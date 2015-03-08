@@ -25,7 +25,7 @@
         <!--Games-->
         <scene sceneID="JrP-w9-a3P">
             <objects>
-                <tableViewController id="pG3-6q-BDc" sceneMemberID="viewController">
+                <tableViewController id="pG3-6q-BDc" customClass="GamesViewController" customModule="Delta" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="RlI-ct-T2T">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

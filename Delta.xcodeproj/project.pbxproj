@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BF46894F1AAC46EF00A2586D /* DirectoryContentsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF46894E1AAC46EF00A2586D /* DirectoryContentsDataSource.swift */; };
 		BFFA71DD1AAC406100EE9DD1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFA71DC1AAC406100EE9DD1 /* AppDelegate.swift */; };
 		BFFA71DF1AAC406100EE9DD1 /* GamesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFA71DE1AAC406100EE9DD1 /* GamesViewController.swift */; };
 		BFFA71E21AAC406100EE9DD1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BFFA71E01AAC406100EE9DD1 /* Main.storyboard */; };
@@ -15,6 +16,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		BF46894E1AAC46EF00A2586D /* DirectoryContentsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectoryContentsDataSource.swift; sourceTree = "<group>"; };
 		BFFA71D71AAC406100EE9DD1 /* Delta.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Delta.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFFA71DB1AAC406100EE9DD1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BFFA71DC1AAC406100EE9DD1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -35,6 +37,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BF46894D1AAC469800A2586D /* Game Selection */ = {
+			isa = PBXGroup;
+			children = (
+				BFFA71DE1AAC406100EE9DD1 /* GamesViewController.swift */,
+				BF46894E1AAC46EF00A2586D /* DirectoryContentsDataSource.swift */,
+			);
+			name = "Game Selection";
+			sourceTree = "<group>";
+		};
 		BFFA71CE1AAC406100EE9DD1 = {
 			isa = PBXGroup;
 			children = (
@@ -55,7 +66,7 @@
 			isa = PBXGroup;
 			children = (
 				BFFA71DC1AAC406100EE9DD1 /* AppDelegate.swift */,
-				BFFA71DE1AAC406100EE9DD1 /* GamesViewController.swift */,
+				BF46894D1AAC469800A2586D /* Game Selection */,
 				BFFA71E01AAC406100EE9DD1 /* Main.storyboard */,
 				BFFA71E31AAC406100EE9DD1 /* Images.xcassets */,
 				BFFA71E51AAC406100EE9DD1 /* LaunchScreen.xib */,
@@ -144,6 +155,7 @@
 			files = (
 				BFFA71DF1AAC406100EE9DD1 /* GamesViewController.swift in Sources */,
 				BFFA71DD1AAC406100EE9DD1 /* AppDelegate.swift in Sources */,
+				BF46894F1AAC46EF00A2586D /* DirectoryContentsDataSource.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -237,6 +249,7 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -289,6 +302,7 @@
 				BFFA71F81AAC406100EE9DD1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
