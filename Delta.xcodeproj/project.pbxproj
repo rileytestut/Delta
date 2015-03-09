@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		BF46894F1AAC46EF00A2586D /* DirectoryContentsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF46894E1AAC46EF00A2586D /* DirectoryContentsDataSource.swift */; };
+		BF9F4FCF1AAD7B87004C9500 /* DeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF9F4FCE1AAD7B87004C9500 /* DeltaCore.framework */; };
+		BF9F4FD01AAD7B87004C9500 /* DeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BF9F4FCE1AAD7B87004C9500 /* DeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BFFA71DD1AAC406100EE9DD1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFA71DC1AAC406100EE9DD1 /* AppDelegate.swift */; };
 		BFFA71DF1AAC406100EE9DD1 /* GamesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFA71DE1AAC406100EE9DD1 /* GamesViewController.swift */; };
 		BFFA71E21AAC406100EE9DD1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BFFA71E01AAC406100EE9DD1 /* Main.storyboard */; };
@@ -15,8 +17,23 @@
 		BFFA71E71AAC406100EE9DD1 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFFA71E51AAC406100EE9DD1 /* LaunchScreen.xib */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		BF9F4FCC1AAD7AEE004C9500 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				BF9F4FD01AAD7B87004C9500 /* DeltaCore.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		BF46894E1AAC46EF00A2586D /* DirectoryContentsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectoryContentsDataSource.swift; sourceTree = "<group>"; };
+		BF9F4FCE1AAD7B87004C9500 /* DeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFFA71D71AAC406100EE9DD1 /* Delta.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Delta.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFFA71DB1AAC406100EE9DD1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BFFA71DC1AAC406100EE9DD1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -31,6 +48,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BF9F4FCF1AAD7B87004C9500 /* DeltaCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -46,11 +64,20 @@
 			name = "Game Selection";
 			sourceTree = "<group>";
 		};
+		BF9F4FCD1AAD7B25004C9500 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BF9F4FCE1AAD7B87004C9500 /* DeltaCore.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		BFFA71CE1AAC406100EE9DD1 = {
 			isa = PBXGroup;
 			children = (
 				BFFA71D91AAC406100EE9DD1 /* Delta */,
 				BFFA71D81AAC406100EE9DD1 /* Products */,
+				BF9F4FCD1AAD7B25004C9500 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -93,6 +120,7 @@
 				BFFA71D31AAC406100EE9DD1 /* Sources */,
 				BFFA71D41AAC406100EE9DD1 /* Frameworks */,
 				BFFA71D51AAC406100EE9DD1 /* Resources */,
+				BF9F4FCC1AAD7AEE004C9500 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -268,6 +296,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = Delta/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -278,6 +307,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = Delta/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

@@ -1,0 +1,3 @@
+[submodule "Cores/DeltaCore"]
+	path = Cores/DeltaCore
+	url = git@github.com:rileytestut/DeltaCore.git

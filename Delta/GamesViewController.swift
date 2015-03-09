@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import DeltaCore
 
 class GamesViewController: UITableViewController
 {
@@ -55,7 +56,7 @@ class GamesViewController: UITableViewController
         
         if self.directoryContentsDataSource == nil
         {
-            let alertController = UIAlertController(title: "Games Directory Invalid", message: "Please ensure the current games directory exists, then restart the app.", preferredStyle: .Alert)
+            let alertController = UIAlertController(title: "Invalid Games Directory", message: "Please ensure the current games directory exists, then restart Delta.", preferredStyle: .Alert)
             alertController.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Cancel, handler: nil))
             
             self.presentViewController(alertController, animated: true, completion: nil)
@@ -67,7 +68,24 @@ class GamesViewController: UITableViewController
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
-
+    
+    
+    //MARK: UITableViewDelegate
+    
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
+    {
+        if let URL = self.directoryContentsDataSource?.URLAtIndexPath(indexPath), game = Game.gameWithURL(URL)
+        {
+            println(game.name)
+        }
+        else
+        {
+            let alertController = UIAlertController(title: "Unsupported Game", message: "This game is not supported by Delta. Please select another game.", preferredStyle: .Alert)
+            alertController.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Cancel, handler: nil))
+            
+            self.presentViewController(alertController, animated: true, completion: nil)
+        }
+    }
 }
 
