@@ -7,4 +7,7 @@
    <FileRef
       location = "group:Cores/DeltaCore/DeltaCore.xcodeproj">
    </FileRef>
+   <FileRef
+      location = "group:Cores/SNESDeltaCore/SNESDeltaCore.xcodeproj">
+   </FileRef>
 </Workspace>

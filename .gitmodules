@@ -1,3 +1,6 @@
 [submodule "Cores/DeltaCore"]
 	path = Cores/DeltaCore
 	url = git@github.com:rileytestut/DeltaCore.git
+[submodule "Cores/SNESDeltaCore"]
+	path = Cores/SNESDeltaCore
+	url = git@github.com:rileytestut/SNESDeltaCore.git

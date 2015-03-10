@@ -75,7 +75,7 @@ class GamesViewController: UITableViewController
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
     {
-        if let URL = self.directoryContentsDataSource?.URLAtIndexPath(indexPath), game = Game.gameWithURL(URL)
+        if let URL = self.directoryContentsDataSource?.URLAtIndexPath(indexPath), game = Game.gameWithURL(URL) where !(game.isMemberOfClass(Game.self))
         {
             println(game.name)
         }
@@ -85,6 +85,8 @@ class GamesViewController: UITableViewController
             alertController.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Cancel, handler: nil))
             
             self.presentViewController(alertController, animated: true, completion: nil)
+            
+            self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
         }
     }
 }
