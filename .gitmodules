@@ -4,3 +4,6 @@
 [submodule "Cores/SNESDeltaCore"]
 	path = Cores/SNESDeltaCore
 	url = git@github.com:rileytestut/SNESDeltaCore.git
+[submodule "External/Roxas"]
+	path = External/Roxas
+	url = git@github.com:rileytestut/Roxas.git

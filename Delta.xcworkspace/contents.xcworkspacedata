@@ -10,4 +10,7 @@
    <FileRef
       location = "group:Cores/SNESDeltaCore/SNESDeltaCore.xcodeproj">
    </FileRef>
+   <FileRef
+      location = "group:External/Roxas/Roxas.xcodeproj">
+   </FileRef>
 </Workspace>
