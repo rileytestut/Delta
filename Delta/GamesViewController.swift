@@ -72,12 +72,12 @@ class GamesViewController: UITableViewController
     
     //MARK: UITableViewDelegate
     
-    
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
     {
-        if let URL = self.directoryContentsDataSource?.URLAtIndexPath(indexPath), game = Game.gameWithURL(URL) where !(game.isMemberOfClass(Game.self))
+        if let URL = self.directoryContentsDataSource?.URLAtIndexPath(indexPath), game = Game(URL: URL) where game.UTI != kUTTypeDeltaGame as String
         {
             println(game.name)
+            let emulatorCore = EmulatorCore(game: game)
         }
         else
         {
