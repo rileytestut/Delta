@@ -56,8 +56,8 @@ class GamesViewController: UITableViewController
         
         if self.directoryContentsDataSource == nil
         {
-            let alertController = UIAlertController(title: "Invalid Games Directory", message: "Please ensure the current games directory exists, then restart Delta.", preferredStyle: .Alert)
-            alertController.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Cancel, handler: nil))
+            let alertController = UIAlertController(title: NSLocalizedString("Invalid Games Directory", comment: ""), message: NSLocalizedString("Please ensure the current games directory exists, then restart Delta.", comment: ""), preferredStyle: .Alert)
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: UIAlertActionStyle.Cancel, handler: nil))
             
             self.presentViewController(alertController, animated: true, completion: nil)
         }
@@ -81,8 +81,8 @@ class GamesViewController: UITableViewController
         }
         else
         {
-            let alertController = UIAlertController(title: "Unsupported Game", message: "This game is not supported by Delta. Please select another game.", preferredStyle: .Alert)
-            alertController.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Cancel, handler: nil))
+            let alertController = UIAlertController(title: NSLocalizedString("Unsupported Game", comment:""), message: NSLocalizedString("This game is not supported by Delta. Please select another game.", comment:""), preferredStyle: .Alert)
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment:""), style: UIAlertActionStyle.Cancel, handler: nil))
             
             self.presentViewController(alertController, animated: true, completion: nil)
             
