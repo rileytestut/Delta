@@ -19,6 +19,8 @@
 		BFFA71E21AAC406100EE9DD1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BFFA71E01AAC406100EE9DD1 /* Main.storyboard */; };
 		BFFA71E41AAC406100EE9DD1 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BFFA71E31AAC406100EE9DD1 /* Images.xcassets */; };
 		BFFA71E71AAC406100EE9DD1 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFFA71E51AAC406100EE9DD1 /* LaunchScreen.xib */; };
+		BFFB709F1AF99B1700DE56FE /* EmulationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFB709E1AF99B1700DE56FE /* EmulationViewController.swift */; };
+		BFFB70A11AF99DFB00DE56FE /* EmulationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFFB70A01AF99DFB00DE56FE /* EmulationViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -49,6 +51,8 @@
 		BFFA71E11AAC406100EE9DD1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		BFFA71E31AAC406100EE9DD1 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		BFFA71E61AAC406100EE9DD1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		BFFB709E1AF99B1700DE56FE /* EmulationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmulationViewController.swift; sourceTree = "<group>"; };
+		BFFB70A01AF99DFB00DE56FE /* EmulationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EmulationViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,6 +119,7 @@
 				BFFA71DC1AAC406100EE9DD1 /* AppDelegate.swift */,
 				BFFA71E01AAC406100EE9DD1 /* Main.storyboard */,
 				BF46894D1AAC469800A2586D /* Game Selection */,
+				BFFB709D1AF99ACA00DE56FE /* Emulation */,
 				BFEC732F1AAECCBD00650035 /* Resources */,
 				BFFA71DA1AAC406100EE9DD1 /* Supporting Files */,
 			);
@@ -128,6 +133,15 @@
 				BFFA71DB1AAC406100EE9DD1 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		BFFB709D1AF99ACA00DE56FE /* Emulation */ = {
+			isa = PBXGroup;
+			children = (
+				BFFB709E1AF99B1700DE56FE /* EmulationViewController.swift */,
+				BFFB70A01AF99DFB00DE56FE /* EmulationViewController.xib */,
+			);
+			name = Emulation;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -157,6 +171,7 @@
 		BFFA71CF1AAC406100EE9DD1 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0630;
 				ORGANIZATIONNAME = "Riley Testut";
 				TargetAttributes = {
@@ -189,6 +204,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BFFA71E21AAC406100EE9DD1 /* Main.storyboard in Resources */,
+				BFFB70A11AF99DFB00DE56FE /* EmulationViewController.xib in Resources */,
 				BFFA71E71AAC406100EE9DD1 /* LaunchScreen.xib in Resources */,
 				BFFA71E41AAC406100EE9DD1 /* Images.xcassets in Resources */,
 			);
@@ -202,6 +218,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BFFA71DF1AAC406100EE9DD1 /* GamesViewController.swift in Sources */,
+				BFFB709F1AF99B1700DE56FE /* EmulationViewController.swift in Sources */,
 				BFFA71DD1AAC406100EE9DD1 /* AppDelegate.swift in Sources */,
 				BF46894F1AAC46EF00A2586D /* DirectoryContentsDataSource.swift in Sources */,
 			);
@@ -290,7 +307,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;

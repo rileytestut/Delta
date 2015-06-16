@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7702"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EmulationViewController" customModule="Delta" customModuleProvider="target">
+            <connections>
+                <outlet property="controllerView" destination="vwI-ri-b2R" id="ntJ-HT-evx"/>
+                <outlet property="controllerViewHeightConstraint" destination="6qz-Ae-arR" id="H8i-pm-31E"/>
+                <outlet property="view" destination="iN0-l3-epB" id="eD5-dV-r00"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" placeholderIntrinsicWidth="600" placeholderIntrinsicHeight="300" translatesAutoresizingMaskIntoConstraints="NO" id="vwI-ri-b2R" customClass="ControllerView" customModule="DeltaCore">
+                    <rect key="frame" x="0.0" y="300" width="600" height="300"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="300" id="6qz-Ae-arR"/>
+                    </constraints>
+                    <variation key="heightClass=compact">
+                        <mask key="constraints">
+                            <exclude reference="6qz-Ae-arR"/>
+                        </mask>
+                    </variation>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="vwI-ri-b2R" secondAttribute="bottom" id="Blz-Nt-ex2"/>
+                <constraint firstAttribute="trailing" secondItem="vwI-ri-b2R" secondAttribute="trailing" id="YbQ-Se-7bk"/>
+                <constraint firstItem="vwI-ri-b2R" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="ZYq-E4-bHb"/>
+                <constraint firstItem="vwI-ri-b2R" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="mX7-Cl-eSm"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="ZYq-E4-bHb"/>
+                </mask>
+            </variation>
+            <variation key="heightClass=compact">
+                <mask key="constraints">
+                    <include reference="ZYq-E4-bHb"/>
+                </mask>
+            </variation>
+        </view>
+    </objects>
+</document>

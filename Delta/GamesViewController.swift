@@ -76,8 +76,8 @@ class GamesViewController: UITableViewController
     {
         if let URL = self.directoryContentsDataSource?.URLAtIndexPath(indexPath), game = Game(URL: URL) where game.UTI != kUTTypeDeltaGame as String
         {
-            println(game.name)
-            let emulatorCore = EmulatorCore(game: game)
+            let emulationViewController = EmulationViewController(game: game)
+            self.presentViewController(emulationViewController, animated: true, completion: nil)
         }
         else
         {
