@@ -87,16 +87,13 @@ private extension DirectoryContentsDataSource
 {
     func didUpdateDirectoryContents()
     {
-        var error: NSError? = nil
-        var contents = NSFileManager.defaultManager().contentsOfDirectoryAtURL(self.directoryURL, includingPropertiesForKeys: nil, options:NSDirectoryEnumerationOptions.SkipsSubdirectoryDescendants | NSDirectoryEnumerationOptions.SkipsHiddenFiles, error: &error) as! [NSURL]?
-        
-        if let contents = contents
+        do
         {
-            self.directoryContents = contents
+            self.directoryContents = try NSFileManager.defaultManager().contentsOfDirectoryAtURL(self.directoryURL, includingPropertiesForKeys: nil, options:[NSDirectoryEnumerationOptions.SkipsSubdirectoryDescendants, NSDirectoryEnumerationOptions.SkipsHiddenFiles])
         }
-        else
+        catch let error as NSError
         {
-            println(error?.userInfo)
+            print("\(error) \(error.userInfo)")
         }
         
         self.contentsUpdateHandler?()
@@ -112,7 +109,7 @@ extension DirectoryContentsDataSource: UITableViewDataSource
     
     public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
     {
-        let tableViewCell = tableView.dequeueReusableCellWithIdentifier(self.tableViewCellIdentifier, forIndexPath: indexPath) as! UITableViewCell
+        let tableViewCell = tableView.dequeueReusableCellWithIdentifier(self.tableViewCellIdentifier, forIndexPath: indexPath) as UITableViewCell
         
         self.cellConfigurationBlock?(tableViewCell, indexPath, self.URLAtIndexPath(indexPath))
         

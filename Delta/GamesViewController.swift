@@ -15,20 +15,28 @@ class GamesViewController: UITableViewController
     
     override init(style: UITableViewStyle)
     {
-        let error: NSError? = nil;
-        let documentsDirectoryURL = NSFileManager.defaultManager().URLsForDirectory(NSSearchPathDirectory.DocumentDirectory, inDomains: NSSearchPathDomainMask.UserDomainMask).first as! NSURL
-        
-        self.directoryContentsDataSource = DirectoryContentsDataSource(directoryURL: documentsDirectoryURL)
+        if let documentsDirectoryURL = NSFileManager.defaultManager().URLsForDirectory(NSSearchPathDirectory.DocumentDirectory, inDomains: NSSearchPathDomainMask.UserDomainMask).first
+        {
+            self.directoryContentsDataSource = DirectoryContentsDataSource(directoryURL: documentsDirectoryURL)
+        }
+        else
+        {
+            self.directoryContentsDataSource = nil
+        }
         
         super.init(style: style)
     }
 
     required init(coder aDecoder: NSCoder)
     {
-        let error: NSError? = nil;
-        let documentsDirectoryURL = NSFileManager.defaultManager().URLsForDirectory(NSSearchPathDirectory.DocumentDirectory, inDomains: NSSearchPathDomainMask.UserDomainMask).first as! NSURL
-        
-        self.directoryContentsDataSource = DirectoryContentsDataSource(directoryURL: documentsDirectoryURL)
+        if let documentsDirectoryURL = NSFileManager.defaultManager().URLsForDirectory(NSSearchPathDirectory.DocumentDirectory, inDomains: NSSearchPathDomainMask.UserDomainMask).first
+        {
+            self.directoryContentsDataSource = DirectoryContentsDataSource(directoryURL: documentsDirectoryURL)
+        }
+        else
+        {
+            self.directoryContentsDataSource = nil
+        }
         
         super.init(coder: aDecoder)
     }

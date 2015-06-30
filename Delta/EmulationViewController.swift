@@ -41,7 +41,7 @@ class EmulationViewController: UIViewController
         
         self.controllerView.controllerSkin = controllerSkin
         
-        println(self.controllerView.intrinsicContentSize())
+        print(self.controllerView.intrinsicContentSize())
     }
     
     override func viewDidAppear(animated: Bool)
