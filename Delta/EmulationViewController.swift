@@ -7,21 +7,26 @@
 //
 
 import UIKit
+
 import DeltaCore
-import SNESDeltaCore
 
 class EmulationViewController: UIViewController
 {
+    //MARK: - Properties -
+    /** Properties **/
     let game: Game
     let emulatorCore: EmulatorCore
     @IBOutlet private(set) var controllerView: ControllerView!
     
+    //MARK: - Private Properties
     @IBOutlet private var controllerViewHeightConstraint: NSLayoutConstraint!
     
+    //MARK: - Initializers -
+    /** Initializers **/
     required init(game: Game)
     {
         self.game = game
-        self.emulatorCore = SNESEmulatorCore(game: game)
+        self.emulatorCore = EmulatorCore(game: game)
         
         super.init(nibName: "EmulationViewController", bundle: nil)
     }
@@ -30,18 +35,20 @@ class EmulationViewController: UIViewController
         fatalError("initWithCoder: not implemented.")
     }
     
-    //MARK: UIViewController
+    //MARK: - Overrides -
+    /** Overrides **/
     
+    //MARK: - UIViewController
+    /// UIViewController
     override func viewDidLoad()
     {
         super.viewDidLoad()
         
-        let skinURL = self.game.URL.URLByDeletingLastPathComponent?.URLByAppendingPathComponent("Standard.deltaskin")
-        let controllerSkin = ControllerSkin(URL: skinURL!)
+        let controllerSkin = ControllerSkin.defaultControllerSkinForGameUTI(self.game.UTI)
         
         self.controllerView.controllerSkin = controllerSkin
-        
-        print(self.controllerView.intrinsicContentSize())
+        self.controllerView.addReceiver(self)
+        self.emulatorCore.setGameController(self.controllerView, atIndex: 0)
     }
     
     override func viewDidAppear(animated: Bool)
@@ -59,6 +66,12 @@ class EmulationViewController: UIViewController
         self.controllerViewHeightConstraint.constant = self.controllerView.intrinsicContentSize().height * scale
     }
     
+    override func prefersStatusBarHidden() -> Bool
+    {
+        return true
+    }
+    
+    /// <UIContentContainer>
     override func willTransitionToTraitCollection(newCollection: UITraitCollection, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator)
     {
         super.willTransitionToTraitCollection(newCollection, withTransitionCoordinator: coordinator)
@@ -69,9 +82,28 @@ class EmulationViewController: UIViewController
             self.controllerView.finishAnimatingUpdateControllerSkin()
         }
     }
-    
-    override func prefersStatusBarHidden() -> Bool
+}
+
+//MARK: - <GameControllerReceiver> -
+/// <GameControllerReceiver>
+extension EmulationViewController: GameControllerReceiverType
+{
+    func gameController(gameController: GameControllerType, didActivateInput input: InputType)
     {
-        return true
+        if UIDevice.currentDevice().supportsVibration
+        {
+            UIDevice.currentDevice().vibrate()
+        }
+        
+        guard let input = input as? ControllerInput else { return }
+        
+        print("Activated \(input)")
+    }
+    
+    func gameController(gameController: GameControllerType, didDeactivateInput input: InputType)
+    {
+        guard let input = input as? ControllerInput else { return }
+        
+        print("Deactivated \(input)")
     }
 }

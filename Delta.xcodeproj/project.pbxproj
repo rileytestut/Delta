@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BF090CF41B490D8300DCAB45 /* UIDevice+Vibration.m in Sources */ = {isa = PBXBuildFile; fileRef = BF090CF31B490D8300DCAB45 /* UIDevice+Vibration.m */; };
 		BF46894F1AAC46EF00A2586D /* DirectoryContentsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF46894E1AAC46EF00A2586D /* DirectoryContentsDataSource.swift */; };
 		BF9F4FCF1AAD7B87004C9500 /* DeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF9F4FCE1AAD7B87004C9500 /* DeltaCore.framework */; };
 		BF9F4FD01AAD7B87004C9500 /* DeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BF9F4FCE1AAD7B87004C9500 /* DeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -40,6 +41,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		BF090CF11B490D8300DCAB45 /* Delta-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Delta-Bridging-Header.h"; sourceTree = "<group>"; };
+		BF090CF21B490D8300DCAB45 /* UIDevice+Vibration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+Vibration.h"; sourceTree = "<group>"; };
+		BF090CF31B490D8300DCAB45 /* UIDevice+Vibration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+Vibration.m"; sourceTree = "<group>"; };
 		BF46894E1AAC46EF00A2586D /* DirectoryContentsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectoryContentsDataSource.swift; sourceTree = "<group>"; };
 		BF9F4FCE1AAD7B87004C9500 /* DeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFC134E01AAD82460087AD7B /* SNESDeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SNESDeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -69,6 +73,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BF090CEE1B490C1A00DCAB45 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				BF090CF21B490D8300DCAB45 /* UIDevice+Vibration.h */,
+				BF090CF31B490D8300DCAB45 /* UIDevice+Vibration.m */,
+			);
+			name = Extensions;
+			sourceTree = "<group>";
+		};
 		BF46894D1AAC469800A2586D /* Game Selection */ = {
 			isa = PBXGroup;
 			children = (
@@ -120,6 +133,7 @@
 				BFFA71E01AAC406100EE9DD1 /* Main.storyboard */,
 				BF46894D1AAC469800A2586D /* Game Selection */,
 				BFFB709D1AF99ACA00DE56FE /* Emulation */,
+				BF090CEE1B490C1A00DCAB45 /* Extensions */,
 				BFEC732F1AAECCBD00650035 /* Resources */,
 				BFFA71DA1AAC406100EE9DD1 /* Supporting Files */,
 			);
@@ -129,6 +143,7 @@
 		BFFA71DA1AAC406100EE9DD1 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				BF090CF11B490D8300DCAB45 /* Delta-Bridging-Header.h */,
 				BFFA71E51AAC406100EE9DD1 /* LaunchScreen.xib */,
 				BFFA71DB1AAC406100EE9DD1 /* Info.plist */,
 			);
@@ -221,6 +236,7 @@
 				BFFB709F1AF99B1700DE56FE /* EmulationViewController.swift in Sources */,
 				BFFA71DD1AAC406100EE9DD1 /* AppDelegate.swift in Sources */,
 				BF46894F1AAC46EF00A2586D /* DirectoryContentsDataSource.swift in Sources */,
+				BF090CF41B490D8300DCAB45 /* UIDevice+Vibration.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -333,15 +349,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Delta-cubiloonxwcpqtawcqdjabbtttfl/Build/Products/Debug-iphoneos",
-				);
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = Delta/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_CFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.rileytestut.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Delta/Delta-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -349,15 +365,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Delta-cubiloonxwcpqtawcqdjabbtttfl/Build/Products/Debug-iphoneos",
-				);
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = Delta/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_CFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.rileytestut.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Delta/Delta-Bridging-Header.h";
 			};
 			name = Release;
 		};
