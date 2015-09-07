@@ -9,8 +9,14 @@
 /* Begin PBXBuildFile section */
 		BF090CF41B490D8300DCAB45 /* UIDevice+Vibration.m in Sources */ = {isa = PBXBuildFile; fileRef = BF090CF31B490D8300DCAB45 /* UIDevice+Vibration.m */; };
 		BF46894F1AAC46EF00A2586D /* DirectoryContentsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF46894E1AAC46EF00A2586D /* DirectoryContentsDataSource.swift */; };
+		BF5E7F441B9A650B00AE44F8 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5E7F431B9A650B00AE44F8 /* SettingsViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		BF5E7F461B9A652600AE44F8 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF5E7F451B9A652600AE44F8 /* Settings.storyboard */; settings = {ASSET_TAGS = (); }; };
+		BF70798C1B6B464B0019077C /* ZipZap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF70798B1B6B464B0019077C /* ZipZap.framework */; };
+		BF70798D1B6B464B0019077C /* ZipZap.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BF70798B1B6B464B0019077C /* ZipZap.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF9F4FCF1AAD7B87004C9500 /* DeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF9F4FCE1AAD7B87004C9500 /* DeltaCore.framework */; };
 		BF9F4FD01AAD7B87004C9500 /* DeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BF9F4FCE1AAD7B87004C9500 /* DeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BFAA1FED1B8AA4FA00495943 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFAA1FEC1B8AA4FA00495943 /* Settings.swift */; };
+		BFAA1FF41B8AD7F900495943 /* ControllersSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFAA1FF31B8AD7F900495943 /* ControllersSettingsViewController.swift */; };
 		BFC134E11AAD82460087AD7B /* SNESDeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFC134E01AAD82460087AD7B /* SNESDeltaCore.framework */; };
 		BFC134E21AAD82470087AD7B /* SNESDeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BFC134E01AAD82460087AD7B /* SNESDeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BFEC732D1AAECC4A00650035 /* Roxas.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFEC732C1AAECC4A00650035 /* Roxas.framework */; };
@@ -33,6 +39,7 @@
 			files = (
 				BF9F4FD01AAD7B87004C9500 /* DeltaCore.framework in Embed Frameworks */,
 				BFEC732E1AAECC4A00650035 /* Roxas.framework in Embed Frameworks */,
+				BF70798D1B6B464B0019077C /* ZipZap.framework in Embed Frameworks */,
 				BFC134E21AAD82470087AD7B /* SNESDeltaCore.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -45,7 +52,12 @@
 		BF090CF21B490D8300DCAB45 /* UIDevice+Vibration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+Vibration.h"; sourceTree = "<group>"; };
 		BF090CF31B490D8300DCAB45 /* UIDevice+Vibration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+Vibration.m"; sourceTree = "<group>"; };
 		BF46894E1AAC46EF00A2586D /* DirectoryContentsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectoryContentsDataSource.swift; sourceTree = "<group>"; };
+		BF5E7F431B9A650B00AE44F8 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		BF5E7F451B9A652600AE44F8 /* Settings.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
+		BF70798B1B6B464B0019077C /* ZipZap.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ZipZap.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF9F4FCE1AAD7B87004C9500 /* DeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BFAA1FEC1B8AA4FA00495943 /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		BFAA1FF31B8AD7F900495943 /* ControllersSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControllersSettingsViewController.swift; sourceTree = "<group>"; };
 		BFC134E01AAD82460087AD7B /* SNESDeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SNESDeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFEC732C1AAECC4A00650035 /* Roxas.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Roxas.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFFA71D71AAC406100EE9DD1 /* Delta.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Delta.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -66,6 +78,7 @@
 			files = (
 				BF9F4FCF1AAD7B87004C9500 /* DeltaCore.framework in Frameworks */,
 				BFEC732D1AAECC4A00650035 /* Roxas.framework in Frameworks */,
+				BF70798C1B6B464B0019077C /* ZipZap.framework in Frameworks */,
 				BFC134E11AAD82460087AD7B /* SNESDeltaCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -94,11 +107,23 @@
 		BF9F4FCD1AAD7B25004C9500 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BF70798B1B6B464B0019077C /* ZipZap.framework */,
 				BFEC732C1AAECC4A00650035 /* Roxas.framework */,
 				BF9F4FCE1AAD7B87004C9500 /* DeltaCore.framework */,
 				BFC134E01AAD82460087AD7B /* SNESDeltaCore.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		BFAA1FEB1B8AA4E800495943 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				BFAA1FEC1B8AA4FA00495943 /* Settings.swift */,
+				BF5E7F451B9A652600AE44F8 /* Settings.storyboard */,
+				BF5E7F431B9A650B00AE44F8 /* SettingsViewController.swift */,
+				BFAA1FF31B8AD7F900495943 /* ControllersSettingsViewController.swift */,
+			);
+			name = Settings;
 			sourceTree = "<group>";
 		};
 		BFEC732F1AAECCBD00650035 /* Resources */ = {
@@ -133,6 +158,7 @@
 				BFFA71E01AAC406100EE9DD1 /* Main.storyboard */,
 				BF46894D1AAC469800A2586D /* Game Selection */,
 				BFFB709D1AF99ACA00DE56FE /* Emulation */,
+				BFAA1FEB1B8AA4E800495943 /* Settings */,
 				BF090CEE1B490C1A00DCAB45 /* Extensions */,
 				BFEC732F1AAECCBD00650035 /* Resources */,
 				BFFA71DA1AAC406100EE9DD1 /* Supporting Files */,
@@ -222,6 +248,7 @@
 				BFFB70A11AF99DFB00DE56FE /* EmulationViewController.xib in Resources */,
 				BFFA71E71AAC406100EE9DD1 /* LaunchScreen.xib in Resources */,
 				BFFA71E41AAC406100EE9DD1 /* Images.xcassets in Resources */,
+				BF5E7F461B9A652600AE44F8 /* Settings.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -232,11 +259,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BFAA1FED1B8AA4FA00495943 /* Settings.swift in Sources */,
 				BFFA71DF1AAC406100EE9DD1 /* GamesViewController.swift in Sources */,
 				BFFB709F1AF99B1700DE56FE /* EmulationViewController.swift in Sources */,
+				BFAA1FF41B8AD7F900495943 /* ControllersSettingsViewController.swift in Sources */,
 				BFFA71DD1AAC406100EE9DD1 /* AppDelegate.swift in Sources */,
 				BF46894F1AAC46EF00A2586D /* DirectoryContentsDataSource.swift in Sources */,
 				BF090CF41B490D8300DCAB45 /* UIDevice+Vibration.m in Sources */,
+				BF5E7F441B9A650B00AE44F8 /* SettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

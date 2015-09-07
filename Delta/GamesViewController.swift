@@ -77,6 +77,13 @@ class GamesViewController: UITableViewController
         // Dispose of any resources that can be recreated.
     }
     
+    //MARK: - Settings -
+    
+    @IBAction func dismissSettingsViewController(segue: UIStoryboardSegue)
+    {
+        
+    }
+    
     
     //MARK: UITableViewDelegate
     
