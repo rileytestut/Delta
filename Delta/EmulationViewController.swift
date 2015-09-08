@@ -29,13 +29,16 @@ class EmulationViewController: UIViewController
         self.emulatorCore = EmulatorCore(game: game)
         
         super.init(nibName: "EmulationViewController", bundle: nil)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("updateControllers"), name: ExternalControllerDidConnectNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("updateControllers"), name: ExternalControllerDidDisconnectNotification, object: nil)
     }
     
     required init(coder aDecoder: NSCoder) {
         fatalError("initWithCoder: not implemented.")
     }
     
-    //MARK: - Overrides -
+    //MARK: - Overrides
     /** Overrides **/
     
     //MARK: - UIViewController
@@ -49,6 +52,8 @@ class EmulationViewController: UIViewController
         self.controllerView.controllerSkin = controllerSkin
         self.controllerView.addReceiver(self)
         self.emulatorCore.setGameController(self.controllerView, atIndex: 0)
+        
+        self.updateControllers()
     }
     
     override func viewDidAppear(animated: Bool)
@@ -62,8 +67,16 @@ class EmulationViewController: UIViewController
     {
         super.viewDidLayoutSubviews()
         
-        let scale = self.view.bounds.width / self.controllerView.intrinsicContentSize().width
-        self.controllerViewHeightConstraint.constant = self.controllerView.intrinsicContentSize().height * scale
+        if Settings.localControllerPlayerIndex != nil
+        {
+            let scale = self.view.bounds.width / self.controllerView.intrinsicContentSize().width
+            self.controllerViewHeightConstraint.constant = self.controllerView.intrinsicContentSize().height * scale
+        }
+        else
+        {
+            self.controllerViewHeightConstraint.constant = 0
+        }
+        
     }
     
     override func prefersStatusBarHidden() -> Bool
@@ -81,6 +94,28 @@ class EmulationViewController: UIViewController
         coordinator.animateAlongsideTransition(nil) { (context) in
             self.controllerView.finishAnimatingUpdateControllerSkin()
         }
+    }
+    
+    //MARK: - Controllers -
+    /// Controllers
+    func updateControllers()
+    {
+        self.emulatorCore.removeAllGameControllers()
+        
+        if let index = Settings.localControllerPlayerIndex
+        {
+            self.emulatorCore.setGameController(self.controllerView, atIndex: index)
+        }
+        
+        for controller in ExternalControllerManager.sharedManager.connectedControllers
+        {
+            if let index = controller.playerIndex
+            {
+                self.emulatorCore.setGameController(controller, atIndex: index)
+            }
+        }
+        
+        self.view.setNeedsLayout()
     }
 }
 
