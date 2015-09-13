@@ -16,9 +16,11 @@ class EmulationViewController: UIViewController
     /** Properties **/
     let game: Game
     let emulatorCore: EmulatorCore
-    @IBOutlet private(set) var controllerView: ControllerView!
     
     //MARK: - Private Properties
+    @IBOutlet private var controllerView: ControllerView!
+    @IBOutlet private var gameView: GameView!
+    
     @IBOutlet private var controllerViewHeightConstraint: NSLayoutConstraint!
     
     //MARK: - Initializers -
@@ -47,6 +49,9 @@ class EmulationViewController: UIViewController
     {
         super.viewDidLoad()
         
+        self.gameView.backgroundColor = UIColor.clearColor()
+        self.emulatorCore.addGameView(self.gameView)
+        
         let controllerSkin = ControllerSkin.defaultControllerSkinForGameUTI(self.game.UTI)
         
         self.controllerView.controllerSkin = controllerSkin
@@ -67,7 +72,7 @@ class EmulationViewController: UIViewController
     {
         super.viewDidLayoutSubviews()
         
-        if Settings.localControllerPlayerIndex != nil
+        if Settings.localControllerPlayerIndex != nil && self.controllerView.intrinsicContentSize() != CGSize(width: UIViewNoIntrinsicMetric, height: UIViewNoIntrinsicMetric)
         {
             let scale = self.view.bounds.width / self.controllerView.intrinsicContentSize().width
             self.controllerViewHeightConstraint.constant = self.controllerView.intrinsicContentSize().height * scale
@@ -128,6 +133,16 @@ extension EmulationViewController: GameControllerReceiverType
         if UIDevice.currentDevice().supportsVibration
         {
             UIDevice.currentDevice().vibrate()
+        }
+        
+        if let input = input as? ControllerInput
+        {
+            switch input
+            {
+            case .Menu: self.controllerViewHeightConstraint.constant = 0
+            }
+            
+            return
         }
         
         guard let input = input as? ControllerInput else { return }
