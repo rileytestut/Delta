@@ -1,8 +1,8 @@
 {
   "images" : [
     {
-      "idiom" : "universal",
-      "filename" : "gear_1.pdf"
+      "idiom" : "tv",
+      "scale" : "1x"
     }
   ],
   "info" : {

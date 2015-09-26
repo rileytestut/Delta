@@ -11,6 +11,10 @@
 		BF46894F1AAC46EF00A2586D /* DirectoryContentsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF46894E1AAC46EF00A2586D /* DirectoryContentsDataSource.swift */; };
 		BF5E7F441B9A650B00AE44F8 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5E7F431B9A650B00AE44F8 /* SettingsViewController.swift */; };
 		BF5E7F461B9A652600AE44F8 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF5E7F451B9A652600AE44F8 /* Settings.storyboard */; };
+		BF6BB23F1BB73FE800CCF94A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6BB23E1BB73FE800CCF94A /* AppDelegate.swift */; };
+		BF6BB2411BB73FE800CCF94A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6BB2401BB73FE800CCF94A /* ViewController.swift */; };
+		BF6BB2441BB73FE800CCF94A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF6BB2421BB73FE800CCF94A /* Main.storyboard */; };
+		BF6BB2461BB73FE800CCF94A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF6BB2451BB73FE800CCF94A /* Assets.xcassets */; };
 		BF70798C1B6B464B0019077C /* ZipZap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF70798B1B6B464B0019077C /* ZipZap.framework */; };
 		BF70798D1B6B464B0019077C /* ZipZap.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BF70798B1B6B464B0019077C /* ZipZap.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF9F4FCF1AAD7B87004C9500 /* DeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF9F4FCE1AAD7B87004C9500 /* DeltaCore.framework */; };
@@ -24,7 +28,6 @@
 		BFFA71DD1AAC406100EE9DD1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFA71DC1AAC406100EE9DD1 /* AppDelegate.swift */; };
 		BFFA71DF1AAC406100EE9DD1 /* GamesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFA71DE1AAC406100EE9DD1 /* GamesViewController.swift */; };
 		BFFA71E21AAC406100EE9DD1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BFFA71E01AAC406100EE9DD1 /* Main.storyboard */; };
-		BFFA71E41AAC406100EE9DD1 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BFFA71E31AAC406100EE9DD1 /* Images.xcassets */; };
 		BFFA71E71AAC406100EE9DD1 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFFA71E51AAC406100EE9DD1 /* LaunchScreen.xib */; };
 		BFFB709F1AF99B1700DE56FE /* EmulationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFB709E1AF99B1700DE56FE /* EmulationViewController.swift */; };
 		BFFB70A11AF99DFB00DE56FE /* EmulationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFFB70A01AF99DFB00DE56FE /* EmulationViewController.xib */; };
@@ -54,6 +57,12 @@
 		BF46894E1AAC46EF00A2586D /* DirectoryContentsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectoryContentsDataSource.swift; sourceTree = "<group>"; };
 		BF5E7F431B9A650B00AE44F8 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		BF5E7F451B9A652600AE44F8 /* Settings.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
+		BF6BB23C1BB73FE800CCF94A /* Delta.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Delta.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BF6BB23E1BB73FE800CCF94A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		BF6BB2401BB73FE800CCF94A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		BF6BB2431BB73FE800CCF94A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		BF6BB2451BB73FE800CCF94A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		BF6BB2471BB73FE800CCF94A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BF70798B1B6B464B0019077C /* ZipZap.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ZipZap.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF9F4FCE1AAD7B87004C9500 /* DeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFAA1FEC1B8AA4FA00495943 /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
@@ -65,13 +74,19 @@
 		BFFA71DC1AAC406100EE9DD1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BFFA71DE1AAC406100EE9DD1 /* GamesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamesViewController.swift; sourceTree = "<group>"; };
 		BFFA71E11AAC406100EE9DD1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		BFFA71E31AAC406100EE9DD1 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		BFFA71E61AAC406100EE9DD1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		BFFB709E1AF99B1700DE56FE /* EmulationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmulationViewController.swift; sourceTree = "<group>"; };
 		BFFB70A01AF99DFB00DE56FE /* EmulationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EmulationViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		BF6BB2391BB73FE800CCF94A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BFFA71D41AAC406100EE9DD1 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -104,6 +119,25 @@
 			path = "Game Selection";
 			sourceTree = "<group>";
 		};
+		BF6BB23D1BB73FE800CCF94A /* DeltaTV */ = {
+			isa = PBXGroup;
+			children = (
+				BF6BB23E1BB73FE800CCF94A /* AppDelegate.swift */,
+				BF6BB2401BB73FE800CCF94A /* ViewController.swift */,
+				BF6BB2421BB73FE800CCF94A /* Main.storyboard */,
+				BF8624621BB7400E00C12EEE /* Supporting Files */,
+			);
+			path = DeltaTV;
+			sourceTree = "<group>";
+		};
+		BF8624621BB7400E00C12EEE /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				BF6BB2471BB73FE800CCF94A /* Info.plist */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		BF9F4FCD1AAD7B25004C9500 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -129,7 +163,7 @@
 		BFEC732F1AAECCBD00650035 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				BFFA71E31AAC406100EE9DD1 /* Images.xcassets */,
+				BF6BB2451BB73FE800CCF94A /* Assets.xcassets */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -138,8 +172,10 @@
 			isa = PBXGroup;
 			children = (
 				BFFA71D91AAC406100EE9DD1 /* Delta */,
+				BF6BB23D1BB73FE800CCF94A /* DeltaTV */,
 				BF9F4FCD1AAD7B25004C9500 /* Frameworks */,
 				BFFA71D81AAC406100EE9DD1 /* Products */,
+				BFEC732F1AAECCBD00650035 /* Resources */,
 			);
 			sourceTree = "<group>";
 		};
@@ -147,6 +183,7 @@
 			isa = PBXGroup;
 			children = (
 				BFFA71D71AAC406100EE9DD1 /* Delta.app */,
+				BF6BB23C1BB73FE800CCF94A /* Delta.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -160,7 +197,6 @@
 				BFFB709D1AF99ACA00DE56FE /* Emulation */,
 				BFAA1FEB1B8AA4E800495943 /* Settings */,
 				BF090CEE1B490C1A00DCAB45 /* Extensions */,
-				BFEC732F1AAECCBD00650035 /* Resources */,
 				BFFA71DA1AAC406100EE9DD1 /* Supporting Files */,
 			);
 			path = Delta;
@@ -188,6 +224,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		BF6BB23B1BB73FE800CCF94A /* DeltaTV */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BF6BB2481BB73FE800CCF94A /* Build configuration list for PBXNativeTarget "DeltaTV" */;
+			buildPhases = (
+				BF6BB2381BB73FE800CCF94A /* Sources */,
+				BF6BB2391BB73FE800CCF94A /* Frameworks */,
+				BF6BB23A1BB73FE800CCF94A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DeltaTV;
+			productName = DeltaTV;
+			productReference = BF6BB23C1BB73FE800CCF94A /* Delta.app */;
+			productType = "com.apple.product-type.application";
+		};
 		BFFA71D61AAC406100EE9DD1 /* Delta */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = BFFA71F61AAC406100EE9DD1 /* Build configuration list for PBXNativeTarget "Delta" */;
@@ -216,6 +269,9 @@
 				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Riley Testut";
 				TargetAttributes = {
+					BF6BB23B1BB73FE800CCF94A = {
+						CreatedOnToolsVersion = 7.1;
+					};
 					BFFA71D61AAC406100EE9DD1 = {
 						CreatedOnToolsVersion = 6.3;
 						DevelopmentTeam = 6XVY5G3U44;
@@ -236,11 +292,21 @@
 			projectRoot = "";
 			targets = (
 				BFFA71D61AAC406100EE9DD1 /* Delta */,
+				BF6BB23B1BB73FE800CCF94A /* DeltaTV */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		BF6BB23A1BB73FE800CCF94A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF6BB2461BB73FE800CCF94A /* Assets.xcassets in Resources */,
+				BF6BB2441BB73FE800CCF94A /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BFFA71D51AAC406100EE9DD1 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -248,7 +314,6 @@
 				BFFA71E21AAC406100EE9DD1 /* Main.storyboard in Resources */,
 				BFFB70A11AF99DFB00DE56FE /* EmulationViewController.xib in Resources */,
 				BFFA71E71AAC406100EE9DD1 /* LaunchScreen.xib in Resources */,
-				BFFA71E41AAC406100EE9DD1 /* Images.xcassets in Resources */,
 				BF5E7F461B9A652600AE44F8 /* Settings.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -256,6 +321,15 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		BF6BB2381BB73FE800CCF94A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF6BB2411BB73FE800CCF94A /* ViewController.swift in Sources */,
+				BF6BB23F1BB73FE800CCF94A /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BFFA71D31AAC406100EE9DD1 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -274,6 +348,15 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		BF6BB2421BB73FE800CCF94A /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BF6BB2431BB73FE800CCF94A /* Base */,
+			);
+			name = Main.storyboard;
+			path = .;
+			sourceTree = "<group>";
+		};
 		BFFA71E01AAC406100EE9DD1 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -295,6 +378,32 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		BF6BB2491BB73FE800CCF94A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				INFOPLIST_FILE = "DeltaTV/Supporting Files/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				SDKROOT = appletvos;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+			};
+			name = Debug;
+		};
+		BF6BB24A1BB73FE800CCF94A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				INFOPLIST_FILE = "DeltaTV/Supporting Files/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				SDKROOT = appletvos;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+			};
+			name = Release;
+		};
 		BFFA71F41AAC406100EE9DD1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -335,6 +444,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rileytestut.Delta;
+				PRODUCT_NAME = Delta;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -373,6 +484,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rileytestut.Delta;
+				PRODUCT_NAME = Delta;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -389,8 +502,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_CFLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.rileytestut.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Delta/Supporting Files/Delta-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -408,8 +519,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_CFLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.rileytestut.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Delta/Supporting Files/Delta-Bridging-Header.h";
 			};
@@ -418,6 +527,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		BF6BB2481BB73FE800CCF94A /* Build configuration list for PBXNativeTarget "DeltaTV" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BF6BB2491BB73FE800CCF94A /* Debug */,
+				BF6BB24A1BB73FE800CCF94A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		BFFA71D21AAC406100EE9DD1 /* Build configuration list for PBXProject "Delta" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
