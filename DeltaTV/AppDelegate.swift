@@ -8,14 +8,23 @@
 
 import UIKit
 
+import DeltaCore
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
 
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Override point for customization after application launch.
+    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool
+    {
+        // Database
+        DatabaseManager.sharedManager.startWithCompletion { performingMigration in
+        }
+        
+        // Controllers
+        ExternalControllerManager.sharedManager.startMonitoringExternalControllers()
+        
         return true
     }
 

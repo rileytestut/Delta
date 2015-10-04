@@ -52,7 +52,7 @@ class EmulationViewController: UIViewController
         self.gameView.backgroundColor = UIColor.clearColor()
         self.emulatorCore.addGameView(self.gameView)
         
-        let controllerSkin = ControllerSkin.defaultControllerSkinForGameUTI(self.game.UTI)
+        let controllerSkin = ControllerSkin.defaultControllerSkinForGameUTI(self.game.typeIdentifier)
         
         self.controllerView.controllerSkin = controllerSkin
         self.controllerView.addReceiver(self)

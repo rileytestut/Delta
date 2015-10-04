@@ -7,6 +7,7 @@
 //
 
 import UIKit
+
 import DeltaCore
 
 @UIApplicationMain
@@ -16,6 +17,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool
     {
+        // Database
+        DatabaseManager.sharedManager.startWithCompletion { performingMigration in
+        }
+        
         // Controllers
         ExternalControllerManager.sharedManager.startMonitoringExternalControllers()
                 

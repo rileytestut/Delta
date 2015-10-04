@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9053" systemVersion="15A284" minimumToolsVersion="Xcode 7.0">
+    <entity name="Game" representedClassName="Game" syncable="YES">
+        <attribute name="artworkURL" optional="YES" attributeType="Transformable" syncable="YES">
+            <userInfo>
+                <entry key="attributeValueClassName" value="NSURL"/>
+            </userInfo>
+        </attribute>
+        <attribute name="fileURL" optional="YES" attributeType="Transformable" syncable="YES">
+            <userInfo>
+                <entry key="attributeValueClassName" value="NSURL"/>
+            </userInfo>
+        </attribute>
+        <attribute name="identifier" attributeType="String" syncable="YES"/>
+        <attribute name="name" attributeType="String" syncable="YES"/>
+        <attribute name="typeIdentifier" attributeType="String" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Game" positionX="-198" positionY="9" width="128" height="118"/>
+    </elements>
+</model>
