@@ -1,0 +1,10 @@
+PODS:
+  - FileMD5Hash (2.0.0)
+
+DEPENDENCIES:
+  - FileMD5Hash (~> 2.0.0)
+
+SPEC CHECKSUMS:
+  FileMD5Hash: 3ed69cc19a21ff4d30ae8833fc104275ad2c7de0
+
+COCOAPODS: 0.39.0

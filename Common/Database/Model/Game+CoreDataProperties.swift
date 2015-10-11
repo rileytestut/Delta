@@ -12,6 +12,15 @@
 import Foundation
 import CoreData
 
+enum GameAttributes: String
+{
+    case artworkURL
+    case fileURL
+    case identifier
+    case name
+    case typeIdentifier
+}
+
 extension Game
 {
     @NSManaged var artworkURL: NSURL?

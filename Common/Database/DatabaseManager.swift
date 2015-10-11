@@ -8,7 +8,12 @@
 
 import CoreData
 
+// Workspace
 import Roxas
+import DeltaCore
+
+// Pods
+import FileMD5Hash
 
 class DatabaseManager
 {
@@ -18,6 +23,9 @@ class DatabaseManager
     
     private let privateManagedObjectContext: NSManagedObjectContext
     
+    // MARK: - Initialization -
+    /// Initialization
+    
     private init()
     {
         let modelURL = NSBundle.mainBundle().URLForResource("Model", withExtension: "momd")
@@ -26,28 +34,19 @@ class DatabaseManager
         
         self.privateManagedObjectContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
         self.privateManagedObjectContext.persistentStoreCoordinator = persistentStoreCoordinator
+        self.privateManagedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
         
         self.managedObjectContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
         self.managedObjectContext.parentContext = self.privateManagedObjectContext
+        self.managedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
     }
     
     func startWithCompletion(completionBlock: ((performingMigration: Bool) -> Void)?)
     {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)) {
             
-            let documentsDirectoryURL = NSFileManager.defaultManager().URLsForDirectory(NSSearchPathDirectory.DocumentDirectory, inDomains: NSSearchPathDomainMask.UserDomainMask).first!
-            let databaseDirectorURL = documentsDirectoryURL.URLByAppendingPathComponent("Games")
-            let storeURL = databaseDirectorURL.URLByAppendingPathComponent("Delta.sqlite")
-            
-            do
-            {
-                try NSFileManager.defaultManager().createDirectoryAtURL(databaseDirectorURL, withIntermediateDirectories: true, attributes: nil)
-            }
-            catch
-            {
-                print(error)
-            }
-            
+            let storeURL = self.databaseDirectoryURL().URLByAppendingPathComponent("Delta.sqlite")
+
             let options = [NSMigratePersistentStoresAutomaticallyOption: true, NSInferMappingModelAutomaticallyOption: true]
             
             var performingMigration = false
@@ -83,10 +82,11 @@ class DatabaseManager
         }
     }
     
+    // MARK: - Saving -
+    /// Saving
+    
     func save()
     {
-        guard self.managedObjectContext.hasChanges || self.privateManagedObjectContext.hasChanges else { return }
-        
         let backgroundTaskIdentifier = RSTBeginBackgroundTask("Save Database Task")
         
         self.managedObjectContext.performBlockAndWait() {
@@ -118,4 +118,102 @@ class DatabaseManager
         }
     }
     
+    // MARK: - Importing -
+    /// Importing
+    
+    func importGamesAtURLs(URLs: [NSURL], withCompletion completion: ([String] -> Void)?)
+    {
+        let managedObjectContext = self.backgroundManagedObjectContext()
+        managedObjectContext.performBlock() {
+            
+            var identifiers: [String] = []
+            
+            for URL in URLs
+            {
+                let game = Game.insertIntoManagedObjectContext(managedObjectContext)
+                game.name = URL.URLByDeletingPathExtension?.lastPathComponent ?? NSLocalizedString("Game", comment: "")
+                game.identifier = FileHash.sha1HashOfFileAtPath(URL.path)
+                game.fileURL = self.gamesDirectoryURL().URLByAppendingPathComponent(game.identifier)
+                game.typeIdentifier = Game.typeIdentifierForURL(URL) ?? kUTTypeDeltaGame as String
+                
+                do
+                {
+                    try NSFileManager.defaultManager().moveItemAtURL(URL, toURL: game.fileURL)
+                    
+                    identifiers.append(game.identifier)
+                }
+                catch
+                {
+                    game.managedObjectContext?.deleteObject(game)
+                }
+                
+            }
+            
+            do
+            {
+                try managedObjectContext.save()
+            }
+            catch let error as NSError
+            {
+                print("Failed to save import context:", error)
+                
+                identifiers.removeAll()
+            }
+            
+            if let completion = completion
+            {
+                completion(identifiers)
+            }
+        }
+        
+        
+    }
+    
+    
+    // MARK: - Background Contexts -
+    /// Background Contexts
+    
+    func backgroundManagedObjectContext() -> NSManagedObjectContext
+    {
+        let managedObjectContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
+        managedObjectContext.parentContext = self.managedObjectContext
+        managedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+        
+        return managedObjectContext
+    }
+    
+    // MARK: - File URLs -
+    
+    private func databaseDirectoryURL() -> NSURL
+    {
+        let documentsDirectoryURL = NSFileManager.defaultManager().URLsForDirectory(NSSearchPathDirectory.DocumentDirectory, inDomains: NSSearchPathDomainMask.UserDomainMask).first!
+        let databaseDirectoryURL = documentsDirectoryURL.URLByAppendingPathComponent("Database")
+        
+        do
+        {
+            try NSFileManager.defaultManager().createDirectoryAtURL(databaseDirectoryURL, withIntermediateDirectories: true, attributes: nil)
+        }
+        catch
+        {
+            print(error)
+        }
+        
+        return databaseDirectoryURL
+    }
+    
+    private func gamesDirectoryURL() -> NSURL
+    {
+        let gamesDirectoryURL = self.databaseDirectoryURL().URLByAppendingPathComponent("Games")
+        
+        do
+        {
+            try NSFileManager.defaultManager().createDirectoryAtURL(gamesDirectoryURL, withIntermediateDirectories: true, attributes: nil)
+        }
+        catch
+        {
+            print(error)
+        }
+        
+        return gamesDirectoryURL
+    }
 }

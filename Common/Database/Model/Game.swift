@@ -10,7 +10,31 @@ import Foundation
 import CoreData
 
 import DeltaCore
+import SNESDeltaCore
 
+@objc(Game)
 class Game: NSManagedObject, GameType
 {
+}
+
+extension Game
+{
+    class func typeIdentifierForURL(URL: NSURL) -> String?
+    {
+        guard let pathExtension = URL.pathExtension else { return nil }
+        
+        switch pathExtension
+        {
+            case "smc": fallthrough
+            case "sfc": fallthrough
+            case "fig": return kUTTypeSNESGame as String
+            
+            default: return nil
+        }
+    }
+    
+    class func supportedTypeIdentifiers() -> Set<String>
+    {
+        return [kUTTypeSNESGame as String]
+    }
 }

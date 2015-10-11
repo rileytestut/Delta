@@ -84,25 +84,29 @@ class GamesViewController: UITableViewController
         
     }
     
+    // MARK: - Importing -
+    
+    @IBAction func importFiles()
+    {
+        let gamePickerController = GamePickerController()
+        gamePickerController.delegate = self
+        self.presentGamePickerController(gamePickerController, animated: true, completion: nil)
+    }
+    
     
     //MARK: UITableViewDelegate
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
     {
-//        if let URL = self.directoryContentsDataSource?.URLAtIndexPath(indexPath), game = Game(URL: URL) where game.UTI != kUTTypeDeltaGame as String
-//        {
-//            let emulationViewController = EmulationViewController(game: game)
-//            self.presentViewController(emulationViewController, animated: true, completion: nil)
-//        }
-//        else
-//        {
-//            let alertController = UIAlertController(title: NSLocalizedString("Unsupported Game", comment:""), message: NSLocalizedString("This game is not supported by Delta. Please select another game.", comment:""), preferredStyle: .Alert)
-//            alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment:""), style: UIAlertActionStyle.Cancel, handler: nil))
-//            
-//            self.presentViewController(alertController, animated: true, completion: nil)
-//            
-//            self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
-//        }
+        
+    }
+}
+
+extension GamesViewController: GamePickerControllerDelegate
+{
+    func gamePickerController(gamePickerController: GamePickerController, didImportGames games: [Game])
+    {
+        print(games)
     }
 }
 
