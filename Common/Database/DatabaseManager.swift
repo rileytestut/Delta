@@ -130,15 +130,26 @@ class DatabaseManager
             
             for URL in URLs
             {
+                let identifier = FileHash.sha1HashOfFileAtPath(URL.path) as String
+                
+                var filename = identifier
+                if let pathExtension = URL.pathExtension
+                {
+                    filename += "." + pathExtension
+                }
+                
                 let game = Game.insertIntoManagedObjectContext(managedObjectContext)
                 game.name = URL.URLByDeletingPathExtension?.lastPathComponent ?? NSLocalizedString("Game", comment: "")
                 game.identifier = FileHash.sha1HashOfFileAtPath(URL.path)
                 game.fileURL = self.gamesDirectoryURL().URLByAppendingPathComponent(game.identifier)
+                game.identifier = identifier
+                game.filename = filename
                 game.typeIdentifier = Game.typeIdentifierForURL(URL) ?? kUTTypeDeltaGame as String
                 
                 do
                 {
                     try NSFileManager.defaultManager().moveItemAtURL(URL, toURL: game.fileURL)
+                    try NSFileManager.defaultManager().moveItemAtURL(URL, toURL: DatabaseManager.sharedManager.gamesDirectoryURL().URLByAppendingPathComponent(game.identifier + ".smc"))
                     
                     identifiers.append(game.identifier)
                 }

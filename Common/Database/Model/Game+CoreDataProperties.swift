@@ -15,7 +15,7 @@ import CoreData
 enum GameAttributes: String
 {
     case artworkURL
-    case fileURL
+    case filename
     case identifier
     case name
     case typeIdentifier
@@ -24,7 +24,7 @@ enum GameAttributes: String
 extension Game
 {
     @NSManaged var artworkURL: NSURL?
-    @NSManaged var fileURL: NSURL
+    @NSManaged var filename: String
     @NSManaged var identifier: String
     @NSManaged var name: String
     @NSManaged var typeIdentifier: String

@@ -15,6 +15,10 @@ import SNESDeltaCore
 @objc(Game)
 class Game: NSManagedObject, GameType
 {
+    var fileURL: NSURL {
+        let fileURL = DatabaseManager.gamesDirectoryURL.URLByAppendingPathComponent(self.filename)
+        return fileURL
+    }
 }
 
 extension Game
