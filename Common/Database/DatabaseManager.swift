@@ -186,7 +186,17 @@ class DatabaseManager
                 game.name = URL.URLByDeletingPathExtension?.lastPathComponent ?? NSLocalizedString("Game", comment: "")
                 game.identifier = identifier
                 game.filename = filename
-                game.typeIdentifier = Game.typeIdentifierForURL(URL) ?? kUTTypeDeltaGame as String
+                
+                if let pathExtension = URL.pathExtension,
+                    gameCollection = GameCollection.gameSystemCollectionForPathExtension(pathExtension, inManagedObjectContext: managedObjectContext)
+                {
+                    game.typeIdentifier = gameCollection.identifier
+                    game.gameCollections.insert(gameCollection)
+                }
+                else
+                {
+                    game.typeIdentifier = kUTTypeDeltaGame as String
+                }
                 
                 do
                 {

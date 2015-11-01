@@ -57,8 +57,11 @@ class GamePickerController: NSObject
             {
                 let contents = try NSFileManager.defaultManager().contentsOfDirectoryAtURL(documentsDirectoryURL!, includingPropertiesForKeys: nil, options: .SkipsHiddenFiles)
                 
-                let gameURLs = contents.filter({ Game.typeIdentifierForURL($0) != nil })
-                self.importGamesAtURLs(gameURLs)
+                let managedObjectContext = DatabaseManager.sharedManager.backgroundManagedObjectContext()
+                managedObjectContext.performBlock() {
+                    let gameURLs = contents.filter({ GameCollection.gameSystemCollectionForPathExtension($0.pathExtension, inManagedObjectContext: managedObjectContext) != nil })
+                    self.importGamesAtURLs(gameURLs)
+                }
                 
             }
             catch let error as NSError

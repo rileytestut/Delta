@@ -19,6 +19,8 @@ enum GameAttributes: String
     case identifier
     case name
     case typeIdentifier
+    
+    case gameCollections
 }
 
 extension Game
@@ -28,4 +30,6 @@ extension Game
     @NSManaged var identifier: String
     @NSManaged var name: String
     @NSManaged var typeIdentifier: String
+    
+    @NSManaged var gameCollections: Set<GameCollection>
 }

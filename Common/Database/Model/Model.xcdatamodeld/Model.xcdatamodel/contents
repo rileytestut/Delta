@@ -14,6 +14,18 @@
         <attribute name="identifier" attributeType="String" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
         <attribute name="typeIdentifier" attributeType="String" syncable="YES"/>
+        <relationship name="gameCollections" toMany="YES" deletionRule="Nullify" destinationEntity="GameCollection" inverseName="games" inverseEntity="GameCollection" syncable="YES"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="identifier"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="GameCollection" representedClassName="GameCollection" syncable="YES">
+        <attribute name="identifier" attributeType="String" syncable="YES"/>
+        <attribute name="name" attributeType="String" syncable="YES"/>
+        <attribute name="shortName" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="games" toMany="YES" deletionRule="Nullify" destinationEntity="Game" inverseName="gameCollections" inverseEntity="Game" syncable="YES"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="identifier"/>
@@ -21,6 +33,7 @@
         </uniquenessConstraints>
     </entity>
     <elements>
-        <element name="Game" positionX="-198" positionY="9" width="128" height="120"/>
+        <element name="Game" positionX="-200" positionY="9" width="128" height="133"/>
+        <element name="GameCollection" positionX="-198" positionY="-207" width="128" height="103"/>
     </elements>
 </model>
