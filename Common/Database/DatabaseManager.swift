@@ -21,6 +21,50 @@ class DatabaseManager
     
     let managedObjectContext: NSManagedObjectContext
     
+    class var databaseDirectoryURL: NSURL
+    {
+        let documentsDirectoryURL: NSURL
+        
+        if UIDevice.currentDevice().userInterfaceIdiom == .TV
+        {
+            documentsDirectoryURL = NSFileManager.defaultManager().URLsForDirectory(NSSearchPathDirectory.CachesDirectory, inDomains: NSSearchPathDomainMask.UserDomainMask).first!
+        }
+        else
+        {
+            documentsDirectoryURL = NSFileManager.defaultManager().URLsForDirectory(NSSearchPathDirectory.DocumentDirectory, inDomains: NSSearchPathDomainMask.UserDomainMask).first!
+        }
+        
+        let databaseDirectoryURL = documentsDirectoryURL.URLByAppendingPathComponent("Database")
+        
+        
+        do
+        {
+            try NSFileManager.defaultManager().createDirectoryAtURL(databaseDirectoryURL, withIntermediateDirectories: true, attributes: nil)
+        }
+        catch
+        {
+            print(error)
+        }
+        
+        return databaseDirectoryURL
+    }
+    
+    class var gamesDirectoryURL: NSURL
+    {
+        let gamesDirectoryURL = DatabaseManager.databaseDirectoryURL.URLByAppendingPathComponent("Games")
+        
+        do
+        {
+            try NSFileManager.defaultManager().createDirectoryAtURL(gamesDirectoryURL, withIntermediateDirectories: true, attributes: nil)
+        }
+        catch
+        {
+            print(error)
+        }
+        
+        return gamesDirectoryURL
+    }
+    
     private let privateManagedObjectContext: NSManagedObjectContext
     
     // MARK: - Initialization -
@@ -45,7 +89,7 @@ class DatabaseManager
     {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)) {
             
-            let storeURL = self.databaseDirectoryURL().URLByAppendingPathComponent("Delta.sqlite")
+            let storeURL = DatabaseManager.databaseDirectoryURL.URLByAppendingPathComponent("Delta.sqlite")
 
             let options = [NSMigratePersistentStoresAutomaticallyOption: true, NSInferMappingModelAutomaticallyOption: true]
             
@@ -140,16 +184,13 @@ class DatabaseManager
                 
                 let game = Game.insertIntoManagedObjectContext(managedObjectContext)
                 game.name = URL.URLByDeletingPathExtension?.lastPathComponent ?? NSLocalizedString("Game", comment: "")
-                game.identifier = FileHash.sha1HashOfFileAtPath(URL.path)
-                game.fileURL = self.gamesDirectoryURL().URLByAppendingPathComponent(game.identifier)
                 game.identifier = identifier
                 game.filename = filename
                 game.typeIdentifier = Game.typeIdentifierForURL(URL) ?? kUTTypeDeltaGame as String
                 
                 do
                 {
-                    try NSFileManager.defaultManager().moveItemAtURL(URL, toURL: game.fileURL)
-                    try NSFileManager.defaultManager().moveItemAtURL(URL, toURL: DatabaseManager.sharedManager.gamesDirectoryURL().URLByAppendingPathComponent(game.identifier + ".smc"))
+                    try NSFileManager.defaultManager().moveItemAtURL(URL, toURL: DatabaseManager.gamesDirectoryURL.URLByAppendingPathComponent(game.identifier + ".smc"))
                     
                     identifiers.append(game.identifier)
                 }
@@ -191,40 +232,5 @@ class DatabaseManager
         managedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
         
         return managedObjectContext
-    }
-    
-    // MARK: - File URLs -
-    
-    private func databaseDirectoryURL() -> NSURL
-    {
-        let documentsDirectoryURL = NSFileManager.defaultManager().URLsForDirectory(NSSearchPathDirectory.DocumentDirectory, inDomains: NSSearchPathDomainMask.UserDomainMask).first!
-        let databaseDirectoryURL = documentsDirectoryURL.URLByAppendingPathComponent("Database")
-        
-        do
-        {
-            try NSFileManager.defaultManager().createDirectoryAtURL(databaseDirectoryURL, withIntermediateDirectories: true, attributes: nil)
-        }
-        catch
-        {
-            print(error)
-        }
-        
-        return databaseDirectoryURL
-    }
-    
-    private func gamesDirectoryURL() -> NSURL
-    {
-        let gamesDirectoryURL = self.databaseDirectoryURL().URLByAppendingPathComponent("Games")
-        
-        do
-        {
-            try NSFileManager.defaultManager().createDirectoryAtURL(gamesDirectoryURL, withIntermediateDirectories: true, attributes: nil)
-        }
-        catch
-        {
-            print(error)
-        }
-        
-        return gamesDirectoryURL
     }
 }
