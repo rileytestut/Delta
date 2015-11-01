@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9052" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Sqc-e3-Var">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9059" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="wKV-3d-NIY">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9040"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
     </dependencies>
     <scenes>
         <!--Navigation Controller-->
@@ -66,6 +66,166 @@
             </objects>
             <point key="canvasLocation" x="1054" y="333"/>
         </scene>
+        <!--Games-->
+        <scene sceneID="Cd2-Pf-cua">
+            <objects>
+                <viewController id="jeE-WD-wXO" customClass="GamesViewController" customModule="Delta" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="WoX-O4-qy5"/>
+                        <viewControllerLayoutGuide type="bottom" id="0om-QB-N5a"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="3Bk-k3-7J9">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tmn-gd-5UN">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <animations/>
+                                <connections>
+                                    <segue destination="tpK-ou-yEA" kind="embed" id="cjU-nW-cHY"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="tmn-gd-5UN" secondAttribute="trailing" id="9Rq-HM-vqk"/>
+                            <constraint firstItem="0om-QB-N5a" firstAttribute="top" secondItem="tmn-gd-5UN" secondAttribute="bottom" id="DV5-hh-1VN"/>
+                            <constraint firstItem="tmn-gd-5UN" firstAttribute="leading" secondItem="3Bk-k3-7J9" secondAttribute="leading" id="f1f-sa-dBA"/>
+                            <constraint firstItem="tmn-gd-5UN" firstAttribute="top" secondItem="3Bk-k3-7J9" secondAttribute="top" id="nhS-aC-rUR"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Games" id="pFk-as-3k4">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="FeA-O5-xd2">
+                            <connections>
+                                <action selector="importFiles" destination="jeE-WD-wXO" id="A1s-kE-NkM"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="JYx-xE-nis" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1054" y="1002"/>
+        </scene>
+        <!--Games Collection View Controller-->
+        <scene sceneID="qNA-NP-TiF">
+            <objects>
+                <collectionViewController storyboardIdentifier="gamesCollectionViewController" clearsSelectionOnViewWillAppear="NO" id="kqu-75-owz" customClass="GamesCollectionViewController" customModule="Delta" customModuleProvider="target" sceneMemberID="viewController">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="OIq-Z8-kxO">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <animations/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="NKN-dd-bTh" customClass="GameCollectionViewLayout" customModule="Delta" customModuleProvider="target">
+                            <size key="itemSize" width="100" height="100"/>
+                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="10" minY="10" maxX="10" maxY="10"/>
+                        </collectionViewFlowLayout>
+                        <cells>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="GameCell" id="ioT-sh-j8y" customClass="GameCollectionViewCell" customModule="Delta" customModuleProvider="target">
+                                <rect key="frame" x="10" y="10" width="100" height="100"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                    <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <animations/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </view>
+                                <animations/>
+                                <connections>
+                                    <segue destination="hx4-Ze-0Jw" kind="presentation" id="flc-7j-hej"/>
+                                </connections>
+                            </collectionViewCell>
+                        </cells>
+                        <connections>
+                            <outlet property="dataSource" destination="kqu-75-owz" id="lrW-kx-elN"/>
+                            <outlet property="delegate" destination="kqu-75-owz" id="B0G-y1-UrU"/>
+                        </connections>
+                    </collectionView>
+                </collectionViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bW1-t8-idm" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1707" y="1002"/>
+        </scene>
+        <!--Emulation View Controller-->
+        <scene sceneID="g58-A4-ib1">
+            <objects>
+                <viewController id="hx4-Ze-0Jw" customClass="EmulationViewController" customModule="Delta" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Fo4-YI-5cN"/>
+                        <viewControllerLayoutGuide type="bottom" id="UIe-oC-tUc"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="7ei-Ah-JvQ">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GfI-Mx-CQT" customClass="GameView" customModule="DeltaCore">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="300"/>
+                                <animations/>
+                                <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
+                            <view contentMode="scaleToFill" placeholderIntrinsicWidth="600" placeholderIntrinsicHeight="300" translatesAutoresizingMaskIntoConstraints="NO" id="2W1-IT-Y2l" customClass="ControllerView" customModule="DeltaCore">
+                                <rect key="frame" x="0.0" y="300" width="600" height="300"/>
+                                <animations/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="300" id="PEV-zv-Buo"/>
+                                </constraints>
+                                <variation key="heightClass=compact">
+                                    <mask key="constraints">
+                                        <exclude reference="PEV-zv-Buo"/>
+                                    </mask>
+                                </variation>
+                            </view>
+                        </subviews>
+                        <animations/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="2W1-IT-Y2l" firstAttribute="top" secondItem="7ei-Ah-JvQ" secondAttribute="top" id="EF1-5h-FJs"/>
+                            <constraint firstAttribute="trailing" secondItem="GfI-Mx-CQT" secondAttribute="trailing" id="EKN-e9-x37"/>
+                            <constraint firstItem="GfI-Mx-CQT" firstAttribute="top" secondItem="7ei-Ah-JvQ" secondAttribute="top" id="ala-4P-wQR"/>
+                            <constraint firstAttribute="bottom" secondItem="GfI-Mx-CQT" secondAttribute="bottom" id="gFo-XU-4PO">
+                                <variation key="heightClass=compact" constant="0.0"/>
+                            </constraint>
+                            <constraint firstItem="GfI-Mx-CQT" firstAttribute="leading" secondItem="7ei-Ah-JvQ" secondAttribute="leading" id="hck-DY-vlt"/>
+                            <constraint firstItem="2W1-IT-Y2l" firstAttribute="top" secondItem="GfI-Mx-CQT" secondAttribute="bottom" id="uWb-Cv-NM1"/>
+                            <constraint firstAttribute="bottom" secondItem="2W1-IT-Y2l" secondAttribute="bottom" id="vZg-yU-Kqm"/>
+                            <constraint firstAttribute="trailing" secondItem="2W1-IT-Y2l" secondAttribute="trailing" id="wcY-Qm-RRC"/>
+                            <constraint firstItem="2W1-IT-Y2l" firstAttribute="leading" secondItem="7ei-Ah-JvQ" secondAttribute="leading" id="ygW-0T-DPh"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="gFo-XU-4PO"/>
+                                <exclude reference="EF1-5h-FJs"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=compact">
+                            <mask key="constraints">
+                                <include reference="gFo-XU-4PO"/>
+                                <include reference="EF1-5h-FJs"/>
+                                <exclude reference="uWb-Cv-NM1"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <connections>
+                        <outlet property="controllerView" destination="2W1-IT-Y2l" id="WCa-LM-fXF"/>
+                        <outlet property="controllerViewHeightConstraint" destination="PEV-zv-Buo" id="1jo-Kg-HpO"/>
+                        <outlet property="gameView" destination="GfI-Mx-CQT" id="HmP-OA-mci"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ZYd-It-2t0" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2361" y="1002"/>
+        </scene>
+        <!--Page View Controller-->
+        <scene sceneID="35q-Io-64T">
+            <objects>
+                <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="tpK-ou-yEA" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="TZS-QE-4Yg" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1054" y="1681"/>
+        </scene>
         <!--Settings-->
         <scene sceneID="L3X-MM-hJL">
             <objects>
@@ -73,6 +233,25 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2N5-3k-beA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="795.5" y="-88"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="zJI-sC-1sm">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="wKV-3d-NIY" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="wj9-1e-eev">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <animations/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="jeE-WD-wXO" kind="relationship" relationship="rootViewController" id="JbW-Xm-9mu"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0Br-8t-jcG" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="400" y="1002"/>
         </scene>
     </scenes>
     <resources>

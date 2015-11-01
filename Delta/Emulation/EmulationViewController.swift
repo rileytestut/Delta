@@ -9,13 +9,19 @@
 import UIKit
 
 import DeltaCore
+import SNESDeltaCore
 
 class EmulationViewController: UIViewController
 {
     //MARK: - Properties -
     /** Properties **/
-    let game: Game
-    let emulatorCore: EmulatorCore
+    var game: Game! {
+        didSet
+        {
+            self.emulatorCore = SNESEmulatorCore(game: game)
+        }
+    }
+    private(set) var emulatorCore: EmulatorCore!
     
     //MARK: - Private Properties
     @IBOutlet private var controllerView: ControllerView!
@@ -25,19 +31,12 @@ class EmulationViewController: UIViewController
     
     //MARK: - Initializers -
     /** Initializers **/
-    required init(game: Game)
+    required init?(coder aDecoder: NSCoder)
     {
-        self.game = game
-        self.emulatorCore = EmulatorCore(game: game)
-        
-        super.init(nibName: "EmulationViewController", bundle: nil)
+        super.init(coder: aDecoder)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("updateControllers"), name: ExternalControllerDidConnectNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("updateControllers"), name: ExternalControllerDidDisconnectNotification, object: nil)
-    }
-    
-    required init(coder aDecoder: NSCoder) {
-        fatalError("initWithCoder: not implemented.")
     }
     
     //MARK: - Overrides

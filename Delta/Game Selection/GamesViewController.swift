@@ -2,86 +2,47 @@
 //  GamesViewController.swift
 //  Delta
 //
-//  Created by Riley Testut on 3/8/15.
-//  Copyright (c) 2015 Riley Testut. All rights reserved.
+//  Created by Riley Testut on 10/12/15.
+//  Copyright © 2015 Riley Testut. All rights reserved.
 //
 
 import UIKit
-import DeltaCore
 
-class GamesViewController: UITableViewController
+import SNESDeltaCore
+
+class GamesViewController: UIViewController
 {
-    let directoryContentsDataSource: DirectoryContentsDataSource?
+    var pageViewController: UIPageViewController! = nil
     
-    override init(style: UITableViewStyle)
-    {
-        if let documentsDirectoryURL = NSFileManager.defaultManager().URLsForDirectory(NSSearchPathDirectory.DocumentDirectory, inDomains: NSSearchPathDomainMask.UserDomainMask).first
-        {
-            self.directoryContentsDataSource = DirectoryContentsDataSource(directoryURL: documentsDirectoryURL)
-        }
-        else
-        {
-            self.directoryContentsDataSource = nil
-        }
-        
-        super.init(style: style)
-    }
+    let supportedGameTypeIdentifiers = [kUTTypeSNESGame as String]
 
-    required init?(coder aDecoder: NSCoder)
-    {
-        if let documentsDirectoryURL = NSFileManager.defaultManager().URLsForDirectory(NSSearchPathDirectory.DocumentDirectory, inDomains: NSSearchPathDomainMask.UserDomainMask).first
-        {
-            self.directoryContentsDataSource = DirectoryContentsDataSource(directoryURL: documentsDirectoryURL)
-        }
-        else
-        {
-            self.directoryContentsDataSource = nil
-        }
-        
-        super.init(coder: aDecoder)
-    }
-    
     override func viewDidLoad()
     {
         super.viewDidLoad()
         
-        self.tableView.dataSource = self.directoryContentsDataSource
+        self.automaticallyAdjustsScrollViewInsets = false
         
-        self.directoryContentsDataSource!.contentsUpdateHandler = {
-            dispatch_async(dispatch_get_main_queue(), {
-                self.tableView.reloadData()
-            })
-        }
+        self.pageViewController = self.childViewControllers.first as? UIPageViewController
+        self.pageViewController.dataSource = self
+        self.pageViewController.delegate = self
         
-        self.directoryContentsDataSource?.cellConfigurationBlock = { (cell, indexPath, URL) in
-            cell.textLabel?.text = URL.lastPathComponent
-        }
+        let viewController = self.viewControllerForIndex(0)
+        self.pageViewController.setViewControllers([viewController], direction: .Forward, animated: false, completion: nil)
+
+        // Do any additional setup after loading the view.
     }
     
-    override func viewDidAppear(animated: Bool)
+    override func viewDidLayoutSubviews()
     {
-        super.viewDidAppear(animated)
+        super.viewDidLayoutSubviews()
         
-        if self.directoryContentsDataSource == nil
-        {
-            let alertController = UIAlertController(title: NSLocalizedString("Invalid Games Directory", comment: ""), message: NSLocalizedString("Please ensure the current games directory exists, then restart Delta.", comment: ""), preferredStyle: .Alert)
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: UIAlertActionStyle.Cancel, handler: nil))
-            
-            self.presentViewController(alertController, animated: true, completion: nil)
-        }
+        let viewController = self.pageViewController.viewControllers?.first as! GamesCollectionViewController
+        viewController.collectionView?.contentInset.top = self.topLayoutGuide.length
     }
 
-    override func didReceiveMemoryWarning()
-    {
+    override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-    }
-    
-    //MARK: - Settings -
-    
-    @IBAction func dismissSettingsViewController(segue: UIStoryboardSegue)
-    {
-        
     }
     
     // MARK: - Importing -
@@ -92,13 +53,23 @@ class GamesViewController: UITableViewController
         gamePickerController.delegate = self
         self.presentGamePickerController(gamePickerController, animated: true, completion: nil)
     }
-    
-    
-    //MARK: UITableViewDelegate
-    
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
+}
+
+private extension GamesViewController
+{
+    func viewControllerForIndex(index: Int) -> GamesCollectionViewController
     {
+        var safeIndex = index % self.supportedGameTypeIdentifiers.count
+        if safeIndex < 0
+        {
+            safeIndex = self.supportedGameTypeIdentifiers.count + safeIndex
+        }
+                
+        let viewController = self.storyboard?.instantiateViewControllerWithIdentifier("gamesCollectionViewController") as! GamesCollectionViewController
+        viewController.gameTypeIdentifier = self.supportedGameTypeIdentifiers[safeIndex] as String
+        viewController.collectionView?.contentInset.top = self.topLayoutGuide.length
         
+        return viewController
     }
 }
 
@@ -106,7 +77,24 @@ extension GamesViewController: GamePickerControllerDelegate
 {
     func gamePickerController(gamePickerController: GamePickerController, didImportGames games: [Game])
     {
+        DatabaseManager.sharedManager.save()
         print(games)
     }
 }
 
+extension GamesViewController: UIPageViewControllerDelegate, UIPageViewControllerDataSource
+{
+    func pageViewController(pageViewController: UIPageViewController, viewControllerBeforeViewController viewController: UIViewController) -> UIViewController?
+    {
+        let index = self.supportedGameTypeIdentifiers.indexOf((viewController as! GamesCollectionViewController).gameTypeIdentifier)
+        let viewController = self.viewControllerForIndex(index! - 1)
+        return viewController
+    }
+    
+    func pageViewController(pageViewController: UIPageViewController, viewControllerAfterViewController viewController: UIViewController) -> UIViewController?
+    {
+        let index = self.supportedGameTypeIdentifiers.indexOf((viewController as! GamesCollectionViewController).gameTypeIdentifier)
+        let viewController = self.viewControllerForIndex(index! + 1)
+        return viewController
+    }
+}
