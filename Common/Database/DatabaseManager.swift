@@ -66,6 +66,7 @@ class DatabaseManager
     }
     
     private let privateManagedObjectContext: NSManagedObjectContext
+    private let validationManagedObjectContext: NSManagedObjectContext
     
     // MARK: - Initialization -
     /// Initialization
@@ -83,6 +84,12 @@ class DatabaseManager
         self.managedObjectContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
         self.managedObjectContext.parentContext = self.privateManagedObjectContext
         self.managedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+        
+        self.validationManagedObjectContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
+        self.validationManagedObjectContext.parentContext = self.managedObjectContext
+        self.validationManagedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("managedObjectContextDidSave:"), name: NSManagedObjectContextDidSaveNotification, object: nil)
     }
     
     func startWithCompletion(completionBlock: ((performingMigration: Bool) -> Void)?)
@@ -123,42 +130,6 @@ class DatabaseManager
             {
                 completionBlock(performingMigration: performingMigration)
             }
-        }
-    }
-    
-    // MARK: - Saving -
-    /// Saving
-    
-    func save()
-    {
-        let backgroundTaskIdentifier = RSTBeginBackgroundTask("Save Database Task")
-        
-        self.managedObjectContext.performBlockAndWait() {
-            
-            do
-            {
-                try self.managedObjectContext.save()
-            }
-            catch let error as NSError
-            {
-                print("Failed to save main context:", error)
-            }
-            
-            self.privateManagedObjectContext.performBlock() {
-                
-                do
-                {
-                    try self.privateManagedObjectContext.save()
-                }
-                catch let error as NSError
-                {
-                    print("Failed to save private context to disk:", error)
-                }
-                
-                RSTEndBackgroundTask(backgroundTaskIdentifier)
-                
-            }
-            
         }
     }
     
@@ -231,16 +202,80 @@ class DatabaseManager
         
     }
     
-    
     // MARK: - Background Contexts -
     /// Background Contexts
     
     func backgroundManagedObjectContext() -> NSManagedObjectContext
     {
         let managedObjectContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
-        managedObjectContext.parentContext = self.managedObjectContext
+        managedObjectContext.parentContext = self.validationManagedObjectContext
         managedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
         
         return managedObjectContext
     }
+}
+
+private extension DatabaseManager
+{
+    // MARK: - Saving -
+    
+    private func save()
+    {
+        let backgroundTaskIdentifier = RSTBeginBackgroundTask("Save Database Task")
+        
+        self.validationManagedObjectContext.performBlockAndWait {
+            
+            do
+            {
+                try self.validationManagedObjectContext.save()
+            }
+            catch let error as NSError
+            {
+                print("Failed to save validation context:", error)
+            }
+            
+            
+            // Update main managed object context
+            self.managedObjectContext.performBlockAndWait() {
+                
+                do
+                {
+                    try self.managedObjectContext.save()
+                }
+                catch let error as NSError
+                {
+                    print("Failed to save main context:", error)
+                }
+                
+                
+                // Save to disk
+                self.privateManagedObjectContext.performBlock() {
+                    
+                    do
+                    {
+                        try self.privateManagedObjectContext.save()
+                    }
+                    catch let error as NSError
+                    {
+                        print("Failed to save private context to disk:", error)
+                    }
+                    
+                    RSTEndBackgroundTask(backgroundTaskIdentifier)
+                    
+                }
+                
+            }
+            
+        }
+    }
+    
+    // MARK: - Notifications -
+    
+    dynamic func managedObjectContextDidSave(notification: NSNotification)
+    {
+        guard let managedObjectContext = notification.object as? NSManagedObjectContext where managedObjectContext.parentContext == self.validationManagedObjectContext else { return }
+        
+        self.save()
+    }
+    
 }

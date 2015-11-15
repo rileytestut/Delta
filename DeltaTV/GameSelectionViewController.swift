@@ -88,7 +88,6 @@ extension GameSelectionViewController: GamePickerControllerDelegate
 {
     func gamePickerController(gamePickerController: GamePickerController, didImportGames games: [Game])
     {
-        DatabaseManager.sharedManager.save()
         print(games)
     }
 }
