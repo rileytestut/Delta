@@ -1,4 +1,5 @@
 {
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "A1BF268530E217C860B34A81A1DA1B446006BF9E",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
 
   },
@@ -6,6 +7,7 @@
     "377491A212AA92C1503AD101C88ADDBD6FD62CF0" : 0,
     "C14902E1A817B9BD0549E16C5F6A56E2377FBF42" : 0,
     "816D57F18EE93972A535858CB18F29A85BE91A39" : 0,
+    "A1BF268530E217C860B34A81A1DA1B446006BF9E" : 0,
     "82DF43EF5CA016D15C41E0AF1AF686E9973475B7" : 0
   },
   "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "8EE86D07-2AAF-47C3-91DF-0E46DBDAB128",
@@ -13,6 +15,7 @@
     "377491A212AA92C1503AD101C88ADDBD6FD62CF0" : "Delta\/External\/Roxas\/",
     "C14902E1A817B9BD0549E16C5F6A56E2377FBF42" : "Delta\/Cores\/SNESDeltaCore\/",
     "816D57F18EE93972A535858CB18F29A85BE91A39" : "Delta\/Cores\/DeltaCore\/",
+    "A1BF268530E217C860B34A81A1DA1B446006BF9E" : "Delta\/",
     "82DF43EF5CA016D15C41E0AF1AF686E9973475B7" : "Delta\/Cores\/DeltaCore\/External\/ZipZap\/"
   },
   "DVTSourceControlWorkspaceBlueprintNameKey" : "Delta",
@@ -33,6 +36,11 @@
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:pixelglow\/ZipZap.git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "82DF43EF5CA016D15C41E0AF1AF686E9973475B7"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:rileytestut\/Delta.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "A1BF268530E217C860B34A81A1DA1B446006BF9E"
     },
     {
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:rileytestut\/SNESDeltaCore.git",

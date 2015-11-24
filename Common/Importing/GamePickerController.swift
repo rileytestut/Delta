@@ -9,6 +9,8 @@
 import UIKit
 import ObjectiveC
 
+import DeltaCore
+
 protocol GamePickerControllerDelegate
 {
     func gamePickerController(gamePickerController: GamePickerController, didImportGames games: [Game])
@@ -59,7 +61,7 @@ class GamePickerController: NSObject
                 
                 let managedObjectContext = DatabaseManager.sharedManager.backgroundManagedObjectContext()
                 managedObjectContext.performBlock() {
-                    let gameURLs = contents.filter({ GameCollection.gameSystemCollectionForPathExtension($0.pathExtension, inManagedObjectContext: managedObjectContext) != nil })
+                    let gameURLs = contents.filter({ GameCollection.gameSystemCollectionForPathExtension($0.pathExtension, inManagedObjectContext: managedObjectContext).identifier != kUTTypeDeltaGame as String })
                     self.importGamesAtURLs(gameURLs)
                 }
                 

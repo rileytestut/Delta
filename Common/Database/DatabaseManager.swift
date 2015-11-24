@@ -88,8 +88,9 @@ class DatabaseManager
         self.validationManagedObjectContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
         self.validationManagedObjectContext.parentContext = self.managedObjectContext
         self.validationManagedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
-        
+
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("managedObjectContextDidSave:"), name: NSManagedObjectContextDidSaveNotification, object: nil)
+
     }
     
     func startWithCompletion(completionBlock: ((performingMigration: Bool) -> Void)?)
@@ -158,9 +159,9 @@ class DatabaseManager
                 game.identifier = identifier
                 game.filename = filename
                 
-                if let pathExtension = URL.pathExtension,
-                    gameCollection = GameCollection.gameSystemCollectionForPathExtension(pathExtension, inManagedObjectContext: managedObjectContext)
+                if let pathExtension = URL.pathExtension
                 {
+                    let gameCollection = GameCollection.gameSystemCollectionForPathExtension(pathExtension, inManagedObjectContext: managedObjectContext)
                     game.typeIdentifier = gameCollection.identifier
                     game.gameCollections.insert(gameCollection)
                 }
@@ -171,7 +172,19 @@ class DatabaseManager
                 
                 do
                 {
-                    try NSFileManager.defaultManager().moveItemAtURL(URL, toURL: DatabaseManager.gamesDirectoryURL.URLByAppendingPathComponent(game.identifier + ".smc"))
+                    let destinationURL = DatabaseManager.gamesDirectoryURL.URLByAppendingPathComponent(game.identifier + "." + game.preferredFileExtension)
+                    
+                    if let path = destinationURL.path
+                    {
+                        if NSFileManager.defaultManager().fileExistsAtPath(path)
+                        {
+                            try NSFileManager.defaultManager().removeItemAtURL(URL)
+                        }
+                        else
+                        {
+                            try NSFileManager.defaultManager().moveItemAtURL(URL, toURL: destinationURL)
+                        }
+                    }
                     
                     identifiers.append(game.identifier)
                 }
@@ -275,7 +288,36 @@ private extension DatabaseManager
     {
         guard let managedObjectContext = notification.object as? NSManagedObjectContext where managedObjectContext.parentContext == self.validationManagedObjectContext else { return }
         
-        self.save()
+        self.validationManagedObjectContext.performBlockAndWait {
+            
+            // Remove deleted games from disk
+            if let deletedObjects = notification.userInfo?[NSDeletedObjectsKey] as? Set<NSManagedObject>
+            {
+                let games = deletedObjects.filter({ $0 is Game }).map({ self.validationManagedObjectContext.objectWithID($0.objectID) as! Game })
+                
+                for game in games
+                {
+                    do
+                    {
+                        try NSFileManager.defaultManager().removeItemAtURL(game.fileURL)
+                    }
+                    catch let error as NSError
+                    {
+                        print(error)
+                    }
+                }
+            }
+            
+            // Remove empty collections
+            let collections = GameCollection.instancesWithPredicate(NSPredicate(format: "%K.@count == 0", GameCollectionAttributes.games.rawValue), inManagedObjectContext: self.validationManagedObjectContext, type: GameCollection.self)
+            
+            for collection in collections
+            {
+                self.validationManagedObjectContext.deleteObject(collection)
+            }
+            
+            self.save()
+        }
     }
-    
+
 }

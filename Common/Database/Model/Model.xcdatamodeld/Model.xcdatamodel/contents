@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9057" systemVersion="15A284" minimumToolsVersion="Xcode 7.0">
+<model userDefinedModelVersionIdentifier="1.0" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9057" systemVersion="15B42" minimumToolsVersion="Xcode 7.0">
     <entity name="Game" representedClassName="Game" syncable="YES">
         <attribute name="artworkURL" optional="YES" attributeType="Transformable" syncable="YES">
             <userInfo>
@@ -23,8 +23,7 @@
     </entity>
     <entity name="GameCollection" representedClassName="GameCollection" syncable="YES">
         <attribute name="identifier" attributeType="String" syncable="YES"/>
-        <attribute name="name" attributeType="String" syncable="YES"/>
-        <attribute name="shortName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="index" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <relationship name="games" toMany="YES" deletionRule="Nullify" destinationEntity="Game" inverseName="gameCollections" inverseEntity="Game" syncable="YES"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
@@ -33,7 +32,7 @@
         </uniquenessConstraints>
     </entity>
     <elements>
-        <element name="Game" positionX="-200" positionY="9" width="128" height="133"/>
-        <element name="GameCollection" positionX="-198" positionY="-207" width="128" height="103"/>
+        <element name="Game" positionX="-200" positionY="9" width="128" height="135"/>
+        <element name="GameCollection" positionX="-198" positionY="-207" width="128" height="90"/>
     </elements>
 </model>

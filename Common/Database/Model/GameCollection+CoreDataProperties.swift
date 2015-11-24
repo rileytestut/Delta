@@ -14,18 +14,16 @@ import CoreData
 
 enum GameCollectionAttributes: String
 {
-    case name
     case identifier
-    case shortName
+    case index
     
     case games
 }
 
 extension GameCollection {
 
-    @NSManaged var name: String
     @NSManaged var identifier: String
-    @NSManaged var shortName: String?
+    @NSManaged var index: Int16
     
     @NSManaged var games: Set<Game>
 }

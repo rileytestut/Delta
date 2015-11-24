@@ -9,31 +9,54 @@
 import Foundation
 import CoreData
 
+import DeltaCore
 import SNESDeltaCore
 
 @objc(GameCollection)
 class GameCollection: NSManagedObject
 {
-    class func gameSystemCollectionForPathExtension(pathExtension: String?, inManagedObjectContext managedObjectContext: NSManagedObjectContext) -> GameCollection?
+    var name: String {
+        
+        switch self.identifier
+        {
+        case kUTTypeSNESGame as String as String: return NSLocalizedString("Super Nintendo Entertainment System", comment: "")
+        case kUTTypeGBAGame  as String as String: return NSLocalizedString("Game Boy Advance", comment: "")
+        case kUTTypeDeltaGame as String as String: return NSLocalizedString("Unsupported Games", comment: "")
+        default: return NSLocalizedString("Unknown", comment: "")
+        }
+    }
+    
+    var shortName: String {
+        
+        switch self.identifier
+        {
+        case kUTTypeSNESGame as String as String: return NSLocalizedString("SNES", comment: "")
+        case kUTTypeGBAGame  as String as String: return NSLocalizedString("GBA", comment: "")
+        case kUTTypeDeltaGame as String as String: return NSLocalizedString("Unsupported", comment: "")
+        default: return NSLocalizedString("Unknown", comment: "")
+        }
+    }
+    
+    class func gameSystemCollectionForPathExtension(pathExtension: String?, inManagedObjectContext managedObjectContext: NSManagedObjectContext) -> GameCollection
     {
-        guard let pathExtension = pathExtension else { return nil }
-        
         let identifier: String
-        let name: String
-        let shortName: String
+        let index: Int16
         
-        switch pathExtension
+        switch pathExtension ?? ""
         {
         case "smc": fallthrough
         case "sfc": fallthrough
         case "fig":
             identifier = kUTTypeSNESGame as String
-            name = "Super Nintendo Entertainment System"
-            shortName = "SNES"
+            index = 1990
             
+        case "gba":
+            identifier = kUTTypeGBAGame as String
+            index = 2001
             
-            
-        default: return nil
+        default:
+            identifier = kUTTypeDeltaGame as String
+            index = Int16(INT16_MAX)
         }
         
         let predicate = NSPredicate(format: "%K == %@", GameCollectionAttributes.identifier.rawValue, identifier)
@@ -43,10 +66,9 @@ class GameCollection: NSManagedObject
         {
             gameCollection = GameCollection.insertIntoManagedObjectContext(managedObjectContext)
             gameCollection?.identifier = identifier
-            gameCollection?.name = name
-            gameCollection?.shortName = shortName
+            gameCollection?.index = index
         }
         
-        return gameCollection
+        return gameCollection!
     }
 }

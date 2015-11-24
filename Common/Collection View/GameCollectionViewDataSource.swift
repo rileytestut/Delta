@@ -11,14 +11,12 @@ import CoreData
 
 class GameCollectionViewDataSource: NSObject
 {
-    var gameTypeIdentifiers: [String] = [] {
+    var supportedGameCollectionIdentifiers: [String]? {
         didSet
         {
             self.updateFetchedResultsController()
         }
     }
-    
-    var sectionTitles: [String] = []
     
     var cellConfigurationHandler: ((GameCollectionViewCell, Game) -> Void)?
     
@@ -47,10 +45,13 @@ class GameCollectionViewDataSource: NSObject
         
         var predicates: [NSPredicate] = []
         
-        for typeIdentifier in self.gameTypeIdentifiers
+        if let identifiers = self.supportedGameCollectionIdentifiers
         {
-            let predicate = NSPredicate(format: "%K == %@", GameAttributes.typeIdentifier.rawValue, typeIdentifier)
-            predicates.append(predicate)
+            for identifier in identifiers
+            {
+                let predicate = NSPredicate(format: "SUBQUERY(%K, $x, $x.%K == %@).@count > 0", GameAttributes.gameCollections.rawValue, GameCollectionAttributes.identifier.rawValue, identifier)
+                predicates.append(predicate)
+            }
         }
         
         if predicates.count > 0
@@ -58,7 +59,7 @@ class GameCollectionViewDataSource: NSObject
             fetchRequest.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: predicates)
         }
         
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: GameAttributes.name.rawValue, ascending: true)]
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: GameAttributes.typeIdentifier.rawValue, ascending: true), NSSortDescriptor(key: GameAttributes.name.rawValue, ascending: true)]
         
         self.fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DatabaseManager.sharedManager.managedObjectContext, sectionNameKeyPath: GameAttributes.typeIdentifier.rawValue, cacheName: nil)
         self.fetchedResultsController.delegate = previousDelegate
@@ -117,6 +118,4 @@ extension GameCollectionViewDataSource: UICollectionViewDelegate
         let size = self.prototypeCell.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize)
         return size
     }
-    
-    
 }

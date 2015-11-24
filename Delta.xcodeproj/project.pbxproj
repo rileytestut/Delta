@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		AF0535CD7331785FA15E0864 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22506DA00971C4300AF90A35 /* Pods.framework */; };
 		BF090CF41B490D8300DCAB45 /* UIDevice+Vibration.m in Sources */ = {isa = PBXBuildFile; fileRef = BF090CF31B490D8300DCAB45 /* UIDevice+Vibration.m */; };
+		BF107EC41BF413F000E0C32C /* GamesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF107EC31BF413F000E0C32C /* GamesViewController.swift */; };
 		BF27CC8B1BC9FE4D00A20D89 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF27CC8A1BC9FE4D00A20D89 /* Pods.framework */; };
 		BF27CC8C1BC9FE5300A20D89 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22506DA00971C4300AF90A35 /* Pods.framework */; };
 		BF27CC8D1BC9FE5300A20D89 /* Pods.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 22506DA00971C4300AF90A35 /* Pods.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -17,7 +18,6 @@
 		BF27CC911BCB156200A20D89 /* EmulationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF27CC901BCB156200A20D89 /* EmulationViewController.swift */; };
 		BF27CC951BCB7B7A00A20D89 /* GameController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF27CC941BCB7B7A00A20D89 /* GameController.framework */; };
 		BF27CC971BCC890700A20D89 /* GamesCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF27CC961BCC890700A20D89 /* GamesCollectionViewController.swift */; };
-		BF27CC991BCC8AE600A20D89 /* GamesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF27CC981BCC8AE600A20D89 /* GamesViewController.swift */; };
 		BF2A53FB1BB74FC10052BD0C /* SNESDeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFC134E01AAD82460087AD7B /* SNESDeltaCore.framework */; };
 		BF2A53FC1BB74FC10052BD0C /* SNESDeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BFC134E01AAD82460087AD7B /* SNESDeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF2A53FD1BB74FC60052BD0C /* ZipZap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF70798B1B6B464B0019077C /* ZipZap.framework */; };
@@ -112,12 +112,12 @@
 		BF090CF11B490D8300DCAB45 /* Delta-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Delta-Bridging-Header.h"; sourceTree = "<group>"; };
 		BF090CF21B490D8300DCAB45 /* UIDevice+Vibration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+Vibration.h"; sourceTree = "<group>"; };
 		BF090CF31B490D8300DCAB45 /* UIDevice+Vibration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+Vibration.m"; sourceTree = "<group>"; };
+		BF107EC31BF413F000E0C32C /* GamesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GamesViewController.swift; sourceTree = "<group>"; };
 		BF27CC861BC9E3C600A20D89 /* Delta.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Delta.entitlements; sourceTree = "<group>"; };
 		BF27CC8A1BC9FE4D00A20D89 /* Pods.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Pods.framework; path = "Pods/../build/Debug-appletvos/Pods.framework"; sourceTree = "<group>"; };
 		BF27CC901BCB156200A20D89 /* EmulationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmulationViewController.swift; sourceTree = "<group>"; };
 		BF27CC941BCB7B7A00A20D89 /* GameController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameController.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS9.0.sdk/System/Library/Frameworks/GameController.framework; sourceTree = DEVELOPER_DIR; };
 		BF27CC961BCC890700A20D89 /* GamesCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GamesCollectionViewController.swift; sourceTree = "<group>"; };
-		BF27CC981BCC8AE600A20D89 /* GamesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GamesViewController.swift; sourceTree = "<group>"; };
 		BF4566E71BC090B6007BFA1A /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		BF50DC411BD851740024C720 /* GameCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GameCollectionViewCell.swift; path = "Collection View/GameCollectionViewCell.swift"; sourceTree = "<group>"; };
 		BF5E7F431B9A650B00AE44F8 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -204,7 +204,6 @@
 		BF4566E31BC09026007BFA1A /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				BFC273151BE612CE00D22B05 /* Model */,
 				BFF1E55F1BE04BF6000E9EF6 /* Components */,
 				BF9257571BD8244800B109DA /* Collection View */,
 				BF4566E41BC0902E007BFA1A /* Database */,
@@ -238,7 +237,7 @@
 		BF46894D1AAC469800A2586D /* Game Selection */ = {
 			isa = PBXGroup;
 			children = (
-				BF27CC981BCC8AE600A20D89 /* GamesViewController.swift */,
+				BF107EC31BF413F000E0C32C /* GamesViewController.swift */,
 				BF27CC961BCC890700A20D89 /* GamesCollectionViewController.swift */,
 			);
 			path = "Game Selection";
@@ -306,13 +305,6 @@
 				BFAA1FF31B8AD7F900495943 /* ControllersSettingsViewController.swift */,
 			);
 			path = Settings;
-			sourceTree = "<group>";
-		};
-		BFC273151BE612CE00D22B05 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Model;
 			sourceTree = "<group>";
 		};
 		BFDB28431BC9D9D1001D0C83 /* Importing */ = {
@@ -632,7 +624,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF27CC991BCC8AE600A20D89 /* GamesViewController.swift in Sources */,
 				BFF4EA011BE1B2420056AAA4 /* GameCollectionViewLayoutAttributes.swift in Sources */,
 				BFAA1FED1B8AA4FA00495943 /* Settings.swift in Sources */,
 				BF50DC421BD851740024C720 /* GameCollectionViewCell.swift in Sources */,
@@ -650,6 +641,7 @@
 				BFA5342A1BDC6B520088F1BE /* GameCollectionViewLayout.swift in Sources */,
 				BF762E9E1BC19D31002C8866 /* DatabaseManager.swift in Sources */,
 				BF090CF41B490D8300DCAB45 /* UIDevice+Vibration.m in Sources */,
+				BF107EC41BF413F000E0C32C /* GamesViewController.swift in Sources */,
 				BF5E7F441B9A650B00AE44F8 /* SettingsViewController.swift in Sources */,
 				BFDB28451BC9DA7B001D0C83 /* GamePickerController.swift in Sources */,
 				BFDE393A1BC0CEDF003F72E8 /* Game+CoreDataProperties.swift in Sources */,

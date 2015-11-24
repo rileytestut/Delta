@@ -13,10 +13,11 @@ import DeltaCore
 
 class GamesCollectionViewController: UICollectionViewController
 {
-    var gameTypeIdentifier: String! {
+    var gameCollection: GameCollection! {
         didSet
         {
-            self.dataSource.gameTypeIdentifiers = [self.gameTypeIdentifier]
+            self.dataSource.supportedGameCollectionIdentifiers = [self.gameCollection.identifier]
+            self.title = self.gameCollection.shortName
         }
     }
     

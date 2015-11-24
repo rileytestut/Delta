@@ -11,9 +11,12 @@ import CoreData
 
 import SNESDeltaCore
 
+import Roxas
+
 class GameSelectionViewController: UICollectionViewController
 {
     private let dataSource = GameCollectionViewDataSource()
+    private var backgroundView: RSTBackgroundView! = nil
     
     required init?(coder aDecoder: NSCoder)
     {
@@ -21,7 +24,7 @@ class GameSelectionViewController: UICollectionViewController
         
         self.title = NSLocalizedString("Games", comment: "")
         
-        self.dataSource.gameTypeIdentifiers = [kUTTypeSNESGame as String]
+        self.dataSource.supportedGameCollectionIdentifiers = [kUTTypeSNESGame as String, kUTTypeGBAGame as String]
         self.dataSource.fetchedResultsController.delegate = self
         self.dataSource.cellConfigurationHandler = self.configureCell
     }
@@ -37,11 +40,18 @@ class GameSelectionViewController: UICollectionViewController
         {
             layout.maximumBoxArtSize = CGSize(width: 200, height: 200)
         }
+        
+        self.backgroundView = RSTBackgroundView(frame: self.view.bounds)
+        self.backgroundView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+        self.backgroundView.textLabel.text = NSLocalizedString("No Games", comment: "")
+        self.backgroundView.detailTextLabel.text = NSLocalizedString("You can import games by pressing the + button in the top right.", comment: "")
+        self.view.addSubview(self.backgroundView)
     }
     
     override func viewWillAppear(animated: Bool)
     {
         self.dataSource.update()
+        self.updateCollections()
         
         super.viewWillAppear(animated)
     }
@@ -83,6 +93,23 @@ class GameSelectionViewController: UICollectionViewController
     }
 }
 
+private extension GameSelectionViewController
+{
+    func updateCollections()
+    {
+        if self.dataSource.fetchedResultsController.sections?.count ?? 0 == 0
+        {
+            self.backgroundView.hidden = false
+            self.collectionView?.hidden = true
+        }
+        else
+        {
+            self.backgroundView.hidden = true
+            self.collectionView?.hidden = false
+        }
+    }
+}
+
 // MARK: - <GamePickerControllerDelegate> -
 extension GameSelectionViewController: GamePickerControllerDelegate
 {
@@ -97,6 +124,8 @@ extension GameSelectionViewController: NSFetchedResultsControllerDelegate
     func controllerDidChangeContent(controller: NSFetchedResultsController)
     {
         self.collectionView?.reloadData()
+        
+        self.updateCollections()
     }
 }
 
