@@ -15,10 +15,15 @@ class EmulationViewController: UIViewController
 {
     //MARK: - Properties -
     /** Properties **/
+    
+    /// Should only be set when preparing for segue. Otherwise, should be considered immutable
     var game: Game! {
         didSet
         {
+            guard oldValue != game else { return }
+
             self.emulatorCore = SNESEmulatorCore(game: game)
+            self.preferredContentSize = self.emulatorCore.preferredRenderingSize
         }
     }
     private(set) var emulatorCore: EmulatorCore!
@@ -29,14 +34,26 @@ class EmulationViewController: UIViewController
     
     @IBOutlet private var controllerViewHeightConstraint: NSLayoutConstraint!
     
+    private var isPreviewing: Bool {
+        guard let presentationController = self.presentationController else { return false }
+        return NSStringFromClass(presentationController.dynamicType).containsString("PreviewPresentation")
+    }
+
+    
     //MARK: - Initializers -
     /** Initializers **/
     required init?(coder aDecoder: NSCoder)
     {
         super.init(coder: aDecoder)
-        
+                
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("updateControllers"), name: ExternalControllerDidConnectNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("updateControllers"), name: ExternalControllerDidDisconnectNotification, object: nil)
+    }
+    
+    deinit
+    {
+        // To ensure the emulation stops when cancelling a peek/preview gesture
+        self.emulatorCore.stopEmulation()
     }
     
     //MARK: - Overrides
@@ -47,6 +64,10 @@ class EmulationViewController: UIViewController
     override func viewDidLoad()
     {
         super.viewDidLoad()
+        
+        // Set this to 0 now and update it in viewDidLayoutSubviews to ensure there are never conflicting constraints
+        // (such as when peeking and popping)
+        self.controllerViewHeightConstraint.constant = 0
         
         self.gameView.backgroundColor = UIColor.clearColor()
         self.emulatorCore.addGameView(self.gameView)
@@ -66,12 +87,12 @@ class EmulationViewController: UIViewController
         
         self.emulatorCore.startEmulation()
     }
-    
+
     override func viewDidLayoutSubviews()
     {
         super.viewDidLayoutSubviews()
         
-        if Settings.localControllerPlayerIndex != nil && self.controllerView.intrinsicContentSize() != CGSize(width: UIViewNoIntrinsicMetric, height: UIViewNoIntrinsicMetric)
+        if Settings.localControllerPlayerIndex != nil && self.controllerView.intrinsicContentSize() != CGSize(width: UIViewNoIntrinsicMetric, height: UIViewNoIntrinsicMetric) && !self.isPreviewing
         {
             let scale = self.view.bounds.width / self.controllerView.intrinsicContentSize().width
             self.controllerViewHeightConstraint.constant = self.controllerView.intrinsicContentSize().height * scale
@@ -80,7 +101,6 @@ class EmulationViewController: UIViewController
         {
             self.controllerViewHeightConstraint.constant = 0
         }
-        
     }
     
     override func prefersStatusBarHidden() -> Bool
@@ -120,6 +140,21 @@ class EmulationViewController: UIViewController
         }
         
         self.view.setNeedsLayout()
+    }
+    
+    //MARK: - 3D Touch -
+    /// 3D Touch
+    override func previewActionItems() -> [UIPreviewActionItem]
+    {
+        let presentingViewController = self.presentingViewController
+        
+        let launchGameAction = UIPreviewAction(title: NSLocalizedString("Launch \(self.game.name)", comment: ""), style: .Default) { (action, viewController) in
+            // Delaying until next run loop prevents self from being dismissed immediately
+            dispatch_async(dispatch_get_main_queue()) {
+                presentingViewController?.presentViewController(viewController, animated: true, completion: nil)
+            }
+        }
+        return [launchGameAction]
     }
 }
 

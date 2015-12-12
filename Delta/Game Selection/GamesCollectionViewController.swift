@@ -13,6 +13,8 @@ import DeltaCore
 
 class GamesCollectionViewController: UICollectionViewController
 {
+    weak var segueHandler: UIViewController?
+    
     var gameCollection: GameCollection! {
         didSet
         {
@@ -21,7 +23,7 @@ class GamesCollectionViewController: UICollectionViewController
         }
     }
     
-    private let dataSource = GameCollectionViewDataSource()
+    let dataSource = GameCollectionViewDataSource()
     
     required init?(coder aDecoder: NSCoder)
     {
@@ -50,7 +52,7 @@ class GamesCollectionViewController: UICollectionViewController
         
         super.viewWillAppear(animated)
     }
-
+    
     override func didReceiveMemoryWarning()
     {
         super.didReceiveMemoryWarning()
@@ -62,12 +64,7 @@ class GamesCollectionViewController: UICollectionViewController
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?)
     {
-        guard let viewController = segue.destinationViewController as? EmulationViewController else { return }
-        
-        let indexPath = self.collectionView?.indexPathsForSelectedItems()?.first
-        let game = self.dataSource.fetchedResultsController.objectAtIndexPath(indexPath!) as! Game
-        
-        viewController.game = game
+        self.segueHandler?.prepareForSegue(segue, sender: sender)
     }
     
     // MARK: - Collection View -

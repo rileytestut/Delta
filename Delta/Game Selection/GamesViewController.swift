@@ -111,6 +111,21 @@ class GamesViewController: UIViewController
         gamePickerController.delegate = self
         self.presentGamePickerController(gamePickerController, animated: true, completion: nil)
     }
+    
+    // MARK: - Navigation -
+    
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?)
+    {
+        guard let sourceViewController = segue.sourceViewController as? GamesCollectionViewController else { return }
+        guard let destinationViewController = segue.destinationViewController as? EmulationViewController else { return }
+        guard let cell = sender as? UICollectionViewCell else { return }
+        
+        let indexPath = sourceViewController.collectionView?.indexPathForCell(cell)
+        let game = sourceViewController.dataSource.fetchedResultsController.objectAtIndexPath(indexPath!) as! Game
+        
+        destinationViewController.game = game
+    }
 }
 
 private extension GamesViewController
@@ -133,6 +148,7 @@ private extension GamesViewController
         let viewController = self.storyboard?.instantiateViewControllerWithIdentifier("gamesCollectionViewController") as! GamesCollectionViewController
         viewController.gameCollection = self.fetchedResultsController.objectAtIndexPath(indexPath) as! GameCollection
         viewController.collectionView?.contentInset.top = self.topLayoutGuide.length
+        viewController.segueHandler = self
         
         return viewController
     }
