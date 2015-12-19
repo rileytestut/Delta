@@ -232,7 +232,7 @@ private extension DatabaseManager
 {
     // MARK: - Saving -
     
-    private func save()
+    func save()
     {
         let backgroundTaskIdentifier = RSTBeginBackgroundTask("Save Database Task")
         
@@ -282,6 +282,37 @@ private extension DatabaseManager
         }
     }
     
+    // MARK: - Validation -
+    
+    func validateManagedObjectSaveWithUserInfo(userInfo: [NSObject : AnyObject])
+    {
+        // Remove deleted games from disk
+        if let deletedObjects = userInfo[NSDeletedObjectsKey] as? Set<NSManagedObject>
+        {
+            let games = deletedObjects.filter({ $0 is Game }).map({ self.validationManagedObjectContext.objectWithID($0.objectID) as! Game })
+            
+            for game in games
+            {
+                do
+                {
+                    try NSFileManager.defaultManager().removeItemAtURL(game.fileURL)
+                }
+                catch let error as NSError
+                {
+                    print(error)
+                }
+            }
+        }
+        
+        // Remove empty collections
+        let collections = GameCollection.instancesWithPredicate(NSPredicate(format: "%K.@count == 0", GameCollectionAttributes.games.rawValue), inManagedObjectContext: self.validationManagedObjectContext, type: GameCollection.self)
+        
+        for collection in collections
+        {
+            self.validationManagedObjectContext.deleteObject(collection)
+        }
+    }
+    
     // MARK: - Notifications -
     
     dynamic func managedObjectContextDidSave(notification: NSNotification)
@@ -289,35 +320,8 @@ private extension DatabaseManager
         guard let managedObjectContext = notification.object as? NSManagedObjectContext where managedObjectContext.parentContext == self.validationManagedObjectContext else { return }
         
         self.validationManagedObjectContext.performBlockAndWait {
-            
-            // Remove deleted games from disk
-            if let deletedObjects = notification.userInfo?[NSDeletedObjectsKey] as? Set<NSManagedObject>
-            {
-                let games = deletedObjects.filter({ $0 is Game }).map({ self.validationManagedObjectContext.objectWithID($0.objectID) as! Game })
-                
-                for game in games
-                {
-                    do
-                    {
-                        try NSFileManager.defaultManager().removeItemAtURL(game.fileURL)
-                    }
-                    catch let error as NSError
-                    {
-                        print(error)
-                    }
-                }
-            }
-            
-            // Remove empty collections
-            let collections = GameCollection.instancesWithPredicate(NSPredicate(format: "%K.@count == 0", GameCollectionAttributes.games.rawValue), inManagedObjectContext: self.validationManagedObjectContext, type: GameCollection.self)
-            
-            for collection in collections
-            {
-                self.validationManagedObjectContext.deleteObject(collection)
-            }
-            
+            self.validateManagedObjectSaveWithUserInfo(notification.userInfo ?? [:])
             self.save()
         }
     }
-
 }
