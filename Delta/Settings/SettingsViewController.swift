@@ -61,7 +61,7 @@ class SettingsViewController: UITableViewController
 
 private extension SettingsViewController
 {
-    @IBAction func unwindControllersSettingsViewController(segue: UIStoryboardSegue)
+    @IBAction func unwindFromControllersSettingsViewController(segue: UIStoryboardSegue)
     {
         let indexPath = self.tableView.indexPathForSelectedRow
         

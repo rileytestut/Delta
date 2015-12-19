@@ -126,6 +126,11 @@ class GamesViewController: UIViewController
         
         destinationViewController.game = game
     }
+    
+    @IBAction func unwindFromSettingsViewController(segue: UIStoryboardSegue)
+    {
+        
+    }
 }
 
 private extension GamesViewController
