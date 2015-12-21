@@ -74,6 +74,7 @@ class EmulationViewController: UIViewController
         
         let controllerSkin = ControllerSkin.defaultControllerSkinForGameUTI(self.game.typeIdentifier)
         
+        self.controllerView.containerView = self.view
         self.controllerView.controllerSkin = controllerSkin
         self.controllerView.addReceiver(self)
         self.emulatorCore.setGameController(self.controllerView, atIndex: 0)
@@ -167,16 +168,6 @@ extension EmulationViewController: GameControllerReceiverType
         if UIDevice.currentDevice().supportsVibration
         {
             UIDevice.currentDevice().vibrate()
-        }
-        
-        if let input = input as? ControllerInput
-        {
-            switch input
-            {
-            case .Menu: self.controllerViewHeightConstraint.constant = 0
-            }
-            
-            return
         }
         
         guard let input = input as? ControllerInput else { return }
