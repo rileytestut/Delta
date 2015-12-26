@@ -131,6 +131,11 @@ class GamesViewController: UIViewController
     {
         
     }
+    
+    @IBAction func unwindFromEmulationViewController(segue: UIStoryboardSegue)
+    {
+        
+    }
 }
 
 private extension GamesViewController

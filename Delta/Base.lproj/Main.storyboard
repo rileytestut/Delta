@@ -248,7 +248,13 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Paused" id="hbg-6F-GRq">
-                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="ye0-Nk-K1X">
+                        <barButtonItem key="leftBarButtonItem" title="Main Menu" style="done" id="zv1-Ig-77x">
+                            <color key="tintColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <connections>
+                                <segue destination="mTB-5a-Mdf" kind="unwind" unwindAction="unwindFromEmulationViewController:" id="8H0-x9-1QN"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Resume" style="done" id="ye0-Nk-K1X">
                             <connections>
                                 <segue destination="mTB-5a-Mdf" kind="unwind" unwindAction="unwindFromPauseViewController:" id="OIW-2I-L70"/>
                             </connections>
