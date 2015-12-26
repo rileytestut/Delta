@@ -46,6 +46,7 @@
 		BF7AE8061C2E858400B1B5BC /* PausePresentationControllerContentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF7AE8021C2E858400B1B5BC /* PausePresentationControllerContentView.xib */; };
 		BF7AE8071C2E858400B1B5BC /* PauseStoryboardSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7AE8031C2E858400B1B5BC /* PauseStoryboardSegue.swift */; };
 		BF7AE8081C2E858400B1B5BC /* PauseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7AE8041C2E858400B1B5BC /* PauseViewController.swift */; };
+		BF7AE80A1C2E8C7600B1B5BC /* UIColor+Delta.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7AE8091C2E8C7600B1B5BC /* UIColor+Delta.swift */; };
 		BF8624881BB743FE00C12EEE /* Roxas.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFEC732C1AAECC4A00650035 /* Roxas.framework */; };
 		BF8624891BB743FE00C12EEE /* Roxas.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BFEC732C1AAECC4A00650035 /* Roxas.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF8624A91BB7464B00C12EEE /* DeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF9F4FCE1AAD7B87004C9500 /* DeltaCore.framework */; };
@@ -147,6 +148,7 @@
 		BF7AE8021C2E858400B1B5BC /* PausePresentationControllerContentView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PausePresentationControllerContentView.xib; path = "Pause Menu/PausePresentationControllerContentView.xib"; sourceTree = "<group>"; };
 		BF7AE8031C2E858400B1B5BC /* PauseStoryboardSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PauseStoryboardSegue.swift; path = "Pause Menu/PauseStoryboardSegue.swift"; sourceTree = "<group>"; };
 		BF7AE8041C2E858400B1B5BC /* PauseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PauseViewController.swift; path = "Pause Menu/PauseViewController.swift"; sourceTree = "<group>"; };
+		BF7AE8091C2E8C7600B1B5BC /* UIColor+Delta.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Delta.swift"; sourceTree = "<group>"; };
 		BF9F4FCE1AAD7B87004C9500 /* DeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFA534291BDC6B520088F1BE /* GameCollectionViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GameCollectionViewLayout.swift; path = "Collection View/GameCollectionViewLayout.swift"; sourceTree = "<group>"; };
 		BFAA1FEC1B8AA4FA00495943 /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
@@ -214,6 +216,7 @@
 				BF090CF21B490D8300DCAB45 /* UIDevice+Vibration.h */,
 				BF090CF31B490D8300DCAB45 /* UIDevice+Vibration.m */,
 				BF797A2C1C2D339F00F1A000 /* UILabel+FontSize.swift */,
+				BF7AE8091C2E8C7600B1B5BC /* UIColor+Delta.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -683,6 +686,7 @@
 				BFC2731A1BE6152200D22B05 /* GameCollection.swift in Sources */,
 				BFF1E5641BE04CAF000E9EF6 /* BoxArtImageView.swift in Sources */,
 				BF762EAB1BC1B076002C8866 /* NSManagedObject+Conveniences.swift in Sources */,
+				BF7AE80A1C2E8C7600B1B5BC /* UIColor+Delta.swift in Sources */,
 				BFA5342A1BDC6B520088F1BE /* GameCollectionViewLayout.swift in Sources */,
 				BF762E9E1BC19D31002C8866 /* DatabaseManager.swift in Sources */,
 				BF090CF41B490D8300DCAB45 /* UIDevice+Vibration.m in Sources */,

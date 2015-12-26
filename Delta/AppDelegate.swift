@@ -17,6 +17,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool
     {
+        self.window?.tintColor = UIColor.deltaPurpleColor()
+        
         // Database
         DatabaseManager.sharedManager.startWithCompletion { performingMigration in
         }

@@ -61,6 +61,8 @@ class PauseViewController: UIViewController, PauseInfoProvidable
         self.collectionViewLayout.itemWidth = 90
         self.collectionViewLayout.usesEqualHorizontalSpacingDistributionForSingleRow = true
         
+        self.navigationItem.rightBarButtonItem?.tintColor = UIColor.deltaLightPurpleColor()
+        
         // Manually update prototype cell properties
         self.prototypeCell.contentView.widthAnchor.constraintEqualToConstant(self.collectionViewLayout.itemWidth).active = true
 
