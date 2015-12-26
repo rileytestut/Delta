@@ -121,8 +121,47 @@ class EmulationViewController: UIViewController
         }
     }
     
-    //MARK: - Controllers -
-    /// Controllers
+    // MARK: - Navigation -
+    
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?)
+    {
+        self.emulatorCore.pauseEmulation()
+        
+        if segue.identifier == "pauseSegue"
+        {
+            if let destinationViewController = segue.destinationViewController as? UINavigationController, pauseViewController = destinationViewController.topViewController as? PauseViewController
+            {
+                pauseViewController.pauseText = self.game.name
+            }
+        }
+    }
+    
+    @IBAction func unwindFromPauseViewController(segue: UIStoryboardSegue)
+    {
+        self.emulatorCore.resumeEmulation()
+    }
+    
+    //MARK: - 3D Touch -
+    /// 3D Touch
+    override func previewActionItems() -> [UIPreviewActionItem]
+    {
+        let presentingViewController = self.presentingViewController
+        
+        let launchGameAction = UIPreviewAction(title: NSLocalizedString("Launch \(self.game.name)", comment: ""), style: .Default) { (action, viewController) in
+            // Delaying until next run loop prevents self from being dismissed immediately
+            dispatch_async(dispatch_get_main_queue()) {
+                presentingViewController?.presentViewController(viewController, animated: true, completion: nil)
+            }
+        }
+        return [launchGameAction]
+    }
+}
+
+//MARK: - Controllers -
+/// Controllers
+private extension EmulationViewController
+{
     func updateControllers()
     {
         self.emulatorCore.removeAllGameControllers()
@@ -142,21 +181,6 @@ class EmulationViewController: UIViewController
         
         self.view.setNeedsLayout()
     }
-    
-    //MARK: - 3D Touch -
-    /// 3D Touch
-    override func previewActionItems() -> [UIPreviewActionItem]
-    {
-        let presentingViewController = self.presentingViewController
-        
-        let launchGameAction = UIPreviewAction(title: NSLocalizedString("Launch \(self.game.name)", comment: ""), style: .Default) { (action, viewController) in
-            // Delaying until next run loop prevents self from being dismissed immediately
-            dispatch_async(dispatch_get_main_queue()) {
-                presentingViewController?.presentViewController(viewController, animated: true, completion: nil)
-            }
-        }
-        return [launchGameAction]
-    }
 }
 
 //MARK: - <GameControllerReceiver> -
@@ -173,6 +197,11 @@ extension EmulationViewController: GameControllerReceiverType
         guard let input = input as? ControllerInput else { return }
         
         print("Activated \(input)")
+        
+        switch input
+        {
+        case ControllerInput.Menu: self.performSegueWithIdentifier("pauseSegue", sender: gameController)
+        }
     }
     
     func gameController(gameController: GameControllerType, didDeactivateInput input: InputType)

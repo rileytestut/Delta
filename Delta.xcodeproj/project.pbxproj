@@ -38,6 +38,14 @@
 		BF762E9F1BC19D31002C8866 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF762E9D1BC19D31002C8866 /* DatabaseManager.swift */; };
 		BF762EAB1BC1B076002C8866 /* NSManagedObject+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF762EAA1BC1B076002C8866 /* NSManagedObject+Conveniences.swift */; };
 		BF762EAC1BC1B076002C8866 /* NSManagedObject+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF762EAA1BC1B076002C8866 /* NSManagedObject+Conveniences.swift */; };
+		BF797A2D1C2D339F00F1A000 /* UILabel+FontSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF797A2C1C2D339F00F1A000 /* UILabel+FontSize.swift */; };
+		BF7AE7FE1C2E857A00B1B5BC /* GridCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7AE7FB1C2E857A00B1B5BC /* GridCollectionViewCell.swift */; };
+		BF7AE7FF1C2E857A00B1B5BC /* GridCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF7AE7FC1C2E857A00B1B5BC /* GridCollectionViewCell.xib */; };
+		BF7AE8001C2E857A00B1B5BC /* GridCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7AE7FD1C2E857A00B1B5BC /* GridCollectionViewLayout.swift */; };
+		BF7AE8051C2E858400B1B5BC /* PausePresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7AE8011C2E858400B1B5BC /* PausePresentationController.swift */; };
+		BF7AE8061C2E858400B1B5BC /* PausePresentationControllerContentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF7AE8021C2E858400B1B5BC /* PausePresentationControllerContentView.xib */; };
+		BF7AE8071C2E858400B1B5BC /* PauseStoryboardSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7AE8031C2E858400B1B5BC /* PauseStoryboardSegue.swift */; };
+		BF7AE8081C2E858400B1B5BC /* PauseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7AE8041C2E858400B1B5BC /* PauseViewController.swift */; };
 		BF8624881BB743FE00C12EEE /* Roxas.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFEC732C1AAECC4A00650035 /* Roxas.framework */; };
 		BF8624891BB743FE00C12EEE /* Roxas.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BFEC732C1AAECC4A00650035 /* Roxas.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF8624A91BB7464B00C12EEE /* DeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF9F4FCE1AAD7B87004C9500 /* DeltaCore.framework */; };
@@ -131,6 +139,14 @@
 		BF70798B1B6B464B0019077C /* ZipZap.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ZipZap.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF762E9D1BC19D31002C8866 /* DatabaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		BF762EAA1BC1B076002C8866 /* NSManagedObject+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+Conveniences.swift"; sourceTree = "<group>"; };
+		BF797A2C1C2D339F00F1A000 /* UILabel+FontSize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+FontSize.swift"; sourceTree = "<group>"; };
+		BF7AE7FB1C2E857A00B1B5BC /* GridCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GridCollectionViewCell.swift; path = "Delta/Pause Menu/Collection View/GridCollectionViewCell.swift"; sourceTree = SOURCE_ROOT; };
+		BF7AE7FC1C2E857A00B1B5BC /* GridCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = GridCollectionViewCell.xib; path = "Delta/Pause Menu/Collection View/GridCollectionViewCell.xib"; sourceTree = SOURCE_ROOT; };
+		BF7AE7FD1C2E857A00B1B5BC /* GridCollectionViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GridCollectionViewLayout.swift; path = "Delta/Pause Menu/Collection View/GridCollectionViewLayout.swift"; sourceTree = SOURCE_ROOT; };
+		BF7AE8011C2E858400B1B5BC /* PausePresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PausePresentationController.swift; path = "Pause Menu/PausePresentationController.swift"; sourceTree = "<group>"; };
+		BF7AE8021C2E858400B1B5BC /* PausePresentationControllerContentView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PausePresentationControllerContentView.xib; path = "Pause Menu/PausePresentationControllerContentView.xib"; sourceTree = "<group>"; };
+		BF7AE8031C2E858400B1B5BC /* PauseStoryboardSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PauseStoryboardSegue.swift; path = "Pause Menu/PauseStoryboardSegue.swift"; sourceTree = "<group>"; };
+		BF7AE8041C2E858400B1B5BC /* PauseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PauseViewController.swift; path = "Pause Menu/PauseViewController.swift"; sourceTree = "<group>"; };
 		BF9F4FCE1AAD7B87004C9500 /* DeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFA534291BDC6B520088F1BE /* GameCollectionViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GameCollectionViewLayout.swift; path = "Collection View/GameCollectionViewLayout.swift"; sourceTree = "<group>"; };
 		BFAA1FEC1B8AA4FA00495943 /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
@@ -197,6 +213,7 @@
 			children = (
 				BF090CF21B490D8300DCAB45 /* UIDevice+Vibration.h */,
 				BF090CF31B490D8300DCAB45 /* UIDevice+Vibration.m */,
+				BF797A2C1C2D339F00F1A000 /* UILabel+FontSize.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -263,6 +280,18 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		BF7AE7FA1C2E851F00B1B5BC /* Pause Menu */ = {
+			isa = PBXGroup;
+			children = (
+				BF7AE8041C2E858400B1B5BC /* PauseViewController.swift */,
+				BF7AE8031C2E858400B1B5BC /* PauseStoryboardSegue.swift */,
+				BF7AE8011C2E858400B1B5BC /* PausePresentationController.swift */,
+				BF7AE8021C2E858400B1B5BC /* PausePresentationControllerContentView.xib */,
+				BF9CB2261C2A025700E7D6C8 /* Collection View */,
+			);
+			name = "Pause Menu";
+			sourceTree = "<group>";
+		};
 		BF8624621BB7400E00C12EEE /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
@@ -280,6 +309,17 @@
 				BFB141171BE46934004FBF46 /* GameCollectionViewDataSource.swift */,
 			);
 			name = "Collection View";
+			sourceTree = "<group>";
+		};
+		BF9CB2261C2A025700E7D6C8 /* Collection View */ = {
+			isa = PBXGroup;
+			children = (
+				BF7AE7FB1C2E857A00B1B5BC /* GridCollectionViewCell.swift */,
+				BF7AE7FC1C2E857A00B1B5BC /* GridCollectionViewCell.xib */,
+				BF7AE7FD1C2E857A00B1B5BC /* GridCollectionViewLayout.swift */,
+			);
+			name = "Collection View";
+			path = Emulation;
 			sourceTree = "<group>";
 		};
 		BF9F4FCD1AAD7B25004C9500 /* Frameworks */ = {
@@ -360,6 +400,7 @@
 				BFFA71E01AAC406100EE9DD1 /* Main.storyboard */,
 				BF46894D1AAC469800A2586D /* Game Selection */,
 				BFFB709D1AF99ACA00DE56FE /* Emulation */,
+				BF7AE7FA1C2E851F00B1B5BC /* Pause Menu */,
 				BFAA1FEB1B8AA4E800495943 /* Settings */,
 				BF090CEE1B490C1A00DCAB45 /* Extensions */,
 				BFFA71DA1AAC406100EE9DD1 /* Supporting Files */,
@@ -495,8 +536,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				BFFA71E21AAC406100EE9DD1 /* Main.storyboard in Resources */,
+				BF7AE8061C2E858400B1B5BC /* PausePresentationControllerContentView.xib in Resources */,
 				BFFA71E71AAC406100EE9DD1 /* LaunchScreen.xib in Resources */,
 				BF5E7F461B9A652600AE44F8 /* Settings.storyboard in Resources */,
+				BF7AE7FF1C2E857A00B1B5BC /* GridCollectionViewCell.xib in Resources */,
 				BF27CC8E1BC9FEA200A20D89 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -628,8 +671,10 @@
 				BFAA1FED1B8AA4FA00495943 /* Settings.swift in Sources */,
 				BF50DC421BD851740024C720 /* GameCollectionViewCell.swift in Sources */,
 				BFB141181BE46934004FBF46 /* GameCollectionViewDataSource.swift in Sources */,
+				BF7AE8001C2E857A00B1B5BC /* GridCollectionViewLayout.swift in Sources */,
 				BFFB709F1AF99B1700DE56FE /* EmulationViewController.swift in Sources */,
 				BFAA1FF41B8AD7F900495943 /* ControllersSettingsViewController.swift in Sources */,
+				BF7AE8071C2E858400B1B5BC /* PauseStoryboardSegue.swift in Sources */,
 				BF27CC971BCC890700A20D89 /* GamesCollectionViewController.swift in Sources */,
 				BFFA71DD1AAC406100EE9DD1 /* AppDelegate.swift in Sources */,
 				BF4566E81BC090B6007BFA1A /* Model.xcdatamodeld in Sources */,
@@ -641,10 +686,14 @@
 				BFA5342A1BDC6B520088F1BE /* GameCollectionViewLayout.swift in Sources */,
 				BF762E9E1BC19D31002C8866 /* DatabaseManager.swift in Sources */,
 				BF090CF41B490D8300DCAB45 /* UIDevice+Vibration.m in Sources */,
+				BF797A2D1C2D339F00F1A000 /* UILabel+FontSize.swift in Sources */,
 				BF107EC41BF413F000E0C32C /* GamesViewController.swift in Sources */,
 				BF5E7F441B9A650B00AE44F8 /* SettingsViewController.swift in Sources */,
 				BFDB28451BC9DA7B001D0C83 /* GamePickerController.swift in Sources */,
+				BF7AE8051C2E858400B1B5BC /* PausePresentationController.swift in Sources */,
+				BF7AE7FE1C2E857A00B1B5BC /* GridCollectionViewCell.swift in Sources */,
 				BFDE393A1BC0CEDF003F72E8 /* Game+CoreDataProperties.swift in Sources */,
+				BF7AE8081C2E858400B1B5BC /* PauseViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
