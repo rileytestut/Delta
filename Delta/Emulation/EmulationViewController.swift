@@ -38,6 +38,8 @@ class EmulationViewController: UIViewController
         guard let presentationController = self.presentationController else { return false }
         return NSStringFromClass(presentationController.dynamicType).containsString("PreviewPresentation")
     }
+    
+    private var _isPauseViewControllerPresented = false
 
     
     //MARK: - Initializers -
@@ -110,15 +112,23 @@ class EmulationViewController: UIViewController
     }
     
     /// <UIContentContainer>
-    override func willTransitionToTraitCollection(newCollection: UITraitCollection, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator)
+    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator)
     {
-        super.willTransitionToTraitCollection(newCollection, withTransitionCoordinator: coordinator)
+        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
         
         self.controllerView.beginAnimatingUpdateControllerSkin()
         
-        coordinator.animateAlongsideTransition(nil) { (context) in
-            self.controllerView.finishAnimatingUpdateControllerSkin()
-        }
+        coordinator.animateAlongsideTransition({ _ in
+            
+            if self._isPauseViewControllerPresented
+            {
+                // We need to manually "refresh" the game screen, otherwise the system tries to cache the rendered image, but skews it incorrectly when rotating b/c of UIVisualEffectView
+                self.gameView.inputImage = self.gameView.outputImage
+            }
+            
+        }, completion: { _ in
+                self.controllerView.finishAnimatingUpdateControllerSkin()
+        })
     }
     
     // MARK: - Navigation -
@@ -134,11 +144,15 @@ class EmulationViewController: UIViewController
             {
                 pauseViewController.pauseText = self.game.name
             }
+            
+            self._isPauseViewControllerPresented = true
         }
     }
     
     @IBAction func unwindFromPauseViewController(segue: UIStoryboardSegue)
     {
+        self._isPauseViewControllerPresented = false
+        
         self.emulatorCore.resumeEmulation()
     }
     
