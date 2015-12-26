@@ -18,10 +18,13 @@ class GameCollectionViewDataSource: NSObject
         }
     }
     
-    var cellConfigurationHandler: ((GameCollectionViewCell, Game) -> Void)?
+    var cellConfigurationHandler: ((GridCollectionViewCell, Game) -> Void)?
     
     private(set) var fetchedResultsController: NSFetchedResultsController = NSFetchedResultsController()
-    private let prototypeCell = GameCollectionViewCell(frame: CGRectZero)
+    
+    private var prototypeCell = GridCollectionViewCell()
+    
+    private var _registeredCollectionViewCells = false
     
     // MARK: - Update -
     
@@ -69,7 +72,7 @@ class GameCollectionViewDataSource: NSObject
     
     // MARK: - Collection View -
     
-    private func configureCell(cell: GameCollectionViewCell, forIndexPath indexPath: NSIndexPath)
+    private func configureCell(cell: GridCollectionViewCell, forIndexPath indexPath: NSIndexPath)
     {
         let game = self.fetchedResultsController.objectAtIndexPath(indexPath) as! Game
         
@@ -95,7 +98,7 @@ extension GameCollectionViewDataSource: UICollectionViewDataSource
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell
     {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("GameCell", forIndexPath: indexPath) as! GameCollectionViewCell
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("GameCell", forIndexPath: indexPath) as! GridCollectionViewCell
         
         self.configureCell(cell, forIndexPath: indexPath)
         
@@ -107,15 +110,17 @@ extension GameCollectionViewDataSource: UICollectionViewDelegate
 {
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize
     {
-        if let layoutAttributes = collectionViewLayout.layoutAttributesForItemAtIndexPath(indexPath)
-        {
-            self.prototypeCell.applyLayoutAttributes(layoutAttributes)
-        }
+        let collectionViewLayout = collectionView.collectionViewLayout as! GridCollectionViewLayout
+        
+        let widthConstraint = self.prototypeCell.contentView.widthAnchor.constraintEqualToConstant(collectionViewLayout.itemWidth)
+        widthConstraint.active = true
         
         self.configureCell(self.prototypeCell, forIndexPath: indexPath)
-        self.prototypeCell.layoutIfNeeded()
         
-        let size = self.prototypeCell.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize)
+        let size = self.prototypeCell.contentView.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize)
+        
+        widthConstraint.active = false
+        
         return size
     }
 }

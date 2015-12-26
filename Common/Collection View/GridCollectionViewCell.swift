@@ -10,8 +10,8 @@ import UIKit
 
 class GridCollectionViewCell: UICollectionViewCell
 {
-    @IBOutlet private(set) var imageView: UIImageView!
-    @IBOutlet private(set) var textLabel: UILabel!
+    let imageView = UIImageView()
+    let textLabel = UILabel()
     
     var maximumImageSize: CGSize = CGSize(width: 100, height: 100) {
         didSet {
@@ -19,20 +19,35 @@ class GridCollectionViewCell: UICollectionViewCell
         }
     }
     
-    @IBOutlet private var imageViewWidthConstraint: NSLayoutConstraint!
-    @IBOutlet private var imageViewHeightConstraint: NSLayoutConstraint!
+    private var imageViewWidthConstraint: NSLayoutConstraint!
+    private var imageViewHeightConstraint: NSLayoutConstraint!
     
-    @IBOutlet private var textLabelBottomAnchorConstraint: NSLayoutConstraint!
+    private var textLabelBottomAnchorConstraint: NSLayoutConstraint!
     
-    @IBOutlet private var textLabelVerticalSpacingConstraint: NSLayoutConstraint!
+    private var textLabelVerticalSpacingConstraint: NSLayoutConstraint!
     private var textLabelFocusedVerticalSpacingConstraint: NSLayoutConstraint?
     
-    override func awakeFromNib()
+    override init(frame: CGRect)
     {
-        super.awakeFromNib()
+        super.init(frame: frame)
         
+        self.configureSubviews()
+    }
+    
+    required init?(coder aDecoder: NSCoder)
+    {
+        super.init(coder: aDecoder)
+        
+        self.configureSubviews()
+    }
+    
+    private func configureSubviews()
+    {
         // Fix super annoying Unsatisfiable Constraints message in debugger by setting autoresizingMask
         self.contentView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+        
+        self.clipsToBounds = false
+        self.contentView.clipsToBounds = false
         
         self.imageView.translatesAutoresizingMaskIntoConstraints = false
         #if os(tvOS)
@@ -48,14 +63,35 @@ class GridCollectionViewCell: UICollectionViewCell
         
         // Auto Layout
         
+        self.imageView.topAnchor.constraintEqualToAnchor(self.contentView.topAnchor).active = true
+        self.imageView.centerXAnchor.constraintEqualToAnchor(self.contentView.centerXAnchor).active = true
+        
+        self.imageViewWidthConstraint = self.imageView.widthAnchor.constraintEqualToConstant(self.maximumImageSize.width)
+        self.imageViewWidthConstraint.active = true
+        
+        self.imageViewHeightConstraint = self.imageView.heightAnchor.constraintEqualToConstant(self.maximumImageSize.height)
+        self.imageViewHeightConstraint.active = true
+        
+        
+        self.textLabel.trailingAnchor.constraintEqualToAnchor(self.contentView.trailingAnchor).active = true
+        self.textLabel.leadingAnchor.constraintEqualToAnchor(self.contentView.leadingAnchor).active = true
+        
+        self.textLabelBottomAnchorConstraint = self.textLabel.bottomAnchor.constraintEqualToAnchor(self.contentView.bottomAnchor)
+        self.textLabelBottomAnchorConstraint.active = true
+        
+        self.textLabelVerticalSpacingConstraint = self.textLabel.topAnchor.constraintEqualToAnchor(self.imageView.bottomAnchor)
+        self.textLabelVerticalSpacingConstraint.active = true
+        
+        
         #if os(tvOS)
             self.textLabelVerticalSpacingConstraint.active = false
             
-            self.textLabelFocusedVerticalSpacingConstraint = self.textLabel.topAnchor.constraintEqualToAnchor(self.imageView.focusedFrameGuide.bottomAnchor, constant: verticalSpacingConstant)
+            self.textLabelFocusedVerticalSpacingConstraint = self.textLabel.topAnchor.constraintEqualToAnchor(self.imageView.focusedFrameGuide.bottomAnchor, constant: 0)
             self.textLabelFocusedVerticalSpacingConstraint?.active = true
         #else
             self.textLabelVerticalSpacingConstraint.active = true
         #endif
+        
         
         self.updateMaximumImageSize()
     }

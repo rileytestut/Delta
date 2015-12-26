@@ -41,10 +41,7 @@ class PauseViewController: UIViewController, PauseInfoProvidable
         return self.collectionView.collectionViewLayout as! GridCollectionViewLayout
     }
     
-    private var prototypeCell: GridCollectionViewCell = {
-        let nib = UINib(nibName: "GridCollectionViewCell", bundle: nil)
-        return nib.instantiateWithOwner(nil, options: nil).first as! GridCollectionViewCell
-    }()
+    private var prototypeCell = GridCollectionViewCell()
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle
     {
@@ -55,8 +52,7 @@ class PauseViewController: UIViewController, PauseInfoProvidable
     {
         super.viewDidLoad()
         
-        let nib = UINib(nibName: "GridCollectionViewCell", bundle: nil)
-        self.collectionView.registerNib(nib, forCellWithReuseIdentifier: "Cell")
+        self.collectionView.registerClass(GridCollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
         
         self.collectionViewLayout.itemWidth = 90
         self.collectionViewLayout.usesEqualHorizontalSpacingDistributionForSingleRow = true

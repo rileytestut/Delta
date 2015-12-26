@@ -40,9 +40,9 @@ class GamesCollectionViewController: UICollectionViewController
         self.collectionView?.dataSource = self.dataSource
         self.collectionView?.delegate = self.dataSource
         
-        if let layout = self.collectionViewLayout as? GameCollectionViewLayout
+        if let layout = self.collectionViewLayout as? GridCollectionViewLayout
         {
-            layout.maximumBoxArtSize = CGSize(width: 100, height: 100)
+            layout.itemWidth = 90
         }
     }
     
@@ -69,9 +69,11 @@ class GamesCollectionViewController: UICollectionViewController
     
     // MARK: - Collection View -
     
-    private func configureCell(cell: GameCollectionViewCell, game: Game)
+    private func configureCell(cell: GridCollectionViewCell, game: Game)
     {
-        cell.nameLabel.text = game.name
+        cell.maximumImageSize = CGSize(width: 90, height: 90)
+        cell.textLabel.text = game.name
+        cell.imageView.image = UIImage(named: "BoxArt")
     }
 }
 

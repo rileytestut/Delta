@@ -36,9 +36,9 @@ class GameSelectionViewController: UICollectionViewController
         self.collectionView?.dataSource = self.dataSource
         self.collectionView?.delegate = self.dataSource
                 
-        if let layout = self.collectionViewLayout as? GameCollectionViewLayout
+        if let layout = self.collectionViewLayout as? GridCollectionViewLayout
         {
-            layout.maximumBoxArtSize = CGSize(width: 200, height: 200)
+            layout.itemWidth = 200
         }
         
         self.backgroundView = RSTBackgroundView(frame: self.view.bounds)
@@ -86,10 +86,14 @@ class GameSelectionViewController: UICollectionViewController
     
     // MARK: - Collection View -
     
-    private func configureCell(cell: GameCollectionViewCell, game: Game)
+    private func configureCell(cell: GridCollectionViewCell, game: Game)
     {
-        cell.nameLabel.font = UIFont.boldSystemFontOfSize(30)
-        cell.nameLabel.text = game.name
+        cell.maximumImageSize = CGSize(width: 200, height: 200)
+        
+        cell.textLabel.font = UIFont.boldSystemFontOfSize(30)
+        cell.textLabel.text = game.name
+        
+        cell.imageView.image = UIImage(named: "BoxArt")
     }
 }
 
