@@ -8,17 +8,33 @@
 
 import UIKit
 
-struct PauseItem
+struct PauseItem: Equatable
 {
     let image: UIImage
     let text: String
     let action: (PauseItem -> Void)
+    
+    var selected = false
+    
+    init(image: UIImage, text: String, action: (PauseItem -> Void))
+    {
+        self.image = image
+        self.text = text
+        self.action = action
+    }
+}
+
+func ==(lhs: PauseItem, rhs: PauseItem) -> Bool
+{
+    return (lhs.image == rhs.image) && (lhs.text == rhs.text)
 }
 
 class PauseViewController: UIViewController, PauseInfoProvidable
 {
     var items = [PauseItem]() {
-        didSet {
+        didSet
+        {
+            guard oldValue != self.items else { return }
             
             if self.items.count > 8
             {
@@ -61,9 +77,14 @@ class PauseViewController: UIViewController, PauseInfoProvidable
         
         // Manually update prototype cell properties
         self.prototypeCell.contentView.widthAnchor.constraintEqualToConstant(self.collectionViewLayout.itemWidth).active = true
+    }
+}
 
-        let pauseItem = PauseItem(image: UIImage(named: "Pause")!, text: "Resume", action: { _ in })
-        self.items = [pauseItem, pauseItem, pauseItem, pauseItem, pauseItem, pauseItem]
+internal extension PauseViewController
+{
+    func dismiss()
+    {
+        self.performSegueWithIdentifier("unwindPauseSegue", sender: self)
     }
 }
 
@@ -71,20 +92,43 @@ private extension PauseViewController
 {
     func configureCollectionViewCell(cell: GridCollectionViewCell, forIndexPath indexPath: NSIndexPath)
     {
-        let array = ["Save State", "Load State", "Cheat Codes", "Fast Forward", "Sustain Button", "Event Distribution"]
+        let pauseItem = self.items[indexPath.item]
         
         cell.maximumImageSize = CGSize(width: 60, height: 60)
         
+        cell.imageView.image = pauseItem.image
+        cell.imageView.contentMode = .Center
         cell.imageView.layer.borderWidth = 2
         cell.imageView.layer.borderColor = UIColor.whiteColor().CGColor
         cell.imageView.layer.cornerRadius = 10
         
-        cell.textLabel.text = array[indexPath.item]
+        cell.textLabel.text = pauseItem.text
         cell.textLabel.textColor = UIColor.whiteColor()
+        
+        if pauseItem.selected
+        {
+            cell.imageView.tintColor = UIColor.blackColor()
+            cell.imageView.backgroundColor = UIColor.whiteColor()
+        }
+        else
+        {
+            cell.imageView.tintColor = UIColor.whiteColor()
+            cell.imageView.backgroundColor = UIColor.clearColor()
+        }
+    }
+    
+    func toggleSelectedStateForPauseItemAtIndexPath(indexPath: NSIndexPath)
+    {
+        var pauseItem = self.items[indexPath.item]
+        pauseItem.selected = !pauseItem.selected
+        self.items[indexPath.item] = pauseItem
+        
+        let cell = self.collectionView.cellForItemAtIndexPath(indexPath) as! GridCollectionViewCell
+        self.configureCollectionViewCell(cell, forIndexPath: indexPath)
     }
 }
 
-extension PauseViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
+extension PauseViewController: UICollectionViewDataSource
 {
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
     {
@@ -97,13 +141,37 @@ extension PauseViewController: UICollectionViewDataSource, UICollectionViewDeleg
         self.configureCollectionViewCell(cell, forIndexPath: indexPath)
         return cell
     }
-    
+}
+
+extension PauseViewController: UICollectionViewDelegateFlowLayout
+{
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize
     {
         self.configureCollectionViewCell(self.prototypeCell, forIndexPath: indexPath)
         
         let size = self.prototypeCell.contentView.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize)
         return size
+    }
+}
+
+extension PauseViewController: UICollectionViewDelegate
+{
+    func collectionView(collectionView: UICollectionView, didHighlightItemAtIndexPath indexPath: NSIndexPath)
+    {
+        self.toggleSelectedStateForPauseItemAtIndexPath(indexPath)
+    }
+    
+    func collectionView(collectionView: UICollectionView, didUnhighlightItemAtIndexPath indexPath: NSIndexPath)
+    {
+        self.toggleSelectedStateForPauseItemAtIndexPath(indexPath)
+    }
+    
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath)
+    {
+        self.toggleSelectedStateForPauseItemAtIndexPath(indexPath)
+        
+        let pauseItem = self.items[indexPath.item]
+        pauseItem.action(pauseItem)
     }
 }
 

@@ -256,7 +256,7 @@
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Resume" style="done" id="ye0-Nk-K1X">
                             <connections>
-                                <segue destination="mTB-5a-Mdf" kind="unwind" unwindAction="unwindFromPauseViewController:" id="OIW-2I-L70"/>
+                                <segue destination="mTB-5a-Mdf" kind="unwind" identifier="unwindPauseSegue" unwindAction="unwindFromPauseViewController:" id="OIW-2I-L70"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>

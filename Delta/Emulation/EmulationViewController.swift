@@ -143,6 +143,18 @@ class EmulationViewController: UIViewController
             if let destinationViewController = segue.destinationViewController as? UINavigationController, pauseViewController = destinationViewController.topViewController as? PauseViewController
             {
                 pauseViewController.pauseText = self.game.name
+                
+                let dismissAction: (PauseItem -> Void) = { item in
+                    pauseViewController.dismiss()
+                }
+                
+                let saveStateItem = PauseItem(image: UIImage(named: "SmallPause")!, text: "Save State", action: dismissAction)
+                let loadStateItem = PauseItem(image: UIImage(named: "SmallPause")!, text: "Load State", action: dismissAction)
+                let cheatCodesItem = PauseItem(image: UIImage(named: "SmallPause")!, text: "Cheat Codes", action: dismissAction)
+                let fastForwardItem = PauseItem(image: UIImage(named: "SmallPause")!, text: "Fast Forward", action: dismissAction)
+                let sustainButtonItem = PauseItem(image: UIImage(named: "SmallPause")!, text: "Sustain Button", action: dismissAction)
+                
+                pauseViewController.items = [saveStateItem, loadStateItem, cheatCodesItem, fastForwardItem, sustainButtonItem]
             }
             
             self._isPauseViewControllerPresented = true
