@@ -147,12 +147,16 @@ class EmulationViewController: UIViewController
                 let dismissAction: (PauseItem -> Void) = { item in
                     pauseViewController.dismiss()
                 }
+
+                let saveStateItem = PauseItem(image: UIImage(named: "SmallPause")!, text: NSLocalizedString("Save State", comment: ""), action: dismissAction)
+                let loadStateItem = PauseItem(image: UIImage(named: "SmallPause")!, text: NSLocalizedString("Load State", comment: ""), action: dismissAction)
+                let cheatCodesItem = PauseItem(image: UIImage(named: "SmallPause")!, text: NSLocalizedString("Cheat Codes", comment: ""), action: dismissAction)
+                let sustainButtonItem = PauseItem(image: UIImage(named: "SmallPause")!, text: NSLocalizedString("Sustain Button", comment: ""), action: dismissAction)
                 
-                let saveStateItem = PauseItem(image: UIImage(named: "SmallPause")!, text: "Save State", action: dismissAction)
-                let loadStateItem = PauseItem(image: UIImage(named: "SmallPause")!, text: "Load State", action: dismissAction)
-                let cheatCodesItem = PauseItem(image: UIImage(named: "SmallPause")!, text: "Cheat Codes", action: dismissAction)
-                let fastForwardItem = PauseItem(image: UIImage(named: "SmallPause")!, text: "Fast Forward", action: dismissAction)
-                let sustainButtonItem = PauseItem(image: UIImage(named: "SmallPause")!, text: "Sustain Button", action: dismissAction)
+                var fastForwardItem = PauseItem(image: UIImage(named: "FastForward")!, text: NSLocalizedString("Fast Forward", comment: ""), action: { [weak self] item in
+                    self?.emulatorCore.fastForwarding = item.selected
+                })
+                fastForwardItem.selected = self.emulatorCore.fastForwarding
                 
                 pauseViewController.items = [saveStateItem, loadStateItem, cheatCodesItem, fastForwardItem, sustainButtonItem]
             }
