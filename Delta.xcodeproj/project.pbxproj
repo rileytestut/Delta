@@ -31,6 +31,10 @@
 		BF353FFF1C5DA3C500C1184C /* PausePresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF353FFD1C5DA3C500C1184C /* PausePresentationController.swift */; };
 		BF3540001C5DA3C500C1184C /* PausePresentationControllerContentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF353FFE1C5DA3C500C1184C /* PausePresentationControllerContentView.xib */; };
 		BF3540021C5DA3D500C1184C /* PauseStoryboardSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3540011C5DA3D500C1184C /* PauseStoryboardSegue.swift */; };
+		BF3540051C5DA70400C1184C /* SaveStatesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3540041C5DA70400C1184C /* SaveStatesViewController.swift */; };
+		BF3540061C5DA70400C1184C /* SaveStatesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3540041C5DA70400C1184C /* SaveStatesViewController.swift */; };
+		BF3540081C5DAFAD00C1184C /* PauseTransitionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3540071C5DAFAD00C1184C /* PauseTransitionCoordinator.swift */; };
+		BF3540091C5DAFAD00C1184C /* PauseTransitionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3540071C5DAFAD00C1184C /* PauseTransitionCoordinator.swift */; };
 		BF4566E81BC090B6007BFA1A /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BF4566E61BC090B6007BFA1A /* Model.xcdatamodeld */; };
 		BF4566E91BC090B6007BFA1A /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BF4566E61BC090B6007BFA1A /* Model.xcdatamodeld */; };
 		BF5E7F441B9A650B00AE44F8 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5E7F431B9A650B00AE44F8 /* SettingsViewController.swift */; };
@@ -134,6 +138,8 @@
 		BF353FFD1C5DA3C500C1184C /* PausePresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PausePresentationController.swift; path = "Pause Menu/Presentation Controller/PausePresentationController.swift"; sourceTree = "<group>"; };
 		BF353FFE1C5DA3C500C1184C /* PausePresentationControllerContentView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PausePresentationControllerContentView.xib; path = "Pause Menu/Presentation Controller/PausePresentationControllerContentView.xib"; sourceTree = "<group>"; };
 		BF3540011C5DA3D500C1184C /* PauseStoryboardSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PauseStoryboardSegue.swift; path = "Pause Menu/Segues/PauseStoryboardSegue.swift"; sourceTree = "<group>"; };
+		BF3540041C5DA70400C1184C /* SaveStatesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SaveStatesViewController.swift; path = "Pause Menu/Save States/SaveStatesViewController.swift"; sourceTree = "<group>"; };
+		BF3540071C5DAFAD00C1184C /* PauseTransitionCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PauseTransitionCoordinator.swift; path = "Pause Menu/Segues/PauseTransitionCoordinator.swift"; sourceTree = "<group>"; };
 		BF4566E71BC090B6007BFA1A /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		BF5E7F431B9A650B00AE44F8 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		BF5E7F451B9A652600AE44F8 /* Settings.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
@@ -230,6 +236,14 @@
 			name = "Presentation Controller";
 			sourceTree = "<group>";
 		};
+		BF3540031C5DA6D800C1184C /* Save States */ = {
+			isa = PBXGroup;
+			children = (
+				BF3540041C5DA70400C1184C /* SaveStatesViewController.swift */,
+			);
+			name = "Save States";
+			sourceTree = "<group>";
+		};
 		BF4566E31BC09026007BFA1A /* Common */ = {
 			isa = PBXGroup;
 			children = (
@@ -299,6 +313,7 @@
 				BF353FF11C5D7FB000C1184C /* PauseViewController.swift */,
 				BF7AE8041C2E858400B1B5BC /* PauseMenuViewController.swift */,
 				BF353FF81C5D870B00C1184C /* PauseItem.swift */,
+				BF3540031C5DA6D800C1184C /* Save States */,
 				BF353FFB1C5DA2F600C1184C /* Presentation Controller */,
 				BF912E481C5CB5D50041527C /* Segues */,
 			);
@@ -317,6 +332,7 @@
 			isa = PBXGroup;
 			children = (
 				BF3540011C5DA3D500C1184C /* PauseStoryboardSegue.swift */,
+				BF3540071C5DAFAD00C1184C /* PauseTransitionCoordinator.swift */,
 			);
 			name = Segues;
 			sourceTree = "<group>";
@@ -667,9 +683,11 @@
 				BFB141191BE46934004FBF46 /* GameCollectionViewDataSource.swift in Sources */,
 				BFF1E5651BE04CAF000E9EF6 /* BoxArtImageView.swift in Sources */,
 				BF353FFA1C5D870B00C1184C /* PauseItem.swift in Sources */,
+				BF3540061C5DA70400C1184C /* SaveStatesViewController.swift in Sources */,
 				BF353FF31C5D7FB000C1184C /* PauseViewController.swift in Sources */,
 				BF6BB23F1BB73FE800CCF94A /* AppDelegate.swift in Sources */,
 				BF4566E91BC090B6007BFA1A /* Model.xcdatamodeld in Sources */,
+				BF3540091C5DAFAD00C1184C /* PauseTransitionCoordinator.swift in Sources */,
 				BF762EAC1BC1B076002C8866 /* NSManagedObject+Conveniences.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -678,6 +696,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BF3540081C5DAFAD00C1184C /* PauseTransitionCoordinator.swift in Sources */,
 				BFAA1FED1B8AA4FA00495943 /* Settings.swift in Sources */,
 				BF7AE8241C2E984300B1B5BC /* GridCollectionViewLayout.swift in Sources */,
 				BFB141181BE46934004FBF46 /* GameCollectionViewDataSource.swift in Sources */,
@@ -705,6 +724,7 @@
 				BFDB28451BC9DA7B001D0C83 /* GamePickerController.swift in Sources */,
 				BFDE393A1BC0CEDF003F72E8 /* Game+CoreDataProperties.swift in Sources */,
 				BF7AE8081C2E858400B1B5BC /* PauseMenuViewController.swift in Sources */,
+				BF3540051C5DA70400C1184C /* SaveStatesViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

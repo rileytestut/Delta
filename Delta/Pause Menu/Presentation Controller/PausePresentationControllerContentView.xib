@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
     </dependencies>
@@ -17,7 +17,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="qFz-hB-77X">
-                    <rect key="frame" x="15" y="236" width="570" height="128"/>
+                    <rect key="frame" x="15" y="236" width="570" height="127.5"/>
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="500" image="Pause" translatesAutoresizingMaskIntoConstraints="NO" id="cWa-Ht-i5m">
                             <rect key="frame" x="0.0" y="0.0" width="570" height="80"/>
@@ -28,7 +28,7 @@
                             </constraints>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="800" text="Super Mario World" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="ZcT-qE-aES">
-                            <rect key="frame" x="0.0" y="95" width="570" height="33"/>
+                            <rect key="frame" x="0.0" y="95" width="570" height="32.5"/>
                             <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
@@ -39,10 +39,10 @@
             <constraints>
                 <constraint firstItem="qFz-hB-77X" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="15" id="O4d-vf-HNQ"/>
                 <constraint firstAttribute="trailing" secondItem="qFz-hB-77X" secondAttribute="trailing" constant="15" id="UPY-jb-YBJ"/>
-                <constraint firstItem="qFz-hB-77X" firstAttribute="top" relation="greaterThanOrEqual" secondItem="iN0-l3-epB" secondAttribute="top" constant="15" id="Xjv-XS-rUO"/>
+                <constraint firstItem="qFz-hB-77X" firstAttribute="top" relation="greaterThanOrEqual" secondItem="iN0-l3-epB" secondAttribute="top" priority="999" constant="15" id="Xjv-XS-rUO"/>
                 <constraint firstItem="qFz-hB-77X" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="ayR-oW-5T2"/>
                 <constraint firstItem="qFz-hB-77X" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="b6K-Qu-AAG"/>
-                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="qFz-hB-77X" secondAttribute="bottom" constant="15" id="wwI-EY-TVj"/>
+                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="qFz-hB-77X" secondAttribute="bottom" priority="999" constant="15" id="wwI-EY-TVj"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <point key="canvasLocation" x="393" y="426"/>

@@ -31,17 +31,33 @@ class PauseMenuViewController: UICollectionViewController
     }
     
     private var prototypeCell = GridCollectionViewCell()
-    
+    private var previousIndexPath: NSIndexPath? = nil
+}
+
+extension PauseMenuViewController
+{
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        
+                
         let collectionViewLayout = self.collectionViewLayout as! GridCollectionViewLayout
         collectionViewLayout.itemWidth = 90
         collectionViewLayout.usesEqualHorizontalSpacingDistributionForSingleRow = true
         
         // Manually update prototype cell properties
         self.prototypeCell.contentView.widthAnchor.constraintEqualToConstant(collectionViewLayout.itemWidth).active = true
+    }
+    
+    override func viewDidAppear(animated: Bool)
+    {
+        super.viewDidAppear(animated)
+        
+        if let indexPath = self.previousIndexPath
+        {
+            UIView.animateWithDuration(0.2) {
+                self.toggleSelectedStateForPauseItemAtIndexPath(indexPath)
+            }
+        }
     }
 }
 
@@ -125,6 +141,8 @@ extension PauseMenuViewController
     
     override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath)
     {
+        self.previousIndexPath = indexPath
+        
         self.toggleSelectedStateForPauseItemAtIndexPath(indexPath)
         
         let pauseItem = self.items[indexPath.item]

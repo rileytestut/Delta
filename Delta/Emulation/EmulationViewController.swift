@@ -147,14 +147,20 @@ class EmulationViewController: UIViewController
                 pauseViewController.dismiss()
             }
             
-            let saveStateItem = PauseItem(image: UIImage(named: "SmallPause")!, text: NSLocalizedString("Save State", comment: ""), action: dismissAction)
-            let loadStateItem = PauseItem(image: UIImage(named: "SmallPause")!, text: NSLocalizedString("Load State", comment: ""), action: dismissAction)
+            let saveStateItem = PauseItem(image: UIImage(named: "SmallPause")!, text: NSLocalizedString("Save State", comment: ""), action: { _ in
+                pauseViewController.presentSaveStateViewController()
+            })
+            
+            let loadStateItem = PauseItem(image: UIImage(named: "SmallPause")!, text: NSLocalizedString("Load State", comment: ""), action: { _ in
+                pauseViewController.presentSaveStateViewController()
+            })
+            
             let cheatCodesItem = PauseItem(image: UIImage(named: "SmallPause")!, text: NSLocalizedString("Cheat Codes", comment: ""), action: dismissAction)
             let sustainButtonItem = PauseItem(image: UIImage(named: "SmallPause")!, text: NSLocalizedString("Sustain Button", comment: ""), action: dismissAction)
             
             var fastForwardItem = PauseItem(image: UIImage(named: "FastForward")!, text: NSLocalizedString("Fast Forward", comment: ""), action: { [weak self] item in
                 self?.emulatorCore.fastForwarding = item.selected
-                })
+            })
             fastForwardItem.selected = self.emulatorCore.fastForwarding
             
             pauseViewController.items = [saveStateItem, loadStateItem, cheatCodesItem, fastForwardItem, sustainButtonItem]

@@ -111,6 +111,12 @@ class PausePresentationController: UIPresentationController
         let currentY = self.contentView.frame.minY
         self.contentView.frame = self.containerView!.bounds
         self.contentView.frame.origin.y = currentY
+        
+        if self.presentedView()!.frame.minY == 0
+        {
+            // Temporarily offset top of presentedView by a small amount to prevent navigation bar from growing when rotating from landscape to portrait
+            self.presentedView()?.frame.origin.y = 0.5
+        }
     }
 
     override func containerViewDidLayoutSubviews()
