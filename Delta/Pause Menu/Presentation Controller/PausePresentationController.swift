@@ -39,13 +39,19 @@ class PausePresentationController: UIPresentationController
     {
         guard let containerView = self.containerView else { return super.frameOfPresentedViewInContainerView() }
         
-        var contentHeight = self.presentedViewController.preferredContentSize.height
+        let frame: CGRect
+        let contentHeight = self.presentedViewController.preferredContentSize.height
+        
         if contentHeight == 0
         {
-            contentHeight = containerView.bounds.height - UIApplication.sharedApplication().statusBarFrame.height
+            let statusBarHeight = UIApplication.sharedApplication().statusBarFrame.height
+            frame = CGRect(x: 0, y: statusBarHeight, width: containerView.bounds.width, height: containerView.bounds.height - statusBarHeight)
+        }
+        else
+        {
+            frame = CGRect(x: 0, y: containerView.bounds.height - contentHeight, width: containerView.bounds.width, height: containerView.bounds.height)
         }
         
-        let frame = CGRect(x: 0, y: containerView.bounds.height - contentHeight, width: containerView.bounds.width, height: containerView.bounds.height)
         return frame
     }
     

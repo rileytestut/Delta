@@ -12,7 +12,11 @@ class GridCollectionViewLayout: UICollectionViewFlowLayout
 {
     var itemWidth: CGFloat = 150 {
         didSet {
-            self.invalidateLayout()
+            // Only invalidate if needed, otherwise could potentially cause endless loop
+            if oldValue != self.itemWidth
+            {
+                self.invalidateLayout()
+            }
         }
     }
     

@@ -50,6 +50,7 @@ class GridCollectionViewCell: UICollectionViewCell
         self.contentView.clipsToBounds = false
         
         self.imageView.translatesAutoresizingMaskIntoConstraints = false
+        self.imageView.contentMode = .ScaleAspectFit
         #if os(tvOS)
             self.imageView.adjustsImageWhenAncestorFocused = true
         #endif
@@ -135,7 +136,7 @@ private extension GridCollectionViewCell
         self.imageViewWidthConstraint.constant = self.maximumImageSize.width
         self.imageViewHeightConstraint.constant = self.maximumImageSize.height
         
-        self.textLabelVerticalSpacingConstraint.constant = self.maximumImageSize.height / 10.0
+        self.textLabelVerticalSpacingConstraint.constant = 8
         self.textLabelFocusedVerticalSpacingConstraint?.constant = self.maximumImageSize.height / 10.0
     }
 }
