@@ -2,176 +2,84 @@
 //  PauseViewController.swift
 //  Delta
 //
-//  Created by Riley Testut on 12/21/15.
-//  Copyright © 2015 Riley Testut. All rights reserved.
+//  Created by Riley Testut on 1/30/16.
+//  Copyright © 2016 Riley Testut. All rights reserved.
 //
 
 import UIKit
 
-struct PauseItem: Equatable
-{
-    let image: UIImage
-    let text: String
-    let action: (PauseItem -> Void)
-    
-    var selected = false
-    
-    init(image: UIImage, text: String, action: (PauseItem -> Void))
-    {
-        self.image = image
-        self.text = text
-        self.action = action
-    }
-}
-
-func ==(lhs: PauseItem, rhs: PauseItem) -> Bool
-{
-    return (lhs.image == rhs.image) && (lhs.text == rhs.text)
-}
-
 class PauseViewController: UIViewController, PauseInfoProvidable
 {
-    var items = [PauseItem]() {
-        didSet
+    /// Pause Items
+    var items = [PauseItem]()
+    
+    /// <PauseInfoProvidable>
+    var pauseText: String? = nil
+    
+    /// UIViewController
+    override var preferredContentSize: CGSize {
+        set { }
+        get
         {
-            guard oldValue != self.items else { return }
-            
-            if self.items.count > 8
+            var preferredContentSize = self.pauseNavigationController.topViewController?.preferredContentSize ?? CGSizeZero
+            if preferredContentSize.height > 0
             {
-                fatalError("PauseViewController only supports up to 8 items (for my sanity when laying out on a landscape iPhone 4s")
+                preferredContentSize.height += self.pauseNavigationController.navigationBar.bounds.height
             }
             
-            self.collectionView?.reloadData()
+            return preferredContentSize
         }
     }
     
-    var pauseText: String? = nil
-    
-    override var preferredContentSize: CGSize {
-        set { }
-        get { return self.collectionView.contentSize }
+    private var pauseNavigationController: UINavigationController!
+}
+
+extension PauseViewController
+{
+    override func viewDidLoad()
+    {
+        super.viewDidLoad()
     }
     
-    @IBOutlet private(set) var collectionView: UICollectionView!
-    private var collectionViewLayout: GridCollectionViewLayout {
-        return self.collectionView.collectionViewLayout as! GridCollectionViewLayout
+    override func didReceiveMemoryWarning()
+    {
+        super.didReceiveMemoryWarning()
     }
-    
-    private var prototypeCell = GridCollectionViewCell()
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle
     {
         return .LightContent
     }
     
-    override func viewDidLoad()
+    override func viewDidLayoutSubviews()
     {
-        super.viewDidLoad()
+        super.viewDidLayoutSubviews()
         
-        self.collectionView.registerClass(GridCollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
-        
-        self.collectionViewLayout.itemWidth = 90
-        self.collectionViewLayout.usesEqualHorizontalSpacingDistributionForSingleRow = true
-        
-        self.navigationItem.rightBarButtonItem?.tintColor = UIColor.deltaLightPurpleColor()
-        
-        // Manually update prototype cell properties
-        self.prototypeCell.contentView.widthAnchor.constraintEqualToConstant(self.collectionViewLayout.itemWidth).active = true
+        // Ensure navigation bar is always positioned correctly despite being outside the navigation controller's view
+        self.pauseNavigationController.navigationBar.frame = CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.pauseNavigationController.navigationBar.bounds.height)
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?)
+    {
+        if segue.identifier == "embedNavigationController"
+        {
+            self.pauseNavigationController = segue.destinationViewController as! UINavigationController
+            self.pauseNavigationController.navigationBar.tintColor = UIColor.deltaLightPurpleColor()
+            self.pauseNavigationController.view.backgroundColor = UIColor.clearColor()
+            
+            let pauseMenuViewController = self.pauseNavigationController.topViewController as! PauseMenuViewController
+            pauseMenuViewController.items = self.items
+            
+            // Keep navigation bar outside the UIVisualEffectView's
+            self.view.addSubview(self.pauseNavigationController.navigationBar)
+        }
     }
 }
 
-internal extension PauseViewController
+extension PauseViewController
 {
     func dismiss()
     {
-        self.performSegueWithIdentifier("unwindPauseSegue", sender: self)
+        self.performSegueWithIdentifier("unwindFromPauseMenu", sender: self)
     }
 }
-
-private extension PauseViewController
-{
-    func configureCollectionViewCell(cell: GridCollectionViewCell, forIndexPath indexPath: NSIndexPath)
-    {
-        let pauseItem = self.items[indexPath.item]
-        
-        cell.maximumImageSize = CGSize(width: 60, height: 60)
-        
-        cell.imageView.image = pauseItem.image
-        cell.imageView.contentMode = .Center
-        cell.imageView.layer.borderWidth = 2
-        cell.imageView.layer.borderColor = UIColor.whiteColor().CGColor
-        cell.imageView.layer.cornerRadius = 10
-        
-        cell.textLabel.text = pauseItem.text
-        cell.textLabel.textColor = UIColor.whiteColor()
-        
-        if pauseItem.selected
-        {
-            cell.imageView.tintColor = UIColor.blackColor()
-            cell.imageView.backgroundColor = UIColor.whiteColor()
-        }
-        else
-        {
-            cell.imageView.tintColor = UIColor.whiteColor()
-            cell.imageView.backgroundColor = UIColor.clearColor()
-        }
-    }
-    
-    func toggleSelectedStateForPauseItemAtIndexPath(indexPath: NSIndexPath)
-    {
-        var pauseItem = self.items[indexPath.item]
-        pauseItem.selected = !pauseItem.selected
-        self.items[indexPath.item] = pauseItem
-        
-        let cell = self.collectionView.cellForItemAtIndexPath(indexPath) as! GridCollectionViewCell
-        self.configureCollectionViewCell(cell, forIndexPath: indexPath)
-    }
-}
-
-extension PauseViewController: UICollectionViewDataSource
-{
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
-    {
-        return self.items.count
-    }
-    
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell
-    {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Cell", forIndexPath: indexPath) as! GridCollectionViewCell
-        self.configureCollectionViewCell(cell, forIndexPath: indexPath)
-        return cell
-    }
-}
-
-extension PauseViewController: UICollectionViewDelegateFlowLayout
-{
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize
-    {
-        self.configureCollectionViewCell(self.prototypeCell, forIndexPath: indexPath)
-        
-        let size = self.prototypeCell.contentView.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize)
-        return size
-    }
-}
-
-extension PauseViewController: UICollectionViewDelegate
-{
-    func collectionView(collectionView: UICollectionView, didHighlightItemAtIndexPath indexPath: NSIndexPath)
-    {
-        self.toggleSelectedStateForPauseItemAtIndexPath(indexPath)
-    }
-    
-    func collectionView(collectionView: UICollectionView, didUnhighlightItemAtIndexPath indexPath: NSIndexPath)
-    {
-        self.toggleSelectedStateForPauseItemAtIndexPath(indexPath)
-    }
-    
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath)
-    {
-        self.toggleSelectedStateForPauseItemAtIndexPath(indexPath)
-        
-        let pauseItem = self.items[indexPath.item]
-        pauseItem.action(pauseItem)
-    }
-}
-

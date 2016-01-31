@@ -39,17 +39,12 @@ class PausePresentationController: UIPresentationController
     {
         guard let containerView = self.containerView else { return super.frameOfPresentedViewInContainerView() }
         
-        let contentHeight: CGFloat
+        var contentHeight = self.presentedViewController.preferredContentSize.height
+        if contentHeight == 0
+        {
+            contentHeight = containerView.bounds.height - UIApplication.sharedApplication().statusBarFrame.height
+        }
         
-        if let navigationController = self.presentedViewController as? UINavigationController, topViewController = navigationController.topViewController
-        {
-            contentHeight = topViewController.preferredContentSize.height + navigationController.navigationBar.bounds.height
-        }
-        else
-        {
-            contentHeight = self.presentedViewController.preferredContentSize.height
-        }
-                
         let frame = CGRect(x: 0, y: containerView.bounds.height - contentHeight, width: containerView.bounds.width, height: containerView.bounds.height)
         return frame
     }
@@ -90,7 +85,7 @@ class PausePresentationController: UIPresentationController
             self.contentView.alpha = 1.0
             
         }, completion: nil)
-    } 
+    }
     
     override func dismissalTransitionWillBegin()
     {
@@ -150,6 +145,7 @@ class PausePresentationController: UIPresentationController
         
         // Ensure width is correct
         self.presentedView()?.bounds.size.width = self.containerView!.bounds.width
+        self.presentedView()?.setNeedsLayout()
         self.presentedView()?.layoutIfNeeded()
         
         self.presentedView()?.frame = self.frameOfPresentedViewInContainerView()

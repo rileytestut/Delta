@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="wKV-3d-NIY">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="wKV-3d-NIY">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Segues with Peek and Pop" minToolsVersion="7.1"/>
     </dependencies>
     <scenes>
@@ -152,122 +151,12 @@
                         <outlet property="controllerView" destination="2W1-IT-Y2l" id="WCa-LM-fXF"/>
                         <outlet property="controllerViewHeightConstraint" destination="PEV-zv-Buo" id="1jo-Kg-HpO"/>
                         <outlet property="gameView" destination="GfI-Mx-CQT" id="HmP-OA-mci"/>
-                        <segue destination="YH4-Dy-8Mz" kind="presentation" identifier="pauseSegue" customClass="PauseStoryboardSegue" customModule="Delta" customModuleProvider="target" id="9cz-mr-lTk"/>
+                        <segue destination="Yrw-9v-Pcr" kind="presentation" identifier="pauseSegue" customClass="PauseStoryboardSegue" customModule="Delta" customModuleProvider="target" id="9cz-mr-lTk"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZYd-It-2t0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2361" y="1002"/>
-        </scene>
-        <!--Paused-->
-        <scene sceneID="upW-21-c6e">
-            <objects>
-                <viewController id="fjf-Kd-NY2" customClass="PauseViewController" customModule="Delta" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="T5g-dU-mk3"/>
-                        <viewControllerLayoutGuide type="bottom" id="2VR-he-PMF"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="NYe-l8-jSy">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BTf-mZ-pVi" userLabel="Primary Blur View">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="ahz-4E-cKV" userLabel="Content View">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                </view>
-                                <blurEffect style="dark"/>
-                            </visualEffectView>
-                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="t3G-Xl-Py3" userLabel="Secondary Blur View">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="L1l-tg-4su" userLabel="Content View">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                </view>
-                                <blurEffect style="dark"/>
-                            </visualEffectView>
-                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Upx-pN-cZS" userLabel="Vibrancy View">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="uto-dW-PGz" userLabel="Content View">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                    <subviews>
-                                        <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Jf9-Zr-SU1">
-                                            <rect key="frame" x="0.0" y="64" width="600" height="536"/>
-                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                            <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="20" minimumInteritemSpacing="10" id="0ze-Nw-POW" customClass="GridCollectionViewLayout" customModule="Delta" customModuleProvider="target">
-                                                <size key="itemSize" width="60" height="80"/>
-                                                <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                                                <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                                <inset key="sectionInset" minX="0.0" minY="20" maxX="0.0" maxY="20"/>
-                                            </collectionViewFlowLayout>
-                                            <cells>
-                                                <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Cell" id="CkY-Fc-ejC" customClass="GridCollectionViewCell" customModule="Delta" customModuleProvider="target">
-                                                    <rect key="frame" x="0.0" y="20" width="60" height="80"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                                        <rect key="frame" x="0.0" y="0.0" width="60" height="80"/>
-                                                        <autoresizingMask key="autoresizingMask"/>
-                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                    </view>
-                                                </collectionViewCell>
-                                            </cells>
-                                            <connections>
-                                                <outlet property="dataSource" destination="fjf-Kd-NY2" id="NRE-Ov-Wbg"/>
-                                                <outlet property="delegate" destination="fjf-Kd-NY2" id="QvV-VK-NvJ"/>
-                                            </connections>
-                                        </collectionView>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstAttribute="trailing" secondItem="Jf9-Zr-SU1" secondAttribute="trailing" id="7h7-Xl-xbW"/>
-                                        <constraint firstAttribute="bottom" secondItem="Jf9-Zr-SU1" secondAttribute="bottom" id="IgH-PB-Yzm"/>
-                                        <constraint firstItem="Jf9-Zr-SU1" firstAttribute="leading" secondItem="uto-dW-PGz" secondAttribute="leading" id="i9D-1X-Yhj"/>
-                                    </constraints>
-                                </view>
-                                <vibrancyEffect>
-                                    <blurEffect style="dark"/>
-                                </vibrancyEffect>
-                            </visualEffectView>
-                        </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="2VR-he-PMF" firstAttribute="top" secondItem="Upx-pN-cZS" secondAttribute="bottom" id="8W2-gK-LrU"/>
-                            <constraint firstAttribute="trailing" secondItem="t3G-Xl-Py3" secondAttribute="trailing" id="BQm-tm-M9Y"/>
-                            <constraint firstAttribute="trailing" secondItem="BTf-mZ-pVi" secondAttribute="trailing" id="JsO-WV-IPw"/>
-                            <constraint firstItem="2VR-he-PMF" firstAttribute="top" secondItem="t3G-Xl-Py3" secondAttribute="bottom" id="Km2-jS-OMy"/>
-                            <constraint firstAttribute="trailing" secondItem="Upx-pN-cZS" secondAttribute="trailing" id="PH2-3f-qvK"/>
-                            <constraint firstItem="t3G-Xl-Py3" firstAttribute="top" secondItem="NYe-l8-jSy" secondAttribute="top" id="Pkn-IN-rIR"/>
-                            <constraint firstItem="2VR-he-PMF" firstAttribute="top" secondItem="BTf-mZ-pVi" secondAttribute="bottom" id="Se6-cn-A1N"/>
-                            <constraint firstItem="BTf-mZ-pVi" firstAttribute="top" secondItem="NYe-l8-jSy" secondAttribute="topMargin" id="XDR-Tz-YCv"/>
-                            <constraint firstItem="Upx-pN-cZS" firstAttribute="top" secondItem="NYe-l8-jSy" secondAttribute="top" id="cJx-jw-3g2"/>
-                            <constraint firstItem="t3G-Xl-Py3" firstAttribute="leading" secondItem="NYe-l8-jSy" secondAttribute="leading" id="ep2-LW-5zZ"/>
-                            <constraint firstItem="Upx-pN-cZS" firstAttribute="leading" secondItem="NYe-l8-jSy" secondAttribute="leading" id="gSn-qK-jOM"/>
-                            <constraint firstItem="BTf-mZ-pVi" firstAttribute="leading" secondItem="NYe-l8-jSy" secondAttribute="leading" id="nNM-74-jgo"/>
-                            <constraint firstItem="Jf9-Zr-SU1" firstAttribute="top" secondItem="T5g-dU-mk3" secondAttribute="bottom" id="xj3-As-as0"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" title="Paused" id="hbg-6F-GRq">
-                        <barButtonItem key="leftBarButtonItem" title="Main Menu" style="done" id="zv1-Ig-77x">
-                            <color key="tintColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                            <connections>
-                                <segue destination="mTB-5a-Mdf" kind="unwind" unwindAction="unwindFromEmulationViewController:" id="8H0-x9-1QN"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Resume" style="done" id="ye0-Nk-K1X">
-                            <connections>
-                                <segue destination="mTB-5a-Mdf" kind="unwind" identifier="unwindPauseSegue" unwindAction="unwindFromPauseViewController:" id="OIW-2I-L70"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                    <connections>
-                        <outlet property="collectionView" destination="Jf9-Zr-SU1" id="TIj-CV-wIi"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="LbR-MM-KOb" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="mTB-5a-Mdf" userLabel="Exit" sceneMemberID="exit"/>
-            </objects>
-            <point key="canvasLocation" x="3024" y="1717"/>
         </scene>
         <!--Page View Controller-->
         <scene sceneID="35q-Io-64T">
@@ -308,23 +197,13 @@
             </objects>
             <point key="canvasLocation" x="400" y="1002"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="Xcw-k0-Icf">
+        <!--PauseMenu-->
+        <scene sceneID="97k-By-dJD">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="YH4-Dy-8Mz" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="wGs-6t-cPo">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="fjf-Kd-NY2" kind="relationship" relationship="rootViewController" id="Oi6-bM-ZSf"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="GG6-6X-waQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewControllerPlaceholder storyboardName="PauseMenu" id="Yrw-9v-Pcr" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="BDU-Ql-OgK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2361" y="1717"/>
+            <point key="canvasLocation" x="2361" y="1440"/>
         </scene>
     </scenes>
     <resources>

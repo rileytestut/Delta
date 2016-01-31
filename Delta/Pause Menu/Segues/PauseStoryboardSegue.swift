@@ -56,7 +56,7 @@ extension PauseStoryboardSegue: UIViewControllerAnimatedTransitioning
     
     func animateTransition(transitionContext: UIViewControllerContextTransitioning)
     {
-        let destinationViewController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey) as! UINavigationController
+        let destinationViewController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)!
         
         destinationViewController.view.frame = transitionContext.finalFrameForViewController(destinationViewController)
         destinationViewController.view.frame.origin.y = transitionContext.containerView()!.bounds.height

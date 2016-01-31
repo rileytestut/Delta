@@ -22,6 +22,15 @@
 		BF2A53FC1BB74FC10052BD0C /* SNESDeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BFC134E01AAD82460087AD7B /* SNESDeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF2A53FD1BB74FC60052BD0C /* ZipZap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF70798B1B6B464B0019077C /* ZipZap.framework */; };
 		BF2A53FE1BB74FC60052BD0C /* ZipZap.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BF70798B1B6B464B0019077C /* ZipZap.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BF353FF21C5D7FB000C1184C /* PauseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF353FF11C5D7FB000C1184C /* PauseViewController.swift */; };
+		BF353FF31C5D7FB000C1184C /* PauseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF353FF11C5D7FB000C1184C /* PauseViewController.swift */; };
+		BF353FF61C5D837600C1184C /* PauseMenu.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF353FF41C5D837600C1184C /* PauseMenu.storyboard */; };
+		BF353FF71C5D837600C1184C /* PauseMenu.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF353FF41C5D837600C1184C /* PauseMenu.storyboard */; };
+		BF353FF91C5D870B00C1184C /* PauseItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF353FF81C5D870B00C1184C /* PauseItem.swift */; };
+		BF353FFA1C5D870B00C1184C /* PauseItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF353FF81C5D870B00C1184C /* PauseItem.swift */; };
+		BF353FFF1C5DA3C500C1184C /* PausePresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF353FFD1C5DA3C500C1184C /* PausePresentationController.swift */; };
+		BF3540001C5DA3C500C1184C /* PausePresentationControllerContentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF353FFE1C5DA3C500C1184C /* PausePresentationControllerContentView.xib */; };
+		BF3540021C5DA3D500C1184C /* PauseStoryboardSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3540011C5DA3D500C1184C /* PauseStoryboardSegue.swift */; };
 		BF4566E81BC090B6007BFA1A /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BF4566E61BC090B6007BFA1A /* Model.xcdatamodeld */; };
 		BF4566E91BC090B6007BFA1A /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BF4566E61BC090B6007BFA1A /* Model.xcdatamodeld */; };
 		BF5E7F441B9A650B00AE44F8 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5E7F431B9A650B00AE44F8 /* SettingsViewController.swift */; };
@@ -37,10 +46,7 @@
 		BF762EAB1BC1B076002C8866 /* NSManagedObject+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF762EAA1BC1B076002C8866 /* NSManagedObject+Conveniences.swift */; };
 		BF762EAC1BC1B076002C8866 /* NSManagedObject+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF762EAA1BC1B076002C8866 /* NSManagedObject+Conveniences.swift */; };
 		BF797A2D1C2D339F00F1A000 /* UILabel+FontSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF797A2C1C2D339F00F1A000 /* UILabel+FontSize.swift */; };
-		BF7AE8051C2E858400B1B5BC /* PausePresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7AE8011C2E858400B1B5BC /* PausePresentationController.swift */; };
-		BF7AE8061C2E858400B1B5BC /* PausePresentationControllerContentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF7AE8021C2E858400B1B5BC /* PausePresentationControllerContentView.xib */; };
-		BF7AE8071C2E858400B1B5BC /* PauseStoryboardSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7AE8031C2E858400B1B5BC /* PauseStoryboardSegue.swift */; };
-		BF7AE8081C2E858400B1B5BC /* PauseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7AE8041C2E858400B1B5BC /* PauseViewController.swift */; };
+		BF7AE8081C2E858400B1B5BC /* PauseMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7AE8041C2E858400B1B5BC /* PauseMenuViewController.swift */; };
 		BF7AE80A1C2E8C7600B1B5BC /* UIColor+Delta.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7AE8091C2E8C7600B1B5BC /* UIColor+Delta.swift */; };
 		BF7AE81E1C2E984300B1B5BC /* GridCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7AE81A1C2E984300B1B5BC /* GridCollectionViewCell.swift */; };
 		BF7AE81F1C2E984300B1B5BC /* GridCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7AE81A1C2E984300B1B5BC /* GridCollectionViewCell.swift */; };
@@ -122,6 +128,12 @@
 		BF27CC901BCB156200A20D89 /* EmulationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmulationViewController.swift; sourceTree = "<group>"; };
 		BF27CC941BCB7B7A00A20D89 /* GameController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameController.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS9.0.sdk/System/Library/Frameworks/GameController.framework; sourceTree = DEVELOPER_DIR; };
 		BF27CC961BCC890700A20D89 /* GamesCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GamesCollectionViewController.swift; sourceTree = "<group>"; };
+		BF353FF11C5D7FB000C1184C /* PauseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PauseViewController.swift; path = "Pause Menu/PauseViewController.swift"; sourceTree = "<group>"; };
+		BF353FF51C5D837600C1184C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/PauseMenu.storyboard; sourceTree = "<group>"; };
+		BF353FF81C5D870B00C1184C /* PauseItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PauseItem.swift; path = "Pause Menu/PauseItem.swift"; sourceTree = "<group>"; };
+		BF353FFD1C5DA3C500C1184C /* PausePresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PausePresentationController.swift; path = "Pause Menu/Presentation Controller/PausePresentationController.swift"; sourceTree = "<group>"; };
+		BF353FFE1C5DA3C500C1184C /* PausePresentationControllerContentView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PausePresentationControllerContentView.xib; path = "Pause Menu/Presentation Controller/PausePresentationControllerContentView.xib"; sourceTree = "<group>"; };
+		BF3540011C5DA3D500C1184C /* PauseStoryboardSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PauseStoryboardSegue.swift; path = "Pause Menu/Segues/PauseStoryboardSegue.swift"; sourceTree = "<group>"; };
 		BF4566E71BC090B6007BFA1A /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		BF5E7F431B9A650B00AE44F8 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		BF5E7F451B9A652600AE44F8 /* Settings.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
@@ -135,10 +147,7 @@
 		BF762E9D1BC19D31002C8866 /* DatabaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		BF762EAA1BC1B076002C8866 /* NSManagedObject+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+Conveniences.swift"; sourceTree = "<group>"; };
 		BF797A2C1C2D339F00F1A000 /* UILabel+FontSize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+FontSize.swift"; sourceTree = "<group>"; };
-		BF7AE8011C2E858400B1B5BC /* PausePresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PausePresentationController.swift; path = "Pause Menu/PausePresentationController.swift"; sourceTree = "<group>"; };
-		BF7AE8021C2E858400B1B5BC /* PausePresentationControllerContentView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PausePresentationControllerContentView.xib; path = "Pause Menu/PausePresentationControllerContentView.xib"; sourceTree = "<group>"; };
-		BF7AE8031C2E858400B1B5BC /* PauseStoryboardSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PauseStoryboardSegue.swift; path = "Pause Menu/PauseStoryboardSegue.swift"; sourceTree = "<group>"; };
-		BF7AE8041C2E858400B1B5BC /* PauseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PauseViewController.swift; path = "Pause Menu/PauseViewController.swift"; sourceTree = "<group>"; };
+		BF7AE8041C2E858400B1B5BC /* PauseMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PauseMenuViewController.swift; path = "Pause Menu/PauseMenuViewController.swift"; sourceTree = "<group>"; };
 		BF7AE8091C2E8C7600B1B5BC /* UIColor+Delta.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Delta.swift"; sourceTree = "<group>"; };
 		BF7AE81A1C2E984300B1B5BC /* GridCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GridCollectionViewCell.swift; path = "Collection View/GridCollectionViewCell.swift"; sourceTree = "<group>"; };
 		BF7AE81D1C2E984300B1B5BC /* GridCollectionViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GridCollectionViewLayout.swift; path = "Collection View/GridCollectionViewLayout.swift"; sourceTree = "<group>"; };
@@ -212,6 +221,15 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		BF353FFB1C5DA2F600C1184C /* Presentation Controller */ = {
+			isa = PBXGroup;
+			children = (
+				BF353FFD1C5DA3C500C1184C /* PausePresentationController.swift */,
+				BF353FFE1C5DA3C500C1184C /* PausePresentationControllerContentView.xib */,
+			);
+			name = "Presentation Controller";
+			sourceTree = "<group>";
+		};
 		BF4566E31BC09026007BFA1A /* Common */ = {
 			isa = PBXGroup;
 			children = (
@@ -277,10 +295,12 @@
 		BF7AE7FA1C2E851F00B1B5BC /* Pause Menu */ = {
 			isa = PBXGroup;
 			children = (
-				BF7AE8041C2E858400B1B5BC /* PauseViewController.swift */,
-				BF7AE8031C2E858400B1B5BC /* PauseStoryboardSegue.swift */,
-				BF7AE8011C2E858400B1B5BC /* PausePresentationController.swift */,
-				BF7AE8021C2E858400B1B5BC /* PausePresentationControllerContentView.xib */,
+				BF353FF41C5D837600C1184C /* PauseMenu.storyboard */,
+				BF353FF11C5D7FB000C1184C /* PauseViewController.swift */,
+				BF7AE8041C2E858400B1B5BC /* PauseMenuViewController.swift */,
+				BF353FF81C5D870B00C1184C /* PauseItem.swift */,
+				BF353FFB1C5DA2F600C1184C /* Presentation Controller */,
+				BF912E481C5CB5D50041527C /* Segues */,
 			);
 			name = "Pause Menu";
 			sourceTree = "<group>";
@@ -291,6 +311,14 @@
 				BF6BB2471BB73FE800CCF94A /* Info.plist */,
 			);
 			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		BF912E481C5CB5D50041527C /* Segues */ = {
+			isa = PBXGroup;
+			children = (
+				BF3540011C5DA3D500C1184C /* PauseStoryboardSegue.swift */,
+			);
+			name = Segues;
 			sourceTree = "<group>";
 		};
 		BF9257571BD8244800B109DA /* Collection View */ = {
@@ -509,6 +537,7 @@
 			files = (
 				BF6BB2461BB73FE800CCF94A /* Assets.xcassets in Resources */,
 				BF6BB2441BB73FE800CCF94A /* Main.storyboard in Resources */,
+				BF353FF71C5D837600C1184C /* PauseMenu.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -517,9 +546,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				BFFA71E21AAC406100EE9DD1 /* Main.storyboard in Resources */,
-				BF7AE8061C2E858400B1B5BC /* PausePresentationControllerContentView.xib in Resources */,
+				BF3540001C5DA3C500C1184C /* PausePresentationControllerContentView.xib in Resources */,
 				BFFA71E71AAC406100EE9DD1 /* LaunchScreen.xib in Resources */,
 				BF5E7F461B9A652600AE44F8 /* Settings.storyboard in Resources */,
+				BF353FF61C5D837600C1184C /* PauseMenu.storyboard in Resources */,
 				BF27CC8E1BC9FEA200A20D89 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -636,6 +666,8 @@
 				BF27CC911BCB156200A20D89 /* EmulationViewController.swift in Sources */,
 				BFB141191BE46934004FBF46 /* GameCollectionViewDataSource.swift in Sources */,
 				BFF1E5651BE04CAF000E9EF6 /* BoxArtImageView.swift in Sources */,
+				BF353FFA1C5D870B00C1184C /* PauseItem.swift in Sources */,
+				BF353FF31C5D7FB000C1184C /* PauseViewController.swift in Sources */,
 				BF6BB23F1BB73FE800CCF94A /* AppDelegate.swift in Sources */,
 				BF4566E91BC090B6007BFA1A /* Model.xcdatamodeld in Sources */,
 				BF762EAC1BC1B076002C8866 /* NSManagedObject+Conveniences.swift in Sources */,
@@ -651,7 +683,7 @@
 				BFB141181BE46934004FBF46 /* GameCollectionViewDataSource.swift in Sources */,
 				BFFB709F1AF99B1700DE56FE /* EmulationViewController.swift in Sources */,
 				BFAA1FF41B8AD7F900495943 /* ControllersSettingsViewController.swift in Sources */,
-				BF7AE8071C2E858400B1B5BC /* PauseStoryboardSegue.swift in Sources */,
+				BF353FF91C5D870B00C1184C /* PauseItem.swift in Sources */,
 				BF27CC971BCC890700A20D89 /* GamesCollectionViewController.swift in Sources */,
 				BFFA71DD1AAC406100EE9DD1 /* AppDelegate.swift in Sources */,
 				BF7AE81E1C2E984300B1B5BC /* GridCollectionViewCell.swift in Sources */,
@@ -661,22 +693,32 @@
 				BFC2731A1BE6152200D22B05 /* GameCollection.swift in Sources */,
 				BFF1E5641BE04CAF000E9EF6 /* BoxArtImageView.swift in Sources */,
 				BF762EAB1BC1B076002C8866 /* NSManagedObject+Conveniences.swift in Sources */,
+				BF353FFF1C5DA3C500C1184C /* PausePresentationController.swift in Sources */,
 				BF7AE80A1C2E8C7600B1B5BC /* UIColor+Delta.swift in Sources */,
 				BF762E9E1BC19D31002C8866 /* DatabaseManager.swift in Sources */,
 				BF090CF41B490D8300DCAB45 /* UIDevice+Vibration.m in Sources */,
 				BF797A2D1C2D339F00F1A000 /* UILabel+FontSize.swift in Sources */,
+				BF3540021C5DA3D500C1184C /* PauseStoryboardSegue.swift in Sources */,
 				BF107EC41BF413F000E0C32C /* GamesViewController.swift in Sources */,
 				BF5E7F441B9A650B00AE44F8 /* SettingsViewController.swift in Sources */,
+				BF353FF21C5D7FB000C1184C /* PauseViewController.swift in Sources */,
 				BFDB28451BC9DA7B001D0C83 /* GamePickerController.swift in Sources */,
-				BF7AE8051C2E858400B1B5BC /* PausePresentationController.swift in Sources */,
 				BFDE393A1BC0CEDF003F72E8 /* Game+CoreDataProperties.swift in Sources */,
-				BF7AE8081C2E858400B1B5BC /* PauseViewController.swift in Sources */,
+				BF7AE8081C2E858400B1B5BC /* PauseMenuViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		BF353FF41C5D837600C1184C /* PauseMenu.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BF353FF51C5D837600C1184C /* Base */,
+			);
+			name = PauseMenu.storyboard;
+			sourceTree = "<group>";
+		};
 		BF6BB2421BB73FE800CCF94A /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

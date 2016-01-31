@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Dt0-nV-isV">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+    </dependencies>
+    <scenes>
+        <!--Pause View Controller-->
+        <scene sceneID="Wst-Dv-TjM">
+            <objects>
+                <viewController id="Dt0-nV-isV" customClass="PauseViewController" customModule="Delta" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="nE7-eK-lGa"/>
+                        <viewControllerLayoutGuide type="bottom" id="gF0-0U-kR7"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="oOH-ea-jcb">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="p2M-dE-BJs" userLabel="Blur View">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="eyD-0d-RHe" userLabel="Blur Content View">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rcd-Nl-fKP" userLabel="Vibrancy View">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="3hz-aG-NZy" userLabel="Vibrancy Content View">
+                                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                <subviews>
+                                                    <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rqN-NB-jbb">
+                                                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                                        <connections>
+                                                            <segue destination="sWv-Ky-VGs" kind="embed" identifier="embedNavigationController" id="1Ja-XW-uoT"/>
+                                                        </connections>
+                                                    </containerView>
+                                                </subviews>
+                                                <constraints>
+                                                    <constraint firstItem="rqN-NB-jbb" firstAttribute="leading" secondItem="3hz-aG-NZy" secondAttribute="leading" id="OOk-do-LIf"/>
+                                                    <constraint firstAttribute="trailing" secondItem="rqN-NB-jbb" secondAttribute="trailing" id="hcS-M2-FYQ"/>
+                                                    <constraint firstAttribute="bottom" secondItem="rqN-NB-jbb" secondAttribute="bottom" id="iMd-TA-TXf"/>
+                                                    <constraint firstItem="rqN-NB-jbb" firstAttribute="top" secondItem="3hz-aG-NZy" secondAttribute="top" id="yOz-Ra-ndK"/>
+                                                </constraints>
+                                            </view>
+                                            <vibrancyEffect>
+                                                <blurEffect style="dark"/>
+                                            </vibrancyEffect>
+                                        </visualEffectView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="bottom" secondItem="Rcd-Nl-fKP" secondAttribute="bottom" id="054-eA-dPp"/>
+                                        <constraint firstAttribute="trailing" secondItem="Rcd-Nl-fKP" secondAttribute="trailing" id="RCo-1V-Ryf"/>
+                                        <constraint firstItem="Rcd-Nl-fKP" firstAttribute="leading" secondItem="eyD-0d-RHe" secondAttribute="leading" id="WHs-Ir-0EG"/>
+                                        <constraint firstItem="Rcd-Nl-fKP" firstAttribute="top" secondItem="eyD-0d-RHe" secondAttribute="top" id="zXg-uo-6GK"/>
+                                    </constraints>
+                                </view>
+                                <blurEffect style="dark"/>
+                            </visualEffectView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="p2M-dE-BJs" firstAttribute="top" secondItem="oOH-ea-jcb" secondAttribute="top" id="8tp-qg-fgz"/>
+                            <constraint firstAttribute="trailing" secondItem="p2M-dE-BJs" secondAttribute="trailing" id="Idx-Ok-WhM"/>
+                            <constraint firstItem="p2M-dE-BJs" firstAttribute="leading" secondItem="oOH-ea-jcb" secondAttribute="leading" id="Ppi-05-jHX"/>
+                            <constraint firstItem="gF0-0U-kR7" firstAttribute="top" secondItem="p2M-dE-BJs" secondAttribute="bottom" id="eFj-ha-zJQ"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <segue destination="kQK-P0-mVu" kind="unwind" identifier="unwindFromPauseMenu" unwindAction="unwindFromPauseViewController:" id="2DE-Nv-qaq"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="PWj-WH-rlB" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="kQK-P0-mVu" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="1026" y="657"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="Kva-gK-ERA">
+            <objects>
+                <navigationController id="sWv-Ky-VGs" sceneMemberID="viewController">
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="Snh-Z0-9kC">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="0jA-NY-mvB" kind="relationship" relationship="rootViewController" id="Mhb-Fd-RdX"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="AEb-v1-7Bw" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1702" y="657"/>
+        </scene>
+        <!--Paused-->
+        <scene sceneID="1md-hu-g0J">
+            <objects>
+                <collectionViewController id="0jA-NY-mvB" customClass="PauseMenuViewController" customModule="Delta" customModuleProvider="target" sceneMemberID="viewController">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" delaysContentTouches="NO" dataMode="prototypes" id="scc-uc-vaJ">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="20" minimumInteritemSpacing="10" id="yXv-zl-idO" customClass="GridCollectionViewLayout" customModule="Delta" customModuleProvider="target">
+                            <size key="itemSize" width="60" height="80"/>
+                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="0.0" minY="20" maxX="0.0" maxY="20"/>
+                        </collectionViewFlowLayout>
+                        <cells>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Cell" id="6XS-Ne-nGZ" customClass="GridCollectionViewCell" customModule="Delta" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="64" width="60" height="80"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                    <rect key="frame" x="0.0" y="0.0" width="60" height="80"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </view>
+                            </collectionViewCell>
+                        </cells>
+                        <connections>
+                            <outlet property="dataSource" destination="0jA-NY-mvB" id="iBd-yc-mFj"/>
+                            <outlet property="delegate" destination="0jA-NY-mvB" id="Zhk-cY-zpe"/>
+                        </connections>
+                    </collectionView>
+                    <navigationItem key="navigationItem" title="Paused" id="rY7-Wx-NaD">
+                        <barButtonItem key="leftBarButtonItem" title="Main Menu" style="done" id="2yt-vB-uMF">
+                            <color key="tintColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <connections>
+                                <segue destination="WU3-gG-BA5" kind="unwind" unwindAction="unwindFromEmulationViewController:" id="SdW-CX-n27"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Resume" style="done" id="Wfq-I3-437">
+                            <connections>
+                                <segue destination="WU3-gG-BA5" kind="unwind" unwindAction="unwindFromPauseViewController:" id="RHb-pF-trg"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </collectionViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5Fb-9R-sRk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="WU3-gG-BA5" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="2385" y="657"/>
+        </scene>
+    </scenes>
+</document>
