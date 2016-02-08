@@ -21,50 +21,6 @@ class DatabaseManager
     
     let managedObjectContext: NSManagedObjectContext
     
-    class var databaseDirectoryURL: NSURL
-    {
-        let documentsDirectoryURL: NSURL
-        
-        if UIDevice.currentDevice().userInterfaceIdiom == .TV
-        {
-            documentsDirectoryURL = NSFileManager.defaultManager().URLsForDirectory(NSSearchPathDirectory.CachesDirectory, inDomains: NSSearchPathDomainMask.UserDomainMask).first!
-        }
-        else
-        {
-            documentsDirectoryURL = NSFileManager.defaultManager().URLsForDirectory(NSSearchPathDirectory.DocumentDirectory, inDomains: NSSearchPathDomainMask.UserDomainMask).first!
-        }
-        
-        let databaseDirectoryURL = documentsDirectoryURL.URLByAppendingPathComponent("Database")
-        
-        
-        do
-        {
-            try NSFileManager.defaultManager().createDirectoryAtURL(databaseDirectoryURL, withIntermediateDirectories: true, attributes: nil)
-        }
-        catch
-        {
-            print(error)
-        }
-        
-        return databaseDirectoryURL
-    }
-    
-    class var gamesDirectoryURL: NSURL
-    {
-        let gamesDirectoryURL = DatabaseManager.databaseDirectoryURL.URLByAppendingPathComponent("Games")
-        
-        do
-        {
-            try NSFileManager.defaultManager().createDirectoryAtURL(gamesDirectoryURL, withIntermediateDirectories: true, attributes: nil)
-        }
-        catch
-        {
-            print(error)
-        }
-        
-        return gamesDirectoryURL
-    }
-    
     private let privateManagedObjectContext: NSManagedObjectContext
     private let validationManagedObjectContext: NSManagedObjectContext
     
@@ -228,6 +184,52 @@ class DatabaseManager
     }
 }
 
+extension DatabaseManager
+{
+    class var databaseDirectoryURL: NSURL
+    {
+        let documentsDirectoryURL: NSURL
+        
+        if UIDevice.currentDevice().userInterfaceIdiom == .TV
+        {
+            documentsDirectoryURL = NSFileManager.defaultManager().URLsForDirectory(NSSearchPathDirectory.CachesDirectory, inDomains: NSSearchPathDomainMask.UserDomainMask).first!
+        }
+        else
+        {
+            documentsDirectoryURL = NSFileManager.defaultManager().URLsForDirectory(NSSearchPathDirectory.DocumentDirectory, inDomains: NSSearchPathDomainMask.UserDomainMask).first!
+        }
+        
+        let databaseDirectoryURL = documentsDirectoryURL.URLByAppendingPathComponent("Database")
+        self.createDirectoryAtURLIfNeeded(databaseDirectoryURL)
+        
+        return databaseDirectoryURL
+    }
+    
+    class var gamesDirectoryURL: NSURL
+    {
+        let gamesDirectoryURL = DatabaseManager.databaseDirectoryURL.URLByAppendingPathComponent("Games")
+        self.createDirectoryAtURLIfNeeded(gamesDirectoryURL)
+        
+        return gamesDirectoryURL
+    }
+    
+    class var saveStatesDirectoryURL: NSURL
+    {
+        let saveStatesDirectoryURL = DatabaseManager.databaseDirectoryURL.URLByAppendingPathComponent("Save States")
+        self.createDirectoryAtURLIfNeeded(saveStatesDirectoryURL)
+        
+        return saveStatesDirectoryURL
+    }
+    
+    class func saveStatesDirectoryURLForGame(game: Game) -> NSURL
+    {
+        let gameDirectoryURL = DatabaseManager.saveStatesDirectoryURL.URLByAppendingPathComponent(game.identifier)
+        self.createDirectoryAtURLIfNeeded(gameDirectoryURL)
+        
+        return gameDirectoryURL
+    }
+}
+
 private extension DatabaseManager
 {
     // MARK: - Saving -
@@ -322,6 +324,20 @@ private extension DatabaseManager
         self.validationManagedObjectContext.performBlockAndWait {
             self.validateManagedObjectSaveWithUserInfo(notification.userInfo ?? [:])
             self.save()
+        }
+    }
+    
+    // MARK: - File Management -
+    
+    class func createDirectoryAtURLIfNeeded(URL: NSURL)
+    {
+        do
+        {
+            try NSFileManager.defaultManager().createDirectoryAtURL(URL, withIntermediateDirectories: true, attributes: nil)
+        }
+        catch
+        {
+            print(error)
         }
     }
 }

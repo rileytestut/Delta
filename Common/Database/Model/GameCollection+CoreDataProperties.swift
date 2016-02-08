@@ -20,8 +20,8 @@ enum GameCollectionAttributes: String
     case games
 }
 
-extension GameCollection {
-
+extension GameCollection
+{
     @NSManaged var identifier: String
     @NSManaged var index: Int16
     

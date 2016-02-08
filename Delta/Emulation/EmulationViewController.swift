@@ -39,7 +39,8 @@ class EmulationViewController: UIViewController
         return NSStringFromClass(presentationController.dynamicType).containsString("PreviewPresentation")
     }
     
-    private var _isPauseViewControllerPresented = false
+    private var pauseViewController: PauseViewController?
+    
 
     
     //MARK: - Initializers -
@@ -120,7 +121,7 @@ class EmulationViewController: UIViewController
         
         coordinator.animateAlongsideTransition({ _ in
             
-            if self._isPauseViewControllerPresented
+            if self.pauseViewController != nil
             {
                 // We need to manually "refresh" the game screen, otherwise the system tries to cache the rendered image, but skews it incorrectly when rotating b/c of UIVisualEffectView
                 self.gameView.inputImage = self.gameView.outputImage
@@ -148,11 +149,11 @@ class EmulationViewController: UIViewController
             }
             
             let saveStateItem = PauseItem(image: UIImage(named: "SmallPause")!, text: NSLocalizedString("Save State", comment: ""), action: { _ in
-                pauseViewController.presentSaveStateViewController()
+                pauseViewController.presentSaveStateViewController(delegate: self)
             })
             
             let loadStateItem = PauseItem(image: UIImage(named: "SmallPause")!, text: NSLocalizedString("Load State", comment: ""), action: { _ in
-                pauseViewController.presentSaveStateViewController()
+                pauseViewController.presentSaveStateViewController(delegate: self)
             })
             
             let cheatCodesItem = PauseItem(image: UIImage(named: "SmallPause")!, text: NSLocalizedString("Cheat Codes", comment: ""), action: dismissAction)
@@ -165,13 +166,13 @@ class EmulationViewController: UIViewController
             
             pauseViewController.items = [saveStateItem, loadStateItem, cheatCodesItem, fastForwardItem, sustainButtonItem]
             
-            self._isPauseViewControllerPresented = true
+            self.pauseViewController = pauseViewController
         }
     }
     
     @IBAction func unwindFromPauseViewController(segue: UIStoryboardSegue)
     {
-        self._isPauseViewControllerPresented = false
+        self.pauseViewController = nil
         
         self.emulatorCore.resumeEmulation()
     }
@@ -214,6 +215,46 @@ private extension EmulationViewController
         }
         
         self.view.setNeedsLayout()
+    }
+}
+
+//MARK: - Save States
+/// Save States
+extension EmulationViewController: SaveStatesViewControllerDelegate
+{
+    func saveStatesViewControllerActiveGame(saveStatesViewController: SaveStatesViewController) -> Game
+    {
+        return self.game
+    }
+    
+    func saveStatesViewController(saveStatesViewController: SaveStatesViewController, updateSaveState saveState: SaveState)
+    {
+        guard let filepath = saveState.fileURL.path else { return }
+        
+        self.emulatorCore.saveSaveState { temporarySaveState in
+            do
+            {
+                if NSFileManager.defaultManager().fileExistsAtPath(filepath)
+                {
+                    try NSFileManager.defaultManager().replaceItemAtURL(saveState.fileURL, withItemAtURL: temporarySaveState.fileURL, backupItemName: nil, options: [], resultingItemURL: nil)
+                }
+                else
+                {
+                    try NSFileManager.defaultManager().moveItemAtURL(temporarySaveState.fileURL, toURL: saveState.fileURL)
+                }
+            }
+            catch let error as NSError
+            {
+                print(error)
+            }
+        }
+    }
+    
+    func saveStatesViewController(saveStatesViewController: SaveStatesViewController, loadSaveState saveState: SaveState)
+    {
+        self.emulatorCore.loadSaveState(saveState)
+        
+        self.pauseViewController?.dismiss()
     }
 }
 

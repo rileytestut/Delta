@@ -10,6 +10,12 @@
 		AF0535CD7331785FA15E0864 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22506DA00971C4300AF90A35 /* Pods.framework */; };
 		BF090CF41B490D8300DCAB45 /* UIDevice+Vibration.m in Sources */ = {isa = PBXBuildFile; fileRef = BF090CF31B490D8300DCAB45 /* UIDevice+Vibration.m */; };
 		BF107EC41BF413F000E0C32C /* GamesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF107EC31BF413F000E0C32C /* GamesViewController.swift */; };
+		BF172AEB1C68986300C26774 /* NSManagedObjectContext+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF172AEA1C68986300C26774 /* NSManagedObjectContext+Conveniences.swift */; };
+		BF172AEC1C68986300C26774 /* NSManagedObjectContext+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF172AEA1C68986300C26774 /* NSManagedObjectContext+Conveniences.swift */; };
+		BF1FB1841C5EE643007E2494 /* SaveState+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1FB1821C5EE643007E2494 /* SaveState+CoreDataProperties.swift */; };
+		BF1FB1851C5EE643007E2494 /* SaveState+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1FB1821C5EE643007E2494 /* SaveState+CoreDataProperties.swift */; };
+		BF1FB1861C5EE643007E2494 /* SaveState.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1FB1831C5EE643007E2494 /* SaveState.swift */; };
+		BF1FB1871C5EE643007E2494 /* SaveState.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1FB1831C5EE643007E2494 /* SaveState.swift */; };
 		BF27CC8B1BC9FE4D00A20D89 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF27CC8A1BC9FE4D00A20D89 /* Pods.framework */; };
 		BF27CC8C1BC9FE5300A20D89 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22506DA00971C4300AF90A35 /* Pods.framework */; };
 		BF27CC8D1BC9FE5300A20D89 /* Pods.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 22506DA00971C4300AF90A35 /* Pods.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -127,6 +133,9 @@
 		BF090CF21B490D8300DCAB45 /* UIDevice+Vibration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+Vibration.h"; sourceTree = "<group>"; };
 		BF090CF31B490D8300DCAB45 /* UIDevice+Vibration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+Vibration.m"; sourceTree = "<group>"; };
 		BF107EC31BF413F000E0C32C /* GamesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GamesViewController.swift; sourceTree = "<group>"; };
+		BF172AEA1C68986300C26774 /* NSManagedObjectContext+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+Conveniences.swift"; sourceTree = "<group>"; };
+		BF1FB1821C5EE643007E2494 /* SaveState+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SaveState+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		BF1FB1831C5EE643007E2494 /* SaveState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SaveState.swift; sourceTree = "<group>"; };
 		BF27CC861BC9E3C600A20D89 /* Delta.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Delta.entitlements; sourceTree = "<group>"; };
 		BF27CC8A1BC9FE4D00A20D89 /* Pods.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Pods.framework; path = "Pods/../build/Debug-appletvos/Pods.framework"; sourceTree = "<group>"; };
 		BF27CC901BCB156200A20D89 /* EmulationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmulationViewController.swift; sourceTree = "<group>"; };
@@ -273,6 +282,8 @@
 				BFDE39381BC0CEDF003F72E8 /* Game+CoreDataProperties.swift */,
 				BFC273171BE6152200D22B05 /* GameCollection.swift */,
 				BFC273161BE6152200D22B05 /* GameCollection+CoreDataProperties.swift */,
+				BF1FB1831C5EE643007E2494 /* SaveState.swift */,
+				BF1FB1821C5EE643007E2494 /* SaveState+CoreDataProperties.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -302,6 +313,7 @@
 			isa = PBXGroup;
 			children = (
 				BF762EAA1BC1B076002C8866 /* NSManagedObject+Conveniences.swift */,
+				BF172AEA1C68986300C26774 /* NSManagedObjectContext+Conveniences.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -673,7 +685,9 @@
 				BFC273191BE6152200D22B05 /* GameCollection+CoreDataProperties.swift in Sources */,
 				BF6BB2411BB73FE800CCF94A /* GameSelectionViewController.swift in Sources */,
 				BF27CC8F1BCA010200A20D89 /* GamePickerController.swift in Sources */,
+				BF172AEC1C68986300C26774 /* NSManagedObjectContext+Conveniences.swift in Sources */,
 				BF7AE81F1C2E984300B1B5BC /* GridCollectionViewCell.swift in Sources */,
+				BF1FB1851C5EE643007E2494 /* SaveState+CoreDataProperties.swift in Sources */,
 				BF7AE8251C2E984300B1B5BC /* GridCollectionViewLayout.swift in Sources */,
 				BFDE393D1BC0CEDF003F72E8 /* Game.swift in Sources */,
 				BFC2731B1BE6152200D22B05 /* GameCollection.swift in Sources */,
@@ -681,6 +695,7 @@
 				BFDE393B1BC0CEDF003F72E8 /* Game+CoreDataProperties.swift in Sources */,
 				BF27CC911BCB156200A20D89 /* EmulationViewController.swift in Sources */,
 				BFB141191BE46934004FBF46 /* GameCollectionViewDataSource.swift in Sources */,
+				BF1FB1871C5EE643007E2494 /* SaveState.swift in Sources */,
 				BFF1E5651BE04CAF000E9EF6 /* BoxArtImageView.swift in Sources */,
 				BF353FFA1C5D870B00C1184C /* PauseItem.swift in Sources */,
 				BF3540061C5DA70400C1184C /* SaveStatesViewController.swift in Sources */,
@@ -699,7 +714,9 @@
 				BF3540081C5DAFAD00C1184C /* PauseTransitionCoordinator.swift in Sources */,
 				BFAA1FED1B8AA4FA00495943 /* Settings.swift in Sources */,
 				BF7AE8241C2E984300B1B5BC /* GridCollectionViewLayout.swift in Sources */,
+				BF1FB1861C5EE643007E2494 /* SaveState.swift in Sources */,
 				BFB141181BE46934004FBF46 /* GameCollectionViewDataSource.swift in Sources */,
+				BF1FB1841C5EE643007E2494 /* SaveState+CoreDataProperties.swift in Sources */,
 				BFFB709F1AF99B1700DE56FE /* EmulationViewController.swift in Sources */,
 				BFAA1FF41B8AD7F900495943 /* ControllersSettingsViewController.swift in Sources */,
 				BF353FF91C5D870B00C1184C /* PauseItem.swift in Sources */,
@@ -719,6 +736,7 @@
 				BF797A2D1C2D339F00F1A000 /* UILabel+FontSize.swift in Sources */,
 				BF3540021C5DA3D500C1184C /* PauseStoryboardSegue.swift in Sources */,
 				BF107EC41BF413F000E0C32C /* GamesViewController.swift in Sources */,
+				BF172AEB1C68986300C26774 /* NSManagedObjectContext+Conveniences.swift in Sources */,
 				BF5E7F441B9A650B00AE44F8 /* SettingsViewController.swift in Sources */,
 				BF353FF21C5D7FB000C1184C /* PauseViewController.swift in Sources */,
 				BFDB28451BC9DA7B001D0C83 /* GamePickerController.swift in Sources */,

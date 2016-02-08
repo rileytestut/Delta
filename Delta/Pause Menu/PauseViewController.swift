@@ -16,6 +16,8 @@ class PauseViewController: UIViewController, PauseInfoProvidable
     /// <PauseInfoProvidable>
     var pauseText: String? = nil
     
+    private weak var saveStatesViewControllerDelegate: SaveStatesViewControllerDelegate?
+    
     /// UIViewController
     override var preferredContentSize: CGSize {
         set { }
@@ -69,8 +71,9 @@ extension PauseViewController
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?)
     {
-        if segue.identifier == "embedNavigationController"
+        switch segue.identifier ?? ""
         {
+        case "embedNavigationController":
             self.pauseNavigationController = segue.destinationViewController as! UINavigationController
             self.pauseNavigationController.delegate = self
             self.pauseNavigationController.navigationBar.tintColor = UIColor.deltaLightPurpleColor()
@@ -81,6 +84,12 @@ extension PauseViewController
             
             // Keep navigation bar outside the UIVisualEffectView's
             self.view.addSubview(self.pauseNavigationController.navigationBar)
+            
+        case "saveState":
+            let saveStatesViewController = segue.destinationViewController as! SaveStatesViewController
+            saveStatesViewController.delegate = self.saveStatesViewControllerDelegate
+            
+        default: break
         }
     }
 }
@@ -92,8 +101,10 @@ extension PauseViewController
         self.performSegueWithIdentifier("unwindFromPauseMenu", sender: self)
     }
     
-    func presentSaveStateViewController()
+    func presentSaveStateViewController(delegate delegate: SaveStatesViewControllerDelegate)
     {
+        self.saveStatesViewControllerDelegate = delegate
+        
         self.performSegueWithIdentifier("saveState", sender: self)
     }
 }
