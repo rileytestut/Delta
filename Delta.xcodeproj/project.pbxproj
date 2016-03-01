@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		AF0535CD7331785FA15E0864 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22506DA00971C4300AF90A35 /* Pods.framework */; };
 		BF090CF41B490D8300DCAB45 /* UIDevice+Vibration.m in Sources */ = {isa = PBXBuildFile; fileRef = BF090CF31B490D8300DCAB45 /* UIDevice+Vibration.m */; };
+		BF0CDDAD1C8155D200640168 /* LoadImageOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0CDDAC1C8155D200640168 /* LoadImageOperation.swift */; };
+		BF0CDDAF1C81604100640168 /* NSOperationQueue+KeyValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0CDDAE1C81604100640168 /* NSOperationQueue+KeyValue.swift */; };
 		BF107EC41BF413F000E0C32C /* GamesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF107EC31BF413F000E0C32C /* GamesViewController.swift */; };
 		BF172AEB1C68986300C26774 /* NSManagedObjectContext+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF172AEA1C68986300C26774 /* NSManagedObjectContext+Conveniences.swift */; };
 		BF172AEC1C68986300C26774 /* NSManagedObjectContext+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF172AEA1C68986300C26774 /* NSManagedObjectContext+Conveniences.swift */; };
@@ -132,6 +134,8 @@
 		BF090CF11B490D8300DCAB45 /* Delta-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Delta-Bridging-Header.h"; sourceTree = "<group>"; };
 		BF090CF21B490D8300DCAB45 /* UIDevice+Vibration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+Vibration.h"; sourceTree = "<group>"; };
 		BF090CF31B490D8300DCAB45 /* UIDevice+Vibration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+Vibration.m"; sourceTree = "<group>"; };
+		BF0CDDAC1C8155D200640168 /* LoadImageOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoadImageOperation.swift; path = Components/LoadImageOperation.swift; sourceTree = "<group>"; };
+		BF0CDDAE1C81604100640168 /* NSOperationQueue+KeyValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSOperationQueue+KeyValue.swift"; sourceTree = "<group>"; };
 		BF107EC31BF413F000E0C32C /* GamesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GamesViewController.swift; sourceTree = "<group>"; };
 		BF172AEA1C68986300C26774 /* NSManagedObjectContext+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+Conveniences.swift"; sourceTree = "<group>"; };
 		BF1FB1821C5EE643007E2494 /* SaveState+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SaveState+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -314,6 +318,7 @@
 			children = (
 				BF762EAA1BC1B076002C8866 /* NSManagedObject+Conveniences.swift */,
 				BF172AEA1C68986300C26774 /* NSManagedObjectContext+Conveniences.swift */,
+				BF0CDDAE1C81604100640168 /* NSOperationQueue+KeyValue.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -404,6 +409,7 @@
 			isa = PBXGroup;
 			children = (
 				BFF1E5631BE04CAF000E9EF6 /* BoxArtImageView.swift */,
+				BF0CDDAC1C8155D200640168 /* LoadImageOperation.swift */,
 			);
 			name = Components;
 			sourceTree = "<group>";
@@ -717,6 +723,7 @@
 				BF1FB1861C5EE643007E2494 /* SaveState.swift in Sources */,
 				BFB141181BE46934004FBF46 /* GameCollectionViewDataSource.swift in Sources */,
 				BF1FB1841C5EE643007E2494 /* SaveState+CoreDataProperties.swift in Sources */,
+				BF0CDDAF1C81604100640168 /* NSOperationQueue+KeyValue.swift in Sources */,
 				BFFB709F1AF99B1700DE56FE /* EmulationViewController.swift in Sources */,
 				BFAA1FF41B8AD7F900495943 /* ControllersSettingsViewController.swift in Sources */,
 				BF353FF91C5D870B00C1184C /* PauseItem.swift in Sources */,
@@ -735,6 +742,7 @@
 				BF090CF41B490D8300DCAB45 /* UIDevice+Vibration.m in Sources */,
 				BF797A2D1C2D339F00F1A000 /* UILabel+FontSize.swift in Sources */,
 				BF3540021C5DA3D500C1184C /* PauseStoryboardSegue.swift in Sources */,
+				BF0CDDAD1C8155D200640168 /* LoadImageOperation.swift in Sources */,
 				BF107EC41BF413F000E0C32C /* GamesViewController.swift in Sources */,
 				BF172AEB1C68986300C26774 /* NSManagedObjectContext+Conveniences.swift in Sources */,
 				BF5E7F441B9A650B00AE44F8 /* SettingsViewController.swift in Sources */,

@@ -41,8 +41,9 @@ class EmulationViewController: UIViewController
     
     private var pauseViewController: PauseViewController?
     
+    private var context = CIContext(options: [kCIContextWorkingColorSpace: NSNull()])
 
-    
+
     //MARK: - Initializers -
     /** Initializers **/
     required init?(coder aDecoder: NSCoder)
@@ -148,12 +149,16 @@ class EmulationViewController: UIViewController
                 pauseViewController.dismiss()
             }
             
-            let saveStateItem = PauseItem(image: UIImage(named: "SmallPause")!, text: NSLocalizedString("Save State", comment: ""), action: { _ in
-                pauseViewController.presentSaveStateViewController(delegate: self)
+            // Swift has a bug where using unowned references can lead to swift_abortRetainUnowned errors.
+            // Specifically, if you pause a game, open the save states menu, go back, return to menu, select a new game, then try to pause it, it will crash
+            // As a dirty workaround, we just use a weak reference, and force unwrap it if needed
+            
+            let saveStateItem = PauseItem(image: UIImage(named: "SmallPause")!, text: NSLocalizedString("Save State", comment: ""), action: { [weak self] _ in
+                pauseViewController.presentSaveStateViewController(delegate: self!)
             })
             
-            let loadStateItem = PauseItem(image: UIImage(named: "SmallPause")!, text: NSLocalizedString("Load State", comment: ""), action: { _ in
-                pauseViewController.presentSaveStateViewController(delegate: self)
+            let loadStateItem = PauseItem(image: UIImage(named: "SmallPause")!, text: NSLocalizedString("Load State", comment: ""), action: { [weak self] _ in
+                pauseViewController.presentSaveStateViewController(delegate: self!)
             })
             
             let cheatCodesItem = PauseItem(image: UIImage(named: "SmallPause")!, text: NSLocalizedString("Cheat Codes", comment: ""), action: dismissAction)
@@ -247,6 +252,14 @@ extension EmulationViewController: SaveStatesViewControllerDelegate
             {
                 print(error)
             }
+        }
+        
+        if let outputImage = self.gameView.outputImage
+        {
+            let quartzImage = self.context.createCGImage(outputImage, fromRect: outputImage.extent)
+            
+            let image = UIImage(CGImage: quartzImage)
+            UIImagePNGRepresentation(image)?.writeToURL(saveState.imageFileURL, atomically: true)
         }
     }
     

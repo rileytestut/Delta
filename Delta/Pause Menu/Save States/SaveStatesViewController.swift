@@ -21,32 +21,31 @@ protocol SaveStatesViewControllerDelegate: class
 
 class SaveStatesViewController: UICollectionViewController
 {
-    weak var delegate: SaveStatesViewControllerDelegate?
+    weak var delegate: SaveStatesViewControllerDelegate! {
+        didSet {
+            self.updateFetchedResultsController()
+        }
+    }
     
     private var backgroundView: RSTBackgroundView!
     
     private var prototypeCell = GridCollectionViewCell()
     private var prototypeCellWidthConstraint: NSLayoutConstraint!
     
-    private let fetchedResultsController: NSFetchedResultsController
+    private var fetchedResultsController: NSFetchedResultsController!
+    
+    private let imageOperationQueue = NSOperationQueue()
+    private let imageCache = NSCache()
     
     private let dateFormatter: NSDateFormatter
     
     required init?(coder aDecoder: NSCoder)
     {
-        let fetchRequest = SaveState.fetchRequest()
-        fetchRequest.returnsObjectsAsFaults = false
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: SaveStateAttributes.creationDate.rawValue, ascending: true)]
-        
-        self.fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DatabaseManager.sharedManager.managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
-        
         self.dateFormatter = NSDateFormatter()
         self.dateFormatter.timeStyle = .ShortStyle
         self.dateFormatter.dateStyle = .ShortStyle
         
         super.init(coder: aDecoder)
-        
-        self.fetchedResultsController.delegate = self
     }
 }
 
@@ -107,6 +106,19 @@ extension SaveStatesViewController
 
 private extension SaveStatesViewController
 {
+    func updateFetchedResultsController()
+    {
+        let game = self.delegate.saveStatesViewControllerActiveGame(self)
+        
+        let fetchRequest = SaveState.fetchRequest()
+        fetchRequest.returnsObjectsAsFaults = false
+        fetchRequest.predicate = NSPredicate(format: "%K == %@", SaveStateAttributes.game.rawValue, game)
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: SaveStateAttributes.creationDate.rawValue, ascending: true)]
+        
+        self.fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DatabaseManager.sharedManager.managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
+        self.fetchedResultsController.delegate = self
+    }
+    
     func updateBackgroundView()
     {
         if let fetchedObjects = self.fetchedResultsController.fetchedObjects where fetchedObjects.count > 0
@@ -129,7 +141,17 @@ private extension SaveStatesViewController
         cell.imageView.backgroundColor = UIColor.whiteColor()
         cell.imageView.image = UIImage(named: "DeltaPlaceholder")
         
-        cell.maximumImageSize = CGSizeMake(self.prototypeCellWidthConstraint.constant, (self.prototypeCellWidthConstraint.constant / 4.0) * 3.0)
+        let imageOperation = LoadImageOperation(URL: saveState.imageFileURL)
+        imageOperation.completionHandler = { image in
+            if let image = image
+            {
+                cell.imageView.image = image
+            }
+        }
+        
+        self.imageOperationQueue.addOperation(imageOperation, forKey: indexPath)
+        
+        cell.maximumImageSize = CGSizeMake(self.prototypeCellWidthConstraint.constant, (self.prototypeCellWidthConstraint.constant / 8.0) * 7.0)
         
         cell.textLabel.textColor = UIColor.whiteColor()
         cell.textLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleSubheadline)
@@ -143,15 +165,13 @@ private extension SaveStatesViewController
 {
     @IBAction func addSaveState()
     {
-        guard let delegate = self.delegate else { return }
-        
         let backgroundContext = DatabaseManager.sharedManager.backgroundManagedObjectContext()
         backgroundContext.performBlock {
             
             let identifier = NSUUID().UUIDString
             let date = NSDate()
             
-            var game = delegate.saveStatesViewControllerActiveGame(self)
+            var game = self.delegate.saveStatesViewControllerActiveGame(self)
             game = backgroundContext.objectWithID(game.objectID) as! Game
             
             let saveState = SaveState.insertIntoManagedObjectContext(backgroundContext)
@@ -194,6 +214,12 @@ extension SaveStatesViewController
     {
         let saveState = self.fetchedResultsController.objectAtIndexPath(indexPath) as! SaveState
         self.delegate?.saveStatesViewController(self, loadSaveState: saveState)
+    }
+    
+    override func collectionView(collectionView: UICollectionView, didEndDisplayingCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath)
+    {
+        let operation = self.imageOperationQueue.operationForKey(indexPath)
+        operation?.cancel()
     }
 }
 

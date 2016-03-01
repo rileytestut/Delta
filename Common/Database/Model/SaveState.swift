@@ -18,4 +18,10 @@ class SaveState: NSManagedObject, SaveStateType
         let fileURL = DatabaseManager.saveStatesDirectoryURLForGame(self.game).URLByAppendingPathComponent(self.filename)
         return fileURL
     }
+    
+    var imageFileURL: NSURL {
+        let imageFilename = (self.filename as NSString).stringByDeletingPathExtension + ".png"
+        let imageFileURL = DatabaseManager.saveStatesDirectoryURLForGame(self.game).URLByAppendingPathComponent(imageFilename)
+        return imageFileURL
+    }
 }
