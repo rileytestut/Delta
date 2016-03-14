@@ -154,11 +154,11 @@ class EmulationViewController: UIViewController
             // As a dirty workaround, we just use a weak reference, and force unwrap it if needed
             
             let saveStateItem = PauseItem(image: UIImage(named: "SmallPause")!, text: NSLocalizedString("Save State", comment: ""), action: { [weak self] _ in
-                pauseViewController.presentSaveStateViewController(delegate: self!)
+                pauseViewController.presentSaveStateViewControllerWithMode(.Saving, delegate: self!)
             })
             
             let loadStateItem = PauseItem(image: UIImage(named: "SmallPause")!, text: NSLocalizedString("Load State", comment: ""), action: { [weak self] _ in
-                pauseViewController.presentSaveStateViewController(delegate: self!)
+                pauseViewController.presentSaveStateViewControllerWithMode(.Loading, delegate: self!)
             })
             
             let cheatCodesItem = PauseItem(image: UIImage(named: "SmallPause")!, text: NSLocalizedString("Cheat Codes", comment: ""), action: dismissAction)

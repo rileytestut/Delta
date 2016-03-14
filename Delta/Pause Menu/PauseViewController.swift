@@ -17,6 +17,7 @@ class PauseViewController: UIViewController, PauseInfoProvidable
     var pauseText: String? = nil
     
     private weak var saveStatesViewControllerDelegate: SaveStatesViewControllerDelegate?
+    private var saveStatesViewControllerMode = SaveStatesViewController.Mode.Saving
     
     /// UIViewController
     override var preferredContentSize: CGSize {
@@ -88,6 +89,7 @@ extension PauseViewController
         case "saveState":
             let saveStatesViewController = segue.destinationViewController as! SaveStatesViewController
             saveStatesViewController.delegate = self.saveStatesViewControllerDelegate
+            saveStatesViewController.mode = self.saveStatesViewControllerMode
             
         default: break
         }
@@ -101,8 +103,9 @@ extension PauseViewController
         self.performSegueWithIdentifier("unwindFromPauseMenu", sender: self)
     }
     
-    func presentSaveStateViewController(delegate delegate: SaveStatesViewControllerDelegate)
+    func presentSaveStateViewControllerWithMode(mode: SaveStatesViewController.Mode, delegate: SaveStatesViewControllerDelegate)
     {
+        self.saveStatesViewControllerMode = mode
         self.saveStatesViewControllerDelegate = delegate
         
         self.performSegueWithIdentifier("saveState", sender: self)

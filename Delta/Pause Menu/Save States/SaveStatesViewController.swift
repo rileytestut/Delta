@@ -19,6 +19,15 @@ protocol SaveStatesViewControllerDelegate: class
     func saveStatesViewController(saveStatesViewController: SaveStatesViewController, loadSaveState saveState: SaveState)
 }
 
+extension SaveStatesViewController
+{
+    enum Mode
+    {
+        case Saving
+        case Loading
+    }
+}
+
 class SaveStatesViewController: UICollectionViewController
 {
     weak var delegate: SaveStatesViewControllerDelegate! {
@@ -26,6 +35,8 @@ class SaveStatesViewController: UICollectionViewController
             self.updateFetchedResultsController()
         }
     }
+    
+    var mode = Mode.Saving
     
     private var backgroundView: RSTBackgroundView!
     
@@ -60,7 +71,6 @@ extension SaveStatesViewController
         self.backgroundView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
         self.backgroundView.textLabel.text = NSLocalizedString("No Save States", comment: "")
         self.backgroundView.textLabel.textColor = UIColor.whiteColor()
-        self.backgroundView.detailTextLabel.text = NSLocalizedString("You can create a new save state by pressing the + button in the top right.", comment: "")
         self.backgroundView.detailTextLabel.textColor = UIColor.whiteColor()
         self.view.insertSubview(self.backgroundView, atIndex: 0)
         
@@ -71,6 +81,18 @@ extension SaveStatesViewController
         // Use dimensions that allow two cells to fill the screen horizontally with padding in portrait mode
         // We'll keep the same size for landscape orientation, which will allow more to fit
         collectionViewLayout.itemWidth = (portraitScreenWidth - (averageHorizontalInset * 3)) / 2
+        
+        switch self.mode
+        {
+        case .Saving:
+            self.title = NSLocalizedString("Save State", comment: "")
+            self.backgroundView.detailTextLabel.text = NSLocalizedString("You can create a new save state by pressing the + button in the top right.", comment: "")
+            
+        case .Loading:
+            self.title = NSLocalizedString("Load State", comment: "")
+            self.backgroundView.detailTextLabel.text = NSLocalizedString("You can create a new save state by pressing the Save State option in the pause menu.", comment: "")
+            self.navigationItem.rightBarButtonItem = nil
+        }
         
         // Manually update prototype cell properties
         self.prototypeCellWidthConstraint = self.prototypeCell.contentView.widthAnchor.constraintEqualToConstant(collectionViewLayout.itemWidth)
