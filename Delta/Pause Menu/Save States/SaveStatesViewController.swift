@@ -98,6 +98,9 @@ extension SaveStatesViewController
         self.prototypeCellWidthConstraint = self.prototypeCell.contentView.widthAnchor.constraintEqualToConstant(collectionViewLayout.itemWidth)
         self.prototypeCellWidthConstraint.active = true
         
+        let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "handleLongPressGesture:")
+        self.collectionView?.addGestureRecognizer(longPressGestureRecognizer)
+        
         self.updateBackgroundView()
     }
     
@@ -128,6 +131,8 @@ extension SaveStatesViewController
 
 private extension SaveStatesViewController
 {
+    //MARK: - Update -
+    
     func updateFetchedResultsController()
     {
         let game = self.delegate.saveStatesViewControllerActiveGame(self)
@@ -181,10 +186,27 @@ private extension SaveStatesViewController
         let name = saveState.name ?? self.dateFormatter.stringFromDate(saveState.modifiedDate)
         cell.textLabel.text = name
     }
-}
-
-private extension SaveStatesViewController
-{
+    
+    //MARK: - Gestures -
+    
+    @objc func handleLongPressGesture(gestureRecognizer: UILongPressGestureRecognizer)
+    {
+        guard gestureRecognizer.state == .Began else { return }
+        
+        guard let indexPath = self.collectionView?.indexPathForItemAtPoint(gestureRecognizer.locationInView(self.collectionView)) else { return }
+        
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Delete Save State", comment: ""), style: .Destructive, handler: { action in
+            let saveState = self.fetchedResultsController.objectAtIndexPath(indexPath) as! SaveState
+            self.deleteSaveState(saveState)
+        }))
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .Cancel, handler: nil))
+        
+        self.presentViewController(alertController, animated: true, completion: nil)
+    }
+    
+    //MARK: - Save States -
+    
     @IBAction func addSaveState()
     {
         let backgroundContext = DatabaseManager.sharedManager.backgroundManagedObjectContext()
@@ -212,8 +234,28 @@ private extension SaveStatesViewController
         self.delegate?.saveStatesViewController(self, updateSaveState: saveState)
         saveState.managedObjectContext?.saveWithErrorLogging()
     }
+    
+    func deleteSaveState(saveState: SaveState)
+    {
+        let confirmationAlertController = UIAlertController(title: NSLocalizedString("Confirm Deletion", comment: ""), message: NSLocalizedString("Are you sure you want to delete this save state? This cannot be undone.", comment: ""), preferredStyle: .Alert)
+        confirmationAlertController.addAction(UIAlertAction(title: "Delete", style: .Default, handler: { action in
+            
+            let backgroundContext = DatabaseManager.sharedManager.backgroundManagedObjectContext()
+            backgroundContext.performBlock {
+                let temporarySaveState = backgroundContext.objectWithID(saveState.objectID)
+                backgroundContext.deleteObject(temporarySaveState)
+                backgroundContext.saveWithErrorLogging()
+            }
+            
+            
+        }))
+        confirmationAlertController.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+        
+        self.presentViewController(confirmationAlertController, animated: true, completion: nil)
+    }
 }
 
+//MARK: - <UICollectionViewDataSource> -
 extension SaveStatesViewController
 {
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
@@ -230,6 +272,7 @@ extension SaveStatesViewController
     }
 }
 
+//MARK: - <UICollectionViewDelegate> -
 extension SaveStatesViewController
 {
     override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath)
@@ -245,6 +288,7 @@ extension SaveStatesViewController
     }
 }
 
+//MARK: - <UICollectionViewDelegateFlowLayout> -
 extension SaveStatesViewController: UICollectionViewDelegateFlowLayout
 {
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize
@@ -256,6 +300,7 @@ extension SaveStatesViewController: UICollectionViewDelegateFlowLayout
     }
 }
 
+//MARK: - <NSFetchedResultsControllerDelegate> -
 extension SaveStatesViewController: NSFetchedResultsControllerDelegate
 {
     func controllerDidChangeContent(controller: NSFetchedResultsController)

@@ -45,6 +45,7 @@ class DatabaseManager
         self.validationManagedObjectContext.parentContext = self.managedObjectContext
         self.validationManagedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
 
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("managedObjectContextWillSave:"), name: NSManagedObjectContextWillSaveNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("managedObjectContextDidSave:"), name: NSManagedObjectContextDidSaveNotification, object: nil)
 
     }
@@ -286,18 +287,31 @@ private extension DatabaseManager
     
     // MARK: - Validation -
     
-    func validateManagedObjectSaveWithUserInfo(userInfo: [NSObject : AnyObject])
+    func validateManagedObjectContextSave(managedObjectContext: NSManagedObjectContext)
     {
-        // Remove deleted games from disk
-        if let deletedObjects = userInfo[NSDeletedObjectsKey] as? Set<NSManagedObject>
+        // Remove deleted files from disk
+        for object in managedObjectContext.deletedObjects
         {
-            let games = deletedObjects.filter({ $0 is Game }).map({ self.validationManagedObjectContext.objectWithID($0.objectID) as! Game })
+            var fileURLs = Set<NSURL>()
             
-            for game in games
+            let temporaryObject = self.validationManagedObjectContext.objectWithID(object.objectID)
+            switch temporaryObject
+            {
+            case let game as Game:
+                fileURLs.insert(game.fileURL)
+                
+            case let saveState as SaveState:
+                fileURLs.insert(saveState.fileURL)
+                fileURLs.insert(saveState.imageFileURL)
+                
+            default: break
+            }
+            
+            for URL in fileURLs
             {
                 do
                 {
-                    try NSFileManager.defaultManager().removeItemAtURL(game.fileURL)
+                    try NSFileManager.defaultManager().removeItemAtURL(URL)
                 }
                 catch let error as NSError
                 {
@@ -317,14 +331,20 @@ private extension DatabaseManager
     
     // MARK: - Notifications -
     
-    dynamic func managedObjectContextDidSave(notification: NSNotification)
+    @objc func managedObjectContextWillSave(notification: NSNotification)
     {
         guard let managedObjectContext = notification.object as? NSManagedObjectContext where managedObjectContext.parentContext == self.validationManagedObjectContext else { return }
         
         self.validationManagedObjectContext.performBlockAndWait {
-            self.validateManagedObjectSaveWithUserInfo(notification.userInfo ?? [:])
-            self.save()
+            self.validateManagedObjectContextSave(managedObjectContext)
         }
+    }
+    
+    @objc func managedObjectContextDidSave(notification: NSNotification)
+    {
+        guard let managedObjectContext = notification.object as? NSManagedObjectContext where managedObjectContext.parentContext == self.validationManagedObjectContext else { return }
+        
+        self.save()
     }
     
     // MARK: - File Management -
