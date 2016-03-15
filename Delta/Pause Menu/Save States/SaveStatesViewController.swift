@@ -45,7 +45,7 @@ class SaveStatesViewController: UICollectionViewController
     
     private var fetchedResultsController: NSFetchedResultsController!
     
-    private let imageOperationQueue = NSOperationQueue()
+    private let imageOperationQueue = RSTOperationQueue()
     private let imageCache = NSCache()
     
     private let dateFormatter: NSDateFormatter
@@ -122,7 +122,7 @@ extension SaveStatesViewController
         
         super.viewWillAppear(animated)
     }
-    
+
     override func didReceiveMemoryWarning()
     {
         super.didReceiveMemoryWarning()
@@ -157,26 +157,36 @@ private extension SaveStatesViewController
             self.backgroundView.hidden = false
         }
     }
-}
-
-private extension SaveStatesViewController
-{
-    func configureCollectionViewCell(cell: GridCollectionViewCell, forIndexPath indexPath: NSIndexPath)
+    
+    //MARK: - Configure Cell -
+    
+    func configureCollectionViewCell(cell: GridCollectionViewCell, forIndexPath indexPath: NSIndexPath, ignoreExpensiveOperations ignoreOperations: Bool = false)
     {
         let saveState = self.fetchedResultsController.objectAtIndexPath(indexPath) as! SaveState
         
         cell.imageView.backgroundColor = UIColor.whiteColor()
         cell.imageView.image = UIImage(named: "DeltaPlaceholder")
         
-        let imageOperation = LoadImageOperation(URL: saveState.imageFileURL)
-        imageOperation.completionHandler = { image in
-            if let image = image
-            {
-                cell.imageView.image = image
+        if !ignoreOperations
+        {
+            let imageOperation = LoadImageOperation(URL: saveState.imageFileURL)
+            imageOperation.imageCache = self.imageCache
+            imageOperation.completionHandler = { image in
+                
+                if let image = image
+                {
+                    cell.imageView.image = image
+                }
             }
-        }
-        
-        self.imageOperationQueue.addOperation(imageOperation, forKey: indexPath)
+            
+            // Ensure initially visible cells have loaded their image before they appear to prevent potential flickering from placeholder to thumbnail
+            if self.appearing
+            {
+                imageOperation.immediate = true
+            }
+            
+            self.imageOperationQueue.addOperation(imageOperation, forKey: indexPath)
+        }        
         
         cell.maximumImageSize = CGSizeMake(self.prototypeCellWidthConstraint.constant, (self.prototypeCellWidthConstraint.constant / 8.0) * 7.0)
         
@@ -293,7 +303,8 @@ extension SaveStatesViewController: UICollectionViewDelegateFlowLayout
 {
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize
     {
-        self.configureCollectionViewCell(self.prototypeCell, forIndexPath: indexPath)
+        // No need to load images from disk just to determine size, so we pass true for ignoreExpensiveOperations
+        self.configureCollectionViewCell(self.prototypeCell, forIndexPath: indexPath, ignoreExpensiveOperations: true)
         
         let size = self.prototypeCell.contentView.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize)
         return size

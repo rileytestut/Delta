@@ -9,12 +9,30 @@
 import Foundation
 import ImageIO
 
-public class LoadImageOperation: NSOperation
+import Roxas
+
+public class LoadImageOperation: RSTOperation
 {
     public let URL: NSURL
     
-    public var completionHandler: (UIImage? -> Void)?
-    public var imageCache: NSCache?
+    public var completionHandler: (UIImage? -> Void)? {
+        didSet {
+            self.completionBlock = {
+                rst_dispatch_sync_on_main_thread() {
+                    self.completionHandler?(self.image)
+                }
+            }
+        }
+    }
+    
+    public var imageCache: NSCache? {
+        didSet {
+            // Ensures if an image is cached, it will be returned immediately, to prevent temporary flash of placeholder image
+            self.immediate = self.imageCache?.objectForKey(self.URL) != nil
+        }
+    }
+    
+    private var image: UIImage?
     
     public init(URL: NSURL)
     {
@@ -28,23 +46,11 @@ public extension LoadImageOperation
 {
     override func main()
     {
-        var image: UIImage?
-        
-        defer
-        {
-            if !self.cancelled
-            {
-                dispatch_async(dispatch_get_main_queue()) {
-                    self.completionHandler?(image)
-                }
-            }
-        }
-        
         guard !self.cancelled else { return }
         
         if let cachedImage = self.imageCache?.objectForKey(self.URL) as? UIImage
         {
-            image = cachedImage
+            self.image = cachedImage
             return
         }
         
@@ -61,7 +67,7 @@ public extension LoadImageOperation
             
             self.imageCache?.setObject(loadedImage, forKey: self.URL)
             
-            image = loadedImage
+            self.image = loadedImage
         }
     }
 }
