@@ -246,7 +246,7 @@ private extension SaveStatesViewController
     func deleteSaveState(saveState: SaveState)
     {
         let confirmationAlertController = UIAlertController(title: NSLocalizedString("Confirm Deletion", comment: ""), message: NSLocalizedString("Are you sure you want to delete this save state? This cannot be undone.", comment: ""), preferredStyle: .Alert)
-        confirmationAlertController.addAction(UIAlertAction(title: "Delete", style: .Default, handler: { action in
+        confirmationAlertController.addAction(UIAlertAction(title: NSLocalizedString("Delete", comment: ""), style: .Default, handler: { action in
             
             let backgroundContext = DatabaseManager.sharedManager.backgroundManagedObjectContext()
             backgroundContext.performBlock {
@@ -257,7 +257,7 @@ private extension SaveStatesViewController
             
             
         }))
-        confirmationAlertController.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+        confirmationAlertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .Cancel, handler: nil))
         
         self.presentViewController(confirmationAlertController, animated: true, completion: nil)
     }
