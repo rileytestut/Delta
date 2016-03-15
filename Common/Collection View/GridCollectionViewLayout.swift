@@ -49,6 +49,8 @@ class GridCollectionViewLayout: UICollectionViewFlowLayout
         
         for (index, attributes) in layoutAttributes.enumerate()
         {
+            guard attributes.representedElementCategory == .Cell else { continue }
+            
             // Ensure equal spacing between items (that also match the section insets)
             if index > 0
             {

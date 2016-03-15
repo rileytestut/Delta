@@ -26,6 +26,13 @@ extension SaveStatesViewController
         case Saving
         case Loading
     }
+    
+    enum Section: Int
+    {
+        case Auto
+        case General
+        case Locked
+    }
 }
 
 class SaveStatesViewController: UICollectionViewController
@@ -42,6 +49,7 @@ class SaveStatesViewController: UICollectionViewController
     
     private var prototypeCell = GridCollectionViewCell()
     private var prototypeCellWidthConstraint: NSLayoutConstraint!
+    private var prototypeHeader = SaveStatesCollectionHeaderView()
     
     private var fetchedResultsController: NSFetchedResultsController!
     
@@ -140,9 +148,9 @@ private extension SaveStatesViewController
         let fetchRequest = SaveState.fetchRequest()
         fetchRequest.returnsObjectsAsFaults = false
         fetchRequest.predicate = NSPredicate(format: "%K == %@", SaveState.Attributes.game.rawValue, game)
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: SaveState.Attributes.creationDate.rawValue, ascending: true)]
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: SaveState.Attributes.type.rawValue, ascending: true), NSSortDescriptor(key: SaveState.Attributes.creationDate.rawValue, ascending: true)]
         
-        self.fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DatabaseManager.sharedManager.managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
+        self.fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DatabaseManager.sharedManager.managedObjectContext, sectionNameKeyPath: SaveState.Attributes.type.rawValue, cacheName: nil)
         self.fetchedResultsController.delegate = self
     }
     
@@ -158,7 +166,7 @@ private extension SaveStatesViewController
         }
     }
     
-    //MARK: - Configure Cell -
+    //MARK: - Configure Views -
     
     func configureCollectionViewCell(cell: GridCollectionViewCell, forIndexPath indexPath: NSIndexPath, ignoreExpensiveOperations ignoreOperations: Bool = false)
     {
@@ -175,6 +183,7 @@ private extension SaveStatesViewController
                 
                 if let image = image
                 {
+                    cell.imageView.backgroundColor = nil
                     cell.imageView.image = image
                 }
             }
@@ -197,6 +206,22 @@ private extension SaveStatesViewController
         cell.textLabel.text = name
     }
     
+    func configureCollectionViewHeaderView(headerView: SaveStatesCollectionHeaderView, forSection section: Int)
+    {
+        let section = self.correctedSectionForSectionIndex(section)
+        
+        let title: String
+        
+        switch section
+        {
+        case .Auto: title = NSLocalizedString("Auto Save", comment: "")
+        case .General: title = NSLocalizedString("General", comment: "")
+        case .Locked: title = NSLocalizedString("Locked", comment: "")
+        }
+        
+        headerView.textLabel.text = title
+    }
+    
     //MARK: - Gestures -
     
     @objc func handleLongPressGesture(gestureRecognizer: UILongPressGestureRecognizer)
@@ -205,12 +230,29 @@ private extension SaveStatesViewController
         
         guard let indexPath = self.collectionView?.indexPathForItemAtPoint(gestureRecognizer.locationInView(self.collectionView)) else { return }
         
+        let saveState = self.fetchedResultsController.objectAtIndexPath(indexPath) as! SaveState
+        
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .Cancel, handler: nil))
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Delete Save State", comment: ""), style: .Destructive, handler: { action in
-            let saveState = self.fetchedResultsController.objectAtIndexPath(indexPath) as! SaveState
             self.deleteSaveState(saveState)
         }))
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .Cancel, handler: nil))
+        
+        let section = self.correctedSectionForSectionIndex(indexPath.section)
+        switch section
+        {
+        case .Auto: break
+        case .General:
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Lock Save State", comment: ""), style: .Default, handler: { action in
+                self.lockSaveState(saveState)
+            }))
+            
+        case .Locked:
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Unlock Save State", comment: ""), style: .Default, handler: { action in
+                self.unlockSaveState(saveState)
+            }))
+            
+        }
         
         self.presentViewController(alertController, animated: true, completion: nil)
     }
@@ -261,11 +303,48 @@ private extension SaveStatesViewController
         
         self.presentViewController(confirmationAlertController, animated: true, completion: nil)
     }
+    
+    func lockSaveState(saveState: SaveState)
+    {
+        let backgroundContext = DatabaseManager.sharedManager.backgroundManagedObjectContext()
+        backgroundContext.performBlockAndWait() {
+            let temporarySaveState = backgroundContext.objectWithID(saveState.objectID) as! SaveState
+            temporarySaveState.type = .Locked
+            backgroundContext.saveWithErrorLogging()
+        }
+    }
+    
+    func unlockSaveState(saveState: SaveState)
+    {
+        let backgroundContext = DatabaseManager.sharedManager.backgroundManagedObjectContext()
+        backgroundContext.performBlockAndWait() {
+            let temporarySaveState = backgroundContext.objectWithID(saveState.objectID) as! SaveState
+            temporarySaveState.type = .General
+            backgroundContext.saveWithErrorLogging()
+        }
+    }
+    
+    //MARK: - Convenience Methods -
+    
+    func correctedSectionForSectionIndex(section: Int) -> Section
+    {
+        let sectionInfo = self.fetchedResultsController.sections![section]
+        let sectionIndex = Int(sectionInfo.name)!
+        
+        let section = Section(rawValue: sectionIndex)!
+        return section
+    }
 }
 
 //MARK: - <UICollectionViewDataSource> -
 extension SaveStatesViewController
 {
+    override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int
+    {
+        let numberOfSections = self.fetchedResultsController.sections!.count
+        return numberOfSections
+    }
+    
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
     {
         let section = self.fetchedResultsController.sections![section]
@@ -278,6 +357,13 @@ extension SaveStatesViewController
         self.configureCollectionViewCell(cell, forIndexPath: indexPath)
         return cell
     }
+    
+    override func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView
+    {
+        let headerView = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "Header", forIndexPath: indexPath) as! SaveStatesCollectionHeaderView
+        self.configureCollectionViewHeaderView(headerView, forSection: indexPath.section)
+        return headerView
+    }
 }
 
 //MARK: - <UICollectionViewDelegate> -
@@ -289,7 +375,26 @@ extension SaveStatesViewController
         
         switch self.mode
         {
-        case .Saving: self.updateSaveState(saveState)
+        case .Saving:
+            
+            let section = self.correctedSectionForSectionIndex(indexPath.section)
+            switch section
+            {
+            case .Auto: break
+            case .General:
+                let backgroundContext = DatabaseManager.sharedManager.backgroundManagedObjectContext()
+                backgroundContext.performBlockAndWait() {
+                    let temporarySaveState = backgroundContext.objectWithID(saveState.objectID) as! SaveState
+                    self.updateSaveState(temporarySaveState)
+                }
+                
+            case .Locked:
+                let alertController = UIAlertController(title: NSLocalizedString("Cannot Modify Locked Save State", comment: ""), message: NSLocalizedString("This save state must first be unlocked before it can be modified.", comment: ""), preferredStyle: .Alert)
+                alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .Cancel, handler: nil))
+                self.presentViewController(alertController, animated: true, completion: nil)
+                
+            }
+            
         case .Loading: self.loadSaveState(saveState)
         }
     }
@@ -310,6 +415,14 @@ extension SaveStatesViewController: UICollectionViewDelegateFlowLayout
         self.configureCollectionViewCell(self.prototypeCell, forIndexPath: indexPath, ignoreExpensiveOperations: true)
         
         let size = self.prototypeCell.contentView.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize)
+        return size
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize
+    {
+        self.configureCollectionViewHeaderView(self.prototypeHeader, forSection: section)
+        
+        let size = self.prototypeHeader.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize)
         return size
     }
 }

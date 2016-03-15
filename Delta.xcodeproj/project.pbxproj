@@ -27,6 +27,7 @@
 		BF2A53FC1BB74FC10052BD0C /* SNESDeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BFC134E01AAD82460087AD7B /* SNESDeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF2A53FD1BB74FC60052BD0C /* ZipZap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF70798B1B6B464B0019077C /* ZipZap.framework */; };
 		BF2A53FE1BB74FC60052BD0C /* ZipZap.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BF70798B1B6B464B0019077C /* ZipZap.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BF2B98E61C97E32F00F6D57D /* SaveStatesCollectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2B98E51C97E32F00F6D57D /* SaveStatesCollectionHeaderView.swift */; };
 		BF353FF21C5D7FB000C1184C /* PauseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF353FF11C5D7FB000C1184C /* PauseViewController.swift */; };
 		BF353FF31C5D7FB000C1184C /* PauseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF353FF11C5D7FB000C1184C /* PauseViewController.swift */; };
 		BF353FF61C5D837600C1184C /* PauseMenu.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF353FF41C5D837600C1184C /* PauseMenu.storyboard */; };
@@ -136,6 +137,7 @@
 		BF27CC901BCB156200A20D89 /* EmulationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmulationViewController.swift; sourceTree = "<group>"; };
 		BF27CC941BCB7B7A00A20D89 /* GameController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameController.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS9.0.sdk/System/Library/Frameworks/GameController.framework; sourceTree = DEVELOPER_DIR; };
 		BF27CC961BCC890700A20D89 /* GamesCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GamesCollectionViewController.swift; sourceTree = "<group>"; };
+		BF2B98E51C97E32F00F6D57D /* SaveStatesCollectionHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SaveStatesCollectionHeaderView.swift; path = "Pause Menu/Save States/SaveStatesCollectionHeaderView.swift"; sourceTree = "<group>"; };
 		BF353FF11C5D7FB000C1184C /* PauseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PauseViewController.swift; path = "Pause Menu/PauseViewController.swift"; sourceTree = "<group>"; };
 		BF353FF51C5D837600C1184C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/PauseMenu.storyboard; sourceTree = "<group>"; };
 		BF353FF81C5D870B00C1184C /* PauseItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PauseItem.swift; path = "Pause Menu/PauseItem.swift"; sourceTree = "<group>"; };
@@ -242,6 +244,7 @@
 			isa = PBXGroup;
 			children = (
 				BF3540041C5DA70400C1184C /* SaveStatesViewController.swift */,
+				BF2B98E51C97E32F00F6D57D /* SaveStatesCollectionHeaderView.swift */,
 			);
 			name = "Save States";
 			sourceTree = "<group>";
@@ -714,6 +717,7 @@
 				BFDE393C1BC0CEDF003F72E8 /* Game.swift in Sources */,
 				BFC2731A1BE6152200D22B05 /* GameCollection.swift in Sources */,
 				BFF1E5641BE04CAF000E9EF6 /* BoxArtImageView.swift in Sources */,
+				BF2B98E61C97E32F00F6D57D /* SaveStatesCollectionHeaderView.swift in Sources */,
 				BF762EAB1BC1B076002C8866 /* NSManagedObject+Conveniences.swift in Sources */,
 				BF353FFF1C5DA3C500C1184C /* PausePresentationController.swift in Sources */,
 				BF7AE80A1C2E8C7600B1B5BC /* UIColor+Delta.swift in Sources */,

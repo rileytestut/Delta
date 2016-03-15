@@ -42,6 +42,7 @@
         <attribute name="identifier" attributeType="String" syncable="YES"/>
         <attribute name="modifiedDate" attributeType="Date" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="type" attributeType="Integer 16" defaultValueString="1" syncable="YES"/>
         <relationship name="game" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Game" inverseName="saveStates" inverseEntity="Game" syncable="YES"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
@@ -52,6 +53,6 @@
     <elements>
         <element name="Game" positionX="-200" positionY="-72" width="128" height="148"/>
         <element name="GameCollection" positionX="-198" positionY="-207" width="128" height="90"/>
-        <element name="SaveState" positionX="-198" positionY="113" width="128" height="135"/>
+        <element name="SaveState" positionX="-198" positionY="113" width="128" height="150"/>
     </elements>
 </model>

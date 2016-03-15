@@ -20,8 +20,16 @@ extension SaveState
         case name
         case creationDate
         case modifiedDate
+        case type
         
         case game
+    }
+    
+    @objc enum Type: Int16
+    {
+        case Auto
+        case General
+        case Locked
     }
 }
 
@@ -30,6 +38,7 @@ class SaveState: NSManagedObject, SaveStateType
 {
     @NSManaged var name: String?
     @NSManaged var modifiedDate: NSDate
+    @NSManaged var type: Type
     
     @NSManaged private(set) var filename: String
     @NSManaged private(set) var identifier: String
