@@ -238,6 +238,11 @@ private extension SaveStatesViewController
         saveState.managedObjectContext?.saveWithErrorLogging()
     }
     
+    func loadSaveState(saveState: SaveState)
+    {
+        self.delegate?.saveStatesViewController(self, loadSaveState: saveState)
+    }
+    
     func deleteSaveState(saveState: SaveState)
     {
         let confirmationAlertController = UIAlertController(title: NSLocalizedString("Confirm Deletion", comment: ""), message: NSLocalizedString("Are you sure you want to delete this save state? This cannot be undone.", comment: ""), preferredStyle: .Alert)
@@ -281,7 +286,12 @@ extension SaveStatesViewController
     override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath)
     {
         let saveState = self.fetchedResultsController.objectAtIndexPath(indexPath) as! SaveState
-        self.delegate?.saveStatesViewController(self, loadSaveState: saveState)
+        
+        switch self.mode
+        {
+        case .Saving: self.updateSaveState(saveState)
+        case .Loading: self.loadSaveState(saveState)
+        }
     }
     
     override func collectionView(collectionView: UICollectionView, didEndDisplayingCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath)

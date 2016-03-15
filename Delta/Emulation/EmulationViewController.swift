@@ -236,6 +236,8 @@ extension EmulationViewController: SaveStatesViewControllerDelegate
     {
         guard let filepath = saveState.fileURL.path else { return }
         
+        var updatingExistingSaveState = true
+        
         self.emulatorCore.saveSaveState { temporarySaveState in
             do
             {
@@ -246,6 +248,8 @@ extension EmulationViewController: SaveStatesViewControllerDelegate
                 else
                 {
                     try NSFileManager.defaultManager().moveItemAtURL(temporarySaveState.fileURL, toURL: saveState.fileURL)
+                    
+                    updatingExistingSaveState = false
                 }
             }
             catch let error as NSError
@@ -263,6 +267,13 @@ extension EmulationViewController: SaveStatesViewControllerDelegate
         }
         
         saveState.modifiedDate = NSDate()
+        
+        // Dismiss if updating an existing save state.
+        // If creating a new one, don't dismiss.
+        if updatingExistingSaveState
+        {
+            self.pauseViewController?.dismiss()
+        }
     }
     
     func saveStatesViewController(saveStatesViewController: SaveStatesViewController, loadSaveState saveState: SaveState)
