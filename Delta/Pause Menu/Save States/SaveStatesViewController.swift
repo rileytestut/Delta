@@ -139,8 +139,8 @@ private extension SaveStatesViewController
         
         let fetchRequest = SaveState.fetchRequest()
         fetchRequest.returnsObjectsAsFaults = false
-        fetchRequest.predicate = NSPredicate(format: "%K == %@", SaveStateAttributes.game.rawValue, game)
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: SaveStateAttributes.creationDate.rawValue, ascending: true)]
+        fetchRequest.predicate = NSPredicate(format: "%K == %@", SaveState.Attributes.game.rawValue, game)
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: SaveState.Attributes.creationDate.rawValue, ascending: true)]
         
         self.fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DatabaseManager.sharedManager.managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
         self.fetchedResultsController.delegate = self
@@ -222,17 +222,10 @@ private extension SaveStatesViewController
         let backgroundContext = DatabaseManager.sharedManager.backgroundManagedObjectContext()
         backgroundContext.performBlock {
             
-            let identifier = NSUUID().UUIDString
-            let date = NSDate()
-            
             var game = self.delegate.saveStatesViewControllerActiveGame(self)
             game = backgroundContext.objectWithID(game.objectID) as! Game
             
             let saveState = SaveState.insertIntoManagedObjectContext(backgroundContext)
-            saveState.identifier = identifier
-            saveState.filename = identifier
-            saveState.creationDate = date
-            saveState.modifiedDate = date
             saveState.game = game
             
             self.updateSaveState(saveState)

@@ -261,6 +261,8 @@ extension EmulationViewController: SaveStatesViewControllerDelegate
             let image = UIImage(CGImage: quartzImage)
             UIImagePNGRepresentation(image)?.writeToURL(saveState.imageFileURL, atomically: true)
         }
+        
+        saveState.modifiedDate = NSDate()
     }
     
     func saveStatesViewController(saveStatesViewController: SaveStatesViewController, loadSaveState saveState: SaveState)

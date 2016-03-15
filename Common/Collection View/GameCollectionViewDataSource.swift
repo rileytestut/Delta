@@ -52,7 +52,7 @@ class GameCollectionViewDataSource: NSObject
         {
             for identifier in identifiers
             {
-                let predicate = NSPredicate(format: "SUBQUERY(%K, $x, $x.%K == %@).@count > 0", GameAttributes.gameCollections.rawValue, GameCollectionAttributes.identifier.rawValue, identifier)
+                let predicate = NSPredicate(format: "SUBQUERY(%K, $x, $x.%K == %@).@count > 0", Game.Attributes.gameCollections.rawValue, GameCollection.Attributes.identifier.rawValue, identifier)
                 predicates.append(predicate)
             }
         }
@@ -62,9 +62,9 @@ class GameCollectionViewDataSource: NSObject
             fetchRequest.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: predicates)
         }
         
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: GameAttributes.typeIdentifier.rawValue, ascending: true), NSSortDescriptor(key: GameAttributes.name.rawValue, ascending: true)]
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: Game.Attributes.typeIdentifier.rawValue, ascending: true), NSSortDescriptor(key: Game.Attributes.name.rawValue, ascending: true)]
         
-        self.fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DatabaseManager.sharedManager.managedObjectContext, sectionNameKeyPath: GameAttributes.typeIdentifier.rawValue, cacheName: nil)
+        self.fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DatabaseManager.sharedManager.managedObjectContext, sectionNameKeyPath: Game.Attributes.typeIdentifier.rawValue, cacheName: nil)
         self.fetchedResultsController.delegate = previousDelegate
         
         self.update()

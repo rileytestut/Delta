@@ -14,9 +14,31 @@ import SNESDeltaCore
 
 public let kUTTypeGBAGame: CFStringRef = "com.rileytestut.delta.game.gba"
 
+extension Game
+{
+    enum Attributes: String
+    {
+        case artworkURL
+        case filename
+        case identifier
+        case name
+        case typeIdentifier
+        
+        case gameCollections
+    }
+}
+
 @objc(Game)
 class Game: NSManagedObject, GameType
 {
+    @NSManaged var artworkURL: NSURL?
+    @NSManaged var filename: String
+    @NSManaged var identifier: String
+    @NSManaged var name: String
+    @NSManaged var typeIdentifier: String
+    
+    @NSManaged var gameCollections: Set<GameCollection>
+    
     var fileURL: NSURL {
         let fileURL = DatabaseManager.gamesDirectoryURL.URLByAppendingPathComponent(self.filename)
         return fileURL

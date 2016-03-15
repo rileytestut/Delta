@@ -321,7 +321,7 @@ private extension DatabaseManager
         }
         
         // Remove empty collections
-        let collections = GameCollection.instancesWithPredicate(NSPredicate(format: "%K.@count == 0", GameCollectionAttributes.games.rawValue), inManagedObjectContext: self.validationManagedObjectContext, type: GameCollection.self)
+        let collections = GameCollection.instancesWithPredicate(NSPredicate(format: "%K.@count == 0", GameCollection.Attributes.games.rawValue), inManagedObjectContext: self.validationManagedObjectContext, type: GameCollection.self)
         
         for collection in collections
         {
