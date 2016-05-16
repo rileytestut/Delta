@@ -126,6 +126,8 @@ class EmulationViewController: UIViewController
         {
             self.controllerViewHeightConstraint.constant = 0
         }
+        
+        self.controllerView.hidden = self.isPreviewing
     }
     
     override func prefersStatusBarHidden() -> Bool
