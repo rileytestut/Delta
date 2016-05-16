@@ -57,6 +57,7 @@ class SaveStatesViewController: UICollectionViewController
     private let imageCache = NSCache()
     
     private var currentGameState: SaveStateType?
+    private var selectedSaveState: SaveState?
     
     private let dateFormatter: NSDateFormatter
     
@@ -248,6 +249,9 @@ private extension SaveStatesViewController
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Delete Save State", comment: ""), style: .Destructive, handler: { action in
             self.deleteSaveState(saveState)
         }))
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Rename Save State", comment: ""), style: .Default, handler: { action in
+            self.renameSaveState(saveState)
+        }))
         
         let section = self.correctedSectionForSectionIndex(indexPath.section)
         switch section
@@ -313,6 +317,50 @@ private extension SaveStatesViewController
         confirmationAlertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .Cancel, handler: nil))
         
         self.presentViewController(confirmationAlertController, animated: true, completion: nil)
+    }
+    
+    func renameSaveState(saveState: SaveState)
+    {
+        self.selectedSaveState = saveState
+        
+        let alertController = UIAlertController(title: NSLocalizedString("Rename Save State", comment: ""), message: nil, preferredStyle: .Alert)
+        alertController.addTextFieldWithConfigurationHandler { (textField) in
+            textField.text = saveState.name
+            textField.placeholder = NSLocalizedString("Name", comment: "")
+            textField.autocapitalizationType = .Words
+            textField.returnKeyType = .Done
+            textField.addTarget(self, action: #selector(SaveStatesViewController.updateSaveStateName(_:)), forControlEvents: .EditingDidEnd)
+        }
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .Cancel, handler: { (action) in
+            self.selectedSaveState = nil
+        }))
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Rename", comment: ""), style: .Default, handler: { (action) in
+            self.updateSaveStateName(alertController.textFields!.first!)
+        }))
+        self.presentViewController(alertController, animated: true, completion: nil)
+    }
+    
+    @objc func updateSaveStateName(textField: UITextField)
+    {
+        guard let selectedSaveState = self.selectedSaveState else { return }
+        
+        var text = textField.text
+        if text?.characters.count == 0
+        {
+            // When text is nil, we know to show the timestamp instead
+            text = nil
+        }
+        
+        let backgroundContext = DatabaseManager.sharedManager.backgroundManagedObjectContext()
+        backgroundContext.performBlock {
+            
+            let saveState = backgroundContext.objectWithID(selectedSaveState.objectID) as! SaveState
+            saveState.name = text
+            
+            backgroundContext.saveWithErrorLogging()
+        }
+        
+        self.selectedSaveState = nil
     }
     
     func lockSaveState(saveState: SaveState)
