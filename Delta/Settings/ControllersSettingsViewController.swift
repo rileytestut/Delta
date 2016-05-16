@@ -52,8 +52,8 @@ class ControllersSettingsViewController: UITableViewController
     {
         super.init(coder: aDecoder)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("externalControllerDidConnect:"), name: ExternalControllerDidConnectNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("externalControllerDidDisconnect:"), name: ExternalControllerDidDisconnectNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ControllersSettingsViewController.externalControllerDidConnect(_:)), name: ExternalControllerDidConnectNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ControllersSettingsViewController.externalControllerDidDisconnect(_:)), name: ExternalControllerDidDisconnectNotification, object: nil)
     }
 
     override func viewDidLoad()

@@ -108,7 +108,7 @@ extension SaveStatesViewController
         self.prototypeCellWidthConstraint = self.prototypeCell.contentView.widthAnchor.constraintEqualToConstant(collectionViewLayout.itemWidth)
         self.prototypeCellWidthConstraint.active = true
         
-        let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "handleLongPressGesture:")
+        let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(SaveStatesViewController.handleLongPressGesture(_:)))
         self.collectionView?.addGestureRecognizer(longPressGestureRecognizer)
         
         self.registerForPreviewingWithDelegate(self, sourceView: self.collectionView!)

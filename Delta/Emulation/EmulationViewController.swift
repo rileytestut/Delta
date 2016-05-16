@@ -63,8 +63,8 @@ class EmulationViewController: UIViewController
     {
         super.init(coder: aDecoder)
                 
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("updateControllers"), name: ExternalControllerDidConnectNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("updateControllers"), name: ExternalControllerDidDisconnectNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(EmulationViewController.updateControllers), name: ExternalControllerDidConnectNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(EmulationViewController.updateControllers), name: ExternalControllerDidDisconnectNotification, object: nil)
     }
     
     deinit
@@ -235,7 +235,7 @@ class EmulationViewController: UIViewController
 /// Controllers
 private extension EmulationViewController
 {
-    func updateControllers()
+    @objc func updateControllers()
     {
         self.emulatorCore.removeAllGameControllers()
         

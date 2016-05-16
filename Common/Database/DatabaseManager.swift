@@ -45,8 +45,8 @@ class DatabaseManager
         self.validationManagedObjectContext.parentContext = self.managedObjectContext
         self.validationManagedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
 
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("managedObjectContextWillSave:"), name: NSManagedObjectContextWillSaveNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("managedObjectContextDidSave:"), name: NSManagedObjectContextDidSaveNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DatabaseManager.managedObjectContextWillSave(_:)), name: NSManagedObjectContextWillSaveNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DatabaseManager.managedObjectContextDidSave(_:)), name: NSManagedObjectContextDidSaveNotification, object: nil)
 
     }
     
