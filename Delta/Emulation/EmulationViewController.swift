@@ -23,10 +23,23 @@ class EmulationViewController: UIViewController
             guard oldValue != game else { return }
 
             self.emulatorCore = SNESEmulatorCore(game: game)
+            
+        }
+    }
+    private(set) var emulatorCore: EmulatorCore! {
+        didSet
+        {
             self.preferredContentSize = self.emulatorCore.preferredRenderingSize
         }
     }
-    private(set) var emulatorCore: EmulatorCore!
+    
+    // If non-nil, will override the default preview action items returned in previewActionItems()
+    var overridePreviewActionItems: [UIPreviewActionItem]?
+    
+    // Annoying iOS gotcha: if the previewingContext(_:viewControllerForLocation:) callback takes too long, the peek/preview starts, but fails to actually present the view controller
+    // To workaround, we have this closure to defer work for Peeking/Popping until the view controller appears
+    // Hacky, but works
+    var deferredPreparationHandler: (Void -> Void)?
     
     //MARK: - Private Properties
     @IBOutlet private var controllerView: ControllerView!
@@ -90,7 +103,14 @@ class EmulationViewController: UIViewController
     {
         super.viewDidAppear(animated)
         
-        self.emulatorCore.startEmulation()
+        self.deferredPreparationHandler?()
+        
+        switch self.emulatorCore.state
+        {
+        case .Stopped: self.emulatorCore.startEmulation()
+        case .Running: break
+        case .Paused: self.emulatorCore.resumeEmulation()
+        }
     }
 
     override func viewDidLayoutSubviews()
@@ -180,12 +200,25 @@ class EmulationViewController: UIViewController
         self.pauseViewController = nil
         
         self.emulatorCore.resumeEmulation()
+        
+        // Temporarily disable audioManager to prevent delayed audio bug when using 3D Touch Peek & Pop
+        self.emulatorCore.audioManager.enabled = false
+        
+        // Re-enable after delay
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(0.1 * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) {
+            self.emulatorCore.audioManager.enabled = true
+        }
     }
     
     //MARK: - 3D Touch -
     /// 3D Touch
     override func previewActionItems() -> [UIPreviewActionItem]
     {
+        if let previewActionItems = self.overridePreviewActionItems
+        {
+            return previewActionItems
+        }
+        
         let presentingViewController = self.presentingViewController
         
         let launchGameAction = UIPreviewAction(title: NSLocalizedString("Launch \(self.game.name)", comment: ""), style: .Default) { (action, viewController) in
@@ -227,9 +260,9 @@ private extension EmulationViewController
 /// Save States
 extension EmulationViewController: SaveStatesViewControllerDelegate
 {
-    func saveStatesViewControllerActiveGame(saveStatesViewController: SaveStatesViewController) -> Game
+    func saveStatesViewControllerActiveEmulatorCore(saveStatesViewController: SaveStatesViewController) -> EmulatorCore
     {
-        return self.game
+        return self.emulatorCore
     }
     
     func saveStatesViewController(saveStatesViewController: SaveStatesViewController, updateSaveState saveState: SaveState)
@@ -276,7 +309,7 @@ extension EmulationViewController: SaveStatesViewControllerDelegate
         }
     }
     
-    func saveStatesViewController(saveStatesViewController: SaveStatesViewController, loadSaveState saveState: SaveState)
+    func saveStatesViewController(saveStatesViewController: SaveStatesViewController, loadSaveState saveState: SaveStateType)
     {
         self.emulatorCore.loadSaveState(saveState)
         
