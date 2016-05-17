@@ -387,9 +387,24 @@ private extension SaveStatesViewController
     
     func resetEmulatorCoreIfNeeded()
     {
+        guard let saveState = self.currentGameState else { return }
+        
+        defer
+        {
+            // Remove temporary save state file
+            do
+            {
+                try NSFileManager.defaultManager().removeItemAtURL(saveState.fileURL)
+            }
+            catch let error as NSError
+            {
+                print(error)
+            }
+        }
+        
         // Kinda hacky, but isMovingFromParentViewController only returns yes when popping off navigation controller, and not being dismissed modally
         // Because of this, this is only run when the user returns to PauseMenuViewController, and not when they choose a save state to load
-        guard let saveState = self.currentGameState where self.isMovingFromParentViewController() else { return }
+        guard self.isMovingFromParentViewController() else { return }
         
         // We stopped emulation for 3D Touch, so now we must resume emulation and load the save state we made to make it seem like it was never stopped
         let emulatorCore = self.delegate.saveStatesViewControllerActiveEmulatorCore(self)
@@ -404,16 +419,6 @@ private extension SaveStatesViewController
         
         // Re-enable video rendering
         emulatorCore.videoManager.enabled = true
-        
-        // Remove temporary save state file
-        do
-        {
-            try NSFileManager.defaultManager().removeItemAtURL(saveState.fileURL)
-        }
-        catch let error as NSError
-        {
-            print(error)
-        }
     }
     
     //MARK: - Convenience Methods -
