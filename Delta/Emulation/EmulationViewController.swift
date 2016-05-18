@@ -104,6 +104,7 @@ class EmulationViewController: UIViewController
         super.viewDidAppear(animated)
         
         self.deferredPreparationHandler?()
+        self.deferredPreparationHandler = nil
         
         switch self.emulatorCore.state
         {

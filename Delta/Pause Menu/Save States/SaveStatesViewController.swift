@@ -253,6 +253,23 @@ private extension SaveStatesViewController
             self.renameSaveState(saveState)
         }))
         
+        if self.traitCollection.forceTouchCapability == .Available
+        {
+            if !saveState.isPreview
+            {
+                alertController.addAction(UIAlertAction(title: NSLocalizedString("Set as Preview Save State", comment: ""), style: .Default, handler: { action in
+                    self.updatePreviewSaveState(saveState)
+                }))
+            }
+            else
+            {
+                alertController.addAction(UIAlertAction(title: NSLocalizedString("Remove as Preview Save State", comment: ""), style: .Default, handler: { action in
+                    self.updatePreviewSaveState(nil)
+                }))
+            }
+        }
+        
+        
         let section = self.correctedSectionForSectionIndex(indexPath.section)
         switch section
         {
@@ -302,7 +319,7 @@ private extension SaveStatesViewController
     
     func deleteSaveState(saveState: SaveState)
     {
-        let confirmationAlertController = UIAlertController(title: NSLocalizedString("Confirm Deletion", comment: ""), message: NSLocalizedString("Are you sure you want to delete this save state? This cannot be undone.", comment: ""), preferredStyle: .Alert)
+        let confirmationAlertController = UIAlertController(title: NSLocalizedString("Delete Save State?", comment: ""), message: NSLocalizedString("Are you sure you want to delete this save state? This cannot be undone.", comment: ""), preferredStyle: .Alert)
         confirmationAlertController.addAction(UIAlertAction(title: NSLocalizedString("Delete", comment: ""), style: .Default, handler: { action in
             
             let backgroundContext = DatabaseManager.sharedManager.backgroundManagedObjectContext()
@@ -361,6 +378,37 @@ private extension SaveStatesViewController
         }
         
         self.selectedSaveState = nil
+    }
+    
+    func updatePreviewSaveState(saveState: SaveState?)
+    {
+        let alertController = UIAlertController(title: NSLocalizedString("Change Preview Save State?", comment: ""), message: NSLocalizedString("The Preview Save State is loaded whenever you preview this game from the Main Menu with 3D Touch. Are you sure you want to change it?", comment: ""), preferredStyle: .Alert)
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .Cancel, handler: nil))
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Change", comment: ""), style: .Default, handler: { (action) in
+            
+            let backgroundContext = DatabaseManager.sharedManager.backgroundManagedObjectContext()
+            backgroundContext.performBlock {
+                
+                var game = self.delegate.saveStatesViewControllerActiveEmulatorCore(self).game as! Game
+                game = backgroundContext.objectWithID(game.objectID) as! Game
+                
+                let predicate = NSPredicate(format: "%K == %@ AND %K == YES", SaveState.Attributes.game.rawValue, game, SaveState.Attributes.isPreview.rawValue)
+                
+                let previousPreviewSaveState = SaveState.instancesWithPredicate(predicate, inManagedObjectContext: backgroundContext, type: SaveState.self).first
+                previousPreviewSaveState?.isPreview = false
+                
+                if let saveState = saveState
+                {
+                    let previewSaveState = backgroundContext.objectWithID(saveState.objectID) as! SaveState
+                    previewSaveState.isPreview = true
+                }
+                
+                backgroundContext.saveWithErrorLogging()
+            }
+            
+        }))
+        
+        self.presentViewController(alertController, animated: true, completion: nil)
     }
     
     func lockSaveState(saveState: SaveState)

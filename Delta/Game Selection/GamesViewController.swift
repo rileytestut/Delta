@@ -125,6 +125,21 @@ class GamesViewController: UIViewController
         let game = sourceViewController.dataSource.fetchedResultsController.objectAtIndexPath(indexPath!) as! Game
         
         destinationViewController.game = game
+        
+        if segue.identifier == "peekEmulationViewController"
+        {
+            destinationViewController.deferredPreparationHandler = { [unowned destinationViewController] in
+                
+                let predicate = NSPredicate(format: "%K == %@ AND %K == YES", SaveState.Attributes.game.rawValue, game, SaveState.Attributes.isPreview.rawValue)
+                
+                if let saveState = SaveState.instancesWithPredicate(predicate, inManagedObjectContext: DatabaseManager.sharedManager.managedObjectContext, type: SaveState.self).first
+                {
+                    destinationViewController.emulatorCore.startEmulation()
+                    destinationViewController.emulatorCore.pauseEmulation()
+                    destinationViewController.emulatorCore.loadSaveState(saveState)
+                }
+            }
+        }
     }
     
     @IBAction func unwindFromSettingsViewController(segue: UIStoryboardSegue)

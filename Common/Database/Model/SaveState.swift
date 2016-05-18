@@ -17,6 +17,7 @@ extension SaveState
     {
         case filename
         case identifier
+        case isPreview
         case name
         case creationDate
         case modifiedDate
@@ -39,6 +40,7 @@ class SaveState: NSManagedObject, SaveStateType
     @NSManaged var name: String?
     @NSManaged var modifiedDate: NSDate
     @NSManaged var type: Type
+    @NSManaged var isPreview: Bool
     
     @NSManaged private(set) var filename: String
     @NSManaged private(set) var identifier: String
