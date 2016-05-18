@@ -65,6 +65,7 @@
 		BF8624AA1BB7464B00C12EEE /* DeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BF9F4FCE1AAD7B87004C9500 /* DeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF9F4FCF1AAD7B87004C9500 /* DeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF9F4FCE1AAD7B87004C9500 /* DeltaCore.framework */; };
 		BF9F4FD01AAD7B87004C9500 /* DeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BF9F4FCE1AAD7B87004C9500 /* DeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BFA2315C1CED10BE0011E35A /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA2315B1CED10BE0011E35A /* Action.swift */; };
 		BFAA1FED1B8AA4FA00495943 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFAA1FEC1B8AA4FA00495943 /* Settings.swift */; };
 		BFAA1FF41B8AD7F900495943 /* ControllersSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFAA1FF31B8AD7F900495943 /* ControllersSettingsViewController.swift */; };
 		BFB141181BE46934004FBF46 /* GameCollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB141171BE46934004FBF46 /* GameCollectionViewDataSource.swift */; };
@@ -161,6 +162,7 @@
 		BF7AE81A1C2E984300B1B5BC /* GridCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GridCollectionViewCell.swift; path = "Collection View/GridCollectionViewCell.swift"; sourceTree = "<group>"; };
 		BF7AE81D1C2E984300B1B5BC /* GridCollectionViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GridCollectionViewLayout.swift; path = "Collection View/GridCollectionViewLayout.swift"; sourceTree = "<group>"; };
 		BF9F4FCE1AAD7B87004C9500 /* DeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BFA2315B1CED10BE0011E35A /* Action.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Action.swift; path = Components/Action.swift; sourceTree = "<group>"; };
 		BFAA1FEC1B8AA4FA00495943 /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		BFAA1FF31B8AD7F900495943 /* ControllersSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControllersSettingsViewController.swift; sourceTree = "<group>"; };
 		BFB141171BE46934004FBF46 /* GameCollectionViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GameCollectionViewDataSource.swift; path = "Collection View/GameCollectionViewDataSource.swift"; sourceTree = "<group>"; };
@@ -392,6 +394,7 @@
 		BFF1E55F1BE04BF6000E9EF6 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				BFA2315B1CED10BE0011E35A /* Action.swift */,
 				BFF1E5631BE04CAF000E9EF6 /* BoxArtImageView.swift */,
 				BF0CDDAC1C8155D200640168 /* LoadImageOperation.swift */,
 			);
@@ -703,6 +706,7 @@
 				BF7AE8241C2E984300B1B5BC /* GridCollectionViewLayout.swift in Sources */,
 				BF1FB1861C5EE643007E2494 /* SaveState.swift in Sources */,
 				BFB141181BE46934004FBF46 /* GameCollectionViewDataSource.swift in Sources */,
+				BFA2315C1CED10BE0011E35A /* Action.swift in Sources */,
 				BFFB709F1AF99B1700DE56FE /* EmulationViewController.swift in Sources */,
 				BFAA1FF41B8AD7F900495943 /* ControllersSettingsViewController.swift in Sources */,
 				BF353FF91C5D870B00C1184C /* PauseItem.swift in Sources */,

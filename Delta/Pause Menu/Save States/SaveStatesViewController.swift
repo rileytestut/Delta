@@ -245,45 +245,11 @@ private extension SaveStatesViewController
         let saveState = self.fetchedResultsController.objectAtIndexPath(indexPath) as! SaveState
         
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .Cancel, handler: nil))
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Delete Save State", comment: ""), style: .Destructive, handler: { action in
-            self.deleteSaveState(saveState)
-        }))
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Rename Save State", comment: ""), style: .Default, handler: { action in
-            self.renameSaveState(saveState)
-        }))
         
-        if self.traitCollection.forceTouchCapability == .Available
+        let actions = self.actionsForSaveState(saveState).map { $0.alertAction }
+        for action in actions
         {
-            if !saveState.isPreview
-            {
-                alertController.addAction(UIAlertAction(title: NSLocalizedString("Set as Preview Save State", comment: ""), style: .Default, handler: { action in
-                    self.updatePreviewSaveState(saveState)
-                }))
-            }
-            else
-            {
-                alertController.addAction(UIAlertAction(title: NSLocalizedString("Remove as Preview Save State", comment: ""), style: .Default, handler: { action in
-                    self.updatePreviewSaveState(nil)
-                }))
-            }
-        }
-        
-        
-        let section = self.correctedSectionForSectionIndex(indexPath.section)
-        switch section
-        {
-        case .Auto: break
-        case .General:
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Lock Save State", comment: ""), style: .Default, handler: { action in
-                self.lockSaveState(saveState)
-            }))
-            
-        case .Locked:
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Unlock Save State", comment: ""), style: .Default, handler: { action in
-                self.unlockSaveState(saveState)
-            }))
-            
+            alertController.addAction(action)
         }
         
         self.presentViewController(alertController, animated: true, completion: nil)
@@ -479,6 +445,60 @@ private extension SaveStatesViewController
         let section = Section(rawValue: sectionIndex)!
         return section
     }
+    
+    func actionsForSaveState(saveState: SaveState) -> [Action]
+    {
+        var actions = [Action]()
+        
+        let cancelAction = Action(title: NSLocalizedString("Cancel", comment: ""), style: .Cancel, action: nil)
+        actions.append(cancelAction)
+        
+        let deleteAction = Action(title: NSLocalizedString("Delete Save State", comment: ""), style: .Destructive, action: { action in
+            self.deleteSaveState(saveState)
+        })
+        actions.append(deleteAction)
+        
+        let renameAction = Action(title: NSLocalizedString("Rename Save State", comment: ""), style: .Default, action: { action in
+            self.renameSaveState(saveState)
+        })
+        actions.append(renameAction)
+        
+        if self.traitCollection.forceTouchCapability == .Available
+        {
+            if !saveState.isPreview
+            {
+                let previewAction = Action(title: NSLocalizedString("Set as Preview Save State", comment: ""), style: .Default, action: { action in
+                    self.updatePreviewSaveState(saveState)
+                })
+                actions.append(previewAction)
+            }
+            else
+            {
+                let previewAction = Action(title: NSLocalizedString("Remove as Preview Save State", comment: ""), style: .Default, action: { action in
+                    self.updatePreviewSaveState(nil)
+                })
+                actions.append(previewAction)
+            }
+        }
+        
+        switch saveState.type
+        {
+        case .Auto: break
+        case .General:
+            let lockAction = Action(title: NSLocalizedString("Lock Save State", comment: ""), style: .Default, action: { action in
+                self.lockSaveState(saveState)
+            })
+            actions.append(lockAction)
+            
+        case .Locked:
+            let unlockAction = Action(title: NSLocalizedString("Unlock Save State", comment: ""), style: .Default, action: { action in
+                self.unlockSaveState(saveState)
+            })
+            actions.append(unlockAction)
+        }
+        
+        return actions
+    }
 }
 
 //MARK: - <UIViewControllerPreviewingDelegate> -
@@ -493,9 +513,11 @@ extension SaveStatesViewController: UIViewControllerPreviewingDelegate
         let emulatorCore = self.delegate.saveStatesViewControllerActiveEmulatorCore(self)
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         
+        let saveState = self.fetchedResultsController.objectAtIndexPath(indexPath) as! SaveState
+        
         let emulationViewController = storyboard.instantiateViewControllerWithIdentifier("emulationViewController") as! EmulationViewController
         emulationViewController.game = emulatorCore.game as! Game
-        emulationViewController.overridePreviewActionItems = []
+        emulationViewController.overridePreviewActionItems = self.actionsForSaveState(saveState).filter{ $0.style != .Cancel }.map{ $0.previewAction }
         emulationViewController.deferredPreparationHandler = { [unowned emulationViewController] in
             
             // Store reference to current game state before we stop emulation so we can resume it if user decides to not load a save state
@@ -519,9 +541,6 @@ extension SaveStatesViewController: UIViewControllerPreviewingDelegate
             }
             
             emulatorCore.stopEmulation()
-            
-            
-            let saveState = self.fetchedResultsController.objectAtIndexPath(indexPath) as! SaveState
             
             emulationViewController.emulatorCore.startEmulation()
             emulationViewController.emulatorCore.pauseEmulation()
