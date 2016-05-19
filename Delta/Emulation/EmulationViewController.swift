@@ -106,6 +106,11 @@ class EmulationViewController: UIViewController
         self.deferredPreparationHandler?()
         self.deferredPreparationHandler = nil
         
+        // Toggle audioManager.enabled to reset the audio buffer and ensure the audio isn't delayed from the beginning
+        // This is especially noticeable when peeking a game
+        self.emulatorCore.audioManager.enabled = false
+        self.emulatorCore.audioManager.enabled = true
+        
         switch self.emulatorCore.state
         {
         case .Stopped: self.emulatorCore.startEmulation()
