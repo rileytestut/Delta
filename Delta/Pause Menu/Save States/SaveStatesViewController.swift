@@ -358,15 +358,14 @@ private extension SaveStatesViewController
                 var game = self.delegate.saveStatesViewControllerActiveEmulatorCore(self).game as! Game
                 game = backgroundContext.objectWithID(game.objectID) as! Game
                 
-                let predicate = NSPredicate(format: "%K == %@ AND %K == YES", SaveState.Attributes.game.rawValue, game, SaveState.Attributes.isPreview.rawValue)
-                
-                let previousPreviewSaveState = SaveState.instancesWithPredicate(predicate, inManagedObjectContext: backgroundContext, type: SaveState.self).first
-                previousPreviewSaveState?.isPreview = false
-                
                 if let saveState = saveState
                 {
                     let previewSaveState = backgroundContext.objectWithID(saveState.objectID) as! SaveState
-                    previewSaveState.isPreview = true
+                    game.previewSaveState = previewSaveState
+                }
+                else
+                {
+                    game.previewSaveState = nil
                 }
                 
                 backgroundContext.saveWithErrorLogging()
@@ -465,7 +464,7 @@ private extension SaveStatesViewController
         
         if self.traitCollection.forceTouchCapability == .Available
         {
-            if !saveState.isPreview
+            if saveState.game.previewSaveState != saveState
             {
                 let previewAction = Action(title: NSLocalizedString("Set as Preview Save State", comment: ""), style: .Default, action: { action in
                     self.updatePreviewSaveState(saveState)

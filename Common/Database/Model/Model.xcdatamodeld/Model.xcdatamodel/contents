@@ -15,6 +15,7 @@
         <attribute name="name" attributeType="String" syncable="YES"/>
         <attribute name="typeIdentifier" attributeType="String" syncable="YES"/>
         <relationship name="gameCollections" toMany="YES" deletionRule="Nullify" destinationEntity="GameCollection" inverseName="games" inverseEntity="GameCollection" syncable="YES"/>
+        <relationship name="previewSaveState" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SaveState" inverseName="previewGame" inverseEntity="SaveState" syncable="YES"/>
         <relationship name="saveStates" toMany="YES" deletionRule="Cascade" destinationEntity="SaveState" inverseName="game" inverseEntity="SaveState" syncable="YES"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
@@ -40,11 +41,11 @@
             </userInfo>
         </attribute>
         <attribute name="identifier" attributeType="String" syncable="YES"/>
-        <attribute name="isPreview" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="modifiedDate" attributeType="Date" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="type" attributeType="Integer 16" defaultValueString="1" syncable="YES"/>
         <relationship name="game" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Game" inverseName="saveStates" inverseEntity="Game" syncable="YES"/>
+        <relationship name="previewGame" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Game" inverseName="previewSaveState" inverseEntity="Game" syncable="YES"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="identifier"/>
@@ -52,7 +53,7 @@
         </uniquenessConstraints>
     </entity>
     <elements>
-        <element name="Game" positionX="-200" positionY="-72" width="128" height="148"/>
+        <element name="Game" positionX="-200" positionY="-72" width="128" height="165"/>
         <element name="GameCollection" positionX="-198" positionY="-207" width="128" height="90"/>
         <element name="SaveState" positionX="-198" positionY="113" width="128" height="165"/>
     </elements>

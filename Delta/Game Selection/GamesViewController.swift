@@ -129,10 +129,8 @@ class GamesViewController: UIViewController
         if segue.identifier == "peekEmulationViewController"
         {
             destinationViewController.deferredPreparationHandler = { [unowned destinationViewController] in
-                
-                let predicate = NSPredicate(format: "%K == %@ AND %K == YES", SaveState.Attributes.game.rawValue, game, SaveState.Attributes.isPreview.rawValue)
-                
-                if let saveState = SaveState.instancesWithPredicate(predicate, inManagedObjectContext: DatabaseManager.sharedManager.managedObjectContext, type: SaveState.self).first
+                                
+                if let saveState = game.previewSaveState
                 {
                     destinationViewController.emulatorCore.startEmulation()
                     destinationViewController.emulatorCore.pauseEmulation()
