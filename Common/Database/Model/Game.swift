@@ -25,7 +25,9 @@ extension Game
         case typeIdentifier
         
         case gameCollections
+        case saveStates
         case previewSaveState
+        case cheats
     }
 }
 

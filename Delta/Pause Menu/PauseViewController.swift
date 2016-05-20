@@ -19,6 +19,8 @@ class PauseViewController: UIViewController, PauseInfoProvidable
     private weak var saveStatesViewControllerDelegate: SaveStatesViewControllerDelegate?
     private var saveStatesViewControllerMode = SaveStatesViewController.Mode.Saving
     
+    private weak var cheatsViewControllerDelegate: CheatsViewControllerDelegate?
+    
     /// UIViewController
     override var preferredContentSize: CGSize {
         set { }
@@ -86,10 +88,14 @@ extension PauseViewController
             // Keep navigation bar outside the UIVisualEffectView's
             self.view.addSubview(self.pauseNavigationController.navigationBar)
             
-        case "saveState":
+        case "saveStates":
             let saveStatesViewController = segue.destinationViewController as! SaveStatesViewController
             saveStatesViewController.delegate = self.saveStatesViewControllerDelegate
             saveStatesViewController.mode = self.saveStatesViewControllerMode
+            
+        case "cheats":
+            let cheatsViewController = segue.destinationViewController as! CheatsViewController
+            cheatsViewController.delegate = self.cheatsViewControllerDelegate
             
         default: break
         }
@@ -108,7 +114,14 @@ extension PauseViewController
         self.saveStatesViewControllerMode = mode
         self.saveStatesViewControllerDelegate = delegate
         
-        self.performSegueWithIdentifier("saveState", sender: self)
+        self.performSegueWithIdentifier("saveStates", sender: self)
+    }
+    
+    func presentCheatsViewController(delegate delegate: CheatsViewControllerDelegate)
+    {
+        self.cheatsViewControllerDelegate = delegate
+        
+        self.performSegueWithIdentifier("cheats", sender: self)
     }
 }
 

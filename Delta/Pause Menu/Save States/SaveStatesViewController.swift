@@ -119,17 +119,7 @@ extension SaveStatesViewController
     
     override func viewWillAppear(animated: Bool)
     {
-        if self.fetchedResultsController.fetchedObjects == nil
-        {
-            do
-            {
-                try self.fetchedResultsController.performFetch()
-            }
-            catch let error as NSError
-            {
-                print(error)
-            }
-        }
+        self.fetchedResultsController.performFetchIfNeeded()
         
         self.updateBackgroundView()
         

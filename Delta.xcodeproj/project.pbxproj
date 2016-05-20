@@ -42,6 +42,7 @@
 		BF4566E91BC090B6007BFA1A /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BF4566E61BC090B6007BFA1A /* Model.xcdatamodeld */; };
 		BF5E7F441B9A650B00AE44F8 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5E7F431B9A650B00AE44F8 /* SettingsViewController.swift */; };
 		BF5E7F461B9A652600AE44F8 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF5E7F451B9A652600AE44F8 /* Settings.storyboard */; };
+		BF65E8631CEE5C6A00CD3247 /* Cheat.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF65E8621CEE5C6A00CD3247 /* Cheat.swift */; };
 		BF6BB23F1BB73FE800CCF94A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6BB23E1BB73FE800CCF94A /* AppDelegate.swift */; };
 		BF6BB2411BB73FE800CCF94A /* GameSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6BB2401BB73FE800CCF94A /* GameSelectionViewController.swift */; };
 		BF6BB2441BB73FE800CCF94A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF6BB2421BB73FE800CCF94A /* Main.storyboard */; };
@@ -74,6 +75,8 @@
 		BFC134E21AAD82470087AD7B /* SNESDeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BFC134E01AAD82460087AD7B /* SNESDeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BFC2731A1BE6152200D22B05 /* GameCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC273171BE6152200D22B05 /* GameCollection.swift */; };
 		BFC2731B1BE6152200D22B05 /* GameCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC273171BE6152200D22B05 /* GameCollection.swift */; };
+		BFC9B7391CEFCD34008629BB /* CheatsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC9B7381CEFCD34008629BB /* CheatsViewController.swift */; };
+		BFC9B73B1CEFD438008629BB /* NSFetchedResultsController+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC9B73A1CEFD438008629BB /* NSFetchedResultsController+Conveniences.swift */; };
 		BFDB28451BC9DA7B001D0C83 /* GamePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDB28441BC9DA7B001D0C83 /* GamePickerController.swift */; };
 		BFDE393C1BC0CEDF003F72E8 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDE39391BC0CEDF003F72E8 /* Game.swift */; };
 		BFDE393D1BC0CEDF003F72E8 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDE39391BC0CEDF003F72E8 /* Game.swift */; };
@@ -147,6 +150,7 @@
 		BF4566E71BC090B6007BFA1A /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		BF5E7F431B9A650B00AE44F8 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		BF5E7F451B9A652600AE44F8 /* Settings.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
+		BF65E8621CEE5C6A00CD3247 /* Cheat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cheat.swift; sourceTree = "<group>"; };
 		BF6BB23C1BB73FE800CCF94A /* Delta.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Delta.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF6BB23E1BB73FE800CCF94A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BF6BB2401BB73FE800CCF94A /* GameSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSelectionViewController.swift; sourceTree = "<group>"; };
@@ -168,6 +172,8 @@
 		BFB141171BE46934004FBF46 /* GameCollectionViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GameCollectionViewDataSource.swift; path = "Collection View/GameCollectionViewDataSource.swift"; sourceTree = "<group>"; };
 		BFC134E01AAD82460087AD7B /* SNESDeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SNESDeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFC273171BE6152200D22B05 /* GameCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameCollection.swift; sourceTree = "<group>"; };
+		BFC9B7381CEFCD34008629BB /* CheatsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CheatsViewController.swift; path = "Pause Menu/Cheats/CheatsViewController.swift"; sourceTree = "<group>"; };
+		BFC9B73A1CEFD438008629BB /* NSFetchedResultsController+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSFetchedResultsController+Conveniences.swift"; sourceTree = "<group>"; };
 		BFDB28441BC9DA7B001D0C83 /* GamePickerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GamePickerController.swift; sourceTree = "<group>"; };
 		BFDE39391BC0CEDF003F72E8 /* Game.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 		BFEC732C1AAECC4A00650035 /* Roxas.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Roxas.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -275,6 +281,7 @@
 				BFDE39391BC0CEDF003F72E8 /* Game.swift */,
 				BFC273171BE6152200D22B05 /* GameCollection.swift */,
 				BF1FB1831C5EE643007E2494 /* SaveState.swift */,
+				BF65E8621CEE5C6A00CD3247 /* Cheat.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -305,6 +312,7 @@
 			children = (
 				BF762EAA1BC1B076002C8866 /* NSManagedObject+Conveniences.swift */,
 				BF172AEA1C68986300C26774 /* NSManagedObjectContext+Conveniences.swift */,
+				BFC9B73A1CEFD438008629BB /* NSFetchedResultsController+Conveniences.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -317,6 +325,7 @@
 				BF7AE8041C2E858400B1B5BC /* PauseMenuViewController.swift */,
 				BF353FF81C5D870B00C1184C /* PauseItem.swift */,
 				BF3540031C5DA6D800C1184C /* Save States */,
+				BFC9B7371CEFCD08008629BB /* Cheats */,
 				BF353FFB1C5DA2F600C1184C /* Presentation Controller */,
 				BF912E481C5CB5D50041527C /* Segues */,
 			);
@@ -373,6 +382,14 @@
 				BFAA1FF31B8AD7F900495943 /* ControllersSettingsViewController.swift */,
 			);
 			path = Settings;
+			sourceTree = "<group>";
+		};
+		BFC9B7371CEFCD08008629BB /* Cheats */ = {
+			isa = PBXGroup;
+			children = (
+				BFC9B7381CEFCD34008629BB /* CheatsViewController.swift */,
+			);
+			name = Cheats;
 			sourceTree = "<group>";
 		};
 		BFDB28431BC9D9D1001D0C83 /* Importing */ = {
@@ -719,11 +736,14 @@
 				BFF1E5641BE04CAF000E9EF6 /* BoxArtImageView.swift in Sources */,
 				BF2B98E61C97E32F00F6D57D /* SaveStatesCollectionHeaderView.swift in Sources */,
 				BF762EAB1BC1B076002C8866 /* NSManagedObject+Conveniences.swift in Sources */,
+				BFC9B7391CEFCD34008629BB /* CheatsViewController.swift in Sources */,
 				BF353FFF1C5DA3C500C1184C /* PausePresentationController.swift in Sources */,
 				BF7AE80A1C2E8C7600B1B5BC /* UIColor+Delta.swift in Sources */,
 				BF762E9E1BC19D31002C8866 /* DatabaseManager.swift in Sources */,
 				BF090CF41B490D8300DCAB45 /* UIDevice+Vibration.m in Sources */,
+				BFC9B73B1CEFD438008629BB /* NSFetchedResultsController+Conveniences.swift in Sources */,
 				BF797A2D1C2D339F00F1A000 /* UILabel+FontSize.swift in Sources */,
+				BF65E8631CEE5C6A00CD3247 /* Cheat.swift in Sources */,
 				BF3540021C5DA3D500C1184C /* PauseStoryboardSegue.swift in Sources */,
 				BF0CDDAD1C8155D200640168 /* LoadImageOperation.swift in Sources */,
 				BF107EC41BF413F000E0C32C /* GamesViewController.swift in Sources */,

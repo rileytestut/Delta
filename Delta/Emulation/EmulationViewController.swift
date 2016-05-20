@@ -189,7 +189,10 @@ class EmulationViewController: UIViewController
                 pauseViewController.presentSaveStateViewControllerWithMode(.Loading, delegate: self!)
             })
             
-            let cheatCodesItem = PauseItem(image: UIImage(named: "SmallPause")!, text: NSLocalizedString("Cheat Codes", comment: ""), action: dismissAction)
+            let cheatCodesItem = PauseItem(image: UIImage(named: "SmallPause")!, text: NSLocalizedString("Cheat Codes", comment: ""), action: { _ in
+                pauseViewController.presentCheatsViewController(delegate: self)
+            })
+            
             let sustainButtonItem = PauseItem(image: UIImage(named: "SmallPause")!, text: NSLocalizedString("Sustain Button", comment: ""), action: dismissAction)
             
             var fastForwardItem = PauseItem(image: UIImage(named: "FastForward")!, text: NSLocalizedString("Fast Forward", comment: ""), action: { [weak self] item in
@@ -322,6 +325,16 @@ extension EmulationViewController: SaveStatesViewControllerDelegate
         self.emulatorCore.loadSaveState(saveState)
         
         self.pauseViewController?.dismiss()
+    }
+}
+
+//MARK: - Cheats
+/// Cheats
+extension EmulationViewController: CheatsViewControllerDelegate
+{
+    func cheatsViewControllerActiveGame(cheatsViewController: CheatsViewController) -> Game
+    {
+        return self.emulatorCore.game as! Game
     }
 }
 

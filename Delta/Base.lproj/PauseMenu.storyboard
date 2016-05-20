@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Dt0-nV-isV">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Dt0-nV-isV">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <scenes>
         <!--Pause View Controller-->
@@ -66,7 +66,8 @@
                     </view>
                     <connections>
                         <segue destination="kQK-P0-mVu" kind="unwind" identifier="unwindFromPauseMenu" unwindAction="unwindFromPauseViewController:" id="2DE-Nv-qaq"/>
-                        <segue destination="OOk-k7-INg" kind="show" identifier="saveState" id="iKc-6q-unN"/>
+                        <segue destination="OOk-k7-INg" kind="show" identifier="saveStates" id="iKc-6q-unN"/>
+                        <segue destination="wb8-5o-1jE" kind="show" identifier="cheats" id="g84-5G-av7"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PWj-WH-rlB" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -186,6 +187,42 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cL5-DH-K3b" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="992" y="1377"/>
+        </scene>
+        <!--Cheats-->
+        <scene sceneID="vHb-xC-JLG">
+            <objects>
+                <tableViewController id="wb8-5o-1jE" customClass="CheatsViewController" customModule="Delta" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="f5S-hV-1yV">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="e8g-ZW-5lQ">
+                                <rect key="frame" x="0.0" y="92" width="600" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="e8g-ZW-5lQ" id="AHE-Jk-ULE">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="wb8-5o-1jE" id="R2f-1n-WgX"/>
+                            <outlet property="delegate" destination="wb8-5o-1jE" id="tPS-Bm-ceI"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Cheats" id="Gsv-JZ-Yc0">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="xr9-Op-Op7">
+                            <connections>
+                                <action selector="addSaveState" destination="OOk-k7-INg" id="xjM-nF-CYA"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="loJ-rc-I6l" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1702" y="1377"/>
         </scene>
     </scenes>
 </document>
