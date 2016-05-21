@@ -270,6 +270,14 @@ private extension SaveStatesViewController
     
     func loadSaveState(saveState: SaveState)
     {
+        let emulatorCore = self.delegate.saveStatesViewControllerActiveEmulatorCore(self)
+        
+        if emulatorCore.state == .Stopped
+        {
+            emulatorCore.startEmulation()
+            emulatorCore.pauseEmulation()
+        }
+        
         self.delegate?.saveStatesViewController(self, loadSaveState: saveState)
     }
     
