@@ -9,11 +9,15 @@
 import UIKit
 import CoreData
 
+import DeltaCore
+
 import Roxas
 
 protocol CheatsViewControllerDelegate: class
 {
     func cheatsViewControllerActiveGame(saveStatesViewController: CheatsViewController) -> Game
+    func cheatsViewController(cheatsViewController: CheatsViewController, didActivateCheat cheat: Cheat) throws
+    func cheatsViewController(cheatsViewController: CheatsViewController, didDeactivateCheat cheat: Cheat) throws
 }
 
 class CheatsViewController: UITableViewController
@@ -95,19 +99,158 @@ private extension CheatsViewController
     }
 }
 
+//MARK: - Managing Cheats -
+/// Managing Cheats
+private extension CheatsViewController
+{
+    @IBAction func addCheat()
+    {
+        let backgroundContext = DatabaseManager.sharedManager.backgroundManagedObjectContext()
+        backgroundContext.performBlock { 
+            
+            var game = self.delegate.cheatsViewControllerActiveGame(self)
+            game = backgroundContext.objectWithID(game.objectID) as! Game
+            
+            let cheat = Cheat.insertIntoManagedObjectContext(backgroundContext)
+            cheat.game = game
+            cheat.name = "Unlimited Jumps"
+            cheat.code = "3E2C-AF6F"
+            cheat.type = .gameGenie
+            
+            do
+            {
+                try self.delegate.cheatsViewController(self, didActivateCheat: cheat)
+                backgroundContext.saveWithErrorLogging()
+            }
+            catch EmulatorCore.CheatError.invalid
+            {
+                dispatch_async(dispatch_get_main_queue()) {
+                    
+                    let alertController = UIAlertController(title: NSLocalizedString("Invalid Cheat", comment: ""), message: NSLocalizedString("Please make sure you typed the cheat code in correctly and try again.", comment: ""), preferredStyle: .Alert)
+                    alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .Default, handler: nil))
+                    self.presentViewController(alertController, animated: true, completion: nil)
+                    
+                }
+                
+                print("Invalid cheat:", cheat.name, cheat.code)
+            }
+            catch let error as NSError
+            {
+                print("Unknown Cheat Error:", error, cheat.name, cheat.code)
+            }
+            
+            
+        }
+    }
+    
+    func deleteCheat(cheat: Cheat)
+    {
+        let _ = try? self.delegate.cheatsViewController(self, didDeactivateCheat: cheat)
+        
+        let backgroundContext = DatabaseManager.sharedManager.backgroundManagedObjectContext()
+        backgroundContext.performBlock {
+            let temporaryCheat = backgroundContext.objectWithID(cheat.objectID)
+            backgroundContext.deleteObject(temporaryCheat)
+            backgroundContext.saveWithErrorLogging()
+        }
+    }
+}
+
+//MARK: - Content -
+/// Content
+private extension CheatsViewController
+{
+    func configure(cell cell: UITableViewCell, forIndexPath indexPath: NSIndexPath)
+    {
+        let cheat = self.fetchedResultsController.objectAtIndexPath(indexPath) as! Cheat
+        cell.textLabel?.text = cheat.name
+        cell.textLabel?.font = UIFont.boldSystemFontOfSize(cell.textLabel!.font.pointSize)
+        cell.accessoryType = cheat.enabled ? .Checkmark : .None
+    }
+}
+
 extension CheatsViewController
 {
     // MARK: - Table view data source
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int
     {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
+        let numberOfSections = self.fetchedResultsController.sections!.count
+        return numberOfSections
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int
+    {
+        let section = self.fetchedResultsController.sections![section]
+        return section.numberOfObjects
+    }
+    
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
+    {
+        let cell = tableView.dequeueReusableCellWithIdentifier(RSTGenericCellIdentifier, forIndexPath: indexPath)
+        self.configure(cell: cell, forIndexPath: indexPath)
+        return cell
+    }
+}
+
+extension CheatsViewController
+{
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
+    {
+        let cheat = self.fetchedResultsController.objectAtIndexPath(indexPath) as! Cheat
+        
+        let backgroundContext = DatabaseManager.sharedManager.backgroundManagedObjectContext()
+        backgroundContext.performBlockAndWait {
+            let temporaryCheat = backgroundContext.objectWithID(cheat.objectID) as! Cheat
+            temporaryCheat.enabled = !temporaryCheat.enabled
+            
+            do
+            {
+                if temporaryCheat.enabled
+                {
+                    try self.delegate.cheatsViewController(self, didActivateCheat: temporaryCheat)
+                }
+                else
+                {
+                    try self.delegate.cheatsViewController(self, didDeactivateCheat: temporaryCheat)
+                }
+            }
+            catch EmulatorCore.CheatError.invalid
+            {
+                print("Invalid cheat:", cheat.name, cheat.code)
+            }
+            catch EmulatorCore.CheatError.doesNotExist
+            {
+                print("Cheat does not exist:", cheat.name, cheat.code)
+            }
+            catch let error as NSError
+            {
+                print("Unknown Cheat Error:", error, cheat.name, cheat.code)
+            }
+            
+            backgroundContext.saveWithErrorLogging()
+        }
+        
+        self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .None)
+    }
+    
+    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]?
+    {
+        let deleteAction = UITableViewRowAction(style: .Destructive, title: NSLocalizedString("Delete", comment: "")) { (action, indexPath) in
+            let cheat = self.fetchedResultsController.objectAtIndexPath(indexPath) as! Cheat
+            self.deleteCheat(cheat)
+        }
+        
+        let editAction = UITableViewRowAction(style: .Normal, title: NSLocalizedString("Edit", comment: "")) { (action, indexPath) in
+            
+        }
+        
+        return [deleteAction, editAction]
+    }
+    
+    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath)
+    {
+        // This method intentionally left blank because someone decided it was a Good Idea™ to require this method be implemented to use UITableViewRowActions
     }
 }
 

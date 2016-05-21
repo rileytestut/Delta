@@ -106,17 +106,23 @@ class EmulationViewController: UIViewController
         self.deferredPreparationHandler?()
         self.deferredPreparationHandler = nil
         
+        // Yes, order DOES matter here, in order to prevent audio from being slightly delayed after peeking with 3D Touch (ugh so tired of that issue)
+        switch self.emulatorCore.state
+        {
+        case .Stopped:
+            self.emulatorCore.startEmulation()
+            self.updateCheats()
+            
+        case .Running: break
+        case .Paused:
+            self.updateCheats()
+            self.emulatorCore.resumeEmulation()
+        }
+        
         // Toggle audioManager.enabled to reset the audio buffer and ensure the audio isn't delayed from the beginning
         // This is especially noticeable when peeking a game
         self.emulatorCore.audioManager.enabled = false
         self.emulatorCore.audioManager.enabled = true
-        
-        switch self.emulatorCore.state
-        {
-        case .Stopped: self.emulatorCore.startEmulation()
-        case .Running: break
-        case .Paused: self.emulatorCore.resumeEmulation()
-        }
     }
 
     override func viewDidLayoutSubviews()
@@ -181,22 +187,22 @@ class EmulationViewController: UIViewController
             // Specifically, if you pause a game, open the save states menu, go back, return to menu, select a new game, then try to pause it, it will crash
             // As a dirty workaround, we just use a weak reference, and force unwrap it if needed
             
-            let saveStateItem = PauseItem(image: UIImage(named: "SmallPause")!, text: NSLocalizedString("Save State", comment: ""), action: { [weak self] _ in
-                pauseViewController.presentSaveStateViewControllerWithMode(.Saving, delegate: self!)
+            let saveStateItem = PauseItem(image: UIImage(named: "SmallPause")!, text: NSLocalizedString("Save State", comment: ""), action: { [unowned self] _ in
+                pauseViewController.presentSaveStateViewControllerWithMode(.Saving, delegate: self)
             })
             
-            let loadStateItem = PauseItem(image: UIImage(named: "SmallPause")!, text: NSLocalizedString("Load State", comment: ""), action: { [weak self] _ in
-                pauseViewController.presentSaveStateViewControllerWithMode(.Loading, delegate: self!)
+            let loadStateItem = PauseItem(image: UIImage(named: "SmallPause")!, text: NSLocalizedString("Load State", comment: ""), action: { [unowned self] _ in
+                pauseViewController.presentSaveStateViewControllerWithMode(.Loading, delegate: self)
             })
             
-            let cheatCodesItem = PauseItem(image: UIImage(named: "SmallPause")!, text: NSLocalizedString("Cheat Codes", comment: ""), action: { _ in
+            let cheatCodesItem = PauseItem(image: UIImage(named: "SmallPause")!, text: NSLocalizedString("Cheat Codes", comment: ""), action: { [unowned self] _ in
                 pauseViewController.presentCheatsViewController(delegate: self)
             })
             
             let sustainButtonItem = PauseItem(image: UIImage(named: "SmallPause")!, text: NSLocalizedString("Sustain Button", comment: ""), action: dismissAction)
             
-            var fastForwardItem = PauseItem(image: UIImage(named: "FastForward")!, text: NSLocalizedString("Fast Forward", comment: ""), action: { [weak self] item in
-                self?.emulatorCore.fastForwarding = item.selected
+            var fastForwardItem = PauseItem(image: UIImage(named: "FastForward")!, text: NSLocalizedString("Fast Forward", comment: ""), action: { [unowned self] item in
+                self.emulatorCore.fastForwarding = item.selected
             })
             fastForwardItem.selected = self.emulatorCore.fastForwarding
             
@@ -324,6 +330,8 @@ extension EmulationViewController: SaveStatesViewControllerDelegate
     {
         self.emulatorCore.loadSaveState(saveState)
         
+        self.updateCheats()
+        
         self.pauseViewController?.dismiss()
     }
 }
@@ -335,6 +343,70 @@ extension EmulationViewController: CheatsViewControllerDelegate
     func cheatsViewControllerActiveGame(cheatsViewController: CheatsViewController) -> Game
     {
         return self.emulatorCore.game as! Game
+    }
+    
+    func cheatsViewController(cheatsViewController: CheatsViewController, didActivateCheat cheat: Cheat) throws
+    {
+        try self.emulatorCore.activateCheat(cheat)
+    }
+    
+    func cheatsViewController(cheatsViewController: CheatsViewController, didDeactivateCheat cheat: Cheat) throws
+    {
+        try self.emulatorCore.deactivateCheat(cheat)
+    }
+    
+    private func updateCheats()
+    {
+        let backgroundContext = DatabaseManager.sharedManager.backgroundManagedObjectContext()
+        backgroundContext.performBlockAndWait {
+            
+            let running = (self.emulatorCore.state == .Running)
+            
+            if running
+            {
+                // Core MUST be paused when activating cheats, or else race conditions could crash the core
+                self.emulatorCore.pauseEmulation()
+            }
+            
+            let predicate = NSPredicate(format: "%K == %@", Cheat.Attributes.game.rawValue, self.emulatorCore.game as! Game)
+            
+            let cheats = Cheat.instancesWithPredicate(predicate, inManagedObjectContext: backgroundContext, type: Cheat.self)
+            for cheat in cheats
+            {
+                do
+                {
+                    if cheat.enabled
+                    {
+                        try self.emulatorCore.activateCheat(cheat)
+                    }
+                    else
+                    {
+                        try self.emulatorCore.deactivateCheat(cheat)
+                    }
+                }
+                catch EmulatorCore.CheatError.invalid
+                {
+                    print("Invalid cheat:", cheat.name, cheat.code)
+                }
+                catch EmulatorCore.CheatError.doesNotExist
+                {
+                    // Ignore this error, because we could be deactivating a cheat that hasn't yet been activated
+                    print("Cheat does not exist:", cheat.name, cheat.code)
+                }
+                catch let error as NSError
+                {
+                    print("Unknown Cheat Error:", error, cheat.name, cheat.code)
+                }
+                
+            }
+            
+            if running
+            {
+                self.emulatorCore.resumeEmulation()
+            }
+            
+        }
+        
     }
 }
 

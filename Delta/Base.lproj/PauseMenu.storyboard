@@ -203,7 +203,9 @@
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="e8g-ZW-5lQ" id="AHE-Jk-ULE">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -214,7 +216,7 @@
                     <navigationItem key="navigationItem" title="Cheats" id="Gsv-JZ-Yc0">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="xr9-Op-Op7">
                             <connections>
-                                <action selector="addSaveState" destination="OOk-k7-INg" id="xjM-nF-CYA"/>
+                                <action selector="addCheat" destination="wb8-5o-1jE" id="FEG-zY-Sde"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>

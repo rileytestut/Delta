@@ -3,6 +3,7 @@
     <entity name="Cheat" representedClassName="Cheat" syncable="YES">
         <attribute name="code" attributeType="String" syncable="YES"/>
         <attribute name="creationDate" attributeType="Date" syncable="YES"/>
+        <attribute name="enabled" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
         <attribute name="identifier" attributeType="String" syncable="YES"/>
         <attribute name="modifiedDate" attributeType="Date" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
@@ -68,9 +69,9 @@
         </uniquenessConstraints>
     </entity>
     <elements>
+        <element name="Cheat" positionX="-198" positionY="-63" width="128" height="165"/>
         <element name="Game" positionX="-378" positionY="-54" width="128" height="178"/>
         <element name="GameCollection" positionX="-585" positionY="-27" width="128" height="90"/>
         <element name="SaveState" positionX="-198" positionY="113" width="128" height="165"/>
-        <element name="Cheat" positionX="-198" positionY="-63" width="128" height="148"/>
     </elements>
 </model>

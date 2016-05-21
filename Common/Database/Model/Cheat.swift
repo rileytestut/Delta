@@ -19,6 +19,7 @@ extension Cheat
         case name
         case code
         case type
+        case enabled
         case creationDate
         case modifiedDate
         
@@ -55,6 +56,7 @@ class Cheat: NSManagedObject, CheatProtocol
     @NSManaged var name: String?
     @NSManaged var code: String
     @NSManaged var modifiedDate: NSDate
+    @NSManaged var enabled: Bool
     
     @NSManaged private(set) var identifier: String
     @NSManaged private(set) var creationDate: NSDate
