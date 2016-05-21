@@ -65,6 +65,9 @@ class EmulationViewController: UIViewController
                 
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(EmulationViewController.updateControllers), name: ExternalControllerDidConnectNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(EmulationViewController.updateControllers), name: ExternalControllerDidDisconnectNotification, object: nil)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(EmulationViewController.willResignActive(_:)), name: UIApplicationWillResignActiveNotification, object: UIApplication.sharedApplication())
+         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(EmulationViewController.didBecomeActive(_:)), name: UIApplicationDidBecomeActiveNotification, object: UIApplication.sharedApplication())
     }
     
     deinit
@@ -407,6 +410,23 @@ extension EmulationViewController: CheatsViewControllerDelegate
             
         }
         
+    }
+}
+
+//MARK: - App Lifecycle -
+private extension EmulationViewController
+{
+    @objc func willResignActive(notification: NSNotification)
+    {
+        self.emulatorCore.pauseEmulation()
+    }
+    
+    @objc func didBecomeActive(notification: NSNotification)
+    {
+        if self.pauseViewController == nil
+        {
+            self.emulatorCore.resumeEmulation()
+        }
     }
 }
 
