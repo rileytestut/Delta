@@ -190,11 +190,11 @@ class EmulationViewController: UIViewController
             // Specifically, if you pause a game, open the save states menu, go back, return to menu, select a new game, then try to pause it, it will crash
             // As a dirty workaround, we just use a weak reference, and force unwrap it if needed
             
-            let saveStateItem = PauseItem(image: UIImage(named: "SmallPause")!, text: NSLocalizedString("Save State", comment: ""), action: { [unowned self] _ in
+            let saveStateItem = PauseItem(image: UIImage(named: "SaveSaveState")!, text: NSLocalizedString("Save State", comment: ""), action: { [unowned self] _ in
                 pauseViewController.presentSaveStateViewControllerWithMode(.Saving, delegate: self)
             })
             
-            let loadStateItem = PauseItem(image: UIImage(named: "SmallPause")!, text: NSLocalizedString("Load State", comment: ""), action: { [unowned self] _ in
+            let loadStateItem = PauseItem(image: UIImage(named: "LoadSaveState")!, text: NSLocalizedString("Load State", comment: ""), action: { [unowned self] _ in
                 pauseViewController.presentSaveStateViewControllerWithMode(.Loading, delegate: self)
             })
             
