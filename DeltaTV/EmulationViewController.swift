@@ -9,7 +9,6 @@
 import UIKit
 
 import DeltaCore
-import SNESDeltaCore
 
 class EmulationViewController: UIViewController
 {
@@ -18,7 +17,7 @@ class EmulationViewController: UIViewController
     var game: Game! {
         didSet
         {
-            self.emulatorCore = SNESEmulatorCore(game: game)
+            self.emulatorCore = EmulatorCore(game: game)
         }
     }
     private(set) var emulatorCore: EmulatorCore!

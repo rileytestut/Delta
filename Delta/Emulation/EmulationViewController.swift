@@ -9,7 +9,6 @@
 import UIKit
 
 import DeltaCore
-import SNESDeltaCore
 
 class EmulationViewController: UIViewController
 {
@@ -22,7 +21,7 @@ class EmulationViewController: UIViewController
         {
             guard oldValue != game else { return }
 
-            self.emulatorCore = SNESEmulatorCore(game: game)
+            self.emulatorCore = EmulatorCore(game: game)
             
         }
     }
