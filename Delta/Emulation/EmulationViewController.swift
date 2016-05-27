@@ -342,9 +342,9 @@ extension EmulationViewController: SaveStatesViewControllerDelegate
 /// Cheats
 extension EmulationViewController: CheatsViewControllerDelegate
 {
-    func cheatsViewControllerActiveGame(cheatsViewController: CheatsViewController) -> Game
+    func cheatsViewControllerActiveEmulatorCore(saveStatesViewController: CheatsViewController) -> EmulatorCore
     {
-        return self.emulatorCore.game as! Game
+        return self.emulatorCore
     }
     
     func cheatsViewController(cheatsViewController: CheatsViewController, didActivateCheat cheat: Cheat) throws

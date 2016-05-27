@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Dt0-nV-isV">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Dt0-nV-isV">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Pause View Controller-->
@@ -225,6 +226,144 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="loJ-rc-I6l" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1702" y="1377"/>
+        </scene>
+        <!--Cheat-->
+        <scene sceneID="SMZ-Ah-CVb">
+            <objects>
+                <tableViewController storyboardIdentifier="editCheatViewController" id="jTR-Oe-YUJ" customClass="EditCheatViewController" customModule="Delta" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="interactive" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="BV9-ff-x83">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                        <sections>
+                            <tableViewSection headerTitle="Name" id="QT6-DZ-g70">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" id="ZeC-rg-QFa">
+                                        <rect key="frame" x="0.0" y="113.5" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" tableViewCell="ZeC-rg-QFa" id="UIF-fK-ApW">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Cheat Name" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="DD1-X0-hg7">
+                                                    <rect key="frame" x="15" y="0.0" width="570" height="43.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" returnKeyType="done"/>
+                                                    <connections>
+                                                        <action selector="textFieldDidEndEditing:" destination="jTR-Oe-YUJ" eventType="editingDidEnd" id="RcS-1I-sHp"/>
+                                                        <action selector="updateCheatName:" destination="jTR-Oe-YUJ" eventType="editingChanged" id="ZMg-n2-rsf"/>
+                                                    </connections>
+                                                </textField>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="DD1-X0-hg7" firstAttribute="top" secondItem="UIF-fK-ApW" secondAttribute="top" id="3Ta-uE-hx1"/>
+                                                <constraint firstItem="DD1-X0-hg7" firstAttribute="trailing" secondItem="UIF-fK-ApW" secondAttribute="trailingMargin" id="Igk-iU-oK0"/>
+                                                <constraint firstItem="DD1-X0-hg7" firstAttribute="leading" secondItem="UIF-fK-ApW" secondAttribute="leadingMargin" id="ZPW-fc-ZhS"/>
+                                                <constraint firstAttribute="bottom" secondItem="DD1-X0-hg7" secondAttribute="bottom" id="n6Z-kr-dcR"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                            <tableViewSection headerTitle="Type" footerTitle="Description" id="rvn-VK-2uH">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" id="Tst-zn-e04">
+                                        <rect key="frame" x="0.0" y="207.5" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" tableViewCell="Tst-zn-e04" id="gwV-zS-RWQ">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="xrD-ue-96Q">
+                                                    <rect key="frame" x="15" y="7" width="570" height="29"/>
+                                                    <segments>
+                                                        <segment title="First"/>
+                                                        <segment title="Second"/>
+                                                    </segments>
+                                                    <connections>
+                                                        <action selector="updateCheatType:" destination="jTR-Oe-YUJ" eventType="valueChanged" id="ex4-x7-yaK"/>
+                                                    </connections>
+                                                </segmentedControl>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="xrD-ue-96Q" firstAttribute="centerY" secondItem="gwV-zS-RWQ" secondAttribute="centerY" id="HEE-6o-6oQ"/>
+                                                <constraint firstItem="xrD-ue-96Q" firstAttribute="leading" secondItem="gwV-zS-RWQ" secondAttribute="leadingMargin" id="e07-ea-lKZ"/>
+                                                <constraint firstItem="xrD-ue-96Q" firstAttribute="trailing" secondItem="gwV-zS-RWQ" secondAttribute="trailingMargin" id="qk0-rE-QTg"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                            <tableViewSection headerTitle="Code" footerTitle="Description" id="rHC-nA-ga0">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="210" id="xxc-cz-sb7">
+                                        <rect key="frame" x="0.0" y="318" width="600" height="210"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" tableViewCell="xxc-cz-sb7" id="agU-SE-fNa">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="209.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="XXXXXXXX YYYYYYYY" translatesAutoresizingMaskIntoConstraints="NO" id="a17-LB-QXD" customClass="CheatTextView" customModule="Delta" customModuleProvider="target">
+                                                    <rect key="frame" x="0.0" y="0.0" width="600" height="209.5"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <fontDescription key="fontDescription" name="Menlo-Regular" family="Menlo" pointSize="26"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters" autocorrectionType="no" spellCheckingType="no" returnKeyType="done"/>
+                                                    <connections>
+                                                        <outlet property="delegate" destination="jTR-Oe-YUJ" id="n4b-FA-7Dd"/>
+                                                    </connections>
+                                                </textView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="a17-LB-QXD" secondAttribute="bottom" id="3XH-aF-bNE"/>
+                                                <constraint firstItem="a17-LB-QXD" firstAttribute="top" secondItem="agU-SE-fNa" secondAttribute="topMargin" id="NxO-eC-sk6"/>
+                                                <constraint firstItem="a17-LB-QXD" firstAttribute="leading" secondItem="agU-SE-fNa" secondAttribute="leadingMargin" id="QwM-HU-6cp"/>
+                                                <constraint firstAttribute="trailing" secondItem="a17-LB-QXD" secondAttribute="trailing" id="WpC-Va-wtg"/>
+                                                <constraint firstItem="a17-LB-QXD" firstAttribute="leading" secondItem="agU-SE-fNa" secondAttribute="leading" id="acf-fI-y13"/>
+                                                <constraint firstItem="a17-LB-QXD" firstAttribute="top" secondItem="agU-SE-fNa" secondAttribute="top" id="gcg-A8-DX9"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="a17-LB-QXD" secondAttribute="bottom" id="hex-Ie-1rn"/>
+                                                <constraint firstItem="a17-LB-QXD" firstAttribute="trailing" secondItem="agU-SE-fNa" secondAttribute="trailingMargin" id="ilf-Gt-J7Y"/>
+                                            </constraints>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="NxO-eC-sk6"/>
+                                                    <exclude reference="QwM-HU-6cp"/>
+                                                    <exclude reference="hex-Ie-1rn"/>
+                                                    <exclude reference="ilf-Gt-J7Y"/>
+                                                </mask>
+                                            </variation>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                        </sections>
+                        <connections>
+                            <outlet property="dataSource" destination="jTR-Oe-YUJ" id="IdU-96-UyX"/>
+                            <outlet property="delegate" destination="jTR-Oe-YUJ" id="7X0-hO-jy3"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Cheat" id="zdc-ES-dan">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="MFY-SZ-J7p">
+                            <connections>
+                                <segue destination="d4f-Cp-p2b" kind="unwind" identifier="unwindEditCheatSegue" unwindAction="unwindFromEditCheatViewController:" id="rC5-FR-JoB"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="save" id="C7k-Kp-CF3">
+                            <connections>
+                                <action selector="saveCheat:" destination="jTR-Oe-YUJ" id="Goi-Ob-IUg"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <connections>
+                        <outlet property="codeTextView" destination="a17-LB-QXD" id="dgZ-U8-doW"/>
+                        <outlet property="nameTextField" destination="DD1-X0-hg7" id="y36-wg-Min"/>
+                        <outlet property="typeSegmentedControl" destination="xrD-ue-96Q" id="wNy-cq-NM2"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="x1S-Un-UKy" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="d4f-Cp-p2b" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="2385" y="1377"/>
         </scene>
     </scenes>
 </document>

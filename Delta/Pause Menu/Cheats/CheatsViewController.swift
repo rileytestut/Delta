@@ -15,7 +15,7 @@ import Roxas
 
 protocol CheatsViewControllerDelegate: class
 {
-    func cheatsViewControllerActiveGame(saveStatesViewController: CheatsViewController) -> Game
+    func cheatsViewControllerActiveEmulatorCore(saveStatesViewController: CheatsViewController) -> EmulatorCore
     func cheatsViewController(cheatsViewController: CheatsViewController, didActivateCheat cheat: Cheat) throws
     func cheatsViewController(cheatsViewController: CheatsViewController, didDeactivateCheat cheat: Cheat) throws
 }
@@ -67,13 +67,21 @@ extension CheatsViewController
     }
 }
 
+//MARK: - Navigation -
 private extension CheatsViewController
 {
-    //MARK: - Update -
-    
+    @IBAction func unwindFromEditCheatViewController(segue: UIStoryboardSegue)
+    {
+        
+    }
+}
+
+//MARK: - Update -
+private extension CheatsViewController
+{
     func updateFetchedResultsController()
     {
-        let game = self.delegate.cheatsViewControllerActiveGame(self)
+        let game = self.delegate.cheatsViewControllerActiveEmulatorCore(self).game as! Game
         
         let fetchRequest = Cheat.fetchRequest()
         fetchRequest.returnsObjectsAsFaults = false
@@ -105,42 +113,8 @@ private extension CheatsViewController
 {
     @IBAction func addCheat()
     {
-        let backgroundContext = DatabaseManager.sharedManager.backgroundManagedObjectContext()
-        backgroundContext.performBlock { 
-            
-            var game = self.delegate.cheatsViewControllerActiveGame(self)
-            game = backgroundContext.objectWithID(game.objectID) as! Game
-            
-            let cheat = Cheat.insertIntoManagedObjectContext(backgroundContext)
-            cheat.game = game
-            cheat.name = "Unlimited Jumps"
-            cheat.code = "3E2C-AF6F"
-            cheat.type = .gameGenie
-            
-            do
-            {
-                try self.delegate.cheatsViewController(self, didActivateCheat: cheat)
-                backgroundContext.saveWithErrorLogging()
-            }
-            catch EmulatorCore.CheatError.invalid
-            {
-                dispatch_async(dispatch_get_main_queue()) {
-                    
-                    let alertController = UIAlertController(title: NSLocalizedString("Invalid Cheat", comment: ""), message: NSLocalizedString("Please make sure you typed the cheat code in correctly and try again.", comment: ""), preferredStyle: .Alert)
-                    alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .Default, handler: nil))
-                    self.presentViewController(alertController, animated: true, completion: nil)
-                    
-                }
-                
-                print("Invalid cheat:", cheat.name, cheat.code)
-            }
-            catch let error as NSError
-            {
-                print("Unknown Cheat Error:", error, cheat.name, cheat.code)
-            }
-            
-            
-        }
+        let editCheatViewController = self.makeEditCheatViewController(cheat: nil)
+        self.presentViewController(RSTContainInNavigationController(editCheatViewController), animated: true, completion: nil)
     }
     
     func deleteCheat(cheat: Cheat)
@@ -156,8 +130,8 @@ private extension CheatsViewController
     }
 }
 
-//MARK: - Content -
-/// Content
+//MARK: - Convenience -
+/// Convenience
 private extension CheatsViewController
 {
     func configure(cell cell: UITableViewCell, forIndexPath indexPath: NSIndexPath)
@@ -166,6 +140,17 @@ private extension CheatsViewController
         cell.textLabel?.text = cheat.name
         cell.textLabel?.font = UIFont.boldSystemFontOfSize(cell.textLabel!.font.pointSize)
         cell.accessoryType = cheat.enabled ? .Checkmark : .None
+    }
+    
+    func makeEditCheatViewController(cheat cheat: Cheat?) -> EditCheatViewController
+    {
+        let editCheatViewController = self.storyboard!.instantiateViewControllerWithIdentifier("editCheatViewController") as! EditCheatViewController
+        editCheatViewController.delegate = self
+        editCheatViewController.supportedCheatFormats = self.delegate.cheatsViewControllerActiveEmulatorCore(self).supportedCheatFormats
+        editCheatViewController.cheat = cheat
+        editCheatViewController.game = self.delegate.cheatsViewControllerActiveEmulatorCore(self).game as! Game
+        
+        return editCheatViewController
     }
 }
 
@@ -236,13 +221,15 @@ extension CheatsViewController
     
     override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]?
     {
+        let cheat = self.fetchedResultsController.objectAtIndexPath(indexPath) as! Cheat
+        
         let deleteAction = UITableViewRowAction(style: .Destructive, title: NSLocalizedString("Delete", comment: "")) { (action, indexPath) in
-            let cheat = self.fetchedResultsController.objectAtIndexPath(indexPath) as! Cheat
             self.deleteCheat(cheat)
         }
         
         let editAction = UITableViewRowAction(style: .Normal, title: NSLocalizedString("Edit", comment: "")) { (action, indexPath) in
-            
+            let editCheatViewController = self.makeEditCheatViewController(cheat: cheat)
+            self.presentViewController(RSTContainInNavigationController(editCheatViewController), animated: true, completion: nil)
         }
         
         return [deleteAction, editAction]
@@ -251,6 +238,34 @@ extension CheatsViewController
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath)
     {
         // This method intentionally left blank because someone decided it was a Good Idea™ to require this method be implemented to use UITableViewRowActions
+    }
+}
+
+extension CheatsViewController: EditCheatViewControllerDelegate
+{
+    func editCheatViewController(editCheatViewController: EditCheatViewController, activateCheat cheat: Cheat, previousCheat: Cheat?) throws
+    {
+        try self.delegate.cheatsViewController(self, didActivateCheat: cheat)
+        
+        if let previousCheat = previousCheat
+        {
+            let code = cheat.code
+            
+            previousCheat.managedObjectContext?.performBlockAndWait({
+                
+                guard previousCheat.code != code else { return }
+                
+                do
+                {
+                    try self.delegate.cheatsViewController(self, didDeactivateCheat: previousCheat)
+                }
+                catch let error as NSError
+                {
+                    print(error)
+                }
+                
+            })
+        }
     }
 }
 
