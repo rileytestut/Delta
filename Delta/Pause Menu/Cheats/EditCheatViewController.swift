@@ -390,7 +390,13 @@ extension EditCheatViewController: UITextViewDelegate
         
         guard sanitizedText != text else { return true }
         
-        textView.textStorage.replaceCharactersInRange(range, withString: sanitizedText)
+        // We need to manually add back the attributes when manually modifying the underlying text storage
+        // Otherwise, pasting text into an empty text view will result in the wrong font being used
+        let attributedString = NSAttributedString(string: sanitizedText, attributes: textView.typingAttributes)
+        textView.textStorage.replaceCharactersInRange(range, withAttributedString: attributedString)
+        
+        // We must add attributedString.length, not range.length, in case the attributed string's length differs
+        textView.selectedRange = NSRange(location: range.location + attributedString.length, length: 0)
         
         return false
     }
