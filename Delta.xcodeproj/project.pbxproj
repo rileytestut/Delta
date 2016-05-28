@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		AF0535CD7331785FA15E0864 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22506DA00971C4300AF90A35 /* Pods.framework */; };
+		BF04A5A31CF8E61C00B4A267 /* UIViewController+PeekPop.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF04A5A21CF8E61C00B4A267 /* UIViewController+PeekPop.swift */; };
 		BF090CF41B490D8300DCAB45 /* UIDevice+Vibration.m in Sources */ = {isa = PBXBuildFile; fileRef = BF090CF31B490D8300DCAB45 /* UIDevice+Vibration.m */; };
 		BF0CDDAD1C8155D200640168 /* LoadImageOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0CDDAC1C8155D200640168 /* LoadImageOperation.swift */; };
 		BF107EC41BF413F000E0C32C /* GamesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF107EC31BF413F000E0C32C /* GamesViewController.swift */; };
@@ -128,6 +129,7 @@
 		0340C4EC8B47535482F7F1BB /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		22506DA00971C4300AF90A35 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		685E0D2F62E4246995A02970 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		BF04A5A21CF8E61C00B4A267 /* UIViewController+PeekPop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+PeekPop.swift"; sourceTree = "<group>"; };
 		BF090CF11B490D8300DCAB45 /* Delta-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Delta-Bridging-Header.h"; sourceTree = "<group>"; };
 		BF090CF21B490D8300DCAB45 /* UIDevice+Vibration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+Vibration.h"; sourceTree = "<group>"; };
 		BF090CF31B490D8300DCAB45 /* UIDevice+Vibration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+Vibration.m"; sourceTree = "<group>"; };
@@ -235,6 +237,7 @@
 				BF090CF31B490D8300DCAB45 /* UIDevice+Vibration.m */,
 				BF797A2C1C2D339F00F1A000 /* UILabel+FontSize.swift */,
 				BF7AE8091C2E8C7600B1B5BC /* UIColor+Delta.swift */,
+				BF04A5A21CF8E61C00B4A267 /* UIViewController+PeekPop.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -737,6 +740,7 @@
 				BFFA71DD1AAC406100EE9DD1 /* AppDelegate.swift in Sources */,
 				BF7AE81E1C2E984300B1B5BC /* GridCollectionViewCell.swift in Sources */,
 				BF34FA111CF1899D006624C7 /* CheatTextView.swift in Sources */,
+				BF04A5A31CF8E61C00B4A267 /* UIViewController+PeekPop.swift in Sources */,
 				BF4566E81BC090B6007BFA1A /* Model.xcdatamodeld in Sources */,
 				BFDE393C1BC0CEDF003F72E8 /* Game.swift in Sources */,
 				BF34FA071CF0F510006624C7 /* EditCheatViewController.swift in Sources */,

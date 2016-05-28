@@ -49,6 +49,8 @@ extension CheatsViewController
         self.backgroundView.detailTextLabel.text = NSLocalizedString("You can add a new cheat by pressing the + button in the top right.", comment: "")
         self.backgroundView.detailTextLabel.textColor = UIColor.whiteColor()
         self.tableView.backgroundView = self.backgroundView
+        
+        self.registerForPreviewingWithDelegate(self, sourceView: self.tableView)
     }
     
     override func viewWillAppear(animated: Bool)
@@ -241,6 +243,29 @@ extension CheatsViewController
     }
 }
 
+//MARK: - <UIViewControllerPreviewingDelegate> -
+extension CheatsViewController: UIViewControllerPreviewingDelegate
+{
+    func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController?
+    {
+        guard let indexPath = self.tableView.indexPathForRowAtPoint(location) else { return nil }
+        
+        let frame = self.tableView.rectForRowAtIndexPath(indexPath)
+        previewingContext.sourceRect = frame
+        
+        let cheat = self.fetchedResultsController.objectAtIndexPath(indexPath) as! Cheat
+        
+        let editCheatViewController = self.makeEditCheatViewController(cheat: cheat)
+        return editCheatViewController
+    }
+    
+    func previewingContext(previewingContext: UIViewControllerPreviewing, commitViewController viewControllerToCommit: UIViewController)
+    {
+        self.presentViewController(RSTContainInNavigationController(viewControllerToCommit), animated: true, completion: nil)
+    }
+}
+
+//MARK: - <EditCheatViewControllerDelegate> -
 extension CheatsViewController: EditCheatViewControllerDelegate
 {
     func editCheatViewController(editCheatViewController: EditCheatViewController, activateCheat cheat: Cheat, previousCheat: Cheat?) throws
@@ -266,6 +291,11 @@ extension CheatsViewController: EditCheatViewControllerDelegate
                 
             })
         }
+    }
+    
+    func editCheatViewController(editCheatViewController: EditCheatViewController, deactivateCheat cheat: Cheat)
+    {
+        let _ = try? self.delegate.cheatsViewController(self, didDeactivateCheat: cheat)
     }
 }
 

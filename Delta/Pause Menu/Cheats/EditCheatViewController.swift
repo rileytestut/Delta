@@ -15,6 +15,7 @@ import Roxas
 protocol EditCheatViewControllerDelegate: class
 {
     func editCheatViewController(editCheatViewController: EditCheatViewController, activateCheat cheat: Cheat, previousCheat: Cheat?) throws
+    func editCheatViewController(editCheatViewController: EditCheatViewController, deactivateCheat cheat: Cheat)
 }
 
 private extension EditCheatViewController
@@ -124,6 +125,18 @@ extension EditCheatViewController
         self.updateSaveButtonState()
     }
     
+    override func viewDidAppear(animated: Bool)
+    {
+        super.viewDidAppear(animated)
+        
+        // This matters when going from peek -> pop
+        // Otherwise, has no effect because viewDidLayoutSubviews has already been called
+        if self.appearing && !self.isPreviewing
+        {
+            self.nameTextField.becomeFirstResponder()
+        }
+    }
+    
     override func viewDidLayoutSubviews()
     {
         super.viewDidLayoutSubviews()
@@ -136,16 +149,58 @@ extension EditCheatViewController
             self.codeTextView.textContainer.lineFragmentPadding = 0
         }
         
-        if self.appearing
+        if self.appearing && !self.isPreviewing
         {
             self.nameTextField.becomeFirstResponder()
         }
+    }
+    
+    override func previewActionItems() -> [UIPreviewActionItem]
+    {
+        guard let cheat = self.cheat else { return [] }
+        
+        let copyCodeAction = UIPreviewAction(title: NSLocalizedString("Copy Code", comment: ""), style: .Default) { (action, viewController) in
+            UIPasteboard.generalPasteboard().string = cheat.code
+        }
+        
+        let presentingViewController = self.presentingViewController
+        
+        let editCheatAction = UIPreviewAction(title: NSLocalizedString("Edit", comment: ""), style: .Default) { (action, viewController) in
+            // Delaying until next run loop prevents self from being dismissed immediately
+            dispatch_async(dispatch_get_main_queue()) {
+                presentingViewController?.presentViewController(RSTContainInNavigationController(viewController), animated: true, completion: nil)
+            }
+        }
+        
+        let deleteAction = UIPreviewAction(title: NSLocalizedString("Delete", comment: ""), style: .Destructive) { [unowned self] (action, viewController) in
+            self.delegate?.editCheatViewController(self, deactivateCheat: cheat)
+            
+            let backgroundContext = DatabaseManager.sharedManager.backgroundManagedObjectContext()
+            backgroundContext.performBlock {
+                let temporaryCheat = backgroundContext.objectWithID(cheat.objectID)
+                backgroundContext.deleteObject(temporaryCheat)
+                backgroundContext.saveWithErrorLogging()
+            }
+        }
+        
+        let cancelDeleteAction = UIPreviewAction(title: NSLocalizedString("Cancel", comment: ""), style: .Default) { (action, viewController) in
+        }
+        
+        let deleteActionGroup = UIPreviewActionGroup(title: NSLocalizedString("Delete", comment: ""), style: .Destructive, actions: [deleteAction, cancelDeleteAction])
+        
+        return [copyCodeAction, editCheatAction, deleteActionGroup]
     }
     
     override func didReceiveMemoryWarning()
     {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?)
+    {
+        self.nameTextField.resignFirstResponder()
+        self.codeTextView.resignFirstResponder()
     }
 }
 

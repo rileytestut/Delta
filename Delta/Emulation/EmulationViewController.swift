@@ -46,11 +46,6 @@ class EmulationViewController: UIViewController
     
     @IBOutlet private var controllerViewHeightConstraint: NSLayoutConstraint!
     
-    private var isPreviewing: Bool {
-        guard let presentationController = self.presentationController else { return false }
-        return NSStringFromClass(presentationController.dynamicType).containsString("PreviewPresentation")
-    }
-    
     private var pauseViewController: PauseViewController?
     
     private var context = CIContext(options: [kCIContextWorkingColorSpace: NSNull()])
