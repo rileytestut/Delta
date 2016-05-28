@@ -17,7 +17,7 @@ protocol CheatsViewControllerDelegate: class
 {
     func cheatsViewControllerActiveEmulatorCore(saveStatesViewController: CheatsViewController) -> EmulatorCore
     func cheatsViewController(cheatsViewController: CheatsViewController, didActivateCheat cheat: Cheat) throws
-    func cheatsViewController(cheatsViewController: CheatsViewController, didDeactivateCheat cheat: Cheat) throws
+    func cheatsViewController(cheatsViewController: CheatsViewController, didDeactivateCheat cheat: Cheat)
 }
 
 class CheatsViewController: UITableViewController
@@ -121,7 +121,7 @@ private extension CheatsViewController
     
     func deleteCheat(cheat: Cheat)
     {
-        let _ = try? self.delegate.cheatsViewController(self, didDeactivateCheat: cheat)
+        self.delegate.cheatsViewController(self, didDeactivateCheat: cheat)
         
         let backgroundContext = DatabaseManager.sharedManager.backgroundManagedObjectContext()
         backgroundContext.performBlock {
@@ -191,29 +191,26 @@ extension CheatsViewController
             let temporaryCheat = backgroundContext.objectWithID(cheat.objectID) as! Cheat
             temporaryCheat.enabled = !temporaryCheat.enabled
             
-            do
+            if temporaryCheat.enabled
             {
-                if temporaryCheat.enabled
+                do
                 {
                     try self.delegate.cheatsViewController(self, didActivateCheat: temporaryCheat)
                 }
-                else
+                catch EmulatorCore.CheatError.invalid
                 {
-                    try self.delegate.cheatsViewController(self, didDeactivateCheat: temporaryCheat)
+                    print("Invalid cheat:", cheat.name, cheat.code)
+                }
+                catch let error as NSError
+                {
+                    print("Unknown Cheat Error:", error, cheat.name, cheat.code)
                 }
             }
-            catch EmulatorCore.CheatError.invalid
+            else
             {
-                print("Invalid cheat:", cheat.name, cheat.code)
+                self.delegate.cheatsViewController(self, didDeactivateCheat: temporaryCheat)
             }
-            catch EmulatorCore.CheatError.doesNotExist
-            {
-                print("Cheat does not exist:", cheat.name, cheat.code)
-            }
-            catch let error as NSError
-            {
-                print("Unknown Cheat Error:", error, cheat.name, cheat.code)
-            }
+            
             
             backgroundContext.saveWithErrorLogging()
         }
@@ -281,22 +278,14 @@ extension CheatsViewController: EditCheatViewControllerDelegate
                 
                 guard previousCheat.code != code else { return }
                 
-                do
-                {
-                    try self.delegate.cheatsViewController(self, didDeactivateCheat: previousCheat)
-                }
-                catch let error as NSError
-                {
-                    print(error)
-                }
-                
+                self.delegate.cheatsViewController(self, didDeactivateCheat: previousCheat)
             })
         }
     }
     
     func editCheatViewController(editCheatViewController: EditCheatViewController, deactivateCheat cheat: Cheat)
     {
-        let _ = try? self.delegate.cheatsViewController(self, didDeactivateCheat: cheat)
+        self.delegate.cheatsViewController(self, didDeactivateCheat: cheat)
     }
 }
 

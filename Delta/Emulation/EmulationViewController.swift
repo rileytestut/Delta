@@ -347,9 +347,9 @@ extension EmulationViewController: CheatsViewControllerDelegate
         try self.emulatorCore.activateCheat(cheat)
     }
     
-    func cheatsViewController(cheatsViewController: CheatsViewController, didDeactivateCheat cheat: Cheat) throws
+    func cheatsViewController(cheatsViewController: CheatsViewController, didDeactivateCheat cheat: Cheat)
     {
-        try self.emulatorCore.deactivateCheat(cheat)
+        self.emulatorCore.deactivateCheat(cheat)
     }
     
     private func updateCheats()
@@ -370,31 +370,26 @@ extension EmulationViewController: CheatsViewControllerDelegate
             let cheats = Cheat.instancesWithPredicate(predicate, inManagedObjectContext: backgroundContext, type: Cheat.self)
             for cheat in cheats
             {
-                do
+                if cheat.enabled
                 {
-                    if cheat.enabled
+                    do
                     {
                         try self.emulatorCore.activateCheat(cheat)
                     }
-                    else
+                    catch EmulatorCore.CheatError.invalid
                     {
-                        try self.emulatorCore.deactivateCheat(cheat)
+                        print("Invalid cheat:", cheat.name, cheat.code)
                     }
+                    catch let error as NSError
+                    {
+                        print("Unknown Cheat Error:", error, cheat.name, cheat.code)
+                    }
+                    
                 }
-                catch EmulatorCore.CheatError.invalid
+                else
                 {
-                    print("Invalid cheat:", cheat.name, cheat.code)
+                    self.emulatorCore.deactivateCheat(cheat)
                 }
-                catch EmulatorCore.CheatError.doesNotExist
-                {
-                    // Ignore this error, because we could be deactivating a cheat that hasn't yet been activated
-                    print("Cheat does not exist:", cheat.name, cheat.code)
-                }
-                catch let error as NSError
-                {
-                    print("Unknown Cheat Error:", error, cheat.name, cheat.code)
-                }
-                
             }
             
             if running
