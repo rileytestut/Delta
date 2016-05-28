@@ -116,7 +116,7 @@ private extension CheatsViewController
     @IBAction func addCheat()
     {
         let editCheatViewController = self.makeEditCheatViewController(cheat: nil)
-        self.presentViewController(RSTContainInNavigationController(editCheatViewController), animated: true, completion: nil)
+        editCheatViewController.presentWithPresentingViewController(self)
     }
     
     func deleteCheat(cheat: Cheat)
@@ -231,7 +231,7 @@ extension CheatsViewController
         
         let editAction = UITableViewRowAction(style: .Normal, title: NSLocalizedString("Edit", comment: "")) { (action, indexPath) in
             let editCheatViewController = self.makeEditCheatViewController(cheat: cheat)
-            self.presentViewController(RSTContainInNavigationController(editCheatViewController), animated: true, completion: nil)
+            editCheatViewController.presentWithPresentingViewController(self)
         }
         
         return [deleteAction, editAction]
@@ -261,7 +261,8 @@ extension CheatsViewController: UIViewControllerPreviewingDelegate
     
     func previewingContext(previewingContext: UIViewControllerPreviewing, commitViewController viewControllerToCommit: UIViewController)
     {
-        self.presentViewController(RSTContainInNavigationController(viewControllerToCommit), animated: true, completion: nil)
+        let editCheatViewController = viewControllerToCommit as! EditCheatViewController
+        editCheatViewController.presentWithPresentingViewController(self)
     }
 }
 

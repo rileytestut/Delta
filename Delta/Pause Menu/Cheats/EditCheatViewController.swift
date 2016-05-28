@@ -163,12 +163,13 @@ extension EditCheatViewController
             UIPasteboard.generalPasteboard().string = cheat.code
         }
         
-        let presentingViewController = self.presentingViewController
+        let presentingViewController = self.presentingViewController!
         
         let editCheatAction = UIPreviewAction(title: NSLocalizedString("Edit", comment: ""), style: .Default) { (action, viewController) in
             // Delaying until next run loop prevents self from being dismissed immediately
             dispatch_async(dispatch_get_main_queue()) {
-                presentingViewController?.presentViewController(RSTContainInNavigationController(viewController), animated: true, completion: nil)
+                let editCheatViewController = viewController as! EditCheatViewController
+                editCheatViewController.presentWithPresentingViewController(presentingViewController)
             }
         }
         
@@ -201,6 +202,18 @@ extension EditCheatViewController
     {
         self.nameTextField.resignFirstResponder()
         self.codeTextView.resignFirstResponder()
+    }
+}
+
+internal extension EditCheatViewController
+{
+    func presentWithPresentingViewController(presentingViewController: UIViewController)
+    {
+        let navigationController = RSTNavigationController(rootViewController: self)
+        navigationController.modalPresentationStyle = .OverFullScreen // Keeps PausePresentationController active to ensure layout is not messed up
+        navigationController.modalPresentationCapturesStatusBarAppearance = true
+        
+        presentingViewController.presentViewController(navigationController, animated: true, completion: nil)
     }
 }
 
