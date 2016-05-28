@@ -447,19 +447,6 @@ private extension SaveStatesViewController
     {
         var actions = [Action]()
         
-        let cancelAction = Action(title: NSLocalizedString("Cancel", comment: ""), style: .Cancel, action: nil)
-        actions.append(cancelAction)
-        
-        let deleteAction = Action(title: NSLocalizedString("Delete Save State", comment: ""), style: .Destructive, action: { action in
-            self.deleteSaveState(saveState)
-        })
-        actions.append(deleteAction)
-        
-        let renameAction = Action(title: NSLocalizedString("Rename Save State", comment: ""), style: .Default, action: { action in
-            self.renameSaveState(saveState)
-        })
-        actions.append(renameAction)
-        
         if self.traitCollection.forceTouchCapability == .Available
         {
             if saveState.game.previewSaveState != saveState
@@ -478,21 +465,34 @@ private extension SaveStatesViewController
             }
         }
         
+        let cancelAction = Action(title: NSLocalizedString("Cancel", comment: ""), style: .Cancel, action: nil)
+        actions.append(cancelAction)
+        
+        let renameAction = Action(title: NSLocalizedString("Rename", comment: ""), style: .Default, action: { action in
+            self.renameSaveState(saveState)
+        })
+        actions.append(renameAction)
+        
         switch saveState.type
         {
         case .Auto: break
         case .General:
-            let lockAction = Action(title: NSLocalizedString("Lock Save State", comment: ""), style: .Default, action: { action in
+            let lockAction = Action(title: NSLocalizedString("Lock", comment: ""), style: .Default, action: { action in
                 self.lockSaveState(saveState)
             })
             actions.append(lockAction)
             
         case .Locked:
-            let unlockAction = Action(title: NSLocalizedString("Unlock Save State", comment: ""), style: .Default, action: { action in
+            let unlockAction = Action(title: NSLocalizedString("Unlock", comment: ""), style: .Default, action: { action in
                 self.unlockSaveState(saveState)
             })
             actions.append(unlockAction)
         }
+        
+        let deleteAction = Action(title: NSLocalizedString("Delete", comment: ""), style: .Destructive, action: { action in
+            self.deleteSaveState(saveState)
+        })
+        actions.append(deleteAction)
         
         return actions
     }
