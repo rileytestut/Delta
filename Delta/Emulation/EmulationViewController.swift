@@ -9,6 +9,7 @@
 import UIKit
 
 import DeltaCore
+import Roxas
 
 class EmulationViewController: UIViewController
 {
@@ -43,6 +44,8 @@ class EmulationViewController: UIViewController
     //MARK: - Private Properties
     @IBOutlet private var controllerView: ControllerView!
     @IBOutlet private var gameView: GameView!
+    @IBOutlet private var sustainButtonContentView: UIView!
+    @IBOutlet private var backgroundView: RSTBackgroundView!
     
     @IBOutlet private var controllerViewHeightConstraint: NSLayoutConstraint!
     
@@ -51,6 +54,13 @@ class EmulationViewController: UIViewController
     private var context = CIContext(options: [kCIContextWorkingColorSpace: NSNull()])
 
 
+    private var selectingSustainedButton = false {
+        didSet {
+            self.sustainButtonContentView.alpha = self.selectingSustainedButton ? 1.0 : 0.0
+        }
+    }
+    
+    
     //MARK: - Initializers -
     /** Initializers **/
     required init?(coder aDecoder: NSCoder)
@@ -86,6 +96,9 @@ class EmulationViewController: UIViewController
         self.gameView.backgroundColor = UIColor.clearColor()
         self.emulatorCore.addGameView(self.gameView)
         
+        self.backgroundView.textLabel.text = NSLocalizedString("Select Button to Sustain", comment: "")
+        self.backgroundView.detailTextLabel.text = NSLocalizedString("Sustained buttons act as though they're being held down, without needing to do so yourself. This is particularly useful for certain games, such as platformers which require you to hold down a button to run.", comment: "")
+        
         let controllerSkin = ControllerSkin.defaultControllerSkinForGameUTI(self.game.typeIdentifier)
         
         self.controllerView.containerView = self.view
@@ -113,7 +126,7 @@ class EmulationViewController: UIViewController
         case .Running: break
         case .Paused:
             self.updateCheats()
-            self.emulatorCore.resumeEmulation()
+            self.resumeEmulation()
         }
         
         // Toggle audioManager.enabled to reset the audio buffer and ensure the audio isn't delayed from the beginning
@@ -169,16 +182,12 @@ class EmulationViewController: UIViewController
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?)
     {
-        self.emulatorCore.pauseEmulation()
+        self.pauseEmulation()
         
         if segue.identifier == "pauseSegue"
         {
             let pauseViewController = segue.destinationViewController as! PauseViewController
             pauseViewController.pauseText = self.game.name
-            
-            let dismissAction: (PauseItem -> Void) = { item in
-                pauseViewController.dismiss()
-            }
             
             // Swift has a bug where using unowned references can lead to swift_abortRetainUnowned errors.
             // Specifically, if you pause a game, open the save states menu, go back, return to menu, select a new game, then try to pause it, it will crash
@@ -196,7 +205,15 @@ class EmulationViewController: UIViewController
                 pauseViewController.presentCheatsViewController(delegate: self)
             })
             
-            let sustainButtonItem = PauseItem(image: UIImage(named: "SmallPause")!, text: NSLocalizedString("Sustain Button", comment: ""), action: dismissAction)
+            let sustainButtonItem = PauseItem(image: UIImage(named: "SmallPause")!, text: NSLocalizedString("Sustain Button", comment: ""), action: { [unowned self] item in
+                
+                if item.selected
+                {
+                    self.selectingSustainedButton = true
+                    pauseViewController.dismiss()
+                }
+                
+            })
             
             var fastForwardItem = PauseItem(image: UIImage(named: "FastForward")!, text: NSLocalizedString("Fast Forward", comment: ""), action: { [unowned self] item in
                 self.emulatorCore.fastForwarding = item.selected
@@ -213,14 +230,15 @@ class EmulationViewController: UIViewController
     {
         self.pauseViewController = nil
         
-        self.emulatorCore.resumeEmulation()
-        
-        // Temporarily disable audioManager to prevent delayed audio bug when using 3D Touch Peek & Pop
-        self.emulatorCore.audioManager.enabled = false
-        
-        // Re-enable after delay
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(0.1 * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) {
-            self.emulatorCore.audioManager.enabled = true
+        if self.resumeEmulation()
+        {
+            // Temporarily disable audioManager to prevent delayed audio bug when using 3D Touch Peek & Pop
+            self.emulatorCore.audioManager.enabled = false
+            
+            // Re-enable after delay
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(0.1 * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) {
+                self.emulatorCore.audioManager.enabled = true
+            }
         }
     }
     
@@ -245,8 +263,25 @@ class EmulationViewController: UIViewController
     }
 }
 
-//MARK: - Controllers -
-/// Controllers
+//MARK: - Emulation -
+/// Emulation
+private extension EmulationViewController
+{
+    func pauseEmulation() -> Bool
+    {
+        return self.emulatorCore.pauseEmulation()
+    }
+    
+    func resumeEmulation() -> Bool
+    {
+        guard !self.selectingSustainedButton && self.pauseViewController == nil else { return false }
+        
+        return self.emulatorCore.resumeEmulation()
+    }
+}
+
+//MARK: - Controllers/Inputs -
+/// Controllers/Inputs
 private extension EmulationViewController
 {
     @objc func updateControllers()
@@ -267,6 +302,38 @@ private extension EmulationViewController
         }
         
         self.view.setNeedsLayout()
+    }
+    
+    func setSelectingSustainedButton(selectingSustainedButton: Bool, animated: Bool)
+    {
+        if !animated
+        {
+            self.selectingSustainedButton = selectingSustainedButton
+        }
+        else
+        {
+            UIView.animateWithDuration(0.4) {
+                self.selectingSustainedButton = selectingSustainedButton
+            }
+        }
+    }
+    
+    func sustainInput(input: InputType, gameController: GameControllerType)
+    {
+        if let input = input as? ControllerInput
+        {
+            guard input != ControllerInput.Menu else
+            {
+                self.setSelectingSustainedButton(false, animated: true)
+                self.performSegueWithIdentifier("pauseSegue", sender: gameController)
+                return
+            }
+        }
+        
+        self.setSelectingSustainedButton(false, animated: true)
+        
+        self.resumeEmulation()
+        
     }
 }
 
@@ -362,7 +429,7 @@ extension EmulationViewController: CheatsViewControllerDelegate
             if running
             {
                 // Core MUST be paused when activating cheats, or else race conditions could crash the core
-                self.emulatorCore.pauseEmulation()
+                self.pauseEmulation()
             }
             
             let predicate = NSPredicate(format: "%K == %@", Cheat.Attributes.game.rawValue, self.emulatorCore.game as! Game)
@@ -394,7 +461,7 @@ extension EmulationViewController: CheatsViewControllerDelegate
             
             if running
             {
-                self.emulatorCore.resumeEmulation()
+                self.resumeEmulation()
             }
             
         }
@@ -407,15 +474,12 @@ private extension EmulationViewController
 {
     @objc func willResignActive(notification: NSNotification)
     {
-        self.emulatorCore.pauseEmulation()
+        self.pauseEmulation()
     }
     
     @objc func didBecomeActive(notification: NSNotification)
     {
-        if self.pauseViewController == nil
-        {
-            self.emulatorCore.resumeEmulation()
-        }
+        self.resumeEmulation()
     }
 }
 
@@ -428,6 +492,12 @@ extension EmulationViewController: GameControllerReceiverType
         if UIDevice.currentDevice().supportsVibration
         {
             UIDevice.currentDevice().vibrate()
+        }
+        
+        guard !self.selectingSustainedButton else
+        {
+            self.sustainInput(input, gameController: gameController)
+            return
         }
         
         guard let input = input as? ControllerInput else { return }

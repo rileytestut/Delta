@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="wKV-3d-NIY">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="wKV-3d-NIY">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Segues with Peek and Pop" minToolsVersion="7.1"/>
@@ -106,6 +106,55 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="300"/>
                                 <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
+                            <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="noi-yo-HIE">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="300"/>
+                                <subviews>
+                                    <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pwD-5i-uQ2">
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="300"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="S8Q-YY-Kog">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="300"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <subviews>
+                                                <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Eo-TR-4O4">
+                                                    <rect key="frame" x="0.0" y="0.0" width="600" height="300"/>
+                                                    <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="8ur-lW-yiV">
+                                                        <rect key="frame" x="0.0" y="0.0" width="600" height="300"/>
+                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                        <subviews>
+                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JRb-Vg-JHA" customClass="RSTBackgroundView">
+                                                                <rect key="frame" x="0.0" y="0.0" width="600" height="300"/>
+                                                            </view>
+                                                        </subviews>
+                                                        <constraints>
+                                                            <constraint firstItem="JRb-Vg-JHA" firstAttribute="top" secondItem="8ur-lW-yiV" secondAttribute="top" id="613-jP-t8K"/>
+                                                            <constraint firstAttribute="trailing" secondItem="JRb-Vg-JHA" secondAttribute="trailing" id="Ele-t2-Kcg"/>
+                                                            <constraint firstAttribute="bottom" secondItem="JRb-Vg-JHA" secondAttribute="bottom" id="aTp-7v-QFY"/>
+                                                            <constraint firstItem="JRb-Vg-JHA" firstAttribute="leading" secondItem="8ur-lW-yiV" secondAttribute="leading" id="c05-Bl-4Q8"/>
+                                                        </constraints>
+                                                    </view>
+                                                    <vibrancyEffect>
+                                                        <blurEffect style="dark"/>
+                                                    </vibrancyEffect>
+                                                </visualEffectView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="9Eo-TR-4O4" firstAttribute="top" secondItem="S8Q-YY-Kog" secondAttribute="top" id="EgV-fR-NeD"/>
+                                                <constraint firstAttribute="bottom" secondItem="9Eo-TR-4O4" secondAttribute="bottom" id="TYE-at-xaY"/>
+                                                <constraint firstItem="9Eo-TR-4O4" firstAttribute="leading" secondItem="S8Q-YY-Kog" secondAttribute="leading" id="YRo-nB-Hsb"/>
+                                                <constraint firstAttribute="trailing" secondItem="9Eo-TR-4O4" secondAttribute="trailing" id="rWV-bD-7li"/>
+                                            </constraints>
+                                        </view>
+                                        <blurEffect style="dark"/>
+                                    </visualEffectView>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="pwD-5i-uQ2" firstAttribute="leading" secondItem="noi-yo-HIE" secondAttribute="leading" id="ai3-VH-ZSe"/>
+                                    <constraint firstAttribute="trailing" secondItem="pwD-5i-uQ2" secondAttribute="trailing" id="fTZ-ah-pgi"/>
+                                    <constraint firstItem="pwD-5i-uQ2" firstAttribute="top" secondItem="noi-yo-HIE" secondAttribute="top" id="gYf-Oa-jve"/>
+                                    <constraint firstAttribute="bottom" secondItem="pwD-5i-uQ2" secondAttribute="bottom" id="u3P-PF-gpZ"/>
+                                </constraints>
+                            </view>
                             <view contentMode="scaleToFill" placeholderIntrinsicWidth="600" placeholderIntrinsicHeight="300" translatesAutoresizingMaskIntoConstraints="NO" id="2W1-IT-Y2l" customClass="ControllerView" customModule="DeltaCore">
                                 <rect key="frame" x="0.0" y="300" width="600" height="300"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -121,13 +170,17 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="noi-yo-HIE" firstAttribute="top" secondItem="GfI-Mx-CQT" secondAttribute="top" id="1wY-jJ-o0w"/>
                             <constraint firstItem="2W1-IT-Y2l" firstAttribute="top" secondItem="7ei-Ah-JvQ" secondAttribute="top" id="EF1-5h-FJs"/>
                             <constraint firstAttribute="trailing" secondItem="GfI-Mx-CQT" secondAttribute="trailing" id="EKN-e9-x37"/>
+                            <constraint firstItem="noi-yo-HIE" firstAttribute="bottom" secondItem="GfI-Mx-CQT" secondAttribute="bottom" id="IEw-2f-nC4"/>
+                            <constraint firstItem="noi-yo-HIE" firstAttribute="leading" secondItem="GfI-Mx-CQT" secondAttribute="leading" id="aE5-xg-A1u"/>
                             <constraint firstItem="GfI-Mx-CQT" firstAttribute="top" secondItem="7ei-Ah-JvQ" secondAttribute="top" id="ala-4P-wQR"/>
                             <constraint firstAttribute="bottom" secondItem="GfI-Mx-CQT" secondAttribute="bottom" id="gFo-XU-4PO">
                                 <variation key="heightClass=compact" constant="0.0"/>
                             </constraint>
                             <constraint firstItem="GfI-Mx-CQT" firstAttribute="leading" secondItem="7ei-Ah-JvQ" secondAttribute="leading" id="hck-DY-vlt"/>
+                            <constraint firstItem="noi-yo-HIE" firstAttribute="trailing" secondItem="GfI-Mx-CQT" secondAttribute="trailing" id="l7o-xb-Zxa"/>
                             <constraint firstItem="2W1-IT-Y2l" firstAttribute="top" secondItem="GfI-Mx-CQT" secondAttribute="bottom" id="uWb-Cv-NM1"/>
                             <constraint firstAttribute="bottom" secondItem="2W1-IT-Y2l" secondAttribute="bottom" id="vZg-yU-Kqm"/>
                             <constraint firstAttribute="trailing" secondItem="2W1-IT-Y2l" secondAttribute="trailing" id="wcY-Qm-RRC"/>
@@ -148,9 +201,11 @@
                         </variation>
                     </view>
                     <connections>
+                        <outlet property="backgroundView" destination="JRb-Vg-JHA" id="85O-6W-WOe"/>
                         <outlet property="controllerView" destination="2W1-IT-Y2l" id="WCa-LM-fXF"/>
                         <outlet property="controllerViewHeightConstraint" destination="PEV-zv-Buo" id="1jo-Kg-HpO"/>
                         <outlet property="gameView" destination="GfI-Mx-CQT" id="HmP-OA-mci"/>
+                        <outlet property="sustainButtonContentView" destination="noi-yo-HIE" id="7FG-2i-LC2"/>
                         <segue destination="Yrw-9v-Pcr" kind="presentation" identifier="pauseSegue" customClass="PauseStoryboardSegue" customModule="Delta" customModuleProvider="target" id="9cz-mr-lTk"/>
                     </connections>
                 </viewController>
