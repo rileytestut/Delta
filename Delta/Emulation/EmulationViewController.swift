@@ -103,8 +103,6 @@ class EmulationViewController: UIViewController
         
         self.controllerView.containerView = self.view
         self.controllerView.controllerSkin = controllerSkin
-        self.controllerView.addReceiver(self)
-        self.emulatorCore.setGameController(self.controllerView, atIndex: 0)
         
         self.updateControllers()
     }
@@ -290,14 +288,25 @@ private extension EmulationViewController
         
         if let index = Settings.localControllerPlayerIndex
         {
-            self.emulatorCore.setGameController(self.controllerView, atIndex: index)
+            self.controllerView.playerIndex = index
         }
         
-        for controller in ExternalControllerManager.sharedManager.connectedControllers
+        var controllers = [GameControllerProtocol]()
+        controllers.append(self.controllerView)
+        
+        // We need to map each item as a GameControllerProtocol due to a Swift bug
+        controllers.appendContentsOf(ExternalControllerManager.sharedManager.connectedControllers.map { $0 as GameControllerProtocol })
+        
+        for controller in controllers
         {
             if let index = controller.playerIndex
             {
                 self.emulatorCore.setGameController(controller, atIndex: index)
+                controller.addReceiver(self)
+            }
+            else
+            {
+                controller.removeReceiver(self)
             }
         }
         
@@ -318,7 +327,7 @@ private extension EmulationViewController
         }
     }
     
-    func sustainInput(input: InputType, gameController: GameControllerType)
+    func sustainInput(input: InputType, gameController: GameControllerProtocol)
     {
         if let input = input as? ControllerInput
         {
@@ -485,11 +494,11 @@ private extension EmulationViewController
 
 //MARK: - <GameControllerReceiver> -
 /// <GameControllerReceiver>
-extension EmulationViewController: GameControllerReceiverType
+extension EmulationViewController: GameControllerReceiverProtocol
 {
-    func gameController(gameController: GameControllerType, didActivateInput input: InputType)
+    func gameController(gameController: GameControllerProtocol, didActivateInput input: InputType)
     {
-        if UIDevice.currentDevice().supportsVibration
+        if gameController is ControllerView && UIDevice.currentDevice().supportsVibration
         {
             UIDevice.currentDevice().vibrate()
         }
@@ -510,7 +519,7 @@ extension EmulationViewController: GameControllerReceiverType
         }
     }
     
-    func gameController(gameController: GameControllerType, didDeactivateInput input: InputType)
+    func gameController(gameController: GameControllerProtocol, didDeactivateInput input: InputType)
     {
         guard let input = input as? ControllerInput else { return }
         
