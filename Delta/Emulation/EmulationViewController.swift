@@ -11,6 +11,26 @@ import UIKit
 import DeltaCore
 import Roxas
 
+// Temporary wrapper around dispatch_semaphore_t until Swift 3 + modernized libdispatch
+private struct DispatchSemaphore: Hashable
+{
+    let semaphore: dispatch_semaphore_t
+    
+    var hashValue: Int {
+        return semaphore.hash
+    }
+    
+    init(value: Int)
+    {
+        self.semaphore = dispatch_semaphore_create(value)
+    }
+}
+
+private func ==(lhs: DispatchSemaphore, rhs: DispatchSemaphore) -> Bool
+{
+    return lhs.semaphore.isEqual(rhs.semaphore)
+}
+
 class EmulationViewController: UIViewController
 {
     //MARK: - Properties -
@@ -29,6 +49,13 @@ class EmulationViewController: UIViewController
     private(set) var emulatorCore: EmulatorCore! {
         didSet
         {
+            // Cannot set directly, or else we're left with a strong reference cycle
+            //self.emulatorCore.updateHandler = emulatorCoreDidUpdate
+            
+            self.emulatorCore.updateHandler = { [weak self] core in
+                self?.emulatorCoreDidUpdate(core)
+            }
+            
             self.preferredContentSize = self.emulatorCore.preferredRenderingSize
         }
     }
@@ -42,6 +69,17 @@ class EmulationViewController: UIViewController
     var deferredPreparationHandler: (Void -> Void)?
     
     //MARK: - Private Properties
+    private var pauseViewController: PauseViewController?
+    private var pausingGameController: GameControllerProtocol?
+    
+    private var context = CIContext(options: [kCIContextWorkingColorSpace: NSNull()])
+
+    private var updateSemaphores = Set<DispatchSemaphore>()
+    
+    private var sustainedInputs = [ObjectIdentifier: [InputType]]()
+    private var reactivateSustainInputsQueue: NSOperationQueue
+    private var choosingSustainedButtons = false
+    
     @IBOutlet private var controllerView: ControllerView!
     @IBOutlet private var gameView: GameView!
     @IBOutlet private var sustainButtonContentView: UIView!
@@ -49,22 +87,14 @@ class EmulationViewController: UIViewController
     
     @IBOutlet private var controllerViewHeightConstraint: NSLayoutConstraint!
     
-    private var pauseViewController: PauseViewController?
-    
-    private var context = CIContext(options: [kCIContextWorkingColorSpace: NSNull()])
-
-
-    private var selectingSustainedButton = false {
-        didSet {
-            self.sustainButtonContentView.alpha = self.selectingSustainedButton ? 1.0 : 0.0
-        }
-    }
-    
     
     //MARK: - Initializers -
     /** Initializers **/
     required init?(coder aDecoder: NSCoder)
     {
+        self.reactivateSustainInputsQueue = NSOperationQueue()
+        self.reactivateSustainInputsQueue.maxConcurrentOperationCount = 1
+        
         super.init(coder: aDecoder)
                 
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(EmulationViewController.updateControllers), name: ExternalControllerDidConnectNotification, object: nil)
@@ -96,8 +126,8 @@ class EmulationViewController: UIViewController
         self.gameView.backgroundColor = UIColor.clearColor()
         self.emulatorCore.addGameView(self.gameView)
         
-        self.backgroundView.textLabel.text = NSLocalizedString("Select Button to Sustain", comment: "")
-        self.backgroundView.detailTextLabel.text = NSLocalizedString("Sustained buttons act as though they're being held down, without needing to do so yourself. This is particularly useful for certain games, such as platformers which require you to hold down a button to run.", comment: "")
+        self.backgroundView.textLabel.text = NSLocalizedString("Select Buttons to Sustain", comment: "")
+        self.backgroundView.detailTextLabel.text = NSLocalizedString("Press the Menu button when finished.", comment: "")
         
         let controllerSkin = ControllerSkin.defaultControllerSkinForGameUTI(self.game.typeIdentifier)
         
@@ -164,7 +194,7 @@ class EmulationViewController: UIViewController
         
         coordinator.animateAlongsideTransition({ _ in
             
-            if self.pauseViewController != nil
+            if self.emulatorCore.state == .Paused
             {
                 // We need to manually "refresh" the game screen, otherwise the system tries to cache the rendered image, but skews it incorrectly when rotating b/c of UIVisualEffectView
                 self.gameView.inputImage = self.gameView.outputImage
@@ -184,6 +214,10 @@ class EmulationViewController: UIViewController
         
         if segue.identifier == "pauseSegue"
         {
+            guard let gameController = sender as? GameControllerProtocol else { fatalError("sender for pauseSegue must be the game controller that pressed the Menu button") }
+            
+            self.pausingGameController = gameController
+            
             let pauseViewController = segue.destinationViewController as! PauseViewController
             pauseViewController.pauseText = self.game.name
             
@@ -203,22 +237,24 @@ class EmulationViewController: UIViewController
                 pauseViewController.presentCheatsViewController(delegate: self)
             })
             
-            let sustainButtonItem = PauseItem(image: UIImage(named: "SmallPause")!, text: NSLocalizedString("Sustain Button", comment: ""), action: { [unowned self] item in
+            var sustainButtonsItem = PauseItem(image: UIImage(named: "SmallPause")!, text: NSLocalizedString("Sustain Buttons", comment: ""), action: { [unowned self] item in
+                
+                self.resetSustainedInputs(forGameController: gameController)
                 
                 if item.selected
                 {
-                    self.selectingSustainedButton = true
+                    self.showSustainButtonView()
                     pauseViewController.dismiss()
                 }
-                
             })
+            sustainButtonsItem.selected = self.sustainedInputs[ObjectIdentifier(gameController)]?.count > 0
             
             var fastForwardItem = PauseItem(image: UIImage(named: "FastForward")!, text: NSLocalizedString("Fast Forward", comment: ""), action: { [unowned self] item in
                 self.emulatorCore.fastForwarding = item.selected
             })
             fastForwardItem.selected = self.emulatorCore.fastForwarding
             
-            pauseViewController.items = [saveStateItem, loadStateItem, cheatCodesItem, fastForwardItem, sustainButtonItem]
+            pauseViewController.items = [saveStateItem, loadStateItem, cheatCodesItem, fastForwardItem, sustainButtonsItem]
             
             self.pauseViewController = pauseViewController
         }
@@ -227,6 +263,7 @@ class EmulationViewController: UIViewController
     @IBAction func unwindFromPauseViewController(segue: UIStoryboardSegue)
     {
         self.pauseViewController = nil
+        self.pausingGameController = nil
         
         if self.resumeEmulation()
         {
@@ -265,6 +302,11 @@ class EmulationViewController: UIViewController
 /// Emulation
 private extension EmulationViewController
 {
+    func pause(sender sender: AnyObject?)
+    {
+        self.performSegueWithIdentifier("pauseSegue", sender: sender)
+    }
+    
     func pauseEmulation() -> Bool
     {
         return self.emulatorCore.pauseEmulation()
@@ -272,14 +314,22 @@ private extension EmulationViewController
     
     func resumeEmulation() -> Bool
     {
-        guard !self.selectingSustainedButton && self.pauseViewController == nil else { return false }
+        guard !self.choosingSustainedButtons && self.pauseViewController == nil else { return false }
         
         return self.emulatorCore.resumeEmulation()
     }
+    
+    func emulatorCoreDidUpdate(emulatorCore: EmulatorCore)
+    {
+        for semaphore in self.updateSemaphores
+        {
+            dispatch_semaphore_signal(semaphore.semaphore)
+        }
+    }
 }
 
-//MARK: - Controllers/Inputs -
-/// Controllers/Inputs
+//MARK: - Controllers -
+/// Controllers
 private extension EmulationViewController
 {
     @objc func updateControllers()
@@ -312,37 +362,118 @@ private extension EmulationViewController
         
         self.view.setNeedsLayout()
     }
-    
-    func setSelectingSustainedButton(selectingSustainedButton: Bool, animated: Bool)
+}
+
+//MARK: - Sustain Button -
+private extension EmulationViewController
+{
+    func showSustainButtonView()
     {
-        if !animated
-        {
-            self.selectingSustainedButton = selectingSustainedButton
-        }
-        else
-        {
-            UIView.animateWithDuration(0.4) {
-                self.selectingSustainedButton = selectingSustainedButton
-            }
+        self.choosingSustainedButtons = true
+        self.sustainButtonContentView.hidden = false
+    }
+    
+    func hideSustainButtonView()
+    {
+        self.choosingSustainedButtons = false
+        
+        UIView.animateWithDuration(0.4, animations: { 
+            self.sustainButtonContentView.alpha = 0.0
+        }) { (finished) in
+            self.sustainButtonContentView.hidden = true
+            self.sustainButtonContentView.alpha = 1.0
         }
     }
     
-    func sustainInput(input: InputType, gameController: GameControllerProtocol)
+    func resetSustainedInputs(forGameController gameController: GameControllerProtocol)
     {
-        if let input = input as? ControllerInput
+        if let previousInputs = self.sustainedInputs[ObjectIdentifier(gameController)]
         {
-            guard input != ControllerInput.Menu else
-            {
-                self.setSelectingSustainedButton(false, animated: true)
-                self.performSegueWithIdentifier("pauseSegue", sender: gameController)
-                return
-            }
+            let receivers = gameController.receivers
+            receivers.forEach { gameController.removeReceiver($0) }
+            
+            // Activate previousInputs without notifying anyone so we can then deactivate them
+            // We do this because deactivating an already deactivated input has no effect
+            previousInputs.forEach { gameController.activate($0) }
+            
+            receivers.forEach { gameController.addReceiver($0) }
+            
+            // Deactivate previously sustained inputs
+            previousInputs.forEach { gameController.deactivate($0) }
         }
         
-        self.setSelectingSustainedButton(false, animated: true)
+        self.sustainedInputs[ObjectIdentifier(gameController)] = []
+    }
+    
+    func addSustainedInput(input: InputType, gameController: GameControllerProtocol)
+    {
+        var inputs = self.sustainedInputs[ObjectIdentifier(gameController)] ?? []
         
-        self.resumeEmulation()
+        guard !inputs.contains({ $0.isEqual(input) }) else { return }
         
+        inputs.append(input)
+        self.sustainedInputs[ObjectIdentifier(gameController)] = inputs
+        
+        let receivers = gameController.receivers
+        receivers.forEach { gameController.removeReceiver($0) }
+        
+        // Causes input to be considered deactivated, so gameController won't send a subsequent message to observers when user actually deactivates
+        // However, at this point the core still thinks it is activated, and is temporarily not a receiver, thus sustaining it
+        gameController.deactivate(input)
+        
+        receivers.forEach { gameController.addReceiver($0) }
+    }
+    
+    func reactivateSustainedInput(input: InputType, gameController: GameControllerProtocol)
+    {
+        // These MUST be performed serially, or else Bad Things Happen™ if multiple inputs are reactivated at once
+        self.reactivateSustainInputsQueue.addOperationWithBlock {
+            
+            // The manual activations/deactivations here are hidden implementation details, so we won't notify ourselves about them
+            gameController.removeReceiver(self)
+            
+            // Must deactivate first so core recognizes a secondary activation
+            gameController.deactivate(input)
+            
+            let dispatchQueue = dispatch_queue_create("com.rileytestut.Delta.sustainButtonsQueue", DISPATCH_QUEUE_SERIAL)
+            dispatch_async(dispatchQueue) {
+                
+                let semaphore = DispatchSemaphore(value: 0)
+                self.updateSemaphores.insert(semaphore)
+                
+                // To ensure the emulator core recognizes us activating the input again, we need to wait at least two frames
+                // Unfortunately we cannot init DispatchSemaphore with value less than 0
+                // To compensate, we simply wait twice; once the first wait returns, we wait again
+                dispatch_semaphore_wait(semaphore.semaphore, DISPATCH_TIME_FOREVER)
+                dispatch_semaphore_wait(semaphore.semaphore, DISPATCH_TIME_FOREVER)
+                
+                // These MUST be performed serially, or else Bad Things Happen™ if multiple inputs are reactivated at once
+                self.reactivateSustainInputsQueue.addOperationWithBlock {
+                    
+                    self.updateSemaphores.remove(semaphore)
+                    
+                    // Ensure we still are not a receiver (to prevent rare race conditions)
+                    gameController.removeReceiver(self)
+                    
+                    gameController.activate(input)
+                    
+                    let receivers = gameController.receivers
+                    receivers.forEach { gameController.removeReceiver($0) }
+                    
+                    // Causes input to be considered deactivated, so gameController won't send a subsequent message to observers when user actually deactivates
+                    // However, at this point the core still thinks it is activated, and is temporarily not a receiver, thus sustaining it
+                    gameController.deactivate(input)
+                    
+                    receivers.forEach { gameController.addReceiver($0) }
+                }
+                
+                // More Bad Things Happen™ if we add self as observer before ALL reactivations have occurred (notable, infinite loops)
+                self.reactivateSustainInputsQueue.waitUntilAllOperationsAreFinished()
+                
+                gameController.addReceiver(self)
+                
+            }
+        }
     }
 }
 
@@ -497,25 +628,39 @@ private extension EmulationViewController
 extension EmulationViewController: GameControllerReceiverProtocol
 {
     func gameController(gameController: GameControllerProtocol, didActivateInput input: InputType)
-    {
+    {        
         if gameController is ControllerView && UIDevice.currentDevice().supportsVibration
         {
             UIDevice.currentDevice().vibrate()
         }
         
-        guard !self.selectingSustainedButton else
+        if let input = input as? ControllerInput
         {
-            self.sustainInput(input, gameController: gameController)
+            switch input
+            {
+            case ControllerInput.Menu:
+                if self.choosingSustainedButtons { self.hideSustainButtonView() }
+                self.pause(sender: gameController)
+                
+                // Return now, because Menu cannot be sustained
+                return
+            }
+        }
+        
+        if self.choosingSustainedButtons
+        {
+            self.addSustainedInput(input, gameController: gameController)
             return
         }
         
-        guard let input = input as? ControllerInput else { return }
-        
-        print("Activated \(input)")
-        
-        switch input
+        if let sustainedInputs = self.sustainedInputs[ObjectIdentifier(gameController)] where sustainedInputs.contains({ $0.isEqual(input) })
         {
-        case ControllerInput.Menu: self.performSegueWithIdentifier("pauseSegue", sender: gameController)
+            // Perform on next run loop
+            dispatch_async(dispatch_get_main_queue()) {
+                self.reactivateSustainedInput(input, gameController: gameController)
+            }
+            
+            return
         }
     }
     

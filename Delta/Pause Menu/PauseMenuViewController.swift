@@ -41,7 +41,7 @@ extension PauseMenuViewController
         super.viewDidLoad()
                 
         let collectionViewLayout = self.collectionViewLayout as! GridCollectionViewLayout
-        collectionViewLayout.itemWidth = 90
+        collectionViewLayout.itemWidth = 95
         collectionViewLayout.usesEqualHorizontalSpacingDistributionForSingleRow = true
         
         // Manually update prototype cell properties

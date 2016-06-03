@@ -106,7 +106,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="300"/>
                                 <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
-                            <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="noi-yo-HIE">
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="noi-yo-HIE">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="300"/>
                                 <subviews>
                                     <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pwD-5i-uQ2">
