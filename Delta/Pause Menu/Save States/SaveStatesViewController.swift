@@ -199,7 +199,7 @@ private extension SaveStatesViewController
             self.imageOperationQueue.addOperation(imageOperation, forKey: indexPath)
         }        
         
-        let dimensions = self.delegate.saveStatesViewControllerActiveEmulatorCore(self).videoBufferInfo.outputDimensions
+        let dimensions = self.delegate.saveStatesViewControllerActiveEmulatorCore(self).preferredRenderingSize
         cell.maximumImageSize = CGSizeMake(self.prototypeCellWidthConstraint.constant, (self.prototypeCellWidthConstraint.constant / dimensions.width) * dimensions.height)
         
         cell.textLabel.textColor = UIColor.whiteColor()
