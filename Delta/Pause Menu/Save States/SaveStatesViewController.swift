@@ -427,7 +427,19 @@ private extension SaveStatesViewController
         // Load the save state we stored a reference to
         emulatorCore.startEmulation()
         emulatorCore.pauseEmulation()
-        emulatorCore.loadSaveState(saveState)
+        
+        do
+        {
+            try emulatorCore.loadSaveState(saveState)
+        }
+        catch EmulatorCore.SaveStateError.doesNotExist
+        {
+            print("Save State \(saveState.name) does not exist.")
+        }
+        catch let error as NSError
+        {
+            print(error)
+        }
         
         // Re-enable video rendering
         emulatorCore.videoManager.enabled = true
@@ -542,7 +554,19 @@ extension SaveStatesViewController: UIViewControllerPreviewingDelegate
             
             emulationViewController.emulatorCore.startEmulation()
             emulationViewController.emulatorCore.pauseEmulation()
-            emulationViewController.emulatorCore.loadSaveState(saveState)
+            
+            do
+            {
+                try emulationViewController.emulatorCore.loadSaveState(saveState)
+            }
+            catch EmulatorCore.SaveStateError.doesNotExist
+            {
+                print("Save State \(saveState.name) does not exist.")
+            }
+            catch let error as NSError
+            {
+                print(error)
+            }
         }
         
         return emulationViewController

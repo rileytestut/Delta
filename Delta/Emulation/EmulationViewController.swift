@@ -532,7 +532,18 @@ extension EmulationViewController: SaveStatesViewControllerDelegate
     
     func saveStatesViewController(saveStatesViewController: SaveStatesViewController, loadSaveState saveState: SaveStateType)
     {
-        self.emulatorCore.loadSaveState(saveState)
+        do
+        {
+            try self.emulatorCore.loadSaveState(saveState)
+        }
+        catch EmulatorCore.SaveStateError.doesNotExist
+        {
+            print("Save State \(saveState.name) does not exist.")
+        }
+        catch let error as NSError
+        {
+            print(error)
+        }
         
         self.updateCheats()
         

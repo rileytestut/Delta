@@ -9,6 +9,8 @@
 import UIKit
 import CoreData
 
+import DeltaCore
+
 import Roxas
 
 class GamesViewController: UIViewController
@@ -132,7 +134,20 @@ class GamesViewController: UIViewController
                 {
                     destinationViewController.emulatorCore.startEmulation()
                     destinationViewController.emulatorCore.pauseEmulation()
-                    destinationViewController.emulatorCore.loadSaveState(saveState)
+                    
+                    do
+                    {
+                        try destinationViewController.emulatorCore.loadSaveState(saveState)
+                    }
+                    catch EmulatorCore.SaveStateError.doesNotExist
+                    {
+                        print("Save State \(saveState.name) does not exist.")
+                    }
+                    catch let error as NSError
+                    {
+                        print(error)
+                    }
+                    
                 }
             }
         }
