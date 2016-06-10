@@ -11,6 +11,7 @@ import CoreData
 
 import DeltaCore
 import SNESDeltaCore
+import GBADeltaCore
 
 extension GameCollection
 {

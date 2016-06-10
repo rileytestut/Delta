@@ -11,8 +11,7 @@ import CoreData
 
 import DeltaCore
 import SNESDeltaCore
-
-public let kUTTypeGBAGame: CFStringRef = "com.rileytestut.delta.game.gba"
+import GBADeltaCore
 
 extension Game
 {

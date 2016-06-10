@@ -3,9 +3,65 @@
    LastUpgradeVersion = "0710"
    version = "1.3">
    <BuildAction
-      parallelizeBuildables = "YES"
+      parallelizeBuildables = "NO"
       buildImplicitDependencies = "YES">
       <BuildActionEntries>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "BFADAFF719AE7BB70050CF31"
+               BuildableName = "Roxas.framework"
+               BlueprintName = "Roxas"
+               ReferencedContainer = "container:External/Roxas/Roxas.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "BF46895C1AACF36800A2586D"
+               BuildableName = "DeltaCore.framework"
+               BlueprintName = "DeltaCore"
+               ReferencedContainer = "container:Cores/DeltaCore/DeltaCore.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "BF9F4FDB1AAD8070004C9500"
+               BuildableName = "SNESDeltaCore.framework"
+               BlueprintName = "SNESDeltaCore"
+               ReferencedContainer = "container:Cores/SNESDeltaCore/SNESDeltaCore.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "BFE8E9C91D010AF7009D623D"
+               BuildableName = "GBADeltaCore.framework"
+               BlueprintName = "GBADeltaCore"
+               ReferencedContainer = "container:Cores/GBADeltaCore/GBADeltaCore.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
          <BuildActionEntry
             buildForTesting = "YES"
             buildForRunning = "YES"

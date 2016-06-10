@@ -11,6 +11,9 @@
       location = "group:Cores/SNESDeltaCore/SNESDeltaCore.xcodeproj">
    </FileRef>
    <FileRef
+      location = "group:Cores/GBADeltaCore/GBADeltaCore.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:External/Roxas/Roxas.xcodeproj">
    </FileRef>
    <FileRef

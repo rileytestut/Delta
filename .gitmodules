@@ -7,3 +7,6 @@
 [submodule "External/Roxas"]
 	path = External/Roxas
 	url = git@github.com:rileytestut/Roxas.git
+[submodule "Cores/GBADeltaCore"]
+	path = Cores/GBADeltaCore
+	url = git@github.com:rileytestut/GBADeltaCore.git

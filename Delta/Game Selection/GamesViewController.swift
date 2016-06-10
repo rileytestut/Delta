@@ -9,8 +9,6 @@
 import UIKit
 import CoreData
 
-import SNESDeltaCore
-
 import Roxas
 
 class GamesViewController: UIViewController

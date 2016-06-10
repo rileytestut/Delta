@@ -86,6 +86,21 @@
 				<string>smc</string>
 			</dict>
 		</dict>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>com.rileytestut.delta.game</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>GBA Game</string>
+			<key>UTTypeIdentifier</key>
+			<string>com.rileytestut.delta.game.gba</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<string>gba</string>
+			</dict>
+		</dict>
 	</array>
 </dict>
 </plist>

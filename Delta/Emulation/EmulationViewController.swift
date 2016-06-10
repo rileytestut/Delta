@@ -250,9 +250,9 @@ class EmulationViewController: UIViewController
             sustainButtonsItem.selected = self.sustainedInputs[ObjectIdentifier(gameController)]?.count > 0
             
             var fastForwardItem = PauseItem(image: UIImage(named: "FastForward")!, text: NSLocalizedString("Fast Forward", comment: ""), action: { [unowned self] item in
-                self.emulatorCore.fastForwarding = item.selected
+                self.emulatorCore.rate = item.selected ? self.emulatorCore.supportedRates.end : self.emulatorCore.supportedRates.start
             })
-            fastForwardItem.selected = self.emulatorCore.fastForwarding
+            fastForwardItem.selected = self.emulatorCore.rate == self.emulatorCore.supportedRates.start ? false : true
             
             pauseViewController.items = [saveStateItem, loadStateItem, cheatCodesItem, fastForwardItem, sustainButtonsItem]
             

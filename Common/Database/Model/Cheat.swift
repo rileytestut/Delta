@@ -35,6 +35,8 @@ extension CheatType
         {
         case .actionReplay: return 0
         case .gameGenie: return 1
+        case .gameShark: return 2
+        case .codeBreaker: return 3
         }
     }
     
@@ -44,6 +46,8 @@ extension CheatType
         {
         case 0: self = .actionReplay
         case 1: self = .gameGenie
+        case 2: self = .gameShark
+        case 3: self = .codeBreaker
         default: return nil
         }
     }
