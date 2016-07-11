@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AF0535CD7331785FA15E0864 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22506DA00971C4300AF90A35 /* Pods.framework */; };
 		BF0418141D01E93400E85BCF /* GBADeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF0418131D01E93400E85BCF /* GBADeltaCore.framework */; };
 		BF0418151D01E93400E85BCF /* GBADeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BF0418131D01E93400E85BCF /* GBADeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF04A5A31CF8E61C00B4A267 /* UIViewController+PeekPop.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF04A5A21CF8E61C00B4A267 /* UIViewController+PeekPop.swift */; };
@@ -15,60 +14,33 @@
 		BF0CDDAD1C8155D200640168 /* LoadImageOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0CDDAC1C8155D200640168 /* LoadImageOperation.swift */; };
 		BF107EC41BF413F000E0C32C /* GamesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF107EC31BF413F000E0C32C /* GamesViewController.swift */; };
 		BF172AEB1C68986300C26774 /* NSManagedObjectContext+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF172AEA1C68986300C26774 /* NSManagedObjectContext+Conveniences.swift */; };
-		BF172AEC1C68986300C26774 /* NSManagedObjectContext+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF172AEA1C68986300C26774 /* NSManagedObjectContext+Conveniences.swift */; };
 		BF1FB1861C5EE643007E2494 /* SaveState.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1FB1831C5EE643007E2494 /* SaveState.swift */; };
-		BF1FB1871C5EE643007E2494 /* SaveState.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1FB1831C5EE643007E2494 /* SaveState.swift */; };
 		BF27CC8E1BC9FEA200A20D89 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF6BB2451BB73FE800CCF94A /* Assets.xcassets */; };
-		BF27CC8F1BCA010200A20D89 /* GamePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDB28441BC9DA7B001D0C83 /* GamePickerController.swift */; };
-		BF27CC911BCB156200A20D89 /* EmulationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF27CC901BCB156200A20D89 /* EmulationViewController.swift */; };
-		BF27CC951BCB7B7A00A20D89 /* GameController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF27CC941BCB7B7A00A20D89 /* GameController.framework */; };
 		BF27CC971BCC890700A20D89 /* GamesCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF27CC961BCC890700A20D89 /* GamesCollectionViewController.swift */; };
-		BF2A53FB1BB74FC10052BD0C /* SNESDeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFC134E01AAD82460087AD7B /* SNESDeltaCore.framework */; };
-		BF2A53FC1BB74FC10052BD0C /* SNESDeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BFC134E01AAD82460087AD7B /* SNESDeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		BF2A53FD1BB74FC60052BD0C /* ZipZap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF70798B1B6B464B0019077C /* ZipZap.framework */; };
-		BF2A53FE1BB74FC60052BD0C /* ZipZap.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BF70798B1B6B464B0019077C /* ZipZap.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF2B98E61C97E32F00F6D57D /* SaveStatesCollectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2B98E51C97E32F00F6D57D /* SaveStatesCollectionHeaderView.swift */; };
 		BF34FA071CF0F510006624C7 /* EditCheatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF34FA061CF0F510006624C7 /* EditCheatViewController.swift */; };
 		BF34FA111CF1899D006624C7 /* CheatTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF34FA101CF1899D006624C7 /* CheatTextView.swift */; };
 		BF353FF21C5D7FB000C1184C /* PauseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF353FF11C5D7FB000C1184C /* PauseViewController.swift */; };
-		BF353FF31C5D7FB000C1184C /* PauseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF353FF11C5D7FB000C1184C /* PauseViewController.swift */; };
 		BF353FF61C5D837600C1184C /* PauseMenu.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF353FF41C5D837600C1184C /* PauseMenu.storyboard */; };
-		BF353FF71C5D837600C1184C /* PauseMenu.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF353FF41C5D837600C1184C /* PauseMenu.storyboard */; };
 		BF353FF91C5D870B00C1184C /* PauseItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF353FF81C5D870B00C1184C /* PauseItem.swift */; };
-		BF353FFA1C5D870B00C1184C /* PauseItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF353FF81C5D870B00C1184C /* PauseItem.swift */; };
 		BF353FFF1C5DA3C500C1184C /* PausePresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF353FFD1C5DA3C500C1184C /* PausePresentationController.swift */; };
 		BF3540001C5DA3C500C1184C /* PausePresentationControllerContentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF353FFE1C5DA3C500C1184C /* PausePresentationControllerContentView.xib */; };
 		BF3540021C5DA3D500C1184C /* PauseStoryboardSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3540011C5DA3D500C1184C /* PauseStoryboardSegue.swift */; };
 		BF3540051C5DA70400C1184C /* SaveStatesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3540041C5DA70400C1184C /* SaveStatesViewController.swift */; };
-		BF3540061C5DA70400C1184C /* SaveStatesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3540041C5DA70400C1184C /* SaveStatesViewController.swift */; };
 		BF3540081C5DAFAD00C1184C /* PauseTransitionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3540071C5DAFAD00C1184C /* PauseTransitionCoordinator.swift */; };
-		BF3540091C5DAFAD00C1184C /* PauseTransitionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3540071C5DAFAD00C1184C /* PauseTransitionCoordinator.swift */; };
 		BF4566E81BC090B6007BFA1A /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BF4566E61BC090B6007BFA1A /* Model.xcdatamodeld */; };
-		BF4566E91BC090B6007BFA1A /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BF4566E61BC090B6007BFA1A /* Model.xcdatamodeld */; };
 		BF5E7F441B9A650B00AE44F8 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5E7F431B9A650B00AE44F8 /* SettingsViewController.swift */; };
 		BF5E7F461B9A652600AE44F8 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF5E7F451B9A652600AE44F8 /* Settings.storyboard */; };
 		BF65E8631CEE5C6A00CD3247 /* Cheat.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF65E8621CEE5C6A00CD3247 /* Cheat.swift */; };
-		BF6BB23F1BB73FE800CCF94A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6BB23E1BB73FE800CCF94A /* AppDelegate.swift */; };
-		BF6BB2411BB73FE800CCF94A /* GameSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6BB2401BB73FE800CCF94A /* GameSelectionViewController.swift */; };
-		BF6BB2441BB73FE800CCF94A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF6BB2421BB73FE800CCF94A /* Main.storyboard */; };
-		BF6BB2461BB73FE800CCF94A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF6BB2451BB73FE800CCF94A /* Assets.xcassets */; };
 		BF70798C1B6B464B0019077C /* ZipZap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF70798B1B6B464B0019077C /* ZipZap.framework */; };
 		BF70798D1B6B464B0019077C /* ZipZap.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BF70798B1B6B464B0019077C /* ZipZap.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF762E9E1BC19D31002C8866 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF762E9D1BC19D31002C8866 /* DatabaseManager.swift */; };
-		BF762E9F1BC19D31002C8866 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF762E9D1BC19D31002C8866 /* DatabaseManager.swift */; };
 		BF762EAB1BC1B076002C8866 /* NSManagedObject+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF762EAA1BC1B076002C8866 /* NSManagedObject+Conveniences.swift */; };
-		BF762EAC1BC1B076002C8866 /* NSManagedObject+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF762EAA1BC1B076002C8866 /* NSManagedObject+Conveniences.swift */; };
 		BF797A2D1C2D339F00F1A000 /* UILabel+FontSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF797A2C1C2D339F00F1A000 /* UILabel+FontSize.swift */; };
 		BF7AE8081C2E858400B1B5BC /* PauseMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7AE8041C2E858400B1B5BC /* PauseMenuViewController.swift */; };
 		BF7AE80A1C2E8C7600B1B5BC /* UIColor+Delta.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7AE8091C2E8C7600B1B5BC /* UIColor+Delta.swift */; };
 		BF7AE81E1C2E984300B1B5BC /* GridCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7AE81A1C2E984300B1B5BC /* GridCollectionViewCell.swift */; };
-		BF7AE81F1C2E984300B1B5BC /* GridCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7AE81A1C2E984300B1B5BC /* GridCollectionViewCell.swift */; };
 		BF7AE8241C2E984300B1B5BC /* GridCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7AE81D1C2E984300B1B5BC /* GridCollectionViewLayout.swift */; };
-		BF7AE8251C2E984300B1B5BC /* GridCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7AE81D1C2E984300B1B5BC /* GridCollectionViewLayout.swift */; };
-		BF8624881BB743FE00C12EEE /* Roxas.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFEC732C1AAECC4A00650035 /* Roxas.framework */; };
-		BF8624891BB743FE00C12EEE /* Roxas.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BFEC732C1AAECC4A00650035 /* Roxas.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		BF8624A91BB7464B00C12EEE /* DeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF9F4FCE1AAD7B87004C9500 /* DeltaCore.framework */; };
-		BF8624AA1BB7464B00C12EEE /* DeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BF9F4FCE1AAD7B87004C9500 /* DeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF99C6941D0A9AA600BA92BC /* SNESDeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFC134E01AAD82460087AD7B /* SNESDeltaCore.framework */; };
 		BF99C6951D0A9AA600BA92BC /* SNESDeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BFC134E01AAD82460087AD7B /* SNESDeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF9F4FCF1AAD7B87004C9500 /* DeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF9F4FCE1AAD7B87004C9500 /* DeltaCore.framework */; };
@@ -77,19 +49,15 @@
 		BFAA1FED1B8AA4FA00495943 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFAA1FEC1B8AA4FA00495943 /* Settings.swift */; };
 		BFAA1FF41B8AD7F900495943 /* ControllersSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFAA1FF31B8AD7F900495943 /* ControllersSettingsViewController.swift */; };
 		BFB141181BE46934004FBF46 /* GameCollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB141171BE46934004FBF46 /* GameCollectionViewDataSource.swift */; };
-		BFB141191BE46934004FBF46 /* GameCollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB141171BE46934004FBF46 /* GameCollectionViewDataSource.swift */; };
 		BFC2731A1BE6152200D22B05 /* GameCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC273171BE6152200D22B05 /* GameCollection.swift */; };
-		BFC2731B1BE6152200D22B05 /* GameCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC273171BE6152200D22B05 /* GameCollection.swift */; };
 		BFC9B7391CEFCD34008629BB /* CheatsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC9B7381CEFCD34008629BB /* CheatsViewController.swift */; };
 		BFC9B73B1CEFD438008629BB /* NSFetchedResultsController+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC9B73A1CEFD438008629BB /* NSFetchedResultsController+Conveniences.swift */; };
 		BFDB28451BC9DA7B001D0C83 /* GamePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDB28441BC9DA7B001D0C83 /* GamePickerController.swift */; };
 		BFDE393C1BC0CEDF003F72E8 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDE39391BC0CEDF003F72E8 /* Game.swift */; };
-		BFDE393D1BC0CEDF003F72E8 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDE39391BC0CEDF003F72E8 /* Game.swift */; };
 		BFE704F51CEA426E0058BAC8 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22506DA00971C4300AF90A35 /* Pods.framework */; };
 		BFEC732D1AAECC4A00650035 /* Roxas.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFEC732C1AAECC4A00650035 /* Roxas.framework */; };
 		BFEC732E1AAECC4A00650035 /* Roxas.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BFEC732C1AAECC4A00650035 /* Roxas.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BFF1E5641BE04CAF000E9EF6 /* BoxArtImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF1E5631BE04CAF000E9EF6 /* BoxArtImageView.swift */; };
-		BFF1E5651BE04CAF000E9EF6 /* BoxArtImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF1E5631BE04CAF000E9EF6 /* BoxArtImageView.swift */; };
 		BFFA71DD1AAC406100EE9DD1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFA71DC1AAC406100EE9DD1 /* AppDelegate.swift */; };
 		BFFA71E21AAC406100EE9DD1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BFFA71E01AAC406100EE9DD1 /* Main.storyboard */; };
 		BFFA71E71AAC406100EE9DD1 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFFA71E51AAC406100EE9DD1 /* LaunchScreen.xib */; };
@@ -97,20 +65,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		BF86248A1BB743FE00C12EEE /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				BF2A53FC1BB74FC10052BD0C /* SNESDeltaCore.framework in Embed Frameworks */,
-				BF8624AA1BB7464B00C12EEE /* DeltaCore.framework in Embed Frameworks */,
-				BF2A53FE1BB74FC60052BD0C /* ZipZap.framework in Embed Frameworks */,
-				BF8624891BB743FE00C12EEE /* Roxas.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		BF9F4FCC1AAD7AEE004C9500 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -143,7 +97,6 @@
 		BF1FB1831C5EE643007E2494 /* SaveState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SaveState.swift; sourceTree = "<group>"; };
 		BF27CC861BC9E3C600A20D89 /* Delta.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Delta.entitlements; sourceTree = "<group>"; };
 		BF27CC8A1BC9FE4D00A20D89 /* Pods.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Pods.framework; path = "Pods/../build/Debug-appletvos/Pods.framework"; sourceTree = "<group>"; };
-		BF27CC901BCB156200A20D89 /* EmulationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmulationViewController.swift; sourceTree = "<group>"; };
 		BF27CC941BCB7B7A00A20D89 /* GameController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameController.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS9.0.sdk/System/Library/Frameworks/GameController.framework; sourceTree = DEVELOPER_DIR; };
 		BF27CC961BCC890700A20D89 /* GamesCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GamesCollectionViewController.swift; sourceTree = "<group>"; };
 		BF2B98E51C97E32F00F6D57D /* SaveStatesCollectionHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SaveStatesCollectionHeaderView.swift; path = "Pause Menu/Save States/SaveStatesCollectionHeaderView.swift"; sourceTree = "<group>"; };
@@ -161,12 +114,7 @@
 		BF5E7F431B9A650B00AE44F8 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		BF5E7F451B9A652600AE44F8 /* Settings.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
 		BF65E8621CEE5C6A00CD3247 /* Cheat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cheat.swift; sourceTree = "<group>"; };
-		BF6BB23C1BB73FE800CCF94A /* Delta.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Delta.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		BF6BB23E1BB73FE800CCF94A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		BF6BB2401BB73FE800CCF94A /* GameSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSelectionViewController.swift; sourceTree = "<group>"; };
-		BF6BB2431BB73FE800CCF94A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		BF6BB2451BB73FE800CCF94A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		BF6BB2471BB73FE800CCF94A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BF70798B1B6B464B0019077C /* ZipZap.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ZipZap.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF762E9D1BC19D31002C8866 /* DatabaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		BF762EAA1BC1B076002C8866 /* NSManagedObject+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+Conveniences.swift"; sourceTree = "<group>"; };
@@ -197,19 +145,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		BF6BB2391BB73FE800CCF94A /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				BF2A53FB1BB74FC10052BD0C /* SNESDeltaCore.framework in Frameworks */,
-				BF8624A91BB7464B00C12EEE /* DeltaCore.framework in Frameworks */,
-				BF27CC951BCB7B7A00A20D89 /* GameController.framework in Frameworks */,
-				BF2A53FD1BB74FC60052BD0C /* ZipZap.framework in Frameworks */,
-				BF8624881BB743FE00C12EEE /* Roxas.framework in Frameworks */,
-				AF0535CD7331785FA15E0864 /* Pods.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		BFFA71D41AAC406100EE9DD1 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -307,18 +242,6 @@
 			path = "Game Selection";
 			sourceTree = "<group>";
 		};
-		BF6BB23D1BB73FE800CCF94A /* DeltaTV */ = {
-			isa = PBXGroup;
-			children = (
-				BF6BB23E1BB73FE800CCF94A /* AppDelegate.swift */,
-				BF6BB2421BB73FE800CCF94A /* Main.storyboard */,
-				BF6BB2401BB73FE800CCF94A /* GameSelectionViewController.swift */,
-				BF27CC901BCB156200A20D89 /* EmulationViewController.swift */,
-				BF8624621BB7400E00C12EEE /* Supporting Files */,
-			);
-			path = DeltaTV;
-			sourceTree = "<group>";
-		};
 		BF762EA91BC1B044002C8866 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -342,14 +265,6 @@
 				BF912E481C5CB5D50041527C /* Segues */,
 			);
 			name = "Pause Menu";
-			sourceTree = "<group>";
-		};
-		BF8624621BB7400E00C12EEE /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				BF6BB2471BB73FE800CCF94A /* Info.plist */,
-			);
-			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		BF912E481C5CB5D50041527C /* Segues */ = {
@@ -436,9 +351,8 @@
 		BFFA71CE1AAC406100EE9DD1 = {
 			isa = PBXGroup;
 			children = (
-				BF4566E31BC09026007BFA1A /* Common */,
 				BFFA71D91AAC406100EE9DD1 /* Delta */,
-				BF6BB23D1BB73FE800CCF94A /* DeltaTV */,
+				BF4566E31BC09026007BFA1A /* Common */,
 				BFEC732F1AAECCBD00650035 /* Resources */,
 				BF9F4FCD1AAD7B25004C9500 /* Frameworks */,
 				8BE785B0693C3F8A1EFE5741 /* Pods */,
@@ -450,7 +364,6 @@
 			isa = PBXGroup;
 			children = (
 				BFFA71D71AAC406100EE9DD1 /* Delta.app */,
-				BF6BB23C1BB73FE800CCF94A /* Delta.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -492,27 +405,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		BF6BB23B1BB73FE800CCF94A /* DeltaTV */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = BF6BB2481BB73FE800CCF94A /* Build configuration list for PBXNativeTarget "DeltaTV" */;
-			buildPhases = (
-				FD23FB814808B5A9F7E9F3B4 /* Check Pods Manifest.lock */,
-				BF6BB2381BB73FE800CCF94A /* Sources */,
-				BF6BB2391BB73FE800CCF94A /* Frameworks */,
-				BF6BB23A1BB73FE800CCF94A /* Resources */,
-				BF86248A1BB743FE00C12EEE /* Embed Frameworks */,
-				4A9958248324CBD7F74B810E /* Copy Pods Resources */,
-				A66DCF1EFE2838B14488E83E /* Embed Pods Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = DeltaTV;
-			productName = DeltaTV;
-			productReference = BF6BB23C1BB73FE800CCF94A /* Delta.app */;
-			productType = "com.apple.product-type.application";
-		};
 		BFFA71D61AAC406100EE9DD1 /* Delta */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = BFFA71F61AAC406100EE9DD1 /* Build configuration list for PBXNativeTarget "Delta" */;
@@ -544,15 +436,6 @@
 				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Riley Testut";
 				TargetAttributes = {
-					BF6BB23B1BB73FE800CCF94A = {
-						CreatedOnToolsVersion = 7.1;
-						DevelopmentTeam = 6XVY5G3U44;
-						SystemCapabilities = {
-							com.apple.GameControllers.appletvos = {
-								enabled = 1;
-							};
-						};
-					};
 					BFFA71D61AAC406100EE9DD1 = {
 						CreatedOnToolsVersion = 6.3;
 						DevelopmentTeam = 6XVY5G3U44;
@@ -578,22 +461,11 @@
 			projectRoot = "";
 			targets = (
 				BFFA71D61AAC406100EE9DD1 /* Delta */,
-				BF6BB23B1BB73FE800CCF94A /* DeltaTV */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		BF6BB23A1BB73FE800CCF94A /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				BF6BB2461BB73FE800CCF94A /* Assets.xcassets in Resources */,
-				BF6BB2441BB73FE800CCF94A /* Main.storyboard in Resources */,
-				BF353FF71C5D837600C1184C /* PauseMenu.storyboard in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		BFFA71D51AAC406100EE9DD1 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -610,21 +482,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		4A9958248324CBD7F74B810E /* Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		A5AEDE02D1134013AEC5BCB6 /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -638,21 +495,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		A66DCF1EFE2838B14488E83E /* Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		AA90DB8D72559A44728B98F0 /* Copy Pods Resources */ = {
@@ -685,50 +527,9 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		FD23FB814808B5A9F7E9F3B4 /* Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		BF6BB2381BB73FE800CCF94A /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				BF6BB2411BB73FE800CCF94A /* GameSelectionViewController.swift in Sources */,
-				BF27CC8F1BCA010200A20D89 /* GamePickerController.swift in Sources */,
-				BF172AEC1C68986300C26774 /* NSManagedObjectContext+Conveniences.swift in Sources */,
-				BF7AE81F1C2E984300B1B5BC /* GridCollectionViewCell.swift in Sources */,
-				BF7AE8251C2E984300B1B5BC /* GridCollectionViewLayout.swift in Sources */,
-				BFDE393D1BC0CEDF003F72E8 /* Game.swift in Sources */,
-				BFC2731B1BE6152200D22B05 /* GameCollection.swift in Sources */,
-				BF762E9F1BC19D31002C8866 /* DatabaseManager.swift in Sources */,
-				BF27CC911BCB156200A20D89 /* EmulationViewController.swift in Sources */,
-				BFB141191BE46934004FBF46 /* GameCollectionViewDataSource.swift in Sources */,
-				BF1FB1871C5EE643007E2494 /* SaveState.swift in Sources */,
-				BFF1E5651BE04CAF000E9EF6 /* BoxArtImageView.swift in Sources */,
-				BF353FFA1C5D870B00C1184C /* PauseItem.swift in Sources */,
-				BF3540061C5DA70400C1184C /* SaveStatesViewController.swift in Sources */,
-				BF353FF31C5D7FB000C1184C /* PauseViewController.swift in Sources */,
-				BF6BB23F1BB73FE800CCF94A /* AppDelegate.swift in Sources */,
-				BF4566E91BC090B6007BFA1A /* Model.xcdatamodeld in Sources */,
-				BF3540091C5DAFAD00C1184C /* PauseTransitionCoordinator.swift in Sources */,
-				BF762EAC1BC1B076002C8866 /* NSManagedObject+Conveniences.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		BFFA71D31AAC406100EE9DD1 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -785,15 +586,6 @@
 			name = PauseMenu.storyboard;
 			sourceTree = "<group>";
 		};
-		BF6BB2421BB73FE800CCF94A /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				BF6BB2431BB73FE800CCF94A /* Base */,
-			);
-			name = Main.storyboard;
-			path = .;
-			sourceTree = "<group>";
-		};
 		BFFA71E01AAC406100EE9DD1 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -815,40 +607,6 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		BF6BB2491BB73FE800CCF94A /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0340C4EC8B47535482F7F1BB /* Pods.debug.xcconfig */;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "iPhone Developer";
-				INFOPLIST_FILE = "DeltaTV/Supporting Files/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PROVISIONING_PROFILE = "";
-				SDKROOT = appletvos;
-				TARGETED_DEVICE_FAMILY = 3;
-				TVOS_DEPLOYMENT_TARGET = 9.0;
-			};
-			name = Debug;
-		};
-		BF6BB24A1BB73FE800CCF94A /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 685E0D2F62E4246995A02970 /* Pods.release.xcconfig */;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "iPhone Distribution";
-				INFOPLIST_FILE = "DeltaTV/Supporting Files/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PROVISIONING_PROFILE = "";
-				SDKROOT = appletvos;
-				TARGETED_DEVICE_FAMILY = 3;
-				TVOS_DEPLOYMENT_TARGET = 9.0;
-			};
-			name = Release;
-		};
 		BFFA71F41AAC406100EE9DD1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -968,15 +726,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		BF6BB2481BB73FE800CCF94A /* Build configuration list for PBXNativeTarget "DeltaTV" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				BF6BB2491BB73FE800CCF94A /* Debug */,
-				BF6BB24A1BB73FE800CCF94A /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		BFFA71D21AAC406100EE9DD1 /* Build configuration list for PBXProject "Delta" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
