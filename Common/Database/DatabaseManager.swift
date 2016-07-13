@@ -112,7 +112,7 @@ class DatabaseManager
                 }
                 
                 let game = Game.insertIntoManagedObjectContext(managedObjectContext)
-                game.name = try! URL.deletingPathExtension()?.lastPathComponent ?? NSLocalizedString("Game", comment: "")
+                game.name = try! URL.deletingPathExtension().lastPathComponent ?? NSLocalizedString("Game", comment: "")
                 game.identifier = identifier
                 game.filename = filename
                 

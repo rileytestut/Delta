@@ -30,7 +30,7 @@ class CheatsViewController: UITableViewController
     
     private var backgroundView: RSTBackgroundView!
     
-    private var fetchedResultsController: NSFetchedResultsController<AnyObject>!
+    private var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>!
 }
 
 extension CheatsViewController
@@ -222,7 +222,7 @@ extension CheatsViewController
     {
         let cheat = self.fetchedResultsController.object(at: indexPath) as! Cheat
         
-        let deleteAction = UITableViewRowAction(style: UITableViewRowActionStyle(), title: NSLocalizedString("Delete", comment: "")) { (action, indexPath) in
+        let deleteAction = UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: "")) { (action, indexPath) in
             self.deleteCheat(cheat)
         }
         

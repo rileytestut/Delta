@@ -20,7 +20,7 @@ class GameCollectionViewDataSource: NSObject
     
     var cellConfigurationHandler: ((GridCollectionViewCell, Game) -> Void)?
     
-    private(set) var fetchedResultsController: NSFetchedResultsController = NSFetchedResultsController()
+    private(set) var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult> = NSFetchedResultsController<NSFetchRequestResult>()
     
     private var prototypeCell = GridCollectionViewCell()
     

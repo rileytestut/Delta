@@ -14,7 +14,7 @@ class PauseStoryboardSegue: UIStoryboardSegue
     
     override init(identifier: String?, source: UIViewController, destination: UIViewController)
     {
-        self.presentationController = PausePresentationController(presentedViewController: destination, presentingViewController: source)
+        self.presentationController = PausePresentationController(presentedViewController: destination, presenting: source)
         
         super.init(identifier: identifier, source: source, destination: destination)
     }

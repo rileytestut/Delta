@@ -26,13 +26,15 @@ extension SaveState
         case previewGame
     }
     
-    @objc enum Type: Int16
+    @objc enum `Type`: Int16
     {
         case auto
         case general
         case locked
     }
 }
+
+
 
 @objc(SaveState)
 class SaveState: NSManagedObject, SaveStateType

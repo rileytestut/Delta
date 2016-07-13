@@ -25,7 +25,7 @@ public class LoadImageOperation: RSTOperation
         }
     }
     
-    public var imageCache: Cache<AnyObject, AnyObject>? {
+    public var imageCache: Cache<NSURL, UIImage>? {
         didSet {
             // Ensures if an image is cached, it will be returned immediately, to prevent temporary flash of placeholder image
             self.isImmediate = self.imageCache?.object(forKey: self.URL) != nil
@@ -48,7 +48,7 @@ public extension LoadImageOperation
     {
         guard !self.isCancelled else { return }
         
-        if let cachedImage = self.imageCache?.object(forKey: self.URL) as? UIImage
+        if let cachedImage = self.imageCache?.object(forKey: self.URL)
         {
             self.image = cachedImage
             return

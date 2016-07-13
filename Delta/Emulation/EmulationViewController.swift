@@ -22,7 +22,7 @@ private struct DispatchSemaphore: Hashable
     
     init(value: Int)
     {
-        self.semaphore = DispatchSemaphore(value: value)
+        self.semaphore = Dispatch.DispatchSemaphore(value: value)
     }
 }
 
@@ -97,8 +97,8 @@ class EmulationViewController: UIViewController
         
         super.init(coder: aDecoder)
                 
-        NotificationCenter.default.addObserver(self, selector: #selector(EmulationViewController.updateControllers), name: ExternalControllerDidConnectNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(EmulationViewController.updateControllers), name: ExternalControllerDidDisconnectNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(EmulationViewController.updateControllers), name: NSNotification.Name(rawValue: ExternalControllerDidConnectNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(EmulationViewController.updateControllers), name: NSNotification.Name(rawValue: ExternalControllerDidDisconnectNotification), object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(EmulationViewController.willResignActive(_:)), name: NSNotification.Name.UIApplicationWillResignActive, object: UIApplication.shared())
          NotificationCenter.default.addObserver(self, selector: #selector(EmulationViewController.didBecomeActive(_:)), name: NSNotification.Name.UIApplicationDidBecomeActive, object: UIApplication.shared())
@@ -250,9 +250,9 @@ class EmulationViewController: UIViewController
             sustainButtonsItem.selected = self.sustainedInputs[ObjectIdentifier(gameController)]?.count > 0
             
             var fastForwardItem = PauseItem(image: UIImage(named: "FastForward")!, text: NSLocalizedString("Fast Forward", comment: ""), action: { [unowned self] item in
-                self.emulatorCore.rate = item.selected ? self.emulatorCore.supportedRates.end : self.emulatorCore.supportedRates.start
+                self.emulatorCore.rate = item.selected ? self.emulatorCore.supportedRates.upperBound : self.emulatorCore.supportedRates.lowerBound
             })
-            fastForwardItem.selected = self.emulatorCore.rate == self.emulatorCore.supportedRates.start ? false : true
+            fastForwardItem.selected = self.emulatorCore.rate == self.emulatorCore.supportedRates.lowerBound ? false : true
             
             pauseViewController.items = [saveStateItem, loadStateItem, cheatCodesItem, fastForwardItem, sustainButtonsItem]
             
@@ -512,12 +512,10 @@ extension EmulationViewController: SaveStatesViewControllerDelegate
             }
         }
         
-        if let outputImage = self.gameView.outputImage
+        if let outputImage = self.gameView.outputImage, let quartzImage = self.context.createCGImage(outputImage, from: outputImage.extent)
         {
-            let quartzImage = self.context.createCGImage(outputImage, from: outputImage.extent)
-            
             let image = UIImage(cgImage: quartzImage)
-            try? UIImagePNGRepresentation(image)?.write(to: saveState.imageFileURL, options: [.dataWritingAtomic])
+            try! UIImagePNGRepresentation(image)?.write(to: saveState.imageFileURL, options: [.atomicWrite])
         }
         
         saveState.modifiedDate = Date()

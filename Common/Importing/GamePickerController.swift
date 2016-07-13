@@ -53,11 +53,11 @@ class GamePickerController: NSObject
         
         let importAction = UIAlertAction(title: NSLocalizedString("Import", comment: ""), style: .default) { action in
             
-            let documentsDirectoryURL = try! DatabaseManager.databaseDirectoryURL.deletingLastPathComponent
+            let documentsDirectoryURL = try! DatabaseManager.databaseDirectoryURL.deletingLastPathComponent()
             
             do
             {
-                let contents = try FileManager.default.contentsOfDirectory(at: documentsDirectoryURL!, includingPropertiesForKeys: nil, options: .skipsHiddenFiles)
+                let contents = try FileManager.default.contentsOfDirectory(at: documentsDirectoryURL, includingPropertiesForKeys: nil, options: .skipsHiddenFiles)
                 
                 let managedObjectContext = DatabaseManager.sharedManager.backgroundManagedObjectContext()
                 managedObjectContext.perform() {

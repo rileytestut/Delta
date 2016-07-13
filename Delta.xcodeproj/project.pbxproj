@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BF02BD001D361BD1000892F2 /* NSFetchedResultsController+Conveniences.m in Sources */ = {isa = PBXBuildFile; fileRef = BF02BCFF1D361BD1000892F2 /* NSFetchedResultsController+Conveniences.m */; };
 		BF0418141D01E93400E85BCF /* GBADeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF0418131D01E93400E85BCF /* GBADeltaCore.framework */; };
 		BF0418151D01E93400E85BCF /* GBADeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BF0418131D01E93400E85BCF /* GBADeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF04A5A31CF8E61C00B4A267 /* UIViewController+PeekPop.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF04A5A21CF8E61C00B4A267 /* UIViewController+PeekPop.swift */; };
@@ -51,7 +52,6 @@
 		BFB141181BE46934004FBF46 /* GameCollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB141171BE46934004FBF46 /* GameCollectionViewDataSource.swift */; };
 		BFC2731A1BE6152200D22B05 /* GameCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC273171BE6152200D22B05 /* GameCollection.swift */; };
 		BFC9B7391CEFCD34008629BB /* CheatsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC9B7381CEFCD34008629BB /* CheatsViewController.swift */; };
-		BFC9B73B1CEFD438008629BB /* NSFetchedResultsController+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC9B73A1CEFD438008629BB /* NSFetchedResultsController+Conveniences.swift */; };
 		BFDB28451BC9DA7B001D0C83 /* GamePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDB28441BC9DA7B001D0C83 /* GamePickerController.swift */; };
 		BFDE393C1BC0CEDF003F72E8 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDE39391BC0CEDF003F72E8 /* Game.swift */; };
 		BFE704F51CEA426E0058BAC8 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22506DA00971C4300AF90A35 /* Pods.framework */; };
@@ -86,6 +86,8 @@
 		0340C4EC8B47535482F7F1BB /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		22506DA00971C4300AF90A35 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		685E0D2F62E4246995A02970 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		BF02BCFE1D361BD1000892F2 /* NSFetchedResultsController+Conveniences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFetchedResultsController+Conveniences.h"; sourceTree = "<group>"; };
+		BF02BCFF1D361BD1000892F2 /* NSFetchedResultsController+Conveniences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFetchedResultsController+Conveniences.m"; sourceTree = "<group>"; };
 		BF0418131D01E93400E85BCF /* GBADeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = GBADeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF04A5A21CF8E61C00B4A267 /* UIViewController+PeekPop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+PeekPop.swift"; sourceTree = "<group>"; };
 		BF090CF11B490D8300DCAB45 /* Delta-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Delta-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -131,7 +133,6 @@
 		BFC134E01AAD82460087AD7B /* SNESDeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SNESDeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFC273171BE6152200D22B05 /* GameCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameCollection.swift; sourceTree = "<group>"; };
 		BFC9B7381CEFCD34008629BB /* CheatsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CheatsViewController.swift; path = "Pause Menu/Cheats/CheatsViewController.swift"; sourceTree = "<group>"; };
-		BFC9B73A1CEFD438008629BB /* NSFetchedResultsController+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSFetchedResultsController+Conveniences.swift"; sourceTree = "<group>"; };
 		BFDB28441BC9DA7B001D0C83 /* GamePickerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GamePickerController.swift; sourceTree = "<group>"; };
 		BFDE39391BC0CEDF003F72E8 /* Game.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 		BFEC732C1AAECC4A00650035 /* Roxas.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Roxas.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -247,7 +248,8 @@
 			children = (
 				BF762EAA1BC1B076002C8866 /* NSManagedObject+Conveniences.swift */,
 				BF172AEA1C68986300C26774 /* NSManagedObjectContext+Conveniences.swift */,
-				BFC9B73A1CEFD438008629BB /* NSFetchedResultsController+Conveniences.swift */,
+				BF02BCFE1D361BD1000892F2 /* NSFetchedResultsController+Conveniences.h */,
+				BF02BCFF1D361BD1000892F2 /* NSFetchedResultsController+Conveniences.m */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -558,10 +560,10 @@
 				BF762EAB1BC1B076002C8866 /* NSManagedObject+Conveniences.swift in Sources */,
 				BFC9B7391CEFCD34008629BB /* CheatsViewController.swift in Sources */,
 				BF353FFF1C5DA3C500C1184C /* PausePresentationController.swift in Sources */,
+				BF02BD001D361BD1000892F2 /* NSFetchedResultsController+Conveniences.m in Sources */,
 				BF7AE80A1C2E8C7600B1B5BC /* UIColor+Delta.swift in Sources */,
 				BF762E9E1BC19D31002C8866 /* DatabaseManager.swift in Sources */,
 				BF090CF41B490D8300DCAB45 /* UIDevice+Vibration.m in Sources */,
-				BFC9B73B1CEFD438008629BB /* NSFetchedResultsController+Conveniences.swift in Sources */,
 				BF797A2D1C2D339F00F1A000 /* UILabel+FontSize.swift in Sources */,
 				BF65E8631CEE5C6A00CD3247 /* Cheat.swift in Sources */,
 				BF3540021C5DA3D500C1184C /* PauseStoryboardSegue.swift in Sources */,

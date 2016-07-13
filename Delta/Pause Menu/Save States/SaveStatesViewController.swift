@@ -51,10 +51,10 @@ class SaveStatesViewController: UICollectionViewController
     private var prototypeCellWidthConstraint: NSLayoutConstraint!
     private var prototypeHeader = SaveStatesCollectionHeaderView()
     
-    private var fetchedResultsController: NSFetchedResultsController<AnyObject>!
+    private var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>!
     
     private let imageOperationQueue = RSTOperationQueue()
-    private let imageCache = Cache()
+    private let imageCache = Cache<NSURL, UIImage>()
     
     private var currentGameState: SaveStateType?
     private var selectedSaveState: SaveState?

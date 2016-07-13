@@ -19,7 +19,7 @@ class GamesViewController: UIViewController
     private var backgroundView: RSTBackgroundView!
     private var pageControl: UIPageControl!
     
-    private let fetchedResultsController: NSFetchedResultsController<AnyObject>
+    private let fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         fatalError("initWithNibName: not implemented")

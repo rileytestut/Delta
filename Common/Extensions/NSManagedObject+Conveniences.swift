@@ -28,12 +28,6 @@ extension NSManagedObject
     
     // MARK: - Fetches -
     
-    class func fetchRequest() -> NSFetchRequest<AnyObject>
-    {
-        let fetchRequest = NSFetchRequest(entityName: self.entityName)
-        return fetchRequest
-    }
-    
     class func instancesInManagedObjectContext<T: NSManagedObject>(_ managedObjectContext: NSManagedObjectContext, type: T.Type) -> [T]
     {
         return self.instancesWithPredicate(nil, inManagedObjectContext: managedObjectContext, type: type)
