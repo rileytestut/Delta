@@ -70,13 +70,13 @@ class EmulationViewController: UIViewController
     
     //MARK: - Private Properties
     private var pauseViewController: PauseViewController?
-    private var pausingGameController: GameControllerProtocol?
+    private var pausingGameController: GameController?
     
     private var context = CIContext(options: [kCIContextWorkingColorSpace: NSNull()])
 
     private var updateSemaphores = Set<DispatchSemaphore>()
     
-    private var sustainedInputs = [ObjectIdentifier: [InputType]]()
+    private var sustainedInputs = [ObjectIdentifier: [Input]]()
     private var reactivateSustainInputsQueue: OperationQueue
     private var choosingSustainedButtons = false
     
@@ -97,8 +97,8 @@ class EmulationViewController: UIViewController
         
         super.init(coder: aDecoder)
                 
-        NotificationCenter.default.addObserver(self, selector: #selector(EmulationViewController.updateControllers), name: NSNotification.Name(rawValue: ExternalControllerDidConnectNotification), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(EmulationViewController.updateControllers), name: NSNotification.Name(rawValue: ExternalControllerDidDisconnectNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(EmulationViewController.updateControllers), name: .externalControllerDidConnect, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(EmulationViewController.updateControllers), name: .externalControllerDidDisconnect, object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(EmulationViewController.willResignActive(_:)), name: NSNotification.Name.UIApplicationWillResignActive, object: UIApplication.shared())
          NotificationCenter.default.addObserver(self, selector: #selector(EmulationViewController.didBecomeActive(_:)), name: NSNotification.Name.UIApplicationDidBecomeActive, object: UIApplication.shared())
@@ -107,7 +107,7 @@ class EmulationViewController: UIViewController
     deinit
     {
         // To ensure the emulation stops when cancelling a peek/preview gesture
-        self.emulatorCore.stopEmulation()
+        self.emulatorCore.stop()
     }
     
     //MARK: - Overrides
@@ -124,14 +124,13 @@ class EmulationViewController: UIViewController
         self.controllerViewHeightConstraint.constant = 0
         
         self.gameView.backgroundColor = UIColor.clear()
-        self.emulatorCore.addGameView(self.gameView)
+        self.emulatorCore.add(self.gameView)
         
         self.backgroundView.textLabel.text = NSLocalizedString("Select Buttons to Sustain", comment: "")
         self.backgroundView.detailTextLabel.text = NSLocalizedString("Press the Menu button when finished.", comment: "")
         
-        let controllerSkin = ControllerSkin.defaultControllerSkinForGameUTI(self.game.typeIdentifier)
+        let controllerSkin = ControllerSkin.standardControllerSkin(for: self.game.type)
         
-        self.controllerView.containerView = self.view
         self.controllerView.controllerSkin = controllerSkin
         
         self.updateControllers()
@@ -148,7 +147,7 @@ class EmulationViewController: UIViewController
         switch self.emulatorCore.state
         {
         case .stopped:
-            self.emulatorCore.startEmulation()
+            self.emulatorCore.start()
             self.updateCheats()
             
         case .running: break
@@ -214,7 +213,7 @@ class EmulationViewController: UIViewController
         
         if segue.identifier == "pauseSegue"
         {
-            guard let gameController = sender as? GameControllerProtocol else { fatalError("sender for pauseSegue must be the game controller that pressed the Menu button") }
+            guard let gameController = sender as? GameController else { fatalError("sender for pauseSegue must be the game controller that pressed the Menu button") }
             
             self.pausingGameController = gameController
             
@@ -250,9 +249,9 @@ class EmulationViewController: UIViewController
             sustainButtonsItem.selected = self.sustainedInputs[ObjectIdentifier(gameController)]?.count > 0
             
             var fastForwardItem = PauseItem(image: UIImage(named: "FastForward")!, text: NSLocalizedString("Fast Forward", comment: ""), action: { [unowned self] item in
-                self.emulatorCore.rate = item.selected ? self.emulatorCore.supportedRates.upperBound : self.emulatorCore.supportedRates.lowerBound
+                self.emulatorCore.rate = item.selected ? self.emulatorCore.configuration.supportedRates.upperBound : self.emulatorCore.configuration.supportedRates.lowerBound
             })
-            fastForwardItem.selected = self.emulatorCore.rate == self.emulatorCore.supportedRates.lowerBound ? false : true
+            fastForwardItem.selected = self.emulatorCore.rate == self.emulatorCore.configuration.supportedRates.lowerBound ? false : true
             
             pauseViewController.items = [saveStateItem, loadStateItem, cheatCodesItem, fastForwardItem, sustainButtonsItem]
             
@@ -309,14 +308,14 @@ private extension EmulationViewController
     
     func pauseEmulation() -> Bool
     {
-        return self.emulatorCore.pauseEmulation()
+        return self.emulatorCore.pause()
     }
     
     func resumeEmulation() -> Bool
     {
         guard !self.choosingSustainedButtons && self.pauseViewController == nil else { return false }
         
-        return self.emulatorCore.resumeEmulation()
+        return self.emulatorCore.resume()
     }
     
     func emulatorCoreDidUpdate(_ emulatorCore: EmulatorCore)
@@ -341,17 +340,17 @@ private extension EmulationViewController
             self.controllerView.playerIndex = index
         }
         
-        var controllers = [GameControllerProtocol]()
+        var controllers = [GameController]()
         controllers.append(self.controllerView)
         
         // We need to map each item as a GameControllerProtocol due to a Swift bug
-        controllers.append(contentsOf: ExternalControllerManager.sharedManager.connectedControllers.map { $0 as GameControllerProtocol })
+        controllers.append(contentsOf: ExternalControllerManager.shared.connectedControllers.map { $0 as GameController })
         
         for controller in controllers
         {
             if let index = controller.playerIndex
             {
-                self.emulatorCore.setGameController(controller, atIndex: index)
+                self.emulatorCore.setGameController(controller, at: index)
                 controller.addReceiver(self)
             }
             else
@@ -385,7 +384,7 @@ private extension EmulationViewController
         }
     }
     
-    func resetSustainedInputs(forGameController gameController: GameControllerProtocol)
+    func resetSustainedInputs(forGameController gameController: GameController)
     {
         if let previousInputs = self.sustainedInputs[ObjectIdentifier(gameController)]
         {
@@ -405,7 +404,7 @@ private extension EmulationViewController
         self.sustainedInputs[ObjectIdentifier(gameController)] = []
     }
     
-    func addSustainedInput(_ input: InputType, gameController: GameControllerProtocol)
+    func addSustainedInput(_ input: Input, gameController: GameController)
     {
         var inputs = self.sustainedInputs[ObjectIdentifier(gameController)] ?? []
         
@@ -424,7 +423,7 @@ private extension EmulationViewController
         receivers.forEach { gameController.addReceiver($0) }
     }
     
-    func reactivateSustainedInput(_ input: InputType, gameController: GameControllerProtocol)
+    func reactivateSustainedInput(_ input: Input, gameController: GameController)
     {
         // These MUST be performed serially, or else Bad Things Happen™ if multiple inputs are reactivated at once
         self.reactivateSustainInputsQueue.addOperation {
@@ -492,7 +491,7 @@ extension EmulationViewController: SaveStatesViewControllerDelegate
         
         var updatingExistingSaveState = true
         
-        self.emulatorCore.saveSaveState { temporarySaveState in
+        self.emulatorCore.save { (temporarySaveState) in
             do
             {
                 if FileManager.default.fileExists(atPath: filepath)
@@ -528,15 +527,15 @@ extension EmulationViewController: SaveStatesViewControllerDelegate
         }
     }
     
-    func saveStatesViewController(_ saveStatesViewController: SaveStatesViewController, loadSaveState saveState: SaveStateType)
+    func saveStatesViewController(_ saveStatesViewController: SaveStatesViewController, loadSaveState saveState: SaveStateProtocol)
     {
         do
         {
-            try self.emulatorCore.loadSaveState(saveState)
+            try self.emulatorCore.load(saveState)
         }
         catch EmulatorCore.SaveStateError.doesNotExist
         {
-            print("Save State \(saveState.name) does not exist.")
+            print("Save State does not exist.")
         }
         catch let error as NSError
         {
@@ -560,12 +559,12 @@ extension EmulationViewController: CheatsViewControllerDelegate
     
     func cheatsViewController(_ cheatsViewController: CheatsViewController, didActivateCheat cheat: Cheat) throws
     {
-        try self.emulatorCore.activateCheat(cheat)
+        try self.emulatorCore.activate(cheat)
     }
     
     func cheatsViewController(_ cheatsViewController: CheatsViewController, didDeactivateCheat cheat: Cheat)
     {
-        self.emulatorCore.deactivateCheat(cheat)
+        self.emulatorCore.deactivate(cheat)
     }
     
     private func updateCheats()
@@ -590,7 +589,7 @@ extension EmulationViewController: CheatsViewControllerDelegate
                 {
                     do
                     {
-                        try self.emulatorCore.activateCheat(cheat)
+                        try self.emulatorCore.activate(cheat)
                     }
                     catch EmulatorCore.CheatError.invalid
                     {
@@ -604,7 +603,7 @@ extension EmulationViewController: CheatsViewControllerDelegate
                 }
                 else
                 {
-                    self.emulatorCore.deactivateCheat(cheat)
+                    self.emulatorCore.deactivate(cheat)
                 }
             }
             
@@ -634,10 +633,10 @@ private extension EmulationViewController
 
 //MARK: - <GameControllerReceiver> -
 /// <GameControllerReceiver>
-extension EmulationViewController: GameControllerReceiverProtocol
+extension EmulationViewController: GameControllerReceiver
 {
-    func gameController(_ gameController: GameControllerProtocol, didActivateInput input: InputType)
-    {        
+    func gameController(_ gameController: GameController, didActivate input: Input)
+    {
         if gameController is ControllerView && UIDevice.current().isVibrationSupported
         {
             UIDevice.current().vibrate()
@@ -673,7 +672,7 @@ extension EmulationViewController: GameControllerReceiverProtocol
         }
     }
     
-    func gameController(_ gameController: GameControllerProtocol, didDeactivateInput input: InputType)
+    func gameController(_ gameController: GameController, didDeactivate input: Input)
     {
         guard let input = input as? ControllerInput else { return }
         

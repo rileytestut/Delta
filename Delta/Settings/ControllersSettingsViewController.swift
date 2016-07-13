@@ -39,7 +39,7 @@ class ControllersSettingsViewController: UITableViewController
         }
     }
     
-    private var connectedControllers = ExternalControllerManager.sharedManager.connectedControllers.sorted(isOrderedBefore: { $0.playerIndex ?? NSIntegerMax < $1.playerIndex ?? NSIntegerMax })
+    private var connectedControllers = ExternalControllerManager.shared.connectedControllers.sorted(isOrderedBefore: { $0.playerIndex ?? NSIntegerMax < $1.playerIndex ?? NSIntegerMax })
     
     private lazy var localDeviceController: LocalDeviceController = {
         let device = LocalDeviceController()
@@ -52,8 +52,8 @@ class ControllersSettingsViewController: UITableViewController
     {
         super.init(coder: aDecoder)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(ControllersSettingsViewController.externalControllerDidConnect(_:)), name: NSNotification.Name(rawValue: ExternalControllerDidConnectNotification), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(ControllersSettingsViewController.externalControllerDidDisconnect(_:)), name: NSNotification.Name(rawValue: ExternalControllerDidDisconnectNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ControllersSettingsViewController.externalControllerDidConnect(_:)), name: .externalControllerDidConnect, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ControllersSettingsViewController.externalControllerDidDisconnect(_:)), name: .externalControllerDidDisconnect, object: nil)
     }
 
     override func viewDidLoad()

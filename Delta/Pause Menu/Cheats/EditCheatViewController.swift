@@ -87,7 +87,7 @@ extension EditCheatViewController
             
             name = self.mutableCheat.name
             type = self.mutableCheat.type
-            code = self.mutableCheat.code.sanitized(characterSet: self.selectedCheatFormat.allowedCodeCharacters)
+            code = self.mutableCheat.code.sanitized(with: self.selectedCheatFormat.allowedCodeCharacters)
         }
 
         
@@ -266,7 +266,7 @@ private extension EditCheatViewController
             
             self.mutableCheat.name = self.nameTextField.text ?? ""
             self.mutableCheat.type = self.selectedCheatFormat.type
-            self.mutableCheat.code = self.codeTextView.text.formatted(cheatFormat: self.selectedCheatFormat)
+            self.mutableCheat.code = self.codeTextView.text.formatted(with: self.selectedCheatFormat)
             
             do
             {
@@ -386,7 +386,7 @@ extension EditCheatViewController: UITextViewDelegate
             return false
         }
         
-        let sanitizedText = text.sanitized(characterSet: self.selectedCheatFormat.allowedCodeCharacters)
+        let sanitizedText = text.sanitized(with: self.selectedCheatFormat.allowedCodeCharacters)
         
         guard sanitizedText != text else { return true }
         

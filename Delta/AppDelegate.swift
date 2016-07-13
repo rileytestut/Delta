@@ -30,7 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         semaphore.wait(timeout: DispatchTime.distantFuture)
         
         // Controllers
-        ExternalControllerManager.sharedManager.startMonitoringExternalControllers()
+        ExternalControllerManager.shared.startMonitoringExternalControllers()
                 
         return true
     }

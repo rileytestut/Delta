@@ -132,12 +132,12 @@ class GamesViewController: UIViewController
                                 
                 if let saveState = game.previewSaveState
                 {
-                    destinationViewController.emulatorCore.startEmulation()
-                    destinationViewController.emulatorCore.pauseEmulation()
+                    destinationViewController.emulatorCore.start()
+                    destinationViewController.emulatorCore.pause()
                     
                     do
                     {
-                        try destinationViewController.emulatorCore.loadSaveState(saveState)
+                        try destinationViewController.emulatorCore.load(saveState)
                     }
                     catch EmulatorCore.SaveStateError.doesNotExist
                     {

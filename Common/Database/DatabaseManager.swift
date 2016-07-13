@@ -119,12 +119,12 @@ class DatabaseManager
                 if let pathExtension = URL.pathExtension
                 {
                     let gameCollection = GameCollection.gameSystemCollectionForPathExtension(pathExtension, inManagedObjectContext: managedObjectContext)
-                    game.typeIdentifier = gameCollection.identifier
+                    game.type = GameType(rawValue: gameCollection.identifier)
                     game.gameCollections.insert(gameCollection)
                 }
                 else
                 {
-                    game.typeIdentifier = kUTTypeDeltaGame as String
+                    game.type = GameType.delta
                 }
                 
                 do

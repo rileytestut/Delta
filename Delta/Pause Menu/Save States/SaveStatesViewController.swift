@@ -16,7 +16,7 @@ protocol SaveStatesViewControllerDelegate: class
 {
     func saveStatesViewControllerActiveEmulatorCore(_ saveStatesViewController: SaveStatesViewController) -> EmulatorCore
     func saveStatesViewController(_ saveStatesViewController: SaveStatesViewController, updateSaveState saveState: SaveState)
-    func saveStatesViewController(_ saveStatesViewController: SaveStatesViewController, loadSaveState saveState: SaveStateType)
+    func saveStatesViewController(_ saveStatesViewController: SaveStatesViewController, loadSaveState saveState: SaveStateProtocol)
 }
 
 extension SaveStatesViewController
@@ -56,7 +56,7 @@ class SaveStatesViewController: UICollectionViewController
     private let imageOperationQueue = RSTOperationQueue()
     private let imageCache = Cache<NSURL, UIImage>()
     
-    private var currentGameState: SaveStateType?
+    private var currentGameState: SaveStateProtocol?
     private var selectedSaveState: SaveState?
     
     private let dateFormatter: DateFormatter
@@ -275,8 +275,8 @@ private extension SaveStatesViewController
         
         if emulatorCore.state == .stopped
         {
-            emulatorCore.startEmulation()
-            emulatorCore.pauseEmulation()
+            emulatorCore.start()
+            emulatorCore.pause()
         }
         
         self.delegate?.saveStatesViewController(self, loadSaveState: saveState)
@@ -425,16 +425,16 @@ private extension SaveStatesViewController
         emulatorCore.videoManager.enabled = false
         
         // Load the save state we stored a reference to
-        emulatorCore.startEmulation()
-        emulatorCore.pauseEmulation()
+        emulatorCore.start()
+        emulatorCore.pause()
         
         do
         {
-            try emulatorCore.loadSaveState(saveState)
+            try emulatorCore.load(saveState)
         }
         catch EmulatorCore.SaveStateError.doesNotExist
         {
-            print("Save State \(saveState.name) does not exist.")
+            print("Save State does not exist.")
         }
         catch let error as NSError
         {
@@ -533,7 +533,7 @@ extension SaveStatesViewController: UIViewControllerPreviewingDelegate
             // Store reference to current game state before we stop emulation so we can resume it if user decides to not load a save state
             if self.currentGameState == nil
             {
-                emulatorCore.saveSaveState() { saveState in
+                emulatorCore.save() { saveState in
                     
                     let fileURL = FileManager.uniqueTemporaryURL()
                     
@@ -546,18 +546,18 @@ extension SaveStatesViewController: UIViewControllerPreviewingDelegate
                         print(error)
                     }
                     
-                    self.currentGameState = DeltaCore.SaveState(name: nil, fileURL: fileURL)
+                    self.currentGameState = DeltaCore.SaveState(fileURL: fileURL, gameType: emulatorCore.game.type)
                 }
             }
             
-            emulatorCore.stopEmulation()
+            emulatorCore.stop()
             
-            emulationViewController.emulatorCore.startEmulation()
-            emulationViewController.emulatorCore.pauseEmulation()
+            emulationViewController.emulatorCore.start()
+            emulationViewController.emulatorCore.pause()
             
             do
             {
-                try emulationViewController.emulatorCore.loadSaveState(saveState)
+                try emulationViewController.emulatorCore.load(saveState)
             }
             catch EmulatorCore.SaveStateError.doesNotExist
             {
@@ -576,17 +576,17 @@ extension SaveStatesViewController: UIViewControllerPreviewingDelegate
     {
         let emulationViewController = viewControllerToCommit as! EmulationViewController
         
-        emulationViewController.emulatorCore.pauseEmulation()
-        emulationViewController.emulatorCore.saveSaveState() { saveState in
+        emulationViewController.emulatorCore.pause()
+        emulationViewController.emulatorCore.save() { saveState in
             
-            emulationViewController.emulatorCore.stopEmulation()
+            emulationViewController.emulatorCore.stop()
             
             let emulatorCore = self.delegate.saveStatesViewControllerActiveEmulatorCore(self)
             
             emulatorCore.audioManager.stop()
             
-            emulatorCore.startEmulation()
-            emulatorCore.pauseEmulation()
+            emulatorCore.start()
+            emulatorCore.pause()
             
             self.delegate.saveStatesViewController(self, loadSaveState: saveState)
             

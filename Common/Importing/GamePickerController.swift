@@ -61,7 +61,7 @@ class GamePickerController: NSObject
                 
                 let managedObjectContext = DatabaseManager.sharedManager.backgroundManagedObjectContext()
                 managedObjectContext.perform() {
-                    let gameURLs = contents.filter({ GameCollection.gameSystemCollectionForPathExtension($0.pathExtension, inManagedObjectContext: managedObjectContext).identifier != kUTTypeDeltaGame as String })
+                    let gameURLs = contents.filter({ GameCollection.gameSystemCollectionForPathExtension($0.pathExtension, inManagedObjectContext: managedObjectContext).identifier != GameType.delta.rawValue })
                     self.importGamesAtURLs(gameURLs)
                 }
                 

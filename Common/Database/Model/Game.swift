@@ -31,13 +31,13 @@ extension Game
 }
 
 @objc(Game)
-class Game: NSManagedObject
+class Game: NSManagedObject, GameProtocol
 {
     @NSManaged var artworkURL: URL?
     @NSManaged var filename: String
     @NSManaged var identifier: String
     @NSManaged var name: String
-    @NSManaged var typeIdentifier: String
+    @NSManaged var type: GameType
     
     @NSManaged var gameCollections: Set<GameCollection>
     @NSManaged var previewSaveState: SaveState?
@@ -48,22 +48,19 @@ class Game: NSManagedObject
     }
     
     var preferredFileExtension: String {
-        switch self.typeIdentifier
+        switch self.type
         {
-        case kUTTypeSNESGame as String as String: return "smc"
-        case kUTTypeGBAGame  as String as String: return "gba"
-        case kUTTypeDeltaGame as String as String: fallthrough
+        case GameType.snes: return "smc"
+        case GameType.gba: return "gba"
         default: return "delta"
         }
     }
 }
 
-extension Game: GameType {}
-
 extension Game
 {
     class func supportedTypeIdentifiers() -> Set<String>
     {
-        return [kUTTypeSNESGame as String, kUTTypeGBAGame as String]
+        return [GameType.snes.rawValue, GameType.gba.rawValue]
     }
 }

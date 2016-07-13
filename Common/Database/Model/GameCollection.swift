@@ -36,9 +36,9 @@ class GameCollection: NSManagedObject
         
         switch self.identifier
         {
-        case kUTTypeSNESGame as String as String: return NSLocalizedString("Super Nintendo Entertainment System", comment: "")
-        case kUTTypeGBAGame  as String as String: return NSLocalizedString("Game Boy Advance", comment: "")
-        case kUTTypeDeltaGame as String as String: return NSLocalizedString("Unsupported Games", comment: "")
+        case GameType.snes.rawValue: return NSLocalizedString("Super Nintendo Entertainment System", comment: "")
+        case GameType.gba.rawValue: return NSLocalizedString("Game Boy Advance", comment: "")
+        case GameType.delta.rawValue: return NSLocalizedString("Unsupported Games", comment: "")
         default: return NSLocalizedString("Unknown", comment: "")
         }
     }
@@ -47,9 +47,9 @@ class GameCollection: NSManagedObject
         
         switch self.identifier
         {
-        case kUTTypeSNESGame as String as String: return NSLocalizedString("SNES", comment: "")
-        case kUTTypeGBAGame  as String as String: return NSLocalizedString("GBA", comment: "")
-        case kUTTypeDeltaGame as String as String: return NSLocalizedString("Unsupported", comment: "")
+        case GameType.snes.rawValue as String as String: return NSLocalizedString("SNES", comment: "")
+        case GameType.gba.rawValue  as String as String: return NSLocalizedString("GBA", comment: "")
+        case GameType.delta.rawValue as String as String: return NSLocalizedString("Unsupported", comment: "")
         default: return NSLocalizedString("Unknown", comment: "")
         }
     }
@@ -64,15 +64,15 @@ class GameCollection: NSManagedObject
         case "smc": fallthrough
         case "sfc": fallthrough
         case "fig":
-            identifier = kUTTypeSNESGame as String
+            identifier = GameType.snes.rawValue
             index = 1990
             
         case "gba":
-            identifier = kUTTypeGBAGame as String
+            identifier = GameType.gba.rawValue
             index = 2001
             
         default:
-            identifier = kUTTypeDeltaGame as String
+            identifier = GameType.delta.rawValue
             index = Int16(INT16_MAX)
         }
         

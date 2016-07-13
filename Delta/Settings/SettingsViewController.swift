@@ -25,8 +25,8 @@ class SettingsViewController: UITableViewController
     {
         super.init(coder: aDecoder)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(SettingsViewController.externalControllerDidConnect(_:)), name: NSNotification.Name(rawValue: ExternalControllerDidConnectNotification), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(SettingsViewController.externalControllerDidDisconnect(_:)), name: NSNotification.Name(rawValue: ExternalControllerDidDisconnectNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(SettingsViewController.externalControllerDidConnect(_:)), name: .externalControllerDidConnect, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(SettingsViewController.externalControllerDidDisconnect(_:)), name: .externalControllerDidDisconnect, object: nil)
     }
     
     override func viewDidLoad()
@@ -96,9 +96,9 @@ extension SettingsViewController
             {
                 cell.detailTextLabel?.text = UIDevice.current().name
             }
-            else if let index = ExternalControllerManager.sharedManager.connectedControllers.index(where: { $0.playerIndex == (indexPath as NSIndexPath).row })
+            else if let index = ExternalControllerManager.shared.connectedControllers.index(where: { $0.playerIndex == (indexPath as NSIndexPath).row })
             {
-                let controller = ExternalControllerManager.sharedManager.connectedControllers[index]
+                let controller = ExternalControllerManager.shared.connectedControllers[index]
                 cell.detailTextLabel?.text = controller.name
             }
             else

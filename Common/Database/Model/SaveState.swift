@@ -37,7 +37,7 @@ extension SaveState
 
 
 @objc(SaveState)
-class SaveState: NSManagedObject, SaveStateType
+class SaveState: NSManagedObject, SaveStateProtocol
 {
     @NSManaged var name: String?
     @NSManaged var modifiedDate: Date
@@ -62,6 +62,10 @@ class SaveState: NSManagedObject, SaveStateType
         let imageFilename = (self.filename as NSString).deletingPathExtension + ".png"
         let imageFileURL = try! DatabaseManager.saveStatesDirectoryURLForGame(self.game).appendingPathComponent(imageFilename)
         return imageFileURL
+    }
+    
+    var gameType: GameType {
+        return self.game.type
     }
 }
 

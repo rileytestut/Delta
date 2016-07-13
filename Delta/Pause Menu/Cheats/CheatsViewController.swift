@@ -148,7 +148,7 @@ private extension CheatsViewController
     {
         let editCheatViewController = self.storyboard!.instantiateViewController(withIdentifier: "editCheatViewController") as! EditCheatViewController
         editCheatViewController.delegate = self
-        editCheatViewController.supportedCheatFormats = self.delegate.cheatsViewControllerActiveEmulatorCore(self).supportedCheatFormats
+        editCheatViewController.supportedCheatFormats = self.delegate.cheatsViewControllerActiveEmulatorCore(self).configuration.supportedCheatFormats
         editCheatViewController.cheat = cheat
         editCheatViewController.game = self.delegate.cheatsViewControllerActiveEmulatorCore(self).game as! Game
         
