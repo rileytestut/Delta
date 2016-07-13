@@ -23,7 +23,7 @@ class CheatTextView: UITextView
         }
     }
     
-    @NSCopying private var attributedFormat: NSAttributedString?
+    @NSCopying private var attributedFormat: AttributedString?
     
     required init?(coder aDecoder: NSCoder)
     {
@@ -44,7 +44,7 @@ extension CheatTextView
         
         if let format = self.cheatFormat, font = self.font
         {
-            let characterWidth = ("A" as NSString).sizeWithAttributes([NSFontAttributeName: font]).width
+            let characterWidth = ("A" as NSString).size(attributes: [NSFontAttributeName: font]).width
 
             let width = characterWidth * CGFloat(format.format.characters.count)
             self.textContainer.size = CGSize(width: width, height: 0)
@@ -65,13 +65,13 @@ private extension CheatTextView
         let attributedFormat = NSMutableAttributedString()
         var prefixString: NSString? = nil
         
-        let scanner = NSScanner(string: format)
+        let scanner = Scanner(string: format)
         scanner.charactersToBeSkipped = nil
         
-        while (!scanner.atEnd)
+        while (!scanner.isAtEnd)
         {
             var string: NSString? = nil
-            scanner.scanCharactersFromSet(NSCharacterSet.alphanumericCharacterSet(), intoString: &string)
+            scanner.scanCharacters(from: CharacterSet.alphanumerics, into: &string)
             
             guard let scannedString = string where scannedString.length > 0 else { break }
             
@@ -82,10 +82,10 @@ private extension CheatTextView
                 attributedString.addAttribute(CheatPrefixAttribute, value: prefixString, range: NSRange(location: 0, length: 1))
             }
             
-            attributedFormat.appendAttributedString(attributedString)
+            attributedFormat.append(attributedString)
             
             prefixString = nil
-            scanner.scanUpToCharactersFromSet(NSCharacterSet.alphanumericCharacterSet(), intoString: &prefixString)
+            scanner.scanUpToCharacters(from: CharacterSet.alphanumerics, into: &prefixString)
         }
         
         self.attributedFormat = attributedFormat
@@ -95,17 +95,17 @@ private extension CheatTextView
             self.layoutIfNeeded()
             
             let range = NSRange(location: 0, length: (self.text as NSString).length)
-            self.layoutManager.invalidateGlyphsForCharacterRange(range, changeInLength: 0, actualCharacterRange: nil)
-            self.layoutManager.invalidateLayoutForCharacterRange(range, actualCharacterRange: nil)
-            self.layoutManager.ensureGlyphsForCharacterRange(range)
-            self.layoutManager.ensureLayoutForCharacterRange(range)
+            self.layoutManager.invalidateGlyphs(forCharacterRange: range, changeInLength: 0, actualCharacterRange: nil)
+            self.layoutManager.invalidateLayout(forCharacterRange: range, actualCharacterRange: nil)
+            self.layoutManager.ensureGlyphs(forCharacterRange: range)
+            self.layoutManager.ensureLayout(forCharacterRange: range)
         }
     }
 }
 
 extension CheatTextView: NSLayoutManagerDelegate
 {
-    func layoutManager(layoutManager: NSLayoutManager, shouldGenerateGlyphs glyphs: UnsafePointer<CGGlyph>, properties props: UnsafePointer<NSGlyphProperty>, characterIndexes charIndexes: UnsafePointer<Int>, font aFont: UIFont, forGlyphRange glyphRange: NSRange) -> Int
+    func layoutManager(_ layoutManager: NSLayoutManager, shouldGenerateGlyphs glyphs: UnsafePointer<CGGlyph>, properties props: UnsafePointer<NSGlyphProperty>, characterIndexes charIndexes: UnsafePointer<Int>, font aFont: UIFont, forGlyphRange glyphRange: NSRange) -> Int
     {
         // Returning 0 = let the layoutManager do the normal logic
         guard let attributedFormat = self.attributedFormat else { return 0 }
@@ -117,9 +117,9 @@ extension CheatTextView: NSLayoutManagerDelegate
         let bufferSize = max(attributedFormat.length + 1, glyphCount * 2)
         
         // Allocate our replacement buffers
-        let glyphBuffer = UnsafeMutablePointer<CGGlyph>.alloc(bufferSize)
-        let propertyBuffer = UnsafeMutablePointer<NSGlyphProperty>.alloc(bufferSize)
-        let characterBuffer = UnsafeMutablePointer<Int>.alloc(bufferSize)
+        let glyphBuffer = UnsafeMutablePointer<CGGlyph>(allocatingCapacity: bufferSize)
+        let propertyBuffer = UnsafeMutablePointer<NSGlyphProperty>(allocatingCapacity: bufferSize)
+        let characterBuffer = UnsafeMutablePointer<Int>(allocatingCapacity: bufferSize)
         
         var offset = 0
         
@@ -128,7 +128,7 @@ extension CheatTextView: NSLayoutManagerDelegate
             // The index the actual character maps to in the cheat format
             let characterIndex = charIndexes[i] % attributedFormat.length
             
-            if let prefix = attributedFormat.attributesAtIndex(characterIndex, effectiveRange: nil)[CheatPrefixAttribute] as? String
+            if let prefix = attributedFormat.attributes(at: characterIndex, effectiveRange: nil)[CheatPrefixAttribute] as? String
             {
                 // If there is a prefix string, we insert the glyphs (and associated properties/character indexes) first
                 let prefixCount = prefix.characters.count
@@ -139,7 +139,7 @@ extension CheatTextView: NSLayoutManagerDelegate
                     propertyBuffer[i + offset + j] = props[i]
                     
                     // Prepend prefix character
-                    var prefixCharacter = (prefix as NSString).characterAtIndex(0)
+                    var prefixCharacter = (prefix as NSString).character(at: 0)
                     CTFontGetGlyphsForCharacters(aFont as CTFont, &prefixCharacter, glyphBuffer + (i + offset + j), 1)
                 }
                 
@@ -156,9 +156,9 @@ extension CheatTextView: NSLayoutManagerDelegate
         layoutManager.setGlyphs(glyphBuffer, properties: propertyBuffer, characterIndexes: characterBuffer, font: aFont, forGlyphRange: NSRange(location: glyphRange.location, length: glyphCount + offset))
         
         // Clean up memory
-        characterBuffer.dealloc(bufferSize)
-        propertyBuffer.dealloc(bufferSize)
-        glyphBuffer.dealloc(bufferSize)
+        characterBuffer.deallocateCapacity(bufferSize)
+        propertyBuffer.deallocateCapacity(bufferSize)
+        glyphBuffer.deallocateCapacity(bufferSize)
         
         // Return total number of glyphs
         return glyphCount + offset

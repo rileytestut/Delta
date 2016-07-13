@@ -22,7 +22,7 @@ class PauseStoryboardSegue: UIStoryboardSegue
     override func perform()
     {
         self.destinationViewController.transitioningDelegate = self
-        self.destinationViewController.modalPresentationStyle = .Custom
+        self.destinationViewController.modalPresentationStyle = .custom
         self.destinationViewController.modalPresentationCapturesStatusBarAppearance = true
         
         super.perform()
@@ -31,17 +31,17 @@ class PauseStoryboardSegue: UIStoryboardSegue
 
 extension PauseStoryboardSegue: UIViewControllerTransitioningDelegate
 {
-    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning?
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning?
     {
         return self
     }
     
-    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning?
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning?
     {
         return nil
     }
     
-    func presentationControllerForPresentedViewController(presentedViewController: UIViewController, presentingViewController: UIViewController, sourceViewController source: UIViewController) -> UIPresentationController?
+    func presentationController(forPresented presentedViewController: UIViewController, presenting presentingViewController: UIViewController?, source: UIViewController) -> UIPresentationController?
     {
         return self.presentationController
     }
@@ -49,20 +49,20 @@ extension PauseStoryboardSegue: UIViewControllerTransitioningDelegate
 
 extension PauseStoryboardSegue: UIViewControllerAnimatedTransitioning
 {
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval
+    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval
     {
         return 0.65
     }
     
-    func animateTransition(transitionContext: UIViewControllerContextTransitioning)
+    func animateTransition(using transitionContext: UIViewControllerContextTransitioning)
     {
-        let destinationViewController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)!
+        let destinationViewController = transitionContext.viewController(forKey: UITransitionContextToViewControllerKey)!
         
-        destinationViewController.view.frame = transitionContext.finalFrameForViewController(destinationViewController)
-        destinationViewController.view.frame.origin.y = transitionContext.containerView()!.bounds.height
-        transitionContext.containerView()!.addSubview(destinationViewController.view)
+        destinationViewController.view.frame = transitionContext.finalFrame(for: destinationViewController)
+        destinationViewController.view.frame.origin.y = transitionContext.containerView().bounds.height
+        transitionContext.containerView().addSubview(destinationViewController.view)
         
-        UIView.animateWithDuration(self.transitionDuration(transitionContext), delay: 0.0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.0, options: [], animations: {
+        UIView.animate(withDuration: self.transitionDuration(using: transitionContext), delay: 0.0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.0, options: [], animations: {
             
             // Calling layoutIfNeeded before the animation block for some reason prevents the blur from fading in
             // Additionally, if it's animated, it looks weird

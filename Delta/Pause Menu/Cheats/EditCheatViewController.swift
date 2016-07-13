@@ -14,13 +14,13 @@ import Roxas
 
 protocol EditCheatViewControllerDelegate: class
 {
-    func editCheatViewController(editCheatViewController: EditCheatViewController, activateCheat cheat: Cheat, previousCheat: Cheat?) throws
-    func editCheatViewController(editCheatViewController: EditCheatViewController, deactivateCheat cheat: Cheat)
+    func editCheatViewController(_ editCheatViewController: EditCheatViewController, activateCheat cheat: Cheat, previousCheat: Cheat?) throws
+    func editCheatViewController(_ editCheatViewController: EditCheatViewController, deactivateCheat cheat: Cheat)
 }
 
 private extension EditCheatViewController
 {
-    enum ValidationError: ErrorType
+    enum ValidationError: ErrorProtocol
     {
         case invalidCode
         case duplicateName
@@ -66,18 +66,18 @@ extension EditCheatViewController
         var type: CheatType!
         var code: String!
         
-        self.managedObjectContext.performBlockAndWait {
+        self.managedObjectContext.performAndWait {
             
             // Main Thread context is read-only, so we either create a new cheat, or get a reference to the current cheat in a new background context
             
             if let cheat = self.cheat
             {
-                self.mutableCheat = self.managedObjectContext.objectWithID(cheat.objectID) as? Cheat
+                self.mutableCheat = self.managedObjectContext.object(with: cheat.objectID) as? Cheat
             }
             else
             {
                 self.mutableCheat = Cheat.insertIntoManagedObjectContext(self.managedObjectContext)
-                self.mutableCheat.game = self.managedObjectContext.objectWithID(self.game.objectID) as! Game
+                self.mutableCheat.game = self.managedObjectContext.object(with: self.game.objectID) as! Game
                 self.mutableCheat.type = self.supportedCheatFormats.first!.type
                 self.mutableCheat.code = ""
                 self.mutableCheat.name = ""
@@ -107,12 +107,12 @@ extension EditCheatViewController
         
         self.typeSegmentedControl.removeAllSegments()
         
-        for (index, format) in self.supportedCheatFormats.enumerate()
+        for (index, format) in self.supportedCheatFormats.enumerated()
         {
-            self.typeSegmentedControl.insertSegmentWithTitle(format.name, atIndex: index, animated: false)
+            self.typeSegmentedControl.insertSegment(withTitle: format.name, at: index, animated: false)
         }
         
-        if let index = self.supportedCheatFormats.indexOf({ $0.type == type })
+        if let index = self.supportedCheatFormats.index(where: { $0.type == type })
         {
             self.typeSegmentedControl.selectedSegmentIndex = index
         }
@@ -125,13 +125,13 @@ extension EditCheatViewController
         self.updateSaveButtonState()
     }
     
-    override func viewDidAppear(animated: Bool)
+    override func viewDidAppear(_ animated: Bool)
     {
         super.viewDidAppear(animated)
         
         // This matters when going from peek -> pop
         // Otherwise, has no effect because viewDidLayoutSubviews has already been called
-        if self.appearing && !self.isPreviewing
+        if self.isAppearing && !self.isPreviewing
         {
             self.nameTextField.becomeFirstResponder()
         }
@@ -149,7 +149,7 @@ extension EditCheatViewController
             self.codeTextView.textContainer.lineFragmentPadding = 0
         }
         
-        if self.appearing && !self.isPreviewing
+        if self.isAppearing && !self.isPreviewing
         {
             self.nameTextField.becomeFirstResponder()
         }
@@ -159,35 +159,35 @@ extension EditCheatViewController
     {
         guard let cheat = self.cheat else { return [] }
         
-        let copyCodeAction = UIPreviewAction(title: NSLocalizedString("Copy Code", comment: ""), style: .Default) { (action, viewController) in
-            UIPasteboard.generalPasteboard().string = cheat.code
+        let copyCodeAction = UIPreviewAction(title: NSLocalizedString("Copy Code", comment: ""), style: .default) { (action, viewController) in
+            UIPasteboard.general().string = cheat.code
         }
         
         let presentingViewController = self.presentingViewController!
         
-        let editCheatAction = UIPreviewAction(title: NSLocalizedString("Edit", comment: ""), style: .Default) { (action, viewController) in
+        let editCheatAction = UIPreviewAction(title: NSLocalizedString("Edit", comment: ""), style: .default) { (action, viewController) in
             // Delaying until next run loop prevents self from being dismissed immediately
-            dispatch_async(dispatch_get_main_queue()) {
+            DispatchQueue.main.async {
                 let editCheatViewController = viewController as! EditCheatViewController
                 editCheatViewController.presentWithPresentingViewController(presentingViewController)
             }
         }
         
-        let deleteAction = UIPreviewAction(title: NSLocalizedString("Delete", comment: ""), style: .Destructive) { [unowned self] (action, viewController) in
+        let deleteAction = UIPreviewAction(title: NSLocalizedString("Delete", comment: ""), style: .destructive) { [unowned self] (action, viewController) in
             self.delegate?.editCheatViewController(self, deactivateCheat: cheat)
             
             let backgroundContext = DatabaseManager.sharedManager.backgroundManagedObjectContext()
-            backgroundContext.performBlock {
-                let temporaryCheat = backgroundContext.objectWithID(cheat.objectID)
-                backgroundContext.deleteObject(temporaryCheat)
+            backgroundContext.perform {
+                let temporaryCheat = backgroundContext.object(with: cheat.objectID)
+                backgroundContext.delete(temporaryCheat)
                 backgroundContext.saveWithErrorLogging()
             }
         }
         
-        let cancelDeleteAction = UIPreviewAction(title: NSLocalizedString("Cancel", comment: ""), style: .Default) { (action, viewController) in
+        let cancelDeleteAction = UIPreviewAction(title: NSLocalizedString("Cancel", comment: ""), style: .default) { (action, viewController) in
         }
         
-        let deleteActionGroup = UIPreviewActionGroup(title: NSLocalizedString("Delete", comment: ""), style: .Destructive, actions: [deleteAction, cancelDeleteAction])
+        let deleteActionGroup = UIPreviewActionGroup(title: NSLocalizedString("Delete", comment: ""), style: .destructive, actions: [deleteAction, cancelDeleteAction])
         
         return [copyCodeAction, editCheatAction, deleteActionGroup]
     }
@@ -198,7 +198,7 @@ extension EditCheatViewController
         // Dispose of any resources that can be recreated.
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?)
+    override func prepare(for segue: UIStoryboardSegue, sender: AnyObject?)
     {
         self.nameTextField.resignFirstResponder()
         self.codeTextView.resignFirstResponder()
@@ -207,19 +207,19 @@ extension EditCheatViewController
 
 internal extension EditCheatViewController
 {
-    func presentWithPresentingViewController(presentingViewController: UIViewController)
+    func presentWithPresentingViewController(_ presentingViewController: UIViewController)
     {
         let navigationController = RSTNavigationController(rootViewController: self)
-        navigationController.modalPresentationStyle = .OverFullScreen // Keeps PausePresentationController active to ensure layout is not messed up
+        navigationController.modalPresentationStyle = .overFullScreen // Keeps PausePresentationController active to ensure layout is not messed up
         navigationController.modalPresentationCapturesStatusBarAppearance = true
         
-        presentingViewController.presentViewController(navigationController, animated: true, completion: nil)
+        presentingViewController.present(navigationController, animated: true, completion: nil)
     }
 }
 
 private extension EditCheatViewController
 {
-    @IBAction func updateCheatName(sender: UITextField)
+    @IBAction func updateCheatName(_ sender: UITextField)
     {
         var title = sender.text ?? ""
         if title.characters.count == 0
@@ -232,17 +232,17 @@ private extension EditCheatViewController
         self.updateSaveButtonState()
     }
     
-    @IBAction func updateCheatType(sender: UISegmentedControl)
+    @IBAction func updateCheatType(_ sender: UISegmentedControl)
     {
         self.codeTextView.cheatFormat = self.selectedCheatFormat
         
         UIView.performWithoutAnimation {
-            self.tableView.reloadSections(NSIndexSet(index: Section.type.rawValue), withRowAnimation: .None)
+            self.tableView.reloadSections(IndexSet(integer: Section.type.rawValue), with: .none)
             
             // Hacky-ish workaround so we can update the footer text for the code section without causing text view to resign first responder status
             self.tableView.beginUpdates()
             
-            if let footerView = self.tableView.footerViewForSection(Section.code.rawValue)
+            if let footerView = self.tableView.footerView(forSection: Section.code.rawValue)
             {
                 footerView.textLabel!.text = self.tableView(self.tableView, titleForFooterInSection: Section.code.rawValue)
                 footerView.sizeToFit()
@@ -257,12 +257,12 @@ private extension EditCheatViewController
         let isValidName = !(self.nameTextField.text ?? "").isEmpty
         let isValidCode = !self.codeTextView.text.isEmpty
         
-        self.navigationItem.rightBarButtonItem?.enabled = isValidName && isValidCode
+        self.navigationItem.rightBarButtonItem?.isEnabled = isValidName && isValidCode
     }
     
-    @IBAction func saveCheat(sender: UIBarButtonItem)
+    @IBAction func saveCheat(_ sender: UIBarButtonItem)
     {
-        self.mutableCheat.managedObjectContext?.performBlockAndWait {
+        self.mutableCheat.managedObjectContext?.performAndWait {
             
             self.mutableCheat.name = self.nameTextField.text ?? ""
             self.mutableCheat.type = self.selectedCheatFormat.type
@@ -272,7 +272,7 @@ private extension EditCheatViewController
             {
                 try self.validateCheat(self.mutableCheat)
                 self.mutableCheat.managedObjectContext?.saveWithErrorLogging()
-                self.performSegueWithIdentifier("unwindEditCheatSegue", sender: sender)
+                self.performSegue(withIdentifier: "unwindEditCheatSegue", sender: sender)
             }
             catch ValidationError.invalidCode
             {
@@ -299,13 +299,13 @@ private extension EditCheatViewController
         }
     }
     
-    func validateCheat(cheat: Cheat) throws
+    func validateCheat(_ cheat: Cheat) throws
     {
         let name = cheat.name!
         let code = cheat.code
         
         // Find all cheats that are for the same game, don't have the same identifier as the current cheat, but have either the same name or code
-        let predicate = NSPredicate(format: "%K == %@ AND %K != %@ AND (%K == %@ OR %K == %@)", Cheat.Attributes.game.rawValue, cheat.game, Cheat.Attributes.identifier.rawValue, cheat.identifier, Cheat.Attributes.code.rawValue, code, Cheat.Attributes.name.rawValue, name)
+        let predicate = Predicate(format: "%K == %@ AND %K != %@ AND (%K == %@ OR %K == %@)", Cheat.Attributes.game.rawValue, cheat.game, Cheat.Attributes.identifier.rawValue, cheat.identifier, Cheat.Attributes.code.rawValue, code, Cheat.Attributes.name.rawValue, name)
         
         let cheats = Cheat.instancesWithPredicate(predicate, inManagedObjectContext: self.managedObjectContext, type: Cheat.self)
         for cheat in cheats
@@ -330,26 +330,26 @@ private extension EditCheatViewController
         }
     }
     
-    @IBAction func textFieldDidEndEditing(sender: UITextField)
+    @IBAction func textFieldDidEndEditing(_ sender: UITextField)
     {
         sender.resignFirstResponder()
     }
     
-    func presentErrorAlert(title title: String, message: String, handler: (Void -> Void)?)
+    func presentErrorAlert(title: String, message: String, handler: ((Void) -> Void)?)
     {
-        dispatch_async(dispatch_get_main_queue()) {
-            let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .Default, handler: { action in
+        DispatchQueue.main.async {
+            let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default, handler: { action in
                 handler?()
             }))
-            self.presentViewController(alertController, animated: true, completion: nil)
+            self.present(alertController, animated: true, completion: nil)
         }
     }
 }
 
 extension EditCheatViewController
 {
-    override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String?
+    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String?
     {
         switch Section(rawValue: section)!
         {
@@ -360,8 +360,8 @@ extension EditCheatViewController
             return title
             
         case .code:
-            let containsSpaces = self.selectedCheatFormat.format.containsString(" ")
-            let containsDashes = self.selectedCheatFormat.format.containsString("-")
+            let containsSpaces = self.selectedCheatFormat.format.contains(" ")
+            let containsDashes = self.selectedCheatFormat.format.contains("-")
             
             switch (containsSpaces, containsDashes)
             {
@@ -376,7 +376,7 @@ extension EditCheatViewController
 
 extension EditCheatViewController: UITextViewDelegate
 {
-    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool
     {
         defer { self.updateSaveButtonState() }
         
@@ -392,8 +392,8 @@ extension EditCheatViewController: UITextViewDelegate
         
         // We need to manually add back the attributes when manually modifying the underlying text storage
         // Otherwise, pasting text into an empty text view will result in the wrong font being used
-        let attributedString = NSAttributedString(string: sanitizedText, attributes: textView.typingAttributes)
-        textView.textStorage.replaceCharactersInRange(range, withAttributedString: attributedString)
+        let attributedString = AttributedString(string: sanitizedText, attributes: textView.typingAttributes)
+        textView.textStorage.replaceCharacters(in: range, with: attributedString)
         
         // We must add attributedString.length, not range.length, in case the attributed string's length differs
         textView.selectedRange = NSRange(location: range.location + attributedString.length, length: 0)

@@ -27,11 +27,11 @@ class PauseMenuViewController: UICollectionViewController
     
     override var preferredContentSize: CGSize {
         set { }
-        get { return self.collectionView?.contentSize ?? CGSizeZero }
+        get { return self.collectionView?.contentSize ?? CGSize.zero }
     }
     
     private var prototypeCell = GridCollectionViewCell()
-    private var previousIndexPath: NSIndexPath? = nil
+    private var previousIndexPath: IndexPath? = nil
 }
 
 extension PauseMenuViewController
@@ -45,16 +45,16 @@ extension PauseMenuViewController
         collectionViewLayout.usesEqualHorizontalSpacingDistributionForSingleRow = true
         
         // Manually update prototype cell properties
-        self.prototypeCell.contentView.widthAnchor.constraintEqualToConstant(collectionViewLayout.itemWidth).active = true
+        self.prototypeCell.contentView.widthAnchor.constraint(equalToConstant: collectionViewLayout.itemWidth).isActive = true
     }
     
-    override func viewDidAppear(animated: Bool)
+    override func viewDidAppear(_ animated: Bool)
     {
         super.viewDidAppear(animated)
         
         if let indexPath = self.previousIndexPath
         {
-            UIView.animateWithDuration(0.2) {
+            UIView.animate(withDuration: 0.2) {
                 self.toggleSelectedStateForPauseItemAtIndexPath(indexPath)
             }
         }
@@ -63,54 +63,54 @@ extension PauseMenuViewController
 
 private extension PauseMenuViewController
 {
-    func configureCollectionViewCell(cell: GridCollectionViewCell, forIndexPath indexPath: NSIndexPath)
+    func configureCollectionViewCell(_ cell: GridCollectionViewCell, forIndexPath indexPath: IndexPath)
     {
-        let pauseItem = self.items[indexPath.item]
+        let pauseItem = self.items[(indexPath as NSIndexPath).item]
         
         cell.maximumImageSize = CGSize(width: 60, height: 60)
         
         cell.imageView.image = pauseItem.image
-        cell.imageView.contentMode = .Center
+        cell.imageView.contentMode = .center
         cell.imageView.layer.borderWidth = 2
-        cell.imageView.layer.borderColor = UIColor.whiteColor().CGColor
+        cell.imageView.layer.borderColor = UIColor.white().cgColor
         cell.imageView.layer.cornerRadius = 10
         
         cell.textLabel.text = pauseItem.text
-        cell.textLabel.textColor = UIColor.whiteColor()
+        cell.textLabel.textColor = UIColor.white()
         
         if pauseItem.selected
         {
-            cell.imageView.tintColor = UIColor.blackColor()
-            cell.imageView.backgroundColor = UIColor.whiteColor()
+            cell.imageView.tintColor = UIColor.black()
+            cell.imageView.backgroundColor = UIColor.white()
         }
         else
         {
-            cell.imageView.tintColor = UIColor.whiteColor()
-            cell.imageView.backgroundColor = UIColor.clearColor()
+            cell.imageView.tintColor = UIColor.white()
+            cell.imageView.backgroundColor = UIColor.clear()
         }
     }
     
-    func toggleSelectedStateForPauseItemAtIndexPath(indexPath: NSIndexPath)
+    func toggleSelectedStateForPauseItemAtIndexPath(_ indexPath: IndexPath)
     {
-        var pauseItem = self.items[indexPath.item]
+        var pauseItem = self.items[(indexPath as NSIndexPath).item]
         pauseItem.selected = !pauseItem.selected
-        self.items[indexPath.item] = pauseItem
+        self.items[(indexPath as NSIndexPath).item] = pauseItem
         
-        let cell = self.collectionView!.cellForItemAtIndexPath(indexPath) as! GridCollectionViewCell
+        let cell = self.collectionView!.cellForItem(at: indexPath) as! GridCollectionViewCell
         self.configureCollectionViewCell(cell, forIndexPath: indexPath)
     }
 }
 
 extension PauseMenuViewController
 {
-    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
     {
         return self.items.count
     }
     
-    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
     {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(RSTGenericCellIdentifier, forIndexPath: indexPath) as! GridCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RSTGenericCellIdentifier, for: indexPath) as! GridCollectionViewCell
         self.configureCollectionViewCell(cell, forIndexPath: indexPath)
         return cell
     }
@@ -118,34 +118,34 @@ extension PauseMenuViewController
 
 extension PauseMenuViewController: UICollectionViewDelegateFlowLayout
 {
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize
     {
         self.configureCollectionViewCell(self.prototypeCell, forIndexPath: indexPath)
         
-        let size = self.prototypeCell.contentView.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize)
+        let size = self.prototypeCell.contentView.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
         return size
     }
 }
 
 extension PauseMenuViewController
 {
-    override func collectionView(collectionView: UICollectionView, didHighlightItemAtIndexPath indexPath: NSIndexPath)
+    override func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath)
     {
         self.toggleSelectedStateForPauseItemAtIndexPath(indexPath)
     }
     
-    override func collectionView(collectionView: UICollectionView, didUnhighlightItemAtIndexPath indexPath: NSIndexPath)
+    override func collectionView(_ collectionView: UICollectionView, didUnhighlightItemAt indexPath: IndexPath)
     {
         self.toggleSelectedStateForPauseItemAtIndexPath(indexPath)
     }
     
-    override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath)
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
     {
         self.previousIndexPath = indexPath
         
         self.toggleSelectedStateForPauseItemAtIndexPath(indexPath)
         
-        let pauseItem = self.items[indexPath.item]
+        let pauseItem = self.items[(indexPath as NSIndexPath).item]
         pauseItem.action(pauseItem)
     }
 }

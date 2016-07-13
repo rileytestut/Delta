@@ -29,7 +29,7 @@ class GridCollectionViewLayout: UICollectionViewFlowLayout
         }
     }
     
-    override func layoutAttributesForElementsInRect(rect: CGRect) -> [UICollectionViewLayoutAttributes]?
+    override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]?
     {
         guard let collectionView = self.collectionView else { return nil }
         
@@ -39,7 +39,7 @@ class GridCollectionViewLayout: UICollectionViewFlowLayout
         self.sectionInset.left = interitemSpacing
         self.sectionInset.right = interitemSpacing
         
-        let layoutAttributes = super.layoutAttributesForElementsInRect(rect)?.map({ $0.copy() }) as! [UICollectionViewLayoutAttributes]
+        let layoutAttributes = super.layoutAttributesForElements(in: rect)?.map({ $0.copy() }) as! [UICollectionViewLayoutAttributes]
         
         var minimumY: CGFloat? = nil
         var maximumY: CGFloat? = nil
@@ -47,9 +47,9 @@ class GridCollectionViewLayout: UICollectionViewFlowLayout
         
         var isSingleRow = true
         
-        for (index, attributes) in layoutAttributes.enumerate()
+        for (index, attributes) in layoutAttributes.enumerated()
         {
-            guard attributes.representedElementCategory == .Cell else { continue }
+            guard attributes.representedElementCategory == .cell else { continue }
             
             // Ensure equal spacing between items (that also match the section insets)
             if index > 0
@@ -103,7 +103,7 @@ class GridCollectionViewLayout: UICollectionViewFlowLayout
             {
                 let spacing = (collectionView.bounds.width - (self.itemWidth * CGFloat(tempLayoutAttributes.count))) / (CGFloat(tempLayoutAttributes.count) + 1.0)
                 
-                for (index, layoutAttributes) in tempLayoutAttributes.enumerate()
+                for (index, layoutAttributes) in tempLayoutAttributes.enumerated()
                 {
                     layoutAttributes.frame.origin.x = spacing + (spacing + self.itemWidth) * CGFloat(index)
                 }
@@ -117,7 +117,7 @@ class GridCollectionViewLayout: UICollectionViewFlowLayout
 
 private extension GridCollectionViewLayout
 {
-    func alignLayoutAttributes(layoutAttributes: [UICollectionViewLayoutAttributes], toMinimumY minimumY: CGFloat)
+    func alignLayoutAttributes(_ layoutAttributes: [UICollectionViewLayoutAttributes], toMinimumY minimumY: CGFloat)
     {
         for attributes in layoutAttributes
         {

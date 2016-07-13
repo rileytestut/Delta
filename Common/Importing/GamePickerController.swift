@@ -13,15 +13,15 @@ import DeltaCore
 
 protocol GamePickerControllerDelegate
 {
-    func gamePickerController(gamePickerController: GamePickerController, didImportGames games: [Game])
+    func gamePickerController(_ gamePickerController: GamePickerController, didImportGames games: [Game])
     
     /** Optional **/
-    func gamePickerControllerDidCancel(gamePickerController: GamePickerController)
+    func gamePickerControllerDidCancel(_ gamePickerController: GamePickerController)
 }
 
 extension GamePickerControllerDelegate
 {
-    func gamePickerControllerDidCancel(gamePickerController: GamePickerController)
+    func gamePickerControllerDidCancel(_ gamePickerController: GamePickerController)
     {
         // Empty Implementation
     }
@@ -33,34 +33,34 @@ class GamePickerController: NSObject
     
     private weak var presentingViewController: UIViewController?
     
-    private func presentGamePickerControllerFromPresentingViewController(presentingViewController: UIViewController, animated: Bool, completion: (Void -> Void)?)
+    private func presentGamePickerControllerFromPresentingViewController(_ presentingViewController: UIViewController, animated: Bool, completion: ((Void) -> Void)?)
     {
         self.presentingViewController = presentingViewController
         
         #if os(iOS)
-            let documentMenuController = UIDocumentMenuViewController(documentTypes: Array(Game.supportedTypeIdentifiers()), inMode: .Import)
+            let documentMenuController = UIDocumentMenuViewController(documentTypes: Array(Game.supportedTypeIdentifiers()), in: .import)
             documentMenuController.delegate = self
-            documentMenuController.addOptionWithTitle(NSLocalizedString("iTunes", comment: ""), image: nil, order: .First) { self.importFromiTunes(nil) }
-            self.presentingViewController?.presentViewController(documentMenuController, animated: true, completion: nil)
+            documentMenuController.addOption(withTitle: NSLocalizedString("iTunes", comment: ""), image: nil, order: .first) { self.importFromiTunes(nil) }
+            self.presentingViewController?.present(documentMenuController, animated: true, completion: nil)
         #else
             self.importFromiTunes(completion)
         #endif
     }
     
-    private func importFromiTunes(completion: (Void -> Void)?)
+    private func importFromiTunes(_ completion: ((Void) -> Void)?)
     {
-        let alertController = UIAlertController(title: NSLocalizedString("Import from iTunes?", comment: ""), message: NSLocalizedString("Delta will import the games copied over via iTunes.", comment: ""), preferredStyle: .Alert)
+        let alertController = UIAlertController(title: NSLocalizedString("Import from iTunes?", comment: ""), message: NSLocalizedString("Delta will import the games copied over via iTunes.", comment: ""), preferredStyle: .alert)
         
-        let importAction = UIAlertAction(title: NSLocalizedString("Import", comment: ""), style: .Default) { action in
+        let importAction = UIAlertAction(title: NSLocalizedString("Import", comment: ""), style: .default) { action in
             
-            let documentsDirectoryURL = DatabaseManager.databaseDirectoryURL.URLByDeletingLastPathComponent
+            let documentsDirectoryURL = try! DatabaseManager.databaseDirectoryURL.deletingLastPathComponent
             
             do
             {
-                let contents = try NSFileManager.defaultManager().contentsOfDirectoryAtURL(documentsDirectoryURL!, includingPropertiesForKeys: nil, options: .SkipsHiddenFiles)
+                let contents = try FileManager.default.contentsOfDirectory(at: documentsDirectoryURL!, includingPropertiesForKeys: nil, options: .skipsHiddenFiles)
                 
                 let managedObjectContext = DatabaseManager.sharedManager.backgroundManagedObjectContext()
-                managedObjectContext.performBlock() {
+                managedObjectContext.perform() {
                     let gameURLs = contents.filter({ GameCollection.gameSystemCollectionForPathExtension($0.pathExtension, inManagedObjectContext: managedObjectContext).identifier != kUTTypeDeltaGame as String })
                     self.importGamesAtURLs(gameURLs)
                 }
@@ -76,22 +76,22 @@ class GamePickerController: NSObject
         }
         alertController.addAction(importAction)
         
-        let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .Cancel) { action in
+        let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel) { action in
             self.delegate?.gamePickerControllerDidCancel(self)
             self.presentingViewController?.gamePickerController = nil
         }
         alertController.addAction(cancelAction)
         
-        self.presentingViewController?.presentViewController(alertController, animated: true, completion: completion)
+        self.presentingViewController?.present(alertController, animated: true, completion: completion)
     }
     
-    private func importGamesAtURLs(URLs: [NSURL])
+    private func importGamesAtURLs(_ URLs: [URL])
     {
         DatabaseManager.sharedManager.importGamesAtURLs(URLs) { identifiers in
             
-            DatabaseManager.sharedManager.managedObjectContext.performBlock() {
+            DatabaseManager.sharedManager.managedObjectContext.perform() {
                 
-                let predicate = NSPredicate(format: "%K IN (%@)", Game.Attributes.identifier.rawValue, identifiers)
+                let predicate = Predicate(format: "%K IN (%@)", Game.Attributes.identifier.rawValue, identifiers)
                 let games = Game.instancesWithPredicate(predicate, inManagedObjectContext: DatabaseManager.sharedManager.managedObjectContext, type: Game.self)
                                 
                 self.delegate?.gamePickerController(self, didImportGames: games)
@@ -107,15 +107,15 @@ class GamePickerController: NSObject
     
     extension GamePickerController: UIDocumentMenuDelegate
     {
-        func documentMenu(documentMenu: UIDocumentMenuViewController, didPickDocumentPicker documentPicker: UIDocumentPickerViewController)
+        func documentMenu(_ documentMenu: UIDocumentMenuViewController, didPickDocumentPicker documentPicker: UIDocumentPickerViewController)
         {
             documentPicker.delegate = self
-            self.presentingViewController?.presentViewController(documentPicker, animated: true, completion: nil)
+            self.presentingViewController?.present(documentPicker, animated: true, completion: nil)
             
             self.presentingViewController?.gamePickerController = nil
         }
         
-        func documentMenuWasCancelled(documentMenu: UIDocumentMenuViewController)
+        func documentMenuWasCancelled(_ documentMenu: UIDocumentMenuViewController)
         {
             self.delegate?.gamePickerControllerDidCancel(self)
             
@@ -126,14 +126,14 @@ class GamePickerController: NSObject
     
     extension GamePickerController: UIDocumentPickerDelegate
     {
-        func documentPicker(controller: UIDocumentPickerViewController, didPickDocumentAtURL url: NSURL)
+        func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL)
         {
             self.importGamesAtURLs([url])
             
             self.presentingViewController?.gamePickerController = nil
         }
         
-        func documentPickerWasCancelled(controller: UIDocumentPickerViewController)
+        func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController)
         {
             self.delegate?.gamePickerControllerDidCancel(self)
             
@@ -159,7 +159,7 @@ extension UIViewController
         }
     }
     
-    func presentGamePickerController(gamePickerController: GamePickerController, animated: Bool, completion: (Void -> Void)?)
+    func presentGamePickerController(_ gamePickerController: GamePickerController, animated: Bool, completion: ((Void) -> Void)?)
     {
         self.gamePickerController = gamePickerController
         

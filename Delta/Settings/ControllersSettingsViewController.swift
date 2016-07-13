@@ -11,15 +11,15 @@ import DeltaCore
 
 private enum ControllersSettingsSection: Int
 {
-    case None
-    case LocalDevice
-    case ExternalControllers
+    case none
+    case localDevice
+    case externalControllers
 }
 
 private class LocalDeviceController: ExternalController
 {
     override var name: String {
-        return UIDevice.currentDevice().name
+        return UIDevice.current().name
     }
 }
 
@@ -39,7 +39,7 @@ class ControllersSettingsViewController: UITableViewController
         }
     }
     
-    private var connectedControllers = ExternalControllerManager.sharedManager.connectedControllers.sort({ $0.playerIndex ?? NSIntegerMax < $1.playerIndex ?? NSIntegerMax })
+    private var connectedControllers = ExternalControllerManager.sharedManager.connectedControllers.sorted(isOrderedBefore: { $0.playerIndex ?? NSIntegerMax < $1.playerIndex ?? NSIntegerMax })
     
     private lazy var localDeviceController: LocalDeviceController = {
         let device = LocalDeviceController()
@@ -52,8 +52,8 @@ class ControllersSettingsViewController: UITableViewController
     {
         super.init(coder: aDecoder)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ControllersSettingsViewController.externalControllerDidConnect(_:)), name: ExternalControllerDidConnectNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ControllersSettingsViewController.externalControllerDidDisconnect(_:)), name: ExternalControllerDidDisconnectNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ControllersSettingsViewController.externalControllerDidConnect(_:)), name: ExternalControllerDidConnectNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ControllersSettingsViewController.externalControllerDidDisconnect(_:)), name: ExternalControllerDidDisconnectNotification, object: nil)
     }
 
     override func viewDidLoad()
@@ -63,7 +63,7 @@ class ControllersSettingsViewController: UITableViewController
     
     //MARK: - Storyboards -
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?)
+    override func prepare(for segue: UIStoryboardSegue, sender: AnyObject?)
     {
         guard let indexPath = self.tableView.indexPathForSelectedRow else { return }
         
@@ -71,18 +71,18 @@ class ControllersSettingsViewController: UITableViewController
         controllers.append(self.localDeviceController)
 
         // Reset previous controller
-        if let playerIndex = self.playerIndex, index = controllers.indexOf({ $0.playerIndex == playerIndex })
+        if let playerIndex = self.playerIndex, index = controllers.index(where: { $0.playerIndex == playerIndex })
         {
             let controller = controllers[index]
             controller.playerIndex = nil
         }
         
-        switch ControllersSettingsSection(rawValue: indexPath.section)!
+        switch ControllersSettingsSection(rawValue: (indexPath as NSIndexPath).section)!
         {
-        case .None: break
-        case .LocalDevice: self.localDeviceController.playerIndex = self.playerIndex
-        case .ExternalControllers:
-            let controller = self.connectedControllers[indexPath.row]
+        case .none: break
+        case .localDevice: self.localDeviceController.playerIndex = self.playerIndex
+        case .externalControllers:
+            let controller = self.connectedControllers[(indexPath as NSIndexPath).row]
             controller.playerIndex = self.playerIndex
         }
         
@@ -93,60 +93,60 @@ class ControllersSettingsViewController: UITableViewController
 
 private extension ControllersSettingsViewController
 {
-    dynamic func externalControllerDidConnect(notification: NSNotification)
+    dynamic func externalControllerDidConnect(_ notification: Notification)
     {
         guard let controller = notification.object as? ExternalController else { return }
         
         if let playerIndex = controller.playerIndex
         {
-            self.connectedControllers.insert(controller, atIndex: playerIndex)
+            self.connectedControllers.insert(controller, at: playerIndex)
         }
         else
         {
             self.connectedControllers.append(controller)
         }
         
-        if let index = self.connectedControllers.indexOf(controller)
+        if let index = self.connectedControllers.index(of: controller)
         {
             if self.connectedControllers.count == 1
             {
-                self.tableView.insertSections(NSIndexSet(index: ControllersSettingsSection.ExternalControllers.rawValue), withRowAnimation: .Fade)
+                self.tableView.insertSections(IndexSet(integer: ControllersSettingsSection.externalControllers.rawValue), with: .fade)
             }
             else
             {
-                self.tableView.insertRowsAtIndexPaths([NSIndexPath(forRow: index, inSection: ControllersSettingsSection.ExternalControllers.rawValue)], withRowAnimation: .Automatic)
+                self.tableView.insertRows(at: [IndexPath(row: index, section: ControllersSettingsSection.externalControllers.rawValue)], with: .automatic)
             }
         }
     }
     
-    dynamic func externalControllerDidDisconnect(notification: NSNotification)
+    dynamic func externalControllerDidDisconnect(_ notification: Notification)
     {
         guard let controller = notification.object as? ExternalController else { return }
         
-        if let index = self.connectedControllers.indexOf(controller)
+        if let index = self.connectedControllers.index(of: controller)
         {
-            self.connectedControllers.removeAtIndex(index)
+            self.connectedControllers.remove(at: index)
             
             if self.connectedControllers.count == 0
             {
-                self.tableView.deleteSections(NSIndexSet(index: ControllersSettingsSection.ExternalControllers.rawValue), withRowAnimation: .Fade)
+                self.tableView.deleteSections(IndexSet(integer: ControllersSettingsSection.externalControllers.rawValue), with: .fade)
             }
             else
             {
-                self.tableView.deleteRowsAtIndexPaths([NSIndexPath(forRow: index, inSection: ControllersSettingsSection.ExternalControllers.rawValue)], withRowAnimation: .Automatic)
+                self.tableView.deleteRows(at: [IndexPath(row: index, section: ControllersSettingsSection.externalControllers.rawValue)], with: .automatic)
             }
         }
         
         if controller.playerIndex == self.playerIndex
         {
-            self.tableView.reloadSections(NSIndexSet(index: ControllersSettingsSection.None.rawValue), withRowAnimation: .None)
+            self.tableView.reloadSections(IndexSet(integer: ControllersSettingsSection.none.rawValue), with: .none)
         }
     }
 }
 
 extension ControllersSettingsViewController
 {
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int
+    override func numberOfSections(in tableView: UITableView) -> Int
     {
         if self.connectedControllers.count == 0
         {
@@ -156,42 +156,42 @@ extension ControllersSettingsViewController
         return 3
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
         switch ControllersSettingsSection(rawValue: section)!
         {
-        case .None: return 1
-        case .LocalDevice: return 1
-        case .ExternalControllers: return self.connectedControllers.count
+        case .none: return 1
+        case .localDevice: return 1
+        case .externalControllers: return self.connectedControllers.count
         }
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         cell.detailTextLabel?.text = nil
-        cell.accessoryType = .None
+        cell.accessoryType = .none
         
-        if indexPath.section == ControllersSettingsSection.None.rawValue
+        if (indexPath as NSIndexPath).section == ControllersSettingsSection.none.rawValue
         {
             cell.textLabel?.text = NSLocalizedString("None", comment: "")
             
             if Settings.localControllerPlayerIndex != self.playerIndex && !self.connectedControllers.contains({ $0.playerIndex == self.playerIndex })
             {
-                cell.accessoryType = .Checkmark
+                cell.accessoryType = .checkmark
             }
         }
         else
         {
             let controller: ExternalController
             
-            if indexPath.section == ControllersSettingsSection.LocalDevice.rawValue
+            if (indexPath as NSIndexPath).section == ControllersSettingsSection.localDevice.rawValue
             {
                 controller = self.localDeviceController
             }
-            else if indexPath.section == ControllersSettingsSection.ExternalControllers.rawValue
+            else if (indexPath as NSIndexPath).section == ControllersSettingsSection.externalControllers.rawValue
             {
-                controller = self.connectedControllers[indexPath.row]
+                controller = self.connectedControllers[(indexPath as NSIndexPath).row]
             }
             else
             {
@@ -202,7 +202,7 @@ extension ControllersSettingsViewController
             
             if controller.playerIndex == self.playerIndex
             {
-                cell.accessoryType = .Checkmark
+                cell.accessoryType = .checkmark
             }
             else
             {
@@ -217,13 +217,13 @@ extension ControllersSettingsViewController
         return cell
     }
     
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String?
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String?
     {
         switch ControllersSettingsSection(rawValue: section)!
         {
-        case .None: return nil
-        case .LocalDevice: return NSLocalizedString("Local Device", comment: "")
-        case .ExternalControllers: return self.connectedControllers.count > 0 ? NSLocalizedString("External Controllers", comment: "") : ""
+        case .none: return nil
+        case .localDevice: return NSLocalizedString("Local Device", comment: "")
+        case .externalControllers: return self.connectedControllers.count > 0 ? NSLocalizedString("External Controllers", comment: "") : ""
         }
     }
 }

@@ -54,7 +54,7 @@ class GameCollection: NSManagedObject
         }
     }
     
-    class func gameSystemCollectionForPathExtension(pathExtension: String?, inManagedObjectContext managedObjectContext: NSManagedObjectContext) -> GameCollection
+    class func gameSystemCollectionForPathExtension(_ pathExtension: String?, inManagedObjectContext managedObjectContext: NSManagedObjectContext) -> GameCollection
     {
         let identifier: String
         let index: Int16
@@ -76,7 +76,7 @@ class GameCollection: NSManagedObject
             index = Int16(INT16_MAX)
         }
         
-        let predicate = NSPredicate(format: "%K == %@", GameCollection.Attributes.identifier.rawValue, identifier)
+        let predicate = Predicate(format: "%K == %@", GameCollection.Attributes.identifier.rawValue, identifier)
         
         var gameCollection = GameCollection.instancesWithPredicate(predicate, inManagedObjectContext: managedObjectContext, type: GameCollection.self).first
         if gameCollection == nil

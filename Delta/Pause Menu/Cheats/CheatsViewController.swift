@@ -15,9 +15,9 @@ import Roxas
 
 protocol CheatsViewControllerDelegate: class
 {
-    func cheatsViewControllerActiveEmulatorCore(saveStatesViewController: CheatsViewController) -> EmulatorCore
-    func cheatsViewController(cheatsViewController: CheatsViewController, didActivateCheat cheat: Cheat) throws
-    func cheatsViewController(cheatsViewController: CheatsViewController, didDeactivateCheat cheat: Cheat)
+    func cheatsViewControllerActiveEmulatorCore(_ saveStatesViewController: CheatsViewController) -> EmulatorCore
+    func cheatsViewController(_ cheatsViewController: CheatsViewController, didActivateCheat cheat: Cheat) throws
+    func cheatsViewController(_ cheatsViewController: CheatsViewController, didDeactivateCheat cheat: Cheat)
 }
 
 class CheatsViewController: UITableViewController
@@ -30,7 +30,7 @@ class CheatsViewController: UITableViewController
     
     private var backgroundView: RSTBackgroundView!
     
-    private var fetchedResultsController: NSFetchedResultsController!
+    private var fetchedResultsController: NSFetchedResultsController<AnyObject>!
 }
 
 extension CheatsViewController
@@ -42,18 +42,18 @@ extension CheatsViewController
         self.title = NSLocalizedString("Cheats", comment: "")
         
         self.backgroundView = RSTBackgroundView(frame: self.view.bounds)
-        self.backgroundView.hidden = false
-        self.backgroundView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+        self.backgroundView.isHidden = false
+        self.backgroundView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.backgroundView.textLabel.text = NSLocalizedString("No Cheats", comment: "")
-        self.backgroundView.textLabel.textColor = UIColor.whiteColor()
+        self.backgroundView.textLabel.textColor = UIColor.white()
         self.backgroundView.detailTextLabel.text = NSLocalizedString("You can add a new cheat by pressing the + button in the top right.", comment: "")
-        self.backgroundView.detailTextLabel.textColor = UIColor.whiteColor()
+        self.backgroundView.detailTextLabel.textColor = UIColor.white()
         self.tableView.backgroundView = self.backgroundView
         
-        self.registerForPreviewingWithDelegate(self, sourceView: self.tableView)
+        self.registerForPreviewing(with: self, sourceView: self.tableView)
     }
     
-    override func viewWillAppear(animated: Bool)
+    override func viewWillAppear(_ animated: Bool)
     {
         self.fetchedResultsController.performFetchIfNeeded()
         
@@ -72,7 +72,7 @@ extension CheatsViewController
 //MARK: - Navigation -
 private extension CheatsViewController
 {
-    @IBAction func unwindFromEditCheatViewController(segue: UIStoryboardSegue)
+    @IBAction func unwindFromEditCheatViewController(_ segue: UIStoryboardSegue)
     {
         
     }
@@ -87,8 +87,8 @@ private extension CheatsViewController
         
         let fetchRequest = Cheat.fetchRequest()
         fetchRequest.returnsObjectsAsFaults = false
-        fetchRequest.predicate = NSPredicate(format: "%K == %@", Cheat.Attributes.game.rawValue, game)
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: Cheat.Attributes.name.rawValue, ascending: true)]
+        fetchRequest.predicate = Predicate(format: "%K == %@", Cheat.Attributes.game.rawValue, game)
+        fetchRequest.sortDescriptors = [SortDescriptor(key: Cheat.Attributes.name.rawValue, ascending: true)]
         
         self.fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DatabaseManager.sharedManager.managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
         self.fetchedResultsController.delegate = self
@@ -98,13 +98,13 @@ private extension CheatsViewController
     {
         if let fetchedObjects = self.fetchedResultsController.fetchedObjects where fetchedObjects.count > 0
         {
-            self.tableView.separatorStyle = .SingleLine
-            self.backgroundView.hidden = true
+            self.tableView.separatorStyle = .singleLine
+            self.backgroundView.isHidden = true
         }
         else
         {
-            self.tableView.separatorStyle = .None
-            self.backgroundView.hidden = false
+            self.tableView.separatorStyle = .none
+            self.backgroundView.isHidden = false
         }
     }
 }
@@ -119,14 +119,14 @@ private extension CheatsViewController
         editCheatViewController.presentWithPresentingViewController(self)
     }
     
-    func deleteCheat(cheat: Cheat)
+    func deleteCheat(_ cheat: Cheat)
     {
         self.delegate.cheatsViewController(self, didDeactivateCheat: cheat)
         
         let backgroundContext = DatabaseManager.sharedManager.backgroundManagedObjectContext()
-        backgroundContext.performBlock {
-            let temporaryCheat = backgroundContext.objectWithID(cheat.objectID)
-            backgroundContext.deleteObject(temporaryCheat)
+        backgroundContext.perform {
+            let temporaryCheat = backgroundContext.object(with: cheat.objectID)
+            backgroundContext.delete(temporaryCheat)
             backgroundContext.saveWithErrorLogging()
         }
     }
@@ -136,17 +136,17 @@ private extension CheatsViewController
 /// Convenience
 private extension CheatsViewController
 {
-    func configure(cell cell: UITableViewCell, forIndexPath indexPath: NSIndexPath)
+    func configure(cell: UITableViewCell, forIndexPath indexPath: IndexPath)
     {
-        let cheat = self.fetchedResultsController.objectAtIndexPath(indexPath) as! Cheat
+        let cheat = self.fetchedResultsController.object(at: indexPath) as! Cheat
         cell.textLabel?.text = cheat.name
-        cell.textLabel?.font = UIFont.boldSystemFontOfSize(cell.textLabel!.font.pointSize)
-        cell.accessoryType = cheat.enabled ? .Checkmark : .None
+        cell.textLabel?.font = UIFont.boldSystemFont(ofSize: cell.textLabel!.font.pointSize)
+        cell.accessoryType = cheat.enabled ? .checkmark : .none
     }
     
-    func makeEditCheatViewController(cheat cheat: Cheat?) -> EditCheatViewController
+    func makeEditCheatViewController(cheat: Cheat?) -> EditCheatViewController
     {
-        let editCheatViewController = self.storyboard!.instantiateViewControllerWithIdentifier("editCheatViewController") as! EditCheatViewController
+        let editCheatViewController = self.storyboard!.instantiateViewController(withIdentifier: "editCheatViewController") as! EditCheatViewController
         editCheatViewController.delegate = self
         editCheatViewController.supportedCheatFormats = self.delegate.cheatsViewControllerActiveEmulatorCore(self).supportedCheatFormats
         editCheatViewController.cheat = cheat
@@ -160,21 +160,21 @@ extension CheatsViewController
 {
     // MARK: - Table view data source
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int
+    override func numberOfSections(in tableView: UITableView) -> Int
     {
         let numberOfSections = self.fetchedResultsController.sections!.count
         return numberOfSections
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
         let section = self.fetchedResultsController.sections![section]
         return section.numberOfObjects
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
-        let cell = tableView.dequeueReusableCellWithIdentifier(RSTGenericCellIdentifier, forIndexPath: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: RSTGenericCellIdentifier, for: indexPath)
         self.configure(cell: cell, forIndexPath: indexPath)
         return cell
     }
@@ -182,13 +182,13 @@ extension CheatsViewController
 
 extension CheatsViewController
 {
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
     {
-        let cheat = self.fetchedResultsController.objectAtIndexPath(indexPath) as! Cheat
+        let cheat = self.fetchedResultsController.object(at: indexPath) as! Cheat
         
         let backgroundContext = DatabaseManager.sharedManager.backgroundManagedObjectContext()
-        backgroundContext.performBlockAndWait {
-            let temporaryCheat = backgroundContext.objectWithID(cheat.objectID) as! Cheat
+        backgroundContext.performAndWait {
+            let temporaryCheat = backgroundContext.object(with: cheat.objectID) as! Cheat
             temporaryCheat.enabled = !temporaryCheat.enabled
             
             if temporaryCheat.enabled
@@ -215,18 +215,18 @@ extension CheatsViewController
             backgroundContext.saveWithErrorLogging()
         }
         
-        self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .None)
+        self.tableView.reloadRows(at: [indexPath], with: .none)
     }
     
-    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]?
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]?
     {
-        let cheat = self.fetchedResultsController.objectAtIndexPath(indexPath) as! Cheat
+        let cheat = self.fetchedResultsController.object(at: indexPath) as! Cheat
         
-        let deleteAction = UITableViewRowAction(style: .Destructive, title: NSLocalizedString("Delete", comment: "")) { (action, indexPath) in
+        let deleteAction = UITableViewRowAction(style: UITableViewRowActionStyle(), title: NSLocalizedString("Delete", comment: "")) { (action, indexPath) in
             self.deleteCheat(cheat)
         }
         
-        let editAction = UITableViewRowAction(style: .Normal, title: NSLocalizedString("Edit", comment: "")) { (action, indexPath) in
+        let editAction = UITableViewRowAction(style: .normal, title: NSLocalizedString("Edit", comment: "")) { (action, indexPath) in
             let editCheatViewController = self.makeEditCheatViewController(cheat: cheat)
             editCheatViewController.presentWithPresentingViewController(self)
         }
@@ -234,7 +234,7 @@ extension CheatsViewController
         return [deleteAction, editAction]
     }
     
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath)
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath)
     {
         // This method intentionally left blank because someone decided it was a Good Idea™ to require this method be implemented to use UITableViewRowActions
     }
@@ -243,20 +243,20 @@ extension CheatsViewController
 //MARK: - <UIViewControllerPreviewingDelegate> -
 extension CheatsViewController: UIViewControllerPreviewingDelegate
 {
-    func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController?
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController?
     {
-        guard let indexPath = self.tableView.indexPathForRowAtPoint(location) else { return nil }
+        guard let indexPath = self.tableView.indexPathForRow(at: location) else { return nil }
         
-        let frame = self.tableView.rectForRowAtIndexPath(indexPath)
+        let frame = self.tableView.rectForRow(at: indexPath)
         previewingContext.sourceRect = frame
         
-        let cheat = self.fetchedResultsController.objectAtIndexPath(indexPath) as! Cheat
+        let cheat = self.fetchedResultsController.object(at: indexPath) as! Cheat
         
         let editCheatViewController = self.makeEditCheatViewController(cheat: cheat)
         return editCheatViewController
     }
     
-    func previewingContext(previewingContext: UIViewControllerPreviewing, commitViewController viewControllerToCommit: UIViewController)
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController)
     {
         let editCheatViewController = viewControllerToCommit as! EditCheatViewController
         editCheatViewController.presentWithPresentingViewController(self)
@@ -266,7 +266,7 @@ extension CheatsViewController: UIViewControllerPreviewingDelegate
 //MARK: - <EditCheatViewControllerDelegate> -
 extension CheatsViewController: EditCheatViewControllerDelegate
 {
-    func editCheatViewController(editCheatViewController: EditCheatViewController, activateCheat cheat: Cheat, previousCheat: Cheat?) throws
+    func editCheatViewController(_ editCheatViewController: EditCheatViewController, activateCheat cheat: Cheat, previousCheat: Cheat?) throws
     {
         try self.delegate.cheatsViewController(self, didActivateCheat: cheat)
         
@@ -274,7 +274,7 @@ extension CheatsViewController: EditCheatViewControllerDelegate
         {
             let code = cheat.code
             
-            previousCheat.managedObjectContext?.performBlockAndWait({
+            previousCheat.managedObjectContext?.performAndWait({
                 
                 guard previousCheat.code != code else { return }
                 
@@ -283,7 +283,7 @@ extension CheatsViewController: EditCheatViewControllerDelegate
         }
     }
     
-    func editCheatViewController(editCheatViewController: EditCheatViewController, deactivateCheat cheat: Cheat)
+    func editCheatViewController(_ editCheatViewController: EditCheatViewController, deactivateCheat cheat: Cheat)
     {
         self.delegate.cheatsViewController(self, didDeactivateCheat: cheat)
     }
@@ -292,7 +292,7 @@ extension CheatsViewController: EditCheatViewControllerDelegate
 //MARK: - <NSFetchedResultsControllerDelegate> -
 extension CheatsViewController: NSFetchedResultsControllerDelegate
 {
-    func controllerDidChangeContent(controller: NSFetchedResultsController)
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>)
     {
         self.tableView.reloadData()
         self.updateBackgroundView()

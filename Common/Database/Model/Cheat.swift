@@ -59,11 +59,11 @@ class Cheat: NSManagedObject, CheatProtocol
     //TODO: Change type to String! when Swift 3 allows it
     @NSManaged var name: String?
     @NSManaged var code: String
-    @NSManaged var modifiedDate: NSDate
+    @NSManaged var modifiedDate: Date
     @NSManaged var enabled: Bool
     
     @NSManaged private(set) var identifier: String
-    @NSManaged private(set) var creationDate: NSDate
+    @NSManaged private(set) var creationDate: Date
     
     // Must be optional relationship to satisfy weird Core Data requirement
     // https://forums.developer.apple.com/thread/20535
@@ -73,16 +73,16 @@ class Cheat: NSManagedObject, CheatProtocol
     {
         get
         {
-            self.willAccessValueForKey(Attributes.type.rawValue)
-            let type = CheatType(rawValue: self.primitiveType.shortValue)!
-            self.didAccessValueForKey(Attributes.type.rawValue)
+            self.willAccessValue(forKey: Attributes.type.rawValue)
+            let type = CheatType(rawValue: self.primitiveType.int16Value)!
+            self.didAccessValue(forKey: Attributes.type.rawValue)
             return type
         }
         set
         {
-            self.willChangeValueForKey(Attributes.type.rawValue)
-            self.primitiveType = NSNumber(short: newValue.rawValue)
-            self.didChangeValueForKey(Attributes.type.rawValue)
+            self.willChangeValue(forKey: Attributes.type.rawValue)
+            self.primitiveType = NSNumber(value: newValue.rawValue)
+            self.didChangeValue(forKey: Attributes.type.rawValue)
         }
     }
 }
@@ -90,16 +90,16 @@ class Cheat: NSManagedObject, CheatProtocol
 extension Cheat
 {
     @NSManaged private var primitiveIdentifier: String
-    @NSManaged private var primitiveCreationDate: NSDate
-    @NSManaged private var primitiveModifiedDate: NSDate
+    @NSManaged private var primitiveCreationDate: Date
+    @NSManaged private var primitiveModifiedDate: Date
     @NSManaged private var primitiveType: NSNumber
     
     override func awakeFromInsert()
     {
         super.awakeFromInsert()
         
-        let identifier = NSUUID().UUIDString
-        let date = NSDate()
+        let identifier = UUID().uuidString
+        let date = Date()
         
         self.primitiveIdentifier = identifier
         self.primitiveCreationDate = date

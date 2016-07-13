@@ -44,44 +44,44 @@ class GridCollectionViewCell: UICollectionViewCell
     private func configureSubviews()
     {
         // Fix super annoying Unsatisfiable Constraints message in debugger by setting autoresizingMask
-        self.contentView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+        self.contentView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         
         self.clipsToBounds = false
         self.contentView.clipsToBounds = false
         
         self.imageView.translatesAutoresizingMaskIntoConstraints = false
-        self.imageView.contentMode = .ScaleAspectFit
+        self.imageView.contentMode = .scaleAspectFit
         #if os(tvOS)
             self.imageView.adjustsImageWhenAncestorFocused = true
         #endif
         self.contentView.addSubview(self.imageView)
         
         self.textLabel.translatesAutoresizingMaskIntoConstraints = false
-        self.textLabel.font = UIFont.boldSystemFontOfSize(12)
-        self.textLabel.textAlignment = .Center
+        self.textLabel.font = UIFont.boldSystemFont(ofSize: 12)
+        self.textLabel.textAlignment = .center
         self.textLabel.numberOfLines = 0
         self.contentView.addSubview(self.textLabel)
         
         // Auto Layout
         
-        self.imageView.topAnchor.constraintEqualToAnchor(self.contentView.topAnchor).active = true
-        self.imageView.centerXAnchor.constraintEqualToAnchor(self.contentView.centerXAnchor).active = true
+        self.imageView.topAnchor.constraint(equalTo: self.contentView.topAnchor).isActive = true
+        self.imageView.centerXAnchor.constraint(equalTo: self.contentView.centerXAnchor).isActive = true
         
-        self.imageViewWidthConstraint = self.imageView.widthAnchor.constraintEqualToConstant(self.maximumImageSize.width)
-        self.imageViewWidthConstraint.active = true
+        self.imageViewWidthConstraint = self.imageView.widthAnchor.constraint(equalToConstant: self.maximumImageSize.width)
+        self.imageViewWidthConstraint.isActive = true
         
-        self.imageViewHeightConstraint = self.imageView.heightAnchor.constraintEqualToConstant(self.maximumImageSize.height)
-        self.imageViewHeightConstraint.active = true
+        self.imageViewHeightConstraint = self.imageView.heightAnchor.constraint(equalToConstant: self.maximumImageSize.height)
+        self.imageViewHeightConstraint.isActive = true
         
         
-        self.textLabel.trailingAnchor.constraintEqualToAnchor(self.contentView.trailingAnchor).active = true
-        self.textLabel.leadingAnchor.constraintEqualToAnchor(self.contentView.leadingAnchor).active = true
+        self.textLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor).isActive = true
+        self.textLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor).isActive = true
         
-        self.textLabelBottomAnchorConstraint = self.textLabel.bottomAnchor.constraintEqualToAnchor(self.contentView.bottomAnchor)
-        self.textLabelBottomAnchorConstraint.active = true
+        self.textLabelBottomAnchorConstraint = self.textLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor)
+        self.textLabelBottomAnchorConstraint.isActive = true
         
-        self.textLabelVerticalSpacingConstraint = self.textLabel.topAnchor.constraintEqualToAnchor(self.imageView.bottomAnchor)
-        self.textLabelVerticalSpacingConstraint.active = true
+        self.textLabelVerticalSpacingConstraint = self.textLabel.topAnchor.constraint(equalTo: self.imageView.bottomAnchor)
+        self.textLabelVerticalSpacingConstraint.isActive = true
         
         
         #if os(tvOS)
@@ -90,37 +90,37 @@ class GridCollectionViewCell: UICollectionViewCell
             self.textLabelFocusedVerticalSpacingConstraint = self.textLabel.topAnchor.constraintEqualToAnchor(self.imageView.focusedFrameGuide.bottomAnchor, constant: 0)
             self.textLabelFocusedVerticalSpacingConstraint?.active = true
         #else
-            self.textLabelVerticalSpacingConstraint.active = true
+            self.textLabelVerticalSpacingConstraint.isActive = true
         #endif
         
         
         self.updateMaximumImageSize()
     }
 
-    override func didUpdateFocusInContext(context: UIFocusUpdateContext, withAnimationCoordinator coordinator: UIFocusAnimationCoordinator)
+    override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator)
     {
-        super.didUpdateFocusInContext(context, withAnimationCoordinator: coordinator)
+        super.didUpdateFocus(in: context, with: coordinator)
         
         coordinator.addCoordinatedAnimations({
             
             if context.nextFocusedView == self
             {
-                self.textLabelBottomAnchorConstraint?.active = false
-                self.textLabelVerticalSpacingConstraint.active = false
+                self.textLabelBottomAnchorConstraint?.isActive = false
+                self.textLabelVerticalSpacingConstraint.isActive = false
                 
-                self.textLabelFocusedVerticalSpacingConstraint?.active = true
+                self.textLabelFocusedVerticalSpacingConstraint?.isActive = true
                 
-                self.textLabel.textColor = UIColor.whiteColor()
+                self.textLabel.textColor = UIColor.white()
                 
             }
             else
             {
-                self.textLabelFocusedVerticalSpacingConstraint?.active = false
+                self.textLabelFocusedVerticalSpacingConstraint?.isActive = false
                 
-                self.textLabelBottomAnchorConstraint?.active = true
-                self.textLabelVerticalSpacingConstraint.active = true
+                self.textLabelBottomAnchorConstraint?.isActive = true
+                self.textLabelVerticalSpacingConstraint.isActive = true
                 
-                self.textLabel.textColor = UIColor.blackColor()
+                self.textLabel.textColor = UIColor.black()
             }
             
             self.layoutIfNeeded()

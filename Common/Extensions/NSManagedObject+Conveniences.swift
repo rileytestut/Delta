@@ -15,31 +15,31 @@ extension NSManagedObject
         return NSStringFromClass(self)
     }
     
-    class func insertIntoManagedObjectContext(managedObjectContext: NSManagedObjectContext) -> Self
+    class func insertIntoManagedObjectContext(_ managedObjectContext: NSManagedObjectContext) -> Self
     {
         return self.insertIntoManagedObjectContext(managedObjectContext, type: self)
     }
     
-    private class func insertIntoManagedObjectContext<T>(managedObjectContext: NSManagedObjectContext, type: T.Type) -> T
+    private class func insertIntoManagedObjectContext<T>(_ managedObjectContext: NSManagedObjectContext, type: T.Type) -> T
     {
-        let object = NSEntityDescription.insertNewObjectForEntityForName(self.entityName, inManagedObjectContext: managedObjectContext) as! T
+        let object = NSEntityDescription.insertNewObject(forEntityName: self.entityName, into: managedObjectContext) as! T
         return object
     }
     
     // MARK: - Fetches -
     
-    class func fetchRequest() -> NSFetchRequest
+    class func fetchRequest() -> NSFetchRequest<AnyObject>
     {
         let fetchRequest = NSFetchRequest(entityName: self.entityName)
         return fetchRequest
     }
     
-    class func instancesInManagedObjectContext<T: NSManagedObject>(managedObjectContext: NSManagedObjectContext, type: T.Type) -> [T]
+    class func instancesInManagedObjectContext<T: NSManagedObject>(_ managedObjectContext: NSManagedObjectContext, type: T.Type) -> [T]
     {
         return self.instancesWithPredicate(nil, inManagedObjectContext: managedObjectContext, type: type)
     }
     
-    class func instancesWithPredicate<T: NSManagedObject>(predicate: NSPredicate?, inManagedObjectContext managedObjectContext: NSManagedObjectContext, type: T.Type) -> [T]
+    class func instancesWithPredicate<T: NSManagedObject>(_ predicate: Predicate?, inManagedObjectContext managedObjectContext: NSManagedObjectContext, type: T.Type) -> [T]
     {
         let fetchRequest = self.fetchRequest()
         fetchRequest.predicate = predicate
@@ -48,7 +48,7 @@ extension NSManagedObject
         
         do
         {
-            results = try managedObjectContext.executeFetchRequest(fetchRequest) as! [T]
+            results = try managedObjectContext.fetch(fetchRequest) as! [T]
         }
         catch let error as NSError
         {

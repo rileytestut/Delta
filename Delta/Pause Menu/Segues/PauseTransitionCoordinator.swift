@@ -21,25 +21,25 @@ class PauseTransitionCoordinator: NSObject, UIViewControllerAnimatedTransitionin
         super.init()
     }
     
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval
+    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval
     {
         return 0.4
     }
     
-    func animateTransition(transitionContext: UIViewControllerContextTransitioning)
+    func animateTransition(using transitionContext: UIViewControllerContextTransitioning)
     {
-        let destinationViewController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)!
-        let sourceViewController = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey)!
+        let destinationViewController = transitionContext.viewController(forKey: UITransitionContextToViewControllerKey)!
+        let sourceViewController = transitionContext.viewController(forKey: UITransitionContextFromViewControllerKey)!
         
-        destinationViewController.view.frame = transitionContext.finalFrameForViewController(destinationViewController)
-        destinationViewController.view.frame.origin.y = self.presenting ? transitionContext.containerView()!.bounds.height : -destinationViewController.view.bounds.height
-        transitionContext.containerView()!.addSubview(destinationViewController.view)
+        destinationViewController.view.frame = transitionContext.finalFrame(for: destinationViewController)
+        destinationViewController.view.frame.origin.y = self.presenting ? transitionContext.containerView().bounds.height : -destinationViewController.view.bounds.height
+        transitionContext.containerView().addSubview(destinationViewController.view)
         
         destinationViewController.view.layoutIfNeeded()
         
-        UIView.animateWithDuration(self.transitionDuration(transitionContext), delay:0, options:RSTSystemTransitionAnimationCurve, animations: {
+        UIView.animate(withDuration: self.transitionDuration(using: transitionContext), delay:0, options:RSTSystemTransitionAnimationCurve, animations: {
             
-            sourceViewController.view.frame.origin.y = self.presenting ? -sourceViewController.view.bounds.height : transitionContext.containerView()!.bounds.height
+            sourceViewController.view.frame.origin.y = self.presenting ? -sourceViewController.view.bounds.height : transitionContext.containerView().bounds.height
             destinationViewController.view.frame.origin.y = 0
             
             self.presentationController.containerView?.setNeedsLayout()

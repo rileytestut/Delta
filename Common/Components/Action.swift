@@ -12,10 +12,10 @@ extension Action
 {
     enum Style
     {
-        case Default
-        case Cancel
-        case Destructive
-        case Selected
+        case `default`
+        case cancel
+        case destructive
+        case selected
     }
 }
 
@@ -25,9 +25,9 @@ extension Action.Style
     {
         switch self
         {
-        case .Default, .Selected: return .Default
-        case .Cancel: return .Cancel
-        case .Destructive: return .Destructive
+        case .default, .selected: return .default
+        case .cancel: return .cancel
+        case .destructive: return .destructive
         }
     }
     
@@ -35,9 +35,9 @@ extension Action.Style
     {
         switch self
         {
-        case .Default, .Cancel: return .Default
-        case .Destructive: return .Destructive
-        case .Selected: return .Selected
+        case .default, .cancel: return .default
+        case .destructive: return .destructive
+        case .selected: return .selected
         }
     }
 }
@@ -46,7 +46,7 @@ struct Action
 {
     let title: String
     let style: Style
-    let action: (Action -> Void)?
+    let action: ((Action) -> Void)?
     
     var alertAction: UIAlertAction
     {

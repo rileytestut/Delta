@@ -46,23 +46,23 @@ class GameCollectionViewDataSource: NSObject
         
         let fetchRequest = Game.fetchRequest()
         
-        var predicates: [NSPredicate] = []
+        var predicates: [Predicate] = []
         
         if let identifiers = self.supportedGameCollectionIdentifiers
         {
             for identifier in identifiers
             {
-                let predicate = NSPredicate(format: "SUBQUERY(%K, $x, $x.%K == %@).@count > 0", Game.Attributes.gameCollections.rawValue, GameCollection.Attributes.identifier.rawValue, identifier)
+                let predicate = Predicate(format: "SUBQUERY(%K, $x, $x.%K == %@).@count > 0", Game.Attributes.gameCollections.rawValue, GameCollection.Attributes.identifier.rawValue, identifier)
                 predicates.append(predicate)
             }
         }
         
         if predicates.count > 0
         {
-            fetchRequest.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: predicates)
+            fetchRequest.predicate = CompoundPredicate(orPredicateWithSubpredicates: predicates)
         }
         
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: Game.Attributes.typeIdentifier.rawValue, ascending: true), NSSortDescriptor(key: Game.Attributes.name.rawValue, ascending: true)]
+        fetchRequest.sortDescriptors = [SortDescriptor(key: Game.Attributes.typeIdentifier.rawValue, ascending: true), SortDescriptor(key: Game.Attributes.name.rawValue, ascending: true)]
         
         self.fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DatabaseManager.sharedManager.managedObjectContext, sectionNameKeyPath: Game.Attributes.typeIdentifier.rawValue, cacheName: nil)
         self.fetchedResultsController.delegate = previousDelegate
@@ -72,9 +72,9 @@ class GameCollectionViewDataSource: NSObject
     
     // MARK: - Collection View -
     
-    private func configureCell(cell: GridCollectionViewCell, forIndexPath indexPath: NSIndexPath)
+    private func configureCell(_ cell: GridCollectionViewCell, forIndexPath indexPath: IndexPath)
     {
-        let game = self.fetchedResultsController.objectAtIndexPath(indexPath) as! Game
+        let game = self.fetchedResultsController.object(at: indexPath) as! Game
         
         if let handler = self.cellConfigurationHandler
         {
@@ -85,20 +85,20 @@ class GameCollectionViewDataSource: NSObject
 
 extension GameCollectionViewDataSource: UICollectionViewDataSource
 {
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int
+    func numberOfSections(in collectionView: UICollectionView) -> Int
     {
         return self.fetchedResultsController.sections?.count ?? 0
     }
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
     {
         let count = self.fetchedResultsController.sections?[section].numberOfObjects ?? 0
         return count
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
     {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("GameCell", forIndexPath: indexPath) as! GridCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "GameCell", for: indexPath) as! GridCollectionViewCell
         
         self.configureCell(cell, forIndexPath: indexPath)
         
@@ -108,18 +108,18 @@ extension GameCollectionViewDataSource: UICollectionViewDataSource
 
 extension GameCollectionViewDataSource: UICollectionViewDelegate
 {
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: IndexPath) -> CGSize
     {
         let collectionViewLayout = collectionView.collectionViewLayout as! GridCollectionViewLayout
         
-        let widthConstraint = self.prototypeCell.contentView.widthAnchor.constraintEqualToConstant(collectionViewLayout.itemWidth)
-        widthConstraint.active = true
+        let widthConstraint = self.prototypeCell.contentView.widthAnchor.constraint(equalToConstant: collectionViewLayout.itemWidth)
+        widthConstraint.isActive = true
         
         self.configureCell(self.prototypeCell, forIndexPath: indexPath)
         
-        let size = self.prototypeCell.contentView.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize)
+        let size = self.prototypeCell.contentView.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
         
-        widthConstraint.active = false
+        widthConstraint.isActive = false
         
         return size
     }

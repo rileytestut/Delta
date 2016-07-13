@@ -50,6 +50,6 @@ class BoxArtImageView: UIImageView
             self.adjustsImageWhenAncestorFocused = true
         #endif
         
-        self.contentMode = .ScaleAspectFit
+        self.contentMode = .scaleAspectFit
     }
 }

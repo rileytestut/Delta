@@ -29,46 +29,46 @@ class DatabaseManager
     
     private init()
     {
-        let modelURL = NSBundle.mainBundle().URLForResource("Model", withExtension: "momd")
-        let managedObjectModel = NSManagedObjectModel(contentsOfURL: modelURL!)
+        let modelURL = Bundle.main.urlForResource("Model", withExtension: "momd")
+        let managedObjectModel = NSManagedObjectModel(contentsOf: modelURL!)
         let persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel!)
         
-        self.privateManagedObjectContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
+        self.privateManagedObjectContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
         self.privateManagedObjectContext.persistentStoreCoordinator = persistentStoreCoordinator
         self.privateManagedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
         
-        self.managedObjectContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
-        self.managedObjectContext.parentContext = self.privateManagedObjectContext
+        self.managedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
+        self.managedObjectContext.parent = self.privateManagedObjectContext
         self.managedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
         
-        self.validationManagedObjectContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
-        self.validationManagedObjectContext.parentContext = self.managedObjectContext
+        self.validationManagedObjectContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+        self.validationManagedObjectContext.parent = self.managedObjectContext
         self.validationManagedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
 
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DatabaseManager.managedObjectContextWillSave(_:)), name: NSManagedObjectContextWillSaveNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DatabaseManager.managedObjectContextDidSave(_:)), name: NSManagedObjectContextDidSaveNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(DatabaseManager.managedObjectContextWillSave(_:)), name: NSNotification.Name.NSManagedObjectContextWillSave, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(DatabaseManager.managedObjectContextDidSave(_:)), name: NSNotification.Name.NSManagedObjectContextDidSave, object: nil)
 
     }
     
-    func startWithCompletion(completionBlock: ((performingMigration: Bool) -> Void)?)
+    func startWithCompletion(_ completionBlock: ((performingMigration: Bool) -> Void)?)
     {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)) {
+        DispatchQueue.global(attributes: DispatchQueue.GlobalAttributes.qosUserInitiated).async {
             
-            let storeURL = DatabaseManager.databaseDirectoryURL.URLByAppendingPathComponent("Delta.sqlite")
+            let storeURL = try! DatabaseManager.databaseDirectoryURL.appendingPathComponent("Delta.sqlite")
 
             let options = [NSMigratePersistentStoresAutomaticallyOption: true, NSInferMappingModelAutomaticallyOption: true]
             
             var performingMigration = false
             
-            if let sourceMetadata = try? NSPersistentStoreCoordinator.metadataForPersistentStoreOfType(NSSQLiteStoreType, URL: storeURL, options: options),
+            if let sourceMetadata = try? NSPersistentStoreCoordinator.metadataForPersistentStore(ofType: NSSQLiteStoreType, at: storeURL, options: options),
                 managedObjectModel = self.privateManagedObjectContext.persistentStoreCoordinator?.managedObjectModel
             {
-                performingMigration = !managedObjectModel.isConfiguration(nil, compatibleWithStoreMetadata: sourceMetadata)
+                performingMigration = !managedObjectModel.isConfiguration(withName: nil, compatibleWithStoreMetadata: sourceMetadata)
             }
             
             do
             {
-                try self.privateManagedObjectContext.persistentStoreCoordinator?.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: storeURL, options: options)
+                try self.privateManagedObjectContext.persistentStoreCoordinator?.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: storeURL, options: options)
             }
             catch let error as NSError
             {
@@ -94,16 +94,16 @@ class DatabaseManager
     // MARK: - Importing -
     /// Importing
     
-    func importGamesAtURLs(URLs: [NSURL], withCompletion completion: ([String] -> Void)?)
+    func importGamesAtURLs(_ URLs: [URL], withCompletion completion: (([String]) -> Void)?)
     {
         let managedObjectContext = self.backgroundManagedObjectContext()
-        managedObjectContext.performBlock() {
+        managedObjectContext.perform() {
             
             var identifiers: [String] = []
             
             for URL in URLs
             {
-                let identifier = FileHash.sha1HashOfFileAtPath(URL.path) as String
+                let identifier = FileHash.sha1HashOfFile(atPath: URL.path) as String
                 
                 var filename = identifier
                 if let pathExtension = URL.pathExtension
@@ -112,7 +112,7 @@ class DatabaseManager
                 }
                 
                 let game = Game.insertIntoManagedObjectContext(managedObjectContext)
-                game.name = URL.URLByDeletingPathExtension?.lastPathComponent ?? NSLocalizedString("Game", comment: "")
+                game.name = try! URL.deletingPathExtension()?.lastPathComponent ?? NSLocalizedString("Game", comment: "")
                 game.identifier = identifier
                 game.filename = filename
                 
@@ -129,17 +129,17 @@ class DatabaseManager
                 
                 do
                 {
-                    let destinationURL = DatabaseManager.gamesDirectoryURL.URLByAppendingPathComponent(game.identifier + "." + game.preferredFileExtension)
+                    let destinationURL = try! DatabaseManager.gamesDirectoryURL.appendingPathComponent(game.identifier + "." + game.preferredFileExtension)
                     
                     if let path = destinationURL.path
                     {
-                        if NSFileManager.defaultManager().fileExistsAtPath(path)
+                        if FileManager.default.fileExists(atPath: path)
                         {
-                            try NSFileManager.defaultManager().removeItemAtURL(URL)
+                            try FileManager.default.removeItem(at: URL)
                         }
                         else
                         {
-                            try NSFileManager.defaultManager().moveItemAtURL(URL, toURL: destinationURL)
+                            try FileManager.default.moveItem(at: URL, to: destinationURL)
                         }
                     }
                     
@@ -147,7 +147,7 @@ class DatabaseManager
                 }
                 catch
                 {
-                    game.managedObjectContext?.deleteObject(game)
+                    game.managedObjectContext?.delete(game)
                 }
                 
             }
@@ -177,8 +177,8 @@ class DatabaseManager
     
     func backgroundManagedObjectContext() -> NSManagedObjectContext
     {
-        let managedObjectContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
-        managedObjectContext.parentContext = self.validationManagedObjectContext
+        let managedObjectContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+        managedObjectContext.parent = self.validationManagedObjectContext
         managedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
         
         return managedObjectContext
@@ -187,44 +187,44 @@ class DatabaseManager
 
 extension DatabaseManager
 {
-    class var databaseDirectoryURL: NSURL
+    class var databaseDirectoryURL: URL
     {
-        let documentsDirectoryURL: NSURL
+        let documentsDirectoryURL: URL
         
-        if UIDevice.currentDevice().userInterfaceIdiom == .TV
+        if UIDevice.current().userInterfaceIdiom == .tv
         {
-            documentsDirectoryURL = NSFileManager.defaultManager().URLsForDirectory(NSSearchPathDirectory.CachesDirectory, inDomains: NSSearchPathDomainMask.UserDomainMask).first!
+            documentsDirectoryURL = FileManager.default.urlsForDirectory(FileManager.SearchPathDirectory.cachesDirectory, inDomains: FileManager.SearchPathDomainMask.userDomainMask).first!
         }
         else
         {
-            documentsDirectoryURL = NSFileManager.defaultManager().URLsForDirectory(NSSearchPathDirectory.DocumentDirectory, inDomains: NSSearchPathDomainMask.UserDomainMask).first!
+            documentsDirectoryURL = FileManager.default.urlsForDirectory(FileManager.SearchPathDirectory.documentDirectory, inDomains: FileManager.SearchPathDomainMask.userDomainMask).first!
         }
         
-        let databaseDirectoryURL = documentsDirectoryURL.URLByAppendingPathComponent("Database")
+        let databaseDirectoryURL = try! documentsDirectoryURL.appendingPathComponent("Database")
         self.createDirectoryAtURLIfNeeded(databaseDirectoryURL)
         
         return databaseDirectoryURL
     }
     
-    class var gamesDirectoryURL: NSURL
+    class var gamesDirectoryURL: URL
     {
-        let gamesDirectoryURL = DatabaseManager.databaseDirectoryURL.URLByAppendingPathComponent("Games")
+        let gamesDirectoryURL = try! DatabaseManager.databaseDirectoryURL.appendingPathComponent("Games")
         self.createDirectoryAtURLIfNeeded(gamesDirectoryURL)
         
         return gamesDirectoryURL
     }
     
-    class var saveStatesDirectoryURL: NSURL
+    class var saveStatesDirectoryURL: URL
     {
-        let saveStatesDirectoryURL = DatabaseManager.databaseDirectoryURL.URLByAppendingPathComponent("Save States")
+        let saveStatesDirectoryURL = try! DatabaseManager.databaseDirectoryURL.appendingPathComponent("Save States")
         self.createDirectoryAtURLIfNeeded(saveStatesDirectoryURL)
         
         return saveStatesDirectoryURL
     }
     
-    class func saveStatesDirectoryURLForGame(game: Game) -> NSURL
+    class func saveStatesDirectoryURLForGame(_ game: Game) -> URL
     {
-        let gameDirectoryURL = DatabaseManager.saveStatesDirectoryURL.URLByAppendingPathComponent(game.identifier)
+        let gameDirectoryURL = try! DatabaseManager.saveStatesDirectoryURL.appendingPathComponent(game.identifier)
         self.createDirectoryAtURLIfNeeded(gameDirectoryURL)
         
         return gameDirectoryURL
@@ -239,7 +239,7 @@ private extension DatabaseManager
     {
         let backgroundTaskIdentifier = RSTBeginBackgroundTask("Save Database Task")
         
-        self.validationManagedObjectContext.performBlockAndWait {
+        self.validationManagedObjectContext.performAndWait {
             
             do
             {
@@ -252,7 +252,7 @@ private extension DatabaseManager
             
             
             // Update main managed object context
-            self.managedObjectContext.performBlockAndWait() {
+            self.managedObjectContext.performAndWait() {
                 
                 do
                 {
@@ -265,7 +265,7 @@ private extension DatabaseManager
                 
                 
                 // Save to disk
-                self.privateManagedObjectContext.performBlock() {
+                self.privateManagedObjectContext.perform() {
                     
                     do
                     {
@@ -287,22 +287,22 @@ private extension DatabaseManager
     
     // MARK: - Validation -
     
-    func validateManagedObjectContextSave(managedObjectContext: NSManagedObjectContext)
+    func validateManagedObjectContextSave(_ managedObjectContext: NSManagedObjectContext)
     {
         // Remove deleted files from disk
         for object in managedObjectContext.deletedObjects
         {
-            var fileURLs = Set<NSURL>()
+            var fileURLs = Set<URL>()
             
-            let temporaryObject = self.validationManagedObjectContext.objectWithID(object.objectID)
+            let temporaryObject = self.validationManagedObjectContext.object(with: object.objectID)
             switch temporaryObject
             {
             case let game as Game:
-                fileURLs.insert(game.fileURL)
+                fileURLs.insert(game.fileURL as URL)
                 
             case let saveState as SaveState:
-                fileURLs.insert(saveState.fileURL)
-                fileURLs.insert(saveState.imageFileURL)
+                fileURLs.insert(saveState.fileURL as URL)
+                fileURLs.insert(saveState.imageFileURL as URL)
                 
             default: break
             }
@@ -311,7 +311,7 @@ private extension DatabaseManager
             {
                 do
                 {
-                    try NSFileManager.defaultManager().removeItemAtURL(URL)
+                    try FileManager.default.removeItem(at: URL)
                 }
                 catch let error as NSError
                 {
@@ -321,39 +321,39 @@ private extension DatabaseManager
         }
         
         // Remove empty collections
-        let collections = GameCollection.instancesWithPredicate(NSPredicate(format: "%K.@count == 0", GameCollection.Attributes.games.rawValue), inManagedObjectContext: self.validationManagedObjectContext, type: GameCollection.self)
+        let collections = GameCollection.instancesWithPredicate(Predicate(format: "%K.@count == 0", GameCollection.Attributes.games.rawValue), inManagedObjectContext: self.validationManagedObjectContext, type: GameCollection.self)
         
         for collection in collections
         {
-            self.validationManagedObjectContext.deleteObject(collection)
+            self.validationManagedObjectContext.delete(collection)
         }
     }
     
     // MARK: - Notifications -
     
-    @objc func managedObjectContextWillSave(notification: NSNotification)
+    @objc func managedObjectContextWillSave(_ notification: Notification)
     {
-        guard let managedObjectContext = notification.object as? NSManagedObjectContext where managedObjectContext.parentContext == self.validationManagedObjectContext else { return }
+        guard let managedObjectContext = notification.object as? NSManagedObjectContext where managedObjectContext.parent == self.validationManagedObjectContext else { return }
         
-        self.validationManagedObjectContext.performBlockAndWait {
+        self.validationManagedObjectContext.performAndWait {
             self.validateManagedObjectContextSave(managedObjectContext)
         }
     }
     
-    @objc func managedObjectContextDidSave(notification: NSNotification)
+    @objc func managedObjectContextDidSave(_ notification: Notification)
     {
-        guard let managedObjectContext = notification.object as? NSManagedObjectContext where managedObjectContext.parentContext == self.validationManagedObjectContext else { return }
+        guard let managedObjectContext = notification.object as? NSManagedObjectContext where managedObjectContext.parent == self.validationManagedObjectContext else { return }
         
         self.save()
     }
     
     // MARK: - File Management -
     
-    class func createDirectoryAtURLIfNeeded(URL: NSURL)
+    class func createDirectoryAtURLIfNeeded(_ URL: Foundation.URL)
     {
         do
         {
-            try NSFileManager.defaultManager().createDirectoryAtURL(URL, withIntermediateDirectories: true, attributes: nil)
+            try FileManager.default.createDirectory(at: URL, withIntermediateDirectories: true, attributes: nil)
         }
         catch
         {

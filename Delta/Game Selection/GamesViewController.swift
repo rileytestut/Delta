@@ -19,16 +19,16 @@ class GamesViewController: UIViewController
     private var backgroundView: RSTBackgroundView!
     private var pageControl: UIPageControl!
     
-    private let fetchedResultsController: NSFetchedResultsController
+    private let fetchedResultsController: NSFetchedResultsController<AnyObject>
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         fatalError("initWithNibName: not implemented")
     }
     
     required init?(coder aDecoder: NSCoder)
     {
         let fetchRequest = GameCollection.fetchRequest()
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: GameCollection.Attributes.index.rawValue, ascending: true)]
+        fetchRequest.sortDescriptors = [SortDescriptor(key: GameCollection.Attributes.index.rawValue, ascending: true)]
         
         self.fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DatabaseManager.sharedManager.managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
         
@@ -44,29 +44,29 @@ class GamesViewController: UIViewController
         self.automaticallyAdjustsScrollViewInsets = false
         
         self.backgroundView = RSTBackgroundView(frame: self.view.bounds)
-        self.backgroundView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+        self.backgroundView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.backgroundView.textLabel.text = NSLocalizedString("No Games", comment: "")
         self.backgroundView.detailTextLabel.text = NSLocalizedString("You can import games by pressing the + button in the top right.", comment: "")
-        self.view.insertSubview(self.backgroundView, atIndex: 0)
+        self.view.insertSubview(self.backgroundView, at: 0)
         
         self.pageViewController = self.childViewControllers.first as? UIPageViewController
         self.pageViewController.dataSource = self
         self.pageViewController.delegate = self
-        self.pageViewController.view.hidden = true
+        self.pageViewController.view.isHidden = true
         
         self.pageControl = UIPageControl()
         self.pageControl.translatesAutoresizingMaskIntoConstraints = false
         self.pageControl.hidesForSinglePage = false
         self.pageControl.numberOfPages = 3
-        self.pageControl.currentPageIndicatorTintColor = UIColor.purpleColor()
-        self.pageControl.pageIndicatorTintColor = UIColor.lightGrayColor()
+        self.pageControl.currentPageIndicatorTintColor = UIColor.purple()
+        self.pageControl.pageIndicatorTintColor = UIColor.lightGray()
         self.navigationController?.toolbar.addSubview(self.pageControl)
         
-        self.pageControl.centerXAnchor.constraintEqualToAnchor(self.navigationController?.toolbar.centerXAnchor, constant: 0).active = true
-        self.pageControl.centerYAnchor.constraintEqualToAnchor(self.navigationController?.toolbar.centerYAnchor, constant: 0).active = true
+        self.pageControl.centerXAnchor.constraint(equalTo: (self.navigationController?.toolbar.centerXAnchor)!, constant: 0).isActive = true
+        self.pageControl.centerYAnchor.constraint(equalTo: (self.navigationController?.toolbar.centerYAnchor)!, constant: 0).isActive = true
     }
     
-    override func viewWillAppear(animated: Bool)
+    override func viewWillAppear(_ animated: Bool)
     {
         super.viewWillAppear(animated)
         
@@ -115,14 +115,14 @@ class GamesViewController: UIViewController
     // MARK: - Navigation -
     
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?)
+    override func prepare(for segue: UIStoryboardSegue, sender: AnyObject?)
     {
         guard let sourceViewController = segue.sourceViewController as? GamesCollectionViewController else { return }
         guard let destinationViewController = segue.destinationViewController as? EmulationViewController else { return }
         guard let cell = sender as? UICollectionViewCell else { return }
         
-        let indexPath = sourceViewController.collectionView?.indexPathForCell(cell)
-        let game = sourceViewController.dataSource.fetchedResultsController.objectAtIndexPath(indexPath!) as! Game
+        let indexPath = sourceViewController.collectionView?.indexPath(for: cell)
+        let game = sourceViewController.dataSource.fetchedResultsController.object(at: indexPath!) as! Game
         
         destinationViewController.game = game
         
@@ -153,12 +153,12 @@ class GamesViewController: UIViewController
         }
     }
     
-    @IBAction func unwindFromSettingsViewController(segue: UIStoryboardSegue)
+    @IBAction func unwindFromSettingsViewController(_ segue: UIStoryboardSegue)
     {
         
     }
     
-    @IBAction func unwindFromEmulationViewController(segue: UIStoryboardSegue)
+    @IBAction func unwindFromEmulationViewController(_ segue: UIStoryboardSegue)
     {
         
     }
@@ -166,7 +166,7 @@ class GamesViewController: UIViewController
 
 private extension GamesViewController
 {
-    func viewControllerForIndex(index: Int) -> GamesCollectionViewController?
+    func viewControllerForIndex(_ index: Int) -> GamesCollectionViewController?
     {
         guard let pages = self.fetchedResultsController.sections?.first?.numberOfObjects where pages > 0 else { return nil }
         
@@ -179,10 +179,10 @@ private extension GamesViewController
             safeIndex = pages + safeIndex
         }
         
-        let indexPath = NSIndexPath(forRow: safeIndex, inSection: 0)
+        let indexPath = IndexPath(row: safeIndex, section: 0)
         
-        let viewController = self.storyboard?.instantiateViewControllerWithIdentifier("gamesCollectionViewController") as! GamesCollectionViewController
-        viewController.gameCollection = self.fetchedResultsController.objectAtIndexPath(indexPath) as! GameCollection
+        let viewController = self.storyboard?.instantiateViewController(withIdentifier: "gamesCollectionViewController") as! GamesCollectionViewController
+        viewController.gameCollection = self.fetchedResultsController.object(at: indexPath) as! GameCollection
         viewController.collectionView?.contentInset.top = self.topLayoutGuide.length
         viewController.segueHandler = self
         
@@ -198,7 +198,7 @@ private extension GamesViewController
         
         if let viewController = pageViewController.viewControllers?.first as? GamesCollectionViewController, let gameCollection = viewController.gameCollection
         {
-            if let index = self.fetchedResultsController.fetchedObjects?.indexOf({ $0 as! GameCollection == gameCollection })
+            if let index = self.fetchedResultsController.fetchedObjects?.index(where: { $0 as! GameCollection == gameCollection })
             {
                 self.pageControl.currentPage = index
             }
@@ -216,31 +216,31 @@ private extension GamesViewController
         if sections > 0
         {
             // Reset page view controller if currently hidden or current child should view controller no longer exists
-            if self.pageViewController.view.hidden || resetPageViewController
+            if self.pageViewController.view.isHidden || resetPageViewController
             {
                 if let viewController = self.viewControllerForIndex(0)
                 {
-                    self.pageViewController.view.hidden = false
-                    self.backgroundView.hidden = true
+                    self.pageViewController.view.isHidden = false
+                    self.backgroundView.isHidden = true
                     
-                    self.pageViewController.setViewControllers([viewController], direction: .Forward, animated: false, completion: nil)
+                    self.pageViewController.setViewControllers([viewController], direction: .forward, animated: false, completion: nil)
                     
                     self.title = viewController.title
                 }
             }
             else
             {
-                self.pageViewController.setViewControllers(self.pageViewController.viewControllers, direction: .Forward, animated: false, completion: nil)
+                self.pageViewController.setViewControllers(self.pageViewController.viewControllers, direction: .forward, animated: false, completion: nil)
             }
         }
         else
         {
             self.title = NSLocalizedString("Games", comment: "")
             
-            if !self.pageViewController.view.hidden
+            if !self.pageViewController.view.isHidden
             {
-                self.pageViewController.view.hidden = true
-                self.backgroundView.hidden = false
+                self.pageViewController.view.isHidden = true
+                self.backgroundView.isHidden = false
             }
         }
     }
@@ -248,7 +248,7 @@ private extension GamesViewController
 
 extension GamesViewController: GamePickerControllerDelegate
 {
-    func gamePickerController(gamePickerController: GamePickerController, didImportGames games: [Game])
+    func gamePickerController(_ gamePickerController: GamePickerController, didImportGames games: [Game])
     {
         print(games)
     }
@@ -256,23 +256,23 @@ extension GamesViewController: GamePickerControllerDelegate
 
 extension GamesViewController: UIPageViewControllerDelegate, UIPageViewControllerDataSource
 {
-    func pageViewController(pageViewController: UIPageViewController, viewControllerBeforeViewController viewController: UIViewController) -> UIViewController?
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController?
     {
         let viewController = self.viewControllerForIndex(self.pageControl.currentPage - 1)
         return viewController
     }
     
-    func pageViewController(pageViewController: UIPageViewController, viewControllerAfterViewController viewController: UIViewController) -> UIViewController?
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController?
     {
         let viewController = self.viewControllerForIndex(self.pageControl.currentPage + 1)
         return viewController
     }
     
-    func pageViewController(pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool)
+    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool)
     {
         if let viewController = pageViewController.viewControllers?.first as? GamesCollectionViewController, let gameCollection = viewController.gameCollection
         {
-            let index = self.fetchedResultsController.fetchedObjects?.indexOf({ $0 as! GameCollection == gameCollection }) ?? 0
+            let index = self.fetchedResultsController.fetchedObjects?.index(where: { $0 as! GameCollection == gameCollection }) ?? 0
             self.pageControl.currentPage = index
         }
         
@@ -282,7 +282,7 @@ extension GamesViewController: UIPageViewControllerDelegate, UIPageViewControlle
 
 extension GamesViewController: NSFetchedResultsControllerDelegate
 {
-    func controllerDidChangeContent(controller: NSFetchedResultsController)
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>)
     {
         self.updateSections()
     }

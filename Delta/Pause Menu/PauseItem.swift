@@ -12,11 +12,11 @@ struct PauseItem: Equatable
 {
     let image: UIImage
     let text: String
-    let action: (PauseItem -> Void)
+    let action: ((PauseItem) -> Void)
     
     var selected = false
     
-    init(image: UIImage, text: String, action: (PauseItem -> Void))
+    init(image: UIImage, text: String, action: ((PauseItem) -> Void))
     {
         self.image = image
         self.text = text

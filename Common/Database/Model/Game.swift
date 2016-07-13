@@ -33,7 +33,7 @@ extension Game
 @objc(Game)
 class Game: NSManagedObject, GameType
 {
-    @NSManaged var artworkURL: NSURL?
+    @NSManaged var artworkURL: URL?
     @NSManaged var filename: String
     @NSManaged var identifier: String
     @NSManaged var name: String
@@ -42,9 +42,9 @@ class Game: NSManagedObject, GameType
     @NSManaged var gameCollections: Set<GameCollection>
     @NSManaged var previewSaveState: SaveState?
     
-    var fileURL: NSURL {
-        let fileURL = DatabaseManager.gamesDirectoryURL.URLByAppendingPathComponent(self.filename)
-        return fileURL
+    var fileURL: URL {
+        let fileURL = try! DatabaseManager.gamesDirectoryURL.appendingPathComponent(self.filename)
+        return fileURL!
     }
     
     var preferredFileExtension: String {

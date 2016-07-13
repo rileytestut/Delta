@@ -13,6 +13,6 @@ extension UIViewController
     var isPreviewing: Bool
     {
         guard let presentationController = self.presentationController else { return false }
-        return NSStringFromClass(presentationController.dynamicType).containsString("PreviewPresentation")
+        return NSStringFromClass(presentationController.dynamicType).contains("PreviewPresentation")
     }
 }

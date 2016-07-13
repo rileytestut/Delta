@@ -29,17 +29,17 @@ class SaveStatesCollectionHeaderView: UICollectionReusableView
     private func initialize()
     {
         self.textLabel.translatesAutoresizingMaskIntoConstraints = false
-        self.textLabel.textColor = UIColor.whiteColor()
+        self.textLabel.textColor = UIColor.white()
         
-        var fontDescriptor = UIFontDescriptor.preferredFontDescriptorWithTextStyle(UIFontTextStyleTitle3)
-        fontDescriptor = fontDescriptor.fontDescriptorWithSymbolicTraits([.TraitBold])
+        var fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: UIFontTextStyleTitle3)
+        fontDescriptor = fontDescriptor.withSymbolicTraits([.traitBold])!
         
         self.textLabel.font = UIFont(descriptor: fontDescriptor, size: 0.0)
-        self.textLabel.textAlignment = .Center
+        self.textLabel.textAlignment = .center
         self.addSubview(self.textLabel)
         
         // Auto Layout
-        NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-20-[textLabel]-20-|", options: [], metrics: nil, views: ["textLabel": self.textLabel]))
-        NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-10-[textLabel]|", options: [], metrics: nil, views: ["textLabel": self.textLabel]))
+        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|-20-[textLabel]-20-|", options: [], metrics: nil, views: ["textLabel": self.textLabel]))
+        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[textLabel]|", options: [], metrics: nil, views: ["textLabel": self.textLabel]))
     }
 }

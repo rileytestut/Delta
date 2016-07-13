@@ -28,9 +28,9 @@ extension SaveState
     
     @objc enum Type: Int16
     {
-        case Auto
-        case General
-        case Locked
+        case auto
+        case general
+        case locked
     }
 }
 
@@ -38,12 +38,12 @@ extension SaveState
 class SaveState: NSManagedObject, SaveStateType
 {
     @NSManaged var name: String?
-    @NSManaged var modifiedDate: NSDate
+    @NSManaged var modifiedDate: Date
     @NSManaged var type: Type
     
     @NSManaged private(set) var filename: String
     @NSManaged private(set) var identifier: String
-    @NSManaged private(set) var creationDate: NSDate
+    @NSManaged private(set) var creationDate: Date
     
     // Must be optional relationship to satisfy weird Core Data requirement
     // https://forums.developer.apple.com/thread/20535
@@ -51,14 +51,14 @@ class SaveState: NSManagedObject, SaveStateType
     
     @NSManaged var previewGame: Game?
     
-    var fileURL: NSURL {
-        let fileURL = DatabaseManager.saveStatesDirectoryURLForGame(self.game).URLByAppendingPathComponent(self.filename)
+    var fileURL: URL {
+        let fileURL = try! DatabaseManager.saveStatesDirectoryURLForGame(self.game).appendingPathComponent(self.filename)
         return fileURL
     }
     
-    var imageFileURL: NSURL {
-        let imageFilename = (self.filename as NSString).stringByDeletingPathExtension + ".png"
-        let imageFileURL = DatabaseManager.saveStatesDirectoryURLForGame(self.game).URLByAppendingPathComponent(imageFilename)
+    var imageFileURL: URL {
+        let imageFilename = (self.filename as NSString).deletingPathExtension + ".png"
+        let imageFileURL = try! DatabaseManager.saveStatesDirectoryURLForGame(self.game).appendingPathComponent(imageFilename)
         return imageFileURL
     }
 }
@@ -67,15 +67,15 @@ extension SaveState
 {
     @NSManaged private var primitiveFilename: String
     @NSManaged private var primitiveIdentifier: String
-    @NSManaged private var primitiveCreationDate: NSDate
-    @NSManaged private var primitiveModifiedDate: NSDate
+    @NSManaged private var primitiveCreationDate: Date
+    @NSManaged private var primitiveModifiedDate: Date
     
     override func awakeFromInsert()
     {
         super.awakeFromInsert()
         
-        let identifier = NSUUID().UUIDString
-        let date = NSDate()
+        let identifier = UUID().uuidString
+        let date = Date()
         
         self.primitiveIdentifier = identifier
         self.primitiveFilename = identifier

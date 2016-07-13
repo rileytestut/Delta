@@ -17,7 +17,7 @@ class PauseViewController: UIViewController, PauseInfoProvidable
     var pauseText: String? = nil
     
     private weak var saveStatesViewControllerDelegate: SaveStatesViewControllerDelegate?
-    private var saveStatesViewControllerMode = SaveStatesViewController.Mode.Saving
+    private var saveStatesViewControllerMode = SaveStatesViewController.Mode.saving
     
     private weak var cheatsViewControllerDelegate: CheatsViewControllerDelegate?
     
@@ -26,7 +26,7 @@ class PauseViewController: UIViewController, PauseInfoProvidable
         set { }
         get
         {
-            var preferredContentSize = self.pauseNavigationController.topViewController?.preferredContentSize ?? CGSizeZero
+            var preferredContentSize = self.pauseNavigationController.topViewController?.preferredContentSize ?? CGSize.zero
             if preferredContentSize.height > 0
             {
                 preferredContentSize.height += self.pauseNavigationController.navigationBar.bounds.height
@@ -57,7 +57,7 @@ extension PauseViewController
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle
     {
-        return .LightContent
+        return .lightContent
     }
     
     override func viewDidLayoutSubviews()
@@ -68,11 +68,11 @@ extension PauseViewController
         self.pauseNavigationController.navigationBar.frame = CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.pauseNavigationController.navigationBar.bounds.height)
     }
     
-    override func targetViewControllerForAction(action: Selector, sender: AnyObject?) -> UIViewController? {
+    override func targetViewController(forAction action: Selector, sender: AnyObject?) -> UIViewController? {
         return self.pauseNavigationController
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?)
+    override func prepare(for segue: UIStoryboardSegue, sender: AnyObject?)
     {
         switch segue.identifier ?? ""
         {
@@ -80,7 +80,7 @@ extension PauseViewController
             self.pauseNavigationController = segue.destinationViewController as! UINavigationController
             self.pauseNavigationController.delegate = self
             self.pauseNavigationController.navigationBar.tintColor = UIColor.deltaLightPurpleColor()
-            self.pauseNavigationController.view.backgroundColor = UIColor.clearColor()
+            self.pauseNavigationController.view.backgroundColor = UIColor.clear()
             
             let pauseMenuViewController = self.pauseNavigationController.topViewController as! PauseMenuViewController
             pauseMenuViewController.items = self.items
@@ -106,31 +106,31 @@ extension PauseViewController
 {
     func dismiss()
     {
-        self.performSegueWithIdentifier("unwindFromPauseMenu", sender: self)
+        self.performSegue(withIdentifier: "unwindFromPauseMenu", sender: self)
     }
     
-    func presentSaveStateViewControllerWithMode(mode: SaveStatesViewController.Mode, delegate: SaveStatesViewControllerDelegate)
+    func presentSaveStateViewControllerWithMode(_ mode: SaveStatesViewController.Mode, delegate: SaveStatesViewControllerDelegate)
     {
         self.saveStatesViewControllerMode = mode
         self.saveStatesViewControllerDelegate = delegate
         
-        self.performSegueWithIdentifier("saveStates", sender: self)
+        self.performSegue(withIdentifier: "saveStates", sender: self)
     }
     
-    func presentCheatsViewController(delegate delegate: CheatsViewControllerDelegate)
+    func presentCheatsViewController(delegate: CheatsViewControllerDelegate)
     {
         self.cheatsViewControllerDelegate = delegate
         
-        self.performSegueWithIdentifier("cheats", sender: self)
+        self.performSegue(withIdentifier: "cheats", sender: self)
     }
 }
 
 extension PauseViewController: UINavigationControllerDelegate
 {
-    func navigationController(navigationController: UINavigationController, animationControllerForOperation operation: UINavigationControllerOperation, fromViewController fromVC: UIViewController, toViewController toVC: UIViewController) -> UIViewControllerAnimatedTransitioning?
+    func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationControllerOperation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning?
     {
         let transitionCoordinator = PauseTransitionCoordinator(presentationController: self.presentationController!)
-        transitionCoordinator.presenting = (operation == .Push)
+        transitionCoordinator.presenting = (operation == .push)
         return transitionCoordinator
     }
 }

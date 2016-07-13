@@ -25,14 +25,14 @@ class PausePresentationController: UIPresentationController
     @IBOutlet private weak var pauseIconImageView: UIImageView!
     @IBOutlet private weak var stackView: UIStackView!
     
-    override init(presentedViewController: UIViewController, presentingViewController: UIViewController)
+    override init(presentedViewController: UIViewController, presenting presentingViewController: UIViewController?)
     {
         self.blurringView = UIVisualEffectView(effect: nil)
         self.vibrancyView = UIVisualEffectView(effect: nil)
         
-        super.init(presentedViewController: presentedViewController, presentingViewController: presentingViewController)
+        super.init(presentedViewController: presentedViewController, presenting: presentingViewController)
         
-        self.contentView = NSBundle.mainBundle().loadNibNamed("PausePresentationControllerContentView", owner: self, options: nil).first as! UIView
+        self.contentView = Bundle.main.loadNibNamed("PausePresentationControllerContentView", owner: self, options: nil).first as! UIView
     }
     
     override func frameOfPresentedViewInContainerView() -> CGRect
@@ -44,7 +44,7 @@ class PausePresentationController: UIPresentationController
         
         if contentHeight == 0
         {
-            let statusBarHeight = UIApplication.sharedApplication().statusBarFrame.height
+            let statusBarHeight = UIApplication.shared().statusBarFrame.height
             frame = CGRect(x: 0, y: statusBarHeight, width: containerView.bounds.width, height: containerView.bounds.height - statusBarHeight)
         }
         else
@@ -71,22 +71,22 @@ class PausePresentationController: UIPresentationController
         }
         
         self.blurringView.frame = self.containerView!.frame
-        self.blurringView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+        self.blurringView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.containerView?.addSubview(self.blurringView)
         
         self.vibrancyView.frame = self.containerView!.frame
-        self.vibrancyView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+        self.vibrancyView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.containerView?.addSubview(self.vibrancyView)
         
         self.contentView.alpha = 0.0
         self.vibrancyView.contentView.addSubview(self.contentView)
         
-        self.presentingViewController.transitionCoordinator()?.animateAlongsideTransition({ context in
+        self.presentingViewController.transitionCoordinator()?.animate(alongsideTransition: { context in
             
-            let blurEffect = UIBlurEffect(style: .Dark)
+            let blurEffect = UIBlurEffect(style: .dark)
             
             self.blurringView.effect = blurEffect
-            self.vibrancyView.effect = UIVibrancyEffect(forBlurEffect: blurEffect)
+            self.vibrancyView.effect = UIVibrancyEffect(blurEffect: blurEffect)
             
             self.contentView.alpha = 1.0
             
@@ -95,22 +95,22 @@ class PausePresentationController: UIPresentationController
     
     override func dismissalTransitionWillBegin()
     {
-        self.presentingViewController.transitionCoordinator()?.animateAlongsideTransition({ context in
+        self.presentingViewController.transitionCoordinator()?.animate(alongsideTransition: { context in
             self.blurringView.effect = nil
             self.vibrancyView.effect = nil
             self.contentView.alpha = 0.0
         }, completion: nil)
     }
     
-    override func dismissalTransitionDidEnd(completed: Bool)
+    override func dismissalTransitionDidEnd(_ completed: Bool)
     {
         self.blurringView.removeFromSuperview()
         self.vibrancyView.removeFromSuperview()
     }
     
-    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator)
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator)
     {
-        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+        super.viewWillTransition(to: size, with: coordinator)
         
         // Super super hacky, but the system for some reason tries to layout the view in a (slightly) smaller space, which sometimes breaks constraints
         // To fix this, we ensure there is enough room for the constraints to be valid temporarily, and then the frame will be fixed in containerViewDidLayoutSubviews()
@@ -141,7 +141,7 @@ class PausePresentationController: UIPresentationController
         self.contentView.removeFromSuperview()
         
         // Temporarily match the bounds of self.containerView (accounting for the status bar)
-        let statusBarHeight = UIApplication.sharedApplication().statusBarFrame.height
+        let statusBarHeight = UIApplication.shared().statusBarFrame.height
         self.contentView.frame = CGRect(x: 0, y: statusBarHeight, width: self.containerView!.bounds.width, height: self.containerView!.bounds.height - statusBarHeight)
         
         // Layout content view
@@ -163,7 +163,7 @@ class PausePresentationController: UIPresentationController
         self.presentedView()?.frame = self.frameOfPresentedViewInContainerView()
         
         // Unhide pauseIconImageView so its height is involved with layout calculations
-        self.pauseIconImageView.hidden = false
+        self.pauseIconImageView.isHidden = false
         
         self.contentView.frame = CGRect(x: 0, y: statusBarHeight, width: self.containerView!.bounds.width, height: self.frameOfPresentedViewInContainerView().minY - statusBarHeight)
         
@@ -173,11 +173,11 @@ class PausePresentationController: UIPresentationController
         let currentScaleFactor = self.pauseLabel.currentScaleFactor
         if currentScaleFactor < self.pauseLabel.minimumScaleFactor || CGFloatEqualToFloat(currentScaleFactor, self.pauseLabel.minimumScaleFactor)
         {
-            self.pauseIconImageView.hidden = true
+            self.pauseIconImageView.isHidden = true
         }
         else
         {
-            self.pauseIconImageView.hidden = false
+            self.pauseIconImageView.isHidden = false
         }
         
         self.contentView.setNeedsLayout() // Ensures that layout will actually occur (sometimes the system thinks a layout is not needed, which messes up calculations)

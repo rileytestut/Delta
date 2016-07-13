@@ -46,7 +46,7 @@ class GamesCollectionViewController: UICollectionViewController
         }
     }
     
-    override func viewWillAppear(animated: Bool)
+    override func viewWillAppear(_ animated: Bool)
     {
         self.dataSource.update()
         
@@ -62,14 +62,14 @@ class GamesCollectionViewController: UICollectionViewController
     // MARK: - Navigation -
     
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?)
+    override func prepare(for segue: UIStoryboardSegue, sender: AnyObject?)
     {
-        self.segueHandler?.prepareForSegue(segue, sender: sender)
+        self.segueHandler?.prepare(for: segue, sender: sender)
     }
     
     // MARK: - Collection View -
     
-    private func configureCell(cell: GridCollectionViewCell, game: Game)
+    private func configureCell(_ cell: GridCollectionViewCell, game: Game)
     {
         cell.maximumImageSize = CGSize(width: 90, height: 90)
         cell.textLabel.text = game.name
@@ -79,7 +79,7 @@ class GamesCollectionViewController: UICollectionViewController
 
 extension GamesCollectionViewController: NSFetchedResultsControllerDelegate
 {
-    func controllerDidChangeContent(controller: NSFetchedResultsController)
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>)
     {
         self.collectionView?.reloadData()
     }

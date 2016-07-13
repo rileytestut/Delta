@@ -13,9 +13,9 @@ import Roxas
 
 public class LoadImageOperation: RSTOperation
 {
-    public let URL: NSURL
+    public let URL: Foundation.URL
     
-    public var completionHandler: (UIImage? -> Void)? {
+    public var completionHandler: ((UIImage?) -> Void)? {
         didSet {
             self.completionBlock = {
                 rst_dispatch_sync_on_main_thread() {
@@ -25,16 +25,16 @@ public class LoadImageOperation: RSTOperation
         }
     }
     
-    public var imageCache: NSCache? {
+    public var imageCache: Cache<AnyObject, AnyObject>? {
         didSet {
             // Ensures if an image is cached, it will be returned immediately, to prevent temporary flash of placeholder image
-            self.immediate = self.imageCache?.objectForKey(self.URL) != nil
+            self.isImmediate = self.imageCache?.object(forKey: self.URL) != nil
         }
     }
     
     private var image: UIImage?
     
-    public init(URL: NSURL)
+    public init(URL: Foundation.URL)
     {
         self.URL = URL
         
@@ -46,9 +46,9 @@ public extension LoadImageOperation
 {
     override func main()
     {
-        guard !self.cancelled else { return }
+        guard !self.isCancelled else { return }
         
-        if let cachedImage = self.imageCache?.objectForKey(self.URL) as? UIImage
+        if let cachedImage = self.imageCache?.object(forKey: self.URL) as? UIImage
         {
             self.image = cachedImage
             return
@@ -58,11 +58,11 @@ public extension LoadImageOperation
         
         if let imageSource = CGImageSourceCreateWithURL(self.URL, options), quartzImage = CGImageSourceCreateImageAtIndex(imageSource, 0, options)
         {
-            let loadedImage = UIImage(CGImage: quartzImage)
+            let loadedImage = UIImage(cgImage: quartzImage)
             
             // Force decompression of image
             UIGraphicsBeginImageContextWithOptions(CGSize(width: 1, height: 1), true, 1.0)
-            loadedImage.drawAtPoint(CGPoint.zero)
+            loadedImage.draw(at: CGPoint.zero)
             UIGraphicsEndImageContext()
             
             self.imageCache?.setObject(loadedImage, forKey: self.URL)
