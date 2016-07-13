@@ -44,7 +44,7 @@ class GameCollectionViewDataSource: NSObject
     {
         let previousDelegate = self.fetchedResultsController.delegate
         
-        let fetchRequest = Game.fetchRequest()
+        let fetchRequest = Game.rst_fetchRequest()
         
         var predicates: [Predicate] = []
         

@@ -234,9 +234,13 @@
 				LastUpgradeCheck = 0700;
 				TargetAttributes = {
 					0A60B5C71D5A2CFF92811AA9AEC27278 = {
+						DevelopmentTeam = 6XVY5G3U44;
+						DevelopmentTeamName = "Yvette Testut";
 						LastSwiftMigration = 0800;
 					};
 					B20CFA992EEA3E3A903F2359B05A88E1 = {
+						DevelopmentTeam = 6XVY5G3U44;
+						DevelopmentTeamName = "Yvette Testut";
 						LastSwiftMigration = 0800;
 					};
 				};

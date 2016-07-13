@@ -147,7 +147,7 @@ private extension SaveStatesViewController
     {
         let game = self.delegate.saveStatesViewControllerActiveEmulatorCore(self).game as! Game
         
-        let fetchRequest = SaveState.fetchRequest()
+        let fetchRequest = SaveState.rst_fetchRequest()
         fetchRequest.returnsObjectsAsFaults = false
         fetchRequest.predicate = Predicate(format: "%K == %@", SaveState.Attributes.game.rawValue, game)
         fetchRequest.sortDescriptors = [SortDescriptor(key: SaveState.Attributes.type.rawValue, ascending: true), SortDescriptor(key: SaveState.Attributes.creationDate.rawValue, ascending: true)]

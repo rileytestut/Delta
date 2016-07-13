@@ -85,7 +85,7 @@ private extension CheatsViewController
     {
         let game = self.delegate.cheatsViewControllerActiveEmulatorCore(self).game as! Game
         
-        let fetchRequest = Cheat.fetchRequest()
+        let fetchRequest = Cheat.rst_fetchRequest()
         fetchRequest.returnsObjectsAsFaults = false
         fetchRequest.predicate = Predicate(format: "%K == %@", Cheat.Attributes.game.rawValue, game)
         fetchRequest.sortDescriptors = [SortDescriptor(key: Cheat.Attributes.name.rawValue, ascending: true)]
