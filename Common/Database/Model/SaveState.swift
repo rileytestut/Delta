@@ -21,6 +21,7 @@ extension SaveState
         case creationDate
         case modifiedDate
         case type
+        case gameType
         
         case game
         case previewGame

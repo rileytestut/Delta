@@ -62,9 +62,9 @@ class GameCollectionViewDataSource: NSObject
             fetchRequest.predicate = CompoundPredicate(orPredicateWithSubpredicates: predicates)
         }
         
-        fetchRequest.sortDescriptors = [SortDescriptor(key: Game.Attributes.typeIdentifier.rawValue, ascending: true), SortDescriptor(key: Game.Attributes.name.rawValue, ascending: true)]
+        fetchRequest.sortDescriptors = [SortDescriptor(key: Game.Attributes.type.rawValue, ascending: true), SortDescriptor(key: Game.Attributes.name.rawValue, ascending: true)]
         
-        self.fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DatabaseManager.sharedManager.managedObjectContext, sectionNameKeyPath: Game.Attributes.typeIdentifier.rawValue, cacheName: nil)
+        self.fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DatabaseManager.sharedManager.managedObjectContext, sectionNameKeyPath: Game.Attributes.type.rawValue, cacheName: nil)
         self.fetchedResultsController.delegate = previousDelegate
         
         self.update()

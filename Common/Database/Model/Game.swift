@@ -21,7 +21,7 @@ extension Game
         case filename
         case identifier
         case name
-        case typeIdentifier
+        case type
         
         case gameCollections
         case saveStates
