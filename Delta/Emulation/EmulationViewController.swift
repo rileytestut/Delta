@@ -306,12 +306,12 @@ private extension EmulationViewController
         self.performSegue(withIdentifier: "pauseSegue", sender: sender)
     }
     
-    func pauseEmulation() -> Bool
+    @discardableResult func pauseEmulation() -> Bool
     {
         return self.emulatorCore.pause()
     }
     
-    func resumeEmulation() -> Bool
+    @discardableResult func resumeEmulation() -> Bool
     {
         guard !self.choosingSustainedButtons && self.pauseViewController == nil else { return false }
         
@@ -443,8 +443,8 @@ private extension EmulationViewController
                 // To ensure the emulator core recognizes us activating the input again, we need to wait at least two frames
                 // Unfortunately we cannot init DispatchSemaphore with value less than 0
                 // To compensate, we simply wait twice; once the first wait returns, we wait again
-                semaphore.semaphore.wait(timeout: DispatchTime.distantFuture)
-                semaphore.semaphore.wait(timeout: DispatchTime.distantFuture)
+                semaphore.semaphore.wait()
+                semaphore.semaphore.wait()
                 
                 // These MUST be performed serially, or else Bad Things Happen™ if multiple inputs are reactivated at once
                 self.reactivateSustainInputsQueue.addOperation {
