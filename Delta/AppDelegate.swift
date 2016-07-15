@@ -9,6 +9,8 @@
 import UIKit
 
 import DeltaCore
+import SNESDeltaCore
+import GBADeltaCore
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate
@@ -17,6 +19,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool
     {
+        Delta.register(SNES.core)
+        Delta.register(GBA.core)
+        
         self.window?.tintColor = UIColor.deltaPurpleColor()
         
         // Database
