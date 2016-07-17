@@ -118,47 +118,16 @@ class GamesViewController: UIViewController
     override func prepare(for segue: UIStoryboardSegue, sender: AnyObject?)
     {
         guard let sourceViewController = segue.sourceViewController as? GamesCollectionViewController else { return }
-        guard let destinationViewController = segue.destinationViewController as? EmulationViewController else { return }
+        guard let destinationViewController = segue.destinationViewController as? GameViewController else { return }
         guard let cell = sender as? UICollectionViewCell else { return }
         
         let indexPath = sourceViewController.collectionView?.indexPath(for: cell)
         let game = sourceViewController.dataSource.fetchedResultsController.object(at: indexPath!) as! Game
         
         destinationViewController.game = game
-        
-        if segue.identifier == "peekEmulationViewController"
-        {
-            destinationViewController.deferredPreparationHandler = { [unowned destinationViewController] in
-                                
-                if let saveState = game.previewSaveState
-                {
-                    destinationViewController.emulatorCore.start()
-                    destinationViewController.emulatorCore.pause()
-                    
-                    do
-                    {
-                        try destinationViewController.emulatorCore.load(saveState)
-                    }
-                    catch EmulatorCore.SaveStateError.doesNotExist
-                    {
-                        print("Save State \(saveState.name) does not exist.")
-                    }
-                    catch let error as NSError
-                    {
-                        print(error)
-                    }
-                    
-                }
-            }
-        }
     }
     
     @IBAction func unwindFromSettingsViewController(_ segue: UIStoryboardSegue)
-    {
-        
-    }
-    
-    @IBAction func unwindFromEmulationViewController(_ segue: UIStoryboardSegue)
     {
         
     }
