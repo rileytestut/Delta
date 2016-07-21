@@ -10,10 +10,14 @@ import UIKit
 
 class PauseStoryboardSegue: UIStoryboardSegue
 {
+    private let animator: UIViewPropertyAnimator
     private let presentationController: PausePresentationController
     
     override init(identifier: String?, source: UIViewController, destination: UIViewController)
     {
+        let timingParameters = UISpringTimingParameters(mass: 3.0, stiffness: 750, damping: 65, initialVelocity: CGVector(dx: 0, dy: 0))
+        self.animator = UIViewPropertyAnimator(duration: 0, timingParameters: timingParameters)
+        
         self.presentationController = PausePresentationController(presentedViewController: destination, presenting: source)
         
         super.init(identifier: identifier, source: source, destination: destination)
@@ -24,6 +28,11 @@ class PauseStoryboardSegue: UIStoryboardSegue
         self.destinationViewController.transitioningDelegate = self
         self.destinationViewController.modalPresentationStyle = .custom
         self.destinationViewController.modalPresentationCapturesStatusBarAppearance = true
+        
+        // We need to force layout of destinationViewController.view _before_ animateTransition(using:)
+        // Otherwise, we'll get "Unable to simultaneously satisfy constraints" errors
+        self.destinationViewController.view.frame = self.sourceViewController.view.frame
+        self.destinationViewController.view.layoutIfNeeded()
         
         super.perform()
     }
@@ -51,29 +60,26 @@ extension PauseStoryboardSegue: UIViewControllerAnimatedTransitioning
 {
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval
     {
-        return 0.65
+        return self.animator.duration
     }
     
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning)
     {
-        let destinationViewController = transitionContext.viewController(forKey: UITransitionContextToViewControllerKey)!
+        let presentedView = transitionContext.view(forKey: UITransitionContextToViewKey)!
+        let presentedViewController = transitionContext.viewController(forKey: UITransitionContextToViewControllerKey)!
         
-        destinationViewController.view.frame = transitionContext.finalFrame(for: destinationViewController)
-        destinationViewController.view.frame.origin.y = transitionContext.containerView().bounds.height
-        transitionContext.containerView().addSubview(destinationViewController.view)
+        presentedView.frame = transitionContext.finalFrame(for: presentedViewController)
+        presentedView.frame.origin.y = transitionContext.containerView().bounds.height
+        transitionContext.containerView().addSubview(presentedView)
         
-        UIView.animate(withDuration: self.transitionDuration(using: transitionContext), delay: 0.0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.0, options: [], animations: {
-            
-            // Calling layoutIfNeeded before the animation block for some reason prevents the blur from fading in
-            // Additionally, if it's animated, it looks weird
-            // So we need to wrap it in a no-animation block, inside an animation block. Blech.
-            UIView.performWithoutAnimation({
-                destinationViewController.view.layoutIfNeeded()
-            })
-            
-            destinationViewController.view.frame = self.presentationController.frameOfPresentedViewInContainerView()
-        }, completion: { finished in
-            transitionContext.completeTransition(finished)
-        })
+        self.animator.addAnimations { [unowned self] in
+            presentedView.frame = self.presentationController.frameOfPresentedViewInContainerView()
+        }
+        
+        self.animator.addCompletion { position in
+            transitionContext.completeTransition(position == .end)
+        }
+        
+        self.animator.startAnimation()
     }
 }

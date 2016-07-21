@@ -12,6 +12,7 @@ import DeltaCore
 
 class GameViewController: DeltaCore.GameViewController
 {
+    /// Assumed to be Delta.Game instance
     override var game: GameProtocol? {
         didSet {
             guard let emulatorCore = self.emulatorCore else { return }
@@ -21,6 +22,10 @@ class GameViewController: DeltaCore.GameViewController
     
     // If non-nil, will override the default preview action items returned in previewActionItems()
     var overridePreviewActionItems: [UIPreviewActionItem]?
+    
+    //MARK: - Private Properties -
+    private var pauseViewController: PauseViewController?
+    private var pausingGameController: GameController?
     
     required init()
     {
@@ -94,6 +99,39 @@ extension GameViewController
         }
         return [launchGameAction]
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: AnyObject?)
+    {
+        guard let identifier = segue.identifier where identifier == "pause" else { return }
+        
+        guard let gameController = sender as? GameController else {
+            fatalError("sender for pauseSegue must be the game controller that pressed the Menu button")
+        }
+        
+        self.pausingGameController = gameController
+        
+        let pauseViewController = segue.destinationViewController as! PauseViewController
+        pauseViewController.pauseText = (self.game as? Game)?.name ?? NSLocalizedString("Delta", comment: "")
+        pauseViewController.emulatorCore = self.emulatorCore
+        self.pauseViewController = pauseViewController
+    }
+    
+    @IBAction private func unwindFromPauseViewController(_ segue: UIStoryboardSegue)
+    {        
+        self.pauseViewController = nil
+        self.pausingGameController = nil
+        
+        if self.resumeEmulation()
+        {
+            // Temporarily disable audioManager to prevent delayed audio bug when using 3D Touch Peek & Pop
+            self.emulatorCore?.audioManager.enabled = false
+            
+            // Re-enable after delay
+            DispatchQueue.main.after(when: .now() + 0.1) {
+                self.emulatorCore?.audioManager.enabled = true
+            }
+        }
+    }
 }
 
 //MARK: Controllers -
@@ -141,13 +179,11 @@ extension GameViewController: GameViewControllerDelegate
     {
         self.pauseEmulation()
         
-        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: { (action) in
-            self.resumeEmulation()
-        }))
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Stop Emulation", comment: ""), style: .destructive, handler: { (action) in
-            self.dismiss(animated: true)
-        }))
-        self.present(alertController, animated: true)
+        self.performSegue(withIdentifier: "pause", sender: gameController)
+    }
+    
+    func gameViewControllerShouldResumeEmulation(gameViewController: DeltaCore.GameViewController) -> Bool
+    {
+        return self.pauseViewController == nil
     }
 }

@@ -8,18 +8,31 @@
 
 import UIKit
 
-class PauseViewController: UIViewController, PauseInfoProvidable
+import DeltaCore
+
+class PauseViewController: UIViewController, PauseInfoProviding
 {
+    var emulatorCore: EmulatorCore? {
+        didSet {
+            self.updatePauseItems()
+        }
+    }
+    
+    var pauseItems: [PauseItem] {
+        return [self.saveStateItem, self.loadStateItem, self.cheatCodesItem, self.sustainButtonsItem, self.fastForwardItem].flatMap { $0 }
+    }
+    
     /// Pause Items
-    var items = [PauseItem]()
+    private(set) var saveStateItem: PauseItem?
+    private(set) var loadStateItem: PauseItem?
+    private(set) var cheatCodesItem: PauseItem?
+    private(set) var sustainButtonsItem: PauseItem?
+    private(set) var fastForwardItem: PauseItem?
     
-    /// <PauseInfoProvidable>
-    var pauseText: String? = nil
+    /// PauseInfoProviding
+    var pauseText: String?
     
-    private weak var saveStatesViewControllerDelegate: SaveStatesViewControllerDelegate?
-    private var saveStatesViewControllerMode = SaveStatesViewController.Mode.saving
-    
-    private weak var cheatsViewControllerDelegate: CheatsViewControllerDelegate?
+    private var pauseNavigationController: UINavigationController!
     
     /// UIViewController
     override var preferredContentSize: CGSize {
@@ -39,22 +52,10 @@ class PauseViewController: UIViewController, PauseInfoProvidable
     override var navigationController: UINavigationController? {
         return self.pauseNavigationController
     }
-    
-    private var pauseNavigationController: UINavigationController!
 }
 
 extension PauseViewController
 {
-    override func viewDidLoad()
-    {
-        super.viewDidLoad()
-    }
-    
-    override func didReceiveMemoryWarning()
-    {
-        super.didReceiveMemoryWarning()
-    }
-    
     override func preferredStatusBarStyle() -> UIStatusBarStyle
     {
         return .lightContent
@@ -68,69 +69,49 @@ extension PauseViewController
         self.pauseNavigationController.navigationBar.frame = CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.pauseNavigationController.navigationBar.bounds.height)
     }
     
-    override func targetViewController(forAction action: Selector, sender: AnyObject?) -> UIViewController? {
+    override func targetViewController(forAction action: Selector, sender: AnyObject?) -> UIViewController?
+    {
         return self.pauseNavigationController
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: AnyObject?)
     {
-        switch segue.identifier ?? ""
+        guard let identifier = segue.identifier else { return }
+        
+        switch identifier
         {
         case "embedNavigationController":
             self.pauseNavigationController = segue.destinationViewController as! UINavigationController
-            self.pauseNavigationController.delegate = self
             self.pauseNavigationController.navigationBar.tintColor = UIColor.deltaLightPurpleColor()
             self.pauseNavigationController.view.backgroundColor = UIColor.clear()
             
             let pauseMenuViewController = self.pauseNavigationController.topViewController as! PauseMenuViewController
-            pauseMenuViewController.items = self.items
+            pauseMenuViewController.items = self.pauseItems
             
             // Keep navigation bar outside the UIVisualEffectView's
             self.view.addSubview(self.pauseNavigationController.navigationBar)
-            
-        case "saveStates":
-            let saveStatesViewController = segue.destinationViewController as! SaveStatesViewController
-            saveStatesViewController.delegate = self.saveStatesViewControllerDelegate
-            saveStatesViewController.mode = self.saveStatesViewControllerMode
-            
-        case "cheats":
-            let cheatsViewController = segue.destinationViewController as! CheatsViewController
-            cheatsViewController.delegate = self.cheatsViewControllerDelegate
-            
+
         default: break
         }
     }
 }
 
-extension PauseViewController
+private extension PauseViewController
 {
-    func dismiss()
+    func updatePauseItems()
     {
-        self.performSegue(withIdentifier: "unwindFromPauseMenu", sender: self)
-    }
-    
-    func presentSaveStateViewControllerWithMode(_ mode: SaveStatesViewController.Mode, delegate: SaveStatesViewControllerDelegate)
-    {
-        self.saveStatesViewControllerMode = mode
-        self.saveStatesViewControllerDelegate = delegate
+        self.saveStateItem = nil
+        self.loadStateItem = nil
+        self.cheatCodesItem = nil
+        self.sustainButtonsItem = nil
+        self.fastForwardItem = nil
         
-        self.performSegue(withIdentifier: "saveStates", sender: self)
-    }
-    
-    func presentCheatsViewController(delegate: CheatsViewControllerDelegate)
-    {
-        self.cheatsViewControllerDelegate = delegate
+        guard self.emulatorCore != nil else { return }
         
-        self.performSegue(withIdentifier: "cheats", sender: self)
-    }
-}
-
-extension PauseViewController: UINavigationControllerDelegate
-{
-    func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationControllerOperation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning?
-    {
-        let transitionCoordinator = PauseTransitionCoordinator(presentationController: self.presentationController!)
-        transitionCoordinator.presenting = (operation == .push)
-        return transitionCoordinator
+        self.saveStateItem = PauseItem(image: UIImage(named: "SaveSaveState")!, text: NSLocalizedString("Save State", comment: ""), action: { _ in })
+        self.loadStateItem = PauseItem(image: UIImage(named: "LoadSaveState")!, text: NSLocalizedString("Load State", comment: ""), action: {  _ in })
+        self.cheatCodesItem = PauseItem(image: UIImage(named: "SmallPause")!, text: NSLocalizedString("Cheat Codes", comment: ""), action: { _ in })
+        self.sustainButtonsItem = PauseItem(image: UIImage(named: "SmallPause")!, text: NSLocalizedString("Sustain Buttons", comment: ""), action: { _ in })
+        self.fastForwardItem = PauseItem(image: UIImage(named: "FastForward")!, text: NSLocalizedString("Fast Forward", comment: ""), action: { _ in })
     }
 }

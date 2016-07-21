@@ -103,6 +103,9 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <connections>
+                        <segue destination="Yrw-9v-Pcr" kind="presentation" identifier="pause" customClass="PauseStoryboardSegue" customModule="Delta" customModuleProvider="target" id="FLq-Zt-HDv"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gxI-00-NlJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -153,7 +156,7 @@
                 <viewControllerPlaceholder storyboardName="PauseMenu" id="Yrw-9v-Pcr" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BDU-Ql-OgK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2470" y="1338"/>
+            <point key="canvasLocation" x="2470" y="1441"/>
         </scene>
     </scenes>
     <resources>

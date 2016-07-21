@@ -10,7 +10,7 @@ import UIKit
 
 import Roxas
 
-protocol PauseInfoProvidable
+protocol PauseInfoProviding
 {
     var pauseText: String? { get }
 }
@@ -57,11 +57,11 @@ class PausePresentationController: UIPresentationController
     
     override func presentationTransitionWillBegin()
     {
-        if let provider = self.presentedViewController as? PauseInfoProvidable
+        if let provider = self.presentedViewController as? PauseInfoProviding
         {
             self.pauseLabel.text = provider.pauseText
         }
-        else if let navigationController = self.presentedViewController as? UINavigationController, provider = navigationController.topViewController as? PauseInfoProvidable
+        else if let navigationController = self.presentedViewController as? UINavigationController, provider = navigationController.topViewController as? PauseInfoProviding
         {
             self.pauseLabel.text = provider.pauseText
         }
@@ -160,7 +160,10 @@ class PausePresentationController: UIPresentationController
         self.presentedView()?.setNeedsLayout()
         self.presentedView()?.layoutIfNeeded()
         
-        self.presentedView()?.frame = self.frameOfPresentedViewInContainerView()
+        if self.presentingViewController.transitionCoordinator() == nil
+        {
+            self.presentedView()?.frame = self.frameOfPresentedViewInContainerView()
+        }
         
         // Unhide pauseIconImageView so its height is involved with layout calculations
         self.pauseIconImageView.isHidden = false
