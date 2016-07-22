@@ -32,6 +32,12 @@ class PauseViewController: UIViewController, PauseInfoProviding
     /// PauseInfoProviding
     var pauseText: String?
     
+    /// Save States
+    weak var saveStatesViewControllerDelegate: SaveStatesViewControllerDelegate?
+    
+    // Hopefully this can be removed once SE-0116 is implemented
+    private var saveStatesViewControllerMode = SaveStatesViewController.Mode.loading
+    
     private var pauseNavigationController: UINavigationController!
     
     /// UIViewController
@@ -82,6 +88,7 @@ extension PauseViewController
         {
         case "embedNavigationController":
             self.pauseNavigationController = segue.destinationViewController as! UINavigationController
+            self.pauseNavigationController.delegate = self
             self.pauseNavigationController.navigationBar.tintColor = UIColor.deltaLightPurpleColor()
             self.pauseNavigationController.view.backgroundColor = UIColor.clear()
             
@@ -90,9 +97,34 @@ extension PauseViewController
             
             // Keep navigation bar outside the UIVisualEffectView's
             self.view.addSubview(self.pauseNavigationController.navigationBar)
+            
+        case "saveStates":
+            let saveStatesViewController = segue.destinationViewController as! SaveStatesViewController
+            saveStatesViewController.delegate = self.saveStatesViewControllerDelegate
+            saveStatesViewController.game = self.emulatorCore?.game as? Game
+            saveStatesViewController.emulatorCore = self.emulatorCore
+            saveStatesViewController.mode = self.saveStatesViewControllerMode
 
         default: break
         }
+    }
+}
+
+extension PauseViewController
+{
+    func dismiss()
+    {
+        self.performSegue(withIdentifier: "unwindFromPauseMenu", sender: self)
+    }
+}
+
+extension PauseViewController: UINavigationControllerDelegate
+{
+    func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationControllerOperation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning?
+    {
+        let transitionCoordinator = PauseTransitionCoordinator(presentationController: self.presentationController!)
+        transitionCoordinator.presenting = (operation == .push)
+        return transitionCoordinator
     }
 }
 
@@ -108,8 +140,16 @@ private extension PauseViewController
         
         guard self.emulatorCore != nil else { return }
         
-        self.saveStateItem = PauseItem(image: UIImage(named: "SaveSaveState")!, text: NSLocalizedString("Save State", comment: ""), action: { _ in })
-        self.loadStateItem = PauseItem(image: UIImage(named: "LoadSaveState")!, text: NSLocalizedString("Load State", comment: ""), action: {  _ in })
+        self.saveStateItem = PauseItem(image: UIImage(named: "SaveSaveState")!, text: NSLocalizedString("Save State", comment: ""), action: { [unowned self] _ in
+            self.saveStatesViewControllerMode = .saving
+            self.performSegue(withIdentifier: "saveStates", sender: self)
+        })
+        
+        self.loadStateItem = PauseItem(image: UIImage(named: "LoadSaveState")!, text: NSLocalizedString("Load State", comment: ""), action: { [unowned self] _ in
+            self.saveStatesViewControllerMode = .loading
+            self.performSegue(withIdentifier: "saveStates", sender: self)
+        })
+        
         self.cheatCodesItem = PauseItem(image: UIImage(named: "SmallPause")!, text: NSLocalizedString("Cheat Codes", comment: ""), action: { _ in })
         self.sustainButtonsItem = PauseItem(image: UIImage(named: "SmallPause")!, text: NSLocalizedString("Sustain Buttons", comment: ""), action: { _ in })
         self.fastForwardItem = PauseItem(image: UIImage(named: "FastForward")!, text: NSLocalizedString("Fast Forward", comment: ""), action: { _ in })

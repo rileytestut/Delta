@@ -27,6 +27,8 @@ class GameViewController: DeltaCore.GameViewController
     private var pauseViewController: PauseViewController?
     private var pausingGameController: GameController?
     
+    private var context = CIContext(options: [kCIContextWorkingColorSpace: NSNull()])
+    
     required init()
     {
         super.init()
@@ -113,6 +115,7 @@ extension GameViewController
         let pauseViewController = segue.destinationViewController as! PauseViewController
         pauseViewController.pauseText = (self.game as? Game)?.name ?? NSLocalizedString("Delta", comment: "")
         pauseViewController.emulatorCore = self.emulatorCore
+        pauseViewController.saveStatesViewControllerDelegate = self
         self.pauseViewController = pauseViewController
     }
     
@@ -168,6 +171,80 @@ private extension GameViewController
         }
         
         self.view.setNeedsLayout()
+    }
+}
+
+//MARK: - Save States
+/// Save States
+extension GameViewController: SaveStatesViewControllerDelegate
+{
+    func saveStatesViewController(_ saveStatesViewController: SaveStatesViewController, updateSaveState saveState: SaveState)
+    {
+        guard let filepath = saveState.fileURL.path else { return }
+        
+        var updatingExistingSaveState = true
+        
+        self.emulatorCore?.save { (temporarySaveState) in
+            do
+            {
+                if FileManager.default.fileExists(atPath: filepath)
+                {
+                    try FileManager.default.replaceItem(at: saveState.fileURL, withItemAt: temporarySaveState.fileURL, backupItemName: nil, options: [], resultingItemURL: nil)
+                }
+                else
+                {
+                    try FileManager.default.moveItem(at: temporarySaveState.fileURL, to: saveState.fileURL)
+                    
+                    updatingExistingSaveState = false
+                }
+            }
+            catch let error as NSError
+            {
+                print(error)
+            }
+        }
+        
+        if
+            let outputImage = self.gameView.outputImage,
+            let quartzImage = self.context.createCGImage(outputImage, from: outputImage.extent),
+            let data = UIImagePNGRepresentation(UIImage(cgImage: quartzImage))
+        {
+            do
+            {
+                try data.write(to: saveState.imageFileURL, options: [.atomicWrite])
+            }
+            catch let error as NSError
+            {
+                print(error)
+            }
+        }
+        
+        saveState.modifiedDate = Date()
+        
+        // Dismiss if updating an existing save state.
+        // If creating a new one, don't dismiss.
+        if updatingExistingSaveState
+        {
+            self.pauseViewController?.dismiss()
+        }
+    }
+    
+    func saveStatesViewController(_ saveStatesViewController: SaveStatesViewController, loadSaveState saveState: SaveStateProtocol)
+    {
+        do
+        {
+            try self.emulatorCore?.load(saveState)
+        }
+        catch EmulatorCore.SaveStateError.doesNotExist
+        {
+            print("Save State does not exist.")
+        }
+        catch let error as NSError
+        {
+            print(error)
+        }
+        
+        self.pauseViewController?.dismiss()
     }
 }
 
