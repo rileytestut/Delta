@@ -10,9 +10,9 @@ import UIKit
 
 struct PauseItem: Equatable
 {
-    let image: UIImage
-    let text: String
-    let action: ((PauseItem) -> Void)
+    var image: UIImage
+    var text: String
+    var action: ((PauseItem) -> Void)
     
     var selected = false
     

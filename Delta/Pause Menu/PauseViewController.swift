@@ -19,15 +19,15 @@ class PauseViewController: UIViewController, PauseInfoProviding
     }
     
     var pauseItems: [PauseItem] {
-        return [self.saveStateItem, self.loadStateItem, self.cheatCodesItem, self.sustainButtonsItem, self.fastForwardItem].flatMap { $0 }
+        return [self.saveStateItem, self.loadStateItem, self.cheatCodesItem, self.fastForwardItem, self.sustainButtonsItem].flatMap { $0 }
     }
     
     /// Pause Items
-    private(set) var saveStateItem: PauseItem?
-    private(set) var loadStateItem: PauseItem?
-    private(set) var cheatCodesItem: PauseItem?
-    private(set) var sustainButtonsItem: PauseItem?
-    private(set) var fastForwardItem: PauseItem?
+    var saveStateItem: PauseItem?
+    var loadStateItem: PauseItem?
+    var cheatCodesItem: PauseItem?
+    var fastForwardItem: PauseItem?
+    var sustainButtonsItem: PauseItem?
     
     /// PauseInfoProviding
     var pauseText: String?
@@ -161,7 +161,7 @@ private extension PauseViewController
             self.performSegue(withIdentifier: "cheats", sender: self)
         })
         
-        self.sustainButtonsItem = PauseItem(image: UIImage(named: "SmallPause")!, text: NSLocalizedString("Sustain Buttons", comment: ""), action: { _ in })
         self.fastForwardItem = PauseItem(image: UIImage(named: "FastForward")!, text: NSLocalizedString("Fast Forward", comment: ""), action: { _ in })
+        self.sustainButtonsItem = PauseItem(image: UIImage(named: "SmallPause")!, text: NSLocalizedString("Sustain Buttons", comment: ""), action: { _ in })
     }
 }

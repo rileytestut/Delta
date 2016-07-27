@@ -129,6 +129,13 @@ extension GameViewController
         pauseViewController.emulatorCore = self.emulatorCore
         pauseViewController.saveStatesViewControllerDelegate = self
         pauseViewController.cheatsViewControllerDelegate = self
+        
+        pauseViewController.fastForwardItem?.selected = (self.emulatorCore?.rate != self.emulatorCore?.configuration.supportedRates.lowerBound)
+        pauseViewController.fastForwardItem?.action = { [unowned self] item in
+            guard let emulatorCore = self.emulatorCore else { return }
+            emulatorCore.rate = item.selected ? emulatorCore.configuration.supportedRates.upperBound : emulatorCore.configuration.supportedRates.lowerBound
+        }
+
         self.pauseViewController = pauseViewController
     }
     
