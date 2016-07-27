@@ -63,7 +63,7 @@ class GameViewController: DeltaCore.GameViewController
         self.emulatorCore?.removeObserver(self, forKeyPath: #keyPath(EmulatorCore.state), context: &kvoContext)
     }
     
-    // MARK: GameControllerReceiver -
+    // MARK: - GameControllerReceiver -
     override func gameController(_ gameController: GameController, didActivate input: Input)
     {
         super.gameController(gameController, didActivate: input)
@@ -76,7 +76,7 @@ class GameViewController: DeltaCore.GameViewController
 }
 
 
-//MARK: UIViewController -
+//MARK: - UIViewController -
 /// UIViewController
 extension GameViewController
 {
@@ -113,6 +113,9 @@ extension GameViewController
         }
         return [launchGameAction]
     }
+    
+    // MARK: - Segues
+    /// KVO
     
     override func prepare(for segue: UIStoryboardSegue, sender: AnyObject?)
     {
@@ -156,7 +159,7 @@ extension GameViewController
         }
     }
     
-    // MARK: - KVO -
+    // MARK: - KVO
     /// KVO
     override func observeValue(forKeyPath keyPath: String?, of object: AnyObject?, change: [NSKeyValueChangeKey : AnyObject]?, context: UnsafeMutablePointer<Void>?)
     {
@@ -171,7 +174,7 @@ extension GameViewController
     }
 }
 
-//MARK: Controllers -
+//MARK: - Controllers -
 private extension GameViewController
 {
     @objc func updateControllers()
@@ -208,7 +211,7 @@ private extension GameViewController
     }
 }
 
-//MARK: - Save States
+//MARK: - Save States -
 /// Save States
 extension GameViewController: SaveStatesViewControllerDelegate
 {
@@ -284,7 +287,7 @@ extension GameViewController: SaveStatesViewControllerDelegate
     }
 }
 
-//MARK: - Cheats
+//MARK: - Cheats -
 /// Cheats
 extension GameViewController: CheatsViewControllerDelegate
 {
@@ -353,7 +356,7 @@ extension GameViewController: CheatsViewControllerDelegate
     }
 }
 
-//MARK: GameViewControllerDelegate -
+//MARK: - GameViewControllerDelegate -
 /// GameViewControllerDelegate
 extension GameViewController: GameViewControllerDelegate
 {
