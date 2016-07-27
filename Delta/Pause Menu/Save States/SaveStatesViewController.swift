@@ -169,7 +169,7 @@ private extension SaveStatesViewController
     
     func updateBackgroundView()
     {
-        if let fetchedObjects = self.fetchedResultsController.fetchedObjects where fetchedObjects.count > 0
+        if let fetchedObjects = self.fetchedResultsController.fetchedObjects, fetchedObjects.count > 0
         {
             self.backgroundView.isHidden = true
         }
@@ -587,8 +587,8 @@ extension SaveStatesViewController: UIViewControllerPreviewingDelegate, UIPrevie
     {
         guard
             let indexPath = self.collectionView?.indexPathForItem(at: location),
-            let layoutAttributes = self.collectionViewLayout.layoutAttributesForItem(at: indexPath)
-            where self.emulatorCoreSaveState != nil
+            let layoutAttributes = self.collectionViewLayout.layoutAttributesForItem(at: indexPath),
+            self.emulatorCoreSaveState != nil
         else { return nil }
         
         previewingContext.sourceRect = layoutAttributes.frame

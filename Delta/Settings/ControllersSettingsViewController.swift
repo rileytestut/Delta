@@ -71,7 +71,7 @@ class ControllersSettingsViewController: UITableViewController
         controllers.append(self.localDeviceController)
 
         // Reset previous controller
-        if let playerIndex = self.playerIndex, index = controllers.index(where: { $0.playerIndex == playerIndex })
+        if let playerIndex = self.playerIndex, let index = controllers.index(where: { $0.playerIndex == playerIndex })
         {
             let controller = controllers[index]
             controller.playerIndex = nil

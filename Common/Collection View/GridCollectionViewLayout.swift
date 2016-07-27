@@ -62,7 +62,7 @@ class GridCollectionViewLayout: UICollectionViewFlowLayout
                 }
             }
             
-            if let maxY = maximumY, minY = minimumY
+            if let maxY = maximumY, let minY = minimumY
             {
                 // If attributes.frame.minY is greater than maximumY, then it is a new row
                 // In this case, we need to align all the previous tempLayoutAttributes to the same Y-value

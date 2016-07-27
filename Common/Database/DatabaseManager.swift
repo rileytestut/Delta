@@ -60,8 +60,9 @@ class DatabaseManager
             
             var performingMigration = false
             
-            if let sourceMetadata = try? NSPersistentStoreCoordinator.metadataForPersistentStore(ofType: NSSQLiteStoreType, at: storeURL, options: options),
-                managedObjectModel = self.privateManagedObjectContext.persistentStoreCoordinator?.managedObjectModel
+            if
+                let sourceMetadata = try? NSPersistentStoreCoordinator.metadataForPersistentStore(ofType: NSSQLiteStoreType, at: storeURL, options: options),
+                let managedObjectModel = self.privateManagedObjectContext.persistentStoreCoordinator?.managedObjectModel
             {
                 performingMigration = !managedObjectModel.isConfiguration(withName: nil, compatibleWithStoreMetadata: sourceMetadata)
             }
@@ -333,7 +334,10 @@ private extension DatabaseManager
     
     @objc func managedObjectContextWillSave(_ notification: Notification)
     {
-        guard let managedObjectContext = notification.object as? NSManagedObjectContext where managedObjectContext.parent == self.validationManagedObjectContext else { return }
+        guard
+            let managedObjectContext = notification.object as? NSManagedObjectContext,
+            managedObjectContext.parent == self.validationManagedObjectContext
+        else { return }
         
         self.validationManagedObjectContext.performAndWait {
             self.validateManagedObjectContextSave(managedObjectContext)
@@ -342,7 +346,10 @@ private extension DatabaseManager
     
     @objc func managedObjectContextDidSave(_ notification: Notification)
     {
-        guard let managedObjectContext = notification.object as? NSManagedObjectContext where managedObjectContext.parent == self.validationManagedObjectContext else { return }
+        guard
+            let managedObjectContext = notification.object as? NSManagedObjectContext,
+            managedObjectContext.parent == self.validationManagedObjectContext
+        else { return }
         
         self.save()
     }

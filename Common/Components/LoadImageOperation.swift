@@ -56,7 +56,7 @@ public extension LoadImageOperation
         
         let options: NSDictionary = [kCGImageSourceShouldCache as NSString: true]
         
-        if let imageSource = CGImageSourceCreateWithURL(self.URL, options), quartzImage = CGImageSourceCreateImageAtIndex(imageSource, 0, options)
+        if let imageSource = CGImageSourceCreateWithURL(self.URL, options), let quartzImage = CGImageSourceCreateImageAtIndex(imageSource, 0, options)
         {
             let loadedImage = UIImage(cgImage: quartzImage)
             

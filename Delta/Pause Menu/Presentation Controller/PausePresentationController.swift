@@ -32,7 +32,7 @@ class PausePresentationController: UIPresentationController
         
         super.init(presentedViewController: presentedViewController, presenting: presentingViewController)
         
-        self.contentView = Bundle.main.loadNibNamed("PausePresentationControllerContentView", owner: self, options: nil).first as! UIView
+        self.contentView = Bundle.main.loadNibNamed("PausePresentationControllerContentView", owner: self, options: nil)?.first as! UIView
     }
     
     override func frameOfPresentedViewInContainerView() -> CGRect
@@ -61,7 +61,9 @@ class PausePresentationController: UIPresentationController
         {
             self.pauseLabel.text = provider.pauseText
         }
-        else if let navigationController = self.presentedViewController as? UINavigationController, provider = navigationController.topViewController as? PauseInfoProviding
+        else if
+            let navigationController = self.presentedViewController as? UINavigationController,
+            let provider = navigationController.topViewController as? PauseInfoProviding
         {
             self.pauseLabel.text = provider.pauseText
         }

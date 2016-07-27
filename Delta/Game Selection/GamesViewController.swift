@@ -137,7 +137,7 @@ private extension GamesViewController
 {
     func viewControllerForIndex(_ index: Int) -> GamesCollectionViewController?
     {
-        guard let pages = self.fetchedResultsController.sections?.first?.numberOfObjects where pages > 0 else { return nil }
+        guard let pages = self.fetchedResultsController.sections?.first?.numberOfObjects, pages > 0 else { return nil }
         
         // Return nil if only one section, and not asking for the 0th view controller
         guard !(pages == 1 && index != 0) else { return nil }

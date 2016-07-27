@@ -42,7 +42,7 @@ extension CheatTextView
     {
         super.layoutSubviews()
         
-        if let format = self.cheatFormat, font = self.font
+        if let format = self.cheatFormat, let font = self.font
         {
             let characterWidth = ("A" as NSString).size(attributes: [NSFontAttributeName: font]).width
 
@@ -73,11 +73,11 @@ private extension CheatTextView
             var string: NSString? = nil
             scanner.scanCharacters(from: CharacterSet.alphanumerics, into: &string)
             
-            guard let scannedString = string where scannedString.length > 0 else { break }
+            guard let scannedString = string, scannedString.length > 0 else { break }
             
             let attributedString = NSMutableAttributedString(string: scannedString as String)
             
-            if let prefixString = prefixString where prefixString.length > 0
+            if let prefixString = prefixString, prefixString.length > 0
             {
                 attributedString.addAttribute(CheatPrefixAttribute, value: prefixString, range: NSRange(location: 0, length: 1))
             }

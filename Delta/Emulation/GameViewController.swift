@@ -116,7 +116,7 @@ extension GameViewController
     
     override func prepare(for segue: UIStoryboardSegue, sender: AnyObject?)
     {
-        guard let identifier = segue.identifier where identifier == "pause" else { return }
+        guard let identifier = segue.identifier, identifier == "pause" else { return }
         
         guard let gameController = sender as? GameController else {
             fatalError("sender for pauseSegue must be the game controller that pressed the Menu button")

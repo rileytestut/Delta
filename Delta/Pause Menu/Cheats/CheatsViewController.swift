@@ -95,7 +95,7 @@ private extension CheatsViewController
     
     func updateBackgroundView()
     {
-        if let fetchedObjects = self.fetchedResultsController.fetchedObjects where fetchedObjects.count > 0
+        if let fetchedObjects = self.fetchedResultsController.fetchedObjects, fetchedObjects.count > 0
         {
             self.tableView.separatorStyle = .singleLine
             self.backgroundView.isHidden = true
