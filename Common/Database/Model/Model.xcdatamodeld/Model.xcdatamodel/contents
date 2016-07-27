@@ -7,7 +7,7 @@
         <attribute name="identifier" attributeType="String" syncable="YES"/>
         <attribute name="modifiedDate" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
-        <attribute name="type" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="type" attributeType="String" syncable="YES"/>
         <relationship name="game" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Game" inverseName="cheats" inverseEntity="Game" syncable="YES"/>
         <uniquenessConstraints>
             <uniquenessConstraint>

@@ -15,18 +15,19 @@ import Roxas
 
 protocol CheatsViewControllerDelegate: class
 {
-    func cheatsViewControllerActiveEmulatorCore(_ saveStatesViewController: CheatsViewController) -> EmulatorCore
-    func cheatsViewController(_ cheatsViewController: CheatsViewController, didActivateCheat cheat: Cheat) throws
-    func cheatsViewController(_ cheatsViewController: CheatsViewController, didDeactivateCheat cheat: Cheat)
+    func cheatsViewController(_ cheatsViewController: CheatsViewController, activateCheat cheat: Cheat)
+    func cheatsViewController(_ cheatsViewController: CheatsViewController, deactivateCheat cheat: Cheat)
 }
 
 class CheatsViewController: UITableViewController
 {
-    weak var delegate: CheatsViewControllerDelegate! {
+    var game: Game! {
         didSet {
             self.updateFetchedResultsController()
         }
     }
+    
+    weak var delegate: CheatsViewControllerDelegate?
     
     private var backgroundView: RSTBackgroundView!
     
@@ -83,11 +84,9 @@ private extension CheatsViewController
 {
     func updateFetchedResultsController()
     {
-        let game = self.delegate.cheatsViewControllerActiveEmulatorCore(self).game as! Game
-        
         let fetchRequest = Cheat.rst_fetchRequest()
         fetchRequest.returnsObjectsAsFaults = false
-        fetchRequest.predicate = Predicate(format: "%K == %@", Cheat.Attributes.game.rawValue, game)
+        fetchRequest.predicate = Predicate(format: "%K == %@", Cheat.Attributes.game.rawValue, self.game)
         fetchRequest.sortDescriptors = [SortDescriptor(key: Cheat.Attributes.name.rawValue, ascending: true)]
         
         self.fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DatabaseManager.sharedManager.managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
@@ -121,7 +120,7 @@ private extension CheatsViewController
     
     func deleteCheat(_ cheat: Cheat)
     {
-        self.delegate.cheatsViewController(self, didDeactivateCheat: cheat)
+        self.delegate?.cheatsViewController(self, deactivateCheat: cheat)
         
         let backgroundContext = DatabaseManager.sharedManager.backgroundManagedObjectContext()
         backgroundContext.perform {
@@ -145,12 +144,11 @@ private extension CheatsViewController
     }
     
     func makeEditCheatViewController(cheat: Cheat?) -> EditCheatViewController
-    {
+    {        
         let editCheatViewController = self.storyboard!.instantiateViewController(withIdentifier: "editCheatViewController") as! EditCheatViewController
         editCheatViewController.delegate = self
-        editCheatViewController.supportedCheatFormats = self.delegate.cheatsViewControllerActiveEmulatorCore(self).configuration.supportedCheatFormats
         editCheatViewController.cheat = cheat
-        editCheatViewController.game = self.delegate.cheatsViewControllerActiveEmulatorCore(self).game as! Game
+        editCheatViewController.game = self.game
         
         return editCheatViewController
     }
@@ -193,24 +191,12 @@ extension CheatsViewController
             
             if temporaryCheat.enabled
             {
-                do
-                {
-                    try self.delegate.cheatsViewController(self, didActivateCheat: temporaryCheat)
-                }
-                catch EmulatorCore.CheatError.invalid
-                {
-                    print("Invalid cheat:", cheat.name, cheat.code)
-                }
-                catch let error as NSError
-                {
-                    print("Unknown Cheat Error:", error, cheat.name, cheat.code)
-                }
+                self.delegate?.cheatsViewController(self, activateCheat: temporaryCheat)
             }
             else
             {
-                self.delegate.cheatsViewController(self, didDeactivateCheat: temporaryCheat)
+                self.delegate?.cheatsViewController(self, deactivateCheat: temporaryCheat)
             }
-            
             
             backgroundContext.saveWithErrorLogging()
         }
@@ -266,9 +252,9 @@ extension CheatsViewController: UIViewControllerPreviewingDelegate
 //MARK: - <EditCheatViewControllerDelegate> -
 extension CheatsViewController: EditCheatViewControllerDelegate
 {
-    func editCheatViewController(_ editCheatViewController: EditCheatViewController, activateCheat cheat: Cheat, previousCheat: Cheat?) throws
+    func editCheatViewController(_ editCheatViewController: EditCheatViewController, activateCheat cheat: Cheat, previousCheat: Cheat?)
     {
-        try self.delegate.cheatsViewController(self, didActivateCheat: cheat)
+        self.delegate?.cheatsViewController(self, activateCheat: cheat)
         
         if let previousCheat = previousCheat
         {
@@ -278,14 +264,14 @@ extension CheatsViewController: EditCheatViewControllerDelegate
                 
                 guard previousCheat.code != code else { return }
                 
-                self.delegate.cheatsViewController(self, didDeactivateCheat: previousCheat)
+                self.delegate?.cheatsViewController(self, deactivateCheat: previousCheat)
             })
         }
     }
     
     func editCheatViewController(_ editCheatViewController: EditCheatViewController, deactivateCheat cheat: Cheat)
     {
-        self.delegate.cheatsViewController(self, didDeactivateCheat: cheat)
+        self.delegate?.cheatsViewController(self, deactivateCheat: cheat)
     }
 }
 

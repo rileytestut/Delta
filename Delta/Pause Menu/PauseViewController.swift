@@ -32,10 +32,12 @@ class PauseViewController: UIViewController, PauseInfoProviding
     /// PauseInfoProviding
     var pauseText: String?
     
+    /// Cheats
+    weak var cheatsViewControllerDelegate: CheatsViewControllerDelegate?
+    
     /// Save States
     weak var saveStatesViewControllerDelegate: SaveStatesViewControllerDelegate?
     
-    // Hopefully this can be removed once SE-0116 is implemented
     private var saveStatesViewControllerMode = SaveStatesViewController.Mode.loading
     
     private var pauseNavigationController: UINavigationController!
@@ -104,7 +106,12 @@ extension PauseViewController
             saveStatesViewController.game = self.emulatorCore?.game as? Game
             saveStatesViewController.emulatorCore = self.emulatorCore
             saveStatesViewController.mode = self.saveStatesViewControllerMode
-
+            
+        case "cheats":
+            let cheatsViewController = segue.destinationViewController as! CheatsViewController
+            cheatsViewController.delegate = self.cheatsViewControllerDelegate
+            cheatsViewController.game = self.emulatorCore?.game as? Game
+            
         default: break
         }
     }
@@ -150,7 +157,10 @@ private extension PauseViewController
             self.performSegue(withIdentifier: "saveStates", sender: self)
         })
         
-        self.cheatCodesItem = PauseItem(image: UIImage(named: "SmallPause")!, text: NSLocalizedString("Cheat Codes", comment: ""), action: { _ in })
+        self.cheatCodesItem = PauseItem(image: UIImage(named: "SmallPause")!, text: NSLocalizedString("Cheat Codes", comment: ""), action: { [unowned self] _ in
+            self.performSegue(withIdentifier: "cheats", sender: self)
+        })
+        
         self.sustainButtonsItem = PauseItem(image: UIImage(named: "SmallPause")!, text: NSLocalizedString("Sustain Buttons", comment: ""), action: { _ in })
         self.fastForwardItem = PauseItem(image: UIImage(named: "FastForward")!, text: NSLocalizedString("Fast Forward", comment: ""), action: { _ in })
     }

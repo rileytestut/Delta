@@ -19,6 +19,7 @@
 		BF27CC8E1BC9FEA200A20D89 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF6BB2451BB73FE800CCF94A /* Assets.xcassets */; };
 		BF27CC971BCC890700A20D89 /* GamesCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF27CC961BCC890700A20D89 /* GamesCollectionViewController.swift */; };
 		BF2B98E61C97E32F00F6D57D /* SaveStatesCollectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2B98E51C97E32F00F6D57D /* SaveStatesCollectionHeaderView.swift */; };
+		BF31878B1D489AAA00BD020D /* CheatValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF31878A1D489AAA00BD020D /* CheatValidator.swift */; };
 		BF34FA071CF0F510006624C7 /* EditCheatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF34FA061CF0F510006624C7 /* EditCheatViewController.swift */; };
 		BF34FA111CF1899D006624C7 /* CheatTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF34FA101CF1899D006624C7 /* CheatTextView.swift */; };
 		BF353FF21C5D7FB000C1184C /* PauseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF353FF11C5D7FB000C1184C /* PauseViewController.swift */; };
@@ -102,6 +103,7 @@
 		BF27CC941BCB7B7A00A20D89 /* GameController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameController.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS9.0.sdk/System/Library/Frameworks/GameController.framework; sourceTree = DEVELOPER_DIR; };
 		BF27CC961BCC890700A20D89 /* GamesCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GamesCollectionViewController.swift; sourceTree = "<group>"; };
 		BF2B98E51C97E32F00F6D57D /* SaveStatesCollectionHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SaveStatesCollectionHeaderView.swift; path = "Pause Menu/Save States/SaveStatesCollectionHeaderView.swift"; sourceTree = "<group>"; };
+		BF31878A1D489AAA00BD020D /* CheatValidator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CheatValidator.swift; path = "Pause Menu/Cheats/CheatValidator.swift"; sourceTree = "<group>"; };
 		BF34FA061CF0F510006624C7 /* EditCheatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EditCheatViewController.swift; path = "Pause Menu/Cheats/EditCheatViewController.swift"; sourceTree = "<group>"; };
 		BF34FA101CF1899D006624C7 /* CheatTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CheatTextView.swift; path = "Pause Menu/Cheats/CheatTextView.swift"; sourceTree = "<group>"; };
 		BF353FF11C5D7FB000C1184C /* PauseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PauseViewController.swift; path = "Pause Menu/PauseViewController.swift"; sourceTree = "<group>"; };
@@ -320,6 +322,7 @@
 				BFC9B7381CEFCD34008629BB /* CheatsViewController.swift */,
 				BF34FA061CF0F510006624C7 /* EditCheatViewController.swift */,
 				BF34FA101CF1899D006624C7 /* CheatTextView.swift */,
+				BF31878A1D489AAA00BD020D /* CheatValidator.swift */,
 			);
 			name = Cheats;
 			sourceTree = "<group>";
@@ -542,6 +545,7 @@
 				BF7AE8241C2E984300B1B5BC /* GridCollectionViewLayout.swift in Sources */,
 				BF1FB1861C5EE643007E2494 /* SaveState.swift in Sources */,
 				BFA0D1271D3AE1F600565894 /* GameViewController.swift in Sources */,
+				BF31878B1D489AAA00BD020D /* CheatValidator.swift in Sources */,
 				BFB141181BE46934004FBF46 /* GameCollectionViewDataSource.swift in Sources */,
 				BFA2315C1CED10BE0011E35A /* Action.swift in Sources */,
 				BFAA1FF41B8AD7F900495943 /* ControllersSettingsViewController.swift in Sources */,

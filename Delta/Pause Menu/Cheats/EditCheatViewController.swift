@@ -14,19 +14,12 @@ import Roxas
 
 protocol EditCheatViewControllerDelegate: class
 {
-    func editCheatViewController(_ editCheatViewController: EditCheatViewController, activateCheat cheat: Cheat, previousCheat: Cheat?) throws
+    func editCheatViewController(_ editCheatViewController: EditCheatViewController, activateCheat cheat: Cheat, previousCheat: Cheat?)
     func editCheatViewController(_ editCheatViewController: EditCheatViewController, deactivateCheat cheat: Cheat)
 }
 
 private extension EditCheatViewController
 {
-    enum ValidationError: ErrorProtocol
-    {
-        case invalidCode
-        case duplicateName
-        case duplicateCode
-    }
-    
     enum Section: Int
     {
         case name
@@ -37,11 +30,18 @@ private extension EditCheatViewController
 
 class EditCheatViewController: UITableViewController
 {
-    weak var delegate: EditCheatViewControllerDelegate?
+    var game: Game! {
+        didSet {
+            let deltaCore = Delta.core(for: self.game.type)!
+            self.supportedCheatFormats = deltaCore.emulatorConfiguration.supportedCheatFormats
+        }
+    }
     
     var cheat: Cheat?
-    var game: Game!
-    var supportedCheatFormats: [CheatFormat]!
+    
+    weak var delegate: EditCheatViewControllerDelegate?
+    
+    private var supportedCheatFormats: [CheatFormat]!
     
     private var selectedCheatFormat: CheatFormat {
         let cheatFormat = self.supportedCheatFormats[self.typeSegmentedControl.selectedSegmentIndex]
@@ -271,63 +271,51 @@ private extension EditCheatViewController
             do
             {
                 try self.validateCheat(self.mutableCheat)
+                
+                self.delegate?.editCheatViewController(self, activateCheat: self.mutableCheat, previousCheat: self.cheat)
+                
                 self.mutableCheat.managedObjectContext?.saveWithErrorLogging()
                 self.performSegue(withIdentifier: "unwindEditCheatSegue", sender: sender)
             }
-            catch ValidationError.invalidCode
+            catch CheatValidator.Error.invalidCode
             {
                 self.presentErrorAlert(title: NSLocalizedString("Invalid Code", comment: ""), message: NSLocalizedString("Please make sure you typed the cheat code in correctly and try again.", comment: "")) {
                     self.codeTextView.becomeFirstResponder()
                 }
             }
-            catch ValidationError.duplicateCode
+            catch CheatValidator.Error.invalidName
+            {
+                self.presentErrorAlert(title: NSLocalizedString("Invalid Name", comment: ""), message: NSLocalizedString("Please rename this cheat and try again.", comment: "")) {
+                    self.codeTextView.becomeFirstResponder()
+                }
+            }
+            catch CheatValidator.Error.duplicateCode
             {
                 self.presentErrorAlert(title: NSLocalizedString("Duplicate Code", comment: ""), message: NSLocalizedString("A cheat already exists with this code. Please type in a different code and try again.", comment: "")) {
                     self.codeTextView.becomeFirstResponder()
                 }
             }
-            catch ValidationError.duplicateName
+            catch CheatValidator.Error.duplicateName
             {
                 self.presentErrorAlert(title: NSLocalizedString("Duplicate Name", comment: ""), message: NSLocalizedString("A cheat already exists with this name. Please rename this cheat and try again.", comment: "")) {
                     self.nameTextField.becomeFirstResponder()
                 }
             }
-            catch let error as NSError
+            catch
             {
                 print(error)
+                
+                self.presentErrorAlert(title: NSLocalizedString("Unknown Error", comment: ""), message: NSLocalizedString("An error occured. Please make sure you typed the cheat code in correctly and try again.", comment: "")) {
+                    self.codeTextView.becomeFirstResponder()
+                }
             }
         }
     }
     
     func validateCheat(_ cheat: Cheat) throws
     {
-        let name = cheat.name!
-        let code = cheat.code
-        
-        // Find all cheats that are for the same game, don't have the same identifier as the current cheat, but have either the same name or code
-        let predicate = Predicate(format: "%K == %@ AND %K != %@ AND (%K == %@ OR %K == %@)", Cheat.Attributes.game.rawValue, cheat.game, Cheat.Attributes.identifier.rawValue, cheat.identifier, Cheat.Attributes.code.rawValue, code, Cheat.Attributes.name.rawValue, name)
-        
-        let cheats = Cheat.instancesWithPredicate(predicate, inManagedObjectContext: self.managedObjectContext, type: Cheat.self)
-        for cheat in cheats
-        {
-            if cheat.name == name
-            {
-                throw ValidationError.duplicateName
-            }
-            else if cheat.code == code
-            {
-                throw ValidationError.duplicateCode
-            }
-        }
-        
-        do
-        {
-            try self.delegate?.editCheatViewController(self, activateCheat: cheat, previousCheat: self.cheat)
-        }
-        catch
-        {
-            throw ValidationError.invalidCode
-        }
+        let validator = CheatValidator(format: self.selectedCheatFormat, managedObjectContext: self.managedObjectContext)
+        try validator.validate(cheat)
     }
     
     @IBAction func textFieldDidEndEditing(_ sender: UITextField)

@@ -10,13 +10,20 @@ import UIKit
 
 import DeltaCore
 
+private var kvoContext = 0
+
 class GameViewController: DeltaCore.GameViewController
 {
     /// Assumed to be Delta.Game instance
     override var game: GameProtocol? {
+        willSet {
+            self.emulatorCore?.removeObserver(self, forKeyPath: #keyPath(EmulatorCore.state), context: &kvoContext)
+        }
         didSet {
             guard let emulatorCore = self.emulatorCore else { return }
             self.preferredContentSize = emulatorCore.preferredRenderingSize
+            
+            emulatorCore.addObserver(self, forKeyPath: #keyPath(EmulatorCore.state), options: [.old], context: &kvoContext)
         }
     }
     
@@ -49,6 +56,11 @@ class GameViewController: DeltaCore.GameViewController
         
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.updateControllers), name: .externalControllerDidConnect, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.updateControllers), name: .externalControllerDidDisconnect, object: nil)
+    }
+    
+    deinit
+    {
+        self.emulatorCore?.removeObserver(self, forKeyPath: #keyPath(EmulatorCore.state), context: &kvoContext)
     }
     
     // MARK: GameControllerReceiver -
@@ -116,6 +128,7 @@ extension GameViewController
         pauseViewController.pauseText = (self.game as? Game)?.name ?? NSLocalizedString("Delta", comment: "")
         pauseViewController.emulatorCore = self.emulatorCore
         pauseViewController.saveStatesViewControllerDelegate = self
+        pauseViewController.cheatsViewControllerDelegate = self
         self.pauseViewController = pauseViewController
     }
     
@@ -133,6 +146,20 @@ extension GameViewController
             DispatchQueue.main.after(when: .now() + 0.1) {
                 self.emulatorCore?.audioManager.enabled = true
             }
+        }
+    }
+    
+    // MARK: - KVO -
+    /// KVO
+    override func observeValue(forKeyPath keyPath: String?, of object: AnyObject?, change: [NSKeyValueChangeKey : AnyObject]?, context: UnsafeMutablePointer<Void>?)
+    {
+        guard context == &kvoContext else { return super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context) }
+        
+        guard let rawValue = change?[.oldKey] as? Int, let previousState = EmulatorCore.State(rawValue: rawValue) else { return }
+        
+        if previousState == .stopped
+        {
+            self.updateCheats()
         }
     }
 }
@@ -244,7 +271,78 @@ extension GameViewController: SaveStatesViewControllerDelegate
             print(error)
         }
         
+        self.updateCheats()
+        
         self.pauseViewController?.dismiss()
+    }
+}
+
+//MARK: - Cheats
+/// Cheats
+extension GameViewController: CheatsViewControllerDelegate
+{
+    func cheatsViewController(_ cheatsViewController: CheatsViewController, activateCheat cheat: Cheat)
+    {
+        self.activate(cheat)
+    }
+    
+    func cheatsViewController(_ cheatsViewController: CheatsViewController, deactivateCheat cheat: Cheat)
+    {
+        self.emulatorCore?.deactivate(cheat)
+    }
+    
+    private func activate(_ cheat: Cheat)
+    {
+        do
+        {
+            try self.emulatorCore?.activate(cheat)
+        }
+        catch EmulatorCore.CheatError.invalid
+        {
+            print("Invalid cheat:", cheat.name, cheat.code)
+        }
+        catch let error as NSError
+        {
+            print("Unknown Cheat Error:", error, cheat.name, cheat.code)
+        }
+    }
+    
+    private func updateCheats()
+    {
+        guard let game = self.game as? Game else { return }
+        
+        let running = (self.emulatorCore?.state == .running)
+        
+        if running
+        {
+            // Core MUST be paused when activating cheats, or else race conditions could crash the core
+            self.pauseEmulation()
+        }
+        
+        let backgroundContext = DatabaseManager.sharedManager.backgroundManagedObjectContext()
+        backgroundContext.performAndWait {
+            
+            let predicate = Predicate(format: "%K == %@", Cheat.Attributes.game.rawValue, game)
+            
+            let cheats = Cheat.instancesWithPredicate(predicate, inManagedObjectContext: backgroundContext, type: Cheat.self)
+            for cheat in cheats
+            {
+                if cheat.enabled
+                {
+                    self.activate(cheat)
+                }
+                else
+                {
+                    self.emulatorCore?.deactivate(cheat)
+                }
+            }
+        }
+        
+        if running
+        {
+            self.resumeEmulation()
+        }
+        
     }
 }
 
