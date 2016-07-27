@@ -10,6 +10,8 @@ import UIKit
 
 import DeltaCore
 
+import Roxas
+
 private var kvoContext = 0
 
 class GameViewController: DeltaCore.GameViewController
@@ -36,8 +38,21 @@ class GameViewController: DeltaCore.GameViewController
     
     private var context = CIContext(options: [kCIContextWorkingColorSpace: NSNull()])
     
+    // Sustain Buttons
+    private var updateSemaphores = Set<DispatchSemaphore>()
+    private var sustainedInputs = [ObjectIdentifier: [Input]]()
+    private var reactivateSustainedInputsQueue: OperationQueue
+    private var selectingSustainedButtons = false
+    
+    private var sustainButtonsContentView: UIView!
+    private var sustainButtonsBlurView: UIVisualEffectView!
+    private var sustainButtonsBackgroundView: RSTBackgroundView!
+    
     required init()
     {
+        self.reactivateSustainedInputsQueue = OperationQueue()
+        self.reactivateSustainedInputsQueue.maxConcurrentOperationCount = 1
+        
         super.init()
         
         self.initialize()
@@ -45,6 +60,9 @@ class GameViewController: DeltaCore.GameViewController
     
     required init?(coder aDecoder: NSCoder)
     {
+        self.reactivateSustainedInputsQueue = OperationQueue()
+        self.reactivateSustainedInputsQueue.maxConcurrentOperationCount = 1
+        
         super.init(coder: aDecoder)
         
         self.initialize()
@@ -72,6 +90,20 @@ class GameViewController: DeltaCore.GameViewController
         {
             UIDevice.current().vibrate()
         }
+        
+        guard (input as? ControllerInput) != .menu else { return }
+        
+        if self.selectingSustainedButtons
+        {
+            self.addSustainedInput(input, for: gameController)
+        }
+        else if let sustainedInputs = self.sustainedInputs[ObjectIdentifier(gameController)], sustainedInputs.contains({ $0.isEqual(input) })
+        {
+            // Perform on next run loop
+            DispatchQueue.main.async {
+                self.reactivateSustainedInput(input, for: gameController)
+            }
+        }
     }
 }
 
@@ -83,6 +115,37 @@ extension GameViewController
     override func viewDidLoad()
     {
         super.viewDidLoad()
+        
+        self.sustainButtonsContentView = UIView(frame: CGRect(x: 0, y: 0, width: self.gameView.bounds.width, height: self.gameView.bounds.height))
+        self.sustainButtonsContentView.translatesAutoresizingMaskIntoConstraints = false
+        self.sustainButtonsContentView.isHidden = true
+        self.view.addSubview(self.sustainButtonsContentView)
+        
+        let blurEffect = UIBlurEffect(style: .dark)
+        let vibrancyEffect = UIVibrancyEffect(blurEffect: blurEffect)
+        
+        self.sustainButtonsBlurView = UIVisualEffectView(effect: blurEffect)
+        self.sustainButtonsBlurView.frame = CGRect(x: 0, y: 0, width: self.sustainButtonsContentView.bounds.width, height: self.sustainButtonsContentView.bounds.height)
+        self.sustainButtonsBlurView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        self.sustainButtonsContentView.addSubview(self.sustainButtonsBlurView)
+        
+        let vibrancyView = UIVisualEffectView(effect: vibrancyEffect)
+        vibrancyView.frame = CGRect(x: 0, y: 0, width: self.sustainButtonsBlurView.contentView.bounds.width, height: self.sustainButtonsBlurView.contentView.bounds.height)
+        vibrancyView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        self.sustainButtonsBlurView.contentView.addSubview(vibrancyView)
+        
+        self.sustainButtonsBackgroundView = RSTBackgroundView(frame: CGRect(x: 0, y: 0, width: vibrancyView.contentView.bounds.width, height: vibrancyView.contentView.bounds.height))
+        self.sustainButtonsBackgroundView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        self.sustainButtonsBackgroundView.textLabel.text = NSLocalizedString("Select Buttons to Sustain", comment: "")
+        self.sustainButtonsBackgroundView.detailTextLabel.text = NSLocalizedString("Press the Menu button when finished.", comment: "")
+        self.sustainButtonsBackgroundView.alpha = 0.0
+        vibrancyView.contentView.addSubview(self.sustainButtonsBackgroundView)
+        
+        // Auto Layout
+        self.sustainButtonsContentView.leadingAnchor.constraint(equalTo: self.gameView.leadingAnchor).isActive = true
+        self.sustainButtonsContentView.trailingAnchor.constraint(equalTo: self.gameView.trailingAnchor).isActive = true
+        self.sustainButtonsContentView.topAnchor.constraint(equalTo: self.gameView.topAnchor).isActive = true
+        self.sustainButtonsContentView.bottomAnchor.constraint(equalTo: self.gameView.bottomAnchor).isActive = true
         
         self.updateControllers()
     }
@@ -137,6 +200,18 @@ extension GameViewController
         pauseViewController.fastForwardItem?.action = { [unowned self] item in
             guard let emulatorCore = self.emulatorCore else { return }
             emulatorCore.rate = item.selected ? emulatorCore.configuration.supportedRates.upperBound : emulatorCore.configuration.supportedRates.lowerBound
+        }
+        
+        pauseViewController.sustainButtonsItem?.selected = (self.sustainedInputs[ObjectIdentifier(gameController)]?.count ?? 0) > 0
+        pauseViewController.sustainButtonsItem?.action = { [unowned self] item in
+            
+            self.resetSustainedInputs(for: gameController)
+            
+            if item.selected
+            {
+                self.showSustainButtonView()
+                pauseViewController.dismiss()
+            }
         }
 
         self.pauseViewController = pauseViewController
@@ -356,19 +431,156 @@ extension GameViewController: CheatsViewControllerDelegate
     }
 }
 
+//MARK: - Sustain Buttons -
+private extension GameViewController
+{
+    func showSustainButtonView()
+    {
+        self.selectingSustainedButtons = true
+        
+        let blurEffect = self.sustainButtonsBlurView.effect
+        self.sustainButtonsBlurView.effect = nil
+        
+        self.sustainButtonsContentView.isHidden = false
+        
+        UIView.animate(withDuration: 0.4) {
+            self.sustainButtonsBlurView.effect = blurEffect
+            self.sustainButtonsBackgroundView.alpha = 1.0
+        }
+    }
+    
+    func hideSustainButtonView()
+    {
+        self.selectingSustainedButtons = false
+        
+        let blurEffect = self.sustainButtonsBlurView.effect
+        
+        UIView.animate(withDuration: 0.4, animations: {
+            self.sustainButtonsBlurView.effect = nil
+            self.sustainButtonsBackgroundView.alpha = 0.0
+        }) { (finished) in
+            self.sustainButtonsContentView.isHidden = true
+            self.sustainButtonsBlurView.effect = blurEffect
+        }
+    }
+    
+    func resetSustainedInputs(for gameController: GameController)
+    {
+        if let previousInputs = self.sustainedInputs[ObjectIdentifier(gameController)]
+        {
+            let receivers = gameController.receivers
+            receivers.forEach { gameController.removeReceiver($0) }
+            
+            // Activate previousInputs without notifying anyone so we can then deactivate them
+            // We do this because deactivating an already deactivated input has no effect
+            previousInputs.forEach { gameController.activate($0) }
+            
+            receivers.forEach { gameController.addReceiver($0) }
+            
+            // Deactivate previously sustained inputs
+            previousInputs.forEach { gameController.deactivate($0) }
+        }
+        
+        self.sustainedInputs[ObjectIdentifier(gameController)] = []
+    }
+    
+    func addSustainedInput(_ input: Input, for gameController: GameController)
+    {
+        var inputs = self.sustainedInputs[ObjectIdentifier(gameController)] ?? []
+        
+        guard !inputs.contains({ $0.isEqual(input) }) else { return }
+        
+        inputs.append(input)
+        self.sustainedInputs[ObjectIdentifier(gameController)] = inputs
+        
+        let receivers = gameController.receivers
+        receivers.forEach { gameController.removeReceiver($0) }
+        
+        // Causes input to be considered deactivated, so gameController won't send a subsequent message to observers when user actually deactivates
+        // However, at this point the core still thinks it is activated, and is temporarily not a receiver, thus sustaining it
+        gameController.deactivate(input)
+        
+        receivers.forEach { gameController.addReceiver($0) }
+    }
+    
+    func reactivateSustainedInput(_ input: Input, for gameController: GameController)
+    {
+        // These MUST be performed serially, or else Bad Things Happen™ if multiple inputs are reactivated at once
+        self.reactivateSustainedInputsQueue.addOperation {
+            
+            // The manual activations/deactivations here are hidden implementation details, so we won't notify ourselves about them
+            gameController.removeReceiver(self)
+            
+            // Must deactivate first so core recognizes a secondary activation
+            gameController.deactivate(input)
+            
+            let dispatchQueue = DispatchQueue(label: "com.rileytestut.Delta.sustainButtonsQueue", attributes: DispatchQueueAttributes.serial)
+            dispatchQueue.async {
+                
+                let semaphore = DispatchSemaphore(value: 0)
+                self.updateSemaphores.insert(semaphore)
+                
+                // To ensure the emulator core recognizes us activating the input again, we need to wait at least two frames
+                // Unfortunately we cannot init DispatchSemaphore with value less than 0
+                // To compensate, we simply wait twice; once the first wait returns, we wait again
+                semaphore.wait()
+                semaphore.wait()
+                
+                // These MUST be performed serially, or else Bad Things Happen™ if multiple inputs are reactivated at once
+                self.reactivateSustainedInputsQueue.addOperation {
+                    
+                    self.updateSemaphores.remove(semaphore)
+                    
+                    // Ensure we still are not a receiver (to prevent rare race conditions)
+                    gameController.removeReceiver(self)
+                    
+                    gameController.activate(input)
+                    
+                    let receivers = gameController.receivers
+                    receivers.forEach { gameController.removeReceiver($0) }
+                    
+                    // Causes input to be considered deactivated, so gameController won't send a subsequent message to observers when user actually deactivates
+                    // However, at this point the core still thinks it is activated, and is temporarily not a receiver, thus sustaining it
+                    gameController.deactivate(input)
+                    
+                    receivers.forEach { gameController.addReceiver($0) }
+                }
+                
+                // More Bad Things Happen™ if we add self as observer before ALL reactivations have occurred (notable, infinite loops)
+                self.reactivateSustainedInputsQueue.waitUntilAllOperationsAreFinished()
+                
+                gameController.addReceiver(self)
+                
+            }
+        }
+    }
+}
+
 //MARK: - GameViewControllerDelegate -
 /// GameViewControllerDelegate
 extension GameViewController: GameViewControllerDelegate
 {
     func gameViewController(gameViewController: DeltaCore.GameViewController, handleMenuInputFrom gameController: GameController)
     {
-        self.pauseEmulation()
+        if self.selectingSustainedButtons
+        {
+            self.hideSustainButtonView()
+        }
         
+        self.pauseEmulation()
         self.performSegue(withIdentifier: "pause", sender: gameController)
     }
     
     func gameViewControllerShouldResumeEmulation(gameViewController: DeltaCore.GameViewController) -> Bool
     {
-        return self.pauseViewController == nil
+        return self.pauseViewController == nil && !self.selectingSustainedButtons
+    }
+    
+    func gameViewControllerDidUpdate(gameViewController: DeltaCore.GameViewController)
+    {
+        for semaphore in self.updateSemaphores
+        {
+            semaphore.signal()
+        }
     }
 }
