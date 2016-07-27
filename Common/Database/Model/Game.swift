@@ -43,7 +43,12 @@ class Game: NSManagedObject, GameProtocol
     @NSManaged var previewSaveState: SaveState?
     
     var fileURL: URL {
-        let fileURL = try! DatabaseManager.gamesDirectoryURL.appendingPathComponent(self.filename)
+        var fileURL: URL!
+        
+        self.managedObjectContext?.performAndWait {
+            fileURL = try! DatabaseManager.gamesDirectoryURL.appendingPathComponent(self.filename)
+        }
+        
         return fileURL
     }
     
