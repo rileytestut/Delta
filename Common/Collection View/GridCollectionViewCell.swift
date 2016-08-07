@@ -110,7 +110,7 @@ class GridCollectionViewCell: UICollectionViewCell
                 
                 self.textLabelFocusedVerticalSpacingConstraint?.isActive = true
                 
-                self.textLabel.textColor = UIColor.white()
+                self.textLabel.textColor = UIColor.white
                 
             }
             else
@@ -120,7 +120,7 @@ class GridCollectionViewCell: UICollectionViewCell
                 self.textLabelBottomAnchorConstraint?.isActive = true
                 self.textLabelVerticalSpacingConstraint.isActive = true
                 
-                self.textLabel.textColor = UIColor.black()
+                self.textLabel.textColor = UIColor.black
             }
             
             self.layoutIfNeeded()

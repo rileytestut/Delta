@@ -32,14 +32,14 @@ class PauseTransitionCoordinator: NSObject, UIViewControllerAnimatedTransitionin
         let sourceViewController = transitionContext.viewController(forKey: UITransitionContextFromViewControllerKey)!
         
         destinationViewController.view.frame = transitionContext.finalFrame(for: destinationViewController)
-        destinationViewController.view.frame.origin.y = self.presenting ? transitionContext.containerView().bounds.height : -destinationViewController.view.bounds.height
-        transitionContext.containerView().addSubview(destinationViewController.view)
+        destinationViewController.view.frame.origin.y = self.presenting ? transitionContext.containerView.bounds.height : -destinationViewController.view.bounds.height
+        transitionContext.containerView.addSubview(destinationViewController.view)
         
         destinationViewController.view.layoutIfNeeded()
         
         UIView.animate(withDuration: self.transitionDuration(using: transitionContext), delay:0, options:RSTSystemTransitionAnimationCurve, animations: {
             
-            sourceViewController.view.frame.origin.y = self.presenting ? -sourceViewController.view.bounds.height : transitionContext.containerView().bounds.height
+            sourceViewController.view.frame.origin.y = self.presenting ? -sourceViewController.view.bounds.height : transitionContext.containerView.bounds.height
             destinationViewController.view.frame.origin.y = 0
             
             self.presentationController.containerView?.setNeedsLayout()

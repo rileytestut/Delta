@@ -89,10 +89,10 @@ extension PauseViewController
         switch identifier
         {
         case "embedNavigationController":
-            self.pauseNavigationController = segue.destinationViewController as! UINavigationController
+            self.pauseNavigationController = segue.destination as! UINavigationController
             self.pauseNavigationController.delegate = self
             self.pauseNavigationController.navigationBar.tintColor = UIColor.deltaLightPurpleColor()
-            self.pauseNavigationController.view.backgroundColor = UIColor.clear()
+            self.pauseNavigationController.view.backgroundColor = UIColor.clear
             
             let pauseMenuViewController = self.pauseNavigationController.topViewController as! PauseMenuViewController
             pauseMenuViewController.items = self.pauseItems
@@ -101,14 +101,14 @@ extension PauseViewController
             self.view.addSubview(self.pauseNavigationController.navigationBar)
             
         case "saveStates":
-            let saveStatesViewController = segue.destinationViewController as! SaveStatesViewController
+            let saveStatesViewController = segue.destination as! SaveStatesViewController
             saveStatesViewController.delegate = self.saveStatesViewControllerDelegate
             saveStatesViewController.game = self.emulatorCore?.game as? Game
             saveStatesViewController.emulatorCore = self.emulatorCore
             saveStatesViewController.mode = self.saveStatesViewControllerMode
             
         case "cheats":
-            let cheatsViewController = segue.destinationViewController as! CheatsViewController
+            let cheatsViewController = segue.destination as! CheatsViewController
             cheatsViewController.delegate = self.cheatsViewControllerDelegate
             cheatsViewController.game = self.emulatorCore?.game as? Game
             

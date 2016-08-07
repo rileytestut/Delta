@@ -19,7 +19,7 @@ private enum ControllersSettingsSection: Int
 private class LocalDeviceController: ExternalController
 {
     override var name: String {
-        return UIDevice.current().name
+        return UIDevice.current.name
     }
 }
 

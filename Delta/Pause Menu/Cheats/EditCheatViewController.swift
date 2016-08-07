@@ -160,7 +160,7 @@ extension EditCheatViewController
         guard let cheat = self.cheat else { return [] }
         
         let copyCodeAction = UIPreviewAction(title: NSLocalizedString("Copy Code", comment: ""), style: .default) { (action, viewController) in
-            UIPasteboard.general().string = cheat.code
+            UIPasteboard.general.string = cheat.code
         }
         
         let presentingViewController = self.presentingViewController!

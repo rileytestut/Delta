@@ -58,8 +58,8 @@ class GamesViewController: UIViewController
         self.pageControl.translatesAutoresizingMaskIntoConstraints = false
         self.pageControl.hidesForSinglePage = false
         self.pageControl.numberOfPages = 3
-        self.pageControl.currentPageIndicatorTintColor = UIColor.purple()
-        self.pageControl.pageIndicatorTintColor = UIColor.lightGray()
+        self.pageControl.currentPageIndicatorTintColor = UIColor.purple
+        self.pageControl.pageIndicatorTintColor = UIColor.lightGray
         self.navigationController?.toolbar.addSubview(self.pageControl)
         
         self.pageControl.centerXAnchor.constraint(equalTo: (self.navigationController?.toolbar.centerXAnchor)!, constant: 0).isActive = true
@@ -117,8 +117,8 @@ class GamesViewController: UIViewController
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: AnyObject?)
     {
-        guard let sourceViewController = segue.sourceViewController as? GamesCollectionViewController else { return }
-        guard let destinationViewController = segue.destinationViewController as? GameViewController else { return }
+        guard let sourceViewController = segue.source as? GamesCollectionViewController else { return }
+        guard let destinationViewController = segue.destination as? GameViewController else { return }
         guard let cell = sender as? UICollectionViewCell else { return }
         
         let indexPath = sourceViewController.collectionView?.indexPath(for: cell)

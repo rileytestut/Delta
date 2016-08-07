@@ -37,14 +37,14 @@ class PausePresentationController: UIPresentationController
     
     override func frameOfPresentedViewInContainerView() -> CGRect
     {
-        guard let containerView = self.containerView else { return super.frameOfPresentedViewInContainerView() }
+        guard let containerView = self.containerView else { return super.frameOfPresentedViewInContainerView }
         
         let frame: CGRect
         let contentHeight = self.presentedViewController.preferredContentSize.height
         
         if contentHeight == 0
         {
-            let statusBarHeight = UIApplication.shared().statusBarFrame.height
+            let statusBarHeight = UIApplication.shared.statusBarFrame.height
             frame = CGRect(x: 0, y: statusBarHeight, width: containerView.bounds.width, height: containerView.bounds.height - statusBarHeight)
         }
         else
@@ -83,7 +83,7 @@ class PausePresentationController: UIPresentationController
         self.contentView.alpha = 0.0
         self.vibrancyView.contentView.addSubview(self.contentView)
         
-        self.presentingViewController.transitionCoordinator()?.animate(alongsideTransition: { context in
+        self.presentingViewController.transitionCoordinator?.animate(alongsideTransition: { context in
             
             let blurEffect = UIBlurEffect(style: .dark)
             
@@ -97,7 +97,7 @@ class PausePresentationController: UIPresentationController
     
     override func dismissalTransitionWillBegin()
     {
-        self.presentingViewController.transitionCoordinator()?.animate(alongsideTransition: { context in
+        self.presentingViewController.transitionCoordinator?.animate(alongsideTransition: { context in
             self.blurringView.effect = nil
             self.vibrancyView.effect = nil
             self.contentView.alpha = 0.0
@@ -120,10 +120,10 @@ class PausePresentationController: UIPresentationController
         self.contentView.frame = self.containerView!.bounds
         self.contentView.frame.origin.y = currentY
         
-        if self.presentedView()!.frame.minY == 0
+        if self.presentedView!.frame.minY == 0
         {
             // Temporarily offset top of presentedView by a small amount to prevent navigation bar from growing when rotating from landscape to portrait
-            self.presentedView()?.frame.origin.y = 0.5
+            self.presentedView?.frame.origin.y = 0.5
         }
     }
 
@@ -143,7 +143,7 @@ class PausePresentationController: UIPresentationController
         self.contentView.removeFromSuperview()
         
         // Temporarily match the bounds of self.containerView (accounting for the status bar)
-        let statusBarHeight = UIApplication.shared().statusBarFrame.height
+        let statusBarHeight = UIApplication.shared.statusBarFrame.height
         self.contentView.frame = CGRect(x: 0, y: statusBarHeight, width: self.containerView!.bounds.width, height: self.containerView!.bounds.height - statusBarHeight)
         
         // Layout content view
@@ -158,13 +158,13 @@ class PausePresentationController: UIPresentationController
         
         
         // Ensure width is correct
-        self.presentedView()?.bounds.size.width = self.containerView!.bounds.width
-        self.presentedView()?.setNeedsLayout()
-        self.presentedView()?.layoutIfNeeded()
+        self.presentedView?.bounds.size.width = self.containerView!.bounds.width
+        self.presentedView?.setNeedsLayout()
+        self.presentedView?.layoutIfNeeded()
         
-        if self.presentingViewController.transitionCoordinator() == nil
+        if self.presentingViewController.transitionCoordinator == nil
         {
-            self.presentedView()?.frame = self.frameOfPresentedViewInContainerView()
+            self.presentedView?.frame = self.frameOfPresentedViewInContainerView()
         }
         
         // Unhide pauseIconImageView so its height is involved with layout calculations

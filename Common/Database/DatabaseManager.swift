@@ -192,7 +192,7 @@ extension DatabaseManager
     {
         let documentsDirectoryURL: URL
         
-        if UIDevice.current().userInterfaceIdiom == .tv
+        if UIDevice.current.userInterfaceIdiom == .tv
         {
             documentsDirectoryURL = FileManager.default.urlsForDirectory(FileManager.SearchPathDirectory.cachesDirectory, inDomains: FileManager.SearchPathDomainMask.userDomainMask).first!
         }

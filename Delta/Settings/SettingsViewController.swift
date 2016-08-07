@@ -53,7 +53,7 @@ class SettingsViewController: UITableViewController
     {
         if segue.identifier == SettingsSegues.Controllers.rawValue
         {
-            let controllersSettingsViewController = segue.destinationViewController as! ControllersSettingsViewController
+            let controllersSettingsViewController = segue.destination as! ControllersSettingsViewController
             controllersSettingsViewController.playerIndex = (self.tableView.indexPathForSelectedRow as NSIndexPath?)?.row
         }
     }
@@ -94,7 +94,7 @@ extension SettingsViewController
         {
             if (indexPath as NSIndexPath).row == Settings.localControllerPlayerIndex
             {
-                cell.detailTextLabel?.text = UIDevice.current().name
+                cell.detailTextLabel?.text = UIDevice.current.name
             }
             else if let index = ExternalControllerManager.shared.connectedControllers.index(where: { $0.playerIndex == (indexPath as NSIndexPath).row })
             {

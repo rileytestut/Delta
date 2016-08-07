@@ -58,7 +58,7 @@ class SaveStatesViewController: UICollectionViewController
     private var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>!
     
     private let imageOperationQueue = RSTOperationQueue()
-    private let imageCache = Cache<NSURL, UIImage>()
+    private let imageCache = Cache<URL, UIImage>()
     
     private var emulatorCoreSaveState: SaveStateProtocol?
     private var selectedSaveState: SaveState?
@@ -88,13 +88,13 @@ extension SaveStatesViewController
         self.backgroundView.isHidden = true
         self.backgroundView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.backgroundView.textLabel.text = NSLocalizedString("No Save States", comment: "")
-        self.backgroundView.textLabel.textColor = UIColor.white()
-        self.backgroundView.detailTextLabel.textColor = UIColor.white()
+        self.backgroundView.textLabel.textColor = UIColor.white
+        self.backgroundView.detailTextLabel.textColor = UIColor.white
         self.view.insertSubview(self.backgroundView, at: 0)
         
         let collectionViewLayout = self.collectionViewLayout as! GridCollectionViewLayout
         let averageHorizontalInset = (collectionViewLayout.sectionInset.left + collectionViewLayout.sectionInset.right) / 2
-        let portraitScreenWidth = UIScreen.main().coordinateSpace.convert(UIScreen.main().bounds, to: UIScreen.main().fixedCoordinateSpace).width
+        let portraitScreenWidth = UIScreen.main.coordinateSpace.convert(UIScreen.main.bounds, to: UIScreen.main.fixedCoordinateSpace).width
         
         // Use dimensions that allow two cells to fill the screen horizontally with padding in portrait mode
         // We'll keep the same size for landscape orientation, which will allow more to fit
@@ -185,7 +185,7 @@ private extension SaveStatesViewController
     {
         let saveState = self.fetchedResultsController.object(at: indexPath) as! SaveState
         
-        cell.imageView.backgroundColor = UIColor.white()
+        cell.imageView.backgroundColor = UIColor.white
         cell.imageView.image = UIImage(named: "DeltaPlaceholder")
         
         if !ignoreOperations
@@ -215,7 +215,7 @@ private extension SaveStatesViewController
         let dimensions = deltaCore.emulatorConfiguration.videoBufferInfo.outputDimensions
         cell.maximumImageSize = CGSize(width: self.prototypeCellWidthConstraint.constant, height: (self.prototypeCellWidthConstraint.constant / dimensions.width) * dimensions.height)
         
-        cell.textLabel.textColor = UIColor.white()
+        cell.textLabel.textColor = UIColor.white
         cell.textLabel.font = UIFont.preferredFont(forTextStyle: UIFontTextStyleSubheadline)
         
         let name = saveState.name ?? self.dateFormatter.string(from: saveState.modifiedDate)
@@ -509,7 +509,7 @@ private extension SaveStatesViewController
         
         // Kinda hacky, but isMovingFromParentViewController only returns yes when popping off navigation controller, and not being dismissed modally
         // Because of this, this is only run when the user returns to PauseMenuViewController, and not when they choose a save state to load
-        guard self.isMovingFromParentViewController() else { return }
+        guard self.isMovingFromParentViewController else { return }
         
         self.prepareEmulatorCore()
     }

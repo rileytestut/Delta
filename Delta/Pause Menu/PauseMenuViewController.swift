@@ -72,21 +72,21 @@ private extension PauseMenuViewController
         cell.imageView.image = pauseItem.image
         cell.imageView.contentMode = .center
         cell.imageView.layer.borderWidth = 2
-        cell.imageView.layer.borderColor = UIColor.white().cgColor
+        cell.imageView.layer.borderColor = UIColor.white.cgColor
         cell.imageView.layer.cornerRadius = 10
         
         cell.textLabel.text = pauseItem.text
-        cell.textLabel.textColor = UIColor.white()
+        cell.textLabel.textColor = UIColor.white
         
         if pauseItem.selected
         {
-            cell.imageView.tintColor = UIColor.black()
-            cell.imageView.backgroundColor = UIColor.white()
+            cell.imageView.tintColor = UIColor.black
+            cell.imageView.backgroundColor = UIColor.white
         }
         else
         {
-            cell.imageView.tintColor = UIColor.white()
-            cell.imageView.backgroundColor = UIColor.clear()
+            cell.imageView.tintColor = UIColor.white
+            cell.imageView.backgroundColor = UIColor.clear
         }
     }
     

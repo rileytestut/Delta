@@ -88,7 +88,7 @@ class GameViewController: DeltaCore.GameViewController
         
         if gameController is ControllerView && UIDevice.current().isVibrationSupported
         {
-            UIDevice.current().vibrate()
+            UIDevice.current.vibrate()
         }
         
         guard (input as? ControllerInput) != .menu else { return }
@@ -190,7 +190,7 @@ extension GameViewController
         
         self.pausingGameController = gameController
         
-        let pauseViewController = segue.destinationViewController as! PauseViewController
+        let pauseViewController = segue.destination as! PauseViewController
         pauseViewController.pauseText = (self.game as? Game)?.name ?? NSLocalizedString("Delta", comment: "")
         pauseViewController.emulatorCore = self.emulatorCore
         pauseViewController.saveStatesViewControllerDelegate = self
@@ -560,7 +560,7 @@ private extension GameViewController
 /// GameViewControllerDelegate
 extension GameViewController: GameViewControllerDelegate
 {
-    func gameViewController(gameViewController: DeltaCore.GameViewController, handleMenuInputFrom gameController: GameController)
+    func gameViewController(_ gameViewController: DeltaCore.GameViewController, handleMenuInputFrom gameController: GameController)
     {
         if self.selectingSustainedButtons
         {
@@ -571,12 +571,12 @@ extension GameViewController: GameViewControllerDelegate
         self.performSegue(withIdentifier: "pause", sender: gameController)
     }
     
-    func gameViewControllerShouldResumeEmulation(gameViewController: DeltaCore.GameViewController) -> Bool
+    func gameViewControllerShouldResumeEmulation(_ gameViewController: DeltaCore.GameViewController) -> Bool
     {
         return self.pauseViewController == nil && !self.selectingSustainedButtons
     }
     
-    func gameViewControllerDidUpdate(gameViewController: DeltaCore.GameViewController)
+    func gameViewControllerDidUpdate(_ gameViewController: DeltaCore.GameViewController)
     {
         for semaphore in self.updateSemaphores
         {

@@ -46,9 +46,9 @@ extension CheatsViewController
         self.backgroundView.isHidden = false
         self.backgroundView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.backgroundView.textLabel.text = NSLocalizedString("No Cheats", comment: "")
-        self.backgroundView.textLabel.textColor = UIColor.white()
+        self.backgroundView.textLabel.textColor = UIColor.white
         self.backgroundView.detailTextLabel.text = NSLocalizedString("You can add a new cheat by pressing the + button in the top right.", comment: "")
-        self.backgroundView.detailTextLabel.textColor = UIColor.white()
+        self.backgroundView.detailTextLabel.textColor = UIColor.white
         self.tableView.backgroundView = self.backgroundView
         
         self.registerForPreviewing(with: self, sourceView: self.tableView)
@@ -135,7 +135,7 @@ private extension CheatsViewController
 /// Convenience
 private extension CheatsViewController
 {
-    func configure(cell: UITableViewCell, forIndexPath indexPath: IndexPath)
+    func configure(_ cell: UITableViewCell, forIndexPath indexPath: IndexPath)
     {
         let cheat = self.fetchedResultsController.object(at: indexPath) as! Cheat
         cell.textLabel?.text = cheat.name
@@ -173,7 +173,7 @@ extension CheatsViewController
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
         let cell = tableView.dequeueReusableCell(withIdentifier: RSTGenericCellIdentifier, for: indexPath)
-        self.configure(cell: cell, forIndexPath: indexPath)
+        self.configure(cell, forIndexPath: indexPath)
         return cell
     }
 }

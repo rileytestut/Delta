@@ -29,7 +29,7 @@ class SaveStatesCollectionHeaderView: UICollectionReusableView
     private func initialize()
     {
         self.textLabel.translatesAutoresizingMaskIntoConstraints = false
-        self.textLabel.textColor = UIColor.white()
+        self.textLabel.textColor = UIColor.white
         
         var fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: UIFontTextStyleTitle3)
         fontDescriptor = fontDescriptor.withSymbolicTraits([.traitBold])!

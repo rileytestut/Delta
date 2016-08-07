@@ -12,7 +12,7 @@ import DeltaCore
 
 extension CheatValidator
 {
-    enum Error: ErrorProtocol
+    enum Error: Swift.Error
     {
         case invalidCode
         case invalidName

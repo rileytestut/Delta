@@ -25,14 +25,14 @@ class PauseStoryboardSegue: UIStoryboardSegue
     
     override func perform()
     {
-        self.destinationViewController.transitioningDelegate = self
-        self.destinationViewController.modalPresentationStyle = .custom
-        self.destinationViewController.modalPresentationCapturesStatusBarAppearance = true
+        self.destination.transitioningDelegate = self
+        self.destination.modalPresentationStyle = .custom
+        self.destination.modalPresentationCapturesStatusBarAppearance = true
         
         // We need to force layout of destinationViewController.view _before_ animateTransition(using:)
         // Otherwise, we'll get "Unable to simultaneously satisfy constraints" errors
-        self.destinationViewController.view.frame = self.sourceViewController.view.frame
-        self.destinationViewController.view.layoutIfNeeded()
+        self.destination.view.frame = self.source.view.frame
+        self.destination.view.layoutIfNeeded()
         
         super.perform()
     }
@@ -69,8 +69,8 @@ extension PauseStoryboardSegue: UIViewControllerAnimatedTransitioning
         let presentedViewController = transitionContext.viewController(forKey: UITransitionContextToViewControllerKey)!
         
         presentedView.frame = transitionContext.finalFrame(for: presentedViewController)
-        presentedView.frame.origin.y = transitionContext.containerView().bounds.height
-        transitionContext.containerView().addSubview(presentedView)
+        presentedView.frame.origin.y = transitionContext.containerView.bounds.height
+        transitionContext.containerView.addSubview(presentedView)
         
         self.animator.addAnimations { [unowned self] in
             presentedView.frame = self.presentationController.frameOfPresentedViewInContainerView()
