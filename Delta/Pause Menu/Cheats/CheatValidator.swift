@@ -33,7 +33,7 @@ struct CheatValidator
         let code = cheat.code
         
         // Find all cheats that are for the same game, don't have the same identifier as the current cheat, but have either the same name or code
-        let predicate = Predicate(format: "%K == %@ AND %K != %@ AND (%K == %@ OR %K == %@)", Cheat.Attributes.game.rawValue, cheat.game, Cheat.Attributes.identifier.rawValue, cheat.identifier, Cheat.Attributes.code.rawValue, code, Cheat.Attributes.name.rawValue, name)
+        let predicate = NSPredicate(format: "%K == %@ AND %K != %@ AND (%K == %@ OR %K == %@)", Cheat.Attributes.game.rawValue, cheat.game, Cheat.Attributes.identifier.rawValue, cheat.identifier, Cheat.Attributes.code.rawValue, code, Cheat.Attributes.name.rawValue, name)
         
         let cheats = Cheat.instancesWithPredicate(predicate, inManagedObjectContext: self.managedObjectContext, type: Cheat.self)
         for cheat in cheats

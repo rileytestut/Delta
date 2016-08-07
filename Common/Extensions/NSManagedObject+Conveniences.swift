@@ -39,7 +39,7 @@ extension NSManagedObject
         return self.instancesWithPredicate(nil, inManagedObjectContext: managedObjectContext, type: type)
     }
     
-    class func instancesWithPredicate<T: NSManagedObject>(_ predicate: Predicate?, inManagedObjectContext managedObjectContext: NSManagedObjectContext, type: T.Type) -> [T]
+    class func instancesWithPredicate<T: NSManagedObject>(_ predicate: NSPredicate?, inManagedObjectContext managedObjectContext: NSManagedObjectContext, type: T.Type) -> [T]
     {
         let fetchRequest = self.rst_fetchRequest()
         fetchRequest.predicate = predicate

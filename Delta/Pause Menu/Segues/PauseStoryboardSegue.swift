@@ -73,7 +73,7 @@ extension PauseStoryboardSegue: UIViewControllerAnimatedTransitioning
         transitionContext.containerView.addSubview(presentedView)
         
         self.animator.addAnimations { [unowned self] in
-            presentedView.frame = self.presentationController.frameOfPresentedViewInContainerView()
+            presentedView.frame = self.presentationController.frameOfPresentedViewInContainerView
         }
         
         self.animator.addCompletion { position in

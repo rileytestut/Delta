@@ -39,7 +39,7 @@ class ControllersSettingsViewController: UITableViewController
         }
     }
     
-    private var connectedControllers = ExternalControllerManager.shared.connectedControllers.sorted(isOrderedBefore: { $0.playerIndex ?? NSIntegerMax < $1.playerIndex ?? NSIntegerMax })
+    private var connectedControllers = ExternalControllerManager.shared.connectedControllers.sorted(by: { $0.playerIndex ?? NSIntegerMax < $1.playerIndex ?? NSIntegerMax })
     
     private lazy var localDeviceController: LocalDeviceController = {
         let device = LocalDeviceController()
@@ -176,7 +176,7 @@ extension ControllersSettingsViewController
         {
             cell.textLabel?.text = NSLocalizedString("None", comment: "")
             
-            if Settings.localControllerPlayerIndex != self.playerIndex && !self.connectedControllers.contains({ $0.playerIndex == self.playerIndex })
+            if Settings.localControllerPlayerIndex != self.playerIndex && !self.connectedControllers.contains(where: { $0.playerIndex == self.playerIndex })
             {
                 cell.accessoryType = .checkmark
             }

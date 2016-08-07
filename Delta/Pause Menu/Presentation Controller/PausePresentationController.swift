@@ -25,17 +25,7 @@ class PausePresentationController: UIPresentationController
     @IBOutlet private weak var pauseIconImageView: UIImageView!
     @IBOutlet private weak var stackView: UIStackView!
     
-    override init(presentedViewController: UIViewController, presenting presentingViewController: UIViewController?)
-    {
-        self.blurringView = UIVisualEffectView(effect: nil)
-        self.vibrancyView = UIVisualEffectView(effect: nil)
-        
-        super.init(presentedViewController: presentedViewController, presenting: presentingViewController)
-        
-        self.contentView = Bundle.main.loadNibNamed("PausePresentationControllerContentView", owner: self, options: nil)?.first as! UIView
-    }
-    
-    override func frameOfPresentedViewInContainerView() -> CGRect
+    override var frameOfPresentedViewInContainerView: CGRect
     {
         guard let containerView = self.containerView else { return super.frameOfPresentedViewInContainerView }
         
@@ -53,6 +43,16 @@ class PausePresentationController: UIPresentationController
         }
         
         return frame
+    }
+    
+    override init(presentedViewController: UIViewController, presenting presentingViewController: UIViewController?)
+    {
+        self.blurringView = UIVisualEffectView(effect: nil)
+        self.vibrancyView = UIVisualEffectView(effect: nil)
+        
+        super.init(presentedViewController: presentedViewController, presenting: presentingViewController)
+        
+        self.contentView = Bundle.main.loadNibNamed("PausePresentationControllerContentView", owner: self, options: nil)?.first as! UIView
     }
     
     override func presentationTransitionWillBegin()
@@ -164,13 +164,13 @@ class PausePresentationController: UIPresentationController
         
         if self.presentingViewController.transitionCoordinator == nil
         {
-            self.presentedView?.frame = self.frameOfPresentedViewInContainerView()
+            self.presentedView?.frame = self.frameOfPresentedViewInContainerView
         }
         
         // Unhide pauseIconImageView so its height is involved with layout calculations
         self.pauseIconImageView.isHidden = false
         
-        self.contentView.frame = CGRect(x: 0, y: statusBarHeight, width: self.containerView!.bounds.width, height: self.frameOfPresentedViewInContainerView().minY - statusBarHeight)
+        self.contentView.frame = CGRect(x: 0, y: statusBarHeight, width: self.containerView!.bounds.width, height: self.frameOfPresentedViewInContainerView.minY - statusBarHeight)
         
         self.contentView.setNeedsLayout() // Ensures that layout will actually occur (sometimes the system thinks a layout is not needed, which messes up calculations)
         self.contentView.layoutIfNeeded()

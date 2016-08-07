@@ -58,7 +58,7 @@ class SaveStatesViewController: UICollectionViewController
     private var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>!
     
     private let imageOperationQueue = RSTOperationQueue()
-    private let imageCache = Cache<URL, UIImage>()
+    private let imageCache = NSCache<NSURL, UIImage>()
     
     private var emulatorCoreSaveState: SaveStateProtocol?
     private var selectedSaveState: SaveState?
@@ -160,8 +160,8 @@ private extension SaveStatesViewController
     {
         let fetchRequest = SaveState.rst_fetchRequest()
         fetchRequest.returnsObjectsAsFaults = false
-        fetchRequest.predicate = Predicate(format: "%K == %@", SaveState.Attributes.game.rawValue, self.game)
-        fetchRequest.sortDescriptors = [SortDescriptor(key: SaveState.Attributes.type.rawValue, ascending: true), SortDescriptor(key: SaveState.Attributes.creationDate.rawValue, ascending: true)]
+        fetchRequest.predicate = NSPredicate(format: "%K == %@", SaveState.Attributes.game.rawValue, self.game)
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: SaveState.Attributes.type.rawValue, ascending: true), NSSortDescriptor(key: SaveState.Attributes.creationDate.rawValue, ascending: true)]
         
         self.fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DatabaseManager.sharedManager.managedObjectContext, sectionNameKeyPath: SaveState.Attributes.type.rawValue, cacheName: nil)
         self.fetchedResultsController.delegate = self

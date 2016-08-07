@@ -76,7 +76,7 @@ class GameCollection: NSManagedObject
             index = Int16(INT16_MAX)
         }
         
-        let predicate = Predicate(format: "%K == %@", GameCollection.Attributes.identifier.rawValue, identifier)
+        let predicate = NSPredicate(format: "%K == %@", GameCollection.Attributes.identifier.rawValue, identifier)
         
         var gameCollection = GameCollection.instancesWithPredicate(predicate, inManagedObjectContext: managedObjectContext, type: GameCollection.self).first
         if gameCollection == nil

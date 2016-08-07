@@ -23,7 +23,7 @@ class CheatTextView: UITextView
         }
     }
     
-    @NSCopying private var attributedFormat: AttributedString?
+    @NSCopying private var attributedFormat: NSAttributedString?
     
     required init?(coder aDecoder: NSCoder)
     {
@@ -117,9 +117,9 @@ extension CheatTextView: NSLayoutManagerDelegate
         let bufferSize = max(attributedFormat.length + 1, glyphCount * 2)
         
         // Allocate our replacement buffers
-        let glyphBuffer = UnsafeMutablePointer<CGGlyph>(allocatingCapacity: bufferSize)
-        let propertyBuffer = UnsafeMutablePointer<NSGlyphProperty>(allocatingCapacity: bufferSize)
-        let characterBuffer = UnsafeMutablePointer<Int>(allocatingCapacity: bufferSize)
+        let glyphBuffer = UnsafeMutablePointer<CGGlyph>.allocate(capacity: bufferSize)
+        let propertyBuffer = UnsafeMutablePointer<NSGlyphProperty>.allocate(capacity: bufferSize)
+        let characterBuffer = UnsafeMutablePointer<Int>.allocate(capacity: bufferSize)
         
         var offset = 0
         
@@ -156,9 +156,9 @@ extension CheatTextView: NSLayoutManagerDelegate
         layoutManager.setGlyphs(glyphBuffer, properties: propertyBuffer, characterIndexes: characterBuffer, font: aFont, forGlyphRange: NSRange(location: glyphRange.location, length: glyphCount + offset))
         
         // Clean up memory
-        characterBuffer.deallocateCapacity(bufferSize)
-        propertyBuffer.deallocateCapacity(bufferSize)
-        glyphBuffer.deallocateCapacity(bufferSize)
+        characterBuffer.deallocate(capacity: bufferSize)
+        propertyBuffer.deallocate(capacity: bufferSize)
+        glyphBuffer.deallocate(capacity: bufferSize)
         
         // Return total number of glyphs
         return glyphCount + offset

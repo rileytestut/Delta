@@ -29,7 +29,7 @@ class DatabaseManager
     
     private init()
     {
-        let modelURL = Bundle.main.urlForResource("Model", withExtension: "momd")
+        let modelURL = Bundle.main.url(forResource: "Model", withExtension: "momd")
         let managedObjectModel = NSManagedObjectModel(contentsOf: modelURL!)
         let persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel!)
         
@@ -52,9 +52,9 @@ class DatabaseManager
     
     func startWithCompletion(_ completionBlock: ((performingMigration: Bool) -> Void)?)
     {
-        DispatchQueue.global(attributes: DispatchQueue.GlobalAttributes.qosUserInitiated).async {
+        DispatchQueue.global(qos: .userInitiated).async {
             
-            let storeURL = try! DatabaseManager.databaseDirectoryURL.appendingPathComponent("Delta.sqlite")
+            let storeURL = DatabaseManager.databaseDirectoryURL.appendingPathComponent("Delta.sqlite")
 
             let options = [NSMigratePersistentStoresAutomaticallyOption: true, NSInferMappingModelAutomaticallyOption: true]
             
@@ -106,42 +106,28 @@ class DatabaseManager
             {
                 let identifier = FileHash.sha1HashOfFile(atPath: URL.path) as String
                 
-                var filename = identifier
-                if let pathExtension = URL.pathExtension
-                {
-                    filename += "." + pathExtension
-                }
+                let filename = identifier + "." + URL.pathExtension
                 
                 let game = Game.insertIntoManagedObjectContext(managedObjectContext)
-                game.name = try! URL.deletingPathExtension().lastPathComponent ?? NSLocalizedString("Game", comment: "")
+                game.name = URL.deletingPathExtension().lastPathComponent ?? NSLocalizedString("Game", comment: "")
                 game.identifier = identifier
                 game.filename = filename
                 
-                if let pathExtension = URL.pathExtension
-                {
-                    let gameCollection = GameCollection.gameSystemCollectionForPathExtension(pathExtension, inManagedObjectContext: managedObjectContext)
-                    game.type = GameType(rawValue: gameCollection.identifier)
-                    game.gameCollections.insert(gameCollection)
-                }
-                else
-                {
-                    game.type = GameType.delta
-                }
+                let gameCollection = GameCollection.gameSystemCollectionForPathExtension(URL.pathExtension, inManagedObjectContext: managedObjectContext)
+                game.type = GameType(rawValue: gameCollection.identifier)
+                game.gameCollections.insert(gameCollection)
                 
                 do
                 {
-                    let destinationURL = try! DatabaseManager.gamesDirectoryURL.appendingPathComponent(game.identifier + "." + game.preferredFileExtension)
+                    let destinationURL = DatabaseManager.gamesDirectoryURL.appendingPathComponent(game.identifier + "." + game.preferredFileExtension)
                     
-                    if let path = destinationURL.path
+                    if FileManager.default.fileExists(atPath: destinationURL.path)
                     {
-                        if FileManager.default.fileExists(atPath: path)
-                        {
-                            try FileManager.default.removeItem(at: URL)
-                        }
-                        else
-                        {
-                            try FileManager.default.moveItem(at: URL, to: destinationURL)
-                        }
+                        try FileManager.default.removeItem(at: URL)
+                    }
+                    else
+                    {
+                        try FileManager.default.moveItem(at: URL, to: destinationURL)
                     }
                     
                     identifiers.append(game.identifier)
@@ -194,14 +180,14 @@ extension DatabaseManager
         
         if UIDevice.current.userInterfaceIdiom == .tv
         {
-            documentsDirectoryURL = FileManager.default.urlsForDirectory(FileManager.SearchPathDirectory.cachesDirectory, inDomains: FileManager.SearchPathDomainMask.userDomainMask).first!
+            documentsDirectoryURL = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
         }
         else
         {
-            documentsDirectoryURL = FileManager.default.urlsForDirectory(FileManager.SearchPathDirectory.documentDirectory, inDomains: FileManager.SearchPathDomainMask.userDomainMask).first!
+            documentsDirectoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
         }
         
-        let databaseDirectoryURL = try! documentsDirectoryURL.appendingPathComponent("Database")
+        let databaseDirectoryURL = documentsDirectoryURL.appendingPathComponent("Database")
         self.createDirectoryAtURLIfNeeded(databaseDirectoryURL)
         
         return databaseDirectoryURL
@@ -209,7 +195,7 @@ extension DatabaseManager
     
     class var gamesDirectoryURL: URL
     {
-        let gamesDirectoryURL = try! DatabaseManager.databaseDirectoryURL.appendingPathComponent("Games")
+        let gamesDirectoryURL = DatabaseManager.databaseDirectoryURL.appendingPathComponent("Games")
         self.createDirectoryAtURLIfNeeded(gamesDirectoryURL)
         
         return gamesDirectoryURL
@@ -217,7 +203,7 @@ extension DatabaseManager
     
     class var saveStatesDirectoryURL: URL
     {
-        let saveStatesDirectoryURL = try! DatabaseManager.databaseDirectoryURL.appendingPathComponent("Save States")
+        let saveStatesDirectoryURL = DatabaseManager.databaseDirectoryURL.appendingPathComponent("Save States")
         self.createDirectoryAtURLIfNeeded(saveStatesDirectoryURL)
         
         return saveStatesDirectoryURL
@@ -225,7 +211,7 @@ extension DatabaseManager
     
     class func saveStatesDirectoryURLForGame(_ game: Game) -> URL
     {
-        let gameDirectoryURL = try! DatabaseManager.saveStatesDirectoryURL.appendingPathComponent(game.identifier)
+        let gameDirectoryURL = DatabaseManager.saveStatesDirectoryURL.appendingPathComponent(game.identifier)
         self.createDirectoryAtURLIfNeeded(gameDirectoryURL)
         
         return gameDirectoryURL
@@ -322,7 +308,7 @@ private extension DatabaseManager
         }
         
         // Remove empty collections
-        let collections = GameCollection.instancesWithPredicate(Predicate(format: "%K.@count == 0", GameCollection.Attributes.games.rawValue), inManagedObjectContext: self.validationManagedObjectContext, type: GameCollection.self)
+        let collections = GameCollection.instancesWithPredicate(NSPredicate(format: "%K.@count == 0", GameCollection.Attributes.games.rawValue), inManagedObjectContext: self.validationManagedObjectContext, type: GameCollection.self)
         
         for collection in collections
         {

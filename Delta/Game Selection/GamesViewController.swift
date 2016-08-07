@@ -28,7 +28,7 @@ class GamesViewController: UIViewController
     required init?(coder aDecoder: NSCoder)
     {
         let fetchRequest = GameCollection.rst_fetchRequest()
-        fetchRequest.sortDescriptors = [SortDescriptor(key: GameCollection.Attributes.index.rawValue, ascending: true)]
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: GameCollection.Attributes.index.rawValue, ascending: true)]
                 
         self.fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DatabaseManager.sharedManager.managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
         

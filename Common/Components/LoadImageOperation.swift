@@ -25,7 +25,7 @@ public class LoadImageOperation: RSTOperation
         }
     }
     
-    public var imageCache: Cache<NSURL, UIImage>? {
+    public var imageCache: NSCache<NSURL, UIImage>? {
         didSet {
             // Ensures if an image is cached, it will be returned immediately, to prevent temporary flash of placeholder image
             self.isImmediate = self.imageCache?.object(forKey: self.URL) != nil

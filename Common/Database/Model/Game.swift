@@ -46,7 +46,7 @@ class Game: NSManagedObject, GameProtocol
         var fileURL: URL!
         
         self.managedObjectContext?.performAndWait {
-            fileURL = try! DatabaseManager.gamesDirectoryURL.appendingPathComponent(self.filename)
+            fileURL = DatabaseManager.gamesDirectoryURL.appendingPathComponent(self.filename)
         }
         
         return fileURL

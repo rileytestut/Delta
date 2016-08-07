@@ -48,6 +48,26 @@ class GameViewController: DeltaCore.GameViewController
     private var sustainButtonsBlurView: UIVisualEffectView!
     private var sustainButtonsBackgroundView: RSTBackgroundView!
     
+    override var previewActionItems: [UIPreviewActionItem]
+    {
+        if let previewActionItems = self.overridePreviewActionItems
+        {
+            return previewActionItems
+        }
+        
+        guard let game = self.game as? Game else { return [] }
+        
+        let presentingViewController = self.presentingViewController
+        
+        let launchGameAction = UIPreviewAction(title: NSLocalizedString("Launch \(game.name)", comment: ""), style: .default) { (action, viewController) in
+            // Delaying until next run loop prevents self from being dismissed immediately
+            DispatchQueue.main.async {
+                presentingViewController?.present(viewController, animated: true, completion: nil)
+            }
+        }
+        return [launchGameAction]
+    }
+    
     required init()
     {
         self.reactivateSustainedInputsQueue = OperationQueue()
@@ -86,7 +106,7 @@ class GameViewController: DeltaCore.GameViewController
     {
         super.gameController(gameController, didActivate: input)
         
-        if gameController is ControllerView && UIDevice.current().isVibrationSupported
+        if gameController is ControllerView && UIDevice.current.isVibrationSupported
         {
             UIDevice.current.vibrate()
         }
@@ -97,7 +117,7 @@ class GameViewController: DeltaCore.GameViewController
         {
             self.addSustainedInput(input, for: gameController)
         }
-        else if let sustainedInputs = self.sustainedInputs[ObjectIdentifier(gameController)], sustainedInputs.contains({ $0.isEqual(input) })
+        else if let sustainedInputs = self.sustainedInputs[ObjectIdentifier(gameController)], sustainedInputs.contains(where: { $0.isEqual(input) })
         {
             // Perform on next run loop
             DispatchQueue.main.async {
@@ -157,26 +177,6 @@ extension GameViewController
         self.controllerView.isHidden = self.isPreviewing
     }
     
-    override func previewActionItems() -> [UIPreviewActionItem]
-    {
-        if let previewActionItems = self.overridePreviewActionItems
-        {
-            return previewActionItems
-        }
-        
-        guard let game = self.game as? Game else { return [] }
-        
-        let presentingViewController = self.presentingViewController
-        
-        let launchGameAction = UIPreviewAction(title: NSLocalizedString("Launch \(game.name)", comment: ""), style: .default) { (action, viewController) in
-            // Delaying until next run loop prevents self from being dismissed immediately
-            DispatchQueue.main.async {
-                presentingViewController?.present(viewController, animated: true, completion: nil)
-            }
-        }
-        return [launchGameAction]
-    }
-    
     // MARK: - Segues
     /// KVO
     
@@ -228,7 +228,8 @@ extension GameViewController
             self.emulatorCore?.audioManager.enabled = false
             
             // Re-enable after delay
-            DispatchQueue.main.after(when: .now() + 0.1) {
+                        
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                 self.emulatorCore?.audioManager.enabled = true
             }
         }
@@ -292,14 +293,12 @@ extension GameViewController: SaveStatesViewControllerDelegate
 {
     func saveStatesViewController(_ saveStatesViewController: SaveStatesViewController, updateSaveState saveState: SaveState)
     {
-        guard let filepath = saveState.fileURL.path else { return }
-        
         var updatingExistingSaveState = true
         
         self.emulatorCore?.save { (temporarySaveState) in
             do
             {
-                if FileManager.default.fileExists(atPath: filepath)
+                if FileManager.default.fileExists(atPath: saveState.fileURL.path)
                 {
                     try FileManager.default.replaceItem(at: saveState.fileURL, withItemAt: temporarySaveState.fileURL, backupItemName: nil, options: [], resultingItemURL: nil)
                 }
@@ -407,7 +406,7 @@ extension GameViewController: CheatsViewControllerDelegate
         let backgroundContext = DatabaseManager.sharedManager.backgroundManagedObjectContext()
         backgroundContext.performAndWait {
             
-            let predicate = Predicate(format: "%K == %@", Cheat.Attributes.game.rawValue, game)
+            let predicate = NSPredicate(format: "%K == %@", Cheat.Attributes.game.rawValue, game)
             
             let cheats = Cheat.instancesWithPredicate(predicate, inManagedObjectContext: backgroundContext, type: Cheat.self)
             for cheat in cheats
@@ -488,7 +487,7 @@ private extension GameViewController
     {
         var inputs = self.sustainedInputs[ObjectIdentifier(gameController)] ?? []
         
-        guard !inputs.contains({ $0.isEqual(input) }) else { return }
+        guard !inputs.contains(where: { $0.isEqual(input) }) else { return }
         
         inputs.append(input)
         self.sustainedInputs[ObjectIdentifier(gameController)] = inputs
@@ -514,7 +513,7 @@ private extension GameViewController
             // Must deactivate first so core recognizes a secondary activation
             gameController.deactivate(input)
             
-            let dispatchQueue = DispatchQueue(label: "com.rileytestut.Delta.sustainButtonsQueue", attributes: DispatchQueueAttributes.serial)
+            let dispatchQueue = DispatchQueue(label: "com.rileytestut.Delta.sustainButtonsQueue")
             dispatchQueue.async {
                 
                 let semaphore = DispatchSemaphore(value: 0)

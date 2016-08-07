@@ -54,6 +54,43 @@ class EditCheatViewController: UITableViewController
     @IBOutlet private var nameTextField: UITextField!
     @IBOutlet private var typeSegmentedControl: UISegmentedControl!
     @IBOutlet private var codeTextView: CheatTextView!
+    
+    override var previewActionItems: [UIPreviewActionItem]
+    {
+        guard let cheat = self.cheat else { return [] }
+        
+        let copyCodeAction = UIPreviewAction(title: NSLocalizedString("Copy Code", comment: ""), style: .default) { (action, viewController) in
+            UIPasteboard.general.string = cheat.code
+        }
+        
+        let presentingViewController = self.presentingViewController!
+        
+        let editCheatAction = UIPreviewAction(title: NSLocalizedString("Edit", comment: ""), style: .default) { (action, viewController) in
+            // Delaying until next run loop prevents self from being dismissed immediately
+            DispatchQueue.main.async {
+                let editCheatViewController = viewController as! EditCheatViewController
+                editCheatViewController.presentWithPresentingViewController(presentingViewController)
+            }
+        }
+        
+        let deleteAction = UIPreviewAction(title: NSLocalizedString("Delete", comment: ""), style: .destructive) { [unowned self] (action, viewController) in
+            self.delegate?.editCheatViewController(self, deactivateCheat: cheat)
+            
+            let backgroundContext = DatabaseManager.sharedManager.backgroundManagedObjectContext()
+            backgroundContext.perform {
+                let temporaryCheat = backgroundContext.object(with: cheat.objectID)
+                backgroundContext.delete(temporaryCheat)
+                backgroundContext.saveWithErrorLogging()
+            }
+        }
+        
+        let cancelDeleteAction = UIPreviewAction(title: NSLocalizedString("Cancel", comment: ""), style: .default) { (action, viewController) in
+        }
+        
+        let deleteActionGroup = UIPreviewActionGroup(title: NSLocalizedString("Delete", comment: ""), style: .destructive, actions: [deleteAction, cancelDeleteAction])
+        
+        return [copyCodeAction, editCheatAction, deleteActionGroup]
+    }
 }
 
 extension EditCheatViewController
@@ -153,43 +190,6 @@ extension EditCheatViewController
         {
             self.nameTextField.becomeFirstResponder()
         }
-    }
-    
-    override func previewActionItems() -> [UIPreviewActionItem]
-    {
-        guard let cheat = self.cheat else { return [] }
-        
-        let copyCodeAction = UIPreviewAction(title: NSLocalizedString("Copy Code", comment: ""), style: .default) { (action, viewController) in
-            UIPasteboard.general.string = cheat.code
-        }
-        
-        let presentingViewController = self.presentingViewController!
-        
-        let editCheatAction = UIPreviewAction(title: NSLocalizedString("Edit", comment: ""), style: .default) { (action, viewController) in
-            // Delaying until next run loop prevents self from being dismissed immediately
-            DispatchQueue.main.async {
-                let editCheatViewController = viewController as! EditCheatViewController
-                editCheatViewController.presentWithPresentingViewController(presentingViewController)
-            }
-        }
-        
-        let deleteAction = UIPreviewAction(title: NSLocalizedString("Delete", comment: ""), style: .destructive) { [unowned self] (action, viewController) in
-            self.delegate?.editCheatViewController(self, deactivateCheat: cheat)
-            
-            let backgroundContext = DatabaseManager.sharedManager.backgroundManagedObjectContext()
-            backgroundContext.perform {
-                let temporaryCheat = backgroundContext.object(with: cheat.objectID)
-                backgroundContext.delete(temporaryCheat)
-                backgroundContext.saveWithErrorLogging()
-            }
-        }
-        
-        let cancelDeleteAction = UIPreviewAction(title: NSLocalizedString("Cancel", comment: ""), style: .default) { (action, viewController) in
-        }
-        
-        let deleteActionGroup = UIPreviewActionGroup(title: NSLocalizedString("Delete", comment: ""), style: .destructive, actions: [deleteAction, cancelDeleteAction])
-        
-        return [copyCodeAction, editCheatAction, deleteActionGroup]
     }
     
     override func didReceiveMemoryWarning()
@@ -380,7 +380,7 @@ extension EditCheatViewController: UITextViewDelegate
         
         // We need to manually add back the attributes when manually modifying the underlying text storage
         // Otherwise, pasting text into an empty text view will result in the wrong font being used
-        let attributedString = AttributedString(string: sanitizedText, attributes: textView.typingAttributes)
+        let attributedString = NSAttributedString(string: sanitizedText, attributes: textView.typingAttributes)
         textView.textStorage.replaceCharacters(in: range, with: attributedString)
         
         // We must add attributedString.length, not range.length, in case the attributed string's length differs

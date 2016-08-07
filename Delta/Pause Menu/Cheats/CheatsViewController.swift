@@ -86,8 +86,8 @@ private extension CheatsViewController
     {
         let fetchRequest = Cheat.rst_fetchRequest()
         fetchRequest.returnsObjectsAsFaults = false
-        fetchRequest.predicate = Predicate(format: "%K == %@", Cheat.Attributes.game.rawValue, self.game)
-        fetchRequest.sortDescriptors = [SortDescriptor(key: Cheat.Attributes.name.rawValue, ascending: true)]
+        fetchRequest.predicate = NSPredicate(format: "%K == %@", Cheat.Attributes.game.rawValue, self.game)
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: Cheat.Attributes.name.rawValue, ascending: true)]
         
         self.fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DatabaseManager.sharedManager.managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
         self.fetchedResultsController.delegate = self

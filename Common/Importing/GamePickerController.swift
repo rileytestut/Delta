@@ -53,7 +53,7 @@ class GamePickerController: NSObject
         
         let importAction = UIAlertAction(title: NSLocalizedString("Import", comment: ""), style: .default) { action in
             
-            let documentsDirectoryURL = try! DatabaseManager.databaseDirectoryURL.deletingLastPathComponent()
+            let documentsDirectoryURL = DatabaseManager.databaseDirectoryURL.deletingLastPathComponent()
             
             do
             {
@@ -91,7 +91,7 @@ class GamePickerController: NSObject
             
             DatabaseManager.sharedManager.managedObjectContext.perform() {
                 
-                let predicate = Predicate(format: "%K IN (%@)", Game.Attributes.identifier.rawValue, identifiers)
+                let predicate = NSPredicate(format: "%K IN (%@)", Game.Attributes.identifier.rawValue, identifiers)
                 let games = Game.instancesWithPredicate(predicate, inManagedObjectContext: DatabaseManager.sharedManager.managedObjectContext, type: Game.self)
                                 
                 self.delegate?.gamePickerController(self, didImportGames: games)
