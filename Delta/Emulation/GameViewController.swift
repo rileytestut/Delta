@@ -139,7 +139,7 @@ extension GameViewController
         self.sustainButtonsContentView = UIView(frame: CGRect(x: 0, y: 0, width: self.gameView.bounds.width, height: self.gameView.bounds.height))
         self.sustainButtonsContentView.translatesAutoresizingMaskIntoConstraints = false
         self.sustainButtonsContentView.isHidden = true
-        self.view.addSubview(self.sustainButtonsContentView)
+        self.view.insertSubview(self.sustainButtonsContentView, aboveSubview: self.gameView)
         
         let blurEffect = UIBlurEffect(style: .dark)
         let vibrancyEffect = UIVibrancyEffect(blurEffect: blurEffect)
@@ -157,6 +157,9 @@ extension GameViewController
         self.sustainButtonsBackgroundView = RSTBackgroundView(frame: CGRect(x: 0, y: 0, width: vibrancyView.contentView.bounds.width, height: vibrancyView.contentView.bounds.height))
         self.sustainButtonsBackgroundView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.sustainButtonsBackgroundView.textLabel.text = NSLocalizedString("Select Buttons to Sustain", comment: "")
+        self.sustainButtonsBackgroundView.textLabel.numberOfLines = 1
+        self.sustainButtonsBackgroundView.textLabel.minimumScaleFactor = 0.5
+        self.sustainButtonsBackgroundView.textLabel.adjustsFontSizeToFitWidth = true
         self.sustainButtonsBackgroundView.detailTextLabel.text = NSLocalizedString("Press the Menu button when finished.", comment: "")
         self.sustainButtonsBackgroundView.alpha = 0.0
         vibrancyView.contentView.addSubview(self.sustainButtonsBackgroundView)
