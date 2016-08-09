@@ -117,18 +117,12 @@ class GamesViewController: UIViewController
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    // MARK: - Importing -
-    
-    @IBAction func importFiles()
-    {
-        let gamePickerController = GamePickerController()
-        gamePickerController.delegate = self
-        self.presentGamePickerController(gamePickerController, animated: true, completion: nil)
-    }
-    
-    // MARK: - Navigation -
-    
+}
+
+// MARK: - Segues -
+/// Segues
+extension GamesViewController
+{
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: AnyObject?)
     {
@@ -142,9 +136,8 @@ class GamesViewController: UIViewController
         destinationViewController.game = game
     }
     
-    @IBAction func unwindFromSettingsViewController(_ segue: UIStoryboardSegue)
+    @IBAction private func unwindFromSettingsViewController(_ segue: UIStoryboardSegue)
     {
-        
     }
 }
 
@@ -174,6 +167,7 @@ private extension GamesViewController
     }
 }
 
+// MARK: - Helper Methods -
 private extension GamesViewController
 {
     func viewControllerForIndex(_ index: Int) -> GamesCollectionViewController?
@@ -257,16 +251,29 @@ private extension GamesViewController
     }
 }
 
+//MARK: - Importing -
+// Importing
 extension GamesViewController: GamePickerControllerDelegate
 {
+    @IBAction private func importFiles()
+    {
+        let gamePickerController = GamePickerController()
+        gamePickerController.delegate = self
+        self.presentGamePickerController(gamePickerController, animated: true, completion: nil)
+    }
+    
+    //MARK: - GamePickerControllerDelegate
     func gamePickerController(_ gamePickerController: GamePickerController, didImportGames games: [Game])
     {
         print(games)
     }
 }
 
-extension GamesViewController: UIPageViewControllerDelegate, UIPageViewControllerDataSource
+//MARK: - UIPageViewController -
+// UIPageViewController
+extension GamesViewController: UIPageViewControllerDataSource, UIPageViewControllerDelegate
 {
+    //MARK: - UIPageViewControllerDataSource
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController?
     {
         let viewController = self.viewControllerForIndex(self.pageControl.currentPage - 1)
@@ -279,6 +286,7 @@ extension GamesViewController: UIPageViewControllerDelegate, UIPageViewControlle
         return viewController
     }
     
+    //MARK: - UIPageViewControllerDelegate
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool)
     {
         if let viewController = pageViewController.viewControllers?.first as? GamesCollectionViewController, let gameCollection = viewController.gameCollection
@@ -291,6 +299,8 @@ extension GamesViewController: UIPageViewControllerDelegate, UIPageViewControlle
     }
 }
 
+//MARK: - NSFetchedResultsControllerDelegate -
+// NSFetchedResultsControllerDelegate
 extension GamesViewController: NSFetchedResultsControllerDelegate
 {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>)
