@@ -13,6 +13,12 @@ import DeltaCore
 
 class GamesCollectionViewController: UICollectionViewController
 {
+    var theme: GamesViewController.Theme = .light {
+        didSet {
+            self.collectionView?.reloadData()
+        }
+    }
+    
     weak var segueHandler: UIViewController?
     
     var gameCollection: GameCollection! {
@@ -74,6 +80,19 @@ class GamesCollectionViewController: UICollectionViewController
         cell.maximumImageSize = CGSize(width: 90, height: 90)
         cell.textLabel.text = game.name
         cell.imageView.image = UIImage(named: "BoxArt")
+        
+        switch self.theme
+        {
+        case .light:
+            cell.textLabel.textColor = UIColor.darkText
+            cell.isTextLabelVibrancyEnabled = false
+            cell.isImageViewVibrancyEnabled = false
+            
+        case .dark:
+            cell.textLabel.textColor = UIColor.white
+            cell.isTextLabelVibrancyEnabled = true
+            cell.isImageViewVibrancyEnabled = true
+        }
     }
 }
 

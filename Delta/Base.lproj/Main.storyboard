@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11163.2" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="wKV-3d-NIY">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11185.3" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="yhz-fF-D91">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11133"/>
-        <capability name="Segues with Peek and Pop" minToolsVersion="7.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11151.4"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -48,7 +47,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JYx-xE-nis" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1054" y="1002"/>
+            <point key="canvasLocation" x="1036" y="1002"/>
         </scene>
         <!--Games Collection View Controller-->
         <scene sceneID="qNA-NP-TiF">
@@ -73,10 +72,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </view>
                                 <connections>
-                                    <segue destination="yhz-fF-D91" kind="presentation" identifier="presentGameViewController" id="4ws-DY-L4D">
-                                        <segue key="commit" inheritsFrom="parent" id="sub-e4-fpl"/>
-                                        <segue key="preview" inheritsFrom="commit" id="WKY-hV-sn0"/>
-                                    </segue>
+                                    <segue destination="X2o-q6-XD5" kind="unwind" unwindAction="unwindFromGamesViewControllerWith:" id="Cxx-73-8KV"/>
                                 </connections>
                             </collectionViewCell>
                         </cells>
@@ -87,8 +83,9 @@
                     </collectionView>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bW1-t8-idm" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="X2o-q6-XD5" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1727" y="1002"/>
+            <point key="canvasLocation" x="1764" y="1719"/>
         </scene>
         <!--Game View Controller-->
         <scene sceneID="ASV-Uk-0aP">
@@ -105,11 +102,13 @@
                     </view>
                     <connections>
                         <segue destination="Yrw-9v-Pcr" kind="presentation" identifier="pause" customClass="PauseStoryboardSegue" customModule="Delta" customModuleProvider="target" id="FLq-Zt-HDv"/>
+                        <segue destination="wKV-3d-NIY" kind="presentation" identifier="showGamesViewController" customClass="GamesStoryboardSegue" customModule="Delta" customModuleProvider="target" id="Tey-6Z-UHp"/>
+                        <segue destination="wKV-3d-NIY" kind="presentation" identifier="showInitialGamesViewController" customClass="InitialGamesStoryboardSegue" customModule="Delta" customModuleProvider="target" id="eR2-0c-0Rv"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gxI-00-NlJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2472" y="1002"/>
+            <point key="canvasLocation" x="-490" y="1002"/>
         </scene>
         <!--Page View Controller-->
         <scene sceneID="35q-Io-64T">
@@ -117,7 +116,7 @@
                 <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="tpK-ou-yEA" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TZS-QE-4Yg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1054" y="1681"/>
+            <point key="canvasLocation" x="1036" y="1719"/>
         </scene>
         <!--Settings-->
         <scene sceneID="L3X-MM-hJL">
@@ -125,7 +124,7 @@
                 <viewControllerPlaceholder storyboardName="Settings" id="xMK-Cs-fAS" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2N5-3k-beA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="795.5" y="534"/>
+            <point key="canvasLocation" x="1036" y="605"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="zJI-sC-1sm">
@@ -148,7 +147,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0Br-8t-jcG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="400" y="1002"/>
+            <point key="canvasLocation" x="292" y="1002"/>
         </scene>
         <!--PauseMenu-->
         <scene sceneID="97k-By-dJD">
@@ -156,13 +155,13 @@
                 <viewControllerPlaceholder storyboardName="PauseMenu" id="Yrw-9v-Pcr" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BDU-Ql-OgK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2470" y="1441"/>
+            <point key="canvasLocation" x="-491" y="1431"/>
         </scene>
     </scenes>
     <resources>
         <image name="Settings_Button" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="4ws-DY-L4D"/>
+        <segue reference="Tey-6Z-UHp"/>
     </inferredMetricsTieBreakers>
 </document>

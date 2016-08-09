@@ -185,57 +185,104 @@ extension GameViewController
     
     override func prepare(for segue: UIStoryboardSegue, sender: AnyObject?)
     {
-        guard let identifier = segue.identifier, identifier == "pause" else { return }
+        guard let identifier = segue.identifier else { return }
         
-        guard let gameController = sender as? GameController else {
-            fatalError("sender for pauseSegue must be the game controller that pressed the Menu button")
-        }
-        
-        self.pausingGameController = gameController
-        
-        let pauseViewController = segue.destination as! PauseViewController
-        pauseViewController.pauseText = (self.game as? Game)?.name ?? NSLocalizedString("Delta", comment: "")
-        pauseViewController.emulatorCore = self.emulatorCore
-        pauseViewController.saveStatesViewControllerDelegate = self
-        pauseViewController.cheatsViewControllerDelegate = self
-        
-        pauseViewController.fastForwardItem?.selected = (self.emulatorCore?.rate != self.emulatorCore?.configuration.supportedRates.lowerBound)
-        pauseViewController.fastForwardItem?.action = { [unowned self] item in
-            guard let emulatorCore = self.emulatorCore else { return }
-            emulatorCore.rate = item.selected ? emulatorCore.configuration.supportedRates.upperBound : emulatorCore.configuration.supportedRates.lowerBound
-        }
-        
-        pauseViewController.sustainButtonsItem?.selected = (self.sustainedInputs[ObjectIdentifier(gameController)]?.count ?? 0) > 0
-        pauseViewController.sustainButtonsItem?.action = { [unowned self] item in
+        switch identifier
+        {
+        case "showGamesViewController":
+            let gamesViewController = (segue.destination as! UINavigationController).topViewController as! GamesViewController
+            gamesViewController.theme = .dark
             
-            self.resetSustainedInputs(for: gameController)
-            
-            if item.selected
-            {
-                self.showSustainButtonView()
-                pauseViewController.dismiss()
+        case "pause":
+            guard let gameController = sender as? GameController else {
+                fatalError("sender for pauseSegue must be the game controller that pressed the Menu button")
             }
+            
+            self.pausingGameController = gameController
+            
+            let pauseViewController = segue.destination as! PauseViewController
+            pauseViewController.pauseText = (self.game as? Game)?.name ?? NSLocalizedString("Delta", comment: "")
+            pauseViewController.emulatorCore = self.emulatorCore
+            pauseViewController.saveStatesViewControllerDelegate = self
+            pauseViewController.cheatsViewControllerDelegate = self
+            
+            pauseViewController.fastForwardItem?.selected = (self.emulatorCore?.rate != self.emulatorCore?.configuration.supportedRates.lowerBound)
+            pauseViewController.fastForwardItem?.action = { [unowned self] item in
+                guard let emulatorCore = self.emulatorCore else { return }
+                emulatorCore.rate = item.selected ? emulatorCore.configuration.supportedRates.upperBound : emulatorCore.configuration.supportedRates.lowerBound
+            }
+            
+            pauseViewController.sustainButtonsItem?.selected = (self.sustainedInputs[ObjectIdentifier(gameController)]?.count ?? 0) > 0
+            pauseViewController.sustainButtonsItem?.action = { [unowned self] item in
+                
+                self.resetSustainedInputs(for: gameController)
+                
+                if item.selected
+                {
+                    self.showSustainButtonView()
+                    pauseViewController.dismiss()
+                }
+            }
+            
+            self.pauseViewController = pauseViewController
+            
+        default: break
         }
-
-        self.pauseViewController = pauseViewController
     }
     
     @IBAction private func unwindFromPauseViewController(_ segue: UIStoryboardSegue)
-    {        
+    {
         self.pauseViewController = nil
         self.pausingGameController = nil
         
-        if self.resumeEmulation()
+        guard let identifier = segue.identifier else { return }
+        
+        switch identifier
         {
-            // Temporarily disable audioManager to prevent delayed audio bug when using 3D Touch Peek & Pop
-            self.emulatorCore?.audioManager.enabled = false
-            
-            // Re-enable after delay
+        case "unwindFromPauseMenu":
+            DispatchQueue.main.async {
+                if
+                    let transitionCoordinator = self.transitionCoordinator,
+                    let navigationController = segue.source.navigationController,
+                    navigationController.viewControllers.count == 1
+                {
+                    // If user pressed "Resume" from Pause Menu, we wait for the transition to complete before resuming emulation
+                    transitionCoordinator.animate(alongsideTransition: nil, completion: { (context) in
+                        self.resumeEmulation()
+                    })
+                }
+                else
+                {
+                    // Otherwise, we resume emulation immediately (such as when loading save states and the game view needs to be updated ASAP)
+                    
+                    if self.resumeEmulation()
+                    {
+                        // Temporarily disable audioManager to prevent delayed audio bug when using 3D Touch Peek & Pop
+                        self.emulatorCore?.audioManager.enabled = false
                         
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                self.emulatorCore?.audioManager.enabled = true
+                        // Re-enable after delay
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                            self.emulatorCore?.audioManager.enabled = true
+                        }
+                    }
+                }
             }
+            
+        case "unwindToGames":
+            DispatchQueue.main.async {
+                self.transitionCoordinator?.animate(alongsideTransition: nil, completion: { (context) in
+                    self.performSegue(withIdentifier: "showGamesViewController", sender: nil)
+                })
+            }
+            
+        default: break
         }
+    }
+    
+    @IBAction private func unwindFromGamesViewController(with segue: UIStoryboardSegue)
+    {
+        self.emulatorCore?.resume()
     }
     
     // MARK: - KVO
@@ -552,7 +599,6 @@ private extension GameViewController
                 self.reactivateSustainedInputsQueue.waitUntilAllOperationsAreFinished()
                 
                 gameController.addReceiver(self)
-                
             }
         }
     }
@@ -575,7 +621,7 @@ extension GameViewController: GameViewControllerDelegate
     
     func gameViewControllerShouldResumeEmulation(_ gameViewController: DeltaCore.GameViewController) -> Bool
     {
-        return self.pauseViewController == nil && !self.selectingSustainedButtons
+        return (self.presentedViewController == nil || self.presentedViewController?.isDisappearing == true) && !self.selectingSustainedButtons
     }
     
     func gameViewControllerDidUpdate(_ gameViewController: DeltaCore.GameViewController)

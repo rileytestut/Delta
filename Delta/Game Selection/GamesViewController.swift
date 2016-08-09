@@ -13,8 +13,23 @@ import DeltaCore
 
 import Roxas
 
+extension GamesViewController
+{
+    enum Theme
+    {
+        case light
+        case dark
+    }
+}
+
 class GamesViewController: UIViewController
 {
+    var theme: Theme = .light {
+        didSet {
+            self.updateTheme()
+        }
+    }
+    
     private var pageViewController: UIPageViewController!
     private var backgroundView: RSTBackgroundView!
     private var pageControl: UIPageControl!
@@ -133,6 +148,32 @@ class GamesViewController: UIViewController
     }
 }
 
+// MARK: - UI -
+/// UI
+private extension GamesViewController
+{
+    func updateTheme()
+    {
+        switch self.theme
+        {
+        case .light:
+            self.view.backgroundColor = UIColor.white
+            self.navigationController?.navigationBar.barStyle = .default
+            self.navigationController?.toolbar.barStyle = .default
+            
+        case .dark:
+            self.view.backgroundColor = nil
+            self.navigationController?.navigationBar.barStyle = .blackTranslucent
+            self.navigationController?.toolbar.barStyle = .blackTranslucent
+        }
+        
+        if let collectionViewController = self.pageViewController.viewControllers?.first as? UICollectionViewController
+        {
+            collectionViewController.collectionView?.reloadData()
+        }
+    }
+}
+
 private extension GamesViewController
 {
     func viewControllerForIndex(_ index: Int) -> GamesCollectionViewController?
@@ -154,6 +195,7 @@ private extension GamesViewController
         viewController.gameCollection = self.fetchedResultsController.object(at: indexPath) as! GameCollection
         viewController.collectionView?.contentInset.top = self.topLayoutGuide.length
         viewController.segueHandler = self
+        viewController.theme = self.theme
         
         return viewController
     }

@@ -108,12 +108,12 @@
                         <barButtonItem key="leftBarButtonItem" title="Main Menu" style="done" id="2yt-vB-uMF">
                             <color key="tintColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
-                                <segue destination="WU3-gG-BA5" kind="unwind" unwindAction="unwindFromEmulationViewController:" id="SdW-CX-n27"/>
+                                <segue destination="WU3-gG-BA5" kind="unwind" identifier="unwindToGames" unwindAction="unwindFromPauseViewController:" id="SdW-CX-n27"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Resume" style="done" id="Wfq-I3-437">
                             <connections>
-                                <segue destination="WU3-gG-BA5" kind="unwind" unwindAction="unwindFromPauseViewController:" id="RHb-pF-trg"/>
+                                <segue destination="WU3-gG-BA5" kind="unwind" identifier="unwindFromPauseMenu" unwindAction="unwindFromPauseViewController:" id="RHb-pF-trg"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
