@@ -63,6 +63,7 @@
 		BFFA71DD1AAC406100EE9DD1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFA71DC1AAC406100EE9DD1 /* AppDelegate.swift */; };
 		BFFA71E21AAC406100EE9DD1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BFFA71E01AAC406100EE9DD1 /* Main.storyboard */; };
 		BFFA71E71AAC406100EE9DD1 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFFA71E51AAC406100EE9DD1 /* LaunchScreen.xib */; };
+		BFFC464C1D5998D600AF2CC6 /* CheatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFC464B1D5998D600AF2CC6 /* CheatTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -145,6 +146,7 @@
 		BFFA71DC1AAC406100EE9DD1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BFFA71E11AAC406100EE9DD1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		BFFA71E61AAC406100EE9DD1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		BFFC464B1D5998D600AF2CC6 /* CheatTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CheatTableViewCell.swift; path = "Pause Menu/Cheats/CheatTableViewCell.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -320,6 +322,7 @@
 			isa = PBXGroup;
 			children = (
 				BFC9B7381CEFCD34008629BB /* CheatsViewController.swift */,
+				BFFC464B1D5998D600AF2CC6 /* CheatTableViewCell.swift */,
 				BF34FA061CF0F510006624C7 /* EditCheatViewController.swift */,
 				BF34FA101CF1899D006624C7 /* CheatTextView.swift */,
 				BF31878A1D489AAA00BD020D /* CheatValidator.swift */,
@@ -565,6 +568,7 @@
 				BFC9B7391CEFCD34008629BB /* CheatsViewController.swift in Sources */,
 				BF353FFF1C5DA3C500C1184C /* PausePresentationController.swift in Sources */,
 				BF02BD001D361BD1000892F2 /* NSFetchedResultsController+Conveniences.m in Sources */,
+				BFFC464C1D5998D600AF2CC6 /* CheatTableViewCell.swift in Sources */,
 				BF7AE80A1C2E8C7600B1B5BC /* UIColor+Delta.swift in Sources */,
 				BF762E9E1BC19D31002C8866 /* DatabaseManager.swift in Sources */,
 				BF090CF41B490D8300DCAB45 /* UIDevice+Vibration.m in Sources */,
