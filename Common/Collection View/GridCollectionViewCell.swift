@@ -13,11 +13,39 @@ class GridCollectionViewCell: UICollectionViewCell
     let imageView = UIImageView()
     let textLabel = UILabel()
     
+    var isImageViewVibrancyEnabled = true {
+        didSet {
+            if self.isImageViewVibrancyEnabled
+            {
+                self.vibrancyView.contentView.addSubview(self.imageView)
+            }
+            else
+            {
+                self.contentView.addSubview(self.imageView)
+            }
+        }
+    }
+    
+    var isTextLabelVibrancyEnabled = true {
+        didSet {
+            if self.isTextLabelVibrancyEnabled
+            {
+                self.vibrancyView.contentView.addSubview(self.textLabel)
+            }
+            else
+            {
+                self.contentView.addSubview(self.textLabel)
+            }
+        }
+    }
+    
     var maximumImageSize: CGSize = CGSize(width: 100, height: 100) {
         didSet {
             self.updateMaximumImageSize()
         }
     }
+    
+    private var vibrancyView = UIVisualEffectView(effect: UIVibrancyEffect(blurEffect: UIBlurEffect(style: .dark)))
     
     private var imageViewWidthConstraint: NSLayoutConstraint!
     private var imageViewHeightConstraint: NSLayoutConstraint!
@@ -49,20 +77,37 @@ class GridCollectionViewCell: UICollectionViewCell
         self.clipsToBounds = false
         self.contentView.clipsToBounds = false
         
-        self.imageView.translatesAutoresizingMaskIntoConstraints = false
+        self.vibrancyView.translatesAutoresizingMaskIntoConstraints = false
+        self.vibrancyView.contentView.translatesAutoresizingMaskIntoConstraints = false
+        self.contentView.addSubview(self.vibrancyView)
+        
         self.imageView.contentMode = .scaleAspectFit
         #if os(tvOS)
             self.imageView.adjustsImageWhenAncestorFocused = true
         #endif
         self.contentView.addSubview(self.imageView)
         
-        self.textLabel.translatesAutoresizingMaskIntoConstraints = false
         self.textLabel.font = UIFont.boldSystemFont(ofSize: 12)
         self.textLabel.textAlignment = .center
         self.textLabel.numberOfLines = 0
         self.contentView.addSubview(self.textLabel)
         
-        // Auto Layout
+        /* Auto Layout */
+        
+        // Vibrancy View
+        // Need to add explicit constraints for vibrancyView + vibrancyView.contentView or else Auto Layout won't calculate correct size 🙄
+        self.vibrancyView.topAnchor.constraint(equalTo: self.contentView.topAnchor).isActive = true
+        self.vibrancyView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor).isActive = true
+        self.vibrancyView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor).isActive = true
+        self.vibrancyView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor).isActive = true
+        
+        self.vibrancyView.contentView.topAnchor.constraint(equalTo: self.vibrancyView.topAnchor).isActive = true
+        self.vibrancyView.contentView.bottomAnchor.constraint(equalTo: self.vibrancyView.bottomAnchor).isActive = true
+        self.vibrancyView.contentView.leadingAnchor.constraint(equalTo: self.vibrancyView.leadingAnchor).isActive = true
+        self.vibrancyView.contentView.trailingAnchor.constraint(equalTo: self.vibrancyView.trailingAnchor).isActive = true
+        
+        // Image View
+        self.imageView.translatesAutoresizingMaskIntoConstraints = false
         
         self.imageView.topAnchor.constraint(equalTo: self.contentView.topAnchor).isActive = true
         self.imageView.centerXAnchor.constraint(equalTo: self.contentView.centerXAnchor).isActive = true
@@ -73,6 +118,9 @@ class GridCollectionViewCell: UICollectionViewCell
         self.imageViewHeightConstraint = self.imageView.heightAnchor.constraint(equalToConstant: self.maximumImageSize.height)
         self.imageViewHeightConstraint.isActive = true
         
+        
+        // Text Label
+        self.textLabel.translatesAutoresizingMaskIntoConstraints = false
         
         self.textLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor).isActive = true
         self.textLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor).isActive = true
@@ -96,7 +144,7 @@ class GridCollectionViewCell: UICollectionViewCell
         
         self.updateMaximumImageSize()
     }
-
+    
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator)
     {
         super.didUpdateFocus(in: context, with: coordinator)
@@ -125,7 +173,7 @@ class GridCollectionViewCell: UICollectionViewCell
             
             self.layoutIfNeeded()
             
-        }, completion: nil)
+            }, completion: nil)
     }
 }
 

@@ -84,13 +84,18 @@ extension SaveStatesViewController
     {
         super.viewDidLoad()
         
-        self.backgroundView = RSTBackgroundView(frame: self.view.bounds)
+        let vibrancyView = UIVisualEffectView(effect: UIVibrancyEffect(blurEffect: UIBlurEffect(style: .dark)))
+        vibrancyView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        vibrancyView.frame = CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height)
+        self.view.insertSubview(vibrancyView, at: 0)
+        
+        self.backgroundView = RSTBackgroundView(frame: CGRect(x: 0, y: 0, width: vibrancyView.bounds.width, height: vibrancyView.bounds.height))
         self.backgroundView.isHidden = true
         self.backgroundView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.backgroundView.textLabel.text = NSLocalizedString("No Save States", comment: "")
         self.backgroundView.textLabel.textColor = UIColor.white
         self.backgroundView.detailTextLabel.textColor = UIColor.white
-        self.view.insertSubview(self.backgroundView, at: 0)
+        vibrancyView.contentView.addSubview(self.backgroundView)
         
         let collectionViewLayout = self.collectionViewLayout as! GridCollectionViewLayout
         let averageHorizontalInset = (collectionViewLayout.sectionInset.left + collectionViewLayout.sectionInset.right) / 2
@@ -188,6 +193,9 @@ private extension SaveStatesViewController
         cell.imageView.backgroundColor = UIColor.white
         cell.imageView.image = UIImage(named: "DeltaPlaceholder")
         
+        cell.isTextLabelVibrancyEnabled = true
+        cell.isImageViewVibrancyEnabled = true
+        
         if !ignoreOperations
         {
             let imageOperation = LoadImageOperation(URL: saveState.imageFileURL)
@@ -198,6 +206,8 @@ private extension SaveStatesViewController
                 {
                     cell.imageView.backgroundColor = nil
                     cell.imageView.image = image
+                    
+                    cell.isImageViewVibrancyEnabled = false
                 }
             }
             

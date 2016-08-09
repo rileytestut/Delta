@@ -68,14 +68,6 @@ class PauseViewController: UIViewController, PauseInfoProviding
 
 extension PauseViewController
 {
-    override func viewDidLayoutSubviews()
-    {
-        super.viewDidLayoutSubviews()
-        
-        // Ensure navigation bar is always positioned correctly despite being outside the navigation controller's view
-        self.pauseNavigationController.navigationBar.frame = CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.pauseNavigationController.navigationBar.bounds.height)
-    }
-    
     override func targetViewController(forAction action: Selector, sender: AnyObject?) -> UIViewController?
     {
         return self.pauseNavigationController
@@ -95,9 +87,6 @@ extension PauseViewController
             
             let pauseMenuViewController = self.pauseNavigationController.topViewController as! PauseMenuViewController
             pauseMenuViewController.items = self.pauseItems
-            
-            // Keep navigation bar outside the UIVisualEffectView's
-            self.view.addSubview(self.pauseNavigationController.navigationBar)
             
         case "saveStates":
             let saveStatesViewController = segue.destination as! SaveStatesViewController

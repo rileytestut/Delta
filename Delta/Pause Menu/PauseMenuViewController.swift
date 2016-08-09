@@ -88,6 +88,9 @@ private extension PauseMenuViewController
             cell.imageView.tintColor = UIColor.white
             cell.imageView.backgroundColor = UIColor.clear
         }
+        
+        cell.isImageViewVibrancyEnabled = true
+        cell.isTextLabelVibrancyEnabled = true
     }
     
     func toggleSelectedStateForPauseItemAtIndexPath(_ indexPath: IndexPath)

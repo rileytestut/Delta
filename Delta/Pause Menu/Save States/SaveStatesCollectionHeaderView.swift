@@ -28,6 +28,11 @@ class SaveStatesCollectionHeaderView: UICollectionReusableView
     
     private func initialize()
     {
+        let vibrancyView = UIVisualEffectView(effect: UIVibrancyEffect(blurEffect: UIBlurEffect(style: .dark)))
+        vibrancyView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        vibrancyView.frame = CGRect(x: 0, y: 0, width: self.bounds.width, height: self.bounds.height)
+        self.addSubview(vibrancyView)
+        
         self.textLabel.translatesAutoresizingMaskIntoConstraints = false
         self.textLabel.textColor = UIColor.white
         
@@ -36,7 +41,7 @@ class SaveStatesCollectionHeaderView: UICollectionReusableView
         
         self.textLabel.font = UIFont(descriptor: fontDescriptor, size: 0.0)
         self.textLabel.textAlignment = .center
-        self.addSubview(self.textLabel)
+        vibrancyView.contentView.addSubview(self.textLabel)
         
         // Auto Layout
         NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|-20-[textLabel]-20-|", options: [], metrics: nil, views: ["textLabel": self.textLabel]))
