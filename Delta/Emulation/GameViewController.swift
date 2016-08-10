@@ -453,7 +453,7 @@ extension GameViewController: CheatsViewControllerDelegate
             self.pauseEmulation()
         }
         
-        let backgroundContext = DatabaseManager.sharedManager.backgroundManagedObjectContext()
+        let backgroundContext = DatabaseManager.shared.newBackgroundContext()
         backgroundContext.performAndWait {
             
             let predicate = NSPredicate(format: "%K == %@", Cheat.Attributes.game.rawValue, game)

@@ -53,15 +53,14 @@ class GamePickerController: NSObject
         
         let importAction = UIAlertAction(title: NSLocalizedString("Import", comment: ""), style: .default) { action in
             
-            let documentsDirectoryURL = DatabaseManager.databaseDirectoryURL.deletingLastPathComponent()
+            let documentsDirectoryURL = DatabaseManager.defaultDirectoryURL().deletingLastPathComponent()
             
             do
             {
                 let contents = try FileManager.default.contentsOfDirectory(at: documentsDirectoryURL, includingPropertiesForKeys: nil, options: .skipsHiddenFiles)
                 
-                let managedObjectContext = DatabaseManager.sharedManager.backgroundManagedObjectContext()
-                managedObjectContext.perform() {
-                    let gameURLs = contents.filter({ GameCollection.gameSystemCollectionForPathExtension($0.pathExtension, inManagedObjectContext: managedObjectContext).identifier != GameType.delta.rawValue })
+                DatabaseManager.shared.performBackgroundTask { (context) in
+                    let gameURLs = contents.filter({ GameCollection.gameSystemCollectionForPathExtension($0.pathExtension, inManagedObjectContext: context).identifier != GameType.delta.rawValue })
                     self.importGamesAtURLs(gameURLs)
                 }
                 
@@ -87,12 +86,12 @@ class GamePickerController: NSObject
     
     private func importGamesAtURLs(_ URLs: [URL])
     {
-        DatabaseManager.sharedManager.importGamesAtURLs(URLs) { identifiers in
+        DatabaseManager.shared.importGames(at: URLs) { identifiers in
             
-            DatabaseManager.sharedManager.managedObjectContext.perform() {
+            DatabaseManager.shared.viewContext.perform() {
                 
                 let predicate = NSPredicate(format: "%K IN (%@)", Game.Attributes.identifier.rawValue, identifiers)
-                let games = Game.instancesWithPredicate(predicate, inManagedObjectContext: DatabaseManager.sharedManager.managedObjectContext, type: Game.self)
+                let games = Game.instancesWithPredicate(predicate, inManagedObjectContext: DatabaseManager.shared.viewContext, type: Game.self)
                                 
                 self.delegate?.gamePickerController(self, didImportGames: games)
                 

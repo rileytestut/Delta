@@ -168,7 +168,7 @@ private extension SaveStatesViewController
         fetchRequest.predicate = NSPredicate(format: "%K == %@", SaveState.Attributes.game.rawValue, self.game)
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: SaveState.Attributes.type.rawValue, ascending: true), NSSortDescriptor(key: SaveState.Attributes.creationDate.rawValue, ascending: true)]
         
-        self.fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DatabaseManager.sharedManager.managedObjectContext, sectionNameKeyPath: SaveState.Attributes.type.rawValue, cacheName: nil)
+        self.fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DatabaseManager.shared.viewContext, sectionNameKeyPath: SaveState.Attributes.type.rawValue, cacheName: nil)
         self.fetchedResultsController.delegate = self
     }
     
@@ -275,7 +275,7 @@ private extension SaveStatesViewController
     {
         var saveState: SaveState!
         
-        let backgroundContext = DatabaseManager.sharedManager.backgroundManagedObjectContext()
+        let backgroundContext = DatabaseManager.shared.newBackgroundContext()
         backgroundContext.performAndWait {
             
             let game = backgroundContext.object(with: self.game.objectID) as! Game
@@ -324,13 +324,11 @@ private extension SaveStatesViewController
         let confirmationAlertController = UIAlertController(title: NSLocalizedString("Delete Save State?", comment: ""), message: NSLocalizedString("Are you sure you want to delete this save state? This cannot be undone.", comment: ""), preferredStyle: .alert)
         confirmationAlertController.addAction(UIAlertAction(title: NSLocalizedString("Delete", comment: ""), style: .default, handler: { action in
             
-            let backgroundContext = DatabaseManager.sharedManager.backgroundManagedObjectContext()
-            backgroundContext.perform {
-                let temporarySaveState = backgroundContext.object(with: saveState.objectID)
-                backgroundContext.delete(temporarySaveState)
-                backgroundContext.saveWithErrorLogging()
+            DatabaseManager.shared.performBackgroundTask { (context) in
+                let temporarySaveState = context.object(with: saveState.objectID)
+                context.delete(temporarySaveState)
+                context.saveWithErrorLogging()
             }
-            
             
         }))
         confirmationAlertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
@@ -370,13 +368,11 @@ private extension SaveStatesViewController
             text = nil
         }
         
-        let backgroundContext = DatabaseManager.sharedManager.backgroundManagedObjectContext()
-        backgroundContext.perform {
-            
-            let saveState = backgroundContext.object(with: selectedSaveState.objectID) as! SaveState
+        DatabaseManager.shared.performBackgroundTask { (context) in
+            let saveState = context.object(with: selectedSaveState.objectID) as! SaveState
             saveState.name = text
             
-            backgroundContext.saveWithErrorLogging()
+            context.saveWithErrorLogging()
         }
         
         self.selectedSaveState = nil
@@ -388,14 +384,12 @@ private extension SaveStatesViewController
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Change", comment: ""), style: .default, handler: { (action) in
             
-            let backgroundContext = DatabaseManager.sharedManager.backgroundManagedObjectContext()
-            backgroundContext.perform {
-                
-                let game = backgroundContext.object(with: self.game.objectID) as! Game
+            DatabaseManager.shared.performBackgroundTask { (context) in
+                let game = context.object(with: self.game.objectID) as! Game
                 
                 if let saveState = saveState
                 {
-                    let previewSaveState = backgroundContext.object(with: saveState.objectID) as! SaveState
+                    let previewSaveState = context.object(with: saveState.objectID) as! SaveState
                     game.previewSaveState = previewSaveState
                 }
                 else
@@ -403,9 +397,8 @@ private extension SaveStatesViewController
                     game.previewSaveState = nil
                 }
                 
-                backgroundContext.saveWithErrorLogging()
+                context.saveWithErrorLogging()
             }
-            
         }))
         
         self.present(alertController, animated: true, completion: nil)
@@ -413,7 +406,7 @@ private extension SaveStatesViewController
     
     func lockSaveState(_ saveState: SaveState)
     {
-        let backgroundContext = DatabaseManager.sharedManager.backgroundManagedObjectContext()
+        let backgroundContext = DatabaseManager.shared.newBackgroundContext()
         backgroundContext.performAndWait() {
             let temporarySaveState = backgroundContext.object(with: saveState.objectID) as! SaveState
             temporarySaveState.type = .locked
@@ -423,7 +416,7 @@ private extension SaveStatesViewController
     
     func unlockSaveState(_ saveState: SaveState)
     {
-        let backgroundContext = DatabaseManager.sharedManager.backgroundManagedObjectContext()
+        let backgroundContext = DatabaseManager.shared.newBackgroundContext()
         backgroundContext.performAndWait() {
             let temporarySaveState = backgroundContext.object(with: saveState.objectID) as! SaveState
             temporarySaveState.type = .general
@@ -692,7 +685,7 @@ extension SaveStatesViewController
             {
             case .auto: break
             case .general:
-                let backgroundContext = DatabaseManager.sharedManager.backgroundManagedObjectContext()
+                let backgroundContext = DatabaseManager.shared.newBackgroundContext()
                 backgroundContext.performAndWait() {
                     let temporarySaveState = backgroundContext.object(with: saveState.objectID) as! SaveState
                     self.updateSaveState(temporarySaveState)

@@ -35,7 +35,6 @@
 		BF65E8631CEE5C6A00CD3247 /* Cheat.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF65E8621CEE5C6A00CD3247 /* Cheat.swift */; };
 		BF70798C1B6B464B0019077C /* ZipZap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF70798B1B6B464B0019077C /* ZipZap.framework */; };
 		BF70798D1B6B464B0019077C /* ZipZap.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BF70798B1B6B464B0019077C /* ZipZap.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		BF762E9E1BC19D31002C8866 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF762E9D1BC19D31002C8866 /* DatabaseManager.swift */; };
 		BF762EAB1BC1B076002C8866 /* NSManagedObject+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF762EAA1BC1B076002C8866 /* NSManagedObject+Conveniences.swift */; };
 		BF797A2D1C2D339F00F1A000 /* UILabel+FontSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF797A2C1C2D339F00F1A000 /* UILabel+FontSize.swift */; };
 		BF7AE8081C2E858400B1B5BC /* PauseMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7AE8041C2E858400B1B5BC /* PauseMenuViewController.swift */; };
@@ -51,6 +50,7 @@
 		BFAA1FED1B8AA4FA00495943 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFAA1FEC1B8AA4FA00495943 /* Settings.swift */; };
 		BFAA1FF41B8AD7F900495943 /* ControllersSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFAA1FF31B8AD7F900495943 /* ControllersSettingsViewController.swift */; };
 		BFB141181BE46934004FBF46 /* GameCollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB141171BE46934004FBF46 /* GameCollectionViewDataSource.swift */; };
+		BFBAA86A1D5A483900A29C1B /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFBAA8691D5A483900A29C1B /* DatabaseManager.swift */; };
 		BFC2731A1BE6152200D22B05 /* GameCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC273171BE6152200D22B05 /* GameCollection.swift */; };
 		BFC9B7391CEFCD34008629BB /* CheatsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC9B7381CEFCD34008629BB /* CheatsViewController.swift */; };
 		BFCEA67E1D56FF640061A534 /* UIViewControllerContextTransitioning+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFCEA67D1D56FF640061A534 /* UIViewControllerContextTransitioning+Conveniences.swift */; };
@@ -126,7 +126,6 @@
 		BF65E8621CEE5C6A00CD3247 /* Cheat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cheat.swift; sourceTree = "<group>"; };
 		BF6BB2451BB73FE800CCF94A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BF70798B1B6B464B0019077C /* ZipZap.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ZipZap.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		BF762E9D1BC19D31002C8866 /* DatabaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		BF762EAA1BC1B076002C8866 /* NSManagedObject+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+Conveniences.swift"; sourceTree = "<group>"; };
 		BF797A2C1C2D339F00F1A000 /* UILabel+FontSize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+FontSize.swift"; sourceTree = "<group>"; };
 		BF7AE8041C2E858400B1B5BC /* PauseMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PauseMenuViewController.swift; path = "Pause Menu/PauseMenuViewController.swift"; sourceTree = "<group>"; };
@@ -138,6 +137,7 @@
 		BFAA1FEC1B8AA4FA00495943 /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		BFAA1FF31B8AD7F900495943 /* ControllersSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControllersSettingsViewController.swift; sourceTree = "<group>"; };
 		BFB141171BE46934004FBF46 /* GameCollectionViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GameCollectionViewDataSource.swift; path = "Collection View/GameCollectionViewDataSource.swift"; sourceTree = "<group>"; };
+		BFBAA8691D5A483900A29C1B /* DatabaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		BFC134E01AAD82460087AD7B /* SNESDeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SNESDeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFC273171BE6152200D22B05 /* GameCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameCollection.swift; sourceTree = "<group>"; };
 		BFC9B7381CEFCD34008629BB /* CheatsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CheatsViewController.swift; path = "Pause Menu/Cheats/CheatsViewController.swift"; sourceTree = "<group>"; };
@@ -229,7 +229,7 @@
 		BF4566E41BC0902E007BFA1A /* Database */ = {
 			isa = PBXGroup;
 			children = (
-				BF762E9D1BC19D31002C8866 /* DatabaseManager.swift */,
+				BFBAA8691D5A483900A29C1B /* DatabaseManager.swift */,
 				BF4566E51BC09033007BFA1A /* Model */,
 			);
 			path = Database;
@@ -583,6 +583,7 @@
 				BFAA1FF41B8AD7F900495943 /* ControllersSettingsViewController.swift in Sources */,
 				BF353FF91C5D870B00C1184C /* PauseItem.swift in Sources */,
 				BF27CC971BCC890700A20D89 /* GamesCollectionViewController.swift in Sources */,
+				BFBAA86A1D5A483900A29C1B /* DatabaseManager.swift in Sources */,
 				BFFA71DD1AAC406100EE9DD1 /* AppDelegate.swift in Sources */,
 				BF7AE81E1C2E984300B1B5BC /* GridCollectionViewCell.swift in Sources */,
 				BF34FA111CF1899D006624C7 /* CheatTextView.swift in Sources */,
@@ -600,7 +601,6 @@
 				BF02BD001D361BD1000892F2 /* NSFetchedResultsController+Conveniences.m in Sources */,
 				BFFC464C1D5998D600AF2CC6 /* CheatTableViewCell.swift in Sources */,
 				BF7AE80A1C2E8C7600B1B5BC /* UIColor+Delta.swift in Sources */,
-				BF762E9E1BC19D31002C8866 /* DatabaseManager.swift in Sources */,
 				BF090CF41B490D8300DCAB45 /* UIDevice+Vibration.m in Sources */,
 				BF797A2D1C2D339F00F1A000 /* UILabel+FontSize.swift in Sources */,
 				BFD097211D3A01B8005A44C2 /* SaveStatesViewController.swift in Sources */,

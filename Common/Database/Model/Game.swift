@@ -64,6 +64,39 @@ class Game: NSManagedObject, GameProtocol
 
 extension Game
 {
+    override public func prepareForDeletion()
+    {
+        super.prepareForDeletion()
+        
+        guard FileManager.default.fileExists(atPath: self.fileURL.path) else { return }
+        
+        do
+        {
+            try FileManager.default.removeItem(at: self.fileURL)
+        }
+        catch
+        {
+            print(error)
+        }
+        
+        if let managedObjectContext = self.managedObjectContext
+        {
+            for collection in self.gameCollections where collection.games.count == 1
+            {
+                // Once this game is deleted, collection will have 0 games, so we should delete it
+                managedObjectContext.delete(collection)
+            }
+            
+            if managedObjectContext.hasChanges
+            {
+                managedObjectContext.saveWithErrorLogging()
+            }
+        }
+    }
+}
+
+extension Game
+{
     class func supportedTypeIdentifiers() -> Set<String>
     {
         return [GameType.snes.rawValue, GameType.gba.rawValue]

@@ -45,7 +45,7 @@ class GamesViewController: UIViewController
         let fetchRequest = GameCollection.rst_fetchRequest()
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: GameCollection.Attributes.index.rawValue, ascending: true)]
                 
-        self.fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DatabaseManager.sharedManager.managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
+        self.fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DatabaseManager.shared.viewContext, sectionNameKeyPath: nil, cacheName: nil)
         
         super.init(coder: aDecoder)
         

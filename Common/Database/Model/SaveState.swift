@@ -72,6 +72,25 @@ class SaveState: NSManagedObject, SaveStateProtocol
 
 extension SaveState
 {
+    override public func prepareForDeletion()
+    {
+        super.prepareForDeletion()
+        
+        guard FileManager.default.fileExists(atPath: self.fileURL.path) else { return }
+        
+        do
+        {
+            try FileManager.default.removeItem(at: self.fileURL)
+        }
+        catch
+        {
+            print(error)
+        }
+    }
+}
+
+extension SaveState
+{
     @NSManaged private var primitiveFilename: String
     @NSManaged private var primitiveIdentifier: String
     @NSManaged private var primitiveCreationDate: Date

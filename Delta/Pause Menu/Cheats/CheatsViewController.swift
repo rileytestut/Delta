@@ -97,7 +97,7 @@ private extension CheatsViewController
         fetchRequest.predicate = NSPredicate(format: "%K == %@", Cheat.Attributes.game.rawValue, self.game)
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: Cheat.Attributes.name.rawValue, ascending: true)]
         
-        self.fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DatabaseManager.sharedManager.managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
+        self.fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DatabaseManager.shared.viewContext, sectionNameKeyPath: nil, cacheName: nil)
         self.fetchedResultsController.delegate = self
     }
     
@@ -130,11 +130,10 @@ private extension CheatsViewController
     {
         self.delegate?.cheatsViewController(self, deactivateCheat: cheat)
         
-        let backgroundContext = DatabaseManager.sharedManager.backgroundManagedObjectContext()
-        backgroundContext.perform {
-            let temporaryCheat = backgroundContext.object(with: cheat.objectID)
-            backgroundContext.delete(temporaryCheat)
-            backgroundContext.saveWithErrorLogging()
+        DatabaseManager.shared.performBackgroundTask { (context) in
+            let temporaryCheat = context.object(with: cheat.objectID)
+            context.delete(temporaryCheat)
+            context.saveWithErrorLogging()
         }
     }
 }
@@ -193,7 +192,7 @@ extension CheatsViewController
     {
         let cheat = self.fetchedResultsController.object(at: indexPath) as! Cheat
         
-        let backgroundContext = DatabaseManager.sharedManager.backgroundManagedObjectContext()
+        let backgroundContext = DatabaseManager.shared.newBackgroundContext()
         backgroundContext.performAndWait {
             let temporaryCheat = backgroundContext.object(with: cheat.objectID) as! Cheat
             temporaryCheat.enabled = !temporaryCheat.enabled

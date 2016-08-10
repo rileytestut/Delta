@@ -26,13 +26,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         
         // Database
         
-        let semaphore = DispatchSemaphore(value: 0)
-        
-        DatabaseManager.sharedManager.startWithCompletion { performingMigration in
-            semaphore.signal()
+        DatabaseManager.shared.loadPersistentStores { (description, error) in
         }
-        
-        semaphore.wait()
         
         // Controllers
         ExternalControllerManager.shared.startMonitoringExternalControllers()

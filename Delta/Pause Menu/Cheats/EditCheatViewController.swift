@@ -49,7 +49,7 @@ class EditCheatViewController: UITableViewController
     }
     
     private var mutableCheat: Cheat!
-    private var managedObjectContext = DatabaseManager.sharedManager.backgroundManagedObjectContext()
+    private var managedObjectContext = DatabaseManager.shared.newBackgroundContext()
     
     @IBOutlet private var nameTextField: UITextField!
     @IBOutlet private var typeSegmentedControl: UISegmentedControl!
@@ -76,11 +76,10 @@ class EditCheatViewController: UITableViewController
         let deleteAction = UIPreviewAction(title: NSLocalizedString("Delete", comment: ""), style: .destructive) { [unowned self] (action, viewController) in
             self.delegate?.editCheatViewController(self, deactivateCheat: cheat)
             
-            let backgroundContext = DatabaseManager.sharedManager.backgroundManagedObjectContext()
-            backgroundContext.perform {
-                let temporaryCheat = backgroundContext.object(with: cheat.objectID)
-                backgroundContext.delete(temporaryCheat)
-                backgroundContext.saveWithErrorLogging()
+            DatabaseManager.shared.performBackgroundTask { (context) in
+                let temporaryCheat = context.object(with: cheat.objectID)
+                context.delete(temporaryCheat)
+                context.saveWithErrorLogging()
             }
         }
         
