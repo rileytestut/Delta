@@ -275,12 +275,12 @@ extension GameViewController
                     if self.resumeEmulation()
                     {
                         // Temporarily disable audioManager to prevent delayed audio bug when using 3D Touch Peek & Pop
-                        self.emulatorCore?.audioManager.enabled = false
+                        self.emulatorCore?.audioManager.isEnabled = false
                         
                         // Re-enable after delay
                         
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                            self.emulatorCore?.audioManager.enabled = true
+                            self.emulatorCore?.audioManager.isEnabled = true
                         }
                     }
                 }

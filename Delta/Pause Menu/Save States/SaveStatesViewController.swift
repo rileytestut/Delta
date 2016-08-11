@@ -525,7 +525,7 @@ private extension SaveStatesViewController
         if let emulatorCore = self.emulatorCore
         {
             // Temporarily disable video rendering to prevent flickers
-            emulatorCore.videoManager.enabled = false
+            emulatorCore.videoManager.isEnabled = false
             
             // Load the save state we stored a reference to
             emulatorCore.start()
@@ -548,7 +548,7 @@ private extension SaveStatesViewController
             }
             
             // Re-enable video rendering
-            emulatorCore.videoManager.enabled = true
+            emulatorCore.videoManager.isEnabled = true
         }
     }
 }
