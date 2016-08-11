@@ -18,10 +18,18 @@ class GameViewController: DeltaCore.GameViewController
 {
     /// Assumed to be Delta.Game instance
     override var game: GameProtocol? {
-        willSet {
+        willSet
+        {
             self.emulatorCore?.removeObserver(self, forKeyPath: #keyPath(EmulatorCore.state), context: &kvoContext)
         }
-        didSet {
+        didSet
+        {
+            if self.game?.fileURL != oldValue?.fileURL
+            {
+                // Game changed, so we make sure auto save states are enabled again
+                self.ignoreAutoSaveStateUpdates = false
+            }
+            
             guard let emulatorCore = self.emulatorCore else { return }
             self.preferredContentSize = emulatorCore.preferredRenderingSize
             
@@ -32,9 +40,15 @@ class GameViewController: DeltaCore.GameViewController
     // If non-nil, will override the default preview action items returned in previewActionItems()
     var overridePreviewActionItems: [UIPreviewActionItem]?
     
+    // Set to true to handle automatically updating auto save state
+    var updatesAutoSaveState = false
+    
     //MARK: - Private Properties -
     private var pauseViewController: PauseViewController?
     private var pausingGameController: GameController?
+    
+    // Prevents the "same" save state from being saved multiple times
+    private var ignoreAutoSaveStateUpdates = false
     
     private var context = CIContext(options: [kCIContextWorkingColorSpace: NSNull()])
     
@@ -94,6 +108,7 @@ class GameViewController: DeltaCore.GameViewController
         
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.updateControllers), name: .externalControllerDidConnect, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.updateControllers), name: .externalControllerDidDisconnect, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.didEnterBackground(with:)), name: .UIApplicationDidEnterBackground, object: UIApplication.shared)
     }
     
     deinit
@@ -185,6 +200,8 @@ extension GameViewController
         case "showGamesViewController":
             let gamesViewController = (segue.destination as! UINavigationController).topViewController as! GamesViewController
             gamesViewController.theme = .dark
+            
+            self.updateAutoSaveState()
             
         case "pause":
             guard let gameController = sender as? GameController else {
@@ -290,6 +307,11 @@ extension GameViewController
         {
             self.updateCheats()
         }
+        
+        if self.emulatorCore?.state == .running
+        {
+            self.ignoreAutoSaveStateUpdates = false
+        }
     }
 }
 
@@ -334,25 +356,85 @@ private extension GameViewController
 /// Save States
 extension GameViewController: SaveStatesViewControllerDelegate
 {
-    func saveStatesViewController(_ saveStatesViewController: SaveStatesViewController, updateSaveState saveState: SaveState)
+    private func updateAutoSaveState()
     {
-        var updatingExistingSaveState = true
+        guard !self.ignoreAutoSaveStateUpdates else { return }
+        
+        // If not in view hierarchy, don't update auto save state
+        guard self.updatesAutoSaveState else { return }
+        
+        // Ignore future update auto save state requests until we resume emulation again
+        // This prevents us from filling our auto save state slots with the "same" save state
+        self.ignoreAutoSaveStateUpdates = true
+        
+        // Must be done synchronously
+        let backgroundContext = DatabaseManager.shared.newBackgroundContext()
+        backgroundContext.performAndWait {
+            
+            let game = backgroundContext.object(with: (self.game as! Game).objectID) as! Game
+            
+            let predicate = NSPredicate(format: "%K == %d AND %K == %@", #keyPath(SaveState.type), SaveStateType.auto.rawValue, #keyPath(SaveState.game), game)
+            
+            let fetchRequest = SaveState.fetchRequest()
+            fetchRequest.predicate = predicate
+            fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(SaveState.creationDate), ascending: true)]
+            
+            var saveStates: [SaveState]? = nil
+            
+            do
+            {
+                saveStates = try fetchRequest.execute() as? [SaveState]
+            }
+            catch
+            {
+                print(error)
+            }
+            
+            if let saveStates = saveStates, let saveState = saveStates.first, saveStates.count >= 2
+            {
+                // If there are two or more auto save states, update the oldest one
+                self.update(saveState)
+                
+                // Tiny hack; SaveStatesViewController sorts save states by creation date, so we update the creation date too
+                // Simpler than deleting old save states ¯\_(ツ)_/¯
+                saveState.creationDate = saveState.modifiedDate
+            }
+            else
+            {
+                // Otherwise, create a new one
+                let saveState = SaveState.insertIntoManagedObjectContext(backgroundContext)
+                saveState.type = .auto
+                saveState.game = game
+                
+                self.update(saveState)
+            }
+            
+            backgroundContext.saveWithErrorLogging()
+        }
+    }
+    
+    private func update(_ saveState: SaveState)
+    {
+        let isRunning = (self.emulatorCore?.state == .running)
+        
+        if isRunning
+        {
+            self.pauseEmulation()
+        }
         
         self.emulatorCore?.save { (temporarySaveState) in
             do
             {
                 if FileManager.default.fileExists(atPath: saveState.fileURL.path)
                 {
-                    try FileManager.default.replaceItem(at: saveState.fileURL, withItemAt: temporarySaveState.fileURL, backupItemName: nil, options: [], resultingItemURL: nil)
+                    try FileManager.default.replaceItem(at: saveState.fileURL, withItemAt: temporarySaveState.fileURL, backupItemName: nil, resultingItemURL: nil)
                 }
                 else
                 {
                     try FileManager.default.moveItem(at: temporarySaveState.fileURL, to: saveState.fileURL)
-                    
-                    updatingExistingSaveState = false
                 }
             }
-            catch let error as NSError
+            catch
             {
                 print(error)
             }
@@ -367,13 +449,27 @@ extension GameViewController: SaveStatesViewControllerDelegate
             {
                 try data.write(to: saveState.imageFileURL, options: [.atomicWrite])
             }
-            catch let error as NSError
+            catch
             {
                 print(error)
             }
         }
         
         saveState.modifiedDate = Date()
+        
+        if isRunning
+        {
+            self.resumeEmulation()
+        }
+    }
+    
+    //MARK: - SaveStatesViewControllerDelegate
+    
+    func saveStatesViewController(_ saveStatesViewController: SaveStatesViewController, updateSaveState saveState: SaveState)
+    {
+        let updatingExistingSaveState = FileManager.default.fileExists(atPath: saveState.fileURL.path)
+        
+        self.update(saveState)
         
         // Dismiss if updating an existing save state.
         // If creating a new one, don't dismiss.
@@ -385,9 +481,38 @@ extension GameViewController: SaveStatesViewControllerDelegate
     
     func saveStatesViewController(_ saveStatesViewController: SaveStatesViewController, loadSaveState saveState: SaveStateProtocol)
     {
+        // If we're loading the auto save state, we need to create a temporary copy of saveState.
+        // Then, we update the auto save state, but load our copy so everything works out.
+        var temporarySaveState: SaveStateProtocol? = nil
+        
+        if let autoSaveState = saveState as? SaveState, autoSaveState.type == .auto
+        {
+            let temporaryURL = FileManager.uniqueTemporaryURL()
+            
+            do
+            {
+                try FileManager.default.moveItem(at: saveState.fileURL, to: temporaryURL)
+                temporarySaveState = DeltaCore.SaveState(fileURL: temporaryURL, gameType: saveState.gameType)
+            }
+            catch
+            {
+                print(error)
+            }
+        }
+        
+        self.updateAutoSaveState()
+        
         do
         {
-            try self.emulatorCore?.load(saveState)
+            if let temporarySaveState = temporarySaveState
+            {
+                try self.emulatorCore?.load(temporarySaveState)
+                try FileManager.default.removeItem(at: temporarySaveState.fileURL)
+            }
+            else
+            {
+                try self.emulatorCore?.load(saveState)
+            }
         }
         catch EmulatorCore.SaveStateError.doesNotExist
         {
@@ -614,7 +739,7 @@ extension GameViewController: GameViewControllerDelegate
     
     func gameViewControllerShouldResumeEmulation(_ gameViewController: DeltaCore.GameViewController) -> Bool
     {
-        return (self.presentedViewController == nil || self.presentedViewController?.isDisappearing == true) && !self.selectingSustainedButtons
+        return (self.presentedViewController == nil || self.presentedViewController?.isDisappearing == true) && !self.selectingSustainedButtons && self.view.window != nil
     }
     
     func gameViewControllerDidUpdate(_ gameViewController: DeltaCore.GameViewController)
@@ -623,5 +748,14 @@ extension GameViewController: GameViewControllerDelegate
         {
             semaphore.signal()
         }
+    }
+}
+
+//MARK: - Notifications -
+private extension GameViewController
+{
+    @objc func didEnterBackground(with notification: Notification)
+    {
+        self.updateAutoSaveState()
     }
 }

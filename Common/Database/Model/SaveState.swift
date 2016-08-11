@@ -26,27 +26,25 @@ extension SaveState
         case game
         case previewGame
     }
-    
-    @objc enum `Type`: Int16
-    {
-        case auto
-        case general
-        case locked
-    }
 }
 
-
+@objc enum SaveStateType: Int16
+{
+    case auto
+    case general
+    case locked
+}
 
 @objc(SaveState)
 class SaveState: NSManagedObject, SaveStateProtocol
 {
     @NSManaged var name: String?
+    @NSManaged var creationDate: Date
     @NSManaged var modifiedDate: Date
-    @NSManaged var type: Type
+    @NSManaged var type: SaveStateType
     
     @NSManaged private(set) var filename: String
     @NSManaged private(set) var identifier: String
-    @NSManaged private(set) var creationDate: Date
     
     // Must be optional relationship to satisfy weird Core Data requirement
     // https://forums.developer.apple.com/thread/20535

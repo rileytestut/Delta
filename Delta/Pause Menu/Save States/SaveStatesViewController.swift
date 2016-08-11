@@ -258,9 +258,10 @@ private extension SaveStatesViewController
         
         let saveState = self.fetchedResultsController.object(at: indexPath) as! SaveState
         
+        guard let actions = self.actionsForSaveState(saveState)?.map({ $0.alertAction }) else { return }
+        
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
-        let actions = self.actionsForSaveState(saveState).map { $0.alertAction }
         for action in actions
         {
             alertController.addAction(action)
@@ -435,8 +436,10 @@ private extension SaveStatesViewController
         return section
     }
     
-    func actionsForSaveState(_ saveState: SaveState) -> [Action]
+    func actionsForSaveState(_ saveState: SaveState) -> [Action]?
     {
+        guard saveState.type != .auto else { return nil }
+        
         var actions = [Action]()
         
         if self.traitCollection.forceTouchCapability == .available
@@ -606,7 +609,7 @@ extension SaveStatesViewController: UIViewControllerPreviewingDelegate, UIPrevie
         {
             try self.previewGameViewController.emulatorCore?.load(saveState)
             
-            let actions = self.actionsForSaveState(saveState).lazy.filter{ $0.style != .cancel }.map{ $0.previewAction }
+            let actions = self.actionsForSaveState(saveState)?.lazy.filter{ $0.style != .cancel }.map{ $0.previewAction } ?? []
             self.previewGameViewController.overridePreviewActionItems = Array(actions)
             
             return self.previewGameViewController

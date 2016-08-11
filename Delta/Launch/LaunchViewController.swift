@@ -43,5 +43,6 @@ class LaunchViewController: UIViewController
         guard segue.identifier == "embedGameViewController" else { return }
         
         self.gameViewController = segue.destination as! GameViewController
+        self.gameViewController.updatesAutoSaveState = true
     }
 }
