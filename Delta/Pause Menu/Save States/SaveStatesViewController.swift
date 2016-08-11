@@ -512,9 +512,10 @@ private extension SaveStatesViewController
         
         // Kinda hacky, but isMovingFromParentViewController only returns yes when popping off navigation controller, and not being dismissed modally
         // Because of this, this is only run when the user returns to PauseMenuViewController, and not when they choose a save state to load
-        guard self.isMovingFromParentViewController else { return }
-        
-        self.prepareEmulatorCore()
+        if self.isMovingFromParentViewController
+        {
+            self.prepareEmulatorCore()
+        }
     }
     
     func prepareEmulatorCore()
