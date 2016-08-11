@@ -14,22 +14,31 @@ import Roxas
 
 private var kvoContext = 0
 
+private extension GameViewController
+{
+    struct PausedSaveState: SaveStateProtocol
+    {
+        var fileURL: URL
+        var gameType: GameType
+        
+        var isSaved = false
+        
+        init(fileURL: URL, gameType: GameType)
+        {
+            self.fileURL = fileURL
+            self.gameType = gameType
+        }
+    }
+}
+
 class GameViewController: DeltaCore.GameViewController
 {
     /// Assumed to be Delta.Game instance
     override var game: GameProtocol? {
-        willSet
-        {
+        willSet {
             self.emulatorCore?.removeObserver(self, forKeyPath: #keyPath(EmulatorCore.state), context: &kvoContext)
         }
-        didSet
-        {
-            if self.game?.fileURL != oldValue?.fileURL
-            {
-                // Game changed, so we make sure auto save states are enabled again
-                self.ignoreAutoSaveStateUpdates = false
-            }
-            
+        didSet {
             guard let emulatorCore = self.emulatorCore else { return }
             self.preferredContentSize = emulatorCore.preferredRenderingSize
             
@@ -47,8 +56,23 @@ class GameViewController: DeltaCore.GameViewController
     private var pauseViewController: PauseViewController?
     private var pausingGameController: GameController?
     
-    // Prevents the "same" save state from being saved multiple times
-    private var ignoreAutoSaveStateUpdates = false
+    // Prevents the same save state from being saved multiple times
+    private var pausedSaveState: PausedSaveState? {
+        didSet
+        {
+            if let saveState = oldValue, self.pausedSaveState == nil
+            {
+                do
+                {
+                    try FileManager.default.removeItem(at: saveState.fileURL)
+                }
+                catch
+                {
+                    print(error)
+                }
+            }
+        }
+    }
     
     private var context = CIContext(options: [kCIContextWorkingColorSpace: NSNull()])
     
@@ -211,6 +235,15 @@ extension GameViewController
             self.updateAutoSaveState()
             
         case "pause":
+            
+            if let game = self.game
+            {
+                let fileURL = FileManager.uniqueTemporaryURL()
+                self.pausedSaveState = PausedSaveState(fileURL: fileURL, gameType: game.type)
+                
+                self.emulatorCore?.saveSaveState(to: fileURL)
+            }
+
             guard let gameController = sender as? GameController else {
                 fatalError("sender for pauseSegue must be the game controller that pressed the Menu button")
             }
@@ -257,6 +290,9 @@ extension GameViewController
         switch identifier
         {
         case "unwindFromPauseMenu":
+            
+            self.pausedSaveState = nil
+            
             DispatchQueue.main.async {
                 if
                     let transitionCoordinator = self.transitionCoordinator,
@@ -299,6 +335,7 @@ extension GameViewController
     
     @IBAction private func unwindFromGamesViewController(with segue: UIStoryboardSegue)
     {
+        self.pausedSaveState = nil
         self.emulatorCore?.resume()
     }
     
@@ -313,11 +350,6 @@ extension GameViewController
         if previousState == .stopped
         {
             self.updateCheats()
-        }
-        
-        if self.emulatorCore?.state == .running
-        {
-            self.ignoreAutoSaveStateUpdates = false
         }
     }
 }
@@ -365,14 +397,14 @@ extension GameViewController: SaveStatesViewControllerDelegate
 {
     private func updateAutoSaveState()
     {
-        guard !self.ignoreAutoSaveStateUpdates else { return }
-        
-        // If not in view hierarchy, don't update auto save state
         guard self.updatesAutoSaveState else { return }
         
-        // Ignore future update auto save state requests until we resume emulation again
-        // This prevents us from filling our auto save state slots with the "same" save state
-        self.ignoreAutoSaveStateUpdates = true
+        // If pausedSaveState exists and has already been saved, don't update auto save state
+        // This prevents us from filling our auto save state slots with the same save state
+        let savedPausedSaveState = self.pausedSaveState?.isSaved ?? false
+        guard !savedPausedSaveState else { return }
+        
+        self.pausedSaveState?.isSaved = true
         
         // Must be done synchronously
         let backgroundContext = DatabaseManager.shared.newBackgroundContext()
@@ -400,7 +432,7 @@ extension GameViewController: SaveStatesViewControllerDelegate
             if let saveStates = saveStates, let saveState = saveStates.first, saveStates.count >= 2
             {
                 // If there are two or more auto save states, update the oldest one
-                self.update(saveState)
+                self.update(saveState, with: self.pausedSaveState)
                 
                 // Tiny hack; SaveStatesViewController sorts save states by creation date, so we update the creation date too
                 // Simpler than deleting old save states ¯\_(ツ)_/¯
@@ -413,14 +445,14 @@ extension GameViewController: SaveStatesViewControllerDelegate
                 saveState.type = .auto
                 saveState.game = game
                 
-                self.update(saveState)
+                self.update(saveState, with: self.pausedSaveState)
             }
             
             backgroundContext.saveWithErrorLogging()
         }
     }
     
-    private func update(_ saveState: SaveState)
+    private func update(_ saveState: SaveState, with replacementSaveState: SaveStateProtocol? = nil)
     {
         let isRunning = (self.emulatorCore?.state == .running)
         
@@ -429,7 +461,27 @@ extension GameViewController: SaveStatesViewControllerDelegate
             self.pauseEmulation()
         }
         
-        self.emulatorCore?.saveSaveState(to: saveState.fileURL)
+        if let replacementSaveState = replacementSaveState
+        {
+            do
+            {
+                if FileManager.default.fileExists(atPath: saveState.fileURL.path)
+                {
+                    // Don't use replaceItem(), since that removes the original file as well
+                    try FileManager.default.removeItem(at: saveState.fileURL)
+                }
+                
+                try FileManager.default.copyItem(at: replacementSaveState.fileURL, to: saveState.fileURL)
+            }
+            catch
+            {
+                print(error)
+            }
+        }
+        else
+        {
+            self.emulatorCore?.saveSaveState(to: saveState.fileURL)
+        }
         
         if
             let outputImage = self.gameView.outputImage,
