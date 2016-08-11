@@ -188,6 +188,13 @@ extension GameViewController
         self.updateControllers()
     }
     
+    override func viewDidDisappear(_ animated: Bool)
+    {
+        super.viewDidDisappear(animated)
+        
+        self.emulatorCore?.pause()
+    }
+    
     // MARK: - Segues
     /// KVO
     

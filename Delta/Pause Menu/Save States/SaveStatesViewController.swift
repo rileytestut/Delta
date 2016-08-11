@@ -66,7 +66,6 @@ class SaveStatesViewController: UICollectionViewController
     private let dateFormatter: DateFormatter
     
     private let previewGameViewController = GameViewController()
-    private var previewInteraction: UIPreviewInteraction!
     
     required init?(coder aDecoder: NSCoder)
     {
@@ -126,9 +125,6 @@ extension SaveStatesViewController
         
         // Pre-initialize previewGameViewController with game and start/pause emulation to ensure previewingContext(_:viewControllerForLocation:) callback doesn't take too long + break 3D Touch animation
         self.preparePreviewGameViewController()
-        
-        self.previewInteraction = UIPreviewInteraction(view: self.collectionView!)
-        self.previewInteraction.delegate = self
         
         self.registerForPreviewing(with: self, sourceView: self.collectionView!)
         
@@ -558,7 +554,7 @@ private extension SaveStatesViewController
 }
 
 //MARK: - 3D Touch -
-extension SaveStatesViewController: UIViewControllerPreviewingDelegate, UIPreviewInteractionDelegate
+extension SaveStatesViewController: UIViewControllerPreviewingDelegate
 {
     private func preparePreviewGameViewController()
     {
@@ -634,15 +630,6 @@ extension SaveStatesViewController: UIViewControllerPreviewingDelegate, UIPrevie
         gameViewController.emulatorCore?.save() { saveState in
             self.loadSaveState(saveState)
         }
-    }
-    
-    func previewInteraction(_ previewInteraction: UIPreviewInteraction, didUpdatePreviewTransition transitionProgress: CGFloat, ended: Bool)
-    {
-    }
-    
-    func previewInteractionDidCancel(_ previewInteraction: UIPreviewInteraction)
-    {
-        self.previewGameViewController.emulatorCore?.pause()
     }
 }
 
