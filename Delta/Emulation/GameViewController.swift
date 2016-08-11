@@ -429,23 +429,7 @@ extension GameViewController: SaveStatesViewControllerDelegate
             self.pauseEmulation()
         }
         
-        self.emulatorCore?.save { (temporarySaveState) in
-            do
-            {
-                if FileManager.default.fileExists(atPath: saveState.fileURL.path)
-                {
-                    try FileManager.default.replaceItem(at: saveState.fileURL, withItemAt: temporarySaveState.fileURL, backupItemName: nil, resultingItemURL: nil)
-                }
-                else
-                {
-                    try FileManager.default.moveItem(at: temporarySaveState.fileURL, to: saveState.fileURL)
-                }
-            }
-            catch
-            {
-                print(error)
-            }
-        }
+        self.emulatorCore?.saveSaveState(to: saveState.fileURL)
         
         if
             let outputImage = self.gameView.outputImage,

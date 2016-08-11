@@ -561,20 +561,9 @@ extension SaveStatesViewController: UIViewControllerPreviewingDelegate
         if let emulatorCore = self.emulatorCore
         {
             // Store reference to current game state before we stop emulation so we can resume it if user decides to not load a save state
-            emulatorCore.save() { saveState in
-                
-                let fileURL = FileManager.uniqueTemporaryURL()
-                
-                do
-                {
-                    try FileManager.default.moveItem(at: saveState.fileURL, to: fileURL)
-                    self.emulatorCoreSaveState = DeltaCore.SaveState(fileURL: fileURL, gameType: emulatorCore.game.type)
-                }
-                catch let error as NSError
-                {
-                    print(error)
-                }
-            }
+            
+            let fileURL = FileManager.uniqueTemporaryURL()
+            self.emulatorCoreSaveState = emulatorCore.saveSaveState(to: fileURL)
             
             guard self.emulatorCoreSaveState != nil else { return }
             
@@ -627,8 +616,20 @@ extension SaveStatesViewController: UIViewControllerPreviewingDelegate
         let gameViewController = viewControllerToCommit as! GameViewController
         
         gameViewController.emulatorCore?.pause()
-        gameViewController.emulatorCore?.save() { saveState in
+        
+        let fileURL = FileManager.uniqueTemporaryURL()
+        if let saveState = gameViewController.emulatorCore?.saveSaveState(to: fileURL)
+        {
             self.loadSaveState(saveState)
+            
+            do
+            {
+                try FileManager.default.removeItem(at: fileURL)
+            }
+            catch
+            {
+                print(error)
+            }
         }
     }
 }
