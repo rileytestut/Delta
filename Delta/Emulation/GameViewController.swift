@@ -173,13 +173,6 @@ extension GameViewController
         self.updateControllers()
     }
     
-    override func viewDidLayoutSubviews()
-    {
-        super.viewDidLayoutSubviews()
-        
-        self.controllerView.isHidden = self.isPreviewing
-    }
-    
     // MARK: - Segues
     /// KVO
     
@@ -213,7 +206,7 @@ extension GameViewController
             }
             
             pauseViewController.sustainButtonsItem?.selected = (self.sustainedInputs[ObjectIdentifier(gameController)]?.count ?? 0) > 0
-            pauseViewController.sustainButtonsItem?.action = { [unowned self] item in
+            pauseViewController.sustainButtonsItem?.action = { [unowned self, unowned pauseViewController] item in
                 
                 self.resetSustainedInputs(for: gameController)
                 

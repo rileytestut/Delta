@@ -247,12 +247,14 @@ extension CheatsViewController: UIViewControllerPreviewingDelegate
         let cheat = self.fetchedResultsController.object(at: indexPath) as! Cheat
         
         let editCheatViewController = self.makeEditCheatViewController(cheat: cheat)
+        editCheatViewController.isPreviewing = true
         return editCheatViewController
     }
     
     func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController)
     {
         let editCheatViewController = viewControllerToCommit as! EditCheatViewController
+        editCheatViewController.isPreviewing = false
         editCheatViewController.presentWithPresentingViewController(self)
     }
 }

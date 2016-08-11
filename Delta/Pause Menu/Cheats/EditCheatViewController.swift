@@ -41,6 +41,8 @@ class EditCheatViewController: UITableViewController
     
     weak var delegate: EditCheatViewControllerDelegate?
     
+    var isPreviewing = false
+    
     private var supportedCheatFormats: [CheatFormat]!
     
     private var selectedCheatFormat: CheatFormat {
@@ -69,6 +71,7 @@ class EditCheatViewController: UITableViewController
             // Delaying until next run loop prevents self from being dismissed immediately
             DispatchQueue.main.async {
                 let editCheatViewController = viewController as! EditCheatViewController
+                editCheatViewController.isPreviewing = false
                 editCheatViewController.presentWithPresentingViewController(presentingViewController)
             }
         }

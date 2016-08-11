@@ -10,7 +10,6 @@
 		BF02BD001D361BD1000892F2 /* NSFetchedResultsController+Conveniences.m in Sources */ = {isa = PBXBuildFile; fileRef = BF02BCFF1D361BD1000892F2 /* NSFetchedResultsController+Conveniences.m */; };
 		BF0418141D01E93400E85BCF /* GBADeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF0418131D01E93400E85BCF /* GBADeltaCore.framework */; };
 		BF0418151D01E93400E85BCF /* GBADeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BF0418131D01E93400E85BCF /* GBADeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		BF04A5A31CF8E61C00B4A267 /* UIViewController+PeekPop.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF04A5A21CF8E61C00B4A267 /* UIViewController+PeekPop.swift */; };
 		BF090CF41B490D8300DCAB45 /* UIDevice+Vibration.m in Sources */ = {isa = PBXBuildFile; fileRef = BF090CF31B490D8300DCAB45 /* UIDevice+Vibration.m */; };
 		BF0CDDAD1C8155D200640168 /* LoadImageOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0CDDAC1C8155D200640168 /* LoadImageOperation.swift */; };
 		BF107EC41BF413F000E0C32C /* GamesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF107EC31BF413F000E0C32C /* GamesViewController.swift */; };
@@ -95,7 +94,6 @@
 		BF02BCFE1D361BD1000892F2 /* NSFetchedResultsController+Conveniences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFetchedResultsController+Conveniences.h"; sourceTree = "<group>"; };
 		BF02BCFF1D361BD1000892F2 /* NSFetchedResultsController+Conveniences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFetchedResultsController+Conveniences.m"; sourceTree = "<group>"; };
 		BF0418131D01E93400E85BCF /* GBADeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = GBADeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		BF04A5A21CF8E61C00B4A267 /* UIViewController+PeekPop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+PeekPop.swift"; sourceTree = "<group>"; };
 		BF090CF11B490D8300DCAB45 /* Delta-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Delta-Bridging-Header.h"; sourceTree = "<group>"; };
 		BF090CF21B490D8300DCAB45 /* UIDevice+Vibration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+Vibration.h"; sourceTree = "<group>"; };
 		BF090CF31B490D8300DCAB45 /* UIDevice+Vibration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+Vibration.m"; sourceTree = "<group>"; };
@@ -190,7 +188,6 @@
 				BF090CF31B490D8300DCAB45 /* UIDevice+Vibration.m */,
 				BF797A2C1C2D339F00F1A000 /* UILabel+FontSize.swift */,
 				BF7AE8091C2E8C7600B1B5BC /* UIColor+Delta.swift */,
-				BF04A5A21CF8E61C00B4A267 /* UIViewController+PeekPop.swift */,
 				BFCEA67D1D56FF640061A534 /* UIViewControllerContextTransitioning+Conveniences.swift */,
 			);
 			path = Extensions;
@@ -588,7 +585,6 @@
 				BF7AE81E1C2E984300B1B5BC /* GridCollectionViewCell.swift in Sources */,
 				BF34FA111CF1899D006624C7 /* CheatTextView.swift in Sources */,
 				BFFC46231D5984A000AF2CC6 /* LaunchViewController.swift in Sources */,
-				BF04A5A31CF8E61C00B4A267 /* UIViewController+PeekPop.swift in Sources */,
 				BF4566E81BC090B6007BFA1A /* Model.xcdatamodeld in Sources */,
 				BFDE393C1BC0CEDF003F72E8 /* Game.swift in Sources */,
 				BF34FA071CF0F510006624C7 /* EditCheatViewController.swift in Sources */,

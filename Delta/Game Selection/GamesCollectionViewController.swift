@@ -36,7 +36,9 @@ class GamesCollectionViewController: UICollectionViewController
         super.init(coder: aDecoder)
         
         self.dataSource.fetchedResultsController.delegate = self
-        self.dataSource.cellConfigurationHandler = self.configureCell
+        self.dataSource.cellConfigurationHandler = { [unowned self] (cell, game) in
+            self.configureCell(cell, game: game)
+        }
     }
         
     override func viewDidLoad()
