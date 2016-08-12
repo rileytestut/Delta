@@ -79,6 +79,7 @@ extension SaveState
         do
         {
             try FileManager.default.removeItem(at: self.fileURL)
+            try FileManager.default.removeItem(at: self.imageFileURL)
         }
         catch
         {
