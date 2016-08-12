@@ -12,20 +12,21 @@
 
 @implementation NSFetchedResultsController (Conveniences)
 
-// Needs to be implemented in Objective-C due to current limitation of Swift:
-// Extension of a generic Objective-C class cannot access the class's generic parameters at runtime
-- (void)performFetchIfNeeded
+// Needs to be implemented in Objective-C, because it crashes the Swift compiler :(
+- (BOOL)performFetchIfNeeded
 {
-    if (self.fetchedObjects != nil)
+    if (self.sections != nil)
     {
-        return;
+        return NO;
     }
-    
+
     NSError *error = nil;
     if (![self performFetch:&error])
     {
         ELog(error);
     }
+    
+    return YES;
 }
 
 @end

@@ -10,6 +10,6 @@
 
 @interface NSFetchedResultsController (Conveniences)
 
-- (void)performFetchIfNeeded;
+- (BOOL)performFetchIfNeeded;
 
 @end
