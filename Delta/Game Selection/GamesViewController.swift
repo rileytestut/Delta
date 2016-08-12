@@ -30,6 +30,8 @@ class GamesViewController: UIViewController
         }
     }
     
+    var activeEmulatorCore: EmulatorCore?
+    
     private var pageViewController: UIPageViewController!
     private var backgroundView: RSTBackgroundView!
     private var pageControl: UIPageControl!
@@ -181,6 +183,7 @@ private extension GamesViewController
         let viewController = self.storyboard?.instantiateViewController(withIdentifier: "gameCollectionViewController") as! GameCollectionViewController
         viewController.gameCollection = self.fetchedResultsController.object(at: indexPath) as! GameCollection
         viewController.theme = self.theme
+        viewController.activeEmulatorCore = self.activeEmulatorCore
         
         return viewController
     }

@@ -74,6 +74,8 @@ extension GamesStoryboardSegue: UIViewControllerAnimatedTransitioning
     
     func animatePresentationTransition(using transitionContext: UIViewControllerContextTransitioning)
     {
+        transitionContext.sourceViewController.beginAppearanceTransition(false, animated: true)
+        
         transitionContext.destinationView.frame = transitionContext.destinationViewFinalFrame!
         transitionContext.destinationView.transform = CGAffineTransform(scaleX: 2.0, y: 2.0)
         transitionContext.containerView.addSubview(transitionContext.destinationView)
@@ -137,6 +139,8 @@ extension GamesStoryboardSegue: UIViewControllerAnimatedTransitioning
             
             topPaddingToolbar?.removeFromSuperview()
             bottomPaddingToolbar?.removeFromSuperview()
+            
+            transitionContext.sourceViewController.endAppearanceTransition()
         }
         
         self.animator.startAnimation()
@@ -144,6 +148,8 @@ extension GamesStoryboardSegue: UIViewControllerAnimatedTransitioning
     
     func animateDismissalTransition(using transitionContext: UIViewControllerContextTransitioning)
     {
+        transitionContext.destinationViewController.beginAppearanceTransition(true, animated: true)
+        
         self.animator.addAnimations {
             transitionContext.sourceView.alpha = 0.0
             transitionContext.sourceView.transform = CGAffineTransform(scaleX: 2.0, y: 2.0)
@@ -151,6 +157,7 @@ extension GamesStoryboardSegue: UIViewControllerAnimatedTransitioning
         
         self.animator.addCompletion { (position) in
             transitionContext.completeTransition(position == .end)
+            transitionContext.destinationViewController.endAppearanceTransition()
         }
         
         self.animator.startAnimation()

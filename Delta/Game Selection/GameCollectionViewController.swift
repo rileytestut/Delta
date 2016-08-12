@@ -8,6 +8,8 @@
 
 import UIKit
 
+import DeltaCore
+
 import Roxas
 
 class GameCollectionViewController: UICollectionViewController
@@ -24,6 +26,8 @@ class GameCollectionViewController: UICollectionViewController
             self.collectionView?.reloadData()
         }
     }
+    
+    var activeEmulatorCore: EmulatorCore?
     
     private var dataSource: RSTFetchedResultsCollectionViewDataSource<Game>!
     private let prototypeCell = GridCollectionViewCell()
@@ -128,7 +132,35 @@ extension GameCollectionViewController
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
     {
         let cell = collectionView.cellForItem(at: indexPath)
-        self.performSegue(withIdentifier: "unwindFromGames", sender: cell)
+        let game = self.dataSource.fetchedResultsController.object(at: indexPath)
+        
+        func launchGame(clearScreen: Bool)
+        {
+            if clearScreen
+            {
+                self.activeEmulatorCore?.gameViews.forEach({ $0.inputImage = nil })
+            }
+            
+            self.performSegue(withIdentifier: "unwindFromGames", sender: cell)
+        }
+        
+        if game.fileURL == self.activeEmulatorCore?.game.fileURL
+        {
+            let alertController = UIAlertController(title: NSLocalizedString("Game Paused", comment: ""), message: NSLocalizedString("Would you like to resume where you left off, or restart the game?", comment: ""), preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Resume", comment: ""), style: .default, handler: { (action) in
+                launchGame(clearScreen: false)
+            }))
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Restart", comment: ""), style: .destructive, handler: { (action) in
+                self.activeEmulatorCore?.stop()
+                launchGame(clearScreen: true)
+            }))
+            self.present(alertController, animated: true)
+        }
+        else
+        {
+            launchGame(clearScreen: true)
+        }
     }
 }
 

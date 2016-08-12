@@ -183,13 +183,6 @@ extension GameViewController
         self.updateControllers()
     }
     
-    override func viewDidDisappear(_ animated: Bool)
-    {
-        super.viewDidDisappear(animated)
-        
-        self.emulatorCore?.pause()
-    }
-    
     // MARK: - Segues
     /// KVO
     
@@ -202,6 +195,7 @@ extension GameViewController
         case "showGamesViewController":
             let gamesViewController = (segue.destination as! UINavigationController).topViewController as! GamesViewController
             gamesViewController.theme = .dark
+            gamesViewController.activeEmulatorCore = self.emulatorCore
             
             self.updateAutoSaveState()
             
