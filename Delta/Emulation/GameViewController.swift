@@ -39,18 +39,9 @@ class GameViewController: DeltaCore.GameViewController
             self.emulatorCore?.removeObserver(self, forKeyPath: #keyPath(EmulatorCore.state), context: &kvoContext)
         }
         didSet {
-            guard let emulatorCore = self.emulatorCore else { return }
-            self.preferredContentSize = emulatorCore.preferredRenderingSize
-            
-            emulatorCore.addObserver(self, forKeyPath: #keyPath(EmulatorCore.state), options: [.old], context: &kvoContext)
+            self.emulatorCore?.addObserver(self, forKeyPath: #keyPath(EmulatorCore.state), options: [.old], context: &kvoContext)
         }
     }
-    
-    // If non-nil, will override the default preview action items returned in previewActionItems()
-    var overridePreviewActionItems: [UIPreviewActionItem]?
-    
-    // Set to true to handle automatically updating auto save state
-    var updatesAutoSaveState = false
     
     //MARK: - Private Properties -
     private var pauseViewController: PauseViewController?
@@ -85,26 +76,6 @@ class GameViewController: DeltaCore.GameViewController
     private var sustainButtonsContentView: UIView!
     private var sustainButtonsBlurView: UIVisualEffectView!
     private var sustainButtonsBackgroundView: RSTBackgroundView!
-    
-    override var previewActionItems: [UIPreviewActionItem]
-    {
-        if let previewActionItems = self.overridePreviewActionItems
-        {
-            return previewActionItems
-        }
-        
-        guard let game = self.game as? Game else { return [] }
-        
-        let presentingViewController = self.presentingViewController
-        
-        let launchGameAction = UIPreviewAction(title: NSLocalizedString("Launch \(game.name)", comment: ""), style: .default) { (action, viewController) in
-            // Delaying until next run loop prevents self from being dismissed immediately
-            DispatchQueue.main.async {
-                presentingViewController?.present(viewController, animated: true, completion: nil)
-            }
-        }
-        return [launchGameAction]
-    }
     
     required init()
     {
@@ -349,7 +320,7 @@ extension GameViewController
         
         if previousState == .stopped
         {
-            self.updateCheats()
+            self.emulatorCore?.updateCheats()
         }
     }
 }
@@ -396,9 +367,7 @@ private extension GameViewController
 extension GameViewController: SaveStatesViewControllerDelegate
 {
     private func updateAutoSaveState()
-    {
-        guard self.updatesAutoSaveState else { return }
-        
+    {        
         // If pausedSaveState exists and has already been saved, don't update auto save state
         // This prevents us from filling our auto save state slots with the same save state
         let savedPausedSaveState = self.pausedSaveState?.isSaved ?? false
@@ -566,7 +535,7 @@ extension GameViewController: SaveStatesViewControllerDelegate
             print(error)
         }
         
-        self.updateCheats()
+        self.emulatorCore?.updateCheats()
         
         self.pauseViewController?.dismiss()
     }
@@ -578,66 +547,12 @@ extension GameViewController: CheatsViewControllerDelegate
 {
     func cheatsViewController(_ cheatsViewController: CheatsViewController, activateCheat cheat: Cheat)
     {
-        self.activate(cheat)
+        self.emulatorCore?.activateCheatWithErrorLogging(cheat)
     }
     
     func cheatsViewController(_ cheatsViewController: CheatsViewController, deactivateCheat cheat: Cheat)
     {
         self.emulatorCore?.deactivate(cheat)
-    }
-    
-    private func activate(_ cheat: Cheat)
-    {
-        do
-        {
-            try self.emulatorCore?.activate(cheat)
-        }
-        catch EmulatorCore.CheatError.invalid
-        {
-            print("Invalid cheat:", cheat.name, cheat.code)
-        }
-        catch let error as NSError
-        {
-            print("Unknown Cheat Error:", error, cheat.name, cheat.code)
-        }
-    }
-    
-    private func updateCheats()
-    {
-        guard let game = self.game as? Game else { return }
-        
-        let running = (self.emulatorCore?.state == .running)
-        
-        if running
-        {
-            // Core MUST be paused when activating cheats, or else race conditions could crash the core
-            self.pauseEmulation()
-        }
-        
-        let backgroundContext = DatabaseManager.shared.newBackgroundContext()
-        backgroundContext.performAndWait {
-            
-            let predicate = NSPredicate(format: "%K == %@", Cheat.Attributes.game.rawValue, game)
-            
-            let cheats = Cheat.instancesWithPredicate(predicate, inManagedObjectContext: backgroundContext, type: Cheat.self)
-            for cheat in cheats
-            {
-                if cheat.enabled
-                {
-                    self.activate(cheat)
-                }
-                else
-                {
-                    self.emulatorCore?.deactivate(cheat)
-                }
-            }
-        }
-        
-        if running
-        {
-            self.resumeEmulation()
-        }
-        
     }
 }
 

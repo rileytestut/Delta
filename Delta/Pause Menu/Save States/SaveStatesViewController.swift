@@ -65,8 +65,6 @@ class SaveStatesViewController: UICollectionViewController
     
     private let dateFormatter: DateFormatter
     
-    private let previewGameViewController = GameViewController()
-    
     required init?(coder aDecoder: NSCoder)
     {
         self.dateFormatter = DateFormatter()
@@ -122,9 +120,8 @@ extension SaveStatesViewController
         
         let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(SaveStatesViewController.handleLongPressGesture(_:)))
         self.collectionView?.addGestureRecognizer(longPressGestureRecognizer)
-        
-        // Pre-initialize previewGameViewController with game and start/pause emulation to ensure previewingContext(_:viewControllerForLocation:) callback doesn't take too long + break 3D Touch animation
-        self.preparePreviewGameViewController()
+
+        self.prepareEmulatorCoreSaveState()
         
         self.registerForPreviewing(with: self, sourceView: self.collectionView!)
         
@@ -286,22 +283,12 @@ private extension SaveStatesViewController
     
     func updateSaveState(_ saveState: SaveState)
     {
-        // Stop previewGameViewController.emulatorCore, and switch to self.emulatorCore
+        // Switch back to self.emulatorCore
         self.prepareEmulatorCore()
         
         saveState.managedObjectContext?.performAndWait {
             self.delegate?.saveStatesViewController(self, updateSaveState: saveState)
             saveState.managedObjectContext?.saveWithErrorLogging()
-        }
-        
-        DispatchQueue.main.async {
-            // Only restart self.previewGameViewController.emulatorCore if we're not being dismissed
-            if !self.isDisappearing
-            {
-                self.emulatorCore?.stop()
-                self.previewGameViewController.emulatorCore?.start()
-                self.previewGameViewController.emulatorCore?.pause()
-            }
         }
     }
     
@@ -492,9 +479,14 @@ private extension SaveStatesViewController
     
     func resetEmulatorCoreIfNeeded()
     {
-        guard let saveState = self.emulatorCoreSaveState else { return }
+        // Kinda hacky, but isMovingFromParentViewController only returns yes when popping off navigation controller, and not being dismissed modally
+        // Because of this, this is only run when the user returns to PauseMenuViewController, and not when they choose a save state to load
+        if self.isMovingFromParentViewController
+        {
+            self.prepareEmulatorCore()
+        }
         
-        defer
+        if let saveState = self.emulatorCoreSaveState
         {
             // Remove temporary save state file
             do
@@ -506,76 +498,57 @@ private extension SaveStatesViewController
                 print(error)
             }
         }
-        
-        self.previewGameViewController.emulatorCore?.stop()
-        
-        // Kinda hacky, but isMovingFromParentViewController only returns yes when popping off navigation controller, and not being dismissed modally
-        // Because of this, this is only run when the user returns to PauseMenuViewController, and not when they choose a save state to load
-        if self.isMovingFromParentViewController
-        {
-            self.prepareEmulatorCore()
-        }
     }
     
     func prepareEmulatorCore()
     {
-        self.previewGameViewController.emulatorCore?.stop()
-        
         // We stopped emulation for 3D Touch, so now we must resume emulation and load the save state we made to make it seem like it was never stopped
-        if let emulatorCore = self.emulatorCore
+        guard let emulatorCore = self.emulatorCore else { return }
+        
+        // Temporarily disable video rendering to prevent flickers
+        emulatorCore.videoManager.isEnabled = false
+        
+        // Load the save state we stored a reference to
+        emulatorCore.start()
+        emulatorCore.pause()
+        
+        if let saveState = self.emulatorCoreSaveState
         {
-            // Temporarily disable video rendering to prevent flickers
-            emulatorCore.videoManager.isEnabled = false
-            
-            // Load the save state we stored a reference to
-            emulatorCore.start()
-            emulatorCore.pause()
-            
-            if let saveState = self.emulatorCoreSaveState
+            do
             {
-                do
-                {
-                    try emulatorCore.load(saveState)
-                }
-                catch EmulatorCore.SaveStateError.doesNotExist
-                {
-                    print("Save State does not exist.")
-                }
-                catch let error as NSError
-                {
-                    print(error)
-                }
+                try emulatorCore.load(saveState)
             }
-            
-            // Re-enable video rendering
-            emulatorCore.videoManager.isEnabled = true
+            catch EmulatorCore.SaveStateError.doesNotExist
+            {
+                print("Save State does not exist.")
+            }
+            catch let error as NSError
+            {
+                print(error)
+            }
         }
+        
+        // Re-enable video rendering
+        emulatorCore.videoManager.isEnabled = true
     }
 }
 
 //MARK: - 3D Touch -
 extension SaveStatesViewController: UIViewControllerPreviewingDelegate
 {
-    private func preparePreviewGameViewController()
+    private func prepareEmulatorCoreSaveState()
     {
-        if let emulatorCore = self.emulatorCore
+        guard let emulatorCore = self.emulatorCore else { return }
+        
+        // Store reference to current game state before we stop emulation so we can resume it if user decides to not load a save state
+        
+        let fileURL = FileManager.uniqueTemporaryURL()
+        self.emulatorCoreSaveState = emulatorCore.saveSaveState(to: fileURL)
+        
+        if self.emulatorCoreSaveState != nil
         {
-            // Store reference to current game state before we stop emulation so we can resume it if user decides to not load a save state
-            
-            let fileURL = FileManager.uniqueTemporaryURL()
-            self.emulatorCoreSaveState = emulatorCore.saveSaveState(to: fileURL)
-            
-            guard self.emulatorCoreSaveState != nil else { return }
-            
             emulatorCore.stop()
         }
-        
-        self.previewGameViewController.loadViewIfNeeded()
-        self.previewGameViewController.controllerView.isHidden = true
-        
-        self.previewGameViewController.game = self.game
-        self.previewGameViewController.emulatorCore?.start()
-        self.previewGameViewController.emulatorCore?.pause()
     }
     
     func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController?
@@ -589,37 +562,28 @@ extension SaveStatesViewController: UIViewControllerPreviewingDelegate
         previewingContext.sourceRect = layoutAttributes.frame
         
         let saveState = self.fetchedResultsController.object(at: indexPath) as! SaveState
+        let actions = self.actionsForSaveState(saveState)?.lazy.filter{ $0.style != .cancel }.map{ $0.previewAction } ?? []
+        let previewImage = self.imageCache.object(forKey: saveState.imageFileURL) ?? UIImage(contentsOfFile: saveState.imageFileURL.path)
         
-        do
-        {
-            try self.previewGameViewController.emulatorCore?.load(saveState)
-            
-            let actions = self.actionsForSaveState(saveState)?.lazy.filter{ $0.style != .cancel }.map{ $0.previewAction } ?? []
-            self.previewGameViewController.overridePreviewActionItems = Array(actions)
-            
-            return self.previewGameViewController
-        }
-        catch EmulatorCore.SaveStateError.doesNotExist
-        {
-            print("Save State \(saveState.name) does not exist.")
-        }
-        catch let error as NSError
-        {
-            print(error)
-        }
+        let previewGameViewController = PreviewGameViewController()
+        previewGameViewController.game = self.game
+        previewGameViewController.overridePreviewActionItems = actions
+        previewGameViewController.previewSaveState = saveState
+        previewGameViewController.previewImage = previewImage
         
-        return nil
+        return previewGameViewController
     }
     
     func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController)
     {
-        let gameViewController = viewControllerToCommit as! GameViewController
-        
+        let gameViewController = viewControllerToCommit as! PreviewGameViewController        
         gameViewController.emulatorCore?.pause()
         
         let fileURL = FileManager.uniqueTemporaryURL()
         if let saveState = gameViewController.emulatorCore?.saveSaveState(to: fileURL)
         {
+            gameViewController.emulatorCore?.stop()
+            
             self.loadSaveState(saveState)
             
             do
