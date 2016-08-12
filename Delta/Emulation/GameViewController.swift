@@ -367,7 +367,10 @@ private extension GameViewController
 extension GameViewController: SaveStatesViewControllerDelegate
 {
     private func updateAutoSaveState()
-    {        
+    {
+        // Ensures game is non-nil and also a Game subclass
+        guard let game = self.game as? Game else { return }
+        
         // If pausedSaveState exists and has already been saved, don't update auto save state
         // This prevents us from filling our auto save state slots with the same save state
         let savedPausedSaveState = self.pausedSaveState?.isSaved ?? false
@@ -379,7 +382,7 @@ extension GameViewController: SaveStatesViewControllerDelegate
         let backgroundContext = DatabaseManager.shared.newBackgroundContext()
         backgroundContext.performAndWait {
             
-            let game = backgroundContext.object(with: (self.game as! Game).objectID) as! Game
+            let game = backgroundContext.object(with: game.objectID) as! Game
             
             let predicate = NSPredicate(format: "%K == %d AND %K == %@", #keyPath(SaveState.type), SaveStateType.auto.rawValue, #keyPath(SaveState.game), game)
             
