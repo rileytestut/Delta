@@ -27,10 +27,15 @@ class GameCollectionViewController: UICollectionViewController
         }
     }
     
-    var activeEmulatorCore: EmulatorCore?
+    weak var activeEmulatorCore: EmulatorCore?
+    
+    private var activeSaveState: SaveStateProtocol?
     
     private var dataSource: RSTFetchedResultsCollectionViewDataSource<Game>!
     private let prototypeCell = GridCollectionViewCell()
+    
+    private var _performing3DTouchTransition = false
+    private weak var _destination3DTouchTransitionViewController: UIViewController?
 }
 
 //MARK: - UIViewController -
@@ -46,6 +51,8 @@ extension GameCollectionViewController
         
         let layout = self.collectionViewLayout as! GridCollectionViewLayout
         layout.itemWidth = 90
+        
+        self.registerForPreviewing(with: self, sourceView: self.collectionView!)
     }
     
     override func viewWillAppear(_ animated: Bool)
@@ -53,6 +60,25 @@ extension GameCollectionViewController
         self.dataSource.fetchedResultsController.performFetchIfNeeded()
         
         super.viewWillAppear(animated)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool)
+    {
+        super.viewWillDisappear(animated)
+        
+        if _performing3DTouchTransition
+        {
+            _performing3DTouchTransition = false
+            
+            // Unlike our custom transitions, 3D Touch transition doesn't manually call appearance methods for us
+            // To compensate, we call them ourselves
+            _destination3DTouchTransitionViewController?.beginAppearanceTransition(true, animated: true)
+            
+            self.transitionCoordinator?.animate(alongsideTransition: nil, completion: { (context) in
+                self._destination3DTouchTransitionViewController?.endAppearanceTransition()
+                self._destination3DTouchTransitionViewController = nil
+            })
+        }
     }
 
     override func didReceiveMemoryWarning()
@@ -77,13 +103,42 @@ extension GameCollectionViewController
         let game = self.dataSource.fetchedResultsController.object(at: indexPath!)
         
         destinationViewController.game = game
+        
+        if let saveState = self.activeSaveState
+        {
+            // Must be synchronous or else there will be a flash of black
+            destinationViewController.emulatorCore?.start()
+            destinationViewController.emulatorCore?.pause()
+            
+            do
+            {
+                try destinationViewController.emulatorCore?.load(saveState)
+            }
+            catch EmulatorCore.SaveStateError.doesNotExist
+            {
+                print("Save State does not exist.")
+            }
+            catch
+            {
+                print(error)
+            }
+            
+            destinationViewController.emulatorCore?.resume()
+        }
+        
+        self.activeSaveState = nil
+        
+        if _performing3DTouchTransition
+        {
+            _destination3DTouchTransitionViewController = destinationViewController
+        }
     }
 }
 
-//MARK: - Configure Cells -
-/// Configure Cells
+//MARK: - Private Methods -
 private extension GameCollectionViewController
 {
+    //MARK: - Update
     func updateDataSource()
     {
         let fetchRequest = Game.rst_fetchRequest() as! NSFetchRequest<Game>
@@ -96,12 +151,8 @@ private extension GameCollectionViewController
             self.configure(cell as! GridCollectionViewCell, for: indexPath)
         }
     }
-}
-
-//MARK: - Configure Cells -
-/// Configure Cells
-private extension GameCollectionViewController
-{
+    
+    //MARK: - Configure Cells
     func configure(_ cell: GridCollectionViewCell, for indexPath: IndexPath)
     {
         let game = self.dataSource.fetchedResultsController.object(at: indexPath)
@@ -123,6 +174,73 @@ private extension GameCollectionViewController
             cell.isImageViewVibrancyEnabled = true
         }
     }
+    
+    //MARK: - Emulation
+    func launchGame(withSender sender: AnyObject?, clearScreen: Bool)
+    {
+        if clearScreen
+        {
+            self.activeEmulatorCore?.gameViews.forEach { $0.inputImage = nil }
+        }
+        
+        self.performSegue(withIdentifier: "unwindFromGames", sender: sender)
+    }
+}
+
+//MARK: - UIViewControllerPreviewingDelegate -
+/// UIViewControllerPreviewingDelegate
+extension GameCollectionViewController: UIViewControllerPreviewingDelegate
+{
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController?
+    {
+        guard
+            let collectionView = self.collectionView,
+            let indexPath = collectionView.indexPathForItem(at: location),
+            let layoutAttributes = collectionView.layoutAttributesForItem(at: indexPath)
+        else { return nil }
+        
+        previewingContext.sourceRect = layoutAttributes.frame
+        
+        let game = self.dataSource.fetchedResultsController.object(at: indexPath)
+        
+        let gameViewController = PreviewGameViewController()
+        gameViewController.game = game
+        
+        if let previewSaveState = game.previewSaveState
+        {
+            gameViewController.previewSaveState = previewSaveState
+            gameViewController.previewImage = UIImage(contentsOfFile: previewSaveState.imageFileURL.path)
+        }
+        
+        return gameViewController
+    }
+    
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController)
+    {
+        let gameViewController = viewControllerToCommit as! PreviewGameViewController
+        let game = gameViewController.game as! Game
+        
+        let indexPath = self.dataSource.fetchedResultsController.indexPath(forObject: game)!
+        let cell = self.collectionView?.cellForItem(at: indexPath)
+        
+        let fileURL = FileManager.uniqueTemporaryURL()
+        self.activeSaveState = gameViewController.emulatorCore?.saveSaveState(to: fileURL)
+        
+        gameViewController.emulatorCore?.stop()
+        
+        _performing3DTouchTransition = true
+        
+        self.launchGame(withSender: cell, clearScreen: true)
+        
+        do
+        {
+            try FileManager.default.removeItem(at: fileURL)
+        }
+        catch
+        {
+            print(error)
+        }
+    }
 }
 
 //MARK: - UICollectionViewDelegate -
@@ -134,32 +252,42 @@ extension GameCollectionViewController
         let cell = collectionView.cellForItem(at: indexPath)
         let game = self.dataSource.fetchedResultsController.object(at: indexPath)
         
-        func launchGame(clearScreen: Bool)
-        {
-            if clearScreen
-            {
-                self.activeEmulatorCore?.gameViews.forEach({ $0.inputImage = nil })
-            }
-            
-            self.performSegue(withIdentifier: "unwindFromGames", sender: cell)
-        }
-        
         if game.fileURL == self.activeEmulatorCore?.game.fileURL
         {
             let alertController = UIAlertController(title: NSLocalizedString("Game Paused", comment: ""), message: NSLocalizedString("Would you like to resume where you left off, or restart the game?", comment: ""), preferredStyle: .alert)
             alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
             alertController.addAction(UIAlertAction(title: NSLocalizedString("Resume", comment: ""), style: .default, handler: { (action) in
-                launchGame(clearScreen: false)
+                
+                let fetchRequest = SaveState.rst_fetchRequest() as! NSFetchRequest<SaveState>
+                fetchRequest.predicate = NSPredicate(format: "%K == %@ AND %K == %d", #keyPath(SaveState.game), game, #keyPath(SaveState.type), SaveStateType.auto.rawValue)
+                fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(SaveState.creationDate), ascending: true)]
+                
+                do
+                {
+                    let saveStates = try game.managedObjectContext?.fetch(fetchRequest)
+                    self.activeSaveState = saveStates?.last
+                }
+                catch
+                {
+                    print(error)
+                }
+                
+                // Disable videoManager to prevent flash of black
+                self.activeEmulatorCore?.videoManager.isEnabled = false
+                
+                self.launchGame(withSender: cell, clearScreen: false)
+                
+                // The game hasn't changed, so the activeEmulatorCore is the same as before, so we need to enable videoManager it again
+                self.activeEmulatorCore?.videoManager.isEnabled = true
             }))
             alertController.addAction(UIAlertAction(title: NSLocalizedString("Restart", comment: ""), style: .destructive, handler: { (action) in
-                self.activeEmulatorCore?.stop()
-                launchGame(clearScreen: true)
+                self.launchGame(withSender: cell, clearScreen: true)
             }))
             self.present(alertController, animated: true)
         }
         else
         {
-            launchGame(clearScreen: true)
+            self.launchGame(withSender: cell, clearScreen: true)
         }
     }
 }

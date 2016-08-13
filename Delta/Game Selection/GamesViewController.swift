@@ -30,7 +30,7 @@ class GamesViewController: UIViewController
         }
     }
     
-    var activeEmulatorCore: EmulatorCore?
+    weak var activeEmulatorCore: EmulatorCore?
     
     private var pageViewController: UIPageViewController!
     private var backgroundView: RSTBackgroundView!
@@ -90,6 +90,10 @@ extension GamesViewController
         if self.fetchedResultsController.performFetchIfNeeded()
         {
             self.updateSections()
+        }
+        
+        DispatchQueue.global().async {
+            self.activeEmulatorCore?.stop()
         }
     }
     
