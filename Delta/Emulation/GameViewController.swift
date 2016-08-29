@@ -37,9 +37,15 @@ class GameViewController: DeltaCore.GameViewController
     override var game: GameProtocol? {
         willSet {
             self.emulatorCore?.removeObserver(self, forKeyPath: #keyPath(EmulatorCore.state), context: &kvoContext)
+            
+            let game = self.game as? Game
+            NotificationCenter.default.removeObserver(self, name: .NSManagedObjectContextDidSave, object: game?.managedObjectContext)
         }
         didSet {
             self.emulatorCore?.addObserver(self, forKeyPath: #keyPath(EmulatorCore.state), options: [.old], context: &kvoContext)
+            
+            let game = self.game as? Game
+            NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.managedObjectContextDidChange(with:)), name: .NSManagedObjectContextObjectsDidChange, object: game?.managedObjectContext)
         }
     }
     
@@ -712,5 +718,17 @@ private extension GameViewController
     @objc func didEnterBackground(with notification: Notification)
     {
         self.updateAutoSaveState()
+    }
+    
+    @objc func managedObjectContextDidChange(with notification: Notification)
+    {
+        guard let deletedObjects = notification.userInfo?[NSDeletedObjectsKey] as? Set<NSManagedObject> else { return }
+        guard let game = self.game as? Game else { return }
+        
+        if deletedObjects.contains(game)
+        {
+            self.emulatorCore?.gameViews.forEach { $0.inputImage = nil }
+            self.game = nil
+        }
     }
 }

@@ -251,15 +251,9 @@ private extension SaveStatesViewController
         
         let saveState = self.fetchedResultsController.object(at: indexPath) as! SaveState
         
-        guard let actions = self.actionsForSaveState(saveState)?.map({ $0.alertAction }) else { return }
+        guard let actions = self.actionsForSaveState(saveState) else { return }
         
-        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        
-        for action in actions
-        {
-            alertController.addAction(action)
-        }
-        
+        let alertController = UIAlertController(actions: actions)
         self.present(alertController, animated: true, completion: nil)
     }
     
@@ -559,10 +553,11 @@ extension SaveStatesViewController: UIViewControllerPreviewingDelegate
             self.emulatorCoreSaveState != nil
         else { return nil }
         
+        
         previewingContext.sourceRect = layoutAttributes.frame
         
         let saveState = self.fetchedResultsController.object(at: indexPath) as! SaveState
-        let actions = self.actionsForSaveState(saveState)?.lazy.filter{ $0.style != .cancel }.map{ $0.previewAction } ?? []
+        let actions = self.actionsForSaveState(saveState)?.previewActions ?? []
         let previewImage = self.imageCache.object(forKey: saveState.imageFileURL) ?? UIImage(contentsOfFile: saveState.imageFileURL.path)
         
         let previewGameViewController = PreviewGameViewController()

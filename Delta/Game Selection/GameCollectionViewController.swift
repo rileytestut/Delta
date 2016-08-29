@@ -53,6 +53,9 @@ extension GameCollectionViewController
         layout.itemWidth = 90
         
         self.registerForPreviewing(with: self, sourceView: self.collectionView!)
+        
+        let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(GameCollectionViewController.handleLongPressGesture(_:)))
+        self.collectionView?.addGestureRecognizer(longPressGestureRecognizer)
     }
     
     override func viewWillAppear(_ animated: Bool)
@@ -187,6 +190,52 @@ private extension GameCollectionViewController
     }
 }
 
+//MARK: - Game Actions -
+private extension GameCollectionViewController
+{
+    func actions(for game: Game) -> [Action]
+    {
+        let cancelAction = Action(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, action: nil)
+        
+        let deleteAction = Action(title: NSLocalizedString("Delete", comment: ""), style: .destructive, action: { [unowned self] action in
+            self.delete(game)
+        })
+        
+        return [cancelAction, deleteAction]
+    }
+    
+    func delete(_ game: Game)
+    {
+        let confirmationAlertController = UIAlertController(title: NSLocalizedString("Are you sure you want to delete this game? All associated data, such as saves, save states, and cheat codes, will also be deleted.", comment: ""), message: nil, preferredStyle: .actionSheet)
+        confirmationAlertController.addAction(UIAlertAction(title: NSLocalizedString("Delete Game", comment: ""), style: .destructive, handler: { action in
+            
+            DatabaseManager.shared.performBackgroundTask { (context) in
+                let temporaryGame = context.object(with: game.objectID) as! Game
+                context.delete(temporaryGame)
+                
+                context.saveWithErrorLogging()
+            }
+            
+        }))
+        confirmationAlertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
+        
+        self.present(confirmationAlertController, animated: true, completion: nil)
+    }
+    
+    @objc func handleLongPressGesture(_ gestureRecognizer: UILongPressGestureRecognizer)
+    {
+        guard gestureRecognizer.state == .began else { return }
+        
+        guard let indexPath = self.collectionView?.indexPathForItem(at: gestureRecognizer.location(in: self.collectionView)) else { return }
+        
+        let game = self.dataSource.fetchedResultsController.object(at: indexPath)
+        let actions = self.actions(for: game)
+        
+        let alertController = UIAlertController(actions: actions)
+        self.present(alertController, animated: true, completion: nil)
+    }
+}
+
 //MARK: - UIViewControllerPreviewingDelegate -
 /// UIViewControllerPreviewingDelegate
 extension GameCollectionViewController: UIViewControllerPreviewingDelegate
@@ -211,6 +260,9 @@ extension GameCollectionViewController: UIViewControllerPreviewingDelegate
             gameViewController.previewSaveState = previewSaveState
             gameViewController.previewImage = UIImage(contentsOfFile: previewSaveState.imageFileURL.path)
         }
+        
+        let actions = self.actions(for: game).previewActions
+        gameViewController.overridePreviewActionItems = actions
         
         return gameViewController
     }

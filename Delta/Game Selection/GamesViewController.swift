@@ -89,7 +89,7 @@ extension GamesViewController
         
         if self.fetchedResultsController.performFetchIfNeeded()
         {
-            self.updateSections()
+            self.updateSections(animated: false)
         }
         
         DispatchQueue.global().async {
@@ -189,10 +189,13 @@ private extension GamesViewController
         viewController.theme = self.theme
         viewController.activeEmulatorCore = self.activeEmulatorCore
         
+        // Need to set content inset here AND willTransitionTo callback to ensure its correct for all edge cases
+        viewController.collectionView?.contentInset.top = self.topLayoutGuide.length
+        
         return viewController
     }
     
-    func updateSections()
+    func updateSections(animated: Bool)
     {
         let sections = self.fetchedResultsController.sections?.first?.numberOfObjects ?? 0
         self.pageControl.numberOfPages = sections
@@ -214,7 +217,7 @@ private extension GamesViewController
             
         }
         
-        self.navigationController?.setToolbarHidden(sections < 2, animated: self.view.window != nil)
+        self.navigationController?.setToolbarHidden(sections < 2, animated: animated)
         
         if sections > 0
         {
@@ -223,8 +226,8 @@ private extension GamesViewController
             {
                 if let viewController = self.viewControllerForIndex(0)
                 {
-                    self.pageViewController.view.isHidden = false
-                    self.backgroundView.isHidden = true
+                    self.pageViewController.view.setHidden(false, animated: animated)
+                    self.backgroundView.setHidden(true, animated: animated)
                     
                     self.pageViewController.setViewControllers([viewController], direction: .forward, animated: false, completion: nil)
                     
@@ -240,11 +243,8 @@ private extension GamesViewController
         {
             self.title = NSLocalizedString("Games", comment: "")
             
-            if !self.pageViewController.view.isHidden
-            {
-                self.pageViewController.view.isHidden = true
-                self.backgroundView.isHidden = false
-            }
+            self.pageViewController.view.setHidden(true, animated: animated)
+            self.backgroundView.setHidden(false, animated: animated)
         }
     }
 }
@@ -313,6 +313,6 @@ extension GamesViewController: NSFetchedResultsControllerDelegate
 {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>)
     {
-        self.updateSections()
+        self.updateSections(animated: true)
     }
 }

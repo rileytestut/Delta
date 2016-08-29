@@ -41,6 +41,7 @@ class Game: NSManagedObject, GameProtocol
     
     @NSManaged var gameCollections: Set<GameCollection>
     @NSManaged var previewSaveState: SaveState?
+    @NSManaged var saveStates: Set<SaveState>
     
     var fileURL: URL {
         var fileURL: URL!
@@ -85,6 +86,13 @@ extension Game
             {
                 // Once this game is deleted, collection will have 0 games, so we should delete it
                 managedObjectContext.delete(collection)
+            }
+            
+            // Manually cascade deletion since SaveState.fileURL references Game, and so we need to ensure we delete SaveState's before Game
+            // Otherwise, we crash when accessing SaveState.game since it is nil
+            for saveState in self.saveStates
+            {
+                managedObjectContext.delete(saveState)
             }
             
             if managedObjectContext.hasChanges
