@@ -10,9 +10,9 @@ import UIKit
 
 class InitialGamesStoryboardSegue: UIStoryboardSegue
 {
-    private let animator: UIViewPropertyAnimator
+    fileprivate let animator: UIViewPropertyAnimator
     
-    private var isPresenting: Bool = true
+    fileprivate var isPresenting: Bool = true
     
     override init(identifier: String?, source: UIViewController, destination: UIViewController)
     {

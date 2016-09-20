@@ -10,8 +10,8 @@ import UIKit
 
 class PauseStoryboardSegue: UIStoryboardSegue
 {
-    private let animator: UIViewPropertyAnimator
-    private let presentationController: PausePresentationController
+    fileprivate let animator: UIViewPropertyAnimator
+    fileprivate let presentationController: PausePresentationController
     
     override init(identifier: String?, source: UIViewController, destination: UIViewController)
     {
@@ -65,8 +65,8 @@ extension PauseStoryboardSegue: UIViewControllerAnimatedTransitioning
     
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning)
     {
-        let presentedView = transitionContext.view(forKey: UITransitionContextToViewKey)!
-        let presentedViewController = transitionContext.viewController(forKey: UITransitionContextToViewControllerKey)!
+        let presentedView = transitionContext.view(forKey: .to)!
+        let presentedViewController = transitionContext.viewController(forKey: .to)!
         
         presentedView.frame = transitionContext.finalFrame(for: presentedViewController)
         presentedView.frame.origin.y = transitionContext.containerView.bounds.height

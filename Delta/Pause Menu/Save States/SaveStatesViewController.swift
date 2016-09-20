@@ -49,21 +49,21 @@ class SaveStatesViewController: UICollectionViewController
     
     var mode = Mode.loading
     
-    private var backgroundView: RSTBackgroundView!
+    fileprivate var backgroundView: RSTBackgroundView!
     
-    private var prototypeCell = GridCollectionViewCell()
-    private var prototypeCellWidthConstraint: NSLayoutConstraint!
-    private var prototypeHeader = SaveStatesCollectionHeaderView()
+    fileprivate var prototypeCell = GridCollectionViewCell()
+    fileprivate var prototypeCellWidthConstraint: NSLayoutConstraint!
+    fileprivate var prototypeHeader = SaveStatesCollectionHeaderView()
     
-    private var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>!
+    fileprivate var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>!
     
-    private let imageOperationQueue = RSTOperationQueue()
-    private let imageCache = NSCache<NSURL, UIImage>()
+    fileprivate let imageOperationQueue = RSTOperationQueue()
+    fileprivate let imageCache = NSCache<URL, UIImage>()
     
-    private var emulatorCoreSaveState: SaveStateProtocol?
-    private var selectedSaveState: SaveState?
+    fileprivate var emulatorCoreSaveState: SaveStateProtocol?
+    fileprivate var selectedSaveState: SaveState?
     
-    private let dateFormatter: DateFormatter
+    fileprivate let dateFormatter: DateFormatter
     
     required init?(coder aDecoder: NSCoder)
     {
@@ -219,7 +219,7 @@ private extension SaveStatesViewController
         cell.maximumImageSize = CGSize(width: self.prototypeCellWidthConstraint.constant, height: (self.prototypeCellWidthConstraint.constant / dimensions.width) * dimensions.height)
         
         cell.textLabel.textColor = UIColor.white
-        cell.textLabel.font = UIFont.preferredFont(forTextStyle: UIFontTextStyleSubheadline)
+        cell.textLabel.font = UIFont.preferredFont(forTextStyle: .subheadline)
         
         let name = saveState.name ?? self.dateFormatter.string(from: saveState.modifiedDate)
         cell.textLabel.text = name
@@ -530,7 +530,7 @@ private extension SaveStatesViewController
 //MARK: - 3D Touch -
 extension SaveStatesViewController: UIViewControllerPreviewingDelegate
 {
-    private func prepareEmulatorCoreSaveState()
+    fileprivate func prepareEmulatorCoreSaveState()
     {
         guard let emulatorCore = self.emulatorCore else { return }
         

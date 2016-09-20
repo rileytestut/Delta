@@ -16,7 +16,7 @@ struct PauseItem: Equatable
     
     var selected = false
     
-    init(image: UIImage, text: String, action: ((PauseItem) -> Void))
+    init(image: UIImage, text: String, action: @escaping ((PauseItem) -> Void))
     {
         self.image = image
         self.text = text

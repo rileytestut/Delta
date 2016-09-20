@@ -51,10 +51,10 @@ class GameViewController: DeltaCore.GameViewController
     
     //MARK: - Private Properties -
     private var pauseViewController: PauseViewController?
-    private var pausingGameController: GameController?
+    fileprivate var pausingGameController: GameController?
     
     // Prevents the same save state from being saved multiple times
-    private var pausedSaveState: PausedSaveState? {
+    fileprivate var pausedSaveState: PausedSaveState? {
         didSet
         {
             if let saveState = oldValue, self.pausedSaveState == nil
@@ -77,11 +77,11 @@ class GameViewController: DeltaCore.GameViewController
     private var updateSemaphores = Set<DispatchSemaphore>()
     private var sustainedInputs = [ObjectIdentifier: [Input]]()
     private var reactivateSustainedInputsQueue: OperationQueue
-    private var selectingSustainedButtons = false
+    fileprivate var selectingSustainedButtons = false
     
-    private var sustainButtonsContentView: UIView!
-    private var sustainButtonsBlurView: UIVisualEffectView!
-    private var sustainButtonsBackgroundView: RSTBackgroundView!
+    fileprivate var sustainButtonsContentView: UIView!
+    fileprivate var sustainButtonsBlurView: UIVisualEffectView!
+    fileprivate var sustainButtonsBackgroundView: RSTBackgroundView!
     
     required init()
     {
@@ -366,7 +366,7 @@ private extension GameViewController
 /// Save States
 extension GameViewController: SaveStatesViewControllerDelegate
 {
-    private func updateAutoSaveState()
+    fileprivate func updateAutoSaveState()
     {
         // Ensures game is non-nil and also a Game subclass
         guard let game = self.game as? Game else { return }
@@ -424,7 +424,7 @@ extension GameViewController: SaveStatesViewControllerDelegate
         }
     }
     
-    private func update(_ saveState: SaveState, with replacementSaveState: SaveStateProtocol? = nil)
+    fileprivate func update(_ saveState: SaveState, with replacementSaveState: SaveStateProtocol? = nil)
     {
         let isRunning = (self.emulatorCore?.state == .running)
         

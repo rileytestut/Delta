@@ -30,8 +30,8 @@ class PauseMenuViewController: UICollectionViewController
         get { return self.collectionView?.contentSize ?? CGSize.zero }
     }
     
-    private var prototypeCell = GridCollectionViewCell()
-    private var previousIndexPath: IndexPath? = nil
+    fileprivate var prototypeCell = GridCollectionViewCell()
+    fileprivate var previousIndexPath: IndexPath? = nil
 }
 
 extension PauseMenuViewController

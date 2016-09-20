@@ -29,9 +29,9 @@ class CheatsViewController: UITableViewController
     
     weak var delegate: CheatsViewControllerDelegate?
     
-    private var backgroundView: RSTBackgroundView!
+    fileprivate var backgroundView: RSTBackgroundView!
     
-    private var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>!
+    fileprivate var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>!
 }
 
 extension CheatsViewController

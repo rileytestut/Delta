@@ -28,8 +28,8 @@ class PauseTransitionCoordinator: NSObject, UIViewControllerAnimatedTransitionin
     
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning)
     {
-        let destinationViewController = transitionContext.viewController(forKey: UITransitionContextToViewControllerKey)!
-        let sourceViewController = transitionContext.viewController(forKey: UITransitionContextFromViewControllerKey)!
+        let destinationViewController = transitionContext.viewController(forKey: .to)!
+        let sourceViewController = transitionContext.viewController(forKey: .from)!
         
         destinationViewController.view.frame = transitionContext.finalFrame(for: destinationViewController)
         destinationViewController.view.frame.origin.y = self.presenting ? transitionContext.containerView.bounds.height : -destinationViewController.view.bounds.height

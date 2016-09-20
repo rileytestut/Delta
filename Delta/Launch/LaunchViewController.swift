@@ -10,10 +10,10 @@ import UIKit
 
 class LaunchViewController: UIViewController
 {
-    @IBOutlet private var containerView: UIView!
-    private var gameViewController: GameViewController!
+    @IBOutlet fileprivate var containerView: UIView!
+    fileprivate var gameViewController: GameViewController!
     
-    private var presentedGameViewController: Bool = false
+    fileprivate var presentedGameViewController: Bool = false
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return self.gameViewController?.preferredStatusBarStyle ?? .default

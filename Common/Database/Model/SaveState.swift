@@ -43,8 +43,8 @@ class SaveState: NSManagedObject, SaveStateProtocol
     @NSManaged var modifiedDate: Date
     @NSManaged var type: SaveStateType
     
-    @NSManaged private(set) var filename: String
-    @NSManaged private(set) var identifier: String
+    @NSManaged fileprivate(set) var filename: String
+    @NSManaged fileprivate(set) var identifier: String
     
     // Must be optional relationship to satisfy weird Core Data requirement
     // https://forums.developer.apple.com/thread/20535

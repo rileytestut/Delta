@@ -29,13 +29,13 @@ class GameCollectionViewController: UICollectionViewController
     
     weak var activeEmulatorCore: EmulatorCore?
     
-    private var activeSaveState: SaveStateProtocol?
+    fileprivate var activeSaveState: SaveStateProtocol?
     
-    private var dataSource: RSTFetchedResultsCollectionViewDataSource<Game>!
-    private let prototypeCell = GridCollectionViewCell()
+    fileprivate var dataSource: RSTFetchedResultsCollectionViewDataSource<Game>!
+    fileprivate let prototypeCell = GridCollectionViewCell()
     
-    private var _performing3DTouchTransition = false
-    private weak var _destination3DTouchTransitionViewController: UIViewController?
+    fileprivate var _performing3DTouchTransition = false
+    fileprivate weak var _destination3DTouchTransitionViewController: UIViewController?
 }
 
 //MARK: - UIViewController -

@@ -36,7 +36,7 @@ class SaveStatesCollectionHeaderView: UICollectionReusableView
         self.textLabel.translatesAutoresizingMaskIntoConstraints = false
         self.textLabel.textColor = UIColor.white
         
-        var fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: UIFontTextStyleTitle3)
+        var fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .title3)
         fontDescriptor = fontDescriptor.withSymbolicTraits([.traitBold])!
         
         self.textLabel.font = UIFont(descriptor: fontDescriptor, size: 0.0)

@@ -23,7 +23,7 @@ class CheatTextView: UITextView
         }
     }
     
-    @NSCopying private var attributedFormat: NSAttributedString?
+    @NSCopying fileprivate var attributedFormat: NSAttributedString?
     
     required init?(coder aDecoder: NSCoder)
     {

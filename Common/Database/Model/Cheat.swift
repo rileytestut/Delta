@@ -36,8 +36,8 @@ class Cheat: NSManagedObject, CheatProtocol
     @NSManaged var modifiedDate: Date
     @NSManaged var enabled: Bool
     
-    @NSManaged private(set) var identifier: String
-    @NSManaged private(set) var creationDate: Date
+    @NSManaged fileprivate(set) var identifier: String
+    @NSManaged fileprivate(set) var creationDate: Date
     
     // Must be optional relationship to satisfy weird Core Data requirement
     // https://forums.developer.apple.com/thread/20535

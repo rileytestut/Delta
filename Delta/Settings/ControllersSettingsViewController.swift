@@ -39,9 +39,9 @@ class ControllersSettingsViewController: UITableViewController
         }
     }
     
-    private var connectedControllers = ExternalControllerManager.shared.connectedControllers.sorted(by: { $0.playerIndex ?? NSIntegerMax < $1.playerIndex ?? NSIntegerMax })
+    fileprivate var connectedControllers = ExternalControllerManager.shared.connectedControllers.sorted(by: { $0.playerIndex ?? NSIntegerMax < $1.playerIndex ?? NSIntegerMax })
     
-    private lazy var localDeviceController: LocalDeviceController = {
+    fileprivate lazy var localDeviceController: LocalDeviceController = {
         let device = LocalDeviceController()
         device.playerIndex = Settings.localControllerPlayerIndex
         

@@ -12,11 +12,11 @@ extension UIViewControllerContextTransitioning
 {
     /// UIViewControllers
     var sourceViewController: UIViewController {
-        return self.viewController(forKey: UITransitionContextFromViewControllerKey)!
+        return self.viewController(forKey: .from)!
     }
     
     var destinationViewController: UIViewController {
-        return self.viewController(forKey: UITransitionContextToViewControllerKey)!
+        return self.viewController(forKey: .to)!
     }
     
     /// UIViews

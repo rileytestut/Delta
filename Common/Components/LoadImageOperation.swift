@@ -32,7 +32,7 @@ public class LoadImageOperation: RSTOperation
         }
     }
     
-    private var image: UIImage?
+    fileprivate var image: UIImage?
     
     public init(URL: Foundation.URL)
     {
@@ -44,7 +44,7 @@ public class LoadImageOperation: RSTOperation
 
 public extension LoadImageOperation
 {
-    override func main()
+    override public func main()
     {
         guard !self.isCancelled else { return }
         
@@ -56,7 +56,7 @@ public extension LoadImageOperation
         
         let options: NSDictionary = [kCGImageSourceShouldCache as NSString: true]
         
-        if let imageSource = CGImageSourceCreateWithURL(self.URL, options), let quartzImage = CGImageSourceCreateImageAtIndex(imageSource, 0, options)
+        if let imageSource = CGImageSourceCreateWithURL(self.URL as CFURL, options), let quartzImage = CGImageSourceCreateImageAtIndex(imageSource, 0, options)
         {
             let loadedImage = UIImage(cgImage: quartzImage)
             

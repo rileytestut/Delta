@@ -45,15 +45,15 @@ class GridCollectionViewCell: UICollectionViewCell
         }
     }
     
-    private var vibrancyView = UIVisualEffectView(effect: UIVibrancyEffect(blurEffect: UIBlurEffect(style: .dark)))
+    fileprivate var vibrancyView = UIVisualEffectView(effect: UIVibrancyEffect(blurEffect: UIBlurEffect(style: .dark)))
     
-    private var imageViewWidthConstraint: NSLayoutConstraint!
-    private var imageViewHeightConstraint: NSLayoutConstraint!
+    fileprivate var imageViewWidthConstraint: NSLayoutConstraint!
+    fileprivate var imageViewHeightConstraint: NSLayoutConstraint!
     
-    private var textLabelBottomAnchorConstraint: NSLayoutConstraint!
+    fileprivate var textLabelBottomAnchorConstraint: NSLayoutConstraint!
     
-    private var textLabelVerticalSpacingConstraint: NSLayoutConstraint!
-    private var textLabelFocusedVerticalSpacingConstraint: NSLayoutConstraint?
+    fileprivate var textLabelVerticalSpacingConstraint: NSLayoutConstraint!
+    fileprivate var textLabelFocusedVerticalSpacingConstraint: NSLayoutConstraint?
     
     override init(frame: CGRect)
     {

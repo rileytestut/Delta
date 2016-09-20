@@ -146,7 +146,7 @@ private var GamePickerControllerKey: UInt8 = 0
 
 extension UIViewController
 {
-    private(set) var gamePickerController: GamePickerController?
+    fileprivate(set) var gamePickerController: GamePickerController?
     {
         set
         {

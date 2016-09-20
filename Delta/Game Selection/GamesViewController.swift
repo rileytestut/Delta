@@ -32,11 +32,11 @@ class GamesViewController: UIViewController
     
     weak var activeEmulatorCore: EmulatorCore?
     
-    private var pageViewController: UIPageViewController!
-    private var backgroundView: RSTBackgroundView!
-    private var pageControl: UIPageControl!
+    fileprivate var pageViewController: UIPageViewController!
+    fileprivate var backgroundView: RSTBackgroundView!
+    fileprivate var pageControl: UIPageControl!
     
-    private let fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>
+    fileprivate let fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         fatalError("initWithNibName: not implemented")
@@ -253,7 +253,7 @@ private extension GamesViewController
 /// Importing
 extension GamesViewController: GamePickerControllerDelegate
 {
-    @IBAction private func importFiles()
+    @IBAction fileprivate func importFiles()
     {
         let gamePickerController = GamePickerController()
         gamePickerController.delegate = self

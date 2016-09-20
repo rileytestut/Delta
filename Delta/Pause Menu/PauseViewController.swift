@@ -38,9 +38,9 @@ class PauseViewController: UIViewController, PauseInfoProviding
     /// Save States
     weak var saveStatesViewControllerDelegate: SaveStatesViewControllerDelegate?
     
-    private var saveStatesViewControllerMode = SaveStatesViewController.Mode.loading
+    fileprivate var saveStatesViewControllerMode = SaveStatesViewController.Mode.loading
     
-    private var pauseNavigationController: UINavigationController!
+    fileprivate var pauseNavigationController: UINavigationController!
     
     /// UIViewController
     override var preferredContentSize: CGSize {
