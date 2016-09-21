@@ -110,8 +110,6 @@ class GamePickerController: NSObject
         {
             documentPicker.delegate = self
             self.presentingViewController?.present(documentPicker, animated: true, completion: nil)
-            
-            self.presentingViewController?.gamePickerController = nil
         }
         
         func documentMenuWasCancelled(_ documentMenu: UIDocumentMenuViewController)
