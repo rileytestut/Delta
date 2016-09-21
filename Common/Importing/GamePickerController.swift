@@ -31,9 +31,9 @@ class GamePickerController: NSObject
 {
     var delegate: GamePickerControllerDelegate?
     
-    private weak var presentingViewController: UIViewController?
+    fileprivate weak var presentingViewController: UIViewController?
     
-    private func presentGamePickerControllerFromPresentingViewController(_ presentingViewController: UIViewController, animated: Bool, completion: ((Void) -> Void)?)
+    fileprivate func presentGamePickerControllerFromPresentingViewController(_ presentingViewController: UIViewController, animated: Bool, completion: ((Void) -> Void)?)
     {
         self.presentingViewController = presentingViewController
         
@@ -84,7 +84,7 @@ class GamePickerController: NSObject
         self.presentingViewController?.present(alertController, animated: true, completion: completion)
     }
     
-    private func importGamesAtURLs(_ URLs: [URL])
+    fileprivate func importGamesAtURLs(_ URLs: [URL])
     {
         DatabaseManager.shared.importGames(at: URLs) { identifiers in
             

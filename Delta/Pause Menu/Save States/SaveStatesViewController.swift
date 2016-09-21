@@ -58,7 +58,7 @@ class SaveStatesViewController: UICollectionViewController
     fileprivate var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>!
     
     fileprivate let imageOperationQueue = RSTOperationQueue()
-    fileprivate let imageCache = NSCache<URL, UIImage>()
+    fileprivate let imageCache = NSCache<NSURL, UIImage>()
     
     fileprivate var emulatorCoreSaveState: SaveStateProtocol?
     fileprivate var selectedSaveState: SaveState?
@@ -210,7 +210,7 @@ private extension SaveStatesViewController
                 imageOperation.isImmediate = true
             }
             
-            self.imageOperationQueue.addOperation(imageOperation, forKey: indexPath)
+            self.imageOperationQueue.addOperation(imageOperation, forKey: indexPath as NSCopying)
         }
         
         let deltaCore = Delta.core(for: self.game.type)!
@@ -558,7 +558,7 @@ extension SaveStatesViewController: UIViewControllerPreviewingDelegate
         
         let saveState = self.fetchedResultsController.object(at: indexPath) as! SaveState
         let actions = self.actionsForSaveState(saveState)?.previewActions ?? []
-        let previewImage = self.imageCache.object(forKey: saveState.imageFileURL) ?? UIImage(contentsOfFile: saveState.imageFileURL.path)
+        let previewImage = self.imageCache.object(forKey: saveState.imageFileURL as NSURL) ?? UIImage(contentsOfFile: saveState.imageFileURL.path)
         
         let previewGameViewController = PreviewGameViewController()
         previewGameViewController.game = self.game
@@ -658,7 +658,7 @@ extension SaveStatesViewController
     
     override func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath)
     {
-        let operation = self.imageOperationQueue[indexPath]
+        let operation = self.imageOperationQueue[indexPath as NSCopying]
         operation?.cancel()
     }
 }

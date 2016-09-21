@@ -38,7 +38,7 @@ class LaunchViewController: UIViewController
         }
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: AnyObject?)
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?)
     {
         guard segue.identifier == "embedGameViewController" else { return }
         

@@ -63,7 +63,7 @@ class ControllersSettingsViewController: UITableViewController
     
     //MARK: - Storyboards -
     
-    override func prepare(for segue: UIStoryboardSegue, sender: AnyObject?)
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?)
     {
         guard let indexPath = self.tableView.indexPathForSelectedRow else { return }
         

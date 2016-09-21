@@ -50,7 +50,7 @@ class GameViewController: DeltaCore.GameViewController
     }
     
     //MARK: - Private Properties -
-    private var pauseViewController: PauseViewController?
+    fileprivate var pauseViewController: PauseViewController?
     fileprivate var pausingGameController: GameController?
     
     // Prevents the same save state from being saved multiple times
@@ -71,12 +71,12 @@ class GameViewController: DeltaCore.GameViewController
         }
     }
     
-    private var context = CIContext(options: [kCIContextWorkingColorSpace: NSNull()])
+    fileprivate var context = CIContext(options: [kCIContextWorkingColorSpace: NSNull()])
     
     // Sustain Buttons
-    private var updateSemaphores = Set<DispatchSemaphore>()
-    private var sustainedInputs = [ObjectIdentifier: [Input]]()
-    private var reactivateSustainedInputsQueue: OperationQueue
+    fileprivate var updateSemaphores = Set<DispatchSemaphore>()
+    fileprivate var sustainedInputs = [ObjectIdentifier: [Input]]()
+    fileprivate var reactivateSustainedInputsQueue: OperationQueue
     fileprivate var selectingSustainedButtons = false
     
     fileprivate var sustainButtonsContentView: UIView!
@@ -192,7 +192,7 @@ extension GameViewController
     // MARK: - Segues
     /// KVO
     
-    override func prepare(for segue: UIStoryboardSegue, sender: AnyObject?)
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?)
     {
         guard let identifier = segue.identifier else { return }
         
@@ -312,7 +312,7 @@ extension GameViewController
     
     // MARK: - KVO
     /// KVO
-    override func observeValue(forKeyPath keyPath: String?, of object: AnyObject?, change: [NSKeyValueChangeKey : AnyObject]?, context: UnsafeMutablePointer<Void>?)
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?)
     {
         guard context == &kvoContext else { return super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context) }
         

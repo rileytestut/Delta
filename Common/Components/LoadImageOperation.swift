@@ -28,7 +28,7 @@ public class LoadImageOperation: RSTOperation
     public var imageCache: NSCache<NSURL, UIImage>? {
         didSet {
             // Ensures if an image is cached, it will be returned immediately, to prevent temporary flash of placeholder image
-            self.isImmediate = self.imageCache?.object(forKey: self.URL) != nil
+            self.isImmediate = self.imageCache?.object(forKey: self.URL as NSURL) != nil
         }
     }
     
@@ -48,7 +48,7 @@ public extension LoadImageOperation
     {
         guard !self.isCancelled else { return }
         
-        if let cachedImage = self.imageCache?.object(forKey: self.URL)
+        if let cachedImage = self.imageCache?.object(forKey: self.URL as NSURL)
         {
             self.image = cachedImage
             return
@@ -65,7 +65,7 @@ public extension LoadImageOperation
             loadedImage.draw(at: CGPoint.zero)
             UIGraphicsEndImageContext()
             
-            self.imageCache?.setObject(loadedImage, forKey: self.URL)
+            self.imageCache?.setObject(loadedImage, forKey: self.URL as NSURL)
             
             self.image = loadedImage
         }

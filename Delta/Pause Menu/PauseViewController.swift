@@ -68,12 +68,12 @@ class PauseViewController: UIViewController, PauseInfoProviding
 
 extension PauseViewController
 {
-    override func targetViewController(forAction action: Selector, sender: AnyObject?) -> UIViewController?
+    override func targetViewController(forAction action: Selector, sender: Any?) -> UIViewController?
     {
         return self.pauseNavigationController
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: AnyObject?)
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?)
     {
         guard let identifier = segue.identifier else { return }
         

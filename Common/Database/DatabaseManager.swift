@@ -49,7 +49,7 @@ extension DatabaseManager
                 let filename = identifier + "." + url.pathExtension
                 
                 let game = Game.insertIntoManagedObjectContext(context)
-                game.name = url.deletingPathExtension().lastPathComponent ?? NSLocalizedString("Game", comment: "")
+                game.name = url.deletingPathExtension().lastPathComponent
                 game.identifier = identifier
                 game.filename = filename
                 
