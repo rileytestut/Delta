@@ -12,6 +12,21 @@ class SaveStatesCollectionHeaderView: UICollectionReusableView
 {
     let textLabel = UILabel()
     
+    fileprivate let vibrancyView = UIVisualEffectView(effect: UIVibrancyEffect(blurEffect: UIBlurEffect(style: .dark)))
+    
+    var isTextLabelVibrancyEnabled = true {
+        didSet {
+            if self.isTextLabelVibrancyEnabled
+            {
+                self.vibrancyView.contentView.addSubview(self.textLabel)
+            }
+            else
+            {
+                self.addSubview(self.textLabel)
+            }
+        }
+    }
+    
     override init(frame: CGRect)
     {
         super.init(frame: frame)
@@ -28,10 +43,9 @@ class SaveStatesCollectionHeaderView: UICollectionReusableView
     
     private func initialize()
     {
-        let vibrancyView = UIVisualEffectView(effect: UIVibrancyEffect(blurEffect: UIBlurEffect(style: .dark)))
-        vibrancyView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        vibrancyView.frame = CGRect(x: 0, y: 0, width: self.bounds.width, height: self.bounds.height)
-        self.addSubview(vibrancyView)
+        self.vibrancyView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        self.vibrancyView.frame = CGRect(x: 0, y: 0, width: self.bounds.width, height: self.bounds.height)
+        self.addSubview(self.vibrancyView)
         
         self.textLabel.translatesAutoresizingMaskIntoConstraints = false
         self.textLabel.textColor = UIColor.white
@@ -41,10 +55,12 @@ class SaveStatesCollectionHeaderView: UICollectionReusableView
         
         self.textLabel.font = UIFont(descriptor: fontDescriptor, size: 0.0)
         self.textLabel.textAlignment = .center
-        vibrancyView.contentView.addSubview(self.textLabel)
+        self.vibrancyView.contentView.addSubview(self.textLabel)
         
         // Auto Layout
-        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|-20-[textLabel]-20-|", options: [], metrics: nil, views: ["textLabel": self.textLabel]))
-        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[textLabel]|", options: [], metrics: nil, views: ["textLabel": self.textLabel]))
+        self.textLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20).isActive = true
+        self.textLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20).isActive = true
+        self.textLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 10).isActive = true
+        self.textLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
     }
 }

@@ -21,7 +21,7 @@ class GameCollectionViewController: UICollectionViewController
         }
     }
     
-    var theme: GamesViewController.Theme = .light {
+    var theme: Theme = .light {
         didSet {
             self.collectionView?.reloadData()
         }
@@ -197,11 +197,15 @@ private extension GameCollectionViewController
     {
         let cancelAction = Action(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, action: nil)
         
+        let saveStatesAction = Action(title: NSLocalizedString("Save States", comment: ""), style: .default, action: { [unowned self] action in
+            self.viewSaveStates(for: game)
+        })
+        
         let deleteAction = Action(title: NSLocalizedString("Delete", comment: ""), style: .destructive, action: { [unowned self] action in
             self.delete(game)
         })
         
-        return [cancelAction, deleteAction]
+        return [cancelAction, saveStatesAction, deleteAction]
     }
     
     func delete(_ game: Game)
@@ -220,6 +224,21 @@ private extension GameCollectionViewController
         confirmationAlertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
         
         self.present(confirmationAlertController, animated: true, completion: nil)
+    }
+    
+    func viewSaveStates(for game: Game)
+    {
+        let storyboard = UIStoryboard(name: "PauseMenu", bundle: nil)
+        
+        let saveStatesViewController = storyboard.instantiateViewController(withIdentifier: "saveStatesViewController") as! SaveStatesViewController
+        saveStatesViewController.delegate = self
+        saveStatesViewController.game = game
+        saveStatesViewController.mode = .loading
+        saveStatesViewController.theme = .light
+        saveStatesViewController.showsDoneButton = true
+        
+        let navigationController = UINavigationController(rootViewController: saveStatesViewController)
+        self.present(navigationController, animated: true, completion: nil)
     }
     
     @objc func handleLongPressGesture(_ gestureRecognizer: UILongPressGestureRecognizer)
@@ -291,6 +310,27 @@ extension GameCollectionViewController: UIViewControllerPreviewingDelegate
         catch
         {
             print(error)
+        }
+    }
+}
+
+//MARK: - SaveStatesViewControllerDelegate -
+/// SaveStatesViewControllerDelegate
+extension GameCollectionViewController: SaveStatesViewControllerDelegate
+{
+    func saveStatesViewController(_ saveStatesViewController: SaveStatesViewController, updateSaveState saveState: SaveState)
+    {
+    }
+    
+    func saveStatesViewController(_ saveStatesViewController: SaveStatesViewController, loadSaveState saveState: SaveStateProtocol)
+    {
+        self.activeSaveState = saveState
+        
+        self.dismiss(animated: true) {
+            let indexPath = self.dataSource.fetchedResultsController.indexPath(forObject: saveStatesViewController.game)!
+            let cell = self.collectionView?.cellForItem(at: indexPath)
+            
+            self.launchGame(withSender: cell, clearScreen: false)
         }
     }
 }

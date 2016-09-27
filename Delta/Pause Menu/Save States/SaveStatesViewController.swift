@@ -49,6 +49,18 @@ class SaveStatesViewController: UICollectionViewController
     
     var mode = Mode.loading
     
+    var theme = Theme.dark {
+        didSet {
+            if self.isViewLoaded
+            {
+                self.updateTheme()
+            }
+        }
+    }
+    
+    var showsDoneButton = false
+    
+    fileprivate var vibrancyView: UIVisualEffectView!
     fileprivate var backgroundView: RSTBackgroundView!
     
     fileprivate var prototypeCell = GridCollectionViewCell()
@@ -81,10 +93,10 @@ extension SaveStatesViewController
     {
         super.viewDidLoad()
         
-        let vibrancyView = UIVisualEffectView(effect: UIVibrancyEffect(blurEffect: UIBlurEffect(style: .dark)))
-        vibrancyView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        vibrancyView.frame = CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height)
-        self.view.insertSubview(vibrancyView, at: 0)
+        self.vibrancyView = UIVisualEffectView(effect: nil)
+        self.vibrancyView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        self.vibrancyView.frame = CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height)
+        self.view.insertSubview(self.vibrancyView, at: 0)
         
         self.backgroundView = RSTBackgroundView(frame: CGRect(x: 0, y: 0, width: vibrancyView.bounds.width, height: vibrancyView.bounds.height))
         self.backgroundView.isHidden = true
@@ -92,7 +104,7 @@ extension SaveStatesViewController
         self.backgroundView.textLabel.text = NSLocalizedString("No Save States", comment: "")
         self.backgroundView.textLabel.textColor = UIColor.white
         self.backgroundView.detailTextLabel.textColor = UIColor.white
-        vibrancyView.contentView.addSubview(self.backgroundView)
+        self.vibrancyView.contentView.addSubview(self.backgroundView)
         
         let collectionViewLayout = self.collectionViewLayout as! GridCollectionViewLayout
         let averageHorizontalInset = (collectionViewLayout.sectionInset.left + collectionViewLayout.sectionInset.right) / 2
@@ -114,6 +126,12 @@ extension SaveStatesViewController
             self.navigationItem.rightBarButtonItem = nil
         }
         
+        if self.showsDoneButton
+        {
+            let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(SaveStatesViewController.handleDoneButton))
+            self.navigationItem.rightBarButtonItem = doneButton
+        }
+        
         // Manually update prototype cell properties
         self.prototypeCellWidthConstraint = self.prototypeCell.contentView.widthAnchor.constraint(equalToConstant: collectionViewLayout.itemWidth)
         self.prototypeCellWidthConstraint.isActive = true
@@ -126,6 +144,7 @@ extension SaveStatesViewController
         self.registerForPreviewing(with: self, sourceView: self.collectionView!)
         
         self.updateBackgroundView()
+        self.updateTheme()
     }
     
     override func viewWillAppear(_ animated: Bool)
@@ -177,6 +196,41 @@ private extension SaveStatesViewController
         }
     }
     
+    func updateTheme()
+    {
+        switch self.theme
+        {
+        case .light:
+            self.view.backgroundColor = UIColor.white
+            
+            self.navigationController?.navigationBar.barStyle = .default
+            self.navigationController?.toolbar.barStyle = .default
+            
+            self.vibrancyView.effect = nil
+            
+            self.backgroundView.textLabel.textColor = UIColor.gray
+            self.backgroundView.detailTextLabel.textColor = UIColor.gray
+            
+        case .dark:
+            self.view.backgroundColor = nil
+            
+            self.navigationController?.navigationBar.barStyle = .blackTranslucent
+            self.navigationController?.toolbar.barStyle = .blackTranslucent
+            
+            self.vibrancyView.effect = UIVibrancyEffect(blurEffect: UIBlurEffect(style: .dark))
+            
+            self.backgroundView.textLabel.textColor = UIColor.white
+            self.backgroundView.detailTextLabel.textColor = UIColor.white
+        }
+    }
+    
+    //MARK: - Navigation -
+    
+    @objc func handleDoneButton()
+    {
+        self.presentingViewController?.dismiss(animated: true, completion: nil)
+    }
+    
     //MARK: - Configure Views -
     
     func configureCollectionViewCell(_ cell: GridCollectionViewCell, forIndexPath indexPath: IndexPath, ignoreExpensiveOperations ignoreOperations: Bool = false)
@@ -186,8 +240,20 @@ private extension SaveStatesViewController
         cell.imageView.backgroundColor = UIColor.white
         cell.imageView.image = UIImage(named: "DeltaPlaceholder")
         
-        cell.isTextLabelVibrancyEnabled = true
-        cell.isImageViewVibrancyEnabled = true
+        switch self.theme
+        {
+        case .light:
+            cell.isTextLabelVibrancyEnabled = false
+            cell.isImageViewVibrancyEnabled = false
+            
+            cell.textLabel.textColor = UIColor.gray
+            
+        case .dark:
+            cell.isTextLabelVibrancyEnabled = true
+            cell.isImageViewVibrancyEnabled = true
+            
+            cell.textLabel.textColor = UIColor.white
+        }        
         
         if !ignoreOperations
         {
@@ -218,7 +284,6 @@ private extension SaveStatesViewController
         let dimensions = deltaCore.emulatorConfiguration.videoBufferInfo.outputDimensions
         cell.maximumImageSize = CGSize(width: self.prototypeCellWidthConstraint.constant, height: (self.prototypeCellWidthConstraint.constant / dimensions.width) * dimensions.height)
         
-        cell.textLabel.textColor = UIColor.white
         cell.textLabel.font = UIFont.preferredFont(forTextStyle: .subheadline)
         
         let name = saveState.name ?? self.dateFormatter.string(from: saveState.modifiedDate)
@@ -239,6 +304,17 @@ private extension SaveStatesViewController
         }
         
         headerView.textLabel.text = title
+        
+        switch self.theme
+        {
+        case .light:
+            headerView.textLabel.textColor = UIColor.gray
+            headerView.isTextLabelVibrancyEnabled = false
+            
+        case .dark:
+            headerView.textLabel.textColor = UIColor.white
+            headerView.isTextLabelVibrancyEnabled = true
+        }
     }
     
     //MARK: - Gestures -
@@ -549,10 +625,10 @@ extension SaveStatesViewController: UIViewControllerPreviewingDelegate
     {
         guard
             let indexPath = self.collectionView?.indexPathForItem(at: location),
-            let layoutAttributes = self.collectionViewLayout.layoutAttributesForItem(at: indexPath),
-            self.emulatorCoreSaveState != nil
+            let layoutAttributes = self.collectionViewLayout.layoutAttributesForItem(at: indexPath)
         else { return nil }
         
+        guard self.emulatorCore == nil || (self.emulatorCore != nil && self.emulatorCoreSaveState != nil) else { return nil }
         
         previewingContext.sourceRect = layoutAttributes.frame
         

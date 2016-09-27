@@ -13,15 +13,6 @@ import DeltaCore
 
 import Roxas
 
-extension GamesViewController
-{
-    enum Theme
-    {
-        case light
-        case dark
-    }
-}
-
 class GamesViewController: UIViewController
 {
     var theme: Theme = .light {

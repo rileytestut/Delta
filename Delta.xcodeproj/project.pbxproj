@@ -32,6 +32,7 @@
 		BF5E7F441B9A650B00AE44F8 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5E7F431B9A650B00AE44F8 /* SettingsViewController.swift */; };
 		BF5E7F461B9A652600AE44F8 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF5E7F451B9A652600AE44F8 /* Settings.storyboard */; };
 		BF65E8631CEE5C6A00CD3247 /* Cheat.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF65E8621CEE5C6A00CD3247 /* Cheat.swift */; };
+		BF696B801D9B2B02009639E0 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF696B7F1D9B2B02009639E0 /* Theme.swift */; };
 		BF70798C1B6B464B0019077C /* ZipZap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF70798B1B6B464B0019077C /* ZipZap.framework */; };
 		BF70798D1B6B464B0019077C /* ZipZap.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BF70798B1B6B464B0019077C /* ZipZap.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF762EAB1BC1B076002C8866 /* NSManagedObject+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF762EAA1BC1B076002C8866 /* NSManagedObject+Conveniences.swift */; };
@@ -124,6 +125,7 @@
 		BF5E7F451B9A652600AE44F8 /* Settings.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
 		BF63BDE91D389EEB00FCB040 /* GameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		BF65E8621CEE5C6A00CD3247 /* Cheat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cheat.swift; sourceTree = "<group>"; };
+		BF696B7F1D9B2B02009639E0 /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Theme.swift; path = Theming/Theme.swift; sourceTree = "<group>"; };
 		BF6BB2451BB73FE800CCF94A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BF70798B1B6B464B0019077C /* ZipZap.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ZipZap.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF762EAA1BC1B076002C8866 /* NSManagedObject+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+Conveniences.swift"; sourceTree = "<group>"; };
@@ -255,6 +257,14 @@
 				BFFC461A1D59820F00AF2CC6 /* Segues */,
 			);
 			path = "Game Selection";
+			sourceTree = "<group>";
+		};
+		BF696B7E1D9B2AE6009639E0 /* Theming */ = {
+			isa = PBXGroup;
+			children = (
+				BF696B7F1D9B2B02009639E0 /* Theme.swift */,
+			);
+			name = Theming;
 			sourceTree = "<group>";
 		};
 		BF762EA91BC1B044002C8866 /* Extensions */ = {
@@ -394,6 +404,7 @@
 				BFFB709D1AF99ACA00DE56FE /* Emulation */,
 				BF7AE7FA1C2E851F00B1B5BC /* Pause Menu */,
 				BFAA1FEB1B8AA4E800495943 /* Settings */,
+				BF696B7E1D9B2AE6009639E0 /* Theming */,
 				BF090CEE1B490C1A00DCAB45 /* Extensions */,
 				BFFA71DA1AAC406100EE9DD1 /* Supporting Files */,
 			);
@@ -614,6 +625,7 @@
 				BF5E7F441B9A650B00AE44F8 /* SettingsViewController.swift in Sources */,
 				BF353FF21C5D7FB000C1184C /* PauseViewController.swift in Sources */,
 				BFDB28451BC9DA7B001D0C83 /* GamePickerController.swift in Sources */,
+				BF696B801D9B2B02009639E0 /* Theme.swift in Sources */,
 				BF7AE8081C2E858400B1B5BC /* PauseMenuViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
