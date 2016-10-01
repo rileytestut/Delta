@@ -57,9 +57,7 @@ class SaveStatesViewController: UICollectionViewController
             }
         }
     }
-    
-    var showsDoneButton = false
-    
+        
     fileprivate var vibrancyView: UIVisualEffectView!
     fileprivate var backgroundView: RSTBackgroundView!
     
@@ -124,12 +122,6 @@ extension SaveStatesViewController
             self.title = NSLocalizedString("Load State", comment: "")
             self.backgroundView.detailTextLabel.text = NSLocalizedString("You can create a new save state by pressing the Save State option in the pause menu.", comment: "")
             self.navigationItem.rightBarButtonItem = nil
-        }
-        
-        if self.showsDoneButton
-        {
-            let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(SaveStatesViewController.handleDoneButton))
-            self.navigationItem.rightBarButtonItem = doneButton
         }
         
         // Manually update prototype cell properties
@@ -222,13 +214,6 @@ private extension SaveStatesViewController
             self.backgroundView.textLabel.textColor = UIColor.white
             self.backgroundView.detailTextLabel.textColor = UIColor.white
         }
-    }
-    
-    //MARK: - Navigation -
-    
-    @objc func handleDoneButton()
-    {
-        self.presentingViewController?.dismiss(animated: true, completion: nil)
     }
     
     //MARK: - Configure Views -

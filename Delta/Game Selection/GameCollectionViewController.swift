@@ -97,44 +97,60 @@ extension GameCollectionViewController
 {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?)
     {
-        guard let identifier = segue.identifier, identifier == "unwindFromGames" else { return }
+        guard let identifier = segue.identifier else { return }
         
-        let destinationViewController = segue.destination as! GameViewController
-        let cell = sender as! UICollectionViewCell
-        
-        let indexPath = self.collectionView?.indexPath(for: cell)
-        let game = self.dataSource.fetchedResultsController.object(at: indexPath!)
-        
-        destinationViewController.game = game
-        
-        if let saveState = self.activeSaveState
+        switch identifier
         {
-            // Must be synchronous or else there will be a flash of black
-            destinationViewController.emulatorCore?.start()
-            destinationViewController.emulatorCore?.pause()
+        case "showSaveStates":
+            let game = sender as! Game
             
-            do
+            let saveStatesViewController = (segue.destination as! UINavigationController).topViewController as! SaveStatesViewController
+            saveStatesViewController.delegate = self
+            saveStatesViewController.game = game
+            saveStatesViewController.mode = .loading
+            saveStatesViewController.theme = self.theme
+            
+        case "unwindFromGames":
+            let destinationViewController = segue.destination as! GameViewController
+            let cell = sender as! UICollectionViewCell
+            
+            let indexPath = self.collectionView?.indexPath(for: cell)
+            let game = self.dataSource.fetchedResultsController.object(at: indexPath!)
+            
+            destinationViewController.game = game
+            
+            if let saveState = self.activeSaveState
             {
-                try destinationViewController.emulatorCore?.load(saveState)
-            }
-            catch EmulatorCore.SaveStateError.doesNotExist
-            {
-                print("Save State does not exist.")
-            }
-            catch
-            {
-                print(error)
+                // Must be synchronous or else there will be a flash of black
+                destinationViewController.emulatorCore?.start()
+                destinationViewController.emulatorCore?.pause()
+                
+                do
+                {
+                    try destinationViewController.emulatorCore?.load(saveState)
+                }
+                catch EmulatorCore.SaveStateError.doesNotExist
+                {
+                    print("Save State does not exist.")
+                }
+                catch
+                {
+                    print(error)
+                }
+                
+                destinationViewController.emulatorCore?.resume()
             }
             
-            destinationViewController.emulatorCore?.resume()
+            self.activeSaveState = nil
+            
+            if _performing3DTouchTransition
+            {
+                _destination3DTouchTransitionViewController = destinationViewController
+            }
+            
+        default: break
         }
-        
-        self.activeSaveState = nil
-        
-        if _performing3DTouchTransition
-        {
-            _destination3DTouchTransitionViewController = destinationViewController
-        }
+
     }
 }
 
@@ -228,17 +244,7 @@ private extension GameCollectionViewController
     
     func viewSaveStates(for game: Game)
     {
-        let storyboard = UIStoryboard(name: "PauseMenu", bundle: nil)
-        
-        let saveStatesViewController = storyboard.instantiateViewController(withIdentifier: "saveStatesViewController") as! SaveStatesViewController
-        saveStatesViewController.delegate = self
-        saveStatesViewController.game = game
-        saveStatesViewController.mode = .loading
-        saveStatesViewController.theme = .light
-        saveStatesViewController.showsDoneButton = true
-        
-        let navigationController = UINavigationController(rootViewController: saveStatesViewController)
-        self.present(navigationController, animated: true, completion: nil)
+        self.performSegue(withIdentifier: "showSaveStates", sender: game)
     }
     
     @objc func handleLongPressGesture(_ gestureRecognizer: UILongPressGestureRecognizer)
