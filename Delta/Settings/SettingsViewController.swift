@@ -9,14 +9,19 @@
 import UIKit
 import DeltaCore
 
-private enum SettingsSection: Int
+extension SettingsViewController
 {
-    case controllers
-}
-
-private enum SettingsSegues: String
-{
-    case Controllers = "controllersSegue"
+    fileprivate enum Section: Int
+    {
+        case controllers
+        case controllerSkins
+    }
+    
+    fileprivate enum Segue: String
+    {
+        case controllers = "controllersSegue"
+        case controllerSkins = "controllerSkinsSegue"
+    }
 }
 
 class SettingsViewController: UITableViewController
@@ -51,10 +56,28 @@ class SettingsViewController: UITableViewController
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?)
     {
-        if segue.identifier == SettingsSegues.Controllers.rawValue
+        guard
+            let identifier = segue.identifier,
+            let segueType = Segue(rawValue: identifier),
+            let cell = sender as? UITableViewCell,
+            let indexPath = self.tableView.indexPath(for: cell)
+        else { return }
+        
+        switch segueType
         {
+        case Segue.controllers:
             let controllersSettingsViewController = segue.destination as! ControllersSettingsViewController
-            controllersSettingsViewController.playerIndex = (self.tableView.indexPathForSelectedRow as NSIndexPath?)?.row
+            controllersSettingsViewController.playerIndex = indexPath.row
+            
+        case Segue.controllerSkins:
+            let gameTypeControllerSkinsViewController = segue.destination as! GameTypeControllerSkinsViewController
+            
+            switch indexPath.row
+            {
+            case 0: gameTypeControllerSkinsViewController.gameType = .snes
+            case 1: gameTypeControllerSkinsViewController.gameType = .gba
+            default: break
+            }            
         }
     }
 }
@@ -65,7 +88,7 @@ private extension SettingsViewController
     {
         let indexPath = self.tableView.indexPathForSelectedRow
         
-        self.tableView.reloadSections(IndexSet(integer: SettingsSection.controllers.rawValue), with: .none)
+        self.tableView.reloadSections(IndexSet(integer: Section.controllers.rawValue), with: .none)
         
         self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: UITableViewScrollPosition.none)
     }
@@ -75,12 +98,12 @@ private extension SettingsViewController
 {
     dynamic func externalControllerDidConnect(_ notification: Notification)
     {
-        self.tableView.reloadSections(IndexSet(integer: SettingsSection.controllers.rawValue), with: .none)
+        self.tableView.reloadSections(IndexSet(integer: Section.controllers.rawValue), with: .none)
     }
     
     dynamic func externalControllerDidDisconnect(_ notification: Notification)
     {
-        self.tableView.reloadSections(IndexSet(integer: SettingsSection.controllers.rawValue), with: .none)
+        self.tableView.reloadSections(IndexSet(integer: Section.controllers.rawValue), with: .none)
     }
 }
 
@@ -90,13 +113,13 @@ extension SettingsViewController
     {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
         
-        if (indexPath as NSIndexPath).section == SettingsSection.controllers.rawValue
+        if indexPath.section == Section.controllers.rawValue
         {
-            if (indexPath as NSIndexPath).row == Settings.localControllerPlayerIndex
+            if indexPath.row == Settings.localControllerPlayerIndex
             {
                 cell.detailTextLabel?.text = UIDevice.current.name
             }
-            else if let index = ExternalControllerManager.shared.connectedControllers.index(where: { $0.playerIndex == (indexPath as NSIndexPath).row })
+            else if let index = ExternalControllerManager.shared.connectedControllers.index(where: { $0.playerIndex == indexPath.row })
             {
                 let controller = ExternalControllerManager.shared.connectedControllers[index]
                 cell.detailTextLabel?.text = controller.name
@@ -112,9 +135,13 @@ extension SettingsViewController
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
     {
-        if (indexPath as NSIndexPath).section == SettingsSection.controllers.rawValue
+        let cell = tableView.cellForRow(at: indexPath)
+        let section = Section(rawValue: indexPath.section)!
+        
+        switch section
         {
-            self.performSegue(withIdentifier: SettingsSegues.Controllers.rawValue, sender: self)
+        case Section.controllers: self.performSegue(withIdentifier: Segue.controllers.rawValue, sender: cell)
+        case Section.controllerSkins: self.performSegue(withIdentifier: Segue.controllerSkins.rawValue, sender: cell)
         }
     }
 }

@@ -32,26 +32,16 @@ class GameCollection: NSManagedObject
     
     @NSManaged var games: Set<Game>
     
-    var name: String {
-        
-        switch self.identifier
-        {
-        case GameType.snes.rawValue: return NSLocalizedString("Super Nintendo Entertainment System", comment: "")
-        case GameType.gba.rawValue: return NSLocalizedString("Game Boy Advance", comment: "")
-        case GameType.delta.rawValue: return NSLocalizedString("Unsupported Games", comment: "")
-        default: return NSLocalizedString("Unknown", comment: "")
-        }
+    var name: String
+    {
+        let gameType = GameType(rawValue: self.identifier)
+        return gameType.localizedName
     }
     
-    var shortName: String {
-        
-        switch self.identifier
-        {
-        case GameType.snes.rawValue as String as String: return NSLocalizedString("SNES", comment: "")
-        case GameType.gba.rawValue  as String as String: return NSLocalizedString("GBA", comment: "")
-        case GameType.delta.rawValue as String as String: return NSLocalizedString("Unsupported", comment: "")
-        default: return NSLocalizedString("Unknown", comment: "")
-        }
+    var shortName: String
+    {
+        let gameType = GameType(rawValue: self.identifier)
+        return gameType.localizedShortName
     }
     
     class func gameSystemCollectionForPathExtension(_ pathExtension: String?, inManagedObjectContext managedObjectContext: NSManagedObjectContext) -> GameCollection
