@@ -6,32 +6,15 @@
 //  Copyright © 2015 Riley Testut. All rights reserved.
 //
 
-import Foundation
 import CoreData
 
 import DeltaCore
 import SNESDeltaCore
 import GBADeltaCore
 
-extension GameCollection
-{
-    enum Attributes: String
-    {
-        case identifier
-        case index
-        
-        case games
-    }
-}
-
 @objc(GameCollection)
-class GameCollection: NSManagedObject
+public class GameCollection: _GameCollection 
 {
-    @NSManaged private(set) var identifier: String
-    @NSManaged private(set) var index: Int16
-    
-    @NSManaged var games: Set<Game>
-    
     var name: String
     {
         let gameType = GameType(rawValue: self.identifier)
@@ -66,7 +49,7 @@ class GameCollection: NSManagedObject
             index = Int16(INT16_MAX)
         }
         
-        let predicate = NSPredicate(format: "%K == %@", GameCollection.Attributes.identifier.rawValue, identifier)
+        let predicate = NSPredicate(format: "%K == %@", #keyPath(GameCollection.identifier), identifier)
         
         var gameCollection = GameCollection.instancesWithPredicate(predicate, inManagedObjectContext: managedObjectContext, type: GameCollection.self).first
         if gameCollection == nil

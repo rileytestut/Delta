@@ -169,10 +169,10 @@ private extension SaveStatesViewController
     {
         let fetchRequest = SaveState.rst_fetchRequest()
         fetchRequest.returnsObjectsAsFaults = false
-        fetchRequest.predicate = NSPredicate(format: "%K == %@", SaveState.Attributes.game.rawValue, self.game)
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: SaveState.Attributes.type.rawValue, ascending: true), NSSortDescriptor(key: SaveState.Attributes.creationDate.rawValue, ascending: true)]
+        fetchRequest.predicate = NSPredicate(format: "%K == %@", #keyPath(SaveState.game), self.game)
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(SaveState.type), ascending: true), NSSortDescriptor(key: #keyPath(SaveState.creationDate), ascending: true)]
         
-        self.fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DatabaseManager.shared.viewContext, sectionNameKeyPath: SaveState.Attributes.type.rawValue, cacheName: nil)
+        self.fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DatabaseManager.shared.viewContext, sectionNameKeyPath: #keyPath(SaveState.type), cacheName: nil)
         self.fetchedResultsController.delegate = self
     }
     
@@ -482,7 +482,7 @@ private extension SaveStatesViewController
         
         if self.traitCollection.forceTouchCapability == .available
         {
-            if saveState.game.previewSaveState != saveState
+            if saveState.game?.previewSaveState != saveState
             {
                 let previewAction = Action(title: NSLocalizedString("Set as Preview Save State", comment: ""), style: .default, action: { [unowned self] action in
                     self.updatePreviewSaveState(saveState)

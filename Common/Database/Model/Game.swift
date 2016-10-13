@@ -7,43 +7,13 @@
 //
 
 import Foundation
-import CoreData
 
 import DeltaCore
-import SNESDeltaCore
-import GBADeltaCore
-
-extension Game
-{
-    enum Attributes: String
-    {
-        case artworkURL
-        case filename
-        case identifier
-        case name
-        case type
-        
-        case gameCollections
-        case saveStates
-        case previewSaveState
-        case cheats
-    }
-}
 
 @objc(Game)
-class Game: NSManagedObject, GameProtocol
+public class Game: _Game, GameProtocol
 {
-    @NSManaged var artworkURL: URL?
-    @NSManaged var filename: String
-    @NSManaged var identifier: String
-    @NSManaged var name: String
-    @NSManaged var type: GameType
-    
-    @NSManaged var gameCollections: Set<GameCollection>
-    @NSManaged var previewSaveState: SaveState?
-    @NSManaged var saveStates: Set<SaveState>
-    
-    var fileURL: URL {
+    public var fileURL: URL {
         var fileURL: URL!
         
         self.managedObjectContext?.performAndWait {
@@ -53,7 +23,7 @@ class Game: NSManagedObject, GameProtocol
         return fileURL
     }
     
-    var preferredFileExtension: String {
+    public var preferredFileExtension: String {
         switch self.type
         {
         case GameType.snes: return "smc"

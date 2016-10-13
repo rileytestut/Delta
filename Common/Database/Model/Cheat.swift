@@ -7,51 +7,17 @@
 //
 
 import Foundation
-import CoreData
 
 import DeltaCore
 
-extension Cheat
-{
-    enum Attributes: String
-    {
-        case identifier
-        case name
-        case code
-        case type
-        case enabled
-        case creationDate
-        case modifiedDate
-        
-        case game
-    }
-}
-
 @objc(Cheat)
-class Cheat: NSManagedObject, CheatProtocol
-{
-    @NSManaged var name: String?
-    @NSManaged var code: String
-    @NSManaged var type: CheatType
-    @NSManaged var modifiedDate: Date
-    @NSManaged var enabled: Bool
-    
-    @NSManaged fileprivate(set) var identifier: String
-    @NSManaged fileprivate(set) var creationDate: Date
-    
-    // Must be optional relationship to satisfy weird Core Data requirement
-    // https://forums.developer.apple.com/thread/20535
-    @NSManaged var game: Game!
-}
-
-extension Cheat
-{
+public class Cheat: _Cheat, CheatProtocol
+{    
     @NSManaged private var primitiveIdentifier: String
     @NSManaged private var primitiveCreationDate: Date
     @NSManaged private var primitiveModifiedDate: Date
-    @NSManaged private var primitiveType: NSNumber
     
-    override func awakeFromInsert()
+    public override func awakeFromInsert()
     {
         super.awakeFromInsert()
         

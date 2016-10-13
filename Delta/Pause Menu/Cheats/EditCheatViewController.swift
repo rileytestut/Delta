@@ -116,13 +116,13 @@ extension EditCheatViewController
             else
             {
                 self.mutableCheat = Cheat.insertIntoManagedObjectContext(self.managedObjectContext)
-                self.mutableCheat.game = self.managedObjectContext.object(with: self.game.objectID) as! Game
+                self.mutableCheat.game = self.managedObjectContext.object(with: self.game.objectID) as? Game
                 self.mutableCheat.type = self.supportedCheatFormats.first!.type
                 self.mutableCheat.code = ""
                 self.mutableCheat.name = ""
             }
             
-            self.mutableCheat.enabled = true // After we save a cheat, it should be enabled
+            self.mutableCheat.isEnabled = true // After we save a cheat, it should be enabled
             
             name = self.mutableCheat.name
             type = self.mutableCheat.type

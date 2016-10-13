@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11185.3" systemVersion="15F34" minimumToolsVersion="Xcode 7.0" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="1.0">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11232" systemVersion="16A320" minimumToolsVersion="Xcode 7.0" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="1.0">
     <entity name="Cheat" representedClassName="Cheat" syncable="YES">
         <attribute name="code" attributeType="String" syncable="YES"/>
         <attribute name="creationDate" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="enabled" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="identifier" attributeType="String" syncable="YES"/>
+        <attribute name="isEnabled" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="modifiedDate" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="name" attributeType="String" syncable="YES"/>
-        <attribute name="type" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="type" attributeType="Transformable" syncable="YES">
+            <userInfo>
+                <entry key="attributeValueClassName" value="CheatType"/>
+            </userInfo>
+        </attribute>
         <relationship name="game" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Game" inverseName="cheats" inverseEntity="Game" syncable="YES"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
@@ -18,7 +22,7 @@
     <entity name="Game" representedClassName="Game" syncable="YES">
         <attribute name="artworkURL" optional="YES" attributeType="Transformable" syncable="YES">
             <userInfo>
-                <entry key="attributeValueClassName" value="NSURL"/>
+                <entry key="attributeValueClassName" value="URL"/>
             </userInfo>
         </attribute>
         <attribute name="filename" attributeType="String" syncable="YES">
@@ -28,7 +32,11 @@
         </attribute>
         <attribute name="identifier" attributeType="String" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
-        <attribute name="type" attributeType="String" syncable="YES"/>
+        <attribute name="type" attributeType="Transformable" syncable="YES">
+            <userInfo>
+                <entry key="attributeValueClassName" value="GameType"/>
+            </userInfo>
+        </attribute>
         <relationship name="cheats" toMany="YES" deletionRule="Cascade" destinationEntity="Cheat" inverseName="game" inverseEntity="Cheat" syncable="YES"/>
         <relationship name="gameCollections" toMany="YES" deletionRule="Nullify" destinationEntity="GameCollection" inverseName="games" inverseEntity="GameCollection" syncable="YES"/>
         <relationship name="previewSaveState" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SaveState" inverseName="previewGame" inverseEntity="SaveState" syncable="YES"/>
@@ -59,7 +67,11 @@
         <attribute name="identifier" attributeType="String" syncable="YES"/>
         <attribute name="modifiedDate" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="type" attributeType="Integer 16" defaultValueString="1" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="type" attributeType="Integer 16" defaultValueString="1" usesScalarValueType="NO" syncable="YES">
+            <userInfo>
+                <entry key="attributeValueScalarType" value="SaveStateType"/>
+            </userInfo>
+        </attribute>
         <relationship name="game" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Game" inverseName="saveStates" inverseEntity="Game" syncable="YES"/>
         <relationship name="previewGame" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Game" inverseName="previewSaveState" inverseEntity="Game" syncable="YES"/>
         <uniquenessConstraints>

@@ -94,8 +94,8 @@ private extension CheatsViewController
     {
         let fetchRequest = Cheat.rst_fetchRequest()
         fetchRequest.returnsObjectsAsFaults = false
-        fetchRequest.predicate = NSPredicate(format: "%K == %@", Cheat.Attributes.game.rawValue, self.game)
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: Cheat.Attributes.name.rawValue, ascending: true)]
+        fetchRequest.predicate = NSPredicate(format: "%K == %@", #keyPath(Cheat.game), self.game)
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(Cheat.name), ascending: true)]
         
         self.fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DatabaseManager.shared.viewContext, sectionNameKeyPath: nil, cacheName: nil)
         self.fetchedResultsController.delegate = self
@@ -148,7 +148,7 @@ private extension CheatsViewController
         cell.textLabel?.text = cheat.name
         cell.textLabel?.font = UIFont.boldSystemFont(ofSize: cell.textLabel!.font.pointSize)
         cell.textLabel?.textColor = UIColor.white
-        cell.accessoryType = cheat.enabled ? .checkmark : .none
+        cell.accessoryType = cheat.isEnabled ? .checkmark : .none
     }
     
     func makeEditCheatViewController(cheat: Cheat?) -> EditCheatViewController
@@ -195,9 +195,9 @@ extension CheatsViewController
         let backgroundContext = DatabaseManager.shared.newBackgroundContext()
         backgroundContext.performAndWait {
             let temporaryCheat = backgroundContext.object(with: cheat.objectID) as! Cheat
-            temporaryCheat.enabled = !temporaryCheat.enabled
+            temporaryCheat.isEnabled = !temporaryCheat.isEnabled
             
-            if temporaryCheat.enabled
+            if temporaryCheat.isEnabled
             {
                 self.delegate?.cheatsViewController(self, activateCheat: temporaryCheat)
             }

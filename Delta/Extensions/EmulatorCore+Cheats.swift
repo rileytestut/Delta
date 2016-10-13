@@ -41,12 +41,12 @@ extension EmulatorCore
         let backgroundContext = DatabaseManager.shared.newBackgroundContext()
         backgroundContext.performAndWait {
             
-            let predicate = NSPredicate(format: "%K == %@", Cheat.Attributes.game.rawValue, game)
+            let predicate = NSPredicate(format: "%K == %@", #keyPath(Cheat.game), game)
             
             let cheats = Cheat.instancesWithPredicate(predicate, inManagedObjectContext: backgroundContext, type: Cheat.self)
             for cheat in cheats
             {
-                if cheat.enabled
+                if cheat.isEnabled
                 {
                     self.activateCheatWithErrorLogging(cheat)
                 }

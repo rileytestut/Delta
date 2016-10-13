@@ -90,7 +90,7 @@ class GamePickerController: NSObject
             
             DatabaseManager.shared.viewContext.perform() {
                 
-                let predicate = NSPredicate(format: "%K IN (%@)", Game.Attributes.identifier.rawValue, identifiers)
+                let predicate = NSPredicate(format: "%K IN (%@)", #keyPath(Game.identifier), identifiers)
                 let games = Game.instancesWithPredicate(predicate, inManagedObjectContext: DatabaseManager.shared.viewContext, type: Game.self)
                                 
                 self.delegate?.gamePickerController(self, didImportGames: games)

@@ -386,7 +386,7 @@ extension GameViewController: SaveStatesViewControllerDelegate
             
             let predicate = NSPredicate(format: "%K == %d AND %K == %@", #keyPath(SaveState.type), SaveStateType.auto.rawValue, #keyPath(SaveState.game), game)
             
-            let fetchRequest = SaveState.fetchRequest()
+            let fetchRequest: NSFetchRequest<SaveState> = SaveState.fetchRequest()
             fetchRequest.predicate = predicate
             fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(SaveState.creationDate), ascending: true)]
             
@@ -394,7 +394,7 @@ extension GameViewController: SaveStatesViewControllerDelegate
             
             do
             {
-                saveStates = try fetchRequest.execute() as? [SaveState]
+                saveStates = try fetchRequest.execute()
             }
             catch
             {

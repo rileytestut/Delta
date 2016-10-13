@@ -1,0 +1,177 @@
+// DO NOT EDIT. This file is machine-generated and constantly overwritten.
+// Make changes to <$sanitizedManagedObjectClassName$>.swift instead.
+
+import Foundation
+import CoreData
+
+import DeltaCore
+
+<$if noninheritedFetchedProperties.@count > 0$>
+public enum <$sanitizedManagedObjectClassName$>FetchedProperties: String
+{<$foreach FetchedProperty noninheritedFetchedProperties do$>
+    case <$FetchedProperty.name$><$endforeach do$>
+}
+<$endif$>
+
+<$if hasUserInfoKeys$>
+public enum <$sanitizedManagedObjectClassName$>UserInfo: String 
+{<$foreach UserInfo userInfoKeyValues do$>
+    case <$UserInfo.key$><$endforeach do$>
+}
+<$endif$>
+
+
+<$if hasCustomSuperentity $>
+public class _<$sanitizedManagedObjectClassName$>: <$customSuperentity$> 
+{
+<$else$>
+public class _<$sanitizedManagedObjectClassName$>: NSManagedObject 
+{<$endif$>   
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<<$sanitizedManagedObjectClassName$>> {
+        return NSFetchRequest<<$sanitizedManagedObjectClassName$>>(entityName: "<$sanitizedManagedObjectClassName$>")
+    }
+    
+    // MARK: - Properties
+<$foreach Attribute noninheritedAttributes do$>
+<$if Attribute.hasDefinedAttributeType$>
+<$if Attribute.hasScalarAttributeType$>
+<$if Attribute.isReadonly$>
+    public var <$Attribute.name$>: NSNumber?
+    {
+        self.willAccessValueForKey(<$sanitizedManagedObjectClassName$>Attributes.<$Attribute.name$>.rawValue)
+        let <$Attribute.name$> = self.primitiveValueForKey(<$sanitizedManagedObjectClassName$>Attributes.<$Attribute.name$>.rawValue) as? NSNumber
+        self.didAccessValueForKey(<$sanitizedManagedObjectClassName$>Attributes.<$Attribute.name$>.rawValue)
+        return <$Attribute.name$>
+    }
+<$else$>
+    @NSManaged public var <$Attribute.name$>: <$Attribute.scalarAttributeType$><$if Attribute.isOptional$>?<$endif$>
+<$endif$>
+<$else$>
+<$if Attribute.isReadonly$>
+    public var <$Attribute.name$>: <$Attribute.objectAttributeType$><$if Attribute.isOptional$>?<$endif$>
+    {
+        self.willAccessValueForKey(<$sanitizedManagedObjectClassName$>Attributes.<$Attribute.name$>.rawValue)
+        let <$Attribute.name$> = self.primitiveValueForKey(<$sanitizedManagedObjectClassName$>Attributes.<$Attribute.name$>.rawValue) as? <$Attribute.objectAttributeType$>
+        self.didAccessValueForKey(<$sanitizedManagedObjectClassName$>Attributes.<$Attribute.name$>.rawValue)
+        return <$Attribute.name$>
+    }
+<$else$>
+    @NSManaged public var <$Attribute.name$>: <$Attribute.objectAttributeType$><$if Attribute.isOptional$>?<$endif$>
+<$endif$>
+<$endif$>
+<$endif$>
+<$endforeach do$>
+
+    // MARK: - Relationships
+<$foreach Relationship noninheritedRelationships do$>
+<$if Relationship.isToMany$>
+    @NSManaged public var <$Relationship.name$>: Set<<$Relationship.destinationEntity.sanitizedManagedObjectClassName$>>
+
+<$else$>
+    @NSManaged public var <$Relationship.name$>: <$Relationship.destinationEntity.sanitizedManagedObjectClassName$><$if Relationship.isOptional$>?<$endif$>
+<$endif$>
+<$endforeach do$>
+
+<$foreach FetchRequest prettyFetchRequests do$>
+<$if FetchRequest.singleResult$>
+    class func fetch<$FetchRequest.name.initialCapitalString$>(managedObjectContext: NSManagedObjectContext<$foreach Binding FetchRequest.bindings do2$>, <$Binding.name$>: <$Binding.type$><$endforeach do2$>) -> AnyObject? {
+        return self.fetch<$FetchRequest.name.initialCapitalString$>(managedObjectContext<$foreach Binding FetchRequest.bindings do2$>, <$Binding.name$>: <$Binding.name$><$endforeach do2$>, error: nil)
+    }
+
+    class func fetch<$FetchRequest.name.initialCapitalString$>(managedObjectContext: NSManagedObjectContext<$foreach Binding FetchRequest.bindings do2$>, <$Binding.name$>: <$Binding.type$><$endforeach do2$>, error outError: NSErrorPointer) -> AnyObject? {
+        guard let psc = managedObjectContext.persistentStoreCoordinator else { return nil }
+        let model = psc.managedObjectModel
+        let substitutionVariables = [<$if FetchRequest.hasBindings$><$foreach Binding FetchRequest.bindings do2$>
+            "<$Binding.name$>": <$Binding.name$>,
+        <$endforeach do2$><$endif$>
+        ]
+
+        guard let fetchRequest = model.fetchRequestFromTemplateWithName("<$FetchRequest.name$>", substitutionVariables: substitutionVariables) else {
+          assert(false, "Can't find fetch request named \"<$FetchRequest.name$>\".")
+          return nil
+        }
+
+        var result: AnyObject? = nil
+        do {
+            let results = try managedObjectContext.executeFetchRequest(fetchRequest)
+            switch results.count {
+            case 0:
+                // Nothing found matching the fetch request. That's cool, though: we'll just return nil.
+                break
+            case 1:
+                result = results.first
+            default:
+                print("WARN fetch request <$FetchRequest.name$>: 0 or 1 objects expected, \(results.count) found (substitutionVariables: \(substitutionVariables), results: \(results))")
+            }
+
+        } catch {
+            print("Error executing fetch request: \(error)")
+        }
+        return result
+    }
+<$else$>
+    class func fetch<$FetchRequest.name.initialCapitalString$>(managedObjectContext: NSManagedObjectContext<$foreach Binding FetchRequest.bindings do2$>, <$Binding.name$>: <$Binding.type$><$endforeach do2$>) -> [AnyObject]? {
+        return self.fetch<$FetchRequest.name.initialCapitalString$>(managedObjectContext<$foreach Binding FetchRequest.bindings do2$>, <$Binding.name$>: <$Binding.name$><$endforeach do2$>, error: nil)
+    }
+
+    class func fetch<$FetchRequest.name.initialCapitalString$>(managedObjectContext: NSManagedObjectContext<$foreach Binding FetchRequest.bindings do2$>, <$Binding.name$>: <$Binding.type$><$endforeach do2$>, error outError: NSErrorPointer) -> [AnyObject]? {
+        guard let psc = managedObjectContext.persistentStoreCoordinator else { return nil }
+        let model = psc.managedObjectModel
+        let substitutionVariables : [String : AnyObject] = [<$if FetchRequest.hasBindings$><$foreach Binding FetchRequest.bindings do2$>
+            "<$Binding.name$>": <$Binding.name$>,
+<$endforeach do2$><$else$>:<$endif$>]
+
+        let fetchRequest = model.fetchRequestFromTemplateWithName("<$FetchRequest.name$>", substitutionVariables: substitutionVariables)
+        assert(fetchRequest != nil, "Can't find fetch request named \"<$FetchRequest.name$>\".")
+
+        var results = Array<AnyObject>()
+        do {
+          results = try managedObjectContext.executeFetchRequest(fetchRequest!)
+        } catch {
+          print("Error executing fetch request: \(error)")
+        }
+
+        return results
+    }
+<$endif$>
+<$endforeach do$>
+
+<$foreach FetchedProperty noninheritedFetchedProperties do$>
+    @NSManaged public
+    let <$FetchedProperty.name$>: [<$FetchedProperty.entity.sanitizedManagedObjectClassName$>]
+<$endforeach do$>
+}
+
+<$foreach Relationship noninheritedRelationships do$>
+<$if Relationship.isToMany$>
+<$if Relationship.jr_isOrdered$>
+extension _<$sanitizedManagedObjectClassName$> {
+
+    func add<$Relationship.name.initialCapitalString$>(objects: <$Relationship.immutableCollectionClassName$>) {
+        let mutable = self.<$Relationship.name$>.mutableCopy() as! NSMutable<$if Relationship.jr_isOrdered$>Ordered<$endif$>Set
+        mutable.union<$if Relationship.jr_isOrdered$>Ordered<$endif$>Set(objects<$if !Relationship.jr_isOrdered$> as Set<NSObject><$endif$>)
+        self.<$Relationship.name$> = mutable.copy() as! NS<$if Relationship.jr_isOrdered$>Ordered<$endif$>Set
+    }
+
+    func remove<$Relationship.name.initialCapitalString$>(objects: <$Relationship.immutableCollectionClassName$>) {
+        let mutable = self.<$Relationship.name$>.mutableCopy() as! NSMutable<$if Relationship.jr_isOrdered$>Ordered<$endif$>Set
+        mutable.minus<$if Relationship.jr_isOrdered$>Ordered<$endif$>Set(objects<$if !Relationship.jr_isOrdered$> as Set<NSObject><$endif$>)
+        self.<$Relationship.name$> = mutable.copy() as! NS<$if Relationship.jr_isOrdered$>Ordered<$endif$>Set
+    }
+
+    func add<$Relationship.name.initialCapitalString$>Object(value: <$Relationship.destinationEntity.sanitizedManagedObjectClassName$>) {
+        let mutable = self.<$Relationship.name$>.mutableCopy() as! NSMutable<$if Relationship.jr_isOrdered$>Ordered<$endif$>Set
+        mutable.addObject(value)
+        self.<$Relationship.name$> = mutable.copy() as! NS<$if Relationship.jr_isOrdered$>Ordered<$endif$>Set
+    }
+
+    func remove<$Relationship.name.initialCapitalString$>Object(value: <$Relationship.destinationEntity.sanitizedManagedObjectClassName$>) {
+        let mutable = self.<$Relationship.name$>.mutableCopy() as! NSMutable<$if Relationship.jr_isOrdered$>Ordered<$endif$>Set
+        mutable.removeObject(value)
+        self.<$Relationship.name$> = mutable.copy() as! NS<$if Relationship.jr_isOrdered$>Ordered<$endif$>Set
+    }
+
+}
+<$endif$>
+<$endif$>
+<$endforeach do$>

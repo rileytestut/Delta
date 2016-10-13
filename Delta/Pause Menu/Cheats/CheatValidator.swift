@@ -28,12 +28,12 @@ struct CheatValidator
     
     func validate(_ cheat: Cheat) throws
     {
-        guard let name = cheat.name else { throw Error.invalidName }
+        guard let name = cheat.name, let game = cheat.game else { throw Error.invalidName }
         
         let code = cheat.code
         
         // Find all cheats that are for the same game, don't have the same identifier as the current cheat, but have either the same name or code
-        let predicate = NSPredicate(format: "%K == %@ AND %K != %@ AND (%K == %@ OR %K == %@)", Cheat.Attributes.game.rawValue, cheat.game, Cheat.Attributes.identifier.rawValue, cheat.identifier, Cheat.Attributes.code.rawValue, code, Cheat.Attributes.name.rawValue, name)
+        let predicate = NSPredicate(format: "%K == %@ AND %K != %@ AND (%K == %@ OR %K == %@)", #keyPath(Cheat.game), game, #keyPath(Cheat.identifier), cheat.identifier, #keyPath(Cheat.code), code, #keyPath(Cheat.name), name)
         
         let cheats = Cheat.instancesWithPredicate(predicate, inManagedObjectContext: self.managedObjectContext, type: Cheat.self)
         for cheat in cheats
