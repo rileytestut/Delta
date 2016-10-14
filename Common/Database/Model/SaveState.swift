@@ -21,13 +21,13 @@ import DeltaCore
 public class SaveState: _SaveState, SaveStateProtocol
 {
     public var fileURL: URL {
-        let fileURL = DatabaseManager.saveStatesDirectoryURLForGame(self.game!).appendingPathComponent(self.filename)
+        let fileURL = DatabaseManager.saveStatesDirectoryURL(for: self.game!).appendingPathComponent(self.filename)
         return fileURL
     }
     
     public var imageFileURL: URL {
         let imageFilename = (self.filename as NSString).deletingPathExtension + ".png"
-        let imageFileURL = DatabaseManager.saveStatesDirectoryURLForGame(self.game!).appendingPathComponent(imageFilename)
+        let imageFileURL = DatabaseManager.saveStatesDirectoryURL(for: self.game!).appendingPathComponent(imageFilename)
         return imageFileURL
     }
     

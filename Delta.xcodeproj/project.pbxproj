@@ -58,6 +58,8 @@
 		BFA2315C1CED10BE0011E35A /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA2315B1CED10BE0011E35A /* Action.swift */; };
 		BFAA1FED1B8AA4FA00495943 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFAA1FEC1B8AA4FA00495943 /* Settings.swift */; };
 		BFBAA86A1D5A483900A29C1B /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFBAA8691D5A483900A29C1B /* DatabaseManager.swift */; };
+		BFC853351DB039AD00E8C372 /* _ControllerSkin.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC853341DB039AD00E8C372 /* _ControllerSkin.swift */; };
+		BFC853371DB039B500E8C372 /* ControllerSkin.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC853361DB039B500E8C372 /* ControllerSkin.swift */; };
 		BFC9B7391CEFCD34008629BB /* CheatsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC9B7381CEFCD34008629BB /* CheatsViewController.swift */; };
 		BFCEA67E1D56FF640061A534 /* UIViewControllerContextTransitioning+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFCEA67D1D56FF640061A534 /* UIViewControllerContextTransitioning+Conveniences.swift */; };
 		BFD097211D3A01B8005A44C2 /* SaveStatesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3540041C5DA70400C1184C /* SaveStatesViewController.swift */; };
@@ -155,6 +157,8 @@
 		BFAA1FEC1B8AA4FA00495943 /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		BFBAA8691D5A483900A29C1B /* DatabaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		BFC134E01AAD82460087AD7B /* SNESDeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SNESDeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BFC853341DB039AD00E8C372 /* _ControllerSkin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = _ControllerSkin.swift; sourceTree = "<group>"; };
+		BFC853361DB039B500E8C372 /* ControllerSkin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControllerSkin.swift; sourceTree = "<group>"; };
 		BFC9B7381CEFCD34008629BB /* CheatsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CheatsViewController.swift; path = "Pause Menu/Cheats/CheatsViewController.swift"; sourceTree = "<group>"; };
 		BFCEA67D1D56FF640061A534 /* UIViewControllerContextTransitioning+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewControllerContextTransitioning+Conveniences.swift"; sourceTree = "<group>"; };
 		BFDB28441BC9DA7B001D0C83 /* GamePickerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GamePickerController.swift; sourceTree = "<group>"; };
@@ -233,6 +237,7 @@
 			isa = PBXGroup;
 			children = (
 				BF2898111DAAFC2A0023D8E9 /* Cheat.swift */,
+				BFC853361DB039B500E8C372 /* ControllerSkin.swift */,
 				BF2898121DAAFC2A0023D8E9 /* Game.swift */,
 				BF2898131DAAFC2A0023D8E9 /* GameCollection.swift */,
 				BF2898141DAAFC2A0023D8E9 /* SaveState.swift */,
@@ -244,6 +249,7 @@
 			isa = PBXGroup;
 			children = (
 				BF2898191DAAFC330023D8E9 /* _Cheat.swift */,
+				BFC853341DB039AD00E8C372 /* _ControllerSkin.swift */,
 				BF28981A1DAAFC330023D8E9 /* _Game.swift */,
 				BF28981B1DAAFC330023D8E9 /* _GameCollection.swift */,
 				BF28981C1DAAFC330023D8E9 /* _SaveState.swift */,
@@ -689,6 +695,8 @@
 				BF107EC41BF413F000E0C32C /* GamesViewController.swift in Sources */,
 				BF2898181DAAFC2A0023D8E9 /* SaveState.swift in Sources */,
 				BF172AEB1C68986300C26774 /* NSManagedObjectContext+Conveniences.swift in Sources */,
+				BFC853351DB039AD00E8C372 /* _ControllerSkin.swift in Sources */,
+				BFC853371DB039B500E8C372 /* ControllerSkin.swift in Sources */,
 				BF13A7561D5D29B0000BB055 /* PreviewGameViewController.swift in Sources */,
 				BFDD04EF1D5E27DB002D450E /* NSFetchedResultsController+Conveniences.m in Sources */,
 				BFCEA67E1D56FF640061A534 /* UIViewControllerContextTransitioning+Conveniences.swift in Sources */,

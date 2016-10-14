@@ -138,12 +138,28 @@ extension DatabaseManager
         return saveStatesDirectoryURL
     }
     
-    class func saveStatesDirectoryURLForGame(_ game: Game) -> URL
+    class func saveStatesDirectoryURL(for game: Game) -> URL
     {
         let gameDirectoryURL = DatabaseManager.saveStatesDirectoryURL.appendingPathComponent(game.identifier)
         self.createDirectory(at: gameDirectoryURL)
         
         return gameDirectoryURL
+    }
+    
+    class var controllerSkinsDirectoryURL: URL
+    {
+        let controllerSkinsDirectoryURL = DatabaseManager.defaultDirectoryURL().appendingPathComponent("Controller Skins")
+        self.createDirectory(at: controllerSkinsDirectoryURL)
+        
+        return controllerSkinsDirectoryURL
+    }
+    
+    class func controllerSkinsDirectoryURL(for gameType: GameType) -> URL
+    {
+        let gameTypeDirectoryURL = DatabaseManager.controllerSkinsDirectoryURL.appendingPathComponent(gameType.rawValue)
+        self.createDirectory(at: gameTypeDirectoryURL)
+        
+        return gameTypeDirectoryURL
     }
 }
 

@@ -19,6 +19,22 @@
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>
+    <entity name="ControllerSkin" representedClassName="ControllerSkin" syncable="YES">
+        <attribute name="filename" attributeType="String" syncable="YES"/>
+        <attribute name="gameType" attributeType="Transformable" syncable="YES">
+            <userInfo>
+                <entry key="attributeValueClassName" value="GameType"/>
+            </userInfo>
+        </attribute>
+        <attribute name="identifier" attributeType="String" syncable="YES"/>
+        <attribute name="name" attributeType="String" syncable="YES"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="identifier"/>
+                <constraint value="gameType"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
     <entity name="Game" representedClassName="Game" syncable="YES">
         <attribute name="artworkURL" optional="YES" attributeType="Transformable" syncable="YES">
             <userInfo>
@@ -82,6 +98,7 @@
     </entity>
     <elements>
         <element name="Cheat" positionX="-198" positionY="-63" width="128" height="165"/>
+        <element name="ControllerSkin" positionX="-387" positionY="90" width="128" height="105"/>
         <element name="Game" positionX="-378" positionY="-54" width="128" height="180"/>
         <element name="GameCollection" positionX="-585" positionY="-27" width="128" height="90"/>
         <element name="SaveState" positionX="-198" positionY="113" width="128" height="165"/>
