@@ -20,6 +20,8 @@ public class _ControllerSkin: NSManagedObject
 
     @NSManaged public var identifier: String
 
+    @NSManaged public var isStandard: Bool
+
     @NSManaged public var name: String
 
     // MARK: - Relationships

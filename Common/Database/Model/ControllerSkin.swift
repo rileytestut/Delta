@@ -14,7 +14,7 @@ import DeltaCore
 public class ControllerSkin: _ControllerSkin
 {
     public var fileURL: URL {
-        let fileURL = DatabaseManager.controllerSkinsDirectoryURL(for: self.gameType).appendingPathComponent(self.filename)
+        let fileURL = self.isStandard ? self.controllerSkin!.fileURL : DatabaseManager.controllerSkinsDirectoryURL(for: self.gameType).appendingPathComponent(self.filename)
         return fileURL
     }
     
@@ -22,7 +22,10 @@ public class ControllerSkin: _ControllerSkin
         return self.controllerSkin?.isDebugModeEnabled ?? false
     }
     
-    fileprivate lazy var controllerSkin: DeltaCore.ControllerSkin? = DeltaCore.ControllerSkin(fileURL: self.fileURL)
+    fileprivate lazy var controllerSkin: DeltaCore.ControllerSkin? = {
+        let controllerSkin = self.isStandard ? DeltaCore.ControllerSkin.standardControllerSkin(for: self.gameType) : DeltaCore.ControllerSkin(fileURL: self.fileURL)
+        return controllerSkin
+    }()
 }
 
 extension ControllerSkin: ControllerSkinProtocol

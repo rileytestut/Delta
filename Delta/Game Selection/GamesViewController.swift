@@ -246,19 +246,24 @@ private extension GamesViewController
 
 //MARK: - Importing -
 /// Importing
-extension GamesViewController: GamePickerControllerDelegate
+extension GamesViewController: ImportControllerDelegate
 {
     @IBAction fileprivate func importFiles()
     {
-        let gamePickerController = GamePickerController()
-        gamePickerController.delegate = self
-        self.presentGamePickerController(gamePickerController, animated: true, completion: nil)
+        let importController = ImportController()
+        importController.delegate = self
+        self.present(importController, animated: true, completion: nil)
     }
     
-    //MARK: - GamePickerControllerDelegate
-    func gamePickerController(_ gamePickerController: GamePickerController, didImportGames games: [Game])
+    //MARK: - ImportControllerDelegate
+    @nonobjc func importController(_ importController: ImportController, didImport games: Set<Game>)
     {
         print(games)
+    }
+    
+    @nonobjc func importController(_ importController: ImportController, didImport controllerSkins: Set<ControllerSkin>)
+    {
+        print(controllerSkins)
     }
 }
 

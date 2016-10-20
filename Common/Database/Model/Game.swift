@@ -75,8 +75,8 @@ extension Game
 
 extension Game
 {
-    class func supportedTypeIdentifiers() -> Set<String>
+    class var supportedTypes: Set<GameType>
     {
-        return [GameType.snes.rawValue, GameType.gba.rawValue]
+        return [GameType.snes, GameType.gba]
     }
 }

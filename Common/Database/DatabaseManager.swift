@@ -32,15 +32,124 @@ final class DatabaseManager: NSPersistentContainer
     }
 }
 
+extension DatabaseManager
+{
+    override func newBackgroundContext() -> NSManagedObjectContext
+    {
+        let context = super.newBackgroundContext()
+        context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+        return context
+    }
+    
+    override func loadPersistentStores(completionHandler block: @escaping (NSPersistentStoreDescription, Error?) -> Void)
+    {
+        super.loadPersistentStores { (description, error) in
+            self.prepareDatabase {
+                block(description, error)
+            }
+        }
+    }
+}
+
+//MARK: - Preparation -
+private extension DatabaseManager
+{
+    func prepareDatabase(completion: @escaping (Void) -> Void)
+    {
+        self.performBackgroundTask { (context) in
+            
+            for gameType in Game.supportedTypes
+            {
+                guard let deltaControllerSkin = DeltaCore.ControllerSkin.standardControllerSkin(for: gameType) else { continue }
+                
+                let controllerSkin = ControllerSkin(context: context)
+                controllerSkin.isStandard = true
+                controllerSkin.filename = deltaControllerSkin.fileURL.lastPathComponent
+                controllerSkin.name = deltaControllerSkin.name
+                controllerSkin.identifier = deltaControllerSkin.identifier
+                controllerSkin.gameType = deltaControllerSkin.gameType
+            }
+            
+            do
+            {
+                try context.save()
+            }
+            catch
+            {
+                print("Failed to import standard controller skins:", error)
+            }
+            
+            completion()
+            
+        }
+    }
+}
+
 //MARK: - Importing -
 /// Importing
 extension DatabaseManager
 {
-    func importGames(at urls: [URL], completion: (([String]) -> Void)?)
+    func importControllerSkins(at urls: [URL], completion: ((Set<String>) -> Void)?)
     {
         self.performBackgroundTask { (context) in
             
-            var identifiers: [String] = []
+            var identifiers = Set<String>()
+            
+            for url in urls
+            {
+                guard let deltaControllerSkin = DeltaCore.ControllerSkin(fileURL: url) else { continue }
+                
+                let controllerSkin = ControllerSkin(context: context)
+                
+                // Manually copy values to be stored in database. 
+                // Remaining ControllerSkinProtocol requirements will be provided by the ControllerSkin's private DeltaCore.ControllerSkin instance.
+                controllerSkin.filename = deltaControllerSkin.identifier + ".deltaskin"
+                controllerSkin.name = deltaControllerSkin.name
+                controllerSkin.identifier = deltaControllerSkin.identifier
+                controllerSkin.gameType = deltaControllerSkin.gameType
+                
+                do
+                {
+                    if FileManager.default.fileExists(atPath: controllerSkin.fileURL.path)
+                    {
+                        // Normally we'd replace item instead of delete + move, but it's crashing as of iOS 10
+                        // FileManager.default.replaceItemAt(controllerSkin.fileURL, withItemAt: url)
+                        
+                        // Controller skin exists, but we replace it with the new skin
+                        try FileManager.default.removeItem(at: controllerSkin.fileURL)
+                    }
+                    
+                    try FileManager.default.moveItem(at: url, to: controllerSkin.fileURL)
+                    
+                    identifiers.insert(controllerSkin.identifier)
+                }
+                catch
+                {
+                    print("Import Controller Skins error:", error)
+                    controllerSkin.managedObjectContext?.delete(controllerSkin)
+                }
+            }
+            
+            do
+            {
+                try context.save()
+            }
+            catch
+            {
+                print("Failed to save controller skin import context:", error)
+                
+                identifiers.removeAll()
+            }
+            
+            completion?(identifiers)
+        }
+    }
+    
+    func importGames(at urls: [URL], completion: ((Set<String>) -> Void)?)
+    {
+        self.performBackgroundTask { (context) in
+            
+            var identifiers = Set<String>()
             
             for url in urls
             {
@@ -63,6 +172,7 @@ extension DatabaseManager
                     
                     if FileManager.default.fileExists(atPath: destinationURL.path)
                     {
+                        // Game already exists, so we choose not to override it and just delete the new game instead
                         try FileManager.default.removeItem(at: url)
                     }
                     else
@@ -70,10 +180,11 @@ extension DatabaseManager
                         try FileManager.default.moveItem(at: url, to: destinationURL)
                     }
                     
-                    identifiers.append(game.identifier)
+                    identifiers.insert(game.identifier)
                 }
                 catch
                 {
+                    print("Import Games error:", error)
                     game.managedObjectContext?.delete(game)
                 }
                 
@@ -90,11 +201,7 @@ extension DatabaseManager
                 identifiers.removeAll()
             }
             
-            if let completion = completion
-            {
-                completion(identifiers)
-            }
-            
+            completion?(identifiers)
         }
     }
 }

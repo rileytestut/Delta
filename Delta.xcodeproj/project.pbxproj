@@ -63,7 +63,7 @@
 		BFC9B7391CEFCD34008629BB /* CheatsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC9B7381CEFCD34008629BB /* CheatsViewController.swift */; };
 		BFCEA67E1D56FF640061A534 /* UIViewControllerContextTransitioning+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFCEA67D1D56FF640061A534 /* UIViewControllerContextTransitioning+Conveniences.swift */; };
 		BFD097211D3A01B8005A44C2 /* SaveStatesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3540041C5DA70400C1184C /* SaveStatesViewController.swift */; };
-		BFDB28451BC9DA7B001D0C83 /* GamePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDB28441BC9DA7B001D0C83 /* GamePickerController.swift */; };
+		BFDB28451BC9DA7B001D0C83 /* ImportController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDB28441BC9DA7B001D0C83 /* ImportController.swift */; };
 		BFDD04EF1D5E27DB002D450E /* NSFetchedResultsController+Conveniences.m in Sources */ = {isa = PBXBuildFile; fileRef = BF02BCFF1D361BD1000892F2 /* NSFetchedResultsController+Conveniences.m */; };
 		BFDD04F11D5E2C27002D450E /* GameCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDD04F01D5E2C27002D450E /* GameCollectionViewController.swift */; };
 		BFE4269E1D9C68E600DC913F /* SaveStatesStoryboardSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE4269D1D9C68E600DC913F /* SaveStatesStoryboardSegue.swift */; };
@@ -161,7 +161,7 @@
 		BFC853361DB039B500E8C372 /* ControllerSkin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControllerSkin.swift; sourceTree = "<group>"; };
 		BFC9B7381CEFCD34008629BB /* CheatsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CheatsViewController.swift; path = "Pause Menu/Cheats/CheatsViewController.swift"; sourceTree = "<group>"; };
 		BFCEA67D1D56FF640061A534 /* UIViewControllerContextTransitioning+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewControllerContextTransitioning+Conveniences.swift"; sourceTree = "<group>"; };
-		BFDB28441BC9DA7B001D0C83 /* GamePickerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GamePickerController.swift; sourceTree = "<group>"; };
+		BFDB28441BC9DA7B001D0C83 /* ImportController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImportController.swift; sourceTree = "<group>"; };
 		BFDD04F01D5E2C27002D450E /* GameCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameCollectionViewController.swift; sourceTree = "<group>"; };
 		BFE4269D1D9C68E600DC913F /* SaveStatesStoryboardSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SaveStatesStoryboardSegue.swift; path = Segues/SaveStatesStoryboardSegue.swift; sourceTree = "<group>"; };
 		BFEC732C1AAECC4A00650035 /* Roxas.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Roxas.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -410,7 +410,7 @@
 		BFDB28431BC9D9D1001D0C83 /* Importing */ = {
 			isa = PBXGroup;
 			children = (
-				BFDB28441BC9DA7B001D0C83 /* GamePickerController.swift */,
+				BFDB28441BC9DA7B001D0C83 /* ImportController.swift */,
 			);
 			path = Importing;
 			sourceTree = "<group>";
@@ -706,7 +706,7 @@
 				BF5E7F441B9A650B00AE44F8 /* SettingsViewController.swift in Sources */,
 				BF2898231DAAFD720023D8E9 /* _GameCollection.swift in Sources */,
 				BF353FF21C5D7FB000C1184C /* PauseViewController.swift in Sources */,
-				BFDB28451BC9DA7B001D0C83 /* GamePickerController.swift in Sources */,
+				BFDB28451BC9DA7B001D0C83 /* ImportController.swift in Sources */,
 				BF2898151DAAFC2A0023D8E9 /* Cheat.swift in Sources */,
 				BF696B801D9B2B02009639E0 /* Theme.swift in Sources */,
 				BF7AE8081C2E858400B1B5BC /* PauseMenuViewController.swift in Sources */,

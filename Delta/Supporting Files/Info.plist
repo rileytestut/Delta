@@ -32,6 +32,20 @@
 				<string>com.rileytestut.delta.game.gba</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeIconFiles</key>
+			<array/>
+			<key>CFBundleTypeName</key>
+			<string>Delta Controller Skin</string>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+			<key>LSHandlerRank</key>
+			<string>Owner</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>com.rileytestut.delta.skin</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
@@ -116,6 +130,22 @@
 			<dict>
 				<key>public.filename-extension</key>
 				<string>gba</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.data</string>
+				<string>public.content</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>Delta Controller Skin</string>
+			<key>UTTypeIdentifier</key>
+			<string>com.rileytestut.delta.skin</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<string>deltaskin</string>
 			</dict>
 		</dict>
 	</array>
