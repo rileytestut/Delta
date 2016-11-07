@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11232" systemVersion="16A320" minimumToolsVersion="Xcode 7.0" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="1.0">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11542" systemVersion="16B2555" minimumToolsVersion="Xcode 7.0" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="1.0">
     <entity name="Cheat" representedClassName="Cheat" syncable="YES">
         <attribute name="code" attributeType="String" syncable="YES"/>
         <attribute name="creationDate" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
@@ -29,6 +29,11 @@
         <attribute name="identifier" attributeType="String" syncable="YES"/>
         <attribute name="isStandard" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
+        <attribute name="supportedConfigurations" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES">
+            <userInfo>
+                <entry key="attributeValueScalarType" value="ControllerSkinConfigurations"/>
+            </userInfo>
+        </attribute>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="identifier"/>
@@ -99,7 +104,7 @@
     </entity>
     <elements>
         <element name="Cheat" positionX="-198" positionY="-63" width="128" height="165"/>
-        <element name="ControllerSkin" positionX="-387" positionY="90" width="128" height="120"/>
+        <element name="ControllerSkin" positionX="-387" positionY="90" width="128" height="135"/>
         <element name="Game" positionX="-378" positionY="-54" width="128" height="180"/>
         <element name="GameCollection" positionX="-585" positionY="-27" width="128" height="90"/>
         <element name="SaveState" positionX="-198" positionY="113" width="128" height="165"/>

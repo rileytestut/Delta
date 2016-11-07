@@ -65,9 +65,8 @@ private extension DatabaseManager
                 let controllerSkin = ControllerSkin(context: context)
                 controllerSkin.isStandard = true
                 controllerSkin.filename = deltaControllerSkin.fileURL.lastPathComponent
-                controllerSkin.name = deltaControllerSkin.name
-                controllerSkin.identifier = deltaControllerSkin.identifier
-                controllerSkin.gameType = deltaControllerSkin.gameType
+                
+                controllerSkin.configure(with: deltaControllerSkin)
             }
             
             do
@@ -100,14 +99,10 @@ extension DatabaseManager
                 guard let deltaControllerSkin = DeltaCore.ControllerSkin(fileURL: url) else { continue }
                 
                 let controllerSkin = ControllerSkin(context: context)
-                
-                // Manually copy values to be stored in database. 
-                // Remaining ControllerSkinProtocol requirements will be provided by the ControllerSkin's private DeltaCore.ControllerSkin instance.
                 controllerSkin.filename = deltaControllerSkin.identifier + ".deltaskin"
-                controllerSkin.name = deltaControllerSkin.name
-                controllerSkin.identifier = deltaControllerSkin.identifier
-                controllerSkin.gameType = deltaControllerSkin.gameType
                 
+                controllerSkin.configure(with: deltaControllerSkin)
+                                
                 do
                 {
                     if FileManager.default.fileExists(atPath: controllerSkin.fileURL.path)

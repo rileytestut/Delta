@@ -10,6 +10,45 @@ import Foundation
 
 import DeltaCore
 
+extension ControllerSkinConfigurations
+{
+    init(traits: DeltaCore.ControllerSkin.Traits)
+    {
+        switch traits.deviceType
+        {
+        case .iphone:
+            
+            switch traits.orientation
+            {
+            case .portrait: self = .fullScreenPortrait
+            case .landscape: self = .fullScreenLandscape
+            }
+            
+        case .ipad:
+            
+            switch traits.displayMode
+            {
+            case .fullScreen:
+                
+                switch traits.orientation
+                {
+                case .portrait: self = .fullScreenPortrait
+                case .landscape: self = .fullScreenLandscape
+                }
+                
+            case .splitView:
+                
+                switch traits.orientation
+                {
+                case .portrait: self = .splitViewPortrait
+                case .landscape: self = .splitViewLandscape
+                }
+            }
+            
+        }
+    }
+}
+
 @objc(ControllerSkin)
 public class ControllerSkin: _ControllerSkin
 {

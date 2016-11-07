@@ -4,3 +4,4 @@
 
 #import "UIDevice+Vibration.h"
 #import "NSFetchedResultsController+Conveniences.h"
+#import "ControllerSkinConfigurations.h"
