@@ -98,4 +98,9 @@ extension ControllerSkin: ControllerSkinProtocol
     {
         return self.controllerSkin?.gameScreenFrame(for: traits)
     }
+    
+    public func aspectRatio(for traits: DeltaCore.ControllerSkin.Traits) -> CGSize?
+    {
+        return self.controllerSkin?.aspectRatio(for: traits)
+    }
 }
