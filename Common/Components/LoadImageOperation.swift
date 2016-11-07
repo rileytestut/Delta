@@ -11,11 +11,9 @@ import ImageIO
 
 import Roxas
 
-public class LoadImageOperation: RSTOperation
+class LoadImageOperation<CacheKeyType: AnyObject>: RSTOperation
 {
-    public let URL: Foundation.URL
-    
-    public var completionHandler: ((UIImage?) -> Void)? {
+    var completionHandler: ((UIImage?) -> Void)? {
         didSet {
             self.completionBlock = {
                 rst_dispatch_sync_on_main_thread() {
@@ -25,49 +23,47 @@ public class LoadImageOperation: RSTOperation
         }
     }
     
-    public var imageCache: NSCache<NSURL, UIImage>? {
+    var imageCache: NSCache<CacheKeyType, UIImage>? {
         didSet {
             // Ensures if an image is cached, it will be returned immediately, to prevent temporary flash of placeholder image
-            self.isImmediate = self.imageCache?.object(forKey: self.URL as NSURL) != nil
+            self.isImmediate = self.imageCache?.object(forKey: self.cacheKey) != nil
         }
     }
     
-    fileprivate var image: UIImage?
+    private let cacheKey: CacheKeyType
+    private var image: UIImage?
     
-    public init(URL: Foundation.URL)
+    init(cacheKey: CacheKeyType)
     {
-        self.URL = URL
+        self.cacheKey = cacheKey
         
         super.init()
     }
-}
-
-public extension LoadImageOperation
-{
-    override public func main()
+    
+    override func main()
     {
         guard !self.isCancelled else { return }
         
-        if let cachedImage = self.imageCache?.object(forKey: self.URL as NSURL)
+        if let cachedImage = self.imageCache?.object(forKey: self.cacheKey)
         {
             self.image = cachedImage
             return
         }
         
-        let options: NSDictionary = [kCGImageSourceShouldCache as NSString: true]
+        guard let loadedImage = self.loadImage() else { return }
         
-        if let imageSource = CGImageSourceCreateWithURL(self.URL as CFURL, options), let quartzImage = CGImageSourceCreateImageAtIndex(imageSource, 0, options)
-        {
-            let loadedImage = UIImage(cgImage: quartzImage)
-            
-            // Force decompression of image
-            UIGraphicsBeginImageContextWithOptions(CGSize(width: 1, height: 1), true, 1.0)
-            loadedImage.draw(at: CGPoint.zero)
-            UIGraphicsEndImageContext()
-            
-            self.imageCache?.setObject(loadedImage, forKey: self.URL as NSURL)
-            
-            self.image = loadedImage
-        }
+        // Force decompression of image
+        UIGraphicsBeginImageContextWithOptions(CGSize(width: 1, height: 1), true, 1.0)
+        loadedImage.draw(at: CGPoint.zero)
+        UIGraphicsEndImageContext()
+        
+        self.imageCache?.setObject(loadedImage, forKey: self.cacheKey)
+        
+        self.image = loadedImage
+    }
+    
+    func loadImage() -> UIImage?
+    {
+        return nil
     }
 }

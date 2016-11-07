@@ -47,6 +47,25 @@ extension GameTypeControllerSkinsViewController
     {
         super.didReceiveMemoryWarning()
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?)
+    {
+        guard let cell = sender as? UITableViewCell, let indexPath = self.tableView.indexPath(for: cell) else { return }
+        
+        let controllerSkinsViewController = segue.destination as! ControllerSkinsViewController
+        controllerSkinsViewController.gameType = self.gameType
+        
+        var traits = DeltaCore.ControllerSkin.Traits.defaults(for: self.view)
+        
+        let section = Section(rawValue: indexPath.section)!
+        switch section
+        {
+        case .portrait: traits.orientation = .portrait
+        case .landscape: traits.orientation = .landscape
+        }
+        
+        controllerSkinsViewController.traits = traits
+    }
 }
 
 extension GameTypeControllerSkinsViewController
@@ -69,6 +88,13 @@ extension GameTypeControllerSkinsViewController
         
         let height = unwrappedImageSize.height * scale
         return height
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
+    {
+        guard let cell = tableView.cellForRow(at: indexPath) else { return }
+        
+        self.performSegue(withIdentifier: "showControllerSkins", sender: cell)
     }
 }
 

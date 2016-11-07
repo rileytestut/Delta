@@ -242,7 +242,7 @@ private extension SaveStatesViewController
         
         if !ignoreOperations
         {
-            let imageOperation = LoadImageOperation(URL: saveState.imageFileURL)
+            let imageOperation = LoadImageURLOperation(url: saveState.imageFileURL)
             imageOperation.imageCache = self.imageCache
             imageOperation.completionHandler = { image in
                 

@@ -65,6 +65,15 @@ public class ControllerSkin: _ControllerSkin
         let controllerSkin = self.isStandard ? DeltaCore.ControllerSkin.standardControllerSkin(for: self.gameType) : DeltaCore.ControllerSkin(fileURL: self.fileURL)
         return controllerSkin
     }()
+    
+    public override func awakeFromFetch()
+    {
+        super.awakeFromFetch()
+        
+        // Kinda hacky, but we initialize controllerSkin on fetch to ensure it is initialized on the correct thread
+        // We could solve this by wrapping controllerSkin.getter in performAndWait block, but this can lead to a deadlock
+        _ = self.controllerSkin
+    }
 }
 
 extension ControllerSkin: ControllerSkinProtocol
