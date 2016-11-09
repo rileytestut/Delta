@@ -52,7 +52,7 @@ extension NSManagedObject
         }
         catch let error as NSError
         {
-            print("Error loading", predicate, error)
+            print("Error loading", predicate as Any, error)
         }
         
         return results
