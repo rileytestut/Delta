@@ -46,6 +46,8 @@ class GameViewController: DeltaCore.GameViewController
             
             let game = self.game as? Game
             NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.managedObjectContextDidChange(with:)), name: .NSManagedObjectContextObjectsDidChange, object: game?.managedObjectContext)
+            
+            self.updateControllerSkin()
         }
     }
     
@@ -110,6 +112,7 @@ class GameViewController: DeltaCore.GameViewController
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.updateControllers), name: .externalControllerDidConnect, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.updateControllers), name: .externalControllerDidDisconnect, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.didEnterBackground(with:)), name: .UIApplicationDidEnterBackground, object: UIApplication.shared)
+        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.preferredControllerSkinDidUpdate(with:)), name: .preferredControllerSkinDidUpdate, object: nil)
     }
     
     deinit
@@ -186,7 +189,24 @@ extension GameViewController
         self.sustainButtonsContentView.topAnchor.constraint(equalTo: self.gameView.topAnchor).isActive = true
         self.sustainButtonsContentView.bottomAnchor.constraint(equalTo: self.gameView.bottomAnchor).isActive = true
         
+        self.updateControllerSkin()
         self.updateControllers()
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator)
+    {
+        super.viewWillTransition(to: size, with: coordinator)
+        
+        guard let game = self.game else { return }
+        
+        var traits = DeltaCore.ControllerSkin.Traits.defaults(for: self.view)
+        traits.orientation = (size.width > size.height) ? .landscape : .portrait
+        
+        let controllerSkin = Settings.preferredControllerSkin(for: game.type, traits: traits)
+        
+        coordinator.animate(alongsideTransition: { (context) in
+            self.controllerView.controllerSkin = controllerSkin
+        }, completion: nil)        
     }
     
     // MARK: - Segues
@@ -359,6 +379,16 @@ private extension GameViewController
         }
         
         self.view.setNeedsLayout()
+    }
+    
+    func updateControllerSkin()
+    {
+        guard let game = self.game else { return }
+        
+        let traits = DeltaCore.ControllerSkin.Traits.defaults(for: self.view)
+        
+        let controllerSkin = Settings.preferredControllerSkin(for: game.type, traits: traits)
+        self.controllerView.controllerSkin = controllerSkin
     }
 }
 
@@ -729,6 +759,20 @@ private extension GameViewController
         {
             self.emulatorCore?.gameViews.forEach { $0.inputImage = nil }
             self.game = nil
+        }
+    }
+    
+    @objc func preferredControllerSkinDidUpdate(with notification: Notification)
+    {
+        guard
+            let gameType = notification.userInfo?[Settings.NotificationUserInfoKey.gameType.rawValue] as? GameType,
+            let traits = notification.userInfo?[Settings.NotificationUserInfoKey.traits.rawValue] as? DeltaCore.ControllerSkin.Traits
+        else { return }
+        
+        let currentTraits = DeltaCore.ControllerSkin.Traits.defaults(for: self.view)
+        if gameType == self.game?.type && traits == currentTraits
+        {
+            self.updateControllerSkin()
         }
     }
 }

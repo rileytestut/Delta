@@ -102,12 +102,13 @@ private extension GameTypeControllerSkinsViewController
 {
     func updateControllerSkins()
     {
-        let controllerSkin = DeltaCore.ControllerSkin.standardControllerSkin(for: self.gameType)
-        
         let portraitTraits = DeltaCore.ControllerSkin.Traits(deviceType: .iphone, displayMode: DeltaCore.ControllerSkin.DisplayMode.fullScreen, orientation: .portrait)
-        self.portraitImageView.image = controllerSkin?.image(for: portraitTraits, preferredSize: UIScreen.main.defaultControllerSkinSize)
-        
         let landscapeTraits = DeltaCore.ControllerSkin.Traits(deviceType: .iphone, displayMode: DeltaCore.ControllerSkin.DisplayMode.fullScreen, orientation: .landscape)
-        self.landscapeImageView.image = controllerSkin?.image(for: landscapeTraits, preferredSize: UIScreen.main.defaultControllerSkinSize)
+        
+        let portraitControllerSkin = Settings.preferredControllerSkin(for: self.gameType, traits: portraitTraits)
+        let landscapeControllerSkin = Settings.preferredControllerSkin(for: self.gameType, traits: landscapeTraits)
+        
+        self.portraitImageView.image = portraitControllerSkin?.image(for: portraitTraits, preferredSize: UIScreen.main.defaultControllerSkinSize)
+        self.landscapeImageView.image = landscapeControllerSkin?.image(for: landscapeTraits, preferredSize: UIScreen.main.defaultControllerSkinSize)
     }
 }

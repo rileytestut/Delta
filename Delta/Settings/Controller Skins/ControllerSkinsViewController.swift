@@ -178,6 +178,14 @@ extension ControllerSkinsViewController: UITableViewDataSourcePrefetching
 
 extension ControllerSkinsViewController
 {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
+    {
+        let controllerSkin = self.dataSource.fetchedResultsController.object(at: indexPath)
+        Settings.setPreferredControllerSkin(controllerSkin, for: self.gameType, traits: self.traits)
+        
+        _ = self.navigationController?.popViewController(animated: true)
+    }
+    
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
     {
         let controllerSkin = self.dataSource.fetchedResultsController.object(at: indexPath)
