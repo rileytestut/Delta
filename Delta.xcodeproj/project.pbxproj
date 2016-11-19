@@ -7,11 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4FE8465FD28810191C3E5212 /* Pods_Delta.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 695E8C07A709B16AAD83AEC8 /* Pods_Delta.framework */; };
+		BF02D5DA1DDEBB3000A5E131 /* openvgdb.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = BF02D5D91DDEBB3000A5E131 /* openvgdb.sqlite */; };
 		BF0418141D01E93400E85BCF /* GBADeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF0418131D01E93400E85BCF /* GBADeltaCore.framework */; };
 		BF0418151D01E93400E85BCF /* GBADeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BF0418131D01E93400E85BCF /* GBADeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF04E6FF1DB8625C000F35D3 /* ControllerSkinsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF04E6FE1DB8625C000F35D3 /* ControllerSkinsViewController.swift */; };
 		BF090CF41B490D8300DCAB45 /* UIDevice+Vibration.m in Sources */ = {isa = PBXBuildFile; fileRef = BF090CF31B490D8300DCAB45 /* UIDevice+Vibration.m */; };
 		BF0CDDAD1C8155D200640168 /* LoadImageOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0CDDAC1C8155D200640168 /* LoadImageOperation.swift */; };
+		BF0D057F1DDD9A96002A71A7 /* GamesDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0D057E1DDD9A96002A71A7 /* GamesDatabase.swift */; };
 		BF107EC41BF413F000E0C32C /* GamesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF107EC31BF413F000E0C32C /* GamesViewController.swift */; };
 		BF11734D1DA32A5200047DF8 /* GameType+Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF11734C1DA32A5200047DF8 /* GameType+Localization.swift */; };
 		BF1173501DA32CF600047DF8 /* ControllersSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF11734F1DA32CF600047DF8 /* ControllersSettingsViewController.swift */; };
@@ -72,7 +75,6 @@
 		BFDD04EF1D5E27DB002D450E /* NSFetchedResultsController+Conveniences.m in Sources */ = {isa = PBXBuildFile; fileRef = BF02BCFF1D361BD1000892F2 /* NSFetchedResultsController+Conveniences.m */; };
 		BFDD04F11D5E2C27002D450E /* GameCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDD04F01D5E2C27002D450E /* GameCollectionViewController.swift */; };
 		BFE4269E1D9C68E600DC913F /* SaveStatesStoryboardSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE4269D1D9C68E600DC913F /* SaveStatesStoryboardSegue.swift */; };
-		BFE704F51CEA426E0058BAC8 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22506DA00971C4300AF90A35 /* Pods.framework */; };
 		BFEC732D1AAECC4A00650035 /* Roxas.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFEC732C1AAECC4A00650035 /* Roxas.framework */; };
 		BFEC732E1AAECC4A00650035 /* Roxas.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BFEC732C1AAECC4A00650035 /* Roxas.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BFFA71DD1AAC406100EE9DD1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFA71DC1AAC406100EE9DD1 /* AppDelegate.swift */; };
@@ -104,11 +106,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0340C4EC8B47535482F7F1BB /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		22506DA00971C4300AF90A35 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		685E0D2F62E4246995A02970 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		695E8C07A709B16AAD83AEC8 /* Pods_Delta.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Delta.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A19FF50F55441BC2B2248241 /* Pods-Delta.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Delta.release.xcconfig"; path = "Pods/Target Support Files/Pods-Delta/Pods-Delta.release.xcconfig"; sourceTree = "<group>"; };
 		BF02BCFE1D361BD1000892F2 /* NSFetchedResultsController+Conveniences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFetchedResultsController+Conveniences.h"; sourceTree = "<group>"; };
 		BF02BCFF1D361BD1000892F2 /* NSFetchedResultsController+Conveniences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFetchedResultsController+Conveniences.m"; sourceTree = "<group>"; };
+		BF02D5D91DDEBB3000A5E131 /* openvgdb.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = openvgdb.sqlite; sourceTree = "<group>"; };
 		BF0418131D01E93400E85BCF /* GBADeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = GBADeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF04E6FE1DB8625C000F35D3 /* ControllerSkinsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ControllerSkinsViewController.swift; path = "Controller Skins/ControllerSkinsViewController.swift"; sourceTree = "<group>"; };
 		BF090CF11B490D8300DCAB45 /* Delta-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Delta-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -116,6 +119,7 @@
 		BF090CF31B490D8300DCAB45 /* UIDevice+Vibration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+Vibration.m"; sourceTree = "<group>"; };
 		BF0A81C41DC915C800443EF0 /* ControllerSkinConfigurations.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ControllerSkinConfigurations.h; path = Misc/ControllerSkinConfigurations.h; sourceTree = "<group>"; };
 		BF0CDDAC1C8155D200640168 /* LoadImageOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoadImageOperation.swift; path = Components/LoadImageOperation.swift; sourceTree = "<group>"; };
+		BF0D057E1DDD9A96002A71A7 /* GamesDatabase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GamesDatabase.swift; sourceTree = "<group>"; };
 		BF107EC31BF413F000E0C32C /* GamesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GamesViewController.swift; sourceTree = "<group>"; };
 		BF11734C1DA32A5200047DF8 /* GameType+Localization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GameType+Localization.swift"; sourceTree = "<group>"; };
 		BF11734F1DA32CF600047DF8 /* ControllersSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ControllersSettingsViewController.swift; path = Controllers/ControllersSettingsViewController.swift; sourceTree = "<group>"; };
@@ -186,6 +190,7 @@
 		BFFC46221D5984A000AF2CC6 /* LaunchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LaunchViewController.swift; path = Launch/LaunchViewController.swift; sourceTree = "<group>"; };
 		BFFC46451D59861000AF2CC6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BFFC464B1D5998D600AF2CC6 /* CheatTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CheatTableViewCell.swift; path = "Pause Menu/Cheats/CheatTableViewCell.swift"; sourceTree = "<group>"; };
+		C786AF1D2DDB6223BE2063CC /* Pods-Delta.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Delta.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Delta/Pods-Delta.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -193,27 +198,18 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BFE704F51CEA426E0058BAC8 /* Pods.framework in Frameworks */,
 				BF9F4FCF1AAD7B87004C9500 /* DeltaCore.framework in Frameworks */,
 				BFEC732D1AAECC4A00650035 /* Roxas.framework in Frameworks */,
 				BF99C6941D0A9AA600BA92BC /* SNESDeltaCore.framework in Frameworks */,
 				BF70798C1B6B464B0019077C /* ZipZap.framework in Frameworks */,
 				BF0418141D01E93400E85BCF /* GBADeltaCore.framework in Frameworks */,
+				4FE8465FD28810191C3E5212 /* Pods_Delta.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		8BE785B0693C3F8A1EFE5741 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				0340C4EC8B47535482F7F1BB /* Pods.debug.xcconfig */,
-				685E0D2F62E4246995A02970 /* Pods.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 		BF090CEE1B490C1A00DCAB45 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -313,6 +309,7 @@
 			isa = PBXGroup;
 			children = (
 				BFBAA8691D5A483900A29C1B /* DatabaseManager.swift */,
+				BF0D057E1DDD9A96002A71A7 /* GamesDatabase.swift */,
 				BF4566E51BC09033007BFA1A /* Model */,
 			);
 			path = Database;
@@ -361,6 +358,7 @@
 		BF7AE7FA1C2E851F00B1B5BC /* Pause Menu */ = {
 			isa = PBXGroup;
 			children = (
+				BFFB709D1AF99ACA00DE56FE /* Emulation */,
 				BF353FF41C5D837600C1184C /* PauseMenu.storyboard */,
 				BF353FF11C5D7FB000C1184C /* PauseViewController.swift */,
 				BF7AE8041C2E858400B1B5BC /* PauseMenuViewController.swift */,
@@ -402,6 +400,7 @@
 				BF9F4FCE1AAD7B87004C9500 /* DeltaCore.framework */,
 				BFC134E01AAD82460087AD7B /* SNESDeltaCore.framework */,
 				22506DA00971C4300AF90A35 /* Pods.framework */,
+				695E8C07A709B16AAD83AEC8 /* Pods_Delta.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -442,6 +441,7 @@
 			isa = PBXGroup;
 			children = (
 				BF6BB2451BB73FE800CCF94A /* Assets.xcassets */,
+				BF02D5D91DDEBB3000A5E131 /* openvgdb.sqlite */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -464,8 +464,8 @@
 				BF4566E31BC09026007BFA1A /* Common */,
 				BFEC732F1AAECCBD00650035 /* Resources */,
 				BF9F4FCD1AAD7B25004C9500 /* Frameworks */,
-				8BE785B0693C3F8A1EFE5741 /* Pods */,
 				BFFA71D81AAC406100EE9DD1 /* Products */,
+				FD1E8AE87FA2DB8793F7B937 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -484,7 +484,6 @@
 				BFFA71E01AAC406100EE9DD1 /* Main.storyboard */,
 				BFFC46211D59848000AF2CC6 /* Launch */,
 				BF46894D1AAC469800A2586D /* Game Selection */,
-				BFFB709D1AF99ACA00DE56FE /* Emulation */,
 				BF7AE7FA1C2E851F00B1B5BC /* Pause Menu */,
 				BFAA1FEB1B8AA4E800495943 /* Settings */,
 				BF696B7E1D9B2AE6009639E0 /* Theming */,
@@ -533,6 +532,15 @@
 			name = Launch;
 			sourceTree = "<group>";
 		};
+		FD1E8AE87FA2DB8793F7B937 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				C786AF1D2DDB6223BE2063CC /* Pods-Delta.debug.xcconfig */,
+				A19FF50F55441BC2B2248241 /* Pods-Delta.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -540,14 +548,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = BFFA71F61AAC406100EE9DD1 /* Build configuration list for PBXNativeTarget "Delta" */;
 			buildPhases = (
-				A5AEDE02D1134013AEC5BCB6 /* Check Pods Manifest.lock */,
+				DBD91E7D7EC2729786B4C5B1 /* [CP] Check Pods Manifest.lock */,
 				BF28980A1DAAFB0F0023D8E9 /* mogenerator */,
 				BFFA71D31AAC406100EE9DD1 /* Sources */,
 				BFFA71D41AAC406100EE9DD1 /* Frameworks */,
 				BFFA71D51AAC406100EE9DD1 /* Resources */,
 				BF9F4FCC1AAD7AEE004C9500 /* Embed Frameworks */,
-				AA90DB8D72559A44728B98F0 /* Copy Pods Resources */,
-				AEE0EDDF2E4AAD91E135FE80 /* Embed Pods Frameworks */,
+				B444B2BB31CBCEE7D86E943D /* [CP] Embed Pods Frameworks */,
+				3521C8FA1BB6004A6E9FE324 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -606,6 +614,7 @@
 				BFFA71E21AAC406100EE9DD1 /* Main.storyboard in Resources */,
 				BF3540001C5DA3C500C1184C /* PausePresentationControllerContentView.xib in Resources */,
 				BF5E7F461B9A652600AE44F8 /* Settings.storyboard in Resources */,
+				BF02D5DA1DDEBB3000A5E131 /* openvgdb.sqlite in Resources */,
 				BFFC46461D59861000AF2CC6 /* LaunchScreen.storyboard in Resources */,
 				BF353FF61C5D837600C1184C /* PauseMenu.storyboard in Resources */,
 				BF27CC8E1BC9FEA200A20D89 /* Assets.xcassets in Resources */,
@@ -615,49 +624,34 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		A5AEDE02D1134013AEC5BCB6 /* Check Pods Manifest.lock */ = {
+		3521C8FA1BB6004A6E9FE324 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Delta/Pods-Delta-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		AA90DB8D72559A44728B98F0 /* Copy Pods Resources */ = {
+		B444B2BB31CBCEE7D86E943D /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		AEE0EDDF2E4AAD91E135FE80 /* Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Delta/Pods-Delta-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		BF28980A1DAAFB0F0023D8E9 /* mogenerator */ = {
@@ -673,6 +667,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "/usr/local/bin/mogenerator -m \"Common/Database/Model/Delta.xcdatamodeld\" -O \"Common/Database/Model\" --swift --template-var scalarsWhenNonOptional=true --template-path \"Common/Database/Model/mogenerator/templates\"";
+		};
+		DBD91E7D7EC2729786B4C5B1 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -729,6 +738,7 @@
 				BFDD04EF1D5E27DB002D450E /* NSFetchedResultsController+Conveniences.m in Sources */,
 				BFCEA67E1D56FF640061A534 /* UIViewControllerContextTransitioning+Conveniences.swift in Sources */,
 				BF2898161DAAFC2A0023D8E9 /* Game.swift in Sources */,
+				BF0D057F1DDD9A96002A71A7 /* GamesDatabase.swift in Sources */,
 				BF1173501DA32CF600047DF8 /* ControllersSettingsViewController.swift in Sources */,
 				BFFC461E1D59823500AF2CC6 /* GamesPresentationController.swift in Sources */,
 				BF99A5971DC2F9C400468E9E /* ControllerSkinTableViewCell.swift in Sources */,
@@ -867,7 +877,7 @@
 		};
 		BFFA71F71AAC406100EE9DD1 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0340C4EC8B47535482F7F1BB /* Pods.debug.xcconfig */;
+			baseConfigurationReference = C786AF1D2DDB6223BE2063CC /* Pods-Delta.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -883,7 +893,7 @@
 		};
 		BFFA71F81AAC406100EE9DD1 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 685E0D2F62E4246995A02970 /* Pods.release.xcconfig */;
+			baseConfigurationReference = A19FF50F55441BC2B2248241 /* Pods-Delta.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;

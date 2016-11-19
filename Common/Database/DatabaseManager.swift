@@ -19,12 +19,31 @@ final class DatabaseManager: NSPersistentContainer
 {
     static let shared = DatabaseManager()
     
+    fileprivate let gamesDatabase: GamesDatabase?
+    
     private init()
     {
         guard
             let modelURL = Bundle(for: DatabaseManager.self).url(forResource: "Delta", withExtension: "momd"),
             let managedObjectModel = NSManagedObjectModel(contentsOf: modelURL)
         else { fatalError("Core Data model cannot be found. Aborting.") }
+        
+        do
+        {
+            if let gamesDatabaseURL = Bundle.main.url(forResource: "openvgdb", withExtension: "sqlite")
+            {
+                self.gamesDatabase = try GamesDatabase(fileURL: gamesDatabaseURL)
+            }
+            else
+            {
+                self.gamesDatabase = nil
+            }
+        }
+        catch
+        {
+            self.gamesDatabase = nil
+            print(error)
+        }
         
         super.init(name: "Delta", managedObjectModel: managedObjectModel)
         
@@ -156,7 +175,8 @@ extension DatabaseManager
                 game.name = url.deletingPathExtension().lastPathComponent
                 game.identifier = identifier
                 game.filename = filename
-                
+                game.artworkURL = self.gamesDatabase?.artworkURL(for: game)
+
                 let gameCollection = GameCollection.gameSystemCollectionForPathExtension(url.pathExtension, inManagedObjectContext: context)
                 game.type = GameType(rawValue: gameCollection.identifier)
                 game.gameCollections.insert(gameCollection)

@@ -12,6 +12,8 @@ import DeltaCore
 
 import Roxas
 
+import SDWebImage
+
 class GameCollectionViewController: UICollectionViewController
 {
     var gameCollection: GameCollection! {
@@ -176,10 +178,6 @@ private extension GameCollectionViewController
     {
         let game = self.dataSource.fetchedResultsController.object(at: indexPath)
         
-        cell.maximumImageSize = CGSize(width: 90, height: 90)
-        cell.textLabel.text = game.name
-        cell.imageView.image = UIImage(named: "BoxArt")
-        
         switch self.theme
         {
         case .light:
@@ -191,6 +189,29 @@ private extension GameCollectionViewController
             cell.textLabel.textColor = UIColor.white
             cell.isTextLabelVibrancyEnabled = true
             cell.isImageViewVibrancyEnabled = true
+        }
+        
+        cell.maximumImageSize = CGSize(width: 90, height: 90)
+        cell.textLabel.text = game.name
+        
+        if let artworkURL = game.artworkURL
+        {
+            cell.imageView.sd_setImage(with: artworkURL, placeholderImage: #imageLiteral(resourceName: "BoxArt"), options: .continueInBackground) { (image, error, type, url) in
+                
+                if let error = error
+                {
+                    print(error)
+                }
+                
+                if image != nil
+                {
+                    cell.isImageViewVibrancyEnabled = false
+                }
+            }
+        }
+        else
+        {
+            cell.imageView.image = #imageLiteral(resourceName: "BoxArt")
         }
     }
     
@@ -387,6 +408,12 @@ extension GameCollectionViewController
         {
             self.launchGame(withSender: cell, clearScreen: true)
         }
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath)
+    {
+        let cell = cell as! GridCollectionViewCell
+        cell.imageView.sd_cancelCurrentImageLoad()
     }
 }
 

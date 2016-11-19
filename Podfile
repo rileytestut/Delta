@@ -1,7 +1,8 @@
-platform :ios, '9.0'
-platform :tvos, '9.0'
-
+platform :ios, '10.0'
 use_frameworks!
 
-link_with 'Delta', 'DeltaTV'
-pod 'FileMD5Hash', '~> 2.0.0'
+target 'Delta' do
+    pod 'FileMD5Hash', '~> 2.0.0'
+    pod 'SQLite.swift', '~> 0.11.0'
+    pod 'SDWebImage', '~> 3.8'
+end

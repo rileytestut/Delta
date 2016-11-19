@@ -1,0 +1,6 @@
+framework module Pods_Delta {
+  umbrella header "Pods-Delta-umbrella.h"
+
+  export *
+  module * { export * }
+}
