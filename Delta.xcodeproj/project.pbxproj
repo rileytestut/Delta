@@ -358,7 +358,6 @@
 		BF7AE7FA1C2E851F00B1B5BC /* Pause Menu */ = {
 			isa = PBXGroup;
 			children = (
-				BFFB709D1AF99ACA00DE56FE /* Emulation */,
 				BF353FF41C5D837600C1184C /* PauseMenu.storyboard */,
 				BF353FF11C5D7FB000C1184C /* PauseViewController.swift */,
 				BF7AE8041C2E858400B1B5BC /* PauseMenuViewController.swift */,
@@ -484,6 +483,7 @@
 				BFFA71E01AAC406100EE9DD1 /* Main.storyboard */,
 				BFFC46211D59848000AF2CC6 /* Launch */,
 				BF46894D1AAC469800A2586D /* Game Selection */,
+				BFFB709D1AF99ACA00DE56FE /* Emulation */,
 				BF7AE7FA1C2E851F00B1B5BC /* Pause Menu */,
 				BFAA1FEB1B8AA4E800495943 /* Settings */,
 				BF696B7E1D9B2AE6009639E0 /* Theming */,
