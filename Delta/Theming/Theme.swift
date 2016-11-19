@@ -10,6 +10,6 @@ import Foundation
 
 enum Theme
 {
-    case light
-    case dark
+    case opaque
+    case translucent
 }

@@ -15,7 +15,7 @@ import Roxas
 
 class GamesViewController: UIViewController
 {
-    var theme: Theme = .light {
+    var theme: Theme = .opaque {
         didSet {
             self.updateTheme()
         }
@@ -72,6 +72,11 @@ extension GamesViewController
         
         self.pageControl.centerXAnchor.constraint(equalTo: (self.navigationController?.toolbar.centerXAnchor)!, constant: 0).isActive = true
         self.pageControl.centerYAnchor.constraint(equalTo: (self.navigationController?.toolbar.centerYAnchor)!, constant: 0).isActive = true
+        
+        self.navigationController?.navigationBar.barStyle = .blackTranslucent
+        self.navigationController?.toolbar.barStyle = .blackTranslucent
+        
+        self.updateTheme()
     }
     
     override func viewWillAppear(_ animated: Bool)
@@ -140,15 +145,8 @@ private extension GamesViewController
     {
         switch self.theme
         {
-        case .light:
-            self.view.backgroundColor = UIColor.white
-            self.navigationController?.navigationBar.barStyle = .default
-            self.navigationController?.toolbar.barStyle = .default
-            
-        case .dark:
-            self.view.backgroundColor = nil
-            self.navigationController?.navigationBar.barStyle = .blackTranslucent
-            self.navigationController?.toolbar.barStyle = .blackTranslucent
+        case .opaque: self.view.backgroundColor = UIColor.deltaDarkGray
+        case .translucent: self.view.backgroundColor = nil
         }
         
         if let viewControllers = self.pageViewController.viewControllers as? [GameCollectionViewController]
