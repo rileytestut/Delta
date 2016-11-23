@@ -22,15 +22,6 @@ public class Game: _Game, GameProtocol
         
         return fileURL
     }
-    
-    public var preferredFileExtension: String {
-        switch self.type
-        {
-        case GameType.snes: return "smc"
-        case GameType.gba: return "gba"
-        default: return "delta"
-        }
-    }
 }
 
 extension Game

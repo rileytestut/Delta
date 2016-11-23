@@ -183,7 +183,7 @@ extension DatabaseManager
                 
                 do
                 {
-                    let destinationURL = DatabaseManager.gamesDirectoryURL.appendingPathComponent(game.identifier + "." + game.preferredFileExtension)
+                    let destinationURL = DatabaseManager.gamesDirectoryURL.appendingPathComponent(filename)
                     
                     if FileManager.default.fileExists(atPath: destinationURL.path)
                     {
