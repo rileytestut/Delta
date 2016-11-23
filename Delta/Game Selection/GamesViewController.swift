@@ -77,7 +77,7 @@ extension GamesViewController
         self.pageControl.translatesAutoresizingMaskIntoConstraints = false
         self.pageControl.hidesForSinglePage = false
         self.pageControl.numberOfPages = 3
-        self.pageControl.currentPageIndicatorTintColor = UIColor.deltaPurpleColor()
+        self.pageControl.currentPageIndicatorTintColor = UIColor.deltaPurple
         self.pageControl.pageIndicatorTintColor = UIColor.lightGray
         self.navigationController?.toolbar.addSubview(self.pageControl)
         

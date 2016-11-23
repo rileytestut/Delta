@@ -22,7 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         Delta.register(SNES.core)
         Delta.register(GBA.core)
         
-        self.window?.tintColor = UIColor.deltaPurpleColor()
+        self.window?.tintColor = UIColor.deltaPurple
         
         // Database
         

@@ -10,16 +10,11 @@ import UIKit
 
 extension UIColor
 {
-    class func deltaPurpleColor() -> UIColor
+    class var deltaPurple: UIColor
     {
-        return UIColor(red: 120.0/255.0, green: 32.0/255.0, blue: 157.0/255.0, alpha: 1.0)
+        return UIColor(red: 111.0/255.0, green: 14.0/255.0, blue: 199.0/255.0, alpha: 1.0)
     }
     
-    class func deltaLightPurpleColor() -> UIColor
-    {
-        return UIColor(red: 184.0/255.0, green: 97.0/255.0, blue: 253.0/255.0, alpha: 1.0)
-    }
-}    
     class var deltaDarkGray: UIColor
     {
         return UIColor(white: 0.15, alpha: 1.0)
