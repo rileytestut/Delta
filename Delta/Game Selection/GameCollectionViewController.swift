@@ -174,7 +174,7 @@ private extension GameCollectionViewController
     }
     
     //MARK: - Configure Cells
-    func configure(_ cell: GridCollectionViewCell, for indexPath: IndexPath)
+    func configure(_ cell: GridCollectionViewCell, for indexPath: IndexPath, ignoreImageOperations: Bool = false)
     {
         let game = self.dataSource.fetchedResultsController.object(at: indexPath)
         
@@ -194,7 +194,7 @@ private extension GameCollectionViewController
         cell.maximumImageSize = CGSize(width: 90, height: 90)
         cell.textLabel.text = game.name
         
-        if let artworkURL = game.artworkURL
+        if let artworkURL = game.artworkURL, !ignoreImageOperations
         {
             cell.imageView.sd_setImage(with: artworkURL, placeholderImage: #imageLiteral(resourceName: "BoxArt"), options: .continueInBackground) { (image, error, type, url) in
                 
@@ -429,7 +429,7 @@ extension GameCollectionViewController: UICollectionViewDelegateFlowLayout
         widthConstraint.isActive = true
         defer { widthConstraint.isActive = false }
         
-        self.configure(self.prototypeCell, for: indexPath)
+        self.configure(self.prototypeCell, for: indexPath, ignoreImageOperations: true)
         
         let size = self.prototypeCell.contentView.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
         return size
