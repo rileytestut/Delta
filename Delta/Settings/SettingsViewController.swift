@@ -15,6 +15,7 @@ extension SettingsViewController
     {
         case controllers
         case controllerSkins
+        case controllerOpacity
     }
     
     fileprivate enum Segue: String
@@ -26,6 +27,9 @@ extension SettingsViewController
 
 class SettingsViewController: UITableViewController
 {
+    @IBOutlet fileprivate var controllerOpacityLabel: UILabel!
+    @IBOutlet fileprivate var controllerOpacitySlider: UISlider!
+    
     required init?(coder aDecoder: NSCoder)
     {
         super.init(coder: aDecoder)
@@ -37,6 +41,9 @@ class SettingsViewController: UITableViewController
     override func viewDidLoad()
     {
         super.viewDidLoad()
+        
+        self.controllerOpacitySlider.value = Float(Settings.translucentControllerSkinOpacity)
+        self.updateControllerOpacityLabel()
     }
     
     override func viewWillAppear(_ animated: Bool)
@@ -84,6 +91,15 @@ class SettingsViewController: UITableViewController
 
 private extension SettingsViewController
 {
+    func updateControllerOpacityLabel()
+    {
+        let percentage = String(format: "%.f", Settings.translucentControllerSkinOpacity * 100) + "%"
+        self.controllerOpacityLabel.text = percentage
+    }
+}
+
+private extension SettingsViewController
+{
     @IBAction func unwindFromControllersSettingsViewController(_ segue: UIStoryboardSegue)
     {
         let indexPath = self.tableView.indexPathForSelectedRow
@@ -91,6 +107,22 @@ private extension SettingsViewController
         self.tableView.reloadSections(IndexSet(integer: Section.controllers.rawValue), with: .none)
         
         self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: UITableViewScrollPosition.none)
+    }
+}
+
+private extension SettingsViewController
+{
+    @IBAction func changeControllerOpacity(with sender: UISlider)
+    {
+        let roundedValue = (sender.value / 0.05).rounded() * 0.05
+        Settings.translucentControllerSkinOpacity = CGFloat(roundedValue)
+        
+        self.updateControllerOpacityLabel()
+    }
+    
+    @IBAction func didFinishChangingControllerOpacity(with sender: UISlider)
+    {
+        sender.value = Float(Settings.translucentControllerSkinOpacity)
     }
 }
 
@@ -142,6 +174,7 @@ extension SettingsViewController
         {
         case Section.controllers: self.performSegue(withIdentifier: Segue.controllers.rawValue, sender: cell)
         case Section.controllerSkins: self.performSegue(withIdentifier: Segue.controllerSkins.rawValue, sender: cell)
+        case Section.controllerOpacity: break
         }
     }
 }

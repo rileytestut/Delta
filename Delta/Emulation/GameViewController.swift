@@ -112,7 +112,7 @@ class GameViewController: DeltaCore.GameViewController
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.updateControllers), name: .externalControllerDidConnect, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.updateControllers), name: .externalControllerDidDisconnect, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.didEnterBackground(with:)), name: .UIApplicationDidEnterBackground, object: UIApplication.shared)
-        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.preferredControllerSkinDidUpdate(with:)), name: .preferredControllerSkinDidUpdate, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.settingsDidChange(with:)), name: .settingsDidChange, object: nil)
     }
     
     deinit
@@ -197,15 +197,8 @@ extension GameViewController
     {
         super.viewWillTransition(to: size, with: coordinator)
         
-        guard let game = self.game else { return }
-        
-        var traits = DeltaCore.ControllerSkin.Traits.defaults(for: self.view)
-        traits.orientation = (size.width > size.height) ? .landscape : .portrait
-        
-        let controllerSkin = Settings.preferredControllerSkin(for: game.type, traits: traits)
-        
         coordinator.animate(alongsideTransition: { (context) in
-            self.controllerView.controllerSkin = controllerSkin
+            self.updateControllerSkin()
         }, completion: nil)        
     }
     
@@ -389,6 +382,15 @@ private extension GameViewController
         
         let controllerSkin = Settings.preferredControllerSkin(for: game.type, traits: traits)
         self.controllerView.controllerSkin = controllerSkin
+        
+        if controllerSkin?.isTranslucent(for: traits) ?? false
+        {
+            self.controllerView.alpha = Settings.translucentControllerSkinOpacity
+        }
+        else
+        {
+            self.controllerView.alpha = 1.0
+        }
     }
 }
 
@@ -762,17 +764,35 @@ private extension GameViewController
         }
     }
     
-    @objc func preferredControllerSkinDidUpdate(with notification: Notification)
+    @objc func settingsDidChange(with notification: Notification)
     {
-        guard
-            let gameType = notification.userInfo?[Settings.NotificationUserInfoKey.gameType.rawValue] as? GameType,
-            let traits = notification.userInfo?[Settings.NotificationUserInfoKey.traits.rawValue] as? DeltaCore.ControllerSkin.Traits
-        else { return }
+        guard let settingsName = notification.userInfo?[Settings.NotificationUserInfoKey.name] as? Settings.Name else { return }
         
-        let currentTraits = DeltaCore.ControllerSkin.Traits.defaults(for: self.view)
-        if gameType == self.game?.type && traits == currentTraits
+        switch settingsName
         {
-            self.updateControllerSkin()
+        case .preferredControllerSkin:
+            guard
+                let gameType = notification.userInfo?[Settings.NotificationUserInfoKey.gameType] as? GameType,
+                let traits = notification.userInfo?[Settings.NotificationUserInfoKey.traits] as? DeltaCore.ControllerSkin.Traits
+            else { return }
+            
+            let currentTraits = DeltaCore.ControllerSkin.Traits.defaults(for: self.view)
+            if gameType == self.game?.type && traits == currentTraits
+            {
+                self.updateControllerSkin()
+            }
+            
+        case .translucentControllerSkinOpacity:
+            if let traits = self.controllerView.controllerSkinTraits
+            {
+                if self.controllerView.controllerSkin?.isTranslucent(for: traits) ?? false
+                {
+                    self.controllerView.alpha = Settings.translucentControllerSkinOpacity
+                }
+            }
+            
+            
+        default: break
         }
     }
 }

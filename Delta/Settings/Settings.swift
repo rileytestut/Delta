@@ -16,22 +16,49 @@ import Roxas
 
 extension Notification.Name
 {
-    static let preferredControllerSkinDidUpdate = Notification.Name("PreferredControllerSkinDidUpdateNotification")
+    static let settingsDidChange = Notification.Name("SettingsDidChangeNotification")
 }
 
 extension Settings
 {
     enum NotificationUserInfoKey: String
     {
+        case name
+        
         case gameType
         case traits
+    }
+    
+    enum Name: String
+    {
+        case localControllerPlayerIndex
+        case translucentControllerSkinOpacity
+        case preferredControllerSkin
     }
 }
 
 struct Settings
 {
     /// Controllers
-    static var localControllerPlayerIndex: Int? = 0
+    static var localControllerPlayerIndex: Int? = 0 {
+        didSet {
+            NotificationCenter.default.post(name: .settingsDidChange, object: nil, userInfo: [NotificationUserInfoKey.name: Name.localControllerPlayerIndex])
+        }
+    }
+    
+    static var translucentControllerSkinOpacity: CGFloat {
+        set {
+            UserDefaults.standard.translucentControllerSkinOpacity = newValue
+            NotificationCenter.default.post(name: .settingsDidChange, object: nil, userInfo: [NotificationUserInfoKey.name: Name.translucentControllerSkinOpacity])
+        }
+        get { return UserDefaults.standard.translucentControllerSkinOpacity }
+    }
+    
+    static func registerDefaults()
+    {
+        let defaults = [#keyPath(UserDefaults.translucentControllerSkinOpacity): 1.0]
+        UserDefaults.standard.register(defaults: defaults)
+    }
     
     static func preferredControllerSkin(for gameType: GameType, traits: DeltaCore.ControllerSkin.Traits) -> ControllerSkin?
     {
@@ -78,7 +105,7 @@ struct Settings
         guard let userDefaultKey = self.preferredControllerSkinKey(for: gameType, traits: traits) else { return }
         UserDefaults.standard.set(controllerSkin.identifier, forKey: userDefaultKey)
         
-        NotificationCenter.default.post(name: .preferredControllerSkinDidUpdate, object: controllerSkin, userInfo: [NotificationUserInfoKey.gameType.rawValue: gameType, NotificationUserInfoKey.traits.rawValue: traits])
+        NotificationCenter.default.post(name: .settingsDidChange, object: controllerSkin, userInfo: [NotificationUserInfoKey.name: Name.preferredControllerSkin, NotificationUserInfoKey.gameType: gameType, NotificationUserInfoKey.traits: traits])
     }
 }
 
@@ -114,4 +141,9 @@ private extension Settings
         let key = systemName + "-" + orientation + "-" + displayMode + "-controller"
         return key
     }
+}
+
+private extension UserDefaults
+{
+    @NSManaged var translucentControllerSkinOpacity: CGFloat
 }
