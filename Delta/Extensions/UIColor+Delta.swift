@@ -19,4 +19,9 @@ extension UIColor
     {
         return UIColor(red: 184.0/255.0, green: 97.0/255.0, blue: 253.0/255.0, alpha: 1.0)
     }
+}    
+    class var deltaDarkGray: UIColor
+    {
+        return UIColor(white: 0.15, alpha: 1.0)
+    }
 }

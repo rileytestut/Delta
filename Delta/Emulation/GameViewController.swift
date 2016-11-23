@@ -220,7 +220,7 @@ extension GameViewController
         {
         case "showGamesViewController":
             let gamesViewController = (segue.destination as! UINavigationController).topViewController as! GamesViewController
-            gamesViewController.theme = .dark
+            gamesViewController.theme = .translucent
             gamesViewController.activeEmulatorCore = self.emulatorCore
             
             self.updateAutoSaveState()

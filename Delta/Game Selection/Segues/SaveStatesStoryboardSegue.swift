@@ -26,7 +26,7 @@ class SaveStatesStoryboardSegue: UIStoryboardSegue
         let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(SaveStatesStoryboardSegue.handleDoneButton))
         saveStatesViewController.navigationItem.rightBarButtonItem = doneButton
         
-        guard saveStatesViewController.theme == .dark else { return }
+        guard saveStatesViewController.theme == .translucent else { return }
         
         let sourceView = self.source.navigationController!.view!
         
@@ -53,7 +53,7 @@ class SaveStatesStoryboardUnwindSegue: UIStoryboardSegue
     {
         super.perform()
         
-        guard let saveStatesViewController = (self.source as? UINavigationController)?.topViewController as? SaveStatesViewController, saveStatesViewController.theme == .dark else { return }
+        guard let saveStatesViewController = (self.source as? UINavigationController)?.topViewController as? SaveStatesViewController, saveStatesViewController.theme == .translucent else { return }
         
         let destinationView = self.destination.navigationController!.view!
         

@@ -49,7 +49,7 @@ class SaveStatesViewController: UICollectionViewController
     
     var mode = Mode.loading
     
-    var theme = Theme.dark {
+    var theme = Theme.translucent {
         didSet {
             if self.isViewLoaded
             {
@@ -135,6 +135,9 @@ extension SaveStatesViewController
         
         self.registerForPreviewing(with: self, sourceView: self.collectionView!)
         
+        self.navigationController?.navigationBar.barStyle = .blackTranslucent
+        self.navigationController?.toolbar.barStyle = .blackTranslucent
+        
         self.updateBackgroundView()
         self.updateTheme()
     }
@@ -192,22 +195,16 @@ private extension SaveStatesViewController
     {
         switch self.theme
         {
-        case .light:
-            self.view.backgroundColor = UIColor.white
-            
-            self.navigationController?.navigationBar.barStyle = .default
-            self.navigationController?.toolbar.barStyle = .default
+        case .opaque:
+            self.view.backgroundColor = UIColor.deltaDarkGray
             
             self.vibrancyView.effect = nil
             
             self.backgroundView.textLabel.textColor = UIColor.gray
             self.backgroundView.detailTextLabel.textColor = UIColor.gray
             
-        case .dark:
+        case .translucent:
             self.view.backgroundColor = nil
-            
-            self.navigationController?.navigationBar.barStyle = .blackTranslucent
-            self.navigationController?.toolbar.barStyle = .blackTranslucent
             
             self.vibrancyView.effect = UIVibrancyEffect(blurEffect: UIBlurEffect(style: .dark))
             
@@ -224,20 +221,17 @@ private extension SaveStatesViewController
         
         cell.imageView.backgroundColor = UIColor.white
         cell.imageView.image = UIImage(named: "DeltaPlaceholder")
+        cell.textLabel.textColor = UIColor.gray
         
         switch self.theme
         {
-        case .light:
+        case .opaque:
             cell.isTextLabelVibrancyEnabled = false
             cell.isImageViewVibrancyEnabled = false
             
-            cell.textLabel.textColor = UIColor.gray
-            
-        case .dark:
+        case .translucent:
             cell.isTextLabelVibrancyEnabled = true
             cell.isImageViewVibrancyEnabled = true
-            
-            cell.textLabel.textColor = UIColor.white
         }        
         
         if !ignoreOperations
@@ -289,16 +283,12 @@ private extension SaveStatesViewController
         }
         
         headerView.textLabel.text = title
+        headerView.textLabel.textColor = UIColor.white
         
         switch self.theme
         {
-        case .light:
-            headerView.textLabel.textColor = UIColor.gray
-            headerView.isTextLabelVibrancyEnabled = false
-            
-        case .dark:
-            headerView.textLabel.textColor = UIColor.white
-            headerView.isTextLabelVibrancyEnabled = true
+        case .opaque: headerView.isTextLabelVibrancyEnabled = false
+        case .translucent: headerView.isTextLabelVibrancyEnabled = true
         }
     }
     

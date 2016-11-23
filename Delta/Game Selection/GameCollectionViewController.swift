@@ -23,9 +23,20 @@ class GameCollectionViewController: UICollectionViewController
         }
     }
     
-    var theme: Theme = .light {
+    var theme: Theme = .opaque {
         didSet {
-            self.collectionView?.reloadData()
+            // self.collectionView?.reloadData()
+            
+            // Calling reloadData sometimes will not update the cells correctly if an insertion/deletion animation is in progress
+            // As a workaround, we manually iterate over and configure each cell ourselves
+            for cell in self.collectionView?.visibleCells ?? []
+            {
+                if let indexPath = self.collectionView?.indexPath(for: cell)
+                {
+                    self.configure(cell as! GridCollectionViewCell, for: indexPath)
+                }
+                
+            }
         }
     }
     
@@ -180,19 +191,18 @@ private extension GameCollectionViewController
         
         switch self.theme
         {
-        case .light:
-            cell.textLabel.textColor = UIColor.darkText
+        case .opaque:
             cell.isTextLabelVibrancyEnabled = false
             cell.isImageViewVibrancyEnabled = false
             
-        case .dark:
-            cell.textLabel.textColor = UIColor.white
+        case .translucent:
             cell.isTextLabelVibrancyEnabled = true
             cell.isImageViewVibrancyEnabled = true
         }
         
         cell.maximumImageSize = CGSize(width: 90, height: 90)
         cell.textLabel.text = game.name
+        cell.textLabel.textColor = UIColor.gray
         
         if let artworkURL = game.artworkURL, !ignoreImageOperations
         {

@@ -15,13 +15,24 @@ import Roxas
 
 class GamesViewController: UIViewController
 {
-    var theme: Theme = .light {
+    var theme: Theme = .opaque {
         didSet {
             self.updateTheme()
         }
     }
     
-    weak var activeEmulatorCore: EmulatorCore?
+    weak var activeEmulatorCore: EmulatorCore? {
+        didSet
+        {
+            let game = oldValue?.game as? Game
+            NotificationCenter.default.removeObserver(self, name: .NSManagedObjectContextObjectsDidChange, object: game?.managedObjectContext)
+            
+            if let game = self.activeEmulatorCore?.game as? Game
+            {
+                NotificationCenter.default.addObserver(self, selector: #selector(GamesViewController.managedObjectContextDidChange(with:)), name: .NSManagedObjectContextObjectsDidChange, object: game.managedObjectContext)
+            }
+        }
+    }
     
     fileprivate var pageViewController: UIPageViewController!
     fileprivate var backgroundView: RSTBackgroundView!
@@ -72,6 +83,11 @@ extension GamesViewController
         
         self.pageControl.centerXAnchor.constraint(equalTo: (self.navigationController?.toolbar.centerXAnchor)!, constant: 0).isActive = true
         self.pageControl.centerYAnchor.constraint(equalTo: (self.navigationController?.toolbar.centerYAnchor)!, constant: 0).isActive = true
+        
+        self.navigationController?.navigationBar.barStyle = .blackTranslucent
+        self.navigationController?.toolbar.barStyle = .blackTranslucent
+        
+        self.updateTheme()
     }
     
     override func viewWillAppear(_ animated: Bool)
@@ -140,17 +156,10 @@ private extension GamesViewController
     {
         switch self.theme
         {
-        case .light:
-            self.view.backgroundColor = UIColor.white
-            self.navigationController?.navigationBar.barStyle = .default
-            self.navigationController?.toolbar.barStyle = .default
-            
-        case .dark:
-            self.view.backgroundColor = nil
-            self.navigationController?.navigationBar.barStyle = .blackTranslucent
-            self.navigationController?.toolbar.barStyle = .blackTranslucent
+        case .opaque: self.view.backgroundColor = UIColor.deltaDarkGray
+        case .translucent: self.view.backgroundColor = nil
         }
-        
+                
         if let viewControllers = self.pageViewController.viewControllers as? [GameCollectionViewController]
         {
             for collectionViewController in viewControllers
@@ -264,6 +273,30 @@ extension GamesViewController: ImportControllerDelegate
     @nonobjc func importController(_ importController: ImportController, didImport controllerSkins: Set<ControllerSkin>)
     {
         print(controllerSkins)
+    }
+}
+
+private extension GamesViewController
+{
+    @objc func managedObjectContextDidChange(with notification: Notification)
+    {
+        guard let deletedObjects = notification.userInfo?[NSDeletedObjectsKey] as? Set<NSManagedObject> else { return }
+        
+        if let game = self.activeEmulatorCore?.game as? Game
+        {
+            if deletedObjects.contains(game)
+            {                
+                DispatchQueue.main.async {
+                    self.theme = .opaque
+                }
+            }
+        }
+        else
+        {
+            DispatchQueue.main.async {
+                self.theme = .opaque
+            }
+        }
     }
 }
 
