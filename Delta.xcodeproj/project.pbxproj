@@ -6,6 +6,20 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		BF14D8941DE7A512002CA1BE /* mogenerator */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = BF14D8971DE7A512002CA1BE /* Build configuration list for PBXAggregateTarget "mogenerator" */;
+			buildPhases = (
+				BF14D8981DE7A519002CA1BE /* mogenerator */,
+			);
+			dependencies = (
+			);
+			name = mogenerator;
+			productName = mogenerator;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		4FE8465FD28810191C3E5212 /* Pods_Delta.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 695E8C07A709B16AAD83AEC8 /* Pods_Delta.framework */; };
 		BF02D5DA1DDEBB3000A5E131 /* openvgdb.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = BF02D5D91DDEBB3000A5E131 /* openvgdb.sqlite */; };
@@ -549,7 +563,6 @@
 			buildConfigurationList = BFFA71F61AAC406100EE9DD1 /* Build configuration list for PBXNativeTarget "Delta" */;
 			buildPhases = (
 				DBD91E7D7EC2729786B4C5B1 /* [CP] Check Pods Manifest.lock */,
-				BF28980A1DAAFB0F0023D8E9 /* mogenerator */,
 				BFFA71D31AAC406100EE9DD1 /* Sources */,
 				BFFA71D41AAC406100EE9DD1 /* Frameworks */,
 				BFFA71D51AAC406100EE9DD1 /* Resources */,
@@ -576,6 +589,11 @@
 				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = "Riley Testut";
 				TargetAttributes = {
+					BF14D8941DE7A512002CA1BE = {
+						CreatedOnToolsVersion = 8.2;
+						DevelopmentTeam = 6XVY5G3U44;
+						ProvisioningStyle = Automatic;
+					};
 					BFFA71D61AAC406100EE9DD1 = {
 						CreatedOnToolsVersion = 6.3;
 						DevelopmentTeam = 6XVY5G3U44;
@@ -602,6 +620,7 @@
 			projectRoot = "";
 			targets = (
 				BFFA71D61AAC406100EE9DD1 /* Delta */,
+				BF14D8941DE7A512002CA1BE /* mogenerator */,
 			);
 		};
 /* End PBXProject section */
@@ -654,7 +673,7 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Delta/Pods-Delta-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		BF28980A1DAAFB0F0023D8E9 /* mogenerator */ = {
+		BF14D8981DE7A519002CA1BE /* mogenerator */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -784,6 +803,22 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		BF14D8951DE7A512002CA1BE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = 6XVY5G3U44;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		BF14D8961DE7A512002CA1BE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = 6XVY5G3U44;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		BFFA71F41AAC406100EE9DD1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -910,6 +945,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		BF14D8971DE7A512002CA1BE /* Build configuration list for PBXAggregateTarget "mogenerator" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BF14D8951DE7A512002CA1BE /* Debug */,
+				BF14D8961DE7A512002CA1BE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		BFFA71D21AAC406100EE9DD1 /* Build configuration list for PBXProject "Delta" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
