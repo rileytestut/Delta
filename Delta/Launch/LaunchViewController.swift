@@ -10,13 +10,13 @@ import UIKit
 
 class LaunchViewController: UIViewController
 {
-    @IBOutlet fileprivate var containerView: UIView!
+    @IBOutlet fileprivate var gameViewContainerView: UIView!
     fileprivate var gameViewController: GameViewController!
     
     fileprivate var presentedGameViewController: Bool = false
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.gameViewController?.preferredStatusBarStyle ?? .default
+        return self.gameViewController?.preferredStatusBarStyle ?? .lightContent
     }
     
     override var prefersStatusBarHidden: Bool {
@@ -33,7 +33,7 @@ class LaunchViewController: UIViewController
             
             self.gameViewController.performSegue(withIdentifier: "showInitialGamesViewController", sender: nil)
             self.transitionCoordinator?.animate(alongsideTransition: nil, completion: { (context) in
-                self.containerView.isHidden = false
+                self.view.bringSubview(toFront: self.gameViewContainerView)
             })
         }
     }

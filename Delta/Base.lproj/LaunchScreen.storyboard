@@ -1,16 +1,20 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11185.3" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="dkK-ii-Bx4">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11760" systemVersion="16B2657" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="dkK-ii-Bx4">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11151.4"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11755"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Launch View Controller-->
+        <!--View Controller-->
         <scene sceneID="DQQ-Kb-RwE">
             <objects>
-                <viewController id="dkK-ii-Bx4" customClass="LaunchViewController" customModule="Delta" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="dkK-ii-Bx4" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="qMb-3x-uIu"/>
                         <viewControllerLayoutGuide type="bottom" id="FUd-UF-5dT"/>
@@ -19,49 +23,30 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="  Copyright (c) 2015 Riley Testut. All rights reserved." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="jkf-0n-Uvb">
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Delta" textAlignment="center" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" minimumFontSize="18" translatesAutoresizingMaskIntoConstraints="NO" id="6Gs-zO-Os2">
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="36"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <containerView hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8cb-35-6fJ">
-                                <frame key="frameInset"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <connections>
-                                    <segue destination="t20-MI-odl" kind="embed" identifier="embedGameViewController" id="idv-a8-BL2"/>
-                                </connections>
-                            </containerView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Delta" translatesAutoresizingMaskIntoConstraints="NO" id="plh-tL-LY0">
+                                <rect key="frame" x="94" y="250" width="187.5" height="167"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="plh-tL-LY0" secondAttribute="height" multiplier="64:57" id="8qM-L2-ASa"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" white="0.14728124936421713" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="6Gs-zO-Os2" firstAttribute="leading" secondItem="8Uu-wz-ps8" secondAttribute="leading" constant="20" symbolic="YES" id="5Eu-HV-q7D"/>
-                            <constraint firstItem="jkf-0n-Uvb" firstAttribute="leading" secondItem="8Uu-wz-ps8" secondAttribute="leading" constant="20" symbolic="YES" id="FQi-iY-rOW"/>
-                            <constraint firstItem="6Gs-zO-Os2" firstAttribute="centerY" secondItem="8Uu-wz-ps8" secondAttribute="bottom" multiplier="1/3" constant="1" id="Fna-Iv-pD2"/>
-                            <constraint firstAttribute="bottom" secondItem="jkf-0n-Uvb" secondAttribute="bottom" constant="20" id="JNc-Vw-b2y"/>
-                            <constraint firstAttribute="centerX" secondItem="6Gs-zO-Os2" secondAttribute="centerX" id="ZLv-eF-yHv"/>
-                            <constraint firstAttribute="centerX" secondItem="jkf-0n-Uvb" secondAttribute="centerX" id="b8Z-N5-Fne"/>
+                            <constraint firstItem="plh-tL-LY0" firstAttribute="width" relation="lessThanOrEqual" secondItem="8Uu-wz-ps8" secondAttribute="width" multiplier="0.5" id="8j9-39-Y2s"/>
+                            <constraint firstItem="plh-tL-LY0" firstAttribute="centerY" secondItem="8Uu-wz-ps8" secondAttribute="centerY" id="COW-Co-NFK"/>
+                            <constraint firstItem="plh-tL-LY0" firstAttribute="height" secondItem="8Uu-wz-ps8" secondAttribute="height" multiplier="0.5" priority="900" id="G3L-7B-xVc"/>
+                            <constraint firstItem="plh-tL-LY0" firstAttribute="width" secondItem="8Uu-wz-ps8" secondAttribute="width" multiplier="0.5" priority="950" id="n3i-kS-7eQ"/>
+                            <constraint firstItem="plh-tL-LY0" firstAttribute="centerX" secondItem="8Uu-wz-ps8" secondAttribute="centerX" id="sp5-Kf-N7G"/>
+                            <constraint firstItem="plh-tL-LY0" firstAttribute="height" relation="lessThanOrEqual" secondItem="8Uu-wz-ps8" secondAttribute="height" multiplier="0.5" id="ubN-Qh-I5H"/>
                         </constraints>
                     </view>
-                    <connections>
-                        <outlet property="containerView" destination="8cb-35-6fJ" id="C1R-S6-fWD"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5Q3-eM-p3F" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-226.40000000000001" y="146.17691154422789"/>
         </scene>
-        <!--Main-->
-        <scene sceneID="4GO-dC-G5v">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Main" id="t20-MI-odl" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Kwk-ha-eS6" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="371" y="146"/>
-        </scene>
     </scenes>
+    <resources>
+        <image name="Delta" width="1280" height="1140"/>
+    </resources>
 </document>

@@ -70,12 +70,16 @@ extension InitialGamesStoryboardSegue: UIViewControllerAnimatedTransitioning
     {
         transitionContext.sourceViewController.beginAppearanceTransition(false, animated: false)
         
-        // No animation
+        transitionContext.destinationView.alpha = 0.0
         transitionContext.destinationView.frame = transitionContext.destinationViewFinalFrame!
         transitionContext.containerView.addSubview(transitionContext.destinationView)
-        transitionContext.completeTransition(true)
         
-        transitionContext.sourceViewController.endAppearanceTransition()
+        UIView.animate(withDuration: 0.3, animations: {
+            transitionContext.destinationView.alpha = 1.0
+        }, completion: { finished in
+            transitionContext.completeTransition(true)
+            transitionContext.sourceViewController.endAppearanceTransition()
+        })
     }
     
     func animateDismissalTransition(using transitionContext: UIViewControllerContextTransitioning)
