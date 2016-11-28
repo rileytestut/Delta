@@ -30,6 +30,8 @@ class SettingsViewController: UITableViewController
     @IBOutlet fileprivate var controllerOpacityLabel: UILabel!
     @IBOutlet fileprivate var controllerOpacitySlider: UISlider!
     
+    fileprivate var selectionFeedbackGenerator: UISelectionFeedbackGenerator?
+    
     required init?(coder aDecoder: NSCoder)
     {
         super.init(coder: aDecoder)
@@ -112,9 +114,21 @@ private extension SettingsViewController
 
 private extension SettingsViewController
 {
+    @IBAction func beginChangingControllerOpacity(with sender: UISlider)
+    {
+        self.selectionFeedbackGenerator = UISelectionFeedbackGenerator()
+        self.selectionFeedbackGenerator?.prepare()
+    }
+    
     @IBAction func changeControllerOpacity(with sender: UISlider)
     {
-        let roundedValue = (sender.value / 0.05).rounded() * 0.05
+        let roundedValue = CGFloat((sender.value / 0.05).rounded() * 0.05)
+        
+        if roundedValue != Settings.translucentControllerSkinOpacity
+        {
+            self.selectionFeedbackGenerator?.selectionChanged()
+        }
+        
         Settings.translucentControllerSkinOpacity = CGFloat(roundedValue)
         
         self.updateControllerOpacityLabel()
@@ -123,6 +137,7 @@ private extension SettingsViewController
     @IBAction func didFinishChangingControllerOpacity(with sender: UISlider)
     {
         sender.value = Float(Settings.translucentControllerSkinOpacity)
+        self.selectionFeedbackGenerator = nil
     }
 }
 

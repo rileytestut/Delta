@@ -169,6 +169,7 @@
                                                 <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="whi-If-wFf">
                                                     <rect key="frame" x="74" y="7" width="288" height="31"/>
                                                     <connections>
+                                                        <action selector="beginChangingControllerOpacityWith:" destination="eHi-aO-uGS" eventType="touchDown" id="NG9-FX-62d"/>
                                                         <action selector="changeControllerOpacityWith:" destination="eHi-aO-uGS" eventType="valueChanged" id="Zci-tN-4uU"/>
                                                         <action selector="didFinishChangingControllerOpacityWith:" destination="eHi-aO-uGS" eventType="touchUpInside" id="T9j-dn-oV6"/>
                                                         <action selector="didFinishChangingControllerOpacityWith:" destination="eHi-aO-uGS" eventType="touchCancel" id="YDh-63-VML"/>
