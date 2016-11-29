@@ -26,7 +26,6 @@
 		BF0418141D01E93400E85BCF /* GBADeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF0418131D01E93400E85BCF /* GBADeltaCore.framework */; };
 		BF0418151D01E93400E85BCF /* GBADeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BF0418131D01E93400E85BCF /* GBADeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF04E6FF1DB8625C000F35D3 /* ControllerSkinsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF04E6FE1DB8625C000F35D3 /* ControllerSkinsViewController.swift */; };
-		BF090CF41B490D8300DCAB45 /* UIDevice+Vibration.m in Sources */ = {isa = PBXBuildFile; fileRef = BF090CF31B490D8300DCAB45 /* UIDevice+Vibration.m */; };
 		BF0CDDAD1C8155D200640168 /* LoadImageOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0CDDAC1C8155D200640168 /* LoadImageOperation.swift */; };
 		BF0D057F1DDD9A96002A71A7 /* GamesDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0D057E1DDD9A96002A71A7 /* GamesDatabase.swift */; };
 		BF107EC41BF413F000E0C32C /* GamesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF107EC31BF413F000E0C32C /* GamesViewController.swift */; };
@@ -129,8 +128,6 @@
 		BF0418131D01E93400E85BCF /* GBADeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = GBADeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF04E6FE1DB8625C000F35D3 /* ControllerSkinsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ControllerSkinsViewController.swift; path = "Controller Skins/ControllerSkinsViewController.swift"; sourceTree = "<group>"; };
 		BF090CF11B490D8300DCAB45 /* Delta-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Delta-Bridging-Header.h"; sourceTree = "<group>"; };
-		BF090CF21B490D8300DCAB45 /* UIDevice+Vibration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+Vibration.h"; sourceTree = "<group>"; };
-		BF090CF31B490D8300DCAB45 /* UIDevice+Vibration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+Vibration.m"; sourceTree = "<group>"; };
 		BF0A81C41DC915C800443EF0 /* ControllerSkinConfigurations.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ControllerSkinConfigurations.h; path = Misc/ControllerSkinConfigurations.h; sourceTree = "<group>"; };
 		BF0CDDAC1C8155D200640168 /* LoadImageOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoadImageOperation.swift; path = Components/LoadImageOperation.swift; sourceTree = "<group>"; };
 		BF0D057E1DDD9A96002A71A7 /* GamesDatabase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GamesDatabase.swift; sourceTree = "<group>"; };
@@ -227,8 +224,6 @@
 		BF090CEE1B490C1A00DCAB45 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				BF090CF21B490D8300DCAB45 /* UIDevice+Vibration.h */,
-				BF090CF31B490D8300DCAB45 /* UIDevice+Vibration.m */,
 				BF797A2C1C2D339F00F1A000 /* UILabel+FontSize.swift */,
 				BF7AE8091C2E8C7600B1B5BC /* UIColor+Delta.swift */,
 				BFCEA67D1D56FF640061A534 /* UIViewControllerContextTransitioning+Conveniences.swift */,
@@ -740,7 +735,6 @@
 				BF353FFF1C5DA3C500C1184C /* PausePresentationController.swift in Sources */,
 				BFFC464C1D5998D600AF2CC6 /* CheatTableViewCell.swift in Sources */,
 				BF7AE80A1C2E8C7600B1B5BC /* UIColor+Delta.swift in Sources */,
-				BF090CF41B490D8300DCAB45 /* UIDevice+Vibration.m in Sources */,
 				BFACD5FD1DC3D2CE002D6DDC /* LoadControllerSkinImageOperation.swift in Sources */,
 				BF797A2D1C2D339F00F1A000 /* UILabel+FontSize.swift in Sources */,
 				BFD097211D3A01B8005A44C2 /* SaveStatesViewController.swift in Sources */,
@@ -952,6 +946,7 @@
 				BF14D8961DE7A512002CA1BE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		BFFA71D21AAC406100EE9DD1 /* Build configuration list for PBXProject "Delta" */ = {
 			isa = XCConfigurationList;

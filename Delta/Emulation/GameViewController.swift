@@ -125,11 +125,6 @@ class GameViewController: DeltaCore.GameViewController
     {
         super.gameController(gameController, didActivate: input)
         
-        if gameController is ControllerView && UIDevice.current.isVibrationSupported
-        {
-            UIDevice.current.vibrate()
-        }
-        
         guard (input as? ControllerInput) != .menu else { return }
         
         if self.selectingSustainedButtons
