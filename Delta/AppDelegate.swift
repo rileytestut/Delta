@@ -26,6 +26,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         
         self.window?.tintColor = UIColor.deltaPurple
         
+        // Disable system gestures that delay touches on left edge of screen
+        for gestureRecognizer in self.window?.gestureRecognizers ?? [] where NSStringFromClass(type(of: gestureRecognizer)).contains("GateGesture")
+        {
+            gestureRecognizer.delaysTouchesBegan = false
+        }
+        
         // Database
         
         DatabaseManager.shared.loadPersistentStores { (description, error) in
