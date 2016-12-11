@@ -12,7 +12,7 @@ extension UIColor
 {
     class var deltaPurple: UIColor
     {
-        return UIColor(red: 111.0/255.0, green: 14.0/255.0, blue: 199.0/255.0, alpha: 1.0)
+        return UIColor(red: 140.0/255.0, green: 26.0/255.0, blue: 233.0/255.0, alpha: 1.0)
     }
     
     class var deltaDarkGray: UIColor
