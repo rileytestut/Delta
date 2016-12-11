@@ -135,21 +135,21 @@ private extension PauseViewController
         
         guard self.emulatorCore != nil else { return }
         
-        self.saveStateItem = PauseItem(image: UIImage(named: "SaveSaveState")!, text: NSLocalizedString("Save State", comment: ""), action: { [unowned self] _ in
+        self.saveStateItem = PauseItem(image: #imageLiteral(resourceName: "SaveSaveState"), text: NSLocalizedString("Save State", comment: ""), action: { [unowned self] _ in
             self.saveStatesViewControllerMode = .saving
             self.performSegue(withIdentifier: "saveStates", sender: self)
         })
         
-        self.loadStateItem = PauseItem(image: UIImage(named: "LoadSaveState")!, text: NSLocalizedString("Load State", comment: ""), action: { [unowned self] _ in
+        self.loadStateItem = PauseItem(image: #imageLiteral(resourceName: "LoadSaveState"), text: NSLocalizedString("Load State", comment: ""), action: { [unowned self] _ in
             self.saveStatesViewControllerMode = .loading
             self.performSegue(withIdentifier: "saveStates", sender: self)
         })
         
-        self.cheatCodesItem = PauseItem(image: UIImage(named: "SmallPause")!, text: NSLocalizedString("Cheat Codes", comment: ""), action: { [unowned self] _ in
+        self.cheatCodesItem = PauseItem(image: #imageLiteral(resourceName: "CheatCodes"), text: NSLocalizedString("Cheat Codes", comment: ""), action: { [unowned self] _ in
             self.performSegue(withIdentifier: "cheats", sender: self)
         })
         
-        self.fastForwardItem = PauseItem(image: UIImage(named: "FastForward")!, text: NSLocalizedString("Fast Forward", comment: ""), action: { _ in })
-        self.sustainButtonsItem = PauseItem(image: UIImage(named: "SmallPause")!, text: NSLocalizedString("Sustain Buttons", comment: ""), action: { _ in })
+        self.fastForwardItem = PauseItem(image: #imageLiteral(resourceName: "FastForward"), text: NSLocalizedString("Fast Forward", comment: ""), action: { _ in })
+        self.sustainButtonsItem = PauseItem(image: #imageLiteral(resourceName: "SustainButtons"), text: NSLocalizedString("Sustain Buttons", comment: ""), action: { _ in })
     }
 }
