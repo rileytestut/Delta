@@ -57,6 +57,9 @@ public class SaveState: _SaveState, SaveStateProtocol
     {
         super.prepareForDeletion()
         
+        // In rare cases, game may actually be nil if game is corrupted, so we ensure it is non-nil first
+        guard self.game != nil else { return }
+        
         guard FileManager.default.fileExists(atPath: self.fileURL.path) else { return }
         
         do
