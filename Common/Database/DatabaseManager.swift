@@ -167,6 +167,8 @@ extension DatabaseManager
             
             for url in urls
             {
+                guard FileManager.default.fileExists(atPath: url.path) else { continue }
+                
                 let identifier = FileHash.sha1HashOfFile(atPath: url.path) as String
                 
                 let filename = identifier + "." + url.pathExtension
