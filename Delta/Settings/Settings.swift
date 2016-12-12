@@ -54,6 +54,18 @@ struct Settings
         get { return UserDefaults.standard.translucentControllerSkinOpacity }
     }
     
+    static var previousGameCollection: GameCollection? {
+        set { UserDefaults.standard.previousGameCollectionIdentifier = newValue?.identifier }
+        get {
+            guard let identifier = UserDefaults.standard.previousGameCollectionIdentifier else { return nil }
+            
+            let predicate = NSPredicate(format: "%K == %@", #keyPath(GameCollection.identifier), identifier)
+            
+            let gameCollection = GameCollection.instancesWithPredicate(predicate, inManagedObjectContext: DatabaseManager.shared.viewContext, type: GameCollection.self)
+            return gameCollection.first
+        }
+    }
+    
     static func registerDefaults()
     {
         let defaults = [#keyPath(UserDefaults.translucentControllerSkinOpacity): 1.0]
@@ -146,4 +158,5 @@ private extension Settings
 private extension UserDefaults
 {
     @NSManaged var translucentControllerSkinOpacity: CGFloat
+    @NSManaged var previousGameCollectionIdentifier: String?
 }

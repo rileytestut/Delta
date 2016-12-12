@@ -206,7 +206,7 @@ private extension GamesViewController
         
         var resetPageViewController = false
         
-        if let viewController = pageViewController.viewControllers?.first as? GameCollectionViewController, let gameCollection = viewController.gameCollection
+        if let viewController = self.pageViewController.viewControllers?.first as? GameCollectionViewController, let gameCollection = viewController.gameCollection
         {
             if let index = self.fetchedResultsController.fetchedObjects?.index(where: { $0 as! GameCollection == gameCollection })
             {
@@ -228,7 +228,17 @@ private extension GamesViewController
             // Reset page view controller if currently hidden or current child should view controller no longer exists
             if self.pageViewController.view.isHidden || resetPageViewController
             {
-                if let viewController = self.viewControllerForIndex(0)
+                var index = 0
+                
+                if let gameCollection = Settings.previousGameCollection
+                {
+                    if let gameCollectionIndex = self.fetchedResultsController.fetchedObjects?.index(where: { $0 as! GameCollection == gameCollection })
+                    {
+                        index = gameCollectionIndex
+                    }
+                }
+                
+                if let viewController = self.viewControllerForIndex(index)
                 {
                     self.pageViewController.view.setHidden(false, animated: animated)
                     self.backgroundView.setHidden(true, animated: animated)
@@ -236,6 +246,7 @@ private extension GamesViewController
                     self.pageViewController.setViewControllers([viewController], direction: .forward, animated: false, completion: nil)
                     
                     self.title = viewController.title
+                    self.pageControl.currentPage = index
                 }
             }
             else
@@ -334,6 +345,12 @@ extension GamesViewController: UIPageViewControllerDataSource, UIPageViewControl
         {
             let index = self.fetchedResultsController.fetchedObjects?.index(where: { $0 as! GameCollection == gameCollection }) ?? 0
             self.pageControl.currentPage = index
+            
+            Settings.previousGameCollection = gameCollection
+        }
+        else
+        {
+            Settings.previousGameCollection = nil
         }
         
         self.title = pageViewController.viewControllers?.first?.title
