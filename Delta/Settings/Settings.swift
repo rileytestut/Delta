@@ -68,7 +68,7 @@ struct Settings
     
     static func registerDefaults()
     {
-        let defaults = [#keyPath(UserDefaults.translucentControllerSkinOpacity): 1.0]
+        let defaults = [#keyPath(UserDefaults.translucentControllerSkinOpacity): 0.7]
         UserDefaults.standard.register(defaults: defaults)
     }
     
