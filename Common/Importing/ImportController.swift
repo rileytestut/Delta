@@ -41,6 +41,11 @@ class ImportController: NSObject
         var documentTypes = Game.supportedTypes.map { $0.rawValue }
         documentTypes.append(kUTTypeDeltaControllerSkin as String)
         
+        // Add GBA4iOS's exported UTIs in case user has GBA4iOS installed (which may override Delta's UTI declarations)
+        documentTypes.append("com.rileytestut.gba")
+        documentTypes.append("com.rileytestut.gbc")
+        documentTypes.append("com.rileytestut.gb")
+        
         #if os(iOS)
             let documentMenuController = UIDocumentMenuViewController(documentTypes: documentTypes, in: .import)
             documentMenuController.delegate = self
