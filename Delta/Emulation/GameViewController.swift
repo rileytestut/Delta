@@ -565,7 +565,16 @@ extension GameViewController: SaveStatesViewControllerDelegate
             print(error)
         }
         
-        self.emulatorCore?.updateCheats()
+        // Reactivate sustained inputs
+        for gameController in self.emulatorCore?.gameControllers ?? []
+        {
+            guard let sustainedInputs = self.sustainedInputs[ObjectIdentifier(gameController)] else { continue }
+            
+            for input in sustainedInputs
+            {
+                self.reactivateSustainedInput(input, for: gameController)
+            }
+        }
         
         self.pauseViewController?.dismiss()
     }
