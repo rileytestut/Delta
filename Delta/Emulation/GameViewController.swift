@@ -48,6 +48,7 @@ class GameViewController: DeltaCore.GameViewController
             NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.managedObjectContextDidChange(with:)), name: .NSManagedObjectContextObjectsDidChange, object: game?.managedObjectContext)
             
             self.updateControllerSkin()
+            self.updateControllers()
         }
     }
     
