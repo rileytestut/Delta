@@ -573,7 +573,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0700;
-				LastUpgradeCheck = 0810;
+				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = "Riley Testut";
 				TargetAttributes = {
 					BF14D8941DE7A512002CA1BE = {
@@ -892,6 +892,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.rileytestut.Delta;
 				PRODUCT_NAME = Delta;
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -900,6 +901,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C786AF1D2DDB6223BE2063CC /* Pods-Delta.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "Delta/Supporting Files/Delta.entitlements";
@@ -916,6 +918,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A19FF50F55441BC2B2248241 /* Pods-Delta.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "Delta/Supporting Files/Delta.entitlements";
