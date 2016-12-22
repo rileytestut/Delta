@@ -69,7 +69,42 @@ class AppDelegate: UIResponder, UIApplicationDelegate
     {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
+}
 
-
+extension AppDelegate
+{
+    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any]) -> Bool
+    {
+        return self.openURL(url)
+    }
+    
+    @discardableResult fileprivate func openURL(_ url: URL) -> Bool
+    {
+        guard url.isFileURL else { return false }
+        
+        let gameType = GameType.gameType(forFileExtension: url.pathExtension)
+        if gameType != .unknown
+        {
+            return self.importGame(at: url)
+        }
+        else if url.pathExtension.lowercased() == "deltaskin"
+        {
+            return self.importControllerSkin(at: url)
+        }
+        
+        return false
+    }
+    
+    private func importGame(at url: URL) -> Bool
+    {
+        DatabaseManager.shared.importGames(at: [url], completion: nil)
+        return true
+    }
+    
+    private func importControllerSkin(at url: URL) -> Bool
+    {
+        DatabaseManager.shared.importControllerSkins(at: [url], completion: nil)
+        return true
+    }
 }
 

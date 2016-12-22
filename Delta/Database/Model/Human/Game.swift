@@ -63,11 +63,3 @@ extension Game
         }
     }
 }
-
-extension Game
-{
-    class var supportedTypes: Set<GameType>
-    {
-        return [GameType.snes, GameType.gba]
-    }
-}

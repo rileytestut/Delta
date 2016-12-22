@@ -16,7 +16,7 @@ extension GameType
         {
         case GameType.snes: return NSLocalizedString("Super Nintendo Entertainment System", comment: "")
         case GameType.gba: return NSLocalizedString("Game Boy Advance", comment: "")
-        case GameType.delta: return NSLocalizedString("Unsupported System", comment: "")
+        case GameType.unknown: return NSLocalizedString("Unsupported System", comment: "")
         default: return NSLocalizedString("Unknown", comment: "")
         }
     }
@@ -27,7 +27,7 @@ extension GameType
         {
         case GameType.snes: return NSLocalizedString("SNES", comment: "")
         case GameType.gba: return NSLocalizedString("GBA", comment: "")
-        case GameType.delta: return NSLocalizedString("Unsupported", comment: "")
+        case GameType.unknown: return NSLocalizedString("Unsupported", comment: "")
         default: return NSLocalizedString("Unknown", comment: "")
         }
     }

@@ -29,24 +29,16 @@ public class GameCollection: _GameCollection
     
     class func gameSystemCollectionForPathExtension(_ pathExtension: String?, inManagedObjectContext managedObjectContext: NSManagedObjectContext) -> GameCollection
     {
-        let identifier: String
+        let gameType = GameType.gameType(forFileExtension: pathExtension ?? "")
+        let identifier = gameType.rawValue
+        
         let index: Int16
         
-        switch pathExtension ?? ""
+        switch gameType
         {
-        case "smc": fallthrough
-        case "sfc": fallthrough
-        case "fig":
-            identifier = GameType.snes.rawValue
-            index = 1990
-            
-        case "gba":
-            identifier = GameType.gba.rawValue
-            index = 2001
-            
-        default:
-            identifier = GameType.delta.rawValue
-            index = Int16(INT16_MAX)
+        case GameType.snes: index = 1990
+        case GameType.gba: index = 2001
+        default: index = Int16(INT16_MAX)
         }
         
         let predicate = NSPredicate(format: "%K == %@", #keyPath(GameCollection.identifier), identifier)

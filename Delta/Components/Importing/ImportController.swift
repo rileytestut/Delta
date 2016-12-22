@@ -38,7 +38,7 @@ class ImportController: NSObject
     {
         self.presentingViewController = presentingViewController
         
-        var documentTypes = Game.supportedTypes.map { $0.rawValue }
+        var documentTypes = GameType.supportedTypes.map { $0.rawValue }
         documentTypes.append(kUTTypeDeltaControllerSkin as String)
         
         // Add GBA4iOS's exported UTIs in case user has GBA4iOS installed (which may override Delta's UTI declarations)
@@ -69,10 +69,10 @@ class ImportController: NSObject
                 let contents = try FileManager.default.contentsOfDirectory(at: documentsDirectoryURL, includingPropertiesForKeys: nil, options: .skipsHiddenFiles)
                 
                 DatabaseManager.shared.performBackgroundTask { (context) in
-                    let controllerSkinURLs = contents.filter { $0.pathExtension == "deltaskin" }
+                    let controllerSkinURLs = contents.filter { $0.pathExtension.lowercased() == "deltaskin" }
                     self.importControllerSkins(at: controllerSkinURLs)
                     
-                    let gameURLs = contents.filter { GameCollection.gameSystemCollectionForPathExtension($0.pathExtension, inManagedObjectContext: context).identifier != GameType.delta.rawValue }
+                    let gameURLs = contents.filter { GameType.gameType(forFileExtension: $0.pathExtension) != .unknown }
                     self.importGames(at: gameURLs)
                 }
                 
@@ -154,7 +154,7 @@ class ImportController: NSObject
     {
         func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL)
         {
-            if url.pathExtension == "deltaskin"
+            if url.pathExtension.lowercased() == "deltaskin"
             {
                 self.importControllerSkins(at: [url])
             }

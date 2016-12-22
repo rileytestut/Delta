@@ -77,7 +77,7 @@ private extension DatabaseManager
     {
         self.performBackgroundTask { (context) in
             
-            for gameType in Game.supportedTypes
+            for gameType in GameType.supportedTypes
             {
                 guard let deltaControllerSkin = DeltaCore.ControllerSkin.standardControllerSkin(for: gameType) else { continue }
                 
