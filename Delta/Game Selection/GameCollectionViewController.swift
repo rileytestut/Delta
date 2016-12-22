@@ -64,6 +64,7 @@ extension GameCollectionViewController
         
         let layout = self.collectionViewLayout as! GridCollectionViewLayout
         layout.itemWidth = 90
+        layout.minimumInteritemSpacing = 12
         
         self.registerForPreviewing(with: self, sourceView: self.collectionView!)
         
