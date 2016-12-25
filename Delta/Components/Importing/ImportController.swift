@@ -11,6 +11,8 @@ import ObjectiveC
 
 import DeltaCore
 
+import MobileCoreServices
+
 protocol ImportControllerDelegate
 {
     func importController(_ importController: ImportController, didImport games: Set<Game>)
@@ -40,6 +42,7 @@ class ImportController: NSObject
         
         var documentTypes = GameType.supportedTypes.map { $0.rawValue }
         documentTypes.append(kUTTypeDeltaControllerSkin as String)
+        documentTypes.append(kUTTypeZipArchive as String)
         
         // Add GBA4iOS's exported UTIs in case user has GBA4iOS installed (which may override Delta's UTI declarations)
         documentTypes.append("com.rileytestut.gba")
@@ -72,7 +75,7 @@ class ImportController: NSObject
                     let controllerSkinURLs = contents.filter { $0.pathExtension.lowercased() == "deltaskin" }
                     self.importControllerSkins(at: controllerSkinURLs)
                     
-                    let gameURLs = contents.filter { GameType.gameType(forFileExtension: $0.pathExtension) != .unknown }
+                    let gameURLs = contents.filter { GameType.gameType(forFileExtension: $0.pathExtension) != .unknown || $0.pathExtension.lowercased() == "zip" }
                     self.importGames(at: gameURLs)
                 }
                 

@@ -11,6 +11,7 @@ import CoreData
 
 // Workspace
 import DeltaCore
+import ZipZap
 
 // Pods
 import FileMD5Hash
@@ -107,6 +108,80 @@ private extension DatabaseManager
 /// Importing
 extension DatabaseManager
 {
+    func importGames(at urls: [URL], completion: ((Set<String>) -> Void)?)
+    {
+        let zipFileURLs = urls.filter { $0.pathExtension.lowercased() == "zip" }
+        if zipFileURLs.count > 0
+        {
+            self.extractCompressedGames(at: zipFileURLs) { (extractedURLs) in
+                let gameURLs = urls.filter { $0.pathExtension.lowercased() != "zip" } + extractedURLs
+                self.importGames(at: gameURLs, completion: completion)
+            }
+            
+            return
+        }
+        
+        self.performBackgroundTask { (context) in
+            
+            var identifiers = Set<String>()
+            
+            for url in urls
+            {
+                guard FileManager.default.fileExists(atPath: url.path) else { continue }
+                
+                let identifier = FileHash.sha1HashOfFile(atPath: url.path) as String
+                
+                let filename = identifier + "." + url.pathExtension
+                
+                let game = Game.insertIntoManagedObjectContext(context)
+                game.name = url.deletingPathExtension().lastPathComponent
+                game.identifier = identifier
+                game.filename = filename
+                game.artworkURL = self.gamesDatabase?.artworkURL(for: game)
+                
+                let gameCollection = GameCollection.gameSystemCollectionForPathExtension(url.pathExtension, inManagedObjectContext: context)
+                game.type = GameType(rawValue: gameCollection.identifier)
+                game.gameCollections.insert(gameCollection)
+                
+                do
+                {
+                    let destinationURL = DatabaseManager.gamesDirectoryURL.appendingPathComponent(filename)
+                    
+                    if FileManager.default.fileExists(atPath: destinationURL.path)
+                    {
+                        // Game already exists, so we choose not to override it and just delete the new game instead
+                        try FileManager.default.removeItem(at: url)
+                    }
+                    else
+                    {
+                        try FileManager.default.moveItem(at: url, to: destinationURL)
+                    }
+                    
+                    identifiers.insert(game.identifier)
+                }
+                catch
+                {
+                    print("Import Games error:", error)
+                    game.managedObjectContext?.delete(game)
+                }
+                
+            }
+            
+            do
+            {
+                try context.save()
+            }
+            catch
+            {
+                print("Failed to save import context:", error)
+                
+                identifiers.removeAll()
+            }
+            
+            completion?(identifiers)
+        }
+    }
+    
     func importControllerSkins(at urls: [URL], completion: ((Set<String>) -> Void)?)
     {
         self.performBackgroundTask { (context) in
@@ -159,66 +234,97 @@ extension DatabaseManager
         }
     }
     
-    func importGames(at urls: [URL], completion: ((Set<String>) -> Void)?)
+    private func extractCompressedGames(at urls: [URL], completion: @escaping ((Set<URL>) -> Void))
     {
-        self.performBackgroundTask { (context) in
+        DispatchQueue.global().async {
             
-            var identifiers = Set<String>()
+            var semaphores = Set<DispatchSemaphore>()
+            var outputURLs = Set<URL>()
             
             for url in urls
             {
-                guard FileManager.default.fileExists(atPath: url.path) else { continue }
-                
-                let identifier = FileHash.sha1HashOfFile(atPath: url.path) as String
-                
-                let filename = identifier + "." + url.pathExtension
-                
-                let game = Game.insertIntoManagedObjectContext(context)
-                game.name = url.deletingPathExtension().lastPathComponent
-                game.identifier = identifier
-                game.filename = filename
-                game.artworkURL = self.gamesDatabase?.artworkURL(for: game)
-
-                let gameCollection = GameCollection.gameSystemCollectionForPathExtension(url.pathExtension, inManagedObjectContext: context)
-                game.type = GameType(rawValue: gameCollection.identifier)
-                game.gameCollections.insert(gameCollection)
-                
                 do
                 {
-                    let destinationURL = DatabaseManager.gamesDirectoryURL.appendingPathComponent(filename)
+                    let archive = try ZZArchive(url: url)
                     
-                    if FileManager.default.fileExists(atPath: destinationURL.path)
+                    for entry in archive.entries
                     {
-                        // Game already exists, so we choose not to override it and just delete the new game instead
-                        try FileManager.default.removeItem(at: url)
+                        // Ensure entry is not in a subdirectory
+                        guard !entry.fileName.contains("/") else { continue }
+                        
+                        let fileExtension = (entry.fileName as NSString).pathExtension
+                        let gameType = GameType.gameType(forFileExtension: fileExtension)
+                        
+                        guard gameType != .unknown else { continue }
+                        
+                        // ROMs may potentially be very large, so we extract using file streams and not raw Data
+                        let inputStream = try entry.newStream()
+                        
+                        let outputURL = url.deletingLastPathComponent().appendingPathComponent(entry.fileName)
+                        
+                        if FileManager.default.fileExists(atPath: outputURL.path)
+                        {
+                            try FileManager.default.removeItem(at: outputURL)
+                        }
+                        
+                        guard let outputStream = OutputStream(url: outputURL, append: false) else { continue }
+                        
+                        let semaphore = DispatchSemaphore(value: 0)
+                        semaphores.insert(semaphore)
+                        
+                        let outputWriter = InputStreamOutputWriter(inputStream: inputStream, outputStream: outputStream)
+                        outputWriter.start { (error) in
+                            if let error = error
+                            {
+                                if FileManager.default.fileExists(atPath: outputURL.path)
+                                {
+                                    do
+                                    {
+                                        try FileManager.default.removeItem(at: outputURL)
+                                    }
+                                    catch
+                                    {
+                                        print(error)
+                                    }
+                                }
+                                
+                                print(error)
+                            }
+                            else
+                            {
+                                outputURLs.insert(outputURL)
+                                semaphore.signal()
+                            }
+                        }
                     }
-                    else
-                    {
-                        try FileManager.default.moveItem(at: url, to: destinationURL)
-                    }
-                    
-                    identifiers.insert(game.identifier)
                 }
                 catch
                 {
-                    print("Import Games error:", error)
-                    game.managedObjectContext?.delete(game)
+                    print(error)
                 }
-                
             }
             
-            do
+            for semaphore in semaphores
             {
-                try context.save()
-            }
-            catch
-            {
-                print("Failed to save import context:", error)
-                
-                identifiers.removeAll()
+                semaphore.wait()
             }
             
-            completion?(identifiers)
+            for url in urls
+            {
+                if FileManager.default.fileExists(atPath: url.path)
+                {
+                    do
+                    {
+                        try FileManager.default.removeItem(at: url)
+                    }
+                    catch
+                    {
+                        print(error)
+                    }
+                }
+            }
+            
+            completion(outputURLs)
         }
     }
 }

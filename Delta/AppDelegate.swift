@@ -83,7 +83,7 @@ extension AppDelegate
         guard url.isFileURL else { return false }
         
         let gameType = GameType.gameType(forFileExtension: url.pathExtension)
-        if gameType != .unknown
+        if gameType != .unknown || url.pathExtension.lowercased() == "zip"
         {
             return self.importGame(at: url)
         }
