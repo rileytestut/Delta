@@ -260,7 +260,8 @@ extension DatabaseManager
                         // ROMs may potentially be very large, so we extract using file streams and not raw Data
                         let inputStream = try entry.newStream()
                         
-                        let outputURL = url.deletingLastPathComponent().appendingPathComponent(entry.fileName)
+                        // Must use temporary directory, and not the directory containing zip file, since the latter might be read-only (such as when importing from Safari)
+                        let outputURL = FileManager.default.temporaryDirectory.appendingPathComponent(entry.fileName)
                         
                         if FileManager.default.fileExists(atPath: outputURL.path)
                         {
