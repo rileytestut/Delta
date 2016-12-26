@@ -60,6 +60,12 @@ public class SaveState: _SaveState, SaveStateProtocol
         // In rare cases, game may actually be nil if game is corrupted, so we ensure it is non-nil first
         guard self.game != nil else { return }
         
+        guard let managedObjectContext = self.managedObjectContext else { return }
+        
+        // If a save state with the same identifier is also currently being inserted, Core Data is more than likely resolving a conflict by deleting the previous instance
+        // In this case, we make sure we DON'T delete the save state file + misc other Core Data relationships, or else we'll just lose all that data
+        guard !managedObjectContext.insertedObjects.contains(where: { ($0 as? SaveState)?.identifier == self.identifier }) else { return }
+        
         guard FileManager.default.fileExists(atPath: self.fileURL.path) else { return }
         
         do
