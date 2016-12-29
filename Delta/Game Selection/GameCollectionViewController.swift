@@ -251,6 +251,10 @@ private extension GameCollectionViewController
             self.rename(game)
         })
         
+        let shareAction = Action(title: NSLocalizedString("Share", comment: ""), style: .default, action: { [unowned self] action in
+            self.share(game)
+        })
+        
         let saveStatesAction = Action(title: NSLocalizedString("Save States", comment: ""), style: .default, action: { [unowned self] action in
             self.viewSaveStates(for: game)
         })
@@ -259,7 +263,7 @@ private extension GameCollectionViewController
             self.delete(game)
         })
         
-        return [cancelAction, renameAction, saveStatesAction, deleteAction]
+        return [cancelAction, renameAction, shareAction, saveStatesAction, deleteAction]
     }
     
     func delete(_ game: Game)
@@ -321,6 +325,38 @@ private extension GameCollectionViewController
         }
         
         self._renameAction = nil
+    }
+    
+    func share(_ game: Game)
+    {
+        let temporaryDirectory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        let symbolicURL = temporaryDirectory.appendingPathComponent(game.name + "." + game.fileURL.pathExtension)
+        
+        do
+        {
+            try FileManager.default.createDirectory(at: temporaryDirectory, withIntermediateDirectories: true, attributes: nil)
+            
+            // Create a symbolic link so we can control the file name used when sharing.
+            // Otherwise, if we just passed in game.fileURL to UIActivityViewController, the file name would be the game's SHA1 hash.
+            try FileManager.default.createSymbolicLink(at: symbolicURL, withDestinationURL: game.fileURL)
+        }
+        catch
+        {
+            print(error)
+        }
+        
+        let activityViewController = UIActivityViewController(activityItems: [symbolicURL], applicationActivities: nil)
+        activityViewController.completionWithItemsHandler = { (activityType, finished, returnedItems, error) in
+            do
+            {
+                try FileManager.default.removeItem(at: temporaryDirectory)
+            }
+            catch
+            {
+                print(error)
+            }
+        }
+        self.present(activityViewController, animated: true, completion: nil)
     }
     
     @objc func textFieldTextDidChange(_ textField: UITextField)
