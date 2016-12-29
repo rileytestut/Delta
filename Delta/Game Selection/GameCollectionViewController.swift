@@ -263,7 +263,11 @@ private extension GameCollectionViewController
             self.delete(game)
         })
         
-        return [cancelAction, renameAction, shareAction, saveStatesAction, deleteAction]
+        switch game.type
+        {
+        case GameType.unknown: return [cancelAction, renameAction, shareAction, deleteAction]
+        default: return [cancelAction, renameAction, shareAction, saveStatesAction, deleteAction]
+        }
     }
     
     func delete(_ game: Game)
@@ -385,6 +389,8 @@ extension GameCollectionViewController: UIViewControllerPreviewingDelegate
 {
     func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController?
     {
+        guard self.gameCollection.identifier != GameType.unknown.rawValue else { return nil }
+        
         guard
             let collectionView = self.collectionView,
             let indexPath = collectionView.indexPathForItem(at: location),
@@ -465,6 +471,8 @@ extension GameCollectionViewController
 {
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
     {
+        guard self.gameCollection.identifier != GameType.unknown.rawValue else { return }
+        
         let cell = collectionView.cellForItem(at: indexPath)
         let game = self.dataSource.fetchedResultsController.object(at: indexPath)
         
