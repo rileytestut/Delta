@@ -49,6 +49,8 @@ class GameCollectionViewController: UICollectionViewController
     
     fileprivate var _performing3DTouchTransition = false
     fileprivate weak var _destination3DTouchTransitionViewController: UIViewController?
+    
+    fileprivate var _renameAction: UIAlertAction?
 }
 
 //MARK: - UIViewController -
@@ -245,6 +247,10 @@ private extension GameCollectionViewController
     {
         let cancelAction = Action(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, action: nil)
         
+        let renameAction = Action(title: NSLocalizedString("Rename", comment: ""), style: .default, action: { [unowned self] action in
+            self.rename(game)
+        })
+        
         let saveStatesAction = Action(title: NSLocalizedString("Save States", comment: ""), style: .default, action: { [unowned self] action in
             self.viewSaveStates(for: game)
         })
@@ -253,7 +259,7 @@ private extension GameCollectionViewController
             self.delete(game)
         })
         
-        return [cancelAction, saveStatesAction, deleteAction]
+        return [cancelAction, renameAction, saveStatesAction, deleteAction]
     }
     
     func delete(_ game: Game)
@@ -277,6 +283,50 @@ private extension GameCollectionViewController
     func viewSaveStates(for game: Game)
     {
         self.performSegue(withIdentifier: "showSaveStates", sender: game)
+    }
+    
+    func rename(_ game: Game)
+    {
+        let alertController = UIAlertController(title: NSLocalizedString("Rename Game", comment: ""), message: nil, preferredStyle: .alert)
+        alertController.addTextField { (textField) in
+            textField.text = game.name
+            textField.placeholder = NSLocalizedString("Name", comment: "")
+            textField.autocapitalizationType = .words
+            textField.returnKeyType = .done
+            textField.enablesReturnKeyAutomatically = true
+            textField.addTarget(self, action: #selector(GameCollectionViewController.textFieldTextDidChange(_:)), for: .editingChanged)
+        }
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: { (action) in
+            self._renameAction = nil
+        }))
+        
+        let renameAction = UIAlertAction(title: NSLocalizedString("Rename", comment: ""), style: .default, handler: { [unowned alertController] (action) in
+            self.rename(game, with: alertController.textFields?.first?.text ?? "")
+        })
+        alertController.addAction(renameAction)
+        self._renameAction = renameAction
+        
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    func rename(_ game: Game, with name: String)
+    {
+        guard name.characters.count > 0 else { return }
+
+        DatabaseManager.shared.performBackgroundTask { (context) in
+            let game = context.object(with: game.objectID) as! Game
+            game.name = name
+            
+            context.saveWithErrorLogging()
+        }
+        
+        self._renameAction = nil
+    }
+    
+    @objc func textFieldTextDidChange(_ textField: UITextField)
+    {
+        let text = textField.text ?? ""
+        self._renameAction?.isEnabled = text.characters.count > 0
     }
     
     @objc func handleLongPressGesture(_ gestureRecognizer: UILongPressGestureRecognizer)
