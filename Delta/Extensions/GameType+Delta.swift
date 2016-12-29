@@ -19,7 +19,7 @@ extension GameType
     {
         let gameType: GameType
         
-        switch fileExtension
+        switch fileExtension.lowercased()
         {
         case "smc", "sfc", "fig": gameType = GameType.snes
         case "gba": gameType = GameType.gba
