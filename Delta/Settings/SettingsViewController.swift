@@ -156,6 +156,16 @@ private extension SettingsViewController
 
 extension SettingsViewController
 {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection sectionIndex: Int) -> Int
+    {
+        let section = Section(rawValue: sectionIndex)!
+        switch section
+        {
+        case .controllers: return 1 // Temporarily hide other controller indexes until controller logic is finalized
+        default: return super.tableView(tableView, numberOfRowsInSection: sectionIndex)
+        }
+    }
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
