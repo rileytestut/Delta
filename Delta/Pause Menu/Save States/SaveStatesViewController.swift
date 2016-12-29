@@ -71,7 +71,6 @@ class SaveStatesViewController: UICollectionViewController
     fileprivate let imageCache = NSCache<NSURL, UIImage>()
     
     fileprivate var emulatorCoreSaveState: SaveStateProtocol?
-    fileprivate var selectedSaveState: SaveState?
     
     fileprivate let dateFormatter: DateFormatter
     
@@ -367,44 +366,35 @@ private extension SaveStatesViewController
     
     func renameSaveState(_ saveState: SaveState)
     {
-        self.selectedSaveState = saveState
-        
         let alertController = UIAlertController(title: NSLocalizedString("Rename Save State", comment: ""), message: nil, preferredStyle: .alert)
         alertController.addTextField { (textField) in
             textField.text = saveState.name
             textField.placeholder = NSLocalizedString("Name", comment: "")
             textField.autocapitalizationType = .words
             textField.returnKeyType = .done
-            textField.addTarget(self, action: #selector(SaveStatesViewController.updateSaveStateName(_:)), for: .editingDidEnd)
         }
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: { (action) in
-            self.selectedSaveState = nil
-        }))
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Rename", comment: ""), style: .default, handler: { (action) in
-            self.updateSaveStateName(alertController.textFields!.first!)
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Rename", comment: ""), style: .default, handler: { [unowned alertController] (action) in
+            self.rename(saveState, with: alertController.textFields?.first?.text)
         }))
         self.present(alertController, animated: true, completion: nil)
     }
     
-    @objc func updateSaveStateName(_ textField: UITextField)
+    func rename(_ saveState: SaveState, with name: String?)
     {
-        guard let selectedSaveState = self.selectedSaveState else { return }
-        
-        var text = textField.text
-        if text?.characters.count == 0
+        var name = name
+        if (name ?? "").characters.count == 0
         {
             // When text is nil, we know to show the timestamp instead
-            text = nil
+            name = nil
         }
         
         DatabaseManager.shared.performBackgroundTask { (context) in
-            let saveState = context.object(with: selectedSaveState.objectID) as! SaveState
-            saveState.name = text
+            let saveState = context.object(with: saveState.objectID) as! SaveState
+            saveState.name = name
             
             context.saveWithErrorLogging()
         }
-        
-        self.selectedSaveState = nil
     }
     
     func updatePreviewSaveState(_ saveState: SaveState?)
