@@ -344,6 +344,12 @@ private extension GameViewController
         if let index = Settings.localControllerPlayerIndex
         {
             self.controllerView.playerIndex = index
+            self.controllerView.isHidden = false
+        }
+        else
+        {
+            self.controllerView.playerIndex = nil
+            self.controllerView.isHidden = true
         }
         
         var controllers = [GameController]()
@@ -368,6 +374,7 @@ private extension GameViewController
         }
         
         self.view.setNeedsLayout()
+        self.view.layoutIfNeeded()
     }
     
     func updateControllerSkin()
@@ -775,6 +782,8 @@ private extension GameViewController
         
         switch settingsName
         {
+        case .localControllerPlayerIndex: self.updateControllers()
+            
         case .preferredControllerSkin:
             guard
                 let gameType = notification.userInfo?[Settings.NotificationUserInfoKey.gameType] as? GameType,
@@ -795,9 +804,6 @@ private extension GameViewController
                     self.controllerView.alpha = Settings.translucentControllerSkinOpacity
                 }
             }
-            
-            
-        default: break
         }
     }
 }
