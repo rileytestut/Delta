@@ -514,12 +514,7 @@ private extension SaveStatesViewController
     
     func resetEmulatorCoreIfNeeded()
     {
-        // Kinda hacky, but isMovingFromParentViewController only returns yes when popping off navigation controller, and not being dismissed modally
-        // Because of this, this is only run when the user returns to PauseMenuViewController, and not when they choose a save state to load
-        if self.isMovingFromParentViewController
-        {
-            self.prepareEmulatorCore()
-        }
+        self.prepareEmulatorCore()
         
         if let saveState = self.emulatorCoreSaveState
         {
@@ -538,7 +533,8 @@ private extension SaveStatesViewController
     func prepareEmulatorCore()
     {
         // We stopped emulation for 3D Touch, so now we must resume emulation and load the save state we made to make it seem like it was never stopped
-        guard let emulatorCore = self.emulatorCore else { return }
+        // Additionally, if emulatorCore.state != .stopped, then we have already resumed emulation with correct save state, and don't need to do it again
+        guard let emulatorCore = self.emulatorCore, emulatorCore.state == .stopped else { return }
         
         // Temporarily disable video rendering to prevent flickers
         emulatorCore.videoManager.isEnabled = false

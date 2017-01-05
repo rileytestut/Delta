@@ -74,6 +74,8 @@ class GameViewController: DeltaCore.GameViewController
         }
     }
     
+    fileprivate var _isLoadingSaveState = false
+    
     fileprivate var context = CIContext(options: [kCIContextWorkingColorSpace: NSNull()])
     
     // Sustain Buttons
@@ -274,19 +276,10 @@ extension GameViewController
             self.pausedSaveState = nil
             
             DispatchQueue.main.async {
-                if
-                    let transitionCoordinator = self.transitionCoordinator,
-                    let navigationController = segue.source.navigationController,
-                    navigationController.viewControllers.count == 1
+                
+                if self._isLoadingSaveState
                 {
-                    // If user pressed "Resume" from Pause Menu, we wait for the transition to complete before resuming emulation
-                    transitionCoordinator.animate(alongsideTransition: nil, completion: { (context) in
-                        self.resumeEmulation()
-                    })
-                }
-                else
-                {
-                    // Otherwise, we resume emulation immediately (such as when loading save states and the game view needs to be updated ASAP)
+                    // If loading save state, resume emulation immediately (since the game view needs to be updated ASAP)
                     
                     if self.resumeEmulation()
                     {
@@ -300,6 +293,15 @@ extension GameViewController
                         }
                     }
                 }
+                else
+                {
+                    // Otherwise, wait for the transition to complete before resuming emulation
+                    self.transitionCoordinator?.animate(alongsideTransition: nil, completion: { (context) in
+                        self.resumeEmulation()
+                    })
+                }
+                
+                self._isLoadingSaveState = false
             }
             
         case "unwindToGames":
@@ -339,7 +341,11 @@ private extension GameViewController
 {
     @objc func updateControllers()
     {
-        self.emulatorCore?.removeAllGameControllers()
+        var controllers = [GameController]()
+        controllers.append(self.controllerView)
+        
+        // We need to map each item as a GameControllerProtocol due to a Swift bug
+        controllers.append(contentsOf: ExternalControllerManager.shared.connectedControllers.map { $0 as GameController })
         
         if let index = Settings.localControllerPlayerIndex
         {
@@ -352,11 +358,15 @@ private extension GameViewController
             self.controllerView.isHidden = true
         }
         
-        var controllers = [GameController]()
-        controllers.append(self.controllerView)
+        // Removing all game controllers from EmulatorCore will reset each controller's playerIndex to nil
+        // We temporarily cache their playerIndexes, and then we reset them after removing all controllers
+        var controllerIndexes = [ObjectIdentifier: Int?]()
+        controllers.forEach { controllerIndexes[ObjectIdentifier($0)] = $0.playerIndex }
         
-        // We need to map each item as a GameControllerProtocol due to a Swift bug
-        controllers.append(contentsOf: ExternalControllerManager.shared.connectedControllers.map { $0 as GameController })
+        self.emulatorCore?.removeAllGameControllers()
+        
+        // Reset each controller's playerIndex to what it was before removing all controllers from EmulatorCore
+        controllers.forEach { $0.playerIndex = controllerIndexes[ObjectIdentifier($0)] ?? nil }
         
         for controller in controllers
         {
@@ -531,6 +541,8 @@ extension GameViewController: SaveStatesViewControllerDelegate
     
     func saveStatesViewController(_ saveStatesViewController: SaveStatesViewController, loadSaveState saveState: SaveStateProtocol)
     {
+        self._isLoadingSaveState = true
+        
         // If we're loading the auto save state, we need to create a temporary copy of saveState.
         // Then, we update the auto save state, but load our copy so everything works out.
         var temporarySaveState: SaveStateProtocol? = nil
@@ -738,8 +750,15 @@ extension GameViewController: GameViewControllerDelegate
             self.hideSustainButtonView()
         }
         
-        self.pauseEmulation()
-        self.performSegue(withIdentifier: "pause", sender: gameController)
+        if let pauseViewController = self.pauseViewController, !self.selectingSustainedButtons
+        {
+            pauseViewController.dismiss()
+        }
+        else if self.presentedViewController == nil
+        {
+            self.pauseEmulation()
+            self.performSegue(withIdentifier: "pause", sender: gameController)
+        }
     }
     
     func gameViewControllerShouldResumeEmulation(_ gameViewController: DeltaCore.GameViewController) -> Bool
