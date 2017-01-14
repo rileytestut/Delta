@@ -15,8 +15,8 @@ import MobileCoreServices
 
 protocol ImportControllerDelegate
 {
-    func importController(_ importController: ImportController, didImport games: Set<Game>)
-    func importController(_ importController: ImportController, didImport controllerSkins: Set<ControllerSkin>)
+    func importController(_ importController: ImportController, didImport games: Set<Game>, with errors: Set<DatabaseManager.ImportError>)
+    func importController(_ importController: ImportController, didImport controllerSkins: Set<ControllerSkin>, with errors: Set<DatabaseManager.ImportError>)
     
     /** Optional **/
     func importControllerDidCancel(_ importController: ImportController)
@@ -73,10 +73,10 @@ class ImportController: NSObject
                 
                 DatabaseManager.shared.performBackgroundTask { (context) in
                     let controllerSkinURLs = contents.filter { $0.pathExtension.lowercased() == "deltaskin" }
-                    self.importControllerSkins(at: controllerSkinURLs)
+                    self.importControllerSkins(at: Set(controllerSkinURLs))
                     
                     let gameURLs = contents.filter { GameType.gameType(forFileExtension: $0.pathExtension) != .unknown || $0.pathExtension.lowercased() == "zip" }
-                    self.importGames(at: gameURLs)
+                    self.importGames(at: Set(gameURLs))
                 }
                 
             }
@@ -99,37 +99,17 @@ class ImportController: NSObject
         self.presentingViewController?.present(alertController, animated: true, completion: completion)
     }
     
-    fileprivate func importGames(at urls: [URL])
+    fileprivate func importGames(at urls: Set<URL>)
     {
-        DatabaseManager.shared.importGames(at: urls) { identifiers in
-            
-            DatabaseManager.shared.viewContext.perform() {
-                
-                let predicate = NSPredicate(format: "%K IN (%@)", #keyPath(Game.identifier), identifiers)
-                let games = Game.instancesWithPredicate(predicate, inManagedObjectContext: DatabaseManager.shared.viewContext, type: Game.self)
-                                
-                self.delegate?.importController(self, didImport: Set(games))
-                
-                self.presentingViewController?.importController = nil
-                
-            }            
+        DatabaseManager.shared.importGames(at: urls) { (games, errors) in
+            self.delegate?.importController(self, didImport: games, with: errors)
         }
     }
     
-    fileprivate func importControllerSkins(at urls: [URL])
+    fileprivate func importControllerSkins(at urls: Set<URL>)
     {
-        DatabaseManager.shared.importControllerSkins(at: urls) { identifiers in
-            
-            DatabaseManager.shared.viewContext.perform() {
-                
-                let predicate = NSPredicate(format: "%K IN (%@)", #keyPath(ControllerSkin.identifier), identifiers)
-                let controllerSkins = ControllerSkin.instancesWithPredicate(predicate, inManagedObjectContext: DatabaseManager.shared.viewContext, type: ControllerSkin.self)
-                
-                self.delegate?.importController(self, didImport: Set(controllerSkins))
-                
-                self.presentingViewController?.importController = nil
-                
-            }
+        DatabaseManager.shared.importControllerSkins(at: urls) { (controllerSkins, errors) in
+            self.delegate?.importController(self, didImport: controllerSkins, with: errors)
         }
     }
 }

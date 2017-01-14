@@ -97,14 +97,40 @@ extension AppDelegate
     
     private func importGame(at url: URL) -> Bool
     {
-        DatabaseManager.shared.importGames(at: [url], completion: nil)
+        DatabaseManager.shared.importGames(at: [url]) { (games, errors) in
+            if errors.count > 0
+            {
+                let alertController = UIAlertController.alertController(for: .games, with: errors)
+                self.present(alertController)
+            }
+        }
+        
         return true
     }
     
     private func importControllerSkin(at url: URL) -> Bool
     {
-        DatabaseManager.shared.importControllerSkins(at: [url], completion: nil)
+        DatabaseManager.shared.importControllerSkins(at: [url]) { (games, errors) in
+            if errors.count > 0
+            {
+                let alertController = UIAlertController.alertController(for: .controllerSkins, with: errors)
+                self.present(alertController)
+            }
+        }
+        
         return true
+    }
+    
+    private func present(_ alertController: UIAlertController)
+    {
+        var rootViewController = self.window?.rootViewController
+        
+        while rootViewController?.presentedViewController != nil
+        {
+            rootViewController = rootViewController?.presentedViewController
+        }
+        
+        rootViewController?.present(alertController, animated: true, completion: nil)
     }
 }
 

@@ -16,6 +16,43 @@ import ZipZap
 // Pods
 import FileMD5Hash
 
+extension DatabaseManager
+{
+    enum ImportError: Error, Hashable
+    {
+        case doesNotExist(URL)
+        case invalid(URL)
+        case unknown(URL, NSError)
+        case saveFailed(Set<URL>, NSError)
+        
+        var hashValue: Int {
+            switch self
+            {
+            case .doesNotExist: return 0
+            case .invalid: return 1
+            case .unknown: return 2
+            case .saveFailed: return 3
+            }
+        }
+        
+        static func ==(lhs: ImportError, rhs: ImportError) -> Bool
+        {
+            switch (lhs, rhs)
+            {
+            case (let .doesNotExist(url1), let .doesNotExist(url2)) where url1 == url2: return true
+            case (let .invalid(url1), let .invalid(url2)) where url1 == url2: return true
+            case (let .unknown(url1, error1), let .unknown(url2, error2)) where url1 == url2 && error1 == error2: return true
+            case (let .saveFailed(urls1, error1), let .saveFailed(urls2, error2)) where urls1 == urls2 && error1 == error2: return true
+            case (.doesNotExist, _): return false
+            case (.invalid, _): return false
+            case (.unknown, _): return false
+            case (.saveFailed, _): return false
+            }
+        }
+        
+    }
+}
+
 final class DatabaseManager: NSPersistentContainer
 {
     static let shared = DatabaseManager()
@@ -108,14 +145,19 @@ private extension DatabaseManager
 /// Importing
 extension DatabaseManager
 {
-    func importGames(at urls: [URL], completion: ((Set<String>) -> Void)?)
+    func importGames(at urls: Set<URL>, completion: ((Set<Game>, Set<ImportError>) -> Void)?)
     {
+        var errors = Set<ImportError>()
+        
         let zipFileURLs = urls.filter { $0.pathExtension.lowercased() == "zip" }
         if zipFileURLs.count > 0
         {
-            self.extractCompressedGames(at: zipFileURLs) { (extractedURLs) in
+            self.extractCompressedGames(at: Set(zipFileURLs)) { (extractedURLs, extractErrors) in
                 let gameURLs = urls.filter { $0.pathExtension.lowercased() != "zip" } + extractedURLs
-                self.importGames(at: gameURLs, completion: completion)
+                self.importGames(at: Set(gameURLs)) { (importedGames, importErrors) in
+                    let allErrors = importErrors.union(extractErrors)
+                    completion?(importedGames, allErrors)
+                }
             }
             
             return
@@ -127,7 +169,10 @@ extension DatabaseManager
             
             for url in urls
             {
-                guard FileManager.default.fileExists(atPath: url.path) else { continue }
+                guard FileManager.default.fileExists(atPath: url.path) else {
+                    errors.insert(.doesNotExist(url))
+                    continue
+                }
                 
                 let identifier = FileHash.sha1HashOfFile(atPath: url.path) as String
                 
@@ -159,38 +204,56 @@ extension DatabaseManager
                     
                     identifiers.insert(game.identifier)
                 }
-                catch
+                catch let error as NSError
                 {
                     print("Import Games error:", error)
                     game.managedObjectContext?.delete(game)
+                    
+                    errors.insert(.unknown(url, error))
                 }
                 
             }
-            
+
             do
             {
                 try context.save()
             }
-            catch
+            catch let error as NSError
             {
                 print("Failed to save import context:", error)
                 
                 identifiers.removeAll()
+                
+                errors.insert(.saveFailed(urls, error))
             }
             
-            completion?(identifiers)
+            DatabaseManager.shared.viewContext.perform {
+                let predicate = NSPredicate(format: "%K IN (%@)", #keyPath(Game.identifier), identifiers)
+                let games = Game.instancesWithPredicate(predicate, inManagedObjectContext: DatabaseManager.shared.viewContext, type: Game.self)
+                completion?(Set(games), errors)
+            }
         }
     }
     
-    func importControllerSkins(at urls: [URL], completion: ((Set<String>) -> Void)?)
+    func importControllerSkins(at urls: Set<URL>, completion: ((Set<ControllerSkin>, Set<ImportError>) -> Void)?)
     {
+        var errors = Set<ImportError>()
+        
         self.performBackgroundTask { (context) in
             
             var identifiers = Set<String>()
             
             for url in urls
             {
-                guard let deltaControllerSkin = DeltaCore.ControllerSkin(fileURL: url) else { continue }
+                guard FileManager.default.fileExists(atPath: url.path) else {
+                    errors.insert(.doesNotExist(url))
+                    continue
+                }
+                
+                guard let deltaControllerSkin = DeltaCore.ControllerSkin(fileURL: url) else {
+                    errors.insert(.invalid(url))
+                    continue
+                }
                 
                 let controllerSkin = ControllerSkin(context: context)
                 controllerSkin.filename = deltaControllerSkin.identifier + ".deltaskin"
@@ -212,10 +275,12 @@ extension DatabaseManager
                     
                     identifiers.insert(controllerSkin.identifier)
                 }
-                catch
+                catch let error as NSError
                 {
                     print("Import Controller Skins error:", error)
                     controllerSkin.managedObjectContext?.delete(controllerSkin)
+                    
+                    errors.insert(.unknown(url, error))
                 }
             }
             
@@ -223,26 +288,35 @@ extension DatabaseManager
             {
                 try context.save()
             }
-            catch
+            catch let error as NSError
             {
                 print("Failed to save controller skin import context:", error)
                 
                 identifiers.removeAll()
+                
+                errors.insert(.saveFailed(urls, error))
             }
             
-            completion?(identifiers)
+            DatabaseManager.shared.viewContext.perform {
+                let predicate = NSPredicate(format: "%K IN (%@)", #keyPath(Game.identifier), identifiers)
+                let controllerSkins = ControllerSkin.instancesWithPredicate(predicate, inManagedObjectContext: DatabaseManager.shared.viewContext, type: ControllerSkin.self)
+                completion?(Set(controllerSkins), errors)
+            }
         }
     }
     
-    private func extractCompressedGames(at urls: [URL], completion: @escaping ((Set<URL>) -> Void))
+    private func extractCompressedGames(at urls: Set<URL>, completion: @escaping ((Set<URL>, Set<ImportError>) -> Void))
     {
         DispatchQueue.global().async {
             
             var semaphores = Set<DispatchSemaphore>()
             var outputURLs = Set<URL>()
+            var errors = Set<ImportError>()
             
             for url in urls
             {
+                var archiveContainsValidGameFile = false
+                
                 do
                 {
                     let archive = try ZZArchive(url: url)
@@ -256,6 +330,11 @@ extension DatabaseManager
                         let gameType = GameType.gameType(forFileExtension: fileExtension)
                         
                         guard gameType != .unknown else { continue }
+                        
+                        // At least one entry is a valid game file, so we set archiveContainsValidGameFile to true
+                        // This will result in this archive being considered valid, and thus we will not return an ImportError.invalid error for the archive
+                        // However, if this game file does turn out to be invalid when extracting, we'll return an ImportError.invalid error specific to this game file
+                        archiveContainsValidGameFile = true
                         
                         // ROMs may potentially be very large, so we extract using file streams and not raw Data
                         let inputStream = try entry.newStream()
@@ -290,18 +369,26 @@ extension DatabaseManager
                                 }
                                 
                                 print(error)
+                                
+                                errors.insert(.invalid(outputURL))
                             }
                             else
                             {
                                 outputURLs.insert(outputURL)
-                                semaphore.signal()
                             }
+                            
+                            semaphore.signal()
                         }
                     }
                 }
                 catch
                 {
                     print(error)
+                }
+                
+                if !archiveContainsValidGameFile
+                {
+                    errors.insert(.invalid(url))
                 }
             }
             
@@ -325,7 +412,7 @@ extension DatabaseManager
                 }
             }
             
-            completion(outputURLs)
+            completion(outputURLs, errors)
         }
     }
 }

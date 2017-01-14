@@ -276,14 +276,32 @@ extension GamesViewController: ImportControllerDelegate
     }
     
     //MARK: - ImportControllerDelegate
-    @nonobjc func importController(_ importController: ImportController, didImport games: Set<Game>)
+    @nonobjc func importController(_ importController: ImportController, didImport games: Set<Game>, with errors: Set<DatabaseManager.ImportError>)
     {
-        print(games)
+        if errors.count > 0
+        {
+            let alertController = UIAlertController.alertController(for: .games, with: errors)
+            self.present(alertController, animated: true, completion: nil)
+        }
+        
+        if games.count > 0
+        {
+            print("Imported Games:", games.map { $0.name })
+        }
     }
     
-    @nonobjc func importController(_ importController: ImportController, didImport controllerSkins: Set<ControllerSkin>)
+    @nonobjc func importController(_ importController: ImportController, didImport controllerSkins: Set<ControllerSkin>, with errors: Set<DatabaseManager.ImportError>)
     {
-        print(controllerSkins)
+        if errors.count > 0
+        {
+            let alertController = UIAlertController.alertController(for: .controllerSkins, with: errors)
+            self.present(alertController, animated: true, completion: nil)
+        }
+        
+        if controllerSkins.count > 0
+        {
+            print("Imported Controller Skins:", controllerSkins.map { $0.name })
+        }
     }
 }
 
