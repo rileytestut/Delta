@@ -681,7 +681,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "/usr/local/bin/mogenerator -m \"Common/Database/Model/Delta.xcdatamodeld\" -O \"Common/Database/Model\" --swift --template-var scalarsWhenNonOptional=true --template-path \"Common/Database/Model/mogenerator/templates\"";
+			shellScript = "/usr/local/bin/mogenerator -m \"Delta/Database/Model/Model.xcdatamodel\" --human-dir \"Delta/Database/Model/Human\" --machine-dir \"Delta/Database/Model/Machine\" --swift --template-var scalarsWhenNonOptional=true --template-path \"Delta/Database/Model/mogenerator/templates\"";
 		};
 		DBD91E7D7EC2729786B4C5B1 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
