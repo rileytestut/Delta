@@ -181,8 +181,7 @@ private extension GameCollectionViewController
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(Game.name), ascending: true)]
         
         self.dataSource = RSTFetchedResultsCollectionViewDataSource(fetchRequest: fetchRequest, managedObjectContext: DatabaseManager.shared.viewContext)
-        self.dataSource.cellIdentifierHandler = { _ in RSTGenericCellIdentifier }
-        self.dataSource.cellConfigurationHandler = { [unowned self] (cell, indexPath) in
+        self.dataSource.cellConfigurationHandler = { [unowned self] (cell, item, indexPath) in
             self.configure(cell as! GridCollectionViewCell, for: indexPath)
         }
     }

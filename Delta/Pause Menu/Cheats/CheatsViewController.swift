@@ -180,7 +180,7 @@ extension CheatsViewController
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
-        let cell = tableView.dequeueReusableCell(withIdentifier: RSTGenericCellIdentifier, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: RSTCellContentGenericCellIdentifier, for: indexPath)
         self.configure(cell, forIndexPath: indexPath)
         return cell
     }

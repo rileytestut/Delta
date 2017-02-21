@@ -79,8 +79,7 @@ private extension ControllerSkinsViewController
         let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DatabaseManager.shared.viewContext, sectionNameKeyPath: #keyPath(ControllerSkin.name), cacheName: nil)
         
         self.dataSource = RSTFetchedResultsTableViewDataSource(fetchedResultsController: fetchedResultsController)
-        self.dataSource.cellIdentifierHandler = { _ in RSTGenericCellIdentifier }
-        self.dataSource.cellConfigurationHandler = { [unowned self] (cell, indexPath) in
+        self.dataSource.cellConfigurationHandler = { [unowned self] (cell, item, indexPath) in
             self.configure(cell as! ControllerSkinTableViewCell, for: indexPath)
         }
     }

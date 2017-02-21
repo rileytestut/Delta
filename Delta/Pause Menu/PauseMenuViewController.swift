@@ -113,7 +113,7 @@ extension PauseMenuViewController
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
     {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RSTGenericCellIdentifier, for: indexPath) as! GridCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RSTCellContentGenericCellIdentifier, for: indexPath) as! GridCollectionViewCell
         self.configureCollectionViewCell(cell, forIndexPath: indexPath)
         return cell
     }
