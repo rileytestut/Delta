@@ -95,8 +95,8 @@ private extension ControllerSkinsViewController
         let size = UIScreen.main.defaultControllerSkinSize
         
         let imageOperation = LoadControllerSkinImageOperation(controllerSkin: controllerSkin, traits: self.traits, size: size)
-        imageOperation.imageCache = self.imageCache
-        imageOperation.completionHandler = { image in
+        imageOperation.resultsCache = self.imageCache
+        imageOperation.resultHandler = { (image, error) in
             
             guard let image = image else { return }
             
@@ -159,7 +159,7 @@ extension ControllerSkinsViewController: UITableViewDataSourcePrefetching
             let size = UIScreen.main.defaultControllerSkinSize
             
             let imageOperation = LoadControllerSkinImageOperation(controllerSkin: controllerSkin, traits: self.traits, size: size)
-            imageOperation.imageCache = self.imageCache
+            imageOperation.resultsCache = self.imageCache
             
             self.imageOperationQueue.addOperation(imageOperation, forKey: indexPath as NSCopying)
         }

@@ -10,6 +10,17 @@ import UIKit
 
 import DeltaCore
 
+import Roxas
+
+extension LoadControllerSkinImageOperation
+{
+    enum Error: Swift.Error
+    {
+        case doesNotExist
+        case unsupportedTraits
+    }
+}
+
 class ControllerSkinImageCacheKey: NSObject
 {
     let controllerSkin: ControllerSkin
@@ -36,7 +47,7 @@ class ControllerSkinImageCacheKey: NSObject
     }
 }
 
-class LoadControllerSkinImageOperation: LoadImageOperation<ControllerSkinImageCacheKey>
+class LoadControllerSkinImageOperation: RSTLoadOperation<UIImage, ControllerSkinImageCacheKey>
 {
     let controllerSkin: ControllerSkin
     let traits: DeltaCore.ControllerSkin.Traits
@@ -52,9 +63,23 @@ class LoadControllerSkinImageOperation: LoadImageOperation<ControllerSkinImageCa
         super.init(cacheKey: cacheKey)
     }
     
-    override func loadImage() -> UIImage?
+    override func loadResult(completion: @escaping (UIImage?, Swift.Error?) -> Void)
     {
-        let image = self.controllerSkin.image(for: self.traits, preferredSize: self.size)
-        return image
+        guard self.controllerSkin.supports(self.traits) else {
+            completion(nil, Error.unsupportedTraits)
+            return
+        }
+        
+        guard let image = self.controllerSkin.image(for: self.traits, preferredSize: self.size) else {
+            completion(nil, Error.doesNotExist)
+            return
+        }
+        
+        // Force decompression of image
+        UIGraphicsBeginImageContextWithOptions(CGSize(width: 1, height: 1), true, 1.0)
+        image.draw(at: CGPoint.zero)
+        UIGraphicsEndImageContext()
+        
+        completion(image, nil)
     }
 }

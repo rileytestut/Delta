@@ -9,25 +9,100 @@
 import UIKit
 import ImageIO
 
+import SDWebImage
+
 import Roxas
 
-class LoadImageURLOperation: LoadImageOperation<NSURL>
+extension LoadImageURLOperation
 {
-    public let url: URL
+    enum Error: Swift.Error
+    {
+        case doesNotExist
+        case invalid
+        case downloadFailed(Swift.Error)
+    }
+}
+
+class LoadImageURLOperation: RSTLoadOperation<UIImage, NSURL>
+{
+    let url: URL
+    
+    override var isAsynchronous: Bool {
+        return !self.url.isFileURL
+    }
+    
+    private var downloadOperation: SDWebImageOperation?
     
     init(url: URL)
     {
         self.url = url
+        
         super.init(cacheKey: url as NSURL)
     }
     
-    override func loadImage() -> UIImage?
+    override func cancel()
+    {
+        super.cancel()
+        
+        self.downloadOperation?.cancel()
+    }
+    
+    override func loadResult(completion: @escaping (UIImage?, Swift.Error?) -> Void)
+    {
+        let callback = { (image: UIImage?, error: Error?) in
+            
+            if let image = image, !self.isCancelled
+            {
+                // Force decompression of image
+                UIGraphicsBeginImageContextWithOptions(CGSize(width: 1, height: 1), true, 1.0)
+                image.draw(at: CGPoint.zero)
+                UIGraphicsEndImageContext()
+            }
+            
+            completion(image, error)
+        }
+        
+        if self.url.isFileURL
+        {
+            self.loadLocalImage(completion: callback)
+        }
+        else
+        {
+            self.loadRemoteImage(completion: callback)
+        }
+    }
+    
+    private func loadLocalImage(completion: @escaping (UIImage?, Error?) -> Void)
     {
         let options: NSDictionary = [kCGImageSourceShouldCache as NSString: true]
         
-        guard let imageSource = CGImageSourceCreateWithURL(self.url as CFURL, options), let quartzImage = CGImageSourceCreateImageAtIndex(imageSource, 0, options) else { return nil }
+        guard let imageSource = CGImageSourceCreateWithURL(self.url as CFURL, options) else {
+            completion(nil, .doesNotExist)
+            return
+        }
+        
+        guard let quartzImage = CGImageSourceCreateImageAtIndex(imageSource, 0, options) else {
+            completion(nil, .invalid)
+            return
+        }
         
         let image = UIImage(cgImage: quartzImage)
-        return image
+        completion(image, nil)
+    }
+    
+    private func loadRemoteImage(completion: @escaping (UIImage?, Error?) -> Void)
+    {
+        let manager = SDWebImageManager.shared()
+        
+        self.downloadOperation = manager?.downloadImage(with: self.url, options: [.retryFailed, .continueInBackground], progress: nil, completed: { (image, error, cacheType, finished, imageURL) in
+            if let error = error
+            {
+                completion(nil, .downloadFailed(error))
+            }
+            else
+            {
+                completion(image, nil)
+            }
+        })
     }
 }

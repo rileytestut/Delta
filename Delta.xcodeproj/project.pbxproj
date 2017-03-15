@@ -47,7 +47,6 @@
 		BF3540081C5DAFAD00C1184C /* PauseTransitionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3540071C5DAFAD00C1184C /* PauseTransitionCoordinator.swift */; };
 		BF59425C1E09BB810051894B /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5942581E09BB810051894B /* Action.swift */; };
 		BF5942641E09BBB10051894B /* LoadControllerSkinImageOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5942611E09BBB10051894B /* LoadControllerSkinImageOperation.swift */; };
-		BF5942651E09BBB10051894B /* LoadImageOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5942621E09BBB10051894B /* LoadImageOperation.swift */; };
 		BF5942661E09BBB10051894B /* LoadImageURLOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5942631E09BBB10051894B /* LoadImageURLOperation.swift */; };
 		BF59426A1E09BBD00051894B /* GridCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5942681E09BBD00051894B /* GridCollectionViewCell.swift */; };
 		BF59426B1E09BBD00051894B /* GridCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5942691E09BBD00051894B /* GridCollectionViewLayout.swift */; };
@@ -153,7 +152,6 @@
 		BF3540071C5DAFAD00C1184C /* PauseTransitionCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PauseTransitionCoordinator.swift; path = "Pause Menu/Segues/PauseTransitionCoordinator.swift"; sourceTree = "<group>"; };
 		BF5942581E09BB810051894B /* Action.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Action.swift; path = Components/Action.swift; sourceTree = "<group>"; };
 		BF5942611E09BBB10051894B /* LoadControllerSkinImageOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoadControllerSkinImageOperation.swift; path = Components/Loading/LoadControllerSkinImageOperation.swift; sourceTree = "<group>"; };
-		BF5942621E09BBB10051894B /* LoadImageOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoadImageOperation.swift; path = Components/Loading/LoadImageOperation.swift; sourceTree = "<group>"; };
 		BF5942631E09BBB10051894B /* LoadImageURLOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoadImageURLOperation.swift; path = Components/Loading/LoadImageURLOperation.swift; sourceTree = "<group>"; };
 		BF5942681E09BBD00051894B /* GridCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GridCollectionViewCell.swift; path = "Components/Collection View/GridCollectionViewCell.swift"; sourceTree = "<group>"; };
 		BF5942691E09BBD00051894B /* GridCollectionViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GridCollectionViewLayout.swift; path = "Components/Collection View/GridCollectionViewLayout.swift"; sourceTree = "<group>"; };
@@ -306,9 +304,8 @@
 		BF5942601E09BBA80051894B /* Loading */ = {
 			isa = PBXGroup;
 			children = (
-				BF5942611E09BBB10051894B /* LoadControllerSkinImageOperation.swift */,
-				BF5942621E09BBB10051894B /* LoadImageOperation.swift */,
 				BF5942631E09BBB10051894B /* LoadImageURLOperation.swift */,
+				BF5942611E09BBB10051894B /* LoadControllerSkinImageOperation.swift */,
 			);
 			name = Loading;
 			sourceTree = "<group>";
@@ -752,7 +749,6 @@
 				BF13A7561D5D29B0000BB055 /* PreviewGameViewController.swift in Sources */,
 				BF6866171DCAC8B900BF2D06 /* ControllerSkin+Configuring.swift in Sources */,
 				BF59427D1E09BC830051894B /* ControllerSkin.swift in Sources */,
-				BF5942651E09BBB10051894B /* LoadImageOperation.swift in Sources */,
 				BFCEA67E1D56FF640061A534 /* UIViewControllerContextTransitioning+Conveniences.swift in Sources */,
 				BF1173501DA32CF600047DF8 /* ControllersSettingsViewController.swift in Sources */,
 				BFFC461E1D59823500AF2CC6 /* GamesPresentationController.swift in Sources */,
