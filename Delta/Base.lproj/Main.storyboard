@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11760" systemVersion="16B2657" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="SPq-Bk-fQl">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16C68" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="SPq-Bk-fQl">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11755"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -48,10 +48,58 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <segue destination="6bq-zy-UZU" kind="presentation" identifier="gamesDatabaseBrowser" id="7TT-mP-bjt"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JYx-xE-nis" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1036" y="1002"/>
+        </scene>
+        <!--Games Database-->
+        <scene sceneID="S7I-gw-igt">
+            <objects>
+                <tableViewController id="SB6-jW-dhZ" customClass="GamesDatabaseBrowserViewController" customModule="Delta" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="bJf-Sa-ZOX">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" textLabel="aZq-iY-vhF" style="IBUITableViewCellStyleDefault" id="4cJ-4B-Kgt">
+                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="4cJ-4B-Kgt" id="7ze-s0-mpI">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="aZq-iY-vhF">
+                                            <rect key="frame" x="15" y="0.0" width="345" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="SB6-jW-dhZ" id="2aq-ZA-84E"/>
+                            <outlet property="delegate" destination="SB6-jW-dhZ" id="WgY-cp-m7K"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Games Database" id="rwF-kd-avR">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="BnB-5n-Rff">
+                            <connections>
+                                <segue destination="mUU-ug-yNs" kind="unwind" unwindAction="unwindFromGamesDatabaseBrowserWith:" id="zdg-Az-WwQ"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="f3a-hX-Qnu" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="mUU-ug-yNs" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="2652" y="1002"/>
         </scene>
         <!--Game Collection View Controller-->
         <scene sceneID="qNA-NP-TiF">
@@ -84,13 +132,14 @@
                     </collectionView>
                     <connections>
                         <segue destination="X2o-q6-XD5" kind="unwind" identifier="unwindFromGames" unwindAction="unwindFromGamesViewControllerWith:" id="k8C-Xn-maU"/>
-                        <segue destination="MPk-bF-nkj" kind="presentation" identifier="showSaveStates" customClass="SaveStatesStoryboardSegue" customModule="Delta" customModuleProvider="target" id="1Xp-2J-0cq"/>
+                        <segue destination="MPk-bF-nkj" kind="presentation" identifier="saveStates" customClass="SaveStatesStoryboardSegue" customModule="Delta" customModuleProvider="target" id="1Xp-2J-0cq"/>
+                        <segue destination="6bq-zy-UZU" kind="presentation" identifier="gamesDatabaseBrowser" id="mzX-Bb-MaX"/>
                     </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bW1-t8-idm" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="X2o-q6-XD5" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1764" y="1719"/>
+            <point key="canvasLocation" x="1855" y="1719"/>
         </scene>
         <!--Launch View Controller-->
         <scene sceneID="p7y-IT-nlb">
@@ -219,13 +268,13 @@
                     <nil name="viewControllers"/>
                     <connections>
                         <segue destination="Eae-Qk-9MI" kind="relationship" relationship="rootViewController" id="1Jh-Zf-ntp"/>
-                        <segue destination="WQV-Du-4IA" kind="unwind" identifier="unwindFromSaveStates" customClass="SaveStatesStoryboardUnwindSegue" customModule="Delta" customModuleProvider="target" unwindAction="unwindFromSaveStatesViewController:" id="dwO-iv-XDr"/>
+                        <segue destination="WQV-Du-4IA" kind="unwind" identifier="unwindFromSaveStates" customClass="SaveStatesStoryboardUnwindSegue" customModule="Delta" customModuleProvider="target" unwindAction="unwindFromSaveStatesViewControllerWith:" id="dwO-iv-XDr"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="htj-tq-2KP" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="WQV-Du-4IA" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="2562" y="1718"/>
+            <point key="canvasLocation" x="2652" y="1718"/>
         </scene>
         <!--saveStatesViewController-->
         <scene sceneID="f1R-Kb-FOU">
@@ -235,13 +284,32 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eln-PZ-00u" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3319" y="1717"/>
+            <point key="canvasLocation" x="3409" y="1716"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="REv-V5-eEz">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="6bq-zy-UZU" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="uzY-vR-coL">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="SB6-jW-dhZ" kind="relationship" relationship="rootViewController" id="b0w-Fq-hrk"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Hr9-N6-XXA" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1854" y="1002"/>
         </scene>
     </scenes>
     <resources>
         <image name="Settings_Button" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="mzX-Bb-MaX"/>
         <segue reference="Tey-6Z-UHp"/>
     </inferredMetricsTieBreakers>
 </document>

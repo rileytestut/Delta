@@ -76,6 +76,8 @@
 		BF797A2D1C2D339F00F1A000 /* UILabel+FontSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF797A2C1C2D339F00F1A000 /* UILabel+FontSize.swift */; };
 		BF7AE8081C2E858400B1B5BC /* PauseMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7AE8041C2E858400B1B5BC /* PauseMenuViewController.swift */; };
 		BF7AE80A1C2E8C7600B1B5BC /* UIColor+Delta.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7AE8091C2E8C7600B1B5BC /* UIColor+Delta.swift */; };
+		BF95E2771E4977BF0030E7AD /* GameMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF95E2761E4977BF0030E7AD /* GameMetadata.swift */; };
+		BF95E2791E4982A10030E7AD /* GamesDatabaseBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF95E2781E4982A10030E7AD /* GamesDatabaseBrowserViewController.swift */; };
 		BF99A5971DC2F9C400468E9E /* ControllerSkinTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF99A5961DC2F9C400468E9E /* ControllerSkinTableViewCell.swift */; };
 		BF99C6941D0A9AA600BA92BC /* SNESDeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFC134E01AAD82460087AD7B /* SNESDeltaCore.framework */; };
 		BF99C6951D0A9AA600BA92BC /* SNESDeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BFC134E01AAD82460087AD7B /* SNESDeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -156,7 +158,7 @@
 		BF5942681E09BBD00051894B /* GridCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GridCollectionViewCell.swift; path = "Components/Collection View/GridCollectionViewCell.swift"; sourceTree = "<group>"; };
 		BF5942691E09BBD00051894B /* GridCollectionViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GridCollectionViewLayout.swift; path = "Components/Collection View/GridCollectionViewLayout.swift"; sourceTree = "<group>"; };
 		BF59426D1E09BC5D0051894B /* DatabaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DatabaseManager.swift; path = Database/DatabaseManager.swift; sourceTree = "<group>"; };
-		BF59426E1E09BC5D0051894B /* GamesDatabase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GamesDatabase.swift; path = Database/GamesDatabase.swift; sourceTree = "<group>"; };
+		BF59426E1E09BC5D0051894B /* GamesDatabase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GamesDatabase.swift; path = Database/OpenVGDB/GamesDatabase.swift; sourceTree = "<group>"; };
 		BF5942721E09BC700051894B /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; name = Model.xcdatamodel; path = Database/Model/Model.xcdatamodel; sourceTree = "<group>"; };
 		BF5942771E09BC830051894B /* Cheat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Cheat.swift; path = Database/Model/Human/Cheat.swift; sourceTree = "<group>"; };
 		BF5942781E09BC830051894B /* ControllerSkin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ControllerSkin.swift; path = Database/Model/Human/ControllerSkin.swift; sourceTree = "<group>"; };
@@ -184,6 +186,8 @@
 		BF797A2C1C2D339F00F1A000 /* UILabel+FontSize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+FontSize.swift"; sourceTree = "<group>"; };
 		BF7AE8041C2E858400B1B5BC /* PauseMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PauseMenuViewController.swift; path = "Pause Menu/PauseMenuViewController.swift"; sourceTree = "<group>"; };
 		BF7AE8091C2E8C7600B1B5BC /* UIColor+Delta.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Delta.swift"; sourceTree = "<group>"; };
+		BF95E2761E4977BF0030E7AD /* GameMetadata.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GameMetadata.swift; path = Database/OpenVGDB/GameMetadata.swift; sourceTree = "<group>"; };
+		BF95E2781E4982A10030E7AD /* GamesDatabaseBrowserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GamesDatabaseBrowserViewController.swift; path = Database/OpenVGDB/GamesDatabaseBrowserViewController.swift; sourceTree = "<group>"; };
 		BF99A5961DC2F9C400468E9E /* ControllerSkinTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ControllerSkinTableViewCell.swift; path = "Controller Skins/ControllerSkinTableViewCell.swift"; sourceTree = "<group>"; };
 		BF9F4FCE1AAD7B87004C9500 /* DeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFAA1FEC1B8AA4FA00495943 /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
@@ -323,8 +327,8 @@
 			isa = PBXGroup;
 			children = (
 				BF59426D1E09BC5D0051894B /* DatabaseManager.swift */,
-				BF59426E1E09BC5D0051894B /* GamesDatabase.swift */,
 				BF5942711E09BC690051894B /* Model */,
+				BF95E2751E49763D0030E7AD /* OpenVGDB */,
 			);
 			name = Database;
 			sourceTree = "<group>";
@@ -411,6 +415,16 @@
 				BF3540071C5DAFAD00C1184C /* PauseTransitionCoordinator.swift */,
 			);
 			name = Segues;
+			sourceTree = "<group>";
+		};
+		BF95E2751E49763D0030E7AD /* OpenVGDB */ = {
+			isa = PBXGroup;
+			children = (
+				BF59426E1E09BC5D0051894B /* GamesDatabase.swift */,
+				BF95E2761E4977BF0030E7AD /* GameMetadata.swift */,
+				BF95E2781E4982A10030E7AD /* GamesDatabaseBrowserViewController.swift */,
+			);
+			name = OpenVGDB;
 			sourceTree = "<group>";
 		};
 		BF9F4FCD1AAD7B25004C9500 /* Frameworks */ = {
@@ -730,6 +744,7 @@
 				BF5942701E09BC5D0051894B /* GamesDatabase.swift in Sources */,
 				BF34FA071CF0F510006624C7 /* EditCheatViewController.swift in Sources */,
 				BF5942881E09BC8B0051894B /* _Game.swift in Sources */,
+				BF95E2771E4977BF0030E7AD /* GameMetadata.swift in Sources */,
 				BF11734D1DA32A5200047DF8 /* GameType+Localization.swift in Sources */,
 				BFFC461F1D59823500AF2CC6 /* GamesStoryboardSegue.swift in Sources */,
 				BF2B98E61C97E32F00F6D57D /* SaveStatesCollectionHeaderView.swift in Sources */,
@@ -741,6 +756,7 @@
 				BF797A2D1C2D339F00F1A000 /* UILabel+FontSize.swift in Sources */,
 				BF5942641E09BBB10051894B /* LoadControllerSkinImageOperation.swift in Sources */,
 				BF5942871E09BC8B0051894B /* _ControllerSkin.swift in Sources */,
+				BF95E2791E4982A10030E7AD /* GamesDatabaseBrowserViewController.swift in Sources */,
 				BFD097211D3A01B8005A44C2 /* SaveStatesViewController.swift in Sources */,
 				BF3540021C5DA3D500C1184C /* PauseStoryboardSegue.swift in Sources */,
 				BFC314771E0C8CFC0056E3A8 /* GameType+Delta.swift in Sources */,
@@ -855,6 +871,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_SWIFT_FLAGS = "-Xfrontend -debug-time-function-bodies";
 				PRODUCT_BUNDLE_IDENTIFIER = com.rileytestut.Delta;
 				PRODUCT_NAME = Delta;
 				SDKROOT = iphoneos;
@@ -897,6 +914,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_SWIFT_FLAGS = "-Xfrontend -debug-time-function-bodies";
 				PRODUCT_BUNDLE_IDENTIFIER = com.rileytestut.Delta;
 				PRODUCT_NAME = Delta;
 				SDKROOT = iphoneos;

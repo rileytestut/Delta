@@ -57,7 +57,7 @@ final class DatabaseManager: NSPersistentContainer
 {
     static let shared = DatabaseManager()
     
-    fileprivate let gamesDatabase: GamesDatabase?
+    fileprivate var gamesDatabase: GamesDatabase? = nil
     
     private init()
     {
@@ -66,22 +66,6 @@ final class DatabaseManager: NSPersistentContainer
             let managedObjectModel = NSManagedObjectModel(contentsOf: modelURL)
         else { fatalError("Core Data model cannot be found. Aborting.") }
         
-        do
-        {
-            if let gamesDatabaseURL = Bundle.main.url(forResource: "openvgdb", withExtension: "sqlite")
-            {
-                self.gamesDatabase = try GamesDatabase(fileURL: gamesDatabaseURL)
-            }
-            else
-            {
-                self.gamesDatabase = nil
-            }
-        }
-        catch
-        {
-            self.gamesDatabase = nil
-            print(error)
-        }
         
         super.init(name: "Delta", managedObjectModel: managedObjectModel)
         
@@ -135,6 +119,21 @@ private extension DatabaseManager
                 print("Failed to import standard controller skins:", error)
             }
             
+            do
+            {                
+                if !FileManager.default.fileExists(atPath: DatabaseManager.gamesDatabaseURL.path)
+                {
+                    guard let bundleURL = Bundle.main.url(forResource: "openvgdb", withExtension: "sqlite") else { throw GamesDatabase.Error.doesNotExist }
+                    try FileManager.default.copyItem(at: bundleURL, to: DatabaseManager.gamesDatabaseURL)
+                }
+                
+                self.gamesDatabase = try GamesDatabase()
+            }
+            catch
+            {
+                print(error)
+            }
+            
             completion()
             
         }
@@ -179,11 +178,13 @@ extension DatabaseManager
                 let filename = identifier + "." + url.pathExtension
                 
                 let game = Game.insertIntoManagedObjectContext(context)
-                game.name = url.deletingPathExtension().lastPathComponent
                 game.identifier = identifier
                 game.filename = filename
-                game.artworkURL = self.gamesDatabase?.artworkURL(for: game)
                 
+                let databaseMetadata = self.gamesDatabase?.metadata(for: game)
+                game.name = databaseMetadata?.name ?? url.deletingPathExtension().lastPathComponent
+                game.artworkURL = databaseMetadata?.artworkURL
+                                
                 let gameCollection = GameCollection.gameSystemCollectionForPathExtension(url.pathExtension, inManagedObjectContext: context)
                 game.type = GameType(rawValue: gameCollection.identifier)
                 game.gameCollections.insert(gameCollection)
@@ -438,6 +439,12 @@ extension DatabaseManager
         self.createDirectory(at: databaseDirectoryURL)
         
         return databaseDirectoryURL
+    }
+    
+    class var gamesDatabaseURL: URL
+    {
+        let gamesDatabaseURL = self.defaultDirectoryURL().appendingPathComponent("openvgdb.sqlite")
+        return gamesDatabaseURL
     }
 
     class var gamesDirectoryURL: URL

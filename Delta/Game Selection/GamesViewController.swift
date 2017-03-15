@@ -142,10 +142,6 @@ extension GamesViewController
     @IBAction private func unwindFromSettingsViewController(_ segue: UIStoryboardSegue)
     {
     }
-    
-    @IBAction private func unwindFromSaveStatesViewController(_ segue: UIStoryboardSegue)
-    {
-    }
 }
 
 // MARK: - UI -

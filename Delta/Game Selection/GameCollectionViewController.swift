@@ -117,7 +117,7 @@ extension GameCollectionViewController
         
         switch identifier
         {
-        case "showSaveStates":
+        case "saveStates":
             let game = sender as! Game
             
             let saveStatesViewController = (segue.destination as! UINavigationController).topViewController as! SaveStatesViewController
@@ -125,6 +125,24 @@ extension GameCollectionViewController
             saveStatesViewController.game = game
             saveStatesViewController.mode = .loading
             saveStatesViewController.theme = self.theme
+            
+        case "gamesDatabaseBrowser":
+            let game = sender as! Game
+            
+            let gamesDatabaseBrowserViewController = (segue.destination as! UINavigationController).topViewController as! GamesDatabaseBrowserViewController
+            gamesDatabaseBrowserViewController.selectionHandler = { (metadata) in
+                
+                DatabaseManager.shared.performBackgroundTask({ (context) in
+                    let temporaryGame = context.object(with: game.objectID) as! Game
+                    temporaryGame.artworkURL = metadata.artworkURL
+                    context.saveWithErrorLogging()
+                    
+                    DispatchQueue.main.async {
+                        gamesDatabaseBrowserViewController.dismiss(animated: true, completion: nil)
+                    }
+                })
+                
+            }
             
         case "unwindFromGames":
             let destinationViewController = segue.destination as! GameViewController
@@ -166,7 +184,14 @@ extension GameCollectionViewController
             
         default: break
         }
-
+    }
+    
+    @IBAction private func unwindFromSaveStatesViewController(with segue: UIStoryboardSegue)
+    {
+    }
+    
+    @IBAction private func unwindFromGamesDatabaseBrowser(with segue: UIStoryboardSegue)
+    {
     }
 }
 
@@ -179,6 +204,7 @@ private extension GameCollectionViewController
         let fetchRequest = Game.rst_fetchRequest() as! NSFetchRequest<Game>
         fetchRequest.predicate = NSPredicate(format: "ANY %K == %@", #keyPath(Game.gameCollections), self.gameCollection)
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(Game.name), ascending: true)]
+        fetchRequest.returnsObjectsAsFaults = false
         
         self.dataSource = RSTFetchedResultsCollectionViewDataSource(fetchRequest: fetchRequest, managedObjectContext: DatabaseManager.shared.viewContext)
         self.dataSource.cellConfigurationHandler = { [unowned self] (cell, item, indexPath) in
@@ -205,7 +231,7 @@ private extension GameCollectionViewController
         cell.maximumImageSize = CGSize(width: 90, height: 90)
         cell.textLabel.text = game.name
         cell.textLabel.textColor = UIColor.gray
-        
+                
         if let artworkURL = game.artworkURL, !ignoreImageOperations
         {
             cell.imageView.sd_setImage(with: artworkURL, placeholderImage: #imageLiteral(resourceName: "BoxArt"), options: .continueInBackground) { (image, error, type, url) in
@@ -250,6 +276,10 @@ private extension GameCollectionViewController
             self.rename(game)
         })
         
+        let changeArtworkAction = Action(title: NSLocalizedString("Change Artwork", comment: ""), style: .default) { [unowned self] action in
+            self.changeArtwork(for: game)
+        }
+        
         let shareAction = Action(title: NSLocalizedString("Share", comment: ""), style: .default, action: { [unowned self] action in
             self.share(game)
         })
@@ -264,8 +294,8 @@ private extension GameCollectionViewController
         
         switch game.type
         {
-        case GameType.unknown: return [cancelAction, renameAction, shareAction, deleteAction]
-        default: return [cancelAction, renameAction, shareAction, saveStatesAction, deleteAction]
+        case GameType.unknown: return [cancelAction, renameAction, changeArtworkAction, shareAction, deleteAction]
+        default: return [cancelAction, renameAction, changeArtworkAction, shareAction, saveStatesAction, deleteAction]
         }
     }
     
@@ -289,7 +319,7 @@ private extension GameCollectionViewController
     
     func viewSaveStates(for game: Game)
     {
-        self.performSegue(withIdentifier: "showSaveStates", sender: game)
+        self.performSegue(withIdentifier: "saveStates", sender: game)
     }
     
     func rename(_ game: Game)
@@ -328,6 +358,11 @@ private extension GameCollectionViewController
         }
         
         self._renameAction = nil
+    }
+    
+    func changeArtwork(for game: Game)
+    {
+        self.performSegue(withIdentifier: "gamesDatabaseBrowser", sender: game)
     }
     
     func share(_ game: Game)
