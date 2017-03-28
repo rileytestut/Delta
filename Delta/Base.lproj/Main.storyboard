@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -60,27 +61,54 @@
         <scene sceneID="S7I-gw-igt">
             <objects>
                 <tableViewController id="SB6-jW-dhZ" customClass="GamesDatabaseBrowserViewController" customModule="Delta" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="bJf-Sa-ZOX">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="97" sectionHeaderHeight="28" sectionFooterHeight="28" id="bJf-Sa-ZOX">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" textLabel="aZq-iY-vhF" style="IBUITableViewCellStyleDefault" id="4cJ-4B-Kgt">
-                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="4cJ-4B-Kgt" customClass="GameMetadataTableViewCell" customModule="Delta" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="97"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="4cJ-4B-Kgt" id="7ze-s0-mpI">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="96"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="aZq-iY-vhF">
-                                            <rect key="frame" x="15" y="0.0" width="345" height="43.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <nil key="textColor"/>
+                                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DSH-Hk-snb" userLabel="Selected Background View">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="97"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                        </view>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BoxArt" translatesAutoresizingMaskIntoConstraints="NO" id="tNY-2F-llo">
+                                            <rect key="frame" x="15" y="8" width="80" height="80"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" secondItem="tNY-2F-llo" secondAttribute="height" multiplier="1:1" id="f4E-bV-L96"/>
+                                            </constraints>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Super Mario World" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DND-Fv-FyB">
+                                            <rect key="frame" x="110" y="38.5" width="250" height="20.5"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
+                                    <constraints>
+                                        <constraint firstItem="DND-Fv-FyB" firstAttribute="leading" secondItem="tNY-2F-llo" secondAttribute="trailing" constant="15" id="71e-t3-7Av"/>
+                                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="DND-Fv-FyB" secondAttribute="bottom" constant="1" id="9No-RE-0xx"/>
+                                        <constraint firstItem="DND-Fv-FyB" firstAttribute="top" relation="greaterThanOrEqual" secondItem="7ze-s0-mpI" secondAttribute="top" constant="1" id="F9q-6H-sqC"/>
+                                        <constraint firstAttribute="trailing" secondItem="DND-Fv-FyB" secondAttribute="trailing" constant="15" id="KFv-7n-LrD"/>
+                                        <constraint firstItem="DND-Fv-FyB" firstAttribute="centerY" secondItem="7ze-s0-mpI" secondAttribute="centerY" id="YBX-t4-jkR"/>
+                                        <constraint firstItem="tNY-2F-llo" firstAttribute="top" secondItem="7ze-s0-mpI" secondAttribute="top" constant="8" id="bYX-gA-QvB"/>
+                                        <constraint firstAttribute="bottom" secondItem="tNY-2F-llo" secondAttribute="bottom" constant="8" id="fxr-wr-I6X"/>
+                                        <constraint firstItem="tNY-2F-llo" firstAttribute="leading" secondItem="7ze-s0-mpI" secondAttribute="leading" constant="15" id="hX2-Gr-Bnz"/>
+                                    </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="artworkImageView" destination="tNY-2F-llo" id="GqY-jv-rso"/>
+                                    <outlet property="artworkImageViewLeadingConstraint" destination="hX2-Gr-Bnz" id="be8-dr-c8K"/>
+                                    <outlet property="artworkImageViewTrailingConstraint" destination="71e-t3-7Av" id="y62-KO-y1r"/>
+                                    <outlet property="nameLabel" destination="DND-Fv-FyB" id="LhN-cA-8Hy"/>
+                                    <outlet property="selectedBackgroundView" destination="DSH-Hk-snb" id="hLY-4k-VxU"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -99,7 +127,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="f3a-hX-Qnu" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="mUU-ug-yNs" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="2652" y="1002"/>
+            <point key="canvasLocation" x="2652" y="1001.649175412294"/>
         </scene>
         <!--Game Collection View Controller-->
         <scene sceneID="qNA-NP-TiF">
@@ -291,7 +319,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="6bq-zy-UZU" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="uzY-vR-coL">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" barStyle="black" id="uzY-vR-coL">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -306,6 +334,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="BoxArt" width="100" height="100"/>
         <image name="Settings_Button" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
