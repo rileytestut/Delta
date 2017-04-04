@@ -306,6 +306,18 @@ extension QueryType {
         return query
     }
 
+    /// Adds a condition to the query’s `WHERE` clause.
+    /// This is an alias for `filter(predicate)`
+    public func `where`(_ predicate: Expression<Bool>) -> Self {
+        return `where`(Expression<Bool?>(predicate))
+    }
+
+    /// Adds a condition to the query’s `WHERE` clause.
+    /// This is an alias for `filter(predicate)`
+    public func `where`(_ predicate: Expression<Bool?>) -> Self {
+        return filter(predicate)
+    }
+
     // MARK: GROUP BY
 
     /// Sets a `GROUP BY` clause on the query.
@@ -968,11 +980,11 @@ extension Connection {
     /// - Parameter query: An insert query.
     ///
     /// - Returns: The insert’s rowid.
-    public func run(_ query: Insert) throws -> Int64 {
+    @discardableResult public func run(_ query: Insert) throws -> Int64 {
         let expression = query.expression
         return try sync {
             try self.run(expression.template, expression.bindings)
-            return self.lastInsertRowid!
+            return self.lastInsertRowid
         }
     }
 
@@ -984,7 +996,7 @@ extension Connection {
     /// - Parameter query: An update query.
     ///
     /// - Returns: The number of updated rows.
-    public func run(_ query: Update) throws -> Int {
+    @discardableResult public func run(_ query: Update) throws -> Int {
         let expression = query.expression
         return try sync {
             try self.run(expression.template, expression.bindings)
@@ -999,7 +1011,7 @@ extension Connection {
     /// - Parameter query: A delete query.
     ///
     /// - Returns: The number of deleted rows.
-    public func run(_ query: Delete) throws -> Int {
+    @discardableResult public func run(_ query: Delete) throws -> Int {
         let expression = query.expression
         return try sync {
             try self.run(expression.template, expression.bindings)

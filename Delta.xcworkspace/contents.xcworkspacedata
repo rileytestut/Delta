@@ -2,7 +2,7 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "container:Delta.xcodeproj">
+      location = "group:Delta.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Cores/DeltaCore/DeltaCore.xcodeproj">

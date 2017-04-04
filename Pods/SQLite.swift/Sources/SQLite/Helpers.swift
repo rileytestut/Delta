@@ -24,7 +24,9 @@
 
 #if SQLITE_SWIFT_STANDALONE
 import sqlite3
-#elseif COCOAPODS
+#elseif SQLITE_SWIFT_SQLCIPHER
+import SQLCipher
+#elseif SWIFT_PACKAGE || COCOAPODS
 import CSQLite
 #endif
 

@@ -3,9 +3,9 @@ PODS:
   - SDWebImage (3.8.2):
     - SDWebImage/Core (= 3.8.2)
   - SDWebImage/Core (3.8.2)
-  - SQLite.swift (0.11.0):
-    - SQLite.swift/standard (= 0.11.0)
-  - SQLite.swift/standard (0.11.0)
+  - SQLite.swift (0.11.3):
+    - SQLite.swift/standard (= 0.11.3)
+  - SQLite.swift/standard (0.11.3)
 
 DEPENDENCIES:
   - FileMD5Hash (~> 2.0.0)
@@ -14,9 +14,9 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   FileMD5Hash: 3ed69cc19a21ff4d30ae8833fc104275ad2c7de0
-  SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
-  SQLite.swift: 9a26273607d3077a2e5a8d33486e9989f8404c7d
+  SDWebImage: '098e97e6176540799c27e804c96653ee0833d13c'
+  SQLite.swift: 99b36c22084427f0abbeb957556ce1528cf10bb3
 
-PODFILE CHECKSUM: 4d0cd307e08d6d4673b7cc8e54e1a5106772bfe0
+PODFILE CHECKSUM: e583277236d810a5e080371e73349e52a4aaa25e
 
-COCOAPODS: 1.1.1
+COCOAPODS: 1.2.0

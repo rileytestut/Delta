@@ -26,7 +26,9 @@ import Foundation.NSUUID
 import Dispatch
 #if SQLITE_SWIFT_STANDALONE
 import sqlite3
-#elseif COCOAPODS
+#elseif SQLITE_SWIFT_SQLCIPHER
+import SQLCipher
+#elseif SWIFT_PACKAGE || COCOAPODS
 import CSQLite
 #endif
 
@@ -132,9 +134,8 @@ public final class Connection {
     public var readonly: Bool { return sqlite3_db_readonly(handle, nil) == 1 }
 
     /// The last rowid inserted into the database via this connection.
-    public var lastInsertRowid: Int64? {
-        let rowid = sqlite3_last_insert_rowid(handle)
-        return rowid != 0 ? rowid : nil
+    public var lastInsertRowid: Int64 {
+        return sqlite3_last_insert_rowid(handle)
     }
 
     /// The last number of changes (inserts, updates, or deletes) made to the
@@ -412,11 +413,15 @@ public final class Connection {
     ///
     ///       db.trace { SQL in print(SQL) }
     public func trace(_ callback: ((String) -> Void)?) {
-        if #available(iOS 10.0, OSX 10.12, tvOS 10.0, watchOS 3.0, *) {
-            trace_v2(callback)
-        } else {
+        #if SQLITE_SWIFT_SQLCIPHER
             trace_v1(callback)
-        }
+        #else
+            if #available(iOS 10.0, OSX 10.12, tvOS 10.0, watchOS 3.0, *) {
+                trace_v2(callback)
+            } else {
+                trace_v1(callback)
+            }
+        #endif
     }
 
     fileprivate func trace_v1(_ callback: ((String) -> Void)?) {
@@ -440,37 +445,8 @@ public final class Connection {
         trace = box
     }
 
-    @available(iOS 10.0, OSX 10.12, tvOS 10.0, watchOS 3.0, *)
-    fileprivate func trace_v2(_ callback: ((String) -> Void)?) {
-        guard let callback = callback else {
-            // If the X callback is NULL or if the M mask is zero, then tracing is disabled.
-            sqlite3_trace_v2(handle, 0 /* mask */, nil /* xCallback */, nil /* pCtx */)
-            trace = nil
-            return
-        }
 
-        let box: Trace = { (pointer: UnsafeRawPointer) in
-            callback(String(cString: pointer.assumingMemoryBound(to: UInt8.self)))
-        }
-        sqlite3_trace_v2(handle,
-            UInt32(SQLITE_TRACE_STMT) /* mask */,
-            {
-                // A trace callback is invoked with four arguments: callback(T,C,P,X).
-                // The T argument is one of the SQLITE_TRACE constants to indicate why the
-                // callback was invoked. The C argument is a copy of the context pointer.
-                // The P and X arguments are pointers whose meanings depend on T.
-                (T: UInt32, C: UnsafeMutableRawPointer?, P: UnsafeMutableRawPointer?, X: UnsafeMutableRawPointer?) in
-                    if let P = P,
-                       let expandedSQL = sqlite3_expanded_sql(OpaquePointer(P)) {
-                        unsafeBitCast(C, to: Trace.self)(expandedSQL)
-                        sqlite3_free(expandedSQL)
-                    }
-                    return Int32(0) // currently ignored
-            },
-            unsafeBitCast(box, to: UnsafeMutableRawPointer.self) /* pCtx */
-        )
-        trace = box
-    }
+
 
     fileprivate typealias Trace = @convention(block) (UnsafeRawPointer) -> Void
     fileprivate var trace: Trace?
@@ -603,7 +579,7 @@ public final class Connection {
             } else if result == nil {
                 sqlite3_result_null(context)
             } else {
-                fatalError("unsupported result type: \(result)")
+                fatalError("unsupported result type: \(String(describing: result))")
             }
         }
         var flags = SQLITE_UTF8
@@ -733,11 +709,48 @@ extension Result : CustomStringConvertible {
 
     public var description: String {
         switch self {
-        case let .error(message, _, statement):
-            guard let statement = statement else { return message }
-
-            return "\(message) (\(statement))"
+        case let .error(message, errorCode, statement):
+            if let statement = statement {
+                return "\(message) (\(statement)) (code: \(errorCode))"
+            } else {
+                return "\(message) (code: \(errorCode))"
+            }
         }
     }
-
 }
+
+#if !SQLITE_SWIFT_SQLCIPHER
+@available(iOS 10.0, OSX 10.12, tvOS 10.0, watchOS 3.0, *)
+extension Connection {
+    fileprivate func trace_v2(_ callback: ((String) -> Void)?) {
+        guard let callback = callback else {
+            // If the X callback is NULL or if the M mask is zero, then tracing is disabled.
+            sqlite3_trace_v2(handle, 0 /* mask */, nil /* xCallback */, nil /* pCtx */)
+            trace = nil
+            return
+        }
+
+        let box: Trace = { (pointer: UnsafeRawPointer) in
+            callback(String(cString: pointer.assumingMemoryBound(to: UInt8.self)))
+        }
+        sqlite3_trace_v2(handle,
+            UInt32(SQLITE_TRACE_STMT) /* mask */,
+            {
+                // A trace callback is invoked with four arguments: callback(T,C,P,X).
+                // The T argument is one of the SQLITE_TRACE constants to indicate why the
+                // callback was invoked. The C argument is a copy of the context pointer.
+                // The P and X arguments are pointers whose meanings depend on T.
+                (T: UInt32, C: UnsafeMutableRawPointer?, P: UnsafeMutableRawPointer?, X: UnsafeMutableRawPointer?) in
+                    if let P = P,
+                       let expandedSQL = sqlite3_expanded_sql(OpaquePointer(P)) {
+                        unsafeBitCast(C, to: Trace.self)(expandedSQL)
+                        sqlite3_free(expandedSQL)
+                    }
+                    return Int32(0) // currently ignored
+            },
+            unsafeBitCast(box, to: UnsafeMutableRawPointer.self) /* pCtx */
+        )
+        trace = box
+    }
+}
+#endif
