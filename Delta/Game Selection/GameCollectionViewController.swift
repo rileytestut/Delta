@@ -44,7 +44,7 @@ class GameCollectionViewController: UICollectionViewController
     
     fileprivate var activeSaveState: SaveStateProtocol?
     
-    fileprivate var dataSource: RSTFetchedResultsCollectionViewDataSource<Game>!
+    fileprivate let dataSource = RSTFetchedResultsCollectionViewDataSource<Game>(fetchedResultsController: NSFetchedResultsController())
     fileprivate let prototypeCell = GridCollectionViewCell()
     
     fileprivate var _performing3DTouchTransition = false
@@ -61,6 +61,10 @@ extension GameCollectionViewController
     {
         super.viewDidLoad()
         
+        self.dataSource.cellConfigurationHandler = { [unowned self] (cell, item, indexPath) in
+            self.configure(cell as! GridCollectionViewCell, for: indexPath)
+        }
+        
         self.collectionView?.dataSource = self.dataSource
         self.collectionView?.delegate = self
         
@@ -72,13 +76,6 @@ extension GameCollectionViewController
         
         let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(GameCollectionViewController.handleLongPressGesture(_:)))
         self.collectionView?.addGestureRecognizer(longPressGestureRecognizer)
-    }
-    
-    override func viewWillAppear(_ animated: Bool)
-    {
-        self.dataSource.fetchedResultsController.performFetchIfNeeded()
-        
-        super.viewWillAppear(animated)
     }
     
     override func viewWillDisappear(_ animated: Bool)
@@ -148,8 +145,8 @@ extension GameCollectionViewController
             let destinationViewController = segue.destination as! GameViewController
             let cell = sender as! UICollectionViewCell
             
-            let indexPath = self.collectionView?.indexPath(for: cell)
-            let game = self.dataSource.fetchedResultsController.object(at: indexPath!)
+            let indexPath = self.collectionView!.indexPath(for: cell)!
+            let game = self.dataSource.item(at: indexPath)
             
             destinationViewController.game = game
             
@@ -201,21 +198,18 @@ private extension GameCollectionViewController
     //MARK: - Update
     func updateDataSource()
     {
-        let fetchRequest = Game.rst_fetchRequest() as! NSFetchRequest<Game>
+        let fetchRequest: NSFetchRequest<Game> = Game.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "ANY %K == %@", #keyPath(Game.gameCollections), self.gameCollection)
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(Game.name), ascending: true)]
         fetchRequest.returnsObjectsAsFaults = false
         
-        self.dataSource = RSTFetchedResultsCollectionViewDataSource(fetchRequest: fetchRequest, managedObjectContext: DatabaseManager.shared.viewContext)
-        self.dataSource.cellConfigurationHandler = { [unowned self] (cell, item, indexPath) in
-            self.configure(cell as! GridCollectionViewCell, for: indexPath)
-        }
+        self.dataSource.fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DatabaseManager.shared.viewContext, sectionNameKeyPath: nil, cacheName: nil)
     }
     
     //MARK: - Configure Cells
     func configure(_ cell: GridCollectionViewCell, for indexPath: IndexPath, ignoreImageOperations: Bool = false)
     {
-        let game = self.dataSource.fetchedResultsController.object(at: indexPath)
+        let game = self.dataSource.item(at: indexPath)
         
         switch self.theme
         {
@@ -409,7 +403,7 @@ private extension GameCollectionViewController
         
         guard let indexPath = self.collectionView?.indexPathForItem(at: gestureRecognizer.location(in: self.collectionView)) else { return }
         
-        let game = self.dataSource.fetchedResultsController.object(at: indexPath)
+        let game = self.dataSource.item(at: indexPath)
         let actions = self.actions(for: game)
         
         let alertController = UIAlertController(actions: actions)
@@ -433,7 +427,7 @@ extension GameCollectionViewController: UIViewControllerPreviewingDelegate
         
         previewingContext.sourceRect = layoutAttributes.frame
         
-        let game = self.dataSource.fetchedResultsController.object(at: indexPath)
+        let game = self.dataSource.item(at: indexPath)
         
         let gameViewController = PreviewGameViewController()
         gameViewController.game = game
@@ -508,7 +502,7 @@ extension GameCollectionViewController
         guard self.gameCollection.identifier != GameType.unknown.rawValue else { return }
         
         let cell = collectionView.cellForItem(at: indexPath)
-        let game = self.dataSource.fetchedResultsController.object(at: indexPath)
+        let game = self.dataSource.item(at: indexPath)
         
         if game.fileURL == self.activeEmulatorCore?.game.fileURL
         {

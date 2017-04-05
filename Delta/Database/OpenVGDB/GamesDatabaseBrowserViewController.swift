@@ -39,7 +39,7 @@ class GamesDatabaseBrowserViewController: UITableViewController
         
         self.dataSource = RSTArrayTableViewDataSource<GameMetadata>(items: [])
         
-        let placeholderView = RSTBackgroundView()
+        let placeholderView = RSTPlaceholderView()
         placeholderView.textLabel.textColor = UIColor.lightText
         placeholderView.detailTextLabel.textColor = UIColor.lightText
         
@@ -140,7 +140,7 @@ extension GamesDatabaseBrowserViewController
     
     func updatePlaceholderView()
     {
-        guard let placeholderView = self.dataSource.placeholderView as? RSTBackgroundView else { return }
+        guard let placeholderView = self.dataSource.placeholderView as? RSTPlaceholderView else { return }
         
         if self.dataSource.searchController.searchBar.text == ""
         {

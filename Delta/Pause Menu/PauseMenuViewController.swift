@@ -21,7 +21,7 @@ class PauseMenuViewController: UICollectionViewController
                 fatalError("PauseViewController only supports up to 8 items (for my sanity when laying out on a landscape iPhone 4s")
             }
             
-            self.collectionView?.reloadData()
+            self.dataSource.items = self.items
         }
     }
     
@@ -29,6 +29,8 @@ class PauseMenuViewController: UICollectionViewController
         set { }
         get { return self.collectionView?.contentSize ?? CGSize.zero }
     }
+    
+    fileprivate let dataSource = RSTArrayCollectionViewDataSource<PauseItem>(items: [])
     
     fileprivate var prototypeCell = GridCollectionViewCell()
     fileprivate var previousIndexPath: IndexPath? = nil
@@ -39,6 +41,11 @@ extension PauseMenuViewController
     override func viewDidLoad()
     {
         super.viewDidLoad()
+        
+        self.dataSource.cellConfigurationHandler = { [unowned self] (cell, item, indexPath) in
+            self.configure(cell as! GridCollectionViewCell, for: indexPath)
+        }
+        self.collectionView?.dataSource = self.dataSource
                 
         let collectionViewLayout = self.collectionViewLayout as! GridCollectionViewLayout
         collectionViewLayout.itemWidth = 90
@@ -63,7 +70,7 @@ extension PauseMenuViewController
 
 private extension PauseMenuViewController
 {
-    func configureCollectionViewCell(_ cell: GridCollectionViewCell, forIndexPath indexPath: IndexPath)
+    func configure(_ cell: GridCollectionViewCell, for indexPath: IndexPath)
     {
         let pauseItem = self.items[(indexPath as NSIndexPath).item]
         
@@ -95,27 +102,11 @@ private extension PauseMenuViewController
     
     func toggleSelectedStateForPauseItemAtIndexPath(_ indexPath: IndexPath)
     {
-        var pauseItem = self.items[(indexPath as NSIndexPath).item]
+        let pauseItem = self.items[indexPath.item]
         pauseItem.selected = !pauseItem.selected
-        self.items[(indexPath as NSIndexPath).item] = pauseItem
         
         let cell = self.collectionView!.cellForItem(at: indexPath) as! GridCollectionViewCell
-        self.configureCollectionViewCell(cell, forIndexPath: indexPath)
-    }
-}
-
-extension PauseMenuViewController
-{
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
-    {
-        return self.items.count
-    }
-    
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
-    {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RSTCellContentGenericCellIdentifier, for: indexPath) as! GridCollectionViewCell
-        self.configureCollectionViewCell(cell, forIndexPath: indexPath)
-        return cell
+        self.configure(cell, for: indexPath)
     }
 }
 
@@ -123,7 +114,7 @@ extension PauseMenuViewController: UICollectionViewDelegateFlowLayout
 {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize
     {
-        self.configureCollectionViewCell(self.prototypeCell, forIndexPath: indexPath)
+        self.configure(self.prototypeCell, for: indexPath)
         
         let size = self.prototypeCell.contentView.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
         return size
@@ -148,7 +139,7 @@ extension PauseMenuViewController
         
         self.toggleSelectedStateForPauseItemAtIndexPath(indexPath)
         
-        let pauseItem = self.items[(indexPath as NSIndexPath).item]
+        let pauseItem = self.items[indexPath.item]
         pauseItem.action(pauseItem)
     }
 }

@@ -86,7 +86,7 @@ class GameViewController: DeltaCore.GameViewController
     
     fileprivate var sustainButtonsContentView: UIView!
     fileprivate var sustainButtonsBlurView: UIVisualEffectView!
-    fileprivate var sustainButtonsBackgroundView: RSTBackgroundView!
+    fileprivate var sustainButtonsBackgroundView: RSTPlaceholderView!
     
     required init()
     {
@@ -171,7 +171,7 @@ extension GameViewController
         vibrancyView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.sustainButtonsBlurView.contentView.addSubview(vibrancyView)
         
-        self.sustainButtonsBackgroundView = RSTBackgroundView(frame: CGRect(x: 0, y: 0, width: vibrancyView.contentView.bounds.width, height: vibrancyView.contentView.bounds.height))
+        self.sustainButtonsBackgroundView = RSTPlaceholderView(frame: CGRect(x: 0, y: 0, width: vibrancyView.contentView.bounds.width, height: vibrancyView.contentView.bounds.height))
         self.sustainButtonsBackgroundView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.sustainButtonsBackgroundView.textLabel.text = NSLocalizedString("Select Buttons to Sustain", comment: "")
         self.sustainButtonsBackgroundView.textLabel.numberOfLines = 1

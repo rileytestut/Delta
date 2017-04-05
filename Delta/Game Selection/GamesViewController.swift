@@ -35,7 +35,7 @@ class GamesViewController: UIViewController
     }
     
     fileprivate var pageViewController: UIPageViewController!
-    fileprivate var backgroundView: RSTBackgroundView!
+    fileprivate var placeholderView: RSTPlaceholderView!
     fileprivate var pageControl: UIPageControl!
     
     fileprivate let fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>
@@ -67,11 +67,11 @@ extension GamesViewController
     {
         super.viewDidLoad()
         
-        self.backgroundView = RSTBackgroundView(frame: self.view.bounds)
-        self.backgroundView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        self.backgroundView.textLabel.text = NSLocalizedString("No Games", comment: "")
-        self.backgroundView.detailTextLabel.text = NSLocalizedString("You can import games by pressing the + button in the top right.", comment: "")
-        self.view.insertSubview(self.backgroundView, at: 0)
+        self.placeholderView = RSTPlaceholderView(frame: self.view.bounds)
+        self.placeholderView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        self.placeholderView.textLabel.text = NSLocalizedString("No Games", comment: "")
+        self.placeholderView.detailTextLabel.text = NSLocalizedString("You can import games by pressing the + button in the top right.", comment: "")
+        self.view.insertSubview(self.placeholderView, at: 0)
         
         self.pageControl = UIPageControl()
         self.pageControl.translatesAutoresizingMaskIntoConstraints = false
@@ -237,7 +237,7 @@ private extension GamesViewController
                 if let viewController = self.viewControllerForIndex(index)
                 {
                     self.pageViewController.view.setHidden(false, animated: animated)
-                    self.backgroundView.setHidden(true, animated: animated)
+                    self.placeholderView.setHidden(true, animated: animated)
                     
                     self.pageViewController.setViewControllers([viewController], direction: .forward, animated: false, completion: nil)
                     
@@ -255,7 +255,7 @@ private extension GamesViewController
             self.title = NSLocalizedString("Games", comment: "")
             
             self.pageViewController.view.setHidden(true, animated: animated)
-            self.backgroundView.setHidden(false, animated: animated)
+            self.placeholderView.setHidden(false, animated: animated)
         }
     }
 }

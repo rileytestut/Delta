@@ -23,15 +23,13 @@ class CheatsViewController: UITableViewController
 {
     var game: Game! {
         didSet {
-            self.updateFetchedResultsController()
+            self.updateDataSource()
         }
     }
     
     weak var delegate: CheatsViewControllerDelegate?
     
-    fileprivate var backgroundView: RSTBackgroundView!
-    
-    fileprivate var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>!
+    fileprivate let dataSource = RSTFetchedResultsTableViewDataSource<Cheat>(fetchedResultsController: NSFetchedResultsController())
 }
 
 extension CheatsViewController
@@ -43,32 +41,26 @@ extension CheatsViewController
         self.title = NSLocalizedString("Cheats", comment: "")
         
         let vibrancyEffect = UIVibrancyEffect(blurEffect: UIBlurEffect(style: .dark))
-        
         let vibrancyView = UIVisualEffectView(effect: vibrancyEffect)
-        vibrancyView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        self.tableView.backgroundView = vibrancyView
         
-        self.backgroundView = RSTBackgroundView(frame: CGRect(x: 0, y: 0, width: vibrancyView.bounds.width, height: vibrancyView.bounds.height))
-        self.backgroundView.isHidden = false
-        self.backgroundView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        self.backgroundView.textLabel.text = NSLocalizedString("No Cheats", comment: "")
-        self.backgroundView.textLabel.textColor = UIColor.white
-        self.backgroundView.detailTextLabel.text = NSLocalizedString("You can add a new cheat by pressing the + button in the top right.", comment: "")
-        self.backgroundView.detailTextLabel.textColor = UIColor.white
-        vibrancyView.contentView.addSubview(self.backgroundView)
+        let placeholderView = RSTPlaceholderView(frame: CGRect(x: 0, y: 0, width: vibrancyView.bounds.width, height: vibrancyView.bounds.height))
+        placeholderView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        placeholderView.textLabel.text = NSLocalizedString("No Cheats", comment: "")
+        placeholderView.textLabel.textColor = UIColor.white
+        placeholderView.detailTextLabel.text = NSLocalizedString("You can add a new cheat by pressing the + button in the top right.", comment: "")
+        placeholderView.detailTextLabel.textColor = UIColor.white
+        vibrancyView.contentView.addSubview(placeholderView)
+        
+        self.dataSource.placeholderView = vibrancyView
+        self.dataSource.rowAnimation = .automatic
+        self.dataSource.cellConfigurationHandler = { [unowned self] (cell, item, indexPath) in
+            self.configure(cell, for: indexPath)
+        }
+        self.tableView.dataSource = self.dataSource
         
         self.tableView.separatorEffect = vibrancyEffect
         
         self.registerForPreviewing(with: self, sourceView: self.tableView)
-    }
-    
-    override func viewWillAppear(_ animated: Bool)
-    {
-        self.fetchedResultsController.performFetchIfNeeded()
-        
-        self.updateBackgroundView()
-        
-        super.viewWillAppear(animated)
     }
 
     override func didReceiveMemoryWarning()
@@ -90,29 +82,14 @@ private extension CheatsViewController
 //MARK: - Update -
 private extension CheatsViewController
 {
-    func updateFetchedResultsController()
+    func updateDataSource()
     {
-        let fetchRequest = Cheat.rst_fetchRequest()
+        let fetchRequest: NSFetchRequest<Cheat> = Cheat.fetchRequest()
         fetchRequest.returnsObjectsAsFaults = false
         fetchRequest.predicate = NSPredicate(format: "%K == %@", #keyPath(Cheat.game), self.game)
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(Cheat.name), ascending: true)]
         
-        self.fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DatabaseManager.shared.viewContext, sectionNameKeyPath: nil, cacheName: nil)
-        self.fetchedResultsController.delegate = self
-    }
-    
-    func updateBackgroundView()
-    {
-        if let fetchedObjects = self.fetchedResultsController.fetchedObjects, fetchedObjects.count > 0
-        {
-            self.tableView.separatorStyle = .singleLine
-            self.backgroundView.isHidden = true
-        }
-        else
-        {
-            self.tableView.separatorStyle = .none
-            self.backgroundView.isHidden = false
-        }
+        self.dataSource.fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DatabaseManager.shared.viewContext, sectionNameKeyPath: nil, cacheName: nil)
     }
 }
 
@@ -142,9 +119,9 @@ private extension CheatsViewController
 /// Convenience
 private extension CheatsViewController
 {
-    func configure(_ cell: UITableViewCell, forIndexPath indexPath: IndexPath)
+    func configure(_ cell: UITableViewCell, for indexPath: IndexPath)
     {
-        let cheat = self.fetchedResultsController.object(at: indexPath) as! Cheat
+        let cheat = self.dataSource.item(at: indexPath)
         cell.textLabel?.text = cheat.name
         cell.textLabel?.font = UIFont.boldSystemFont(ofSize: cell.textLabel!.font.pointSize)
         cell.textLabel?.textColor = UIColor.white
@@ -164,33 +141,9 @@ private extension CheatsViewController
 
 extension CheatsViewController
 {
-    // MARK: - Table view data source
-
-    override func numberOfSections(in tableView: UITableView) -> Int
-    {
-        let numberOfSections = self.fetchedResultsController.sections!.count
-        return numberOfSections
-    }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
-    {
-        let section = self.fetchedResultsController.sections![section]
-        return section.numberOfObjects
-    }
-    
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
-    {
-        let cell = tableView.dequeueReusableCell(withIdentifier: RSTCellContentGenericCellIdentifier, for: indexPath)
-        self.configure(cell, forIndexPath: indexPath)
-        return cell
-    }
-}
-
-extension CheatsViewController
-{
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
     {
-        let cheat = self.fetchedResultsController.object(at: indexPath) as! Cheat
+        let cheat = self.dataSource.item(at: indexPath)
         
         let backgroundContext = DatabaseManager.shared.newBackgroundContext()
         backgroundContext.performAndWait {
@@ -214,7 +167,7 @@ extension CheatsViewController
     
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]?
     {
-        let cheat = self.fetchedResultsController.object(at: indexPath) as! Cheat
+        let cheat = self.dataSource.item(at: indexPath)
         
         let deleteAction = UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: "")) { (action, indexPath) in
             self.deleteCheat(cheat)
@@ -244,7 +197,7 @@ extension CheatsViewController: UIViewControllerPreviewingDelegate
         let frame = self.tableView.rectForRow(at: indexPath)
         previewingContext.sourceRect = frame
         
-        let cheat = self.fetchedResultsController.object(at: indexPath) as! Cheat
+        let cheat = self.dataSource.item(at: indexPath)
         
         let editCheatViewController = self.makeEditCheatViewController(cheat: cheat)
         editCheatViewController.isPreviewing = true
@@ -282,15 +235,5 @@ extension CheatsViewController: EditCheatViewControllerDelegate
     func editCheatViewController(_ editCheatViewController: EditCheatViewController, deactivateCheat cheat: Cheat)
     {
         self.delegate?.cheatsViewController(self, deactivateCheat: cheat)
-    }
-}
-
-//MARK: - <NSFetchedResultsControllerDelegate> -
-extension CheatsViewController: NSFetchedResultsControllerDelegate
-{
-    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>)
-    {
-        self.tableView.reloadData()
-        self.updateBackgroundView()
     }
 }

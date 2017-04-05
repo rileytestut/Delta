@@ -35,7 +35,7 @@ class ControllerSkinsViewController: UITableViewController
         }
     }
     
-    fileprivate var dataSource: RSTFetchedResultsTableViewDataSource<ControllerSkin>!
+    fileprivate let dataSource = RSTFetchedResultsTableViewDataSource<ControllerSkin>(fetchedResultsController: NSFetchedResultsController())
     
     fileprivate let imageOperationQueue = RSTOperationQueue()
     
@@ -47,13 +47,12 @@ extension ControllerSkinsViewController
     override func viewDidLoad()
     {
         super.viewDidLoad()
-    }
-    
-    override func viewWillAppear(_ animated: Bool)
-    {
-        self.dataSource.fetchedResultsController.performFetchIfNeeded()
         
-        super.viewWillAppear(animated)
+        self.dataSource.proxy = self
+        self.dataSource.cellConfigurationHandler = { [unowned self] (cell, item, indexPath) in
+            self.configure(cell as! ControllerSkinTableViewCell, for: indexPath)
+        }
+        self.tableView.dataSource = self.dataSource
     }
 
     override func didReceiveMemoryWarning()
@@ -76,18 +75,13 @@ private extension ControllerSkinsViewController
         fetchRequest.predicate = NSPredicate(format: "%K == %@ AND (%K & %d) == %d", #keyPath(ControllerSkin.gameType), gameType.rawValue, #keyPath(ControllerSkin.supportedConfigurations), configuration.rawValue, configuration.rawValue)
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(ControllerSkin.isStandard), ascending: false), NSSortDescriptor(key: #keyPath(ControllerSkin.name), ascending: true)]
         
-        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DatabaseManager.shared.viewContext, sectionNameKeyPath: #keyPath(ControllerSkin.name), cacheName: nil)
-        
-        self.dataSource = RSTFetchedResultsTableViewDataSource(fetchedResultsController: fetchedResultsController)
-        self.dataSource.cellConfigurationHandler = { [unowned self] (cell, item, indexPath) in
-            self.configure(cell as! ControllerSkinTableViewCell, for: indexPath)
-        }
+        self.dataSource.fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DatabaseManager.shared.viewContext, sectionNameKeyPath: #keyPath(ControllerSkin.name), cacheName: nil)
     }
     
     //MARK: - Configure Cells
     func configure(_ cell: ControllerSkinTableViewCell, for indexPath: IndexPath)
     {
-        let controllerSkin = self.dataSource.fetchedResultsController.object(at: indexPath)
+        let controllerSkin = self.dataSource.item(at: indexPath)
         
         cell.controllerSkinImageView.image = nil
         cell.activityIndicatorView.startAnimating()
@@ -126,24 +120,9 @@ private extension ControllerSkinsViewController
 
 extension ControllerSkinsViewController
 {
-    override func numberOfSections(in tableView: UITableView) -> Int
-    {
-        return self.dataSource.numberOfSections(in: tableView)
-    }
-    
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
-    {
-        return self.dataSource.tableView(tableView, numberOfRowsInSection: section)
-    }
-    
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
-    {
-        return self.dataSource.tableView(tableView, cellForRowAt: indexPath)
-    }
-    
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String?
     {
-        let controllerSkin = self.dataSource.fetchedResultsController.object(at: IndexPath(row: 0, section: section))
+        let controllerSkin = self.dataSource.item(at: IndexPath(row: 0, section: section))
         return controllerSkin.name
     }
 }
@@ -154,7 +133,7 @@ extension ControllerSkinsViewController: UITableViewDataSourcePrefetching
     {
         for indexPath in indexPaths
         {
-            let controllerSkin = self.dataSource.fetchedResultsController.object(at: indexPath)
+            let controllerSkin = self.dataSource.item(at: indexPath)
             
             let size = UIScreen.main.defaultControllerSkinSize
             
@@ -179,7 +158,7 @@ extension ControllerSkinsViewController
 {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
     {
-        let controllerSkin = self.dataSource.fetchedResultsController.object(at: indexPath)
+        let controllerSkin = self.dataSource.item(at: indexPath)
         Settings.setPreferredControllerSkin(controllerSkin, for: self.gameType, traits: self.traits)
         
         _ = self.navigationController?.popViewController(animated: true)
@@ -187,7 +166,7 @@ extension ControllerSkinsViewController
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
     {
-        let controllerSkin = self.dataSource.fetchedResultsController.object(at: indexPath)
+        let controllerSkin = self.dataSource.item(at: indexPath)
         
         guard let size = controllerSkin.aspectRatio(for: self.traits) else { return 150 }
         

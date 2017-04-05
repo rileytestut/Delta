@@ -8,7 +8,8 @@
 
 import UIKit
 
-struct PauseItem: Equatable
+// Must be class for use with Objective-C generics :(
+class PauseItem: Equatable
 {
     var image: UIImage
     var text: String
