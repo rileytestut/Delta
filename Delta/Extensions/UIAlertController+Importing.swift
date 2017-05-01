@@ -38,6 +38,7 @@ extension UIAlertController
             {
             case .doesNotExist(let url): urls.insert(url)
             case .invalid(let url): urls.insert(url)
+            case .unsupported(let url): urls.insert(url)
             case .unknown(let url, _): urls.insert(url)
             case .saveFailed(let errorURLs, _): urls.formUnion(errorURLs)
             }

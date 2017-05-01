@@ -23,7 +23,7 @@ extension ControllerSkinsViewController
 
 class ControllerSkinsViewController: UITableViewController
 {
-    var gameType: GameType! {
+    var system: System! {
         didSet {
             self.updateDataSource()
         }
@@ -67,12 +67,12 @@ private extension ControllerSkinsViewController
     //MARK: - Update
     func updateDataSource()
     {
-        guard let gameType = self.gameType, let traits = self.traits else { return }
+        guard let system = self.system, let traits = self.traits else { return }
         
         let configuration = ControllerSkinConfigurations(traits: traits)
         
         let fetchRequest: NSFetchRequest<ControllerSkin> = ControllerSkin.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "%K == %@ AND (%K & %d) == %d", #keyPath(ControllerSkin.gameType), gameType.rawValue, #keyPath(ControllerSkin.supportedConfigurations), configuration.rawValue, configuration.rawValue)
+        fetchRequest.predicate = NSPredicate(format: "%K == %@ AND (%K & %d) == %d", #keyPath(ControllerSkin.gameType), system.gameType.rawValue, #keyPath(ControllerSkin.supportedConfigurations), configuration.rawValue, configuration.rawValue)
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(ControllerSkin.isStandard), ascending: false), NSSortDescriptor(key: #keyPath(ControllerSkin.name), ascending: true)]
         
         self.dataSource.fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DatabaseManager.shared.viewContext, sectionNameKeyPath: #keyPath(ControllerSkin.name), cacheName: nil)
@@ -159,7 +159,7 @@ extension ControllerSkinsViewController
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
     {
         let controllerSkin = self.dataSource.item(at: indexPath)
-        Settings.setPreferredControllerSkin(controllerSkin, for: self.gameType, traits: self.traits)
+        Settings.setPreferredControllerSkin(controllerSkin, for: self.system, traits: self.traits)
         
         _ = self.navigationController?.popViewController(animated: true)
     }

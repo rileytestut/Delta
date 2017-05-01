@@ -7,15 +7,17 @@
 //
 
 import DeltaCore
-import GBADeltaCore
 
 extension DeltaCoreProtocol
 {
     var supportedRates: ClosedRange<Double> {
-        switch self.gameType
+        guard let system = System(gameType: self.gameType) else { return 1...1 }
+        
+        switch system
         {
-        case GameType.gba: return 1...3
-        default: return 1...4
+        case .snes: return 1...4
+        case .gba: return 1...3
+        case .gbc: return 1...4
         }
     }
 }

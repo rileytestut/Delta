@@ -391,11 +391,11 @@ private extension GameViewController
     
     func updateControllerSkin()
     {
-        guard let game = self.game else { return }
+        guard let game = self.game, let system = System(gameType: game.type) else { return }
         
         let traits = DeltaCore.ControllerSkin.Traits.defaults(for: self.view)
         
-        let controllerSkin = Settings.preferredControllerSkin(for: game.type, traits: traits)
+        let controllerSkin = Settings.preferredControllerSkin(for: system, traits: traits)
         self.controllerView.controllerSkin = controllerSkin
         
         if controllerSkin?.isTranslucent(for: traits) ?? false
@@ -807,12 +807,12 @@ private extension GameViewController
             
         case .preferredControllerSkin:
             guard
-                let gameType = notification.userInfo?[Settings.NotificationUserInfoKey.gameType] as? GameType,
+                let system = notification.userInfo?[Settings.NotificationUserInfoKey.system] as? System,
                 let traits = notification.userInfo?[Settings.NotificationUserInfoKey.traits] as? DeltaCore.ControllerSkin.Traits
             else { return }
             
             let currentTraits = DeltaCore.ControllerSkin.Traits.defaults(for: self.view)
-            if gameType == self.game?.type && traits == currentTraits
+            if system.gameType == self.game?.type && traits == currentTraits
             {
                 self.updateControllerSkin()
             }

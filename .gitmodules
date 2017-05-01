@@ -10,3 +10,6 @@
 [submodule "Cores/GBADeltaCore"]
 	path = Cores/GBADeltaCore
 	url = git@github.com:rileytestut/GBADeltaCore.git
+[submodule "Cores/GBCDeltaCore"]
+	path = Cores/GBCDeltaCore
+	url = git@github.com:rileytestut/GBCDeltaCore.git

@@ -40,7 +40,7 @@ class ImportController: NSObject
     {
         self.presentingViewController = presentingViewController
         
-        var documentTypes = GameType.supportedTypes.map { $0.rawValue }
+        var documentTypes = System.supportedSystems.map { $0.gameType.rawValue }
         documentTypes.append(kUTTypeDeltaControllerSkin as String)
         documentTypes.append(kUTTypeZipArchive as String)
         
@@ -75,7 +75,7 @@ class ImportController: NSObject
                     let controllerSkinURLs = contents.filter { $0.pathExtension.lowercased() == "deltaskin" }
                     self.importControllerSkins(at: Set(controllerSkinURLs))
                     
-                    let gameURLs = contents.filter { GameType.gameType(forFileExtension: $0.pathExtension) != .unknown || $0.pathExtension.lowercased() == "zip" }
+                    let gameURLs = contents.filter { GameType(fileExtension: $0.pathExtension) != nil || $0.pathExtension.lowercased() == "zip" }
                     self.importGames(at: Set(gameURLs))
                 }
                 
