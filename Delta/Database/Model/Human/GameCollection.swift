@@ -9,48 +9,22 @@
 import CoreData
 
 import DeltaCore
-import SNESDeltaCore
-import GBADeltaCore
 
 @objc(GameCollection)
-public class GameCollection: _GameCollection 
+public class GameCollection: _GameCollection
 {
-    var name: String
-    {
-        let gameType = GameType(rawValue: self.identifier)
-        return gameType.localizedName
+    var name: String {
+        return self.system?.localizedName ?? NSLocalizedString("Unknown", comment: "")
     }
     
-    var shortName: String
-    {
-        let gameType = GameType(rawValue: self.identifier)
-        return gameType.localizedShortName
+    var shortName: String {
+        return self.system?.localizedShortName ?? NSLocalizedString("Unknown", comment: "")
     }
     
-    class func gameSystemCollectionForPathExtension(_ pathExtension: String?, inManagedObjectContext managedObjectContext: NSManagedObjectContext) -> GameCollection
-    {
-        let gameType = GameType.gameType(forFileExtension: pathExtension ?? "")
-        let identifier = gameType.rawValue
+    var system: System? {
+        let gameType = GameType(rawValue: self.identifier)
         
-        let index: Int16
-        
-        switch gameType
-        {
-        case GameType.snes: index = 1990
-        case GameType.gba: index = 2001
-        default: index = Int16(INT16_MAX)
-        }
-        
-        let predicate = NSPredicate(format: "%K == %@", #keyPath(GameCollection.identifier), identifier)
-        
-        var gameCollection = GameCollection.instancesWithPredicate(predicate, inManagedObjectContext: managedObjectContext, type: GameCollection.self).first
-        if gameCollection == nil
-        {
-            gameCollection = GameCollection.insertIntoManagedObjectContext(managedObjectContext)
-            gameCollection?.identifier = identifier
-            gameCollection?.index = index
-        }
-        
-        return gameCollection!
+        let system = System(gameType: gameType)
+        return system
     }
 }

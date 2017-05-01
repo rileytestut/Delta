@@ -1,5 +1,5 @@
 //
-//  GameTypeControllerSkinsViewController.swift
+//  SystemControllerSkinsViewController.swift
 //  Delta
 //
 //  Created by Riley Testut on 9/30/16.
@@ -10,7 +10,7 @@ import UIKit
 
 import DeltaCore
 
-extension GameTypeControllerSkinsViewController
+extension SystemControllerSkinsViewController
 {
     fileprivate enum Section: Int
     {
@@ -19,21 +19,21 @@ extension GameTypeControllerSkinsViewController
     }
 }
 
-class GameTypeControllerSkinsViewController: UITableViewController
+class SystemControllerSkinsViewController: UITableViewController
 {
-    var gameType: GameType!
+    var system: System!
     
     @IBOutlet fileprivate var portraitImageView: UIImageView!
     @IBOutlet fileprivate var landscapeImageView: UIImageView!
 }
 
-extension GameTypeControllerSkinsViewController
+extension SystemControllerSkinsViewController
 {
     override func viewDidLoad()
     {
         super.viewDidLoad()
         
-        self.title = self.gameType.localizedShortName
+        self.title = self.system.localizedShortName
     }
     
     override func viewWillAppear(_ animated: Bool)
@@ -53,7 +53,7 @@ extension GameTypeControllerSkinsViewController
         guard let cell = sender as? UITableViewCell, let indexPath = self.tableView.indexPath(for: cell) else { return }
         
         let controllerSkinsViewController = segue.destination as! ControllerSkinsViewController
-        controllerSkinsViewController.gameType = self.gameType
+        controllerSkinsViewController.system = self.system
         
         var traits = DeltaCore.ControllerSkin.Traits.defaults(for: self.view)
         
@@ -68,7 +68,7 @@ extension GameTypeControllerSkinsViewController
     }
 }
 
-extension GameTypeControllerSkinsViewController
+extension SystemControllerSkinsViewController
 {
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
     {
@@ -98,15 +98,15 @@ extension GameTypeControllerSkinsViewController
     }
 }
 
-private extension GameTypeControllerSkinsViewController
+private extension SystemControllerSkinsViewController
 {
     func updateControllerSkins()
     {
         let portraitTraits = DeltaCore.ControllerSkin.Traits(deviceType: .iphone, displayMode: DeltaCore.ControllerSkin.DisplayMode.fullScreen, orientation: .portrait)
         let landscapeTraits = DeltaCore.ControllerSkin.Traits(deviceType: .iphone, displayMode: DeltaCore.ControllerSkin.DisplayMode.fullScreen, orientation: .landscape)
         
-        let portraitControllerSkin = Settings.preferredControllerSkin(for: self.gameType, traits: portraitTraits)
-        let landscapeControllerSkin = Settings.preferredControllerSkin(for: self.gameType, traits: landscapeTraits)
+        let portraitControllerSkin = Settings.preferredControllerSkin(for: self.system, traits: portraitTraits)
+        let landscapeControllerSkin = Settings.preferredControllerSkin(for: self.system, traits: landscapeTraits)
         
         self.portraitImageView.image = portraitControllerSkin?.image(for: portraitTraits, preferredSize: UIScreen.main.defaultControllerSkinSize)
         self.landscapeImageView.image = landscapeControllerSkin?.image(for: landscapeTraits, preferredSize: UIScreen.main.defaultControllerSkinSize)

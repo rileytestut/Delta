@@ -60,6 +60,20 @@
 				<string>com.pkware.zip-archive</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeIconFiles</key>
+			<array/>
+			<key>CFBundleTypeName</key>
+			<string>GBC Game</string>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+			<key>LSHandlerRank</key>
+			<string>Owner</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>com.rileytestut.delta.game.gbc</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
@@ -82,17 +96,17 @@
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSExceptionDomains</key>
-        <dict>
-            <key>gamefaqs.net</key>
-            <dict>
-                <key>NSIncludesSubdomains</key>
-                <true/>
-                <key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
-                <true/>
-                <key>NSTemporaryExceptionMinimumTLSVersion</key>
-                <string>TLSv1.1</string>
-            </dict>
-        </dict>
+		<dict>
+			<key>gamefaqs.net</key>
+			<dict>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+				<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+				<key>NSTemporaryExceptionMinimumTLSVersion</key>
+				<string>TLSv1.1</string>
+			</dict>
+		</dict>
 	</dict>
 	<key>UIFileSharingEnabled</key>
 	<true/>
@@ -177,6 +191,24 @@
 			<dict>
 				<key>public.filename-extension</key>
 				<string>deltaskin</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>com.rileytestut.delta.game</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>GBC Game</string>
+			<key>UTTypeIdentifier</key>
+			<string>com.rileytestut.delta.game.gbc</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>gbc</string>
+					<string>gb</string>
+				</array>
 			</dict>
 		</dict>
 	</array>
