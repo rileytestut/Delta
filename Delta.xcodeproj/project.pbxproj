@@ -85,6 +85,7 @@
 		BF9F4FD01AAD7B87004C9500 /* DeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BF9F4FCE1AAD7B87004C9500 /* DeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BFA0D1271D3AE1F600565894 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF63BDE91D389EEB00FCB040 /* GameViewController.swift */; };
 		BFAA1FED1B8AA4FA00495943 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFAA1FEC1B8AA4FA00495943 /* Settings.swift */; };
+		BFBAB2E31EB685A2004E0B0E /* DeltaCoreProtocol+Delta.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFBAB2E21EB685A2004E0B0E /* DeltaCoreProtocol+Delta.swift */; };
 		BFC314771E0C8CFC0056E3A8 /* GameType+Delta.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC314761E0C8CFC0056E3A8 /* GameType+Delta.swift */; };
 		BFC9B7391CEFCD34008629BB /* CheatsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC9B7381CEFCD34008629BB /* CheatsViewController.swift */; };
 		BFCEA67E1D56FF640061A534 /* UIViewControllerContextTransitioning+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFCEA67D1D56FF640061A534 /* UIViewControllerContextTransitioning+Conveniences.swift */; };
@@ -192,6 +193,7 @@
 		BF99A5961DC2F9C400468E9E /* ControllerSkinTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ControllerSkinTableViewCell.swift; path = "Controller Skins/ControllerSkinTableViewCell.swift"; sourceTree = "<group>"; };
 		BF9F4FCE1AAD7B87004C9500 /* DeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFAA1FEC1B8AA4FA00495943 /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		BFBAB2E21EB685A2004E0B0E /* DeltaCoreProtocol+Delta.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DeltaCoreProtocol+Delta.swift"; sourceTree = "<group>"; };
 		BFC134E01AAD82460087AD7B /* SNESDeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SNESDeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFC314761E0C8CFC0056E3A8 /* GameType+Delta.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GameType+Delta.swift"; sourceTree = "<group>"; };
 		BFC9B7381CEFCD34008629BB /* CheatsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CheatsViewController.swift; path = "Pause Menu/Cheats/CheatsViewController.swift"; sourceTree = "<group>"; };
@@ -245,6 +247,7 @@
 				BF5942911E09BD1A0051894B /* NSManagedObject+Conveniences.swift */,
 				BF5942921E09BD1A0051894B /* NSManagedObjectContext+Conveniences.swift */,
 				BFC314761E0C8CFC0056E3A8 /* GameType+Delta.swift */,
+				BFBAB2E21EB685A2004E0B0E /* DeltaCoreProtocol+Delta.swift */,
 				BF18B61E1E2985F900F70067 /* UIAlertController+Importing.swift */,
 			);
 			path = Extensions;
@@ -721,6 +724,7 @@
 			files = (
 				BF59426A1E09BBD00051894B /* GridCollectionViewCell.swift in Sources */,
 				BF59427C1E09BC830051894B /* Cheat.swift in Sources */,
+				BFBAB2E31EB685A2004E0B0E /* DeltaCoreProtocol+Delta.swift in Sources */,
 				BF3540081C5DAFAD00C1184C /* PauseTransitionCoordinator.swift in Sources */,
 				BF59427E1E09BC830051894B /* Game.swift in Sources */,
 				BFAA1FED1B8AA4FA00495943 /* Settings.swift in Sources */,

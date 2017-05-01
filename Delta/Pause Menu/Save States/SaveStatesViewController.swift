@@ -241,7 +241,7 @@ private extension SaveStatesViewController
         
         let deltaCore = Delta.core(for: self.game.type)!
         
-        let dimensions = deltaCore.emulatorConfiguration.videoBufferInfo.outputDimensions
+        let dimensions = deltaCore.videoFormat.dimensions
         cell.maximumImageSize = CGSize(width: self.prototypeCellWidthConstraint.constant, height: (self.prototypeCellWidthConstraint.constant / dimensions.width) * dimensions.height)
         
         cell.textLabel.font = UIFont.preferredFont(forTextStyle: .subheadline)

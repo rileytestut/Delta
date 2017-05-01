@@ -33,7 +33,7 @@ class EditCheatViewController: UITableViewController
     var game: Game! {
         didSet {
             let deltaCore = Delta.core(for: self.game.type)!
-            self.supportedCheatFormats = deltaCore.emulatorConfiguration.supportedCheatFormats
+            self.supportedCheatFormats = deltaCore.supportedCheatFormats.sorted() { $0.name < $1.name }
         }
     }
     

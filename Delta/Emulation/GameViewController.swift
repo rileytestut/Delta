@@ -153,10 +153,12 @@ extension GameViewController
     {
         super.viewDidLoad()
         
+        let gameViewContainerView = self.gameView.superview!
+        
         self.sustainButtonsContentView = UIView(frame: CGRect(x: 0, y: 0, width: self.gameView.bounds.width, height: self.gameView.bounds.height))
         self.sustainButtonsContentView.translatesAutoresizingMaskIntoConstraints = false
         self.sustainButtonsContentView.isHidden = true
-        self.view.insertSubview(self.sustainButtonsContentView, aboveSubview: self.gameView)
+        self.view.insertSubview(self.sustainButtonsContentView, aboveSubview: gameViewContainerView)
         
         let blurEffect = UIBlurEffect(style: .dark)
         let vibrancyEffect = UIVibrancyEffect(blurEffect: blurEffect)
@@ -182,10 +184,10 @@ extension GameViewController
         vibrancyView.contentView.addSubview(self.sustainButtonsBackgroundView)
         
         // Auto Layout
-        self.sustainButtonsContentView.leadingAnchor.constraint(equalTo: self.gameView.leadingAnchor).isActive = true
-        self.sustainButtonsContentView.trailingAnchor.constraint(equalTo: self.gameView.trailingAnchor).isActive = true
-        self.sustainButtonsContentView.topAnchor.constraint(equalTo: self.gameView.topAnchor).isActive = true
-        self.sustainButtonsContentView.bottomAnchor.constraint(equalTo: self.gameView.bottomAnchor).isActive = true
+        self.sustainButtonsContentView.leadingAnchor.constraint(equalTo: gameViewContainerView.leadingAnchor).isActive = true
+        self.sustainButtonsContentView.trailingAnchor.constraint(equalTo: gameViewContainerView.trailingAnchor).isActive = true
+        self.sustainButtonsContentView.topAnchor.constraint(equalTo: gameViewContainerView.topAnchor).isActive = true
+        self.sustainButtonsContentView.bottomAnchor.constraint(equalTo: gameViewContainerView.bottomAnchor).isActive = true
         
         self.updateControllerSkin()
         self.updateControllers()
@@ -238,10 +240,10 @@ extension GameViewController
             pauseViewController.saveStatesViewControllerDelegate = self
             pauseViewController.cheatsViewControllerDelegate = self
             
-            pauseViewController.fastForwardItem?.selected = (self.emulatorCore?.rate != self.emulatorCore?.configuration.supportedRates.lowerBound)
+            pauseViewController.fastForwardItem?.selected = (self.emulatorCore?.rate != self.emulatorCore?.deltaCore.supportedRates.lowerBound)
             pauseViewController.fastForwardItem?.action = { [unowned self] item in
                 guard let emulatorCore = self.emulatorCore else { return }
-                emulatorCore.rate = item.selected ? emulatorCore.configuration.supportedRates.upperBound : emulatorCore.configuration.supportedRates.lowerBound
+                emulatorCore.rate = item.selected ? emulatorCore.deltaCore.supportedRates.upperBound : emulatorCore.deltaCore.supportedRates.lowerBound
             }
             
             pauseViewController.sustainButtonsItem?.selected = (self.sustainedInputs[ObjectIdentifier(gameController)]?.count ?? 0) > 0
