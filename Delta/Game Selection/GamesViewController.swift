@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import MobileCoreServices
 
 import DeltaCore
 
@@ -266,37 +267,50 @@ extension GamesViewController: ImportControllerDelegate
 {
     @IBAction fileprivate func importFiles()
     {
-        let importController = ImportController()
+        var documentTypes = Set(System.supportedSystems.map { $0.gameType.rawValue })
+        documentTypes.insert(kUTTypeZipArchive as String)
+        
+        // Add GBA4iOS's exported UTIs in case user has GBA4iOS installed (which may override Delta's UTI declarations)
+        documentTypes.insert("com.rileytestut.gba")
+        documentTypes.insert("com.rileytestut.gbc")
+        documentTypes.insert("com.rileytestut.gb")
+        
+        let itunesImportOption = iTunesImportOption(presentingViewController: self)
+        
+        let importController = ImportController(documentTypes: documentTypes)
         importController.delegate = self
+        importController.importOptions = [itunesImportOption]
         self.present(importController, animated: true, completion: nil)
     }
     
-    //MARK: - ImportControllerDelegate
-    @nonobjc func importController(_ importController: ImportController, didImport games: Set<Game>, with errors: Set<DatabaseManager.ImportError>)
+    func importController(_ importController: ImportController, didImportItemsAt urls: Set<URL>)
     {
-        if errors.count > 0
-        {
-            let alertController = UIAlertController.alertController(for: .games, with: errors)
-            self.present(alertController, animated: true, completion: nil)
+        let gameURLs = urls.filter { $0.pathExtension.lowercased() != "deltaskin" }
+        DatabaseManager.shared.importGames(at: Set(gameURLs)) { (games, errors) in
+            if errors.count > 0
+            {
+                let alertController = UIAlertController.alertController(for: .games, with: errors)
+                self.present(alertController, animated: true, completion: nil)
+            }
+            
+            if games.count > 0
+            {
+                print("Imported Games:", games.map { $0.name })
+            }
         }
         
-        if games.count > 0
-        {
-            print("Imported Games:", games.map { $0.name })
-        }
-    }
-    
-    @nonobjc func importController(_ importController: ImportController, didImport controllerSkins: Set<ControllerSkin>, with errors: Set<DatabaseManager.ImportError>)
-    {
-        if errors.count > 0
-        {
-            let alertController = UIAlertController.alertController(for: .controllerSkins, with: errors)
-            self.present(alertController, animated: true, completion: nil)
-        }
-        
-        if controllerSkins.count > 0
-        {
-            print("Imported Controller Skins:", controllerSkins.map { $0.name })
+        let controllerSkinURLs = urls.filter { $0.pathExtension.lowercased() == "deltaskin" }
+        DatabaseManager.shared.importControllerSkins(at: Set(controllerSkinURLs)) { (controllerSkins, errors) in
+            if errors.count > 0
+            {
+                let alertController = UIAlertController.alertController(for: .controllerSkins, with: errors)
+                self.present(alertController, animated: true, completion: nil)
+            }
+            
+            if controllerSkins.count > 0
+            {
+                print("Imported Controller Skins:", controllerSkins.map { $0.name })
+            }
         }
     }
 }

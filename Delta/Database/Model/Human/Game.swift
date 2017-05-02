@@ -22,6 +22,37 @@ public class Game: _Game, GameProtocol
         
         return fileURL
     }
+    
+    public override var artworkURL: URL? {
+        get {
+            self.willAccessValue(forKey: #keyPath(Game.artworkURL))
+            var artworkURL = self.primitiveValue(forKey: #keyPath(Game.artworkURL)) as? URL
+            self.didAccessValue(forKey: #keyPath(Game.artworkURL))
+            
+            if let unwrappedArtworkURL = artworkURL, unwrappedArtworkURL.isFileURL
+            {
+                // Recreate the stored URL relative to current sandbox location.
+                artworkURL = URL(fileURLWithPath: unwrappedArtworkURL.relativePath, relativeTo: DatabaseManager.gamesDirectoryURL)
+            }
+            
+            return artworkURL
+        }
+        set {
+            self.willChangeValue(forKey: #keyPath(Game.artworkURL))
+            
+            var artworkURL = newValue
+            
+            if let newValue = newValue, newValue.isFileURL
+            {
+                // Store a relative URL, since the sandbox location changes.
+                artworkURL = URL(fileURLWithPath: newValue.lastPathComponent, relativeTo: DatabaseManager.gamesDirectoryURL)
+            }
+            
+            self.setPrimitiveValue(artworkURL, forKey: #keyPath(Game.artworkURL))
+            
+            self.didChangeValue(forKey: #keyPath(Game.artworkURL))
+        }
+    }
 }
 
 extension Game

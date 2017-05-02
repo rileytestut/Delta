@@ -16,7 +16,7 @@ extension GameType
 {
     init?(fileExtension: String)
     {
-        switch fileExtension
+        switch fileExtension.lowercased()
         {
         case "smc", "sfc", "fig": self = .snes
         case "gba": self = .gba
