@@ -32,6 +32,7 @@ class PhotoLibraryImportOption: NSObject, ImportOption
         imagePickerController.delegate = self
         imagePickerController.sourceType = .photoLibrary
         imagePickerController.mediaTypes = [kUTTypeImage as String]
+        imagePickerController.view.backgroundColor = .white
         self.presentingViewController.present(imagePickerController, animated: true, completion: nil)
     }
 }
