@@ -593,6 +593,7 @@
 				BF9F4FCC1AAD7AEE004C9500 /* Embed Frameworks */,
 				B444B2BB31CBCEE7D86E943D /* [CP] Embed Pods Frameworks */,
 				3521C8FA1BB6004A6E9FE324 /* [CP] Copy Pods Resources */,
+				BF6BF3281EB897F6008E83CD /* Fabric */,
 			);
 			buildRules = (
 			);
@@ -711,6 +712,20 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "/usr/local/bin/mogenerator -m \"Delta/Database/Model/Model.xcdatamodel\" --human-dir \"Delta/Database/Model/Human\" --machine-dir \"Delta/Database/Model/Machine\" --swift --template-var scalarsWhenNonOptional=true --template-path \"Delta/Database/Model/mogenerator/templates\"";
+		};
+		BF6BF3281EB897F6008E83CD /* Fabric */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = Fabric;
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Fabric/run\" d542629b4f6625cfd5564d27318550321272076d 333118df9345dcec21e4ba0bb7fa8f6c67c4eb41734374e24f6c71a8dcd5c870";
 		};
 		DBD91E7D7EC2729786B4C5B1 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -869,7 +884,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
