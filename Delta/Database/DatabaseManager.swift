@@ -53,7 +53,6 @@ extension DatabaseManager
             case (.saveFailed, _): return false
             }
         }
-        
     }
 }
 
@@ -493,6 +492,14 @@ extension DatabaseManager
         self.createDirectory(at: gameTypeDirectoryURL)
         
         return gameTypeDirectoryURL
+    }
+    
+    class func artworkURL(for game: Game) -> URL
+    {
+        let gameURL = game.fileURL
+        
+        let artworkURL = gameURL.deletingPathExtension().appendingPathExtension("jpg")
+        return artworkURL
     }
 }
 
