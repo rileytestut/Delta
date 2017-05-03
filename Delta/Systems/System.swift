@@ -42,7 +42,7 @@ extension System
     var localizedName: String {
         switch self
         {
-        case .snes: return NSLocalizedString("Super Nintendo Entertainment System", comment: "")
+        case .snes: return NSLocalizedString("Super Nintendo", comment: "")
         case .gba: return NSLocalizedString("Game Boy Advance", comment: "")
         case .gbc: return NSLocalizedString("Game Boy Color", comment: "")
         }
