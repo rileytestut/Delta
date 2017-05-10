@@ -7,11 +7,12 @@
 //
 
 import UIKit
+import MobileCoreServices
 import ObjectiveC
 
 import DeltaCore
 
-import MobileCoreServices
+import Roxas
 
 protocol ImportControllerDelegate
 {
@@ -49,6 +50,23 @@ class ImportController: NSObject
     {
         self.presentingViewController = presentingViewController
         
+#if IMPACTOR
+    
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alertController.addAction(UIAlertAction.cancel)
+        
+        if let importOptions = self.importOptions
+        {
+            for importOption in importOptions
+            {
+                alertController.add(importOption, completionHandler: finish(with:))
+            }
+        }
+    
+        self.presentingViewController?.present(alertController, animated: true, completion: nil)
+    
+#else
+    
         let documentMenuController = UIDocumentMenuViewController(documentTypes: Array(self.documentTypes), in: .import)
         documentMenuController.delegate = self
         
@@ -56,22 +74,27 @@ class ImportController: NSObject
         {
             for importOption in reversedImportOptions
             {
-                documentMenuController.add(importOption, order: UIDocumentMenuOrder.first) { (urls) in
-                    if let urls = urls
-                    {
-                        self.delegate?.importController(self, didImportItemsAt: urls)
-                    }
-                    else
-                    {
-                        self.delegate?.importControllerDidCancel(self)
-                    }
-                    
-                    self.presentingViewController?.importController = nil
-                }
+                documentMenuController.add(importOption, order: .first, completionHandler: finish(with:))
             }
         }
-        
+    
         self.presentingViewController?.present(documentMenuController, animated: true, completion: nil)
+#endif
+        
+    }
+    
+    fileprivate func finish(with urls: Set<URL>?)
+    {
+        if let urls = urls
+        {
+            self.delegate?.importController(self, didImportItemsAt: urls)
+        }
+        else
+        {
+            self.delegate?.importControllerDidCancel(self)
+        }
+        
+        self.presentingViewController?.importController = nil
     }
 }
 
@@ -86,9 +109,7 @@ extension ImportController: UIDocumentMenuDelegate
     
     func documentMenuWasCancelled(_ documentMenu: UIDocumentMenuViewController)
     {
-        self.delegate?.importControllerDidCancel(self)
-        
-        self.presentingViewController?.importController = nil
+        self.finish(with: nil)
     }
 }
 
@@ -96,16 +117,12 @@ extension ImportController: UIDocumentPickerDelegate
 {
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL)
     {
-        self.delegate?.importController(self, didImportItemsAt: [url])
-        
-        self.presentingViewController?.importController = nil
+        self.finish(with: [url])
     }
     
     func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController)
     {
-        self.delegate?.importControllerDidCancel(self)
-        
-        self.presentingViewController?.importController = nil
+        self.finish(with: nil)
     }
 }
 

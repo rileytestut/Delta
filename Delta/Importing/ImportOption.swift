@@ -20,6 +20,17 @@ extension UIDocumentMenuViewController
     }
 }
 
+extension UIAlertController
+{
+    func add(_ importOption: ImportOption, completionHandler: @escaping (Set<URL>?) -> Void)
+    {
+        let action = UIAlertAction(title: importOption.title, style: .default, handler: { action in
+            importOption.import(withCompletionHandler: completionHandler)
+        })
+        self.addAction(action)
+    }
+}
+
 protocol ImportOption
 {
     var title: String { get }
