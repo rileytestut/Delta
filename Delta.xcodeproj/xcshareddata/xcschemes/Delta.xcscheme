@@ -70,6 +70,20 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "BF8F2AAD1E9C879300F89F15"
+               BuildableName = "GBCDeltaCore.framework"
+               BlueprintName = "GBCDeltaCore"
+               ReferencedContainer = "container:Cores/GBCDeltaCore/GBCDeltaCore.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "BFFA71D61AAC406100EE9DD1"
                BuildableName = "Delta.app"
                BlueprintName = "Delta"
