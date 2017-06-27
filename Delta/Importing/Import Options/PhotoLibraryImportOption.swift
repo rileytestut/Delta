@@ -48,7 +48,7 @@ extension PhotoLibraryImportOption: UIImagePickerControllerDelegate, UINavigatio
         
         do
         {
-            let temporaryURL = FileManager.uniqueTemporaryURL()
+            let temporaryURL = FileManager.default.uniqueTemporaryURL()
             try data.write(to: temporaryURL, options: .atomic)
             
             self.completionHandler?([temporaryURL])

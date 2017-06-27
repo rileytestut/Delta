@@ -222,7 +222,7 @@ extension GameViewController
             
             if let game = self.game
             {
-                let fileURL = FileManager.uniqueTemporaryURL()
+                let fileURL = FileManager.default.uniqueTemporaryURL()
                 self.pausedSaveState = PausedSaveState(fileURL: fileURL, gameType: game.type)
                 
                 self.emulatorCore?.saveSaveState(to: fileURL)
@@ -551,7 +551,7 @@ extension GameViewController: SaveStatesViewControllerDelegate
         
         if let autoSaveState = saveState as? SaveState, autoSaveState.type == .auto
         {
-            let temporaryURL = FileManager.uniqueTemporaryURL()
+            let temporaryURL = FileManager.default.uniqueTemporaryURL()
             
             do
             {

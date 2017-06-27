@@ -448,7 +448,7 @@ extension GameCollectionViewController: UIViewControllerPreviewingDelegate
         let indexPath = self.dataSource.fetchedResultsController.indexPath(forObject: game)!
         let cell = self.collectionView?.cellForItem(at: indexPath)
         
-        let fileURL = FileManager.uniqueTemporaryURL()
+        let fileURL = FileManager.default.uniqueTemporaryURL()
         self.activeSaveState = gameViewController.emulatorCore?.saveSaveState(to: fileURL)
         
         gameViewController.emulatorCore?.stop()
