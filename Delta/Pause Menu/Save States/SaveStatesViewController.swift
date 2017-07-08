@@ -65,10 +65,7 @@ class SaveStatesViewController: UICollectionViewController
     fileprivate var prototypeCellWidthConstraint: NSLayoutConstraint!
     fileprivate var prototypeHeader = SaveStatesCollectionHeaderView()
     
-    fileprivate let dataSource = RSTFetchedResultsCollectionViewDataSource<SaveState>(fetchedResultsController: NSFetchedResultsController())
-    
-    fileprivate let imageOperationQueue = RSTOperationQueue()
-    fileprivate let imageCache = NSCache<NSURL, UIImage>()
+    fileprivate let dataSource: RSTFetchedResultsCollectionViewPrefetchingDataSource<SaveState, UIImage>
     
     fileprivate var emulatorCoreSaveState: SaveStateProtocol?
     
@@ -76,11 +73,15 @@ class SaveStatesViewController: UICollectionViewController
     
     required init?(coder aDecoder: NSCoder)
     {
+        self.dataSource = RSTFetchedResultsCollectionViewPrefetchingDataSource<SaveState, UIImage>(fetchedResultsController: NSFetchedResultsController())
+        
         self.dateFormatter = DateFormatter()
         self.dateFormatter.timeStyle = .short
         self.dateFormatter.dateStyle = .short
         
         super.init(coder: aDecoder)
+        
+        self.prepareDataSource()
     }
 }
 
@@ -90,21 +91,8 @@ extension SaveStatesViewController
     {
         super.viewDidLoad()
         
-        self.vibrancyView = UIVisualEffectView(effect: nil)
-        
-        self.placeholderView = RSTPlaceholderView(frame: CGRect(x: 0, y: 0, width: self.vibrancyView.bounds.width, height: self.vibrancyView.bounds.height))
-        self.placeholderView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        self.placeholderView.textLabel.text = NSLocalizedString("No Save States", comment: "")
-        self.placeholderView.textLabel.textColor = UIColor.white
-        self.placeholderView.detailTextLabel.textColor = UIColor.white
-        self.vibrancyView.contentView.addSubview(self.placeholderView)
-        
-        self.dataSource.proxy = self
-        self.dataSource.placeholderView = self.vibrancyView
-        self.dataSource.cellConfigurationHandler = { [unowned self] (cell, item, indexPath) in
-            self.configure(cell as! GridCollectionViewCell, for: indexPath)
-        }
         self.collectionView?.dataSource = self.dataSource
+        self.collectionView?.prefetchDataSource = self.dataSource
         
         let collectionViewLayout = self.collectionViewLayout as! GridCollectionViewLayout
         let averageHorizontalInset = (collectionViewLayout.sectionInset.left + collectionViewLayout.sectionInset.right) / 2
@@ -118,11 +106,11 @@ extension SaveStatesViewController
         {
         case .saving:
             self.title = NSLocalizedString("Save State", comment: "")
-            placeholderView.detailTextLabel.text = NSLocalizedString("You can create a new save state by pressing the + button in the top right.", comment: "")
+            self.placeholderView.detailTextLabel.text = NSLocalizedString("You can create a new save state by pressing the + button in the top right.", comment: "")
             
         case .loading:
             self.title = NSLocalizedString("Load State", comment: "")
-            placeholderView.detailTextLabel.text = NSLocalizedString("You can create a new save state by pressing the Save State option in the pause menu.", comment: "")
+            self.placeholderView.detailTextLabel.text = NSLocalizedString("You can create a new save state by pressing the Save State option in the pause menu.", comment: "")
             self.navigationItem.rightBarButtonItem = nil
         }
         
@@ -158,8 +146,55 @@ extension SaveStatesViewController
 
 private extension SaveStatesViewController
 {
+    func prepareDataSource()
+    {
+        self.dataSource.proxy = self
+        
+        self.vibrancyView = UIVisualEffectView(effect: nil)
+        
+        self.placeholderView = RSTPlaceholderView(frame: CGRect(x: 0, y: 0, width: self.vibrancyView.bounds.width, height: self.vibrancyView.bounds.height))
+        self.placeholderView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        self.placeholderView.textLabel.text = NSLocalizedString("No Save States", comment: "")
+        self.placeholderView.textLabel.textColor = UIColor.white
+        self.placeholderView.detailTextLabel.textColor = UIColor.white
+        self.vibrancyView.contentView.addSubview(self.placeholderView)
+        
+        self.dataSource.placeholderView = self.vibrancyView
+        
+        self.dataSource.cellConfigurationHandler = { [unowned self] (cell, item, indexPath) in
+            self.configure(cell as! GridCollectionViewCell, for: indexPath)
+        }
+        
+        self.dataSource.prefetchHandler = { [unowned self] (saveState, indexPath, completionHandler) in
+            let imageOperation = LoadImageURLOperation(url: saveState.imageFileURL)
+            imageOperation.resultHandler = { (image, error) in
+                completionHandler(image, error)
+            }
+                        
+            if self.isAppearing
+            {
+                imageOperation.start()
+                imageOperation.waitUntilFinished()
+                return nil
+            }
+            
+            return imageOperation
+        }
+        
+        self.dataSource.prefetchCompletionHandler = { (cell, image, indexPath, error) in
+            guard let image = image, let cell = cell as? GridCollectionViewCell else { return }
+            
+            cell.imageView.backgroundColor = nil
+            cell.imageView.image = image
+            
+            cell.isImageViewVibrancyEnabled = false
+        }
+    }
+}
+
+private extension SaveStatesViewController
+{
     //MARK: - Update -
-    
     func updateDataSource()
     {
         let fetchRequest: NSFetchRequest<SaveState> = SaveState.fetchRequest()
@@ -194,7 +229,7 @@ private extension SaveStatesViewController
     
     //MARK: - Configure Views -
     
-    func configure(_ cell: GridCollectionViewCell, for indexPath: IndexPath, ignoreExpensiveOperations ignoreOperations: Bool = false)
+    func configure(_ cell: GridCollectionViewCell, for indexPath: IndexPath)
     {
         let saveState = self.dataSource.item(at: indexPath)
         
@@ -212,32 +247,6 @@ private extension SaveStatesViewController
             cell.isTextLabelVibrancyEnabled = true
             cell.isImageViewVibrancyEnabled = true
         }        
-        
-        if !ignoreOperations
-        {
-            let imageOperation = LoadImageURLOperation(url: saveState.imageFileURL)
-            imageOperation.resultsCache = self.imageCache
-            imageOperation.resultHandler = { (image, error) in
-                
-                if let image = image
-                {
-                    DispatchQueue.main.async {
-                        cell.imageView.backgroundColor = nil
-                        cell.imageView.image = image
-                        
-                        cell.isImageViewVibrancyEnabled = false
-                    }
-                }
-            }
-            
-            // Ensure initially visible cells have loaded their image before they appear to prevent potential flickering from placeholder to thumbnail
-            if self.isAppearing
-            {
-                imageOperation.isImmediate = true
-            }
-            
-            self.imageOperationQueue.addOperation(imageOperation, forKey: indexPath as NSCopying)
-        }
         
         let deltaCore = Delta.core(for: self.game.type)!
         
@@ -577,7 +586,7 @@ extension SaveStatesViewController: UIViewControllerPreviewingDelegate
         
         let saveState = self.dataSource.item(at: indexPath)
         let actions = self.actionsForSaveState(saveState)?.previewActions ?? []
-        let previewImage = self.imageCache.object(forKey: saveState.imageFileURL as NSURL) ?? UIImage(contentsOfFile: saveState.imageFileURL.path)
+        let previewImage = self.dataSource.prefetchItemCache.object(forKey: saveState) ?? UIImage(contentsOfFile: saveState.imageFileURL.path)
         
         let previewGameViewController = PreviewGameViewController()
         previewGameViewController.game = self.game
@@ -655,12 +664,6 @@ extension SaveStatesViewController
         case .loading: self.loadSaveState(saveState)
         }
     }
-    
-    override func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath)
-    {
-        let operation = self.imageOperationQueue[indexPath as NSCopying]
-        operation?.cancel()
-    }
 }
 
 //MARK: - <UICollectionViewDelegateFlowLayout> -
@@ -668,8 +671,7 @@ extension SaveStatesViewController: UICollectionViewDelegateFlowLayout
 {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize
     {
-        // No need to load images from disk just to determine size, so we pass true for ignoreExpensiveOperations
-        self.configure(self.prototypeCell, for: indexPath, ignoreExpensiveOperations: true)
+        self.configure(self.prototypeCell, for: indexPath)
         
         let size = self.prototypeCell.contentView.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
         return size

@@ -12,15 +12,6 @@ import DeltaCore
 
 import Roxas
 
-extension ControllerSkinsViewController
-{
-    enum Section: Int
-    {
-        case standard
-        case custom
-    }
-}
-
 class ControllerSkinsViewController: UITableViewController
 {
     var system: System! {
@@ -35,11 +26,16 @@ class ControllerSkinsViewController: UITableViewController
         }
     }
     
-    fileprivate let dataSource = RSTFetchedResultsTableViewDataSource<ControllerSkin>(fetchedResultsController: NSFetchedResultsController())
+    fileprivate let dataSource: RSTFetchedResultsTableViewPrefetchingDataSource<ControllerSkin, UIImage>
     
-    fileprivate let imageOperationQueue = RSTOperationQueue()
-    
-    fileprivate let imageCache = NSCache<ControllerSkinImageCacheKey, UIImage>()
+    required init?(coder aDecoder: NSCoder)
+    {
+        self.dataSource = RSTFetchedResultsTableViewPrefetchingDataSource<ControllerSkin, UIImage>(fetchedResultsController: NSFetchedResultsController())
+        
+        super.init(coder: aDecoder)
+        
+        self.prepareDataSource()
+    }
 }
 
 extension ControllerSkinsViewController
@@ -48,11 +44,8 @@ extension ControllerSkinsViewController
     {
         super.viewDidLoad()
         
-        self.dataSource.proxy = self
-        self.dataSource.cellConfigurationHandler = { [unowned self] (cell, item, indexPath) in
-            self.configure(cell as! ControllerSkinTableViewCell, for: indexPath)
-        }
         self.tableView.dataSource = self.dataSource
+        self.tableView.prefetchDataSource = self.dataSource
     }
 
     override func didReceiveMemoryWarning()
@@ -65,6 +58,41 @@ extension ControllerSkinsViewController
 private extension ControllerSkinsViewController
 {
     //MARK: - Update
+    func prepareDataSource()
+    {
+        self.dataSource.proxy = self
+        self.dataSource.cellConfigurationHandler = { (cell, item, indexPath) in
+            let cell = cell as! ControllerSkinTableViewCell
+            
+            cell.controllerSkinImageView.image = nil
+            cell.activityIndicatorView.startAnimating()
+        }
+        
+        self.dataSource.prefetchHandler = { [unowned self] (controllerSkin, indexPath, completionHandler) in
+            let imageOperation = LoadControllerSkinImageOperation(controllerSkin: controllerSkin, traits: self.traits, size: UIScreen.main.defaultControllerSkinSize)
+            imageOperation.resultHandler = { (image, error) in
+                completionHandler(image, error)
+            }
+            
+            // Ensure initially visible cells have loaded their image before they appear to prevent potential flickering from placeholder to thumbnail
+            if self.isAppearing
+            {
+                imageOperation.start()
+                imageOperation.waitUntilFinished()
+                return nil
+            }
+            
+            return imageOperation
+        }
+        
+        self.dataSource.prefetchCompletionHandler = { (cell, image, indexPath, error) in
+            guard let image = image, let cell = cell as? ControllerSkinTableViewCell else { return }
+            
+            cell.controllerSkinImageView.image = image
+            cell.activityIndicatorView.stopAnimating()
+        }
+    }
+    
     func updateDataSource()
     {
         guard let system = self.system, let traits = self.traits else { return }
@@ -77,45 +105,6 @@ private extension ControllerSkinsViewController
         
         self.dataSource.fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DatabaseManager.shared.viewContext, sectionNameKeyPath: #keyPath(ControllerSkin.name), cacheName: nil)
     }
-    
-    //MARK: - Configure Cells
-    func configure(_ cell: ControllerSkinTableViewCell, for indexPath: IndexPath)
-    {
-        let controllerSkin = self.dataSource.item(at: indexPath)
-        
-        cell.controllerSkinImageView.image = nil
-        cell.activityIndicatorView.startAnimating()
-        
-        let size = UIScreen.main.defaultControllerSkinSize
-        
-        let imageOperation = LoadControllerSkinImageOperation(controllerSkin: controllerSkin, traits: self.traits, size: size)
-        imageOperation.resultsCache = self.imageCache
-        imageOperation.resultHandler = { (image, error) in
-            
-            guard let image = image else { return }
-            
-            if !imageOperation.isImmediate
-            {
-                UIView.transition(with: cell.controllerSkinImageView, duration: 0.2, options: .transitionCrossDissolve, animations: {
-                    cell.controllerSkinImageView.image = image
-                }, completion: nil)
-            }
-            else
-            {
-                cell.controllerSkinImageView.image = image
-            }
-            
-            cell.activityIndicatorView.stopAnimating()
-        }
-        
-        // Ensure initially visible cells have loaded their image before they appear to prevent potential flickering from placeholder to thumbnail
-        if self.isAppearing
-        {
-            imageOperation.isImmediate = true
-        }
-        
-        self.imageOperationQueue.addOperation(imageOperation, forKey: indexPath as NSCopying)
-    }
 }
 
 extension ControllerSkinsViewController
@@ -124,33 +113,6 @@ extension ControllerSkinsViewController
     {
         let controllerSkin = self.dataSource.item(at: IndexPath(row: 0, section: section))
         return controllerSkin.name
-    }
-}
-
-extension ControllerSkinsViewController: UITableViewDataSourcePrefetching
-{
-    func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath])
-    {
-        for indexPath in indexPaths
-        {
-            let controllerSkin = self.dataSource.item(at: indexPath)
-            
-            let size = UIScreen.main.defaultControllerSkinSize
-            
-            let imageOperation = LoadControllerSkinImageOperation(controllerSkin: controllerSkin, traits: self.traits, size: size)
-            imageOperation.resultsCache = self.imageCache
-            
-            self.imageOperationQueue.addOperation(imageOperation, forKey: indexPath as NSCopying)
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, cancelPrefetchingForRowsAt indexPaths: [IndexPath])
-    {
-        for indexPath in indexPaths
-        {
-            let operation = self.imageOperationQueue[indexPath as NSCopying]
-            operation?.cancel()
-        }
     }
 }
 
@@ -175,11 +137,5 @@ extension ControllerSkinsViewController
         let height = size.height * scale
         
         return height
-    }
-    
-    override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath)
-    {
-        let operation = self.imageOperationQueue[indexPath as NSCopying]
-        operation?.cancel()
     }
 }
