@@ -9,6 +9,11 @@
 import Foundation
 import SQLite
 
+private extension UserDefaults
+{
+    @NSManaged var previousGamesDatabaseVersion: Int
+}
+
 extension ExpressionType
 {
     static var name: SQLite.Expression<String?> {
@@ -19,12 +24,16 @@ extension ExpressionType
         return SQLite.Expression<String?>("releaseCoverFront")
     }
     
-    static var hash: SQLite.Expression<String> {
+    static var sha1Hash: SQLite.Expression<String> {
         return SQLite.Expression<String>("romHashSHA1")
     }
     
     static var romID: SQLite.Expression<Int> {
         return SQLite.Expression<Int>("romID")
+    }
+    
+    static var releaseID: SQLite.Expression<Int> {
+        return SQLite.Expression<Int>("releaseID")
     }
 }
 
@@ -57,6 +66,8 @@ extension GamesDatabase
 
 class GamesDatabase
 {
+    static let version = -1
+    
     fileprivate let connection: Connection
     
     init() throws
@@ -71,28 +82,36 @@ class GamesDatabase
         {
             throw Error.connection(error)
         }
+        
+        self.invalidateVirtualTableIfNeeded()
     }
     
     func metadataResults(forGameName gameName: String) -> [GameMetadata]
     {
+        let releaseID = Expression<Any>.releaseID
         let name = Expression<Any>.name
         let artworkAddress = Expression<Any>.artworkAddress
         
-        let query = VirtualTable.search.select(name, artworkAddress).filter(name.match(gameName + "*"))
+        let query = VirtualTable.search.select(releaseID, name, artworkAddress).filter(name.match(gameName + "*"))
         
         do
         {
             let rows = try self.connection.prepare(query)
             
-            let results = rows.map { row -> GameMetadata in
-                let metadata = GameMetadata()
-                metadata.name = row[name]
-                
+            let results = rows.map { (row) -> GameMetadata in
+
+                let artworkURL: URL?
                 if let address = row[artworkAddress]
                 {
-                    metadata.artworkURL = URL(string: address)
+                    artworkURL = URL(string: address)
+                }
+                else
+                {
+                    artworkURL = nil
                 }
                 
+
+                let metadata = GameMetadata(identifier: row[releaseID], name: row[name], artworkURL: artworkURL)
                 return metadata
             }
             
@@ -118,26 +137,31 @@ class GamesDatabase
     
     func metadata(for game: Game) -> GameMetadata?
     {
+        let releaseID = Expression<Any>.releaseID
         let name = Expression<Any>.name
         let artworkAddress = Expression<Any>.artworkAddress
-        let hash = Expression<Any>.hash
+        
+        let sha1Hash = Expression<Any>.sha1Hash
         let romID = Expression<Any>.romID
         
         let gameHash = game.identifier.uppercased()
-        let query = Table.roms.select(name, artworkAddress).filter(hash == gameHash).join(Table.releases, on: Table.roms[romID] == Table.releases[romID])
+        let query = Table.roms.select(releaseID, name, artworkAddress).filter(sha1Hash == gameHash).join(Table.releases, on: Table.roms[romID] == Table.releases[romID])
         
         do
         {
             if let row = try self.connection.pluck(query)
             {
-                let metadata = GameMetadata()
-                metadata.name = row[name]
-                
+                let artworkURL: URL?
                 if let address = row[artworkAddress]
                 {
-                    metadata.artworkURL = URL(string: address)
+                    artworkURL = URL(string: address)
+                }
+                else
+                {
+                    artworkURL = nil
                 }
                 
+                let metadata = GameMetadata(identifier: row[releaseID], name: row[name], artworkURL: artworkURL)
                 return metadata
             }
         }
@@ -152,16 +176,33 @@ class GamesDatabase
 
 private extension GamesDatabase
 {
+    func invalidateVirtualTableIfNeeded()
+    {
+        guard UserDefaults.standard.previousGamesDatabaseVersion != GamesDatabase.version else { return }
+        
+        do
+        {
+            try self.connection.run(VirtualTable.search.drop(ifExists: true))
+            
+            UserDefaults.standard.previousGamesDatabaseVersion = GamesDatabase.version
+        }
+        catch
+        {
+            print(error)
+        }
+    }
+    
     func prepareFTS() -> Bool
     {
         let name = Expression<Any>.name
         let artworkAddress = Expression<Any>.artworkAddress
+        let releaseID = Expression<Any>.releaseID
         
         do
         {
-            try self.connection.run(VirtualTable.search.create(.FTS4([name, artworkAddress], tokenize: .Unicode61())))
+            try self.connection.run(VirtualTable.search.create(.FTS4([releaseID, name, artworkAddress], tokenize: .Unicode61())))
             
-            let update = VirtualTable.search.insert(Table.releases.select(name, artworkAddress))
+            let update = VirtualTable.search.insert(Table.releases.select(releaseID, name, artworkAddress))
             _ = try self.connection.run(update)
         }
         catch
