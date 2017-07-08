@@ -153,6 +153,9 @@ extension GameViewController
     {
         super.viewDidLoad()
         
+        // Lays out self.gameView, so we can pin self.sustainButtonsContentView to it without resulting in a temporary "cannot satisfy constraints".
+        self.view.layoutIfNeeded()
+        
         let gameViewContainerView = self.gameView.superview!
         
         self.sustainButtonsContentView = UIView(frame: CGRect(x: 0, y: 0, width: self.gameView.bounds.width, height: self.gameView.bounds.height))
