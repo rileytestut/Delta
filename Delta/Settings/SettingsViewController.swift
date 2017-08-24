@@ -85,6 +85,7 @@ class SettingsViewController: UITableViewController
             {
             case 0: gameTypeControllerSkinsViewController.gameType = .snes
             case 1: gameTypeControllerSkinsViewController.gameType = .gba
+            case 2: gameTypeControllerSkinsViewController.gameType = .nds
             default: break
             }            
         }

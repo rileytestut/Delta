@@ -11,6 +11,7 @@ import UIKit
 import DeltaCore
 import SNESDeltaCore
 import GBADeltaCore
+import NDSDeltaCore
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate
@@ -23,6 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         
         Delta.register(SNES.core)
         Delta.register(GBA.core)
+        Delta.register(NDS.core)
         
         self.configureAppearance()
         

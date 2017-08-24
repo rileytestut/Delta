@@ -12,7 +12,7 @@ extension GameType
 {
     static var supportedTypes: Set<GameType>
     {
-        return [GameType.snes, GameType.gba]
+        return [GameType.snes, GameType.gba, GameType.nds]
     }
     
     static func gameType(forFileExtension fileExtension: String) -> GameType
@@ -23,6 +23,7 @@ extension GameType
         {
         case "smc", "sfc", "fig": gameType = GameType.snes
         case "gba": gameType = GameType.gba
+        case "nds": gameType = GameType.nds
         default: gameType = GameType.unknown
         }
         

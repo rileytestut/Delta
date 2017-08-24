@@ -38,6 +38,7 @@ public class GameCollection: _GameCollection
         {
         case GameType.snes: index = 1990
         case GameType.gba: index = 2001
+        case GameType.nds: index = 2004
         default: index = Int16(INT16_MAX)
         }
         

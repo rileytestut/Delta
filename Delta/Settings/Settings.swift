@@ -11,6 +11,7 @@ import Foundation
 import DeltaCore
 import SNESDeltaCore
 import GBADeltaCore
+import NDSDeltaCore
 
 import Roxas
 
@@ -131,6 +132,7 @@ private extension Settings
         {
         case GameType.snes: systemName = "snes"
         case GameType.gba: systemName = "gba"
+        case GameType.nds: systemName = "nds"
         default: return nil
         }
         
