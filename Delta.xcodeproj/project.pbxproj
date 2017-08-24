@@ -103,6 +103,8 @@
 		BFFC46231D5984A000AF2CC6 /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFC46221D5984A000AF2CC6 /* LaunchViewController.swift */; };
 		BFFC46461D59861000AF2CC6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BFFC46441D59861000AF2CC6 /* LaunchScreen.storyboard */; };
 		BFFC464C1D5998D600AF2CC6 /* CheatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFC464B1D5998D600AF2CC6 /* CheatTableViewCell.swift */; };
+		CAF467FE1F4E6EEF00073C5D /* NDSDeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CAF467FD1F4E6EEF00073C5D /* NDSDeltaCore.framework */; };
+		CAF467FF1F4E6EEF00073C5D /* NDSDeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CAF467FD1F4E6EEF00073C5D /* NDSDeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -114,6 +116,7 @@
 			files = (
 				BF9F4FD01AAD7B87004C9500 /* DeltaCore.framework in Embed Frameworks */,
 				BFEC732E1AAECC4A00650035 /* Roxas.framework in Embed Frameworks */,
+				CAF467FF1F4E6EEF00073C5D /* NDSDeltaCore.framework in Embed Frameworks */,
 				BF70798D1B6B464B0019077C /* ZipZap.framework in Embed Frameworks */,
 				BF0418151D01E93400E85BCF /* GBADeltaCore.framework in Embed Frameworks */,
 				BF99C6951D0A9AA600BA92BC /* SNESDeltaCore.framework in Embed Frameworks */,
@@ -212,6 +215,7 @@
 		BFFC46451D59861000AF2CC6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BFFC464B1D5998D600AF2CC6 /* CheatTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CheatTableViewCell.swift; path = "Pause Menu/Cheats/CheatTableViewCell.swift"; sourceTree = "<group>"; };
 		C786AF1D2DDB6223BE2063CC /* Pods-Delta.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Delta.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Delta/Pods-Delta.debug.xcconfig"; sourceTree = "<group>"; };
+		CAF467FD1F4E6EEF00073C5D /* NDSDeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = NDSDeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -225,6 +229,7 @@
 				BF70798C1B6B464B0019077C /* ZipZap.framework in Frameworks */,
 				BF0418141D01E93400E85BCF /* GBADeltaCore.framework in Frameworks */,
 				4FE8465FD28810191C3E5212 /* Pods_Delta.framework in Frameworks */,
+				CAF467FE1F4E6EEF00073C5D /* NDSDeltaCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -482,6 +487,7 @@
 		BFFA71CE1AAC406100EE9DD1 = {
 			isa = PBXGroup;
 			children = (
+				CAF467FD1F4E6EEF00073C5D /* NDSDeltaCore.framework */,
 				BFFA71D91AAC406100EE9DD1 /* Delta */,
 				BFEC732F1AAECCBD00650035 /* Resources */,
 				BF9F4FCD1AAD7B25004C9500 /* Frameworks */,
@@ -934,6 +940,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "Delta/Supporting Files/Delta.entitlements";
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = "Delta/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -950,6 +957,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "Delta/Supporting Files/Delta.entitlements";
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = "Delta/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
