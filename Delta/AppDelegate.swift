@@ -10,10 +10,6 @@ import UIKit
 
 import DeltaCore
 
-import SNESDeltaCore
-import GBADeltaCore
-import NDSDeltaCore
-
 import Fabric
 import Crashlytics
 
@@ -28,7 +24,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         
         Settings.registerDefaults()
         
-
         System.supportedSystems.forEach { Delta.register($0.deltaCore) }
         
         self.configureAppearance()
