@@ -22,6 +22,7 @@ extension DatabaseManager
     {
         case doesNotExist(URL)
         case invalid(URL)
+        case unsupported(URL)
         case unknown(URL, NSError)
         case saveFailed(Set<URL>, NSError)
         
@@ -30,8 +31,9 @@ extension DatabaseManager
             {
             case .doesNotExist: return 0
             case .invalid: return 1
-            case .unknown: return 2
-            case .saveFailed: return 3
+            case .unsupported: return 2
+            case .unknown: return 3
+            case .saveFailed: return 4
             }
         }
         
@@ -41,15 +43,16 @@ extension DatabaseManager
             {
             case (let .doesNotExist(url1), let .doesNotExist(url2)) where url1 == url2: return true
             case (let .invalid(url1), let .invalid(url2)) where url1 == url2: return true
+            case (let .unsupported(url1), let .unsupported(url2)) where url1 == url2: return true
             case (let .unknown(url1, error1), let .unknown(url2, error2)) where url1 == url2 && error1 == error2: return true
             case (let .saveFailed(urls1, error1), let .saveFailed(urls2, error2)) where urls1 == urls2 && error1 == error2: return true
             case (.doesNotExist, _): return false
             case (.invalid, _): return false
+            case (.unsupported, _): return false
             case (.unknown, _): return false
             case (.saveFailed, _): return false
             }
         }
-        
     }
 }
 
@@ -99,9 +102,9 @@ private extension DatabaseManager
     {
         self.performBackgroundTask { (context) in
             
-            for gameType in GameType.supportedTypes
+            for system in System.supportedSystems
             {
-                guard let deltaControllerSkin = DeltaCore.ControllerSkin.standardControllerSkin(for: gameType) else { continue }
+                guard let deltaControllerSkin = DeltaCore.ControllerSkin.standardControllerSkin(for: system.gameType) else { continue }
                 
                 let controllerSkin = ControllerSkin(context: context)
                 controllerSkin.isStandard = true
@@ -173,21 +176,27 @@ extension DatabaseManager
                     continue
                 }
                 
-                let identifier = FileHash.sha1HashOfFile(atPath: url.path) as String
+                guard let gameType = GameType(fileExtension: url.pathExtension), let system = System(gameType: gameType) else {
+                    errors.insert(.unsupported(url))
+                    continue
+                }
                 
+                let identifier = FileHash.sha1HashOfFile(atPath: url.path) as String
                 let filename = identifier + "." + url.pathExtension
                 
-                let game = Game.insertIntoManagedObjectContext(context)
+                let game = Game(context: context)
                 game.identifier = identifier
+                game.type = gameType
                 game.filename = filename
                 
                 let databaseMetadata = self.gamesDatabase?.metadata(for: game)
                 game.name = databaseMetadata?.name ?? url.deletingPathExtension().lastPathComponent
                 game.artworkURL = databaseMetadata?.artworkURL
-                                
-                let gameCollection = GameCollection.gameSystemCollectionForPathExtension(url.pathExtension, inManagedObjectContext: context)
-                game.type = GameType(rawValue: gameCollection.identifier)
-                game.gameCollections.insert(gameCollection)
+                
+                let gameCollection = GameCollection(context: context)
+                gameCollection.identifier = gameType.rawValue
+                gameCollection.index = Int16(system.year)
+                gameCollection.games.insert(game)
                 
                 do
                 {
@@ -212,7 +221,6 @@ extension DatabaseManager
                     
                     errors.insert(.unknown(url, error))
                 }
-                
             }
 
             do
@@ -328,9 +336,8 @@ extension DatabaseManager
                         guard !entry.fileName.contains("/") else { continue }
                         
                         let fileExtension = (entry.fileName as NSString).pathExtension
-                        let gameType = GameType.gameType(forFileExtension: fileExtension)
-                        
-                        guard gameType != .unknown else { continue }
+
+                        guard GameType(fileExtension: fileExtension) != nil else { continue }
                         
                         // At least one entry is a valid game file, so we set archiveContainsValidGameFile to true
                         // This will result in this archive being considered valid, and thus we will not return an ImportError.invalid error for the archive
@@ -485,6 +492,14 @@ extension DatabaseManager
         self.createDirectory(at: gameTypeDirectoryURL)
         
         return gameTypeDirectoryURL
+    }
+    
+    class func artworkURL(for game: Game) -> URL
+    {
+        let gameURL = game.fileURL
+        
+        let artworkURL = gameURL.deletingPathExtension().appendingPathExtension("jpg")
+        return artworkURL
     }
 }
 

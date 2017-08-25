@@ -13,3 +13,6 @@
 [submodule "Cores/NDSDeltaCore"]
 	path = Cores/NDSDeltaCore
 	url = https://github.com/WilliamLCobb/NDSDeltaCore
+[submodule "Cores/GBCDeltaCore"]
+	path = Cores/GBCDeltaCore
+	url = git@github.com:rileytestut/GBCDeltaCore.git

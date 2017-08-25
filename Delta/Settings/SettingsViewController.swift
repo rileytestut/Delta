@@ -7,21 +7,31 @@
 //
 
 import UIKit
+
 import DeltaCore
 
-extension SettingsViewController
+import Roxas
+
+fileprivate extension SettingsViewController
 {
-    fileprivate enum Section: Int
+    enum Section: Int
     {
         case controllers
         case controllerSkins
         case controllerOpacity
     }
     
-    fileprivate enum Segue: String
+    enum Segue: String
     {
         case controllers = "controllersSegue"
         case controllerSkins = "controllerSkinsSegue"
+    }
+    
+    enum ControllerSkinsRow: Int
+    {
+        case snes
+        case gba
+        case gbc
     }
 }
 
@@ -79,14 +89,15 @@ class SettingsViewController: UITableViewController
             controllersSettingsViewController.playerIndex = indexPath.row
             
         case Segue.controllerSkins:
-            let gameTypeControllerSkinsViewController = segue.destination as! GameTypeControllerSkinsViewController
+            let systemControllerSkinsViewController = segue.destination as! SystemControllerSkinsViewController
             
-            switch indexPath.row
+            let row = ControllerSkinsRow(rawValue: indexPath.row)!
+            switch row
             {
-            case 0: gameTypeControllerSkinsViewController.gameType = .snes
-            case 1: gameTypeControllerSkinsViewController.gameType = .gba
-            case 2: gameTypeControllerSkinsViewController.gameType = .nds
-            default: break
+            case .snes: systemControllerSkinsViewController.system = .snes
+            case .gba: systemControllerSkinsViewController.system = .gba
+            case .gbc: systemControllerSkinsViewController.system = .gbc
+            case .nds: systemControllerSkinsViewController.system = .nds
             }            
         }
     }
@@ -163,6 +174,7 @@ extension SettingsViewController
         switch section
         {
         case .controllers: return 1 // Temporarily hide other controller indexes until controller logic is finalized
+        case .controllerSkins: return System.supportedSystems.count
         default: return super.tableView(tableView, numberOfRowsInSection: sectionIndex)
         }
     }
@@ -170,9 +182,11 @@ extension SettingsViewController
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
-        
-        if indexPath.section == Section.controllers.rawValue
+
+        let section = Section(rawValue: indexPath.section)!
+        switch section
         {
+        case .controllers:
             if indexPath.row == Settings.localControllerPlayerIndex
             {
                 cell.detailTextLabel?.text = UIDevice.current.name
@@ -186,8 +200,11 @@ extension SettingsViewController
             {
                 cell.detailTextLabel?.text = nil
             }
+            
+        case .controllerSkins: cell.textLabel?.text = System.supportedSystems[indexPath.row].localizedName
+        default: break
         }
-        
+
         return cell
     }
     

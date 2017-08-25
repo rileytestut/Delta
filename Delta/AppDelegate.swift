@@ -9,9 +9,13 @@
 import UIKit
 
 import DeltaCore
+
 import SNESDeltaCore
 import GBADeltaCore
 import NDSDeltaCore
+
+import Fabric
+import Crashlytics
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate
@@ -20,11 +24,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool
     {
+        Fabric.with([Crashlytics.self])
+        
         Settings.registerDefaults()
         
-        Delta.register(SNES.core)
-        Delta.register(GBA.core)
-        Delta.register(NDS.core)
+
+        System.supportedSystems.forEach { Delta.register($0.deltaCore) }
         
         self.configureAppearance()
         
@@ -94,8 +99,7 @@ extension AppDelegate
     {
         guard url.isFileURL else { return false }
         
-        let gameType = GameType.gameType(forFileExtension: url.pathExtension)
-        if gameType != .unknown || url.pathExtension.lowercased() == "zip"
+        if GameType(fileExtension: url.pathExtension) != nil || url.pathExtension.lowercased() == "zip"
         {
             return self.importGame(at: url)
         }

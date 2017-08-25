@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0820"
+   LastUpgradeVersion = "0830"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "NO"
@@ -60,6 +60,20 @@
                BuildableName = "GBADeltaCore.framework"
                BlueprintName = "GBADeltaCore"
                ReferencedContainer = "container:Cores/GBADeltaCore/GBADeltaCore.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "BF8F2AAD1E9C879300F89F15"
+               BuildableName = "GBCDeltaCore.framework"
+               BlueprintName = "GBCDeltaCore"
+               ReferencedContainer = "container:Cores/GBCDeltaCore/GBCDeltaCore.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry

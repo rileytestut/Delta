@@ -153,10 +153,12 @@ extension GameViewController
     {
         super.viewDidLoad()
         
+        let gameViewContainerView = self.gameView.superview!
+        
         self.sustainButtonsContentView = UIView(frame: CGRect(x: 0, y: 0, width: self.gameView.bounds.width, height: self.gameView.bounds.height))
         self.sustainButtonsContentView.translatesAutoresizingMaskIntoConstraints = false
         self.sustainButtonsContentView.isHidden = true
-        self.view.insertSubview(self.sustainButtonsContentView, aboveSubview: self.gameView)
+        self.view.insertSubview(self.sustainButtonsContentView, aboveSubview: gameViewContainerView)
         
         let blurEffect = UIBlurEffect(style: .dark)
         let vibrancyEffect = UIVibrancyEffect(blurEffect: blurEffect)
@@ -182,10 +184,10 @@ extension GameViewController
         vibrancyView.contentView.addSubview(self.sustainButtonsBackgroundView)
         
         // Auto Layout
-        self.sustainButtonsContentView.leadingAnchor.constraint(equalTo: self.gameView.leadingAnchor).isActive = true
-        self.sustainButtonsContentView.trailingAnchor.constraint(equalTo: self.gameView.trailingAnchor).isActive = true
-        self.sustainButtonsContentView.topAnchor.constraint(equalTo: self.gameView.topAnchor).isActive = true
-        self.sustainButtonsContentView.bottomAnchor.constraint(equalTo: self.gameView.bottomAnchor).isActive = true
+        self.sustainButtonsContentView.leadingAnchor.constraint(equalTo: gameViewContainerView.leadingAnchor).isActive = true
+        self.sustainButtonsContentView.trailingAnchor.constraint(equalTo: gameViewContainerView.trailingAnchor).isActive = true
+        self.sustainButtonsContentView.topAnchor.constraint(equalTo: gameViewContainerView.topAnchor).isActive = true
+        self.sustainButtonsContentView.bottomAnchor.constraint(equalTo: gameViewContainerView.bottomAnchor).isActive = true
         
         self.updateControllerSkin()
         self.updateControllers()
@@ -238,10 +240,10 @@ extension GameViewController
             pauseViewController.saveStatesViewControllerDelegate = self
             pauseViewController.cheatsViewControllerDelegate = self
             
-            pauseViewController.fastForwardItem?.selected = (self.emulatorCore?.rate != self.emulatorCore?.configuration.supportedRates.lowerBound)
+            pauseViewController.fastForwardItem?.selected = (self.emulatorCore?.rate != self.emulatorCore?.deltaCore.supportedRates.lowerBound)
             pauseViewController.fastForwardItem?.action = { [unowned self] item in
                 guard let emulatorCore = self.emulatorCore else { return }
-                emulatorCore.rate = item.selected ? emulatorCore.configuration.supportedRates.upperBound : emulatorCore.configuration.supportedRates.lowerBound
+                emulatorCore.rate = item.selected ? emulatorCore.deltaCore.supportedRates.upperBound : emulatorCore.deltaCore.supportedRates.lowerBound
             }
             
             pauseViewController.sustainButtonsItem?.selected = (self.sustainedInputs[ObjectIdentifier(gameController)]?.count ?? 0) > 0
@@ -389,11 +391,11 @@ private extension GameViewController
     
     func updateControllerSkin()
     {
-        guard let game = self.game else { return }
+        guard let game = self.game, let system = System(gameType: game.type) else { return }
         
         let traits = DeltaCore.ControllerSkin.Traits.defaults(for: self.view)
         
-        let controllerSkin = Settings.preferredControllerSkin(for: game.type, traits: traits)
+        let controllerSkin = Settings.preferredControllerSkin(for: system, traits: traits)
         self.controllerView.controllerSkin = controllerSkin
         
         if controllerSkin?.isTranslucent(for: traits) ?? false
@@ -805,12 +807,12 @@ private extension GameViewController
             
         case .preferredControllerSkin:
             guard
-                let gameType = notification.userInfo?[Settings.NotificationUserInfoKey.gameType] as? GameType,
+                let system = notification.userInfo?[Settings.NotificationUserInfoKey.system] as? System,
                 let traits = notification.userInfo?[Settings.NotificationUserInfoKey.traits] as? DeltaCore.ControllerSkin.Traits
             else { return }
             
             let currentTraits = DeltaCore.ControllerSkin.Traits.defaults(for: self.view)
-            if gameType == self.game?.type && traits == currentTraits
+            if system.gameType == self.game?.type && traits == currentTraits
             {
                 self.updateControllerSkin()
             }
