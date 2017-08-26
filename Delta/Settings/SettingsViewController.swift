@@ -32,6 +32,7 @@ fileprivate extension SettingsViewController
         case snes
         case gba
         case gbc
+        case nds
     }
 }
 

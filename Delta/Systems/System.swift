@@ -11,6 +11,7 @@ import DeltaCore
 import SNESDeltaCore
 import GBADeltaCore
 import GBCDeltaCore
+import NDSDeltaCore
 
 extension GameType
 {
@@ -21,6 +22,7 @@ extension GameType
         case "smc", "sfc", "fig": self = .snes
         case "gba": self = .gba
         case "gbc", "gb": self = .gbc
+        case "nds": self = .nds
         default: return nil
         }
     }
@@ -31,9 +33,10 @@ enum System
     case snes
     case gba
     case gbc
+    case nds
     
     static var supportedSystems: [System] {
-        return [.snes, .gba, .gbc]
+        return [.snes, .gba, .gbc, .nds]
     }
 }
 
@@ -45,6 +48,7 @@ extension System
         case .snes: return NSLocalizedString("Super Nintendo", comment: "")
         case .gba: return NSLocalizedString("Game Boy Advance", comment: "")
         case .gbc: return NSLocalizedString("Game Boy Color", comment: "")
+        case .nds: return NSLocalizedString("Nintendo DS", comment: "")
         }
     }
     
@@ -54,6 +58,7 @@ extension System
         case .snes: return NSLocalizedString("SNES", comment: "")
         case .gba: return NSLocalizedString("GBA", comment: "")
         case .gbc: return NSLocalizedString("GBC", comment: "")
+        case .nds: return NSLocalizedString("NDS", comment: "")
         }
     }
     
@@ -63,6 +68,7 @@ extension System
         case .snes: return 1990
         case .gba: return 2001
         case .gbc: return 1998
+        case .nds: return 2004
         }
     }
 }
@@ -75,6 +81,7 @@ extension System
         case .snes: return SNES.core
         case .gba: return GBA.core
         case .gbc: return GBC.core
+        case .nds: return NDS.core
         }
     }
 }
@@ -87,6 +94,7 @@ extension System
         case .snes: return .snes
         case .gba: return .gba
         case .gbc: return .gbc
+        case .nds: return .nds
         }
     }
     
@@ -97,6 +105,7 @@ extension System
         case GameType.snes: self = .snes
         case GameType.gba: self = .gba
         case GameType.gbc: self = .gbc
+        case GameType.nds: self = .nds
         default: return nil
         }
     }
