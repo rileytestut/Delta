@@ -283,8 +283,13 @@ extension GamesViewController: ImportControllerDelegate
         self.present(importController, animated: true, completion: nil)
     }
     
-    func importController(_ importController: ImportController, didImportItemsAt urls: Set<URL>)
+    func importController(_ importController: ImportController, didImportItemsAt urls: Set<URL>, errors: [Error])
     {
+        for error in errors
+        {
+            print(error)
+        }
+        
         let gameURLs = urls.filter { $0.pathExtension.lowercased() != "deltaskin" }
         DatabaseManager.shared.importGames(at: Set(gameURLs)) { (games, errors) in
             if errors.count > 0

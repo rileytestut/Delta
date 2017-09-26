@@ -504,9 +504,11 @@ extension GameCollectionViewController: SaveStatesViewControllerDelegate
 /// ImportControllerDelegate
 extension GameCollectionViewController: ImportControllerDelegate
 {
-    func importController(_ importController: ImportController, didImportItemsAt urls: Set<URL>)
+    func importController(_ importController: ImportController, didImportItemsAt urls: Set<URL>, errors: [Error])
     {
         guard let game = self._changingArtworkGame else { return }
+        
+        var errors = errors
         
         var imageURL: URL?
         
@@ -533,13 +535,18 @@ extension GameCollectionViewController: ImportControllerDelegate
                 }
                 catch
                 {
-                    print(error)
+                    errors.append(error)
                 }
             }
             else
             {
                 imageURL = url
             }
+        }
+        
+        for error in errors
+        {
+            print(error)
         }
         
         if let imageURL = imageURL
