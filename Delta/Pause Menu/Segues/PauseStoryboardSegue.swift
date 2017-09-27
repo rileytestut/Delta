@@ -18,7 +18,7 @@ class PauseStoryboardSegue: UIStoryboardSegue
         let timingParameters = UISpringTimingParameters(mass: 3.0, stiffness: 750, damping: 65, initialVelocity: CGVector(dx: 0, dy: 0))
         self.animator = UIViewPropertyAnimator(duration: 0, timingParameters: timingParameters)
         
-        self.presentationController = PausePresentationController(presentedViewController: destination, presenting: source)
+        self.presentationController = PausePresentationController(presentedViewController: destination, presenting: source, presentationAnimator: self.animator)
         
         super.init(identifier: identifier, source: source, destination: destination)
     }
