@@ -18,16 +18,16 @@ class PauseViewController: UIViewController, PauseInfoProviding
         }
     }
     
-    var pauseItems: [PauseItem] {
+    var pauseItems: [MenuItem] {
         return [self.saveStateItem, self.loadStateItem, self.cheatCodesItem, self.fastForwardItem, self.sustainButtonsItem].flatMap { $0 }
     }
     
     /// Pause Items
-    var saveStateItem: PauseItem?
-    var loadStateItem: PauseItem?
-    var cheatCodesItem: PauseItem?
-    var fastForwardItem: PauseItem?
-    var sustainButtonsItem: PauseItem?
+    var saveStateItem: MenuItem?
+    var loadStateItem: MenuItem?
+    var cheatCodesItem: MenuItem?
+    var fastForwardItem: MenuItem?
+    var sustainButtonsItem: MenuItem?
     
     /// PauseInfoProviding
     var pauseText: String?
@@ -85,8 +85,8 @@ extension PauseViewController
             self.pauseNavigationController.navigationBar.tintColor = UIColor.deltaPurple
             self.pauseNavigationController.view.backgroundColor = UIColor.clear
             
-            let pauseMenuViewController = self.pauseNavigationController.topViewController as! PauseMenuViewController
-            pauseMenuViewController.items = self.pauseItems
+            let gridMenuViewController = self.pauseNavigationController.topViewController as! GridMenuViewController
+            gridMenuViewController.items = self.pauseItems
             
         case "saveStates":
             let saveStatesViewController = segue.destination as! SaveStatesViewController
@@ -135,21 +135,21 @@ private extension PauseViewController
         
         guard self.emulatorCore != nil else { return }
         
-        self.saveStateItem = PauseItem(image: #imageLiteral(resourceName: "SaveSaveState"), text: NSLocalizedString("Save State", comment: ""), action: { [unowned self] _ in
+        self.saveStateItem = MenuItem(text: NSLocalizedString("Save State", comment: ""), image: #imageLiteral(resourceName: "SaveSaveState"), action: { [unowned self] _ in
             self.saveStatesViewControllerMode = .saving
             self.performSegue(withIdentifier: "saveStates", sender: self)
         })
         
-        self.loadStateItem = PauseItem(image: #imageLiteral(resourceName: "LoadSaveState"), text: NSLocalizedString("Load State", comment: ""), action: { [unowned self] _ in
+        self.loadStateItem = MenuItem(text: NSLocalizedString("Load State", comment: ""), image: #imageLiteral(resourceName: "LoadSaveState"), action: { [unowned self] _ in
             self.saveStatesViewControllerMode = .loading
             self.performSegue(withIdentifier: "saveStates", sender: self)
         })
         
-        self.cheatCodesItem = PauseItem(image: #imageLiteral(resourceName: "CheatCodes"), text: NSLocalizedString("Cheat Codes", comment: ""), action: { [unowned self] _ in
+        self.cheatCodesItem = MenuItem(text: NSLocalizedString("Cheat Codes", comment: ""), image: #imageLiteral(resourceName: "CheatCodes"), action: { [unowned self] _ in
             self.performSegue(withIdentifier: "cheats", sender: self)
         })
         
-        self.fastForwardItem = PauseItem(image: #imageLiteral(resourceName: "FastForward"), text: NSLocalizedString("Fast Forward", comment: ""), action: { _ in })
-        self.sustainButtonsItem = PauseItem(image: #imageLiteral(resourceName: "SustainButtons"), text: NSLocalizedString("Sustain Buttons", comment: ""), action: { _ in })
+        self.fastForwardItem = MenuItem(text: NSLocalizedString("Fast Forward", comment: ""), image: #imageLiteral(resourceName: "FastForward"), action: { _ in })
+        self.sustainButtonsItem = MenuItem(text: NSLocalizedString("Sustain Buttons", comment: ""), image: #imageLiteral(resourceName: "SustainButtons"), action: { _ in })
     }
 }

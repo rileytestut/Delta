@@ -1,5 +1,5 @@
 //
-//  PauseMenuViewController.swift
+//  GridMenuViewController.swift
 //  Delta
 //
 //  Created by Riley Testut on 12/21/15.
@@ -9,38 +9,56 @@
 import UIKit
 import Roxas
 
-class PauseMenuViewController: UICollectionViewController
+class GridMenuViewController: UICollectionViewController
 {
-    var items = [PauseItem]() {
-        didSet
-        {
-            guard oldValue != self.items else { return }
-            
-            if self.items.count > 8
-            {
-                fatalError("PauseViewController only supports up to 8 items (for my sanity when laying out on a landscape iPhone 4s")
-            }
-            
-            self.dataSource.items = self.items
-        }
+    var items: [MenuItem] {
+        get { return self.dataSource.items }
+        set { self.dataSource.items = newValue; self.updateItems() }
     }
+    
+    var isVibrancyEnabled = true
     
     override var preferredContentSize: CGSize {
         set { }
         get { return self.collectionView?.contentSize ?? CGSize.zero }
     }
     
-    fileprivate let dataSource = RSTArrayCollectionViewDataSource<PauseItem>(items: [])
+    fileprivate let dataSource = RSTArrayCollectionViewDataSource<MenuItem>(items: [])
     
     fileprivate var prototypeCell = GridCollectionViewCell()
     fileprivate var previousIndexPath: IndexPath? = nil
+    
+    fileprivate var registeredKVOObservers = Set<NSKeyValueObservation>()
+    
+    init()
+    {
+        let collectionViewLayout = GridCollectionViewLayout()
+        collectionViewLayout.itemSize = CGSize(width: 60, height: 80)
+        collectionViewLayout.minimumLineSpacing = 20
+        collectionViewLayout.minimumInteritemSpacing = 10
+        
+        super.init(collectionViewLayout: collectionViewLayout)
+    }
+    
+    required init?(coder aDecoder: NSCoder)
+    {
+        super.init(coder: aDecoder)
+    }
+    
+    deinit
+    {
+        // Crashes on iOS 10 if not explicitly invalidated.
+        self.registeredKVOObservers.forEach { $0.invalidate() }
+    }
 }
 
-extension PauseMenuViewController
+extension GridMenuViewController
 {
     override func viewDidLoad()
     {
         super.viewDidLoad()
+        
+        self.collectionView?.register(GridCollectionViewCell.self, forCellWithReuseIdentifier: RSTCellContentGenericCellIdentifier)
         
         self.dataSource.cellConfigurationHandler = { [unowned self] (cell, item, indexPath) in
             self.configure(cell as! GridCollectionViewCell, for: indexPath)
@@ -62,55 +80,66 @@ extension PauseMenuViewController
         if let indexPath = self.previousIndexPath
         {
             UIView.animate(withDuration: 0.2) {
-                self.toggleSelectedStateForPauseItemAtIndexPath(indexPath)
+                let item = self.items[indexPath.item]
+                item.isSelected = !item.isSelected
             }
         }
     }
 }
 
-private extension PauseMenuViewController
+private extension GridMenuViewController
 {
     func configure(_ cell: GridCollectionViewCell, for indexPath: IndexPath)
     {
-        let pauseItem = self.items[(indexPath as NSIndexPath).item]
+        let pauseItem = self.items[indexPath.item]
         
         cell.maximumImageSize = CGSize(width: 60, height: 60)
         
         cell.imageView.image = pauseItem.image
         cell.imageView.contentMode = .center
         cell.imageView.layer.borderWidth = 2
-        cell.imageView.layer.borderColor = UIColor.white.cgColor
+        cell.imageView.layer.borderColor = self.view.tintColor.cgColor
         cell.imageView.layer.cornerRadius = 10
         
         cell.textLabel.text = pauseItem.text
-        cell.textLabel.textColor = UIColor.white
+        cell.textLabel.textColor = self.view.tintColor
         
-        if pauseItem.selected
+        if pauseItem.isSelected
         {
             cell.imageView.tintColor = UIColor.black
-            cell.imageView.backgroundColor = UIColor.white
+            cell.imageView.backgroundColor = self.view.tintColor
         }
         else
         {
-            cell.imageView.tintColor = UIColor.white
+            cell.imageView.tintColor = self.view.tintColor
             cell.imageView.backgroundColor = UIColor.clear
         }
         
-        cell.isImageViewVibrancyEnabled = true
-        cell.isTextLabelVibrancyEnabled = true
+        cell.isImageViewVibrancyEnabled = self.isVibrancyEnabled
+        cell.isTextLabelVibrancyEnabled = self.isVibrancyEnabled
     }
     
-    func toggleSelectedStateForPauseItemAtIndexPath(_ indexPath: IndexPath)
+    func updateItems()
     {
-        let pauseItem = self.items[indexPath.item]
-        pauseItem.selected = !pauseItem.selected
+        self.registeredKVOObservers.removeAll()
         
-        let cell = self.collectionView!.cellForItem(at: indexPath) as! GridCollectionViewCell
-        self.configure(cell, for: indexPath)
+        for (index, item) in self.items.enumerated()
+        {
+            let observer = item.observe(\.isSelected, changeHandler: { [unowned self] (item, change) in
+                let indexPath = IndexPath(item: index, section: 0)
+                
+                if let cell = self.collectionView?.cellForItem(at: indexPath) as? GridCollectionViewCell
+                {
+                    self.configure(cell, for: indexPath)
+                }
+            })
+            
+            self.registeredKVOObservers.insert(observer)
+        }
     }
 }
 
-extension PauseMenuViewController: UICollectionViewDelegateFlowLayout
+extension GridMenuViewController: UICollectionViewDelegateFlowLayout
 {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize
     {
@@ -121,26 +150,27 @@ extension PauseMenuViewController: UICollectionViewDelegateFlowLayout
     }
 }
 
-extension PauseMenuViewController
+extension GridMenuViewController
 {
     override func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath)
     {
-        self.toggleSelectedStateForPauseItemAtIndexPath(indexPath)
+        let item = self.items[indexPath.item]
+        item.isSelected = !item.isSelected
     }
     
     override func collectionView(_ collectionView: UICollectionView, didUnhighlightItemAt indexPath: IndexPath)
     {
-        self.toggleSelectedStateForPauseItemAtIndexPath(indexPath)
+        let item = self.items[indexPath.item]
+        item.isSelected = !item.isSelected
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
     {
         self.previousIndexPath = indexPath
         
-        self.toggleSelectedStateForPauseItemAtIndexPath(indexPath)
-        
-        let pauseItem = self.items[indexPath.item]
-        pauseItem.action(pauseItem)
+        let item = self.items[indexPath.item]
+        item.isSelected = !item.isSelected
+        item.action(item)
     }
 }
 
