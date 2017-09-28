@@ -17,7 +17,7 @@ class ControllerInputsViewController: UIViewController
 {
     var gameController: GameController! {
         didSet {
-            self.prepareGameController()
+            self.gameController.addReceiver(self, inputMapping: nil)
         }
     }
     
@@ -28,8 +28,8 @@ class ControllerInputsViewController: UIViewController
         }
     }
     
-    fileprivate var inputMapping: GameControllerInputMapping!
-    fileprivate var previousInputMapping: GameControllerInputMappingProtocol?
+    fileprivate lazy var managedObjectContext: NSManagedObjectContext = DatabaseManager.shared.newBackgroundContext()
+    fileprivate var inputMappings = [System: GameControllerInputMapping]()
     
     fileprivate let supportedActionInputs: [ActionInput] = [.saveState, .loadState, .fastForward]
     
@@ -91,8 +91,11 @@ extension ControllerInputsViewController
             self.actionsMenuViewController = segue.destination as! GridMenuViewController
             self.prepareActionsMenuViewController()
             
-        case "cancelControllerControls": self.gameController.inputMapping = self.previousInputMapping
-        case "saveControllerControls": self.gameController.inputMapping = self.inputMapping
+        case "cancelControllerInputs": break
+        case "saveControllerInputs":
+            self.managedObjectContext.performAndWait {
+                self.managedObjectContext.saveWithErrorLogging()
+            }
             
         default: break
         }
@@ -105,6 +108,7 @@ private extension ControllerInputsViewController
     {
         guard self.isViewLoaded else { return }
         
+        // Update popoverMenuButton to display correctly on iOS 10.
         if let popoverMenuButton = self.navigationItem.popoverMenuController?.popoverMenuButton
         {
             popoverMenuButton.title = self.system.localizedShortName
@@ -113,8 +117,31 @@ private extension ControllerInputsViewController
             self.navigationController?.navigationBar.layoutIfNeeded()
         }
         
+        // Update controller view's controller skin.
         self.gameViewController.controllerView.controllerSkin = DeltaCore.ControllerSkin.standardControllerSkin(for: self.system.gameType)
         
+        // Fetch input mapping if it hasn't already been fetched.
+        if let gameController = self.gameController, let playerIndex = gameController.playerIndex, self.inputMappings[self.system] == nil
+        {
+            self.managedObjectContext.performAndWait {
+                let inputMapping = GameControllerInputMapping.inputMapping(for: gameController, gameType: self.system.gameType, in: self.managedObjectContext) ?? {
+                    let deltaCoreInputMapping = gameController.defaultInputMapping as? DeltaCore.GameControllerInputMapping ?? DeltaCore.GameControllerInputMapping(gameControllerInputType: gameController.inputType)
+                    
+                    let inputMapping = GameControllerInputMapping(inputMapping: deltaCoreInputMapping, context: self.managedObjectContext)
+                    inputMapping.gameControllerInputType = gameController.inputType
+                    inputMapping.gameType = self.system.gameType
+                    inputMapping.playerIndex = Int16(playerIndex)
+                    
+                    return inputMapping
+                }()
+                
+                inputMapping.name = String.localizedStringWithFormat("Custom %@", gameController.name)
+                
+                self.inputMappings[self.system] = inputMapping
+            }
+        }
+        
+        // Update callouts, if view is already on screen.
         if self.view.window != nil
         {
             self.calloutViews.forEach { $1.dismissCallout(animated: true) }
@@ -124,18 +151,6 @@ private extension ControllerInputsViewController
                 self.prepareCallouts()
             }
         }
-    }
-    
-    func prepareGameController()
-    {
-        self.gameController.addReceiver(self)
-        
-        self.previousInputMapping = self.gameController.inputMapping
-        
-        self.inputMapping = self.gameController.inputMapping as? GameControllerInputMapping ?? GameControllerInputMapping(gameControllerInputType: self.gameController.inputType)
-        self.inputMapping.name = String.localizedStringWithFormat("Custom %@", self.gameController.name)
-        
-        self.gameController.inputMapping = nil
     }
     
     func preparePopoverMenuController()
@@ -186,7 +201,7 @@ private extension ControllerInputsViewController
                 text = NSLocalizedString("Fast Forward", comment: "")
             }
             
-            let item = MenuItem(text: text, image: image) { (item) in
+            let item = MenuItem(text: text, image: image) { [unowned self] (item) in
                 guard let calloutView = self.calloutViews[AnyInput(input)] else { return }
                 self.toggle(calloutView)
             }
@@ -204,7 +219,8 @@ private extension ControllerInputsViewController
             let controllerView = self.gameViewController.controllerView,
             let traits = controllerView.controllerSkinTraits,
             let items = controllerView.controllerSkin?.items(for: traits),
-            let controllerViewInputMapping = controllerView.inputMapping
+            let controllerViewInputMapping = controllerView.defaultInputMapping,
+            let inputMapping = self.inputMappings[self.system]
         else { return }
         
         // Implicit assumption that all skins used for controller input mapping don't have multiple items with same input.
@@ -218,21 +234,23 @@ private extension ControllerInputsViewController
             self.calloutViews[AnyInput(input)] = calloutView
         }
         
-        // Update callout views with controller inputs that map to callout views' associated controller skin inputs.
-        for input in self.inputMapping.supportedControllerInputs
-        {
-            let mappedInput = self.mappedInput(for: input)
-            
-            if let calloutView = self.calloutViews[mappedInput]
+        self.managedObjectContext.performAndWait {
+            // Update callout views with controller inputs that map to callout views' associated controller skin inputs.
+            for input in inputMapping.supportedControllerInputs
             {
-                if let previousInput = calloutView.input
+                let mappedInput = self.mappedInput(for: input)
+                
+                if let calloutView = self.calloutViews[mappedInput]
                 {
-                    // Ensure the input we display has a higher priority.
-                    calloutView.input = (input.displayPriority > previousInput.displayPriority) ? input : previousInput
-                }
-                else
-                {
-                    calloutView.input = input
+                    if let previousInput = calloutView.input
+                    {
+                        // Ensure the input we display has a higher priority.
+                        calloutView.input = (input.displayPriority > previousInput.displayPriority) ? input : previousInput
+                    }
+                    else
+                    {
+                        calloutView.input = input
+                    }
                 }
             }
         }
@@ -252,6 +270,8 @@ private extension ControllerInputsViewController
 {
     func updateActiveCalloutView(with controllerInput: Input?)
     {
+        guard let inputMapping = self.inputMappings[self.system] else { return }
+        
         guard let activeCalloutView = self.activeCalloutView else { return }
         
         guard let input = self.calloutViews.first(where: { $0.value == activeCalloutView })?.key else { return }
@@ -271,20 +291,22 @@ private extension ControllerInputsViewController
             }
         }
         
-        for supportedInput in self.inputMapping.supportedControllerInputs
-        {
-            let mappedInput = self.mappedInput(for: supportedInput)
-            
-            if mappedInput == input
+        self.managedObjectContext.performAndWait {
+            for supportedInput in inputMapping.supportedControllerInputs
             {
-                // Set all existing controller inputs that currently map to "input" to instead map to nil.
-                self.inputMapping.set(nil, forControllerInput: supportedInput)
+                let mappedInput = self.mappedInput(for: supportedInput)
+                
+                if mappedInput == input
+                {
+                    // Set all existing controller inputs that currently map to "input" to instead map to nil.
+                    inputMapping.set(nil, forControllerInput: supportedInput)
+                }
             }
-        }
-        
-        if let controllerInput = controllerInput
-        {
-            self.inputMapping.set(input, forControllerInput: controllerInput)
+            
+            if let controllerInput = controllerInput
+            {
+                inputMapping.set(input, forControllerInput: controllerInput)
+            }
         }
         
         activeCalloutView.input = controllerInput
@@ -352,7 +374,11 @@ private extension ControllerInputsViewController
 {
     func mappedInput(for input: Input) -> AnyInput
     {
-        guard let mappedInput = self.inputMapping.input(forControllerInput: input) else {
+        guard let inputMapping = self.inputMappings[self.system] else {
+            fatalError("Input mapping for current system does not exist.")
+        }
+        
+        guard let mappedInput = inputMapping.input(forControllerInput: input) else {
             fatalError("Mapped input for provided input does not exist.")
         }
         
@@ -450,6 +476,8 @@ extension ControllerInputsViewController: GameControllerReceiver
 {
     func gameController(_ gameController: GameController, didActivate controllerInput: DeltaCore.Input)
     {
+        guard self.isViewLoaded else { return }
+        
         switch gameController
         {
         case self.gameViewController.controllerView:

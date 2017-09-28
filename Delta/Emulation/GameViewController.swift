@@ -32,12 +32,15 @@ private extension GameViewController
     
     struct SustainInputsMapping: GameControllerInputMappingProtocol
     {
-        let gameControllerInputType: GameControllerInputType
-        let previousInputMapping: GameControllerInputMappingProtocol?
+        let gameController: GameController
+        
+        var gameControllerInputType: GameControllerInputType {
+            return self.gameController.inputType
+        }
         
         func input(forControllerInput controllerInput: Input) -> Input?
         {
-            if let mappedInput = self.previousInputMapping?.input(forControllerInput: controllerInput), mappedInput == StandardGameControllerInput.menu
+            if let mappedInput = self.gameController.defaultInputMapping?.input(forControllerInput: controllerInput), mappedInput == StandardGameControllerInput.menu
             {
                 return mappedInput
             }
@@ -355,6 +358,8 @@ private extension GameViewController
 {
     @objc func updateControllers()
     {
+        guard let emulatorCore = self.emulatorCore, let game = self.game else { return }
+        
         let controllers = [self.controllerView as GameController] + ExternalGameControllerManager.shared.connectedControllers
         
         if let index = Settings.localControllerPlayerIndex
@@ -368,28 +373,25 @@ private extension GameViewController
             self.controllerView.isHidden = true
         }
         
-        // Removing all game controllers from EmulatorCore will reset each controller's playerIndex to nil
-        // We temporarily cache their playerIndexes, and then we reset them after removing all controllers
-        var controllerIndexes = [ObjectIdentifier: Int?]()
-        controllers.forEach { controllerIndexes[ObjectIdentifier($0)] = $0.playerIndex }
-        
-        self.emulatorCore?.removeAllGameControllers()
-        
-        // Reset each controller's playerIndex to what it was before removing all controllers from EmulatorCore
-        controllers.forEach { $0.playerIndex = controllerIndexes[ObjectIdentifier($0)] ?? nil }
-        
-        for controller in controllers
+        for gameController in controllers
         {
-            if let index = controller.playerIndex
+            if gameController.playerIndex != nil
             {
-                // We need to place the underscore here to silence erroneous unused result warning despite annotating function with @discardableResult
-                // Hopefully this bug won't be around for too long...
-                _ = self.emulatorCore?.setGameController(controller, at: index)
-                controller.addReceiver(self)
+                if let inputMapping = GameControllerInputMapping.inputMapping(for: gameController, gameType: game.type, in: DatabaseManager.shared.viewContext)
+                {
+                    gameController.addReceiver(self, inputMapping: inputMapping)
+                    gameController.addReceiver(emulatorCore, inputMapping: inputMapping)
+                }
+                else
+                {
+                    gameController.addReceiver(self)
+                    gameController.addReceiver(emulatorCore)
+                }
             }
             else
             {
-                controller.removeReceiver(self)
+                gameController.removeReceiver(self)
+                gameController.removeReceiver(emulatorCore)
             }
         }
         
@@ -623,8 +625,8 @@ private extension GameViewController
         
         self.isSelectingSustainedButtons = true
         
-        self.sustainInputsMapping = SustainInputsMapping(gameControllerInputType: gameController.inputType, previousInputMapping: gameController.inputMapping)
-        gameController.inputMapping = self.sustainInputsMapping
+        let sustainInputsMapping = SustainInputsMapping(gameController: gameController)
+        gameController.addReceiver(self, inputMapping: sustainInputsMapping)
         
         let blurEffect = self.sustainButtonsBlurView.effect
         self.sustainButtonsBlurView.effect = nil
@@ -643,7 +645,7 @@ private extension GameViewController
         
         self.isSelectingSustainedButtons = false
         
-        gameController.inputMapping = self.sustainInputsMapping?.previousInputMapping
+        self.updateControllers()
         self.sustainInputsMapping = nil
         
         // Reactivate all sustained inputs, since they will now be mapped to game inputs.

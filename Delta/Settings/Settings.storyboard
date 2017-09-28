@@ -286,12 +286,12 @@
                     <navigationItem key="navigationItem" id="UeP-Yr-9jA">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="QfC-sf-WbP">
                             <connections>
-                                <segue destination="8l5-7I-Z7e" kind="unwind" identifier="cancelControllerControls" unwindAction="unwindFromControllerControlsViewController:" id="AkD-Lu-h5b"/>
+                                <segue destination="8l5-7I-Z7e" kind="unwind" identifier="cancelControllerInputs" unwindAction="unwindFromControllerControlsViewController:" id="AkD-Lu-h5b"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" style="done" systemItem="save" id="WHh-7W-jpl">
                             <connections>
-                                <segue destination="8l5-7I-Z7e" kind="unwind" identifier="saveControllerControls" unwindAction="unwindFromControllerControlsViewController:" id="4xr-OB-4dx"/>
+                                <segue destination="8l5-7I-Z7e" kind="unwind" identifier="saveControllerInputs" unwindAction="unwindFromControllerControlsViewController:" id="4xr-OB-4dx"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>

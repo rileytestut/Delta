@@ -36,7 +36,7 @@ private class LocalDeviceController: NSObject, GameController
     
     let inputType: GameControllerInputType = .standard
     
-    var inputMapping: GameControllerInputMappingProtocol?
+    var defaultInputMapping: GameControllerInputMappingProtocol?
 }
 
 class ControllersSettingsViewController: UITableViewController
