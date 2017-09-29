@@ -52,7 +52,7 @@
 		BF59426B1E09BBD00051894B /* GridCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5942691E09BBD00051894B /* GridCollectionViewLayout.swift */; };
 		BF59426F1E09BC5D0051894B /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF59426D1E09BC5D0051894B /* DatabaseManager.swift */; };
 		BF5942701E09BC5D0051894B /* GamesDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF59426E1E09BC5D0051894B /* GamesDatabase.swift */; };
-		BF5942731E09BC700051894B /* Model.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = BF5942721E09BC700051894B /* Model.xcdatamodel */; };
+		BF5942731E09BC700051894B /* Delta.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = BF5942721E09BC700051894B /* Delta.xcdatamodel */; };
 		BF59427C1E09BC830051894B /* Cheat.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5942771E09BC830051894B /* Cheat.swift */; };
 		BF59427D1E09BC830051894B /* ControllerSkin.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5942781E09BC830051894B /* ControllerSkin.swift */; };
 		BF59427E1E09BC830051894B /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5942791E09BC830051894B /* Game.swift */; };
@@ -180,7 +180,7 @@
 		BF5942691E09BBD00051894B /* GridCollectionViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GridCollectionViewLayout.swift; path = "Components/Collection View/GridCollectionViewLayout.swift"; sourceTree = "<group>"; };
 		BF59426D1E09BC5D0051894B /* DatabaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DatabaseManager.swift; path = Database/DatabaseManager.swift; sourceTree = "<group>"; };
 		BF59426E1E09BC5D0051894B /* GamesDatabase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GamesDatabase.swift; path = Database/OpenVGDB/GamesDatabase.swift; sourceTree = "<group>"; };
-		BF5942721E09BC700051894B /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; name = Model.xcdatamodel; path = Database/Model/Model.xcdatamodel; sourceTree = "<group>"; };
+		BF5942721E09BC700051894B /* Delta.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; name = Delta.xcdatamodel; path = Database/Model/Delta.xcdatamodel; sourceTree = "<group>"; };
 		BF5942771E09BC830051894B /* Cheat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Cheat.swift; path = Database/Model/Human/Cheat.swift; sourceTree = "<group>"; };
 		BF5942781E09BC830051894B /* ControllerSkin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ControllerSkin.swift; path = Database/Model/Human/ControllerSkin.swift; sourceTree = "<group>"; };
 		BF5942791E09BC830051894B /* Game.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Game.swift; path = Database/Model/Human/Game.swift; sourceTree = "<group>"; };
@@ -381,7 +381,7 @@
 		BF5942711E09BC690051894B /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				BF5942721E09BC700051894B /* Model.xcdatamodel */,
+				BF5942721E09BC700051894B /* Delta.xcdatamodel */,
 				BF5942741E09BC740051894B /* Human */,
 				BF5942751E09BC780051894B /* Machine */,
 				BF6B82A31F7CC29A00042BFB /* Transformers */,
@@ -844,7 +844,7 @@
 				BF6BF3131EB7E47F008E83CD /* ImportOption.swift in Sources */,
 				BF31878B1D489AAA00BD020D /* CheatValidator.swift in Sources */,
 				BFFC46201D59823500AF2CC6 /* InitialGamesStoryboardSegue.swift in Sources */,
-				BF5942731E09BC700051894B /* Model.xcdatamodel in Sources */,
+				BF5942731E09BC700051894B /* Delta.xcdatamodel in Sources */,
 				BF15AF841F54B43B009B6AAB /* ActionInput.swift in Sources */,
 				BF5942951E09BD1A0051894B /* NSManagedObjectContext+Conveniences.swift in Sources */,
 				BF353FF91C5D870B00C1184C /* MenuItem.swift in Sources */,
