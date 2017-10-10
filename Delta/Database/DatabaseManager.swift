@@ -65,10 +65,9 @@ final class DatabaseManager: NSPersistentContainer
     private init()
     {
         guard
-            let modelURL = Bundle(for: DatabaseManager.self).url(forResource: "Delta", withExtension: "mom"),
+            let modelURL = Bundle(for: DatabaseManager.self).url(forResource: "Delta", withExtension: "momd"),
             let managedObjectModel = NSManagedObjectModel(contentsOf: modelURL)
         else { fatalError("Core Data model cannot be found. Aborting.") }
-        
         
         super.init(name: "Delta", managedObjectModel: managedObjectModel)
         

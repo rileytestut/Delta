@@ -139,13 +139,41 @@ class GameViewController: DeltaCore.GameViewController
     {
         super.gameController(gameController, didActivate: input)
         
-        guard self.isSelectingSustainedButtons else { return }
-        
-        guard let pausingGameController = self.pausingGameController, gameController == pausingGameController else { return }
-        
-        if input != StandardGameControllerInput.menu
+        if self.isSelectingSustainedButtons
         {
-            gameController.sustain(input)
+            guard let pausingGameController = self.pausingGameController, gameController == pausingGameController else { return }
+            
+            if input != StandardGameControllerInput.menu
+            {
+                gameController.sustain(input)
+            }
+        }
+        else if self.emulatorCore?.state == .running
+        {
+            guard let actionInput = ActionInput(input: input) else { return }
+            
+            switch actionInput
+            {
+            case .quickSave: self.performQuickSaveAction()
+            case .quickLoad: self.performQuickLoadAction()
+            case .fastForward: self.performFastForwardAction(activate: true)
+            }
+        }
+    }
+    
+    override func gameController(_ gameController: GameController, didDeactivate input: Input)
+    {
+        super.gameController(gameController, didDeactivate: input)
+        
+        guard !self.isSelectingSustainedButtons else { return }
+        
+        guard let actionInput = ActionInput(input: input) else { return }
+        
+        switch actionInput
+        {
+        case .quickSave: break
+        case .quickLoad: break
+        case .fastForward: self.performFastForwardAction(activate: false)
         }
     }
 }
@@ -251,8 +279,7 @@ extension GameViewController
             
             pauseViewController.fastForwardItem?.isSelected = (self.emulatorCore?.rate != self.emulatorCore?.deltaCore.supportedRates.lowerBound)
             pauseViewController.fastForwardItem?.action = { [unowned self] item in
-                guard let emulatorCore = self.emulatorCore else { return }
-                emulatorCore.rate = item.isSelected ? emulatorCore.deltaCore.supportedRates.upperBound : emulatorCore.deltaCore.supportedRates.lowerBound
+                self.performFastForwardAction(activate: item.isSelected)
             }
             
             pauseViewController.sustainButtonsItem?.isSelected = gameController.sustainedInputs.count > 0
@@ -441,42 +468,37 @@ extension GameViewController: SaveStatesViewControllerDelegate
             
             let game = backgroundContext.object(with: game.objectID) as! Game
             
-            let predicate = NSPredicate(format: "%K == %d AND %K == %@", #keyPath(SaveState.type), SaveStateType.auto.rawValue, #keyPath(SaveState.game), game)
-            
-            let fetchRequest: NSFetchRequest<SaveState> = SaveState.fetchRequest()
-            fetchRequest.predicate = predicate
+            let fetchRequest = SaveState.fetchRequest(for: game, type: .auto)
             fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(SaveState.creationDate), ascending: true)]
-            
-            var saveStates: [SaveState]? = nil
             
             do
             {
-                saveStates = try fetchRequest.execute()
+                let saveStates = try fetchRequest.execute()
+                
+                if let saveState = saveStates.first, saveStates.count >= 2
+                {
+                    // If there are two or more auto save states, update the oldest one
+                    self.update(saveState, with: self.pausedSaveState)
+                    
+                    // Tiny hack: SaveStatesViewController sorts save states by creation date, so we update the creation date too
+                    // Simpler than deleting old save states ¯\_(ツ)_/¯
+                    saveState.creationDate = saveState.modifiedDate
+                }
+                else
+                {
+                    // Otherwise, create a new one
+                    let saveState = SaveState.insertIntoManagedObjectContext(backgroundContext)
+                    saveState.type = .auto
+                    saveState.game = game
+                    
+                    self.update(saveState, with: self.pausedSaveState)
+                }
             }
             catch
             {
                 print(error)
             }
-            
-            if let saveStates = saveStates, let saveState = saveStates.first, saveStates.count >= 2
-            {
-                // If there are two or more auto save states, update the oldest one
-                self.update(saveState, with: self.pausedSaveState)
-                
-                // Tiny hack; SaveStatesViewController sorts save states by creation date, so we update the creation date too
-                // Simpler than deleting old save states ¯\_(ツ)_/¯
-                saveState.creationDate = saveState.modifiedDate
-            }
-            else
-            {
-                // Otherwise, create a new one
-                let saveState = SaveState.insertIntoManagedObjectContext(backgroundContext)
-                saveState.type = .auto
-                saveState.game = game
-                
-                self.update(saveState, with: self.pausedSaveState)
-            }
-            
+
             backgroundContext.saveWithErrorLogging()
         }
     }
@@ -535,25 +557,14 @@ extension GameViewController: SaveStatesViewControllerDelegate
         }
     }
     
-    //MARK: - SaveStatesViewControllerDelegate
-    
-    func saveStatesViewController(_ saveStatesViewController: SaveStatesViewController, updateSaveState saveState: SaveState)
+    fileprivate func load(_ saveState: SaveStateProtocol)
     {
-        let updatingExistingSaveState = FileManager.default.fileExists(atPath: saveState.fileURL.path)
+        let isRunning = (self.emulatorCore?.state == .running)
         
-        self.update(saveState)
-        
-        // Dismiss if updating an existing save state.
-        // If creating a new one, don't dismiss.
-        if updatingExistingSaveState
+        if isRunning
         {
-            self.pauseViewController?.dismiss()
+            self.pauseEmulation()
         }
-    }
-    
-    func saveStatesViewController(_ saveStatesViewController: SaveStatesViewController, loadSaveState saveState: SaveStateProtocol)
-    {
-        self._isLoadingSaveState = true
         
         // If we're loading the auto save state, we need to create a temporary copy of saveState.
         // Then, we update the auto save state, but load our copy so everything works out.
@@ -596,6 +607,34 @@ extension GameViewController: SaveStatesViewControllerDelegate
         {
             print(error)
         }
+        
+        if isRunning
+        {
+            self.resumeEmulation()
+        }
+    }
+    
+    //MARK: - SaveStatesViewControllerDelegate
+    
+    func saveStatesViewController(_ saveStatesViewController: SaveStatesViewController, updateSaveState saveState: SaveState)
+    {
+        let updatingExistingSaveState = FileManager.default.fileExists(atPath: saveState.fileURL.path)
+        
+        self.update(saveState)
+        
+        // Dismiss if updating an existing save state.
+        // If creating a new one, don't dismiss.
+        if updatingExistingSaveState
+        {
+            self.pauseViewController?.dismiss()
+        }
+    }
+    
+    func saveStatesViewController(_ saveStatesViewController: SaveStatesViewController, loadSaveState saveState: SaveStateProtocol)
+    {
+        self._isLoadingSaveState = true
+        
+        self.load(saveState)
         
         self.pauseViewController?.dismiss()
     }
@@ -662,6 +701,78 @@ private extension GameViewController
         }) { (finished) in
             self.sustainButtonsContentView.isHidden = true
             self.sustainButtonsBlurView.effect = blurEffect
+        }
+    }
+}
+
+//MARK: - Action Inputs -
+/// Action Inputs
+extension GameViewController
+{
+    func performQuickSaveAction()
+    {
+        guard let game = self.game as? Game else { return }
+        
+        let backgroundContext = DatabaseManager.shared.newBackgroundContext()
+        backgroundContext.performAndWait {
+            
+            let game = backgroundContext.object(with: game.objectID) as! Game
+            let fetchRequest = SaveState.fetchRequest(for: game, type: .quick)
+            
+            do
+            {
+                if let quickSaveState = try fetchRequest.execute().first
+                {
+                    self.update(quickSaveState)
+                }
+                else
+                {
+                    let saveState = SaveState(context: backgroundContext)
+                    saveState.type = .quick
+                    saveState.game = game
+                    
+                    self.update(saveState)
+                }
+            }
+            catch
+            {
+                print(error)
+            }
+            
+            backgroundContext.saveWithErrorLogging()
+        }
+    }
+    
+    func performQuickLoadAction()
+    {
+        guard let game = self.game as? Game else { return }
+        
+        let fetchRequest = SaveState.fetchRequest(for: game, type: .quick)
+        
+        do
+        {
+            if let quickSaveState = try fetchRequest.execute().first
+            {
+                self.load(quickSaveState)
+            }
+        }
+        catch
+        {
+            print(error)
+        }
+    }
+    
+    func performFastForwardAction(activate: Bool)
+    {
+        guard let emulatorCore = self.emulatorCore else { return }
+        
+        if activate
+        {
+            emulatorCore.rate = emulatorCore.deltaCore.supportedRates.upperBound
+        }
+        else
+        {
+            emulatorCore.rate = emulatorCore.deltaCore.supportedRates.lowerBound
         }
     }
 }

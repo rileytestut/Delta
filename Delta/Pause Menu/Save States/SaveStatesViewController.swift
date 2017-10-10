@@ -29,6 +29,7 @@ extension SaveStatesViewController
     enum Section: Int
     {
         case auto
+        case quick
         case general
         case locked
     }
@@ -268,6 +269,7 @@ private extension SaveStatesViewController
         switch section
         {
         case .auto: title = NSLocalizedString("Auto Save", comment: "")
+        case .quick: title = NSLocalizedString("Quick Save", comment: "")
         case .general: title = NSLocalizedString("General", comment: "")
         case .locked: title = NSLocalizedString("Locked", comment: "")
         }
@@ -310,6 +312,7 @@ private extension SaveStatesViewController
             let game = backgroundContext.object(with: self.game.objectID) as! Game
             
             saveState = SaveState.insertIntoManagedObjectContext(backgroundContext)
+            saveState.type = .general
             saveState.game = game
         }
         
@@ -480,6 +483,7 @@ private extension SaveStatesViewController
         switch saveState.type
         {
         case .auto: break
+        case .quick: break
         case .general:
             let lockAction = Action(title: NSLocalizedString("Lock", comment: ""), style: .default, action: { [unowned self] action in
                 self.lockSaveState(saveState)
@@ -643,11 +647,11 @@ extension SaveStatesViewController
         {
         case .saving:
             
-            let section = self.correctedSectionForSectionIndex((indexPath as NSIndexPath).section)
+            let section = self.correctedSectionForSectionIndex(indexPath.section)
             switch section
             {
             case .auto: break
-            case .general:
+            case .quick, .general:
                 let backgroundContext = DatabaseManager.shared.newBackgroundContext()
                 backgroundContext.performAndWait() {
                     let temporarySaveState = backgroundContext.object(with: saveState.objectID) as! SaveState

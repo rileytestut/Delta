@@ -15,8 +15,8 @@ public extension GameControllerInputType
 
 enum ActionInput: String
 {
-    case saveState
-    case loadState
+    case quickSave
+    case quickLoad
     case fastForward
 }
 

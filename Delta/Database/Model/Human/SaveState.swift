@@ -13,6 +13,7 @@ import DeltaCore
 @objc public enum SaveStateType: Int16
 {
     case auto
+    case quick
     case general
     case locked
 }
@@ -77,5 +78,15 @@ public class SaveState: _SaveState, SaveStateProtocol
         {
             print(error)
         }
+    }
+    
+    class func fetchRequest(for game: Game, type: SaveStateType) -> NSFetchRequest<SaveState>
+    {
+        let predicate = NSPredicate(format: "%K == %@ AND %K == %d", #keyPath(SaveState.game), game, #keyPath(SaveState.type), type.rawValue)
+        
+        let fetchRequest: NSFetchRequest<SaveState> = SaveState.fetchRequest()
+        fetchRequest.predicate = predicate
+        
+        return fetchRequest
     }
 }

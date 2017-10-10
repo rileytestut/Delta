@@ -52,7 +52,6 @@
 		BF59426B1E09BBD00051894B /* GridCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5942691E09BBD00051894B /* GridCollectionViewLayout.swift */; };
 		BF59426F1E09BC5D0051894B /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF59426D1E09BC5D0051894B /* DatabaseManager.swift */; };
 		BF5942701E09BC5D0051894B /* GamesDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF59426E1E09BC5D0051894B /* GamesDatabase.swift */; };
-		BF5942731E09BC700051894B /* Delta.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = BF5942721E09BC700051894B /* Delta.xcdatamodel */; };
 		BF59427C1E09BC830051894B /* Cheat.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5942771E09BC830051894B /* Cheat.swift */; };
 		BF59427D1E09BC830051894B /* ControllerSkin.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5942781E09BC830051894B /* ControllerSkin.swift */; };
 		BF59427E1E09BC830051894B /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5942791E09BC830051894B /* Game.swift */; };
@@ -104,11 +103,14 @@
 		BFC9B7391CEFCD34008629BB /* CheatsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC9B7381CEFCD34008629BB /* CheatsViewController.swift */; };
 		BFCEA67E1D56FF640061A534 /* UIViewControllerContextTransitioning+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFCEA67D1D56FF640061A534 /* UIViewControllerContextTransitioning+Conveniences.swift */; };
 		BFD097211D3A01B8005A44C2 /* SaveStatesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3540041C5DA70400C1184C /* SaveStatesViewController.swift */; };
+		BFDC7B9F1F7DE0CF0052A7C5 /* Delta.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = BFDC7B9E1F7DE0CF0052A7C5 /* Delta.xcmappingmodel */; };
 		BFDD04F11D5E2C27002D450E /* GameCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDD04F01D5E2C27002D450E /* GameCollectionViewController.swift */; };
 		BFE022A01F5B57FF0052D888 /* PopoverMenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE0229F1F5B577D0052D888 /* PopoverMenuButton.swift */; };
 		BFE4269E1D9C68E600DC913F /* SaveStatesStoryboardSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE4269D1D9C68E600DC913F /* SaveStatesStoryboardSegue.swift */; };
 		BFEC732D1AAECC4A00650035 /* Roxas.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFEC732C1AAECC4A00650035 /* Roxas.framework */; };
 		BFEC732E1AAECC4A00650035 /* Roxas.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BFEC732C1AAECC4A00650035 /* Roxas.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BFEF24EF1F7DD3F100454C62 /* Delta.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BFEF24EC1F7DD3F100454C62 /* Delta.xcdatamodeld */; };
+		BFEF24F31F7DD4FD00454C62 /* SaveStateMigrationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEF24F21F7DD4FB00454C62 /* SaveStateMigrationPolicy.swift */; };
 		BFF0742C1E9DC17500ACDF4A /* GBCDeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFF0742B1E9DC17500ACDF4A /* GBCDeltaCore.framework */; };
 		BFF0742D1E9DC17500ACDF4A /* GBCDeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BFF0742B1E9DC17500ACDF4A /* GBCDeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BFF6452E1F7CC5060056533E /* GameControllerInputMappingTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6B82A41F7CC2A300042BFB /* GameControllerInputMappingTransformer.swift */; };
@@ -180,7 +182,6 @@
 		BF5942691E09BBD00051894B /* GridCollectionViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GridCollectionViewLayout.swift; path = "Components/Collection View/GridCollectionViewLayout.swift"; sourceTree = "<group>"; };
 		BF59426D1E09BC5D0051894B /* DatabaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DatabaseManager.swift; path = Database/DatabaseManager.swift; sourceTree = "<group>"; };
 		BF59426E1E09BC5D0051894B /* GamesDatabase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GamesDatabase.swift; path = Database/OpenVGDB/GamesDatabase.swift; sourceTree = "<group>"; };
-		BF5942721E09BC700051894B /* Delta.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; name = Delta.xcdatamodel; path = Database/Model/Delta.xcdatamodel; sourceTree = "<group>"; };
 		BF5942771E09BC830051894B /* Cheat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Cheat.swift; path = Database/Model/Human/Cheat.swift; sourceTree = "<group>"; };
 		BF5942781E09BC830051894B /* ControllerSkin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ControllerSkin.swift; path = Database/Model/Human/ControllerSkin.swift; sourceTree = "<group>"; };
 		BF5942791E09BC830051894B /* Game.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Game.swift; path = Database/Model/Human/Game.swift; sourceTree = "<group>"; };
@@ -232,10 +233,14 @@
 		BFC6F7B71F435BC500221B96 /* Input+Display.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Input+Display.swift"; sourceTree = "<group>"; };
 		BFC9B7381CEFCD34008629BB /* CheatsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CheatsViewController.swift; path = "Pause Menu/Cheats/CheatsViewController.swift"; sourceTree = "<group>"; };
 		BFCEA67D1D56FF640061A534 /* UIViewControllerContextTransitioning+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewControllerContextTransitioning+Conveniences.swift"; sourceTree = "<group>"; };
+		BFDC7B9E1F7DE0CF0052A7C5 /* Delta.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; name = Delta.xcmappingmodel; path = Database/Model/Migrations/Delta.xcmappingmodel; sourceTree = "<group>"; };
 		BFDD04F01D5E2C27002D450E /* GameCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameCollectionViewController.swift; sourceTree = "<group>"; };
 		BFE0229F1F5B577D0052D888 /* PopoverMenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PopoverMenuButton.swift; path = "Components/Popover Menu/PopoverMenuButton.swift"; sourceTree = "<group>"; };
 		BFE4269D1D9C68E600DC913F /* SaveStatesStoryboardSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SaveStatesStoryboardSegue.swift; path = Segues/SaveStatesStoryboardSegue.swift; sourceTree = "<group>"; };
 		BFEC732C1AAECC4A00650035 /* Roxas.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Roxas.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BFEF24ED1F7DD3F100454C62 /* Delta 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Delta 2.xcdatamodel"; sourceTree = "<group>"; };
+		BFEF24EE1F7DD3F100454C62 /* Delta.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Delta.xcdatamodel; sourceTree = "<group>"; };
+		BFEF24F21F7DD4FB00454C62 /* SaveStateMigrationPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SaveStateMigrationPolicy.swift; path = Database/Model/Migrations/Policies/SaveStateMigrationPolicy.swift; sourceTree = "<group>"; };
 		BFF0742B1E9DC17500ACDF4A /* GBCDeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = GBCDeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFF93A9F1E0FB036005EC865 /* InputStreamOutputWriter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InputStreamOutputWriter.swift; path = Database/InputStreamOutputWriter.swift; sourceTree = "<group>"; };
 		BFFA4C081E8A24D600D87934 /* GameMetadataTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GameMetadataTableViewCell.swift; path = Database/OpenVGDB/GameMetadataTableViewCell.swift; sourceTree = "<group>"; };
@@ -381,10 +386,11 @@
 		BF5942711E09BC690051894B /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				BF5942721E09BC700051894B /* Delta.xcdatamodel */,
+				BFEF24EC1F7DD3F100454C62 /* Delta.xcdatamodeld */,
 				BF5942741E09BC740051894B /* Human */,
 				BF5942751E09BC780051894B /* Machine */,
 				BF6B82A31F7CC29A00042BFB /* Transformers */,
+				BFEF24F01F7DD4B600454C62 /* Migrations */,
 				BF5942761E09BC7C0051894B /* Misc */,
 			);
 			name = Model;
@@ -563,6 +569,23 @@
 				BF02D5D91DDEBB3000A5E131 /* openvgdb.sqlite */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		BFEF24F01F7DD4B600454C62 /* Migrations */ = {
+			isa = PBXGroup;
+			children = (
+				BFDC7B9E1F7DE0CF0052A7C5 /* Delta.xcmappingmodel */,
+				BFEF24F11F7DD4BE00454C62 /* Policies */,
+			);
+			name = Migrations;
+			sourceTree = "<group>";
+		};
+		BFEF24F11F7DD4BE00454C62 /* Policies */ = {
+			isa = PBXGroup;
+			children = (
+				BFEF24F21F7DD4FB00454C62 /* SaveStateMigrationPolicy.swift */,
+			);
+			name = Policies;
 			sourceTree = "<group>";
 		};
 		BFFA71CE1AAC406100EE9DD1 = {
@@ -844,7 +867,6 @@
 				BF6BF3131EB7E47F008E83CD /* ImportOption.swift in Sources */,
 				BF31878B1D489AAA00BD020D /* CheatValidator.swift in Sources */,
 				BFFC46201D59823500AF2CC6 /* InitialGamesStoryboardSegue.swift in Sources */,
-				BF5942731E09BC700051894B /* Delta.xcdatamodel in Sources */,
 				BF15AF841F54B43B009B6AAB /* ActionInput.swift in Sources */,
 				BF5942951E09BD1A0051894B /* NSManagedObjectContext+Conveniences.swift in Sources */,
 				BF353FF91C5D870B00C1184C /* MenuItem.swift in Sources */,
@@ -854,6 +876,7 @@
 				BFFA71DD1AAC406100EE9DD1 /* AppDelegate.swift in Sources */,
 				BF59426B1E09BBD00051894B /* GridCollectionViewLayout.swift in Sources */,
 				BF6424851F5CBDC900D6AB44 /* UIView+ParentViewController.swift in Sources */,
+				BFDC7B9F1F7DE0CF0052A7C5 /* Delta.xcmappingmodel in Sources */,
 				BF04E6FF1DB8625C000F35D3 /* ControllerSkinsViewController.swift in Sources */,
 				BF5942891E09BC8B0051894B /* _GameCollection.swift in Sources */,
 				BF34FA111CF1899D006624C7 /* CheatTextView.swift in Sources */,
@@ -878,6 +901,7 @@
 				BF80E1D21F13117000847008 /* ControllerInputsViewController.swift in Sources */,
 				BF5942641E09BBB10051894B /* LoadControllerSkinImageOperation.swift in Sources */,
 				BF6EE5E91F7C5F860051AD6C /* _GameControllerInputMapping.swift in Sources */,
+				BFEF24EF1F7DD3F100454C62 /* Delta.xcdatamodeld in Sources */,
 				BF5942871E09BC8B0051894B /* _ControllerSkin.swift in Sources */,
 				BF95E2791E4982A10030E7AD /* GamesDatabaseBrowserViewController.swift in Sources */,
 				BFD097211D3A01B8005A44C2 /* SaveStatesViewController.swift in Sources */,
@@ -895,6 +919,7 @@
 				BF5942861E09BC8B0051894B /* _Cheat.swift in Sources */,
 				BF5E7F441B9A650B00AE44F8 /* SettingsViewController.swift in Sources */,
 				BF8CA9361F5F651900499FDD /* PopoverMenuController.swift in Sources */,
+				BFEF24F31F7DD4FD00454C62 /* SaveStateMigrationPolicy.swift in Sources */,
 				BF5942931E09BD1A0051894B /* NSFetchedResultsController+Conveniences.m in Sources */,
 				BF6BF3271EB87EB8008E83CD /* PhotoLibraryImportOption.swift in Sources */,
 				BF5942661E09BBB10051894B /* LoadImageURLOperation.swift in Sources */,
@@ -1129,6 +1154,21 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		BFEF24EC1F7DD3F100454C62 /* Delta.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				BFEF24ED1F7DD3F100454C62 /* Delta 2.xcdatamodel */,
+				BFEF24EE1F7DD3F100454C62 /* Delta.xcdatamodel */,
+			);
+			currentVersion = BFEF24ED1F7DD3F100454C62 /* Delta 2.xcdatamodel */;
+			name = Delta.xcdatamodeld;
+			path = Database/Model/Delta.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = BFFA71CF1AAC406100EE9DD1 /* Project object */;
 }

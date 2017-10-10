@@ -31,7 +31,7 @@ class ControllerInputsViewController: UIViewController
     fileprivate lazy var managedObjectContext: NSManagedObjectContext = DatabaseManager.shared.newBackgroundContext()
     fileprivate var inputMappings = [System: GameControllerInputMapping]()
     
-    fileprivate let supportedActionInputs: [ActionInput] = [.saveState, .loadState, .fastForward]
+    fileprivate let supportedActionInputs: [ActionInput] = [.quickSave, .quickLoad, .fastForward]
     
     fileprivate var gameViewController: DeltaCore.GameViewController!
     fileprivate var actionsMenuViewController: GridMenuViewController!
@@ -188,13 +188,13 @@ private extension ControllerInputsViewController
             
             switch input
             {
-            case .saveState:
+            case .quickSave:
                 image = #imageLiteral(resourceName: "SaveSaveState")
-                text = NSLocalizedString("Save State", comment: "")
+                text = NSLocalizedString("Quick Save", comment: "")
                 
-            case .loadState:
+            case .quickLoad:
                 image = #imageLiteral(resourceName: "LoadSaveState")
-                text = NSLocalizedString("Load State", comment: "")
+                text = NSLocalizedString("Quick Load", comment: "")
                 
             case .fastForward:
                 image = #imageLiteral(resourceName: "FastForward")
