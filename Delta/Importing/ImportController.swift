@@ -37,14 +37,14 @@ class ImportController: NSObject
     var delegate: ImportControllerDelegate?
     var importOptions: [ImportOption]?
     
-    fileprivate weak var presentingViewController: UIViewController?
+    private weak var presentingViewController: UIViewController?
     
     // Store presentedViewController separately, since when we dismiss we don't know if it has already been dismissed.
     // Calling dismiss on presentingViewController in that case would dismiss presentingViewController, which is bad.
-    fileprivate weak var presentedViewController: UIViewController?
+    private weak var presentedViewController: UIViewController?
     
-    fileprivate let importQueue: OperationQueue
-    fileprivate let fileCoordinator: NSFileCoordinator
+    private let importQueue: OperationQueue
+    private let fileCoordinator: NSFileCoordinator
     
     init(documentTypes: Set<String>)
     {
@@ -104,12 +104,12 @@ class ImportController: NSObject
         #endif
     }
     
-    @objc fileprivate func cancel()
+    @objc private func cancel()
     {
         self.finish(with: nil, errors: [])
     }
     
-    fileprivate func finish(with urls: Set<URL>?, errors: [Error])
+    private func finish(with urls: Set<URL>?, errors: [Error])
     {
         if let urls = urls
         {

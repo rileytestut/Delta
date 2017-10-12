@@ -43,16 +43,16 @@ class GameCollectionViewController: UICollectionViewController
     
     weak var activeEmulatorCore: EmulatorCore?
     
-    fileprivate var activeSaveState: SaveStateProtocol?
+    private var activeSaveState: SaveStateProtocol?
     
-    fileprivate let dataSource: RSTFetchedResultsCollectionViewPrefetchingDataSource<Game, UIImage>
-    fileprivate let prototypeCell = GridCollectionViewCell()
+    private let dataSource: RSTFetchedResultsCollectionViewPrefetchingDataSource<Game, UIImage>
+    private let prototypeCell = GridCollectionViewCell()
     
-    fileprivate var _performing3DTouchTransition = false
-    fileprivate weak var _destination3DTouchTransitionViewController: UIViewController?
+    private var _performing3DTouchTransition = false
+    private weak var _destination3DTouchTransitionViewController: UIViewController?
     
-    fileprivate var _renameAction: UIAlertAction?
-    fileprivate var _changingArtworkGame: Game?
+    private var _renameAction: UIAlertAction?
+    private var _changingArtworkGame: Game?
     
     required init?(coder aDecoder: NSCoder)
     {

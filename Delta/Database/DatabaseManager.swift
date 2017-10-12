@@ -60,7 +60,7 @@ final class DatabaseManager: NSPersistentContainer
 {
     static let shared = DatabaseManager()
     
-    fileprivate var gamesDatabase: GamesDatabase? = nil
+    private var gamesDatabase: GamesDatabase? = nil
     
     private init()
     {

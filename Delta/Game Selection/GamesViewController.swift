@@ -35,11 +35,11 @@ class GamesViewController: UIViewController
         }
     }
     
-    fileprivate var pageViewController: UIPageViewController!
-    fileprivate var placeholderView: RSTPlaceholderView!
-    fileprivate var pageControl: UIPageControl!
+    private var pageViewController: UIPageViewController!
+    private var placeholderView: RSTPlaceholderView!
+    private var pageControl: UIPageControl!
     
-    fileprivate let fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>
+    private let fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         fatalError("initWithNibName: not implemented")
@@ -273,7 +273,7 @@ private extension GamesViewController
 /// Importing
 extension GamesViewController: ImportControllerDelegate
 {
-    @IBAction fileprivate func importFiles()
+    @IBAction private func importFiles()
     {
         var documentTypes = Set(System.supportedSystems.map { $0.gameType.rawValue })
         documentTypes.insert(kUTTypeZipArchive as String)

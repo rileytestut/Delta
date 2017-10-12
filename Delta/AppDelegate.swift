@@ -90,7 +90,7 @@ extension AppDelegate
         return self.openURL(url)
     }
     
-    @discardableResult fileprivate func openURL(_ url: URL) -> Bool
+    @discardableResult private func openURL(_ url: URL) -> Bool
     {
         guard url.isFileURL else { return false }
         

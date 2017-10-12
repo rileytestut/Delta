@@ -28,17 +28,17 @@ class ControllerInputsViewController: UIViewController
         }
     }
     
-    fileprivate lazy var managedObjectContext: NSManagedObjectContext = DatabaseManager.shared.newBackgroundContext()
-    fileprivate var inputMappings = [System: GameControllerInputMapping]()
+    private lazy var managedObjectContext: NSManagedObjectContext = DatabaseManager.shared.newBackgroundContext()
+    private var inputMappings = [System: GameControllerInputMapping]()
     
-    fileprivate let supportedActionInputs: [ActionInput] = [.quickSave, .quickLoad, .fastForward]
+    private let supportedActionInputs: [ActionInput] = [.quickSave, .quickLoad, .fastForward]
     
-    fileprivate var gameViewController: DeltaCore.GameViewController!
-    fileprivate var actionsMenuViewController: GridMenuViewController!
+    private var gameViewController: DeltaCore.GameViewController!
+    private var actionsMenuViewController: GridMenuViewController!
     
-    fileprivate var calloutViews = [AnyInput: InputCalloutView]()
+    private var calloutViews = [AnyInput: InputCalloutView]()
     
-    fileprivate var activeCalloutView: InputCalloutView?
+    private var activeCalloutView: InputCalloutView?
     
     @IBOutlet private var actionsMenuViewControllerHeightConstraint: NSLayoutConstraint!
     @IBOutlet private var cancelTapGestureRecognizer: UITapGestureRecognizer!

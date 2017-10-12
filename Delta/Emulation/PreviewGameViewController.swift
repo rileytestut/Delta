@@ -27,7 +27,7 @@ class PreviewGameViewController: DeltaCore.GameViewController
         }
     }
     
-    fileprivate var emulatorCoreQueue = DispatchQueue(label: "com.rileytestut.Delta.PreviewGameViewController.emulatorCoreQueue", qos: .userInitiated)
+    private var emulatorCoreQueue = DispatchQueue(label: "com.rileytestut.Delta.PreviewGameViewController.emulatorCoreQueue", qos: .userInitiated)
     
     override var game: GameProtocol? {
         willSet {

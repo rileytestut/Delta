@@ -15,9 +15,9 @@ class GamesDatabaseBrowserViewController: UITableViewController
 {
     var selectionHandler: ((GameMetadata) -> Void)?
     
-    fileprivate let database: GamesDatabase?
+    private let database: GamesDatabase?
     
-    fileprivate let dataSource: RSTArrayTableViewPrefetchingDataSource<GameMetadata, UIImage>
+    private let dataSource: RSTArrayTableViewPrefetchingDataSource<GameMetadata, UIImage>
     
     override init(style: UITableViewStyle) {
         fatalError()

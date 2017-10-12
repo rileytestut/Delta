@@ -43,19 +43,19 @@ class EditCheatViewController: UITableViewController
     
     var isPreviewing = false
     
-    fileprivate var supportedCheatFormats: [CheatFormat]!
+    private var supportedCheatFormats: [CheatFormat]!
     
-    fileprivate var selectedCheatFormat: CheatFormat {
+    private var selectedCheatFormat: CheatFormat {
         let cheatFormat = self.supportedCheatFormats[self.typeSegmentedControl.selectedSegmentIndex]
         return cheatFormat
     }
     
-    fileprivate var mutableCheat: Cheat!
-    fileprivate var managedObjectContext = DatabaseManager.shared.newBackgroundContext()
+    private var mutableCheat: Cheat!
+    private var managedObjectContext = DatabaseManager.shared.newBackgroundContext()
     
-    @IBOutlet fileprivate var nameTextField: UITextField!
-    @IBOutlet fileprivate var typeSegmentedControl: UISegmentedControl!
-    @IBOutlet fileprivate var codeTextView: CheatTextView!
+    @IBOutlet private var nameTextField: UITextField!
+    @IBOutlet private var typeSegmentedControl: UISegmentedControl!
+    @IBOutlet private var codeTextView: CheatTextView!
     
     override var previewActionItems: [UIPreviewActionItem]
     {

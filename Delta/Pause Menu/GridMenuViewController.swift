@@ -23,12 +23,12 @@ class GridMenuViewController: UICollectionViewController
         get { return self.collectionView?.contentSize ?? CGSize.zero }
     }
     
-    fileprivate let dataSource = RSTArrayCollectionViewDataSource<MenuItem>(items: [])
+    private let dataSource = RSTArrayCollectionViewDataSource<MenuItem>(items: [])
     
-    fileprivate var prototypeCell = GridCollectionViewCell()
-    fileprivate var previousIndexPath: IndexPath? = nil
+    private var prototypeCell = GridCollectionViewCell()
+    private var previousIndexPath: IndexPath? = nil
     
-    fileprivate var registeredKVOObservers = Set<NSKeyValueObservation>()
+    private var registeredKVOObservers = Set<NSKeyValueObservation>()
     
     init()
     {

@@ -61,7 +61,7 @@ public class ControllerSkin: _ControllerSkin
         return self.controllerSkin?.isDebugModeEnabled ?? false
     }
     
-    fileprivate lazy var controllerSkin: DeltaCore.ControllerSkin? = {
+    private lazy var controllerSkin: DeltaCore.ControllerSkin? = {
         let controllerSkin = self.isStandard ? DeltaCore.ControllerSkin.standardControllerSkin(for: self.gameType) : DeltaCore.ControllerSkin(fileURL: self.fileURL)
         return controllerSkin
     }()
