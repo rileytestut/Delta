@@ -79,7 +79,7 @@ extension AppDelegate
     {
         self.window?.tintColor = UIColor.deltaPurple
         
-        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).defaultTextAttributes[NSForegroundColorAttributeName] = UIColor.white
+        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).defaultTextAttributes[NSAttributedStringKey.foregroundColor] = UIColor.white
     }
 }
 

@@ -18,7 +18,7 @@ internal extension UILabel
         context.minimumScaleFactor = self.minimumScaleFactor
         
         // Using self.attributedString returns incorrect calculations, so we create our own attributed string
-        let attributedString = NSAttributedString(string: text, attributes: [NSFontAttributeName: self.font])
+        let attributedString = NSAttributedString(string: text, attributes: [NSAttributedStringKey.font: self.font])
         attributedString.boundingRect(with: self.bounds.size, options: [.usesLineFragmentOrigin, .usesFontLeading], context: context)
         
         let scaleFactor = context.actualScaleFactor

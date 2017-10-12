@@ -325,7 +325,7 @@ private extension EditCheatViewController
         sender.resignFirstResponder()
     }
     
-    func presentErrorAlert(title: String, message: String, handler: ((Void) -> Void)?)
+    func presentErrorAlert(title: String, message: String, handler: (() -> Void)?)
     {
         DispatchQueue.main.async {
             let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)

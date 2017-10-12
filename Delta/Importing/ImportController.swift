@@ -61,7 +61,7 @@ class ImportController: NSObject
         super.init()
     }
     
-    fileprivate func presentImportController(from presentingViewController: UIViewController, animated: Bool, completionHandler: ((Void) -> Void)?)
+    fileprivate func presentImportController(from presentingViewController: UIViewController, animated: Bool, completionHandler: (() -> Void)?)
     {
         self.presentingViewController = presentingViewController
         
@@ -241,7 +241,7 @@ extension UIViewController
         }
     }
     
-    func present(_ importController: ImportController, animated: Bool, completion: ((Void) -> Void)?)
+    func present(_ importController: ImportController, animated: Bool, completion: (() -> Void)?)
     {
         self.importController = importController
         

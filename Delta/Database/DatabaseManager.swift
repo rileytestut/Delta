@@ -97,7 +97,7 @@ extension DatabaseManager
 //MARK: - Preparation -
 private extension DatabaseManager
 {
-    func prepareDatabase(completion: @escaping (Void) -> Void)
+    func prepareDatabase(completion: @escaping () -> Void)
     {
         self.performBackgroundTask { (context) in
             
