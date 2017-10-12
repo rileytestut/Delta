@@ -49,7 +49,7 @@ extension CheatTextView
         {
             let characterWidth = ("A" as NSString).size(withAttributes: [.font: font]).width
 
-            let width = characterWidth * CGFloat(format.format.characters.count)
+            let width = characterWidth * CGFloat(format.format.count)
             self.textContainer.size = CGSize(width: width, height: 0)
         }
     }
@@ -134,7 +134,7 @@ extension CheatTextView: NSLayoutManagerDelegate
             if let prefix = attributedFormat.attributes(at: characterIndex, effectiveRange: nil)[.cheatPrefix] as? String
             {
                 // If there is a prefix string, we insert the glyphs (and associated properties/character indexes) first
-                let prefixCount = prefix.characters.count
+                let prefixCount = prefix.count
                 
                 for j in 0 ..< prefixCount
                 {

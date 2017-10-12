@@ -132,7 +132,7 @@ extension EditCheatViewController
         
         // Update UI
         
-        if name.characters.count == 0
+        if name.count == 0
         {
             self.title = NSLocalizedString("Cheat", comment: "")
         }
@@ -224,7 +224,7 @@ private extension EditCheatViewController
     @IBAction func updateCheatName(_ sender: UITextField)
     {
         var title = sender.text ?? ""
-        if title.characters.count == 0
+        if title.count == 0
         {
             title = NSLocalizedString("Cheat", comment: "")
         }

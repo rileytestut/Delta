@@ -377,7 +377,7 @@ private extension SaveStatesViewController
     func rename(_ saveState: SaveState, with name: String?)
     {
         var name = name
-        if (name ?? "").characters.count == 0
+        if (name ?? "").count == 0
         {
             // When text is nil, we know to show the timestamp instead
             name = nil
