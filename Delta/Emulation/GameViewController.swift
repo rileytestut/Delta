@@ -385,11 +385,14 @@ private extension GameViewController
 {
     @objc func updateControllers()
     {
-        guard let emulatorCore = self.emulatorCore, let game = self.game else { return }
+        let isExternalGameControllerConnected = ExternalGameControllerManager.shared.connectedControllers.contains(where: { $0.playerIndex != nil })
+        if !isExternalGameControllerConnected && Settings.localControllerPlayerIndex == nil
+        {
+            Settings.localControllerPlayerIndex = 0
+        }
         
-        let controllers = [self.controllerView as GameController] + ExternalGameControllerManager.shared.connectedControllers
-        
-        if let index = Settings.localControllerPlayerIndex
+        // If Settings.localControllerPlayerIndex is non-nil, and there isn't a connected controller with same playerIndex, show controller view.
+        if let index = Settings.localControllerPlayerIndex, !ExternalGameControllerManager.shared.connectedControllers.contains { $0.playerIndex == index }
         {
             self.controllerView.playerIndex = index
             self.controllerView.isHidden = false
@@ -398,32 +401,39 @@ private extension GameViewController
         {
             self.controllerView.playerIndex = nil
             self.controllerView.isHidden = true
-        }
-        
-        for gameController in controllers
-        {
-            if gameController.playerIndex != nil
-            {
-                if let inputMapping = GameControllerInputMapping.inputMapping(for: gameController, gameType: game.type, in: DatabaseManager.shared.viewContext)
-                {
-                    gameController.addReceiver(self, inputMapping: inputMapping)
-                    gameController.addReceiver(emulatorCore, inputMapping: inputMapping)
-                }
-                else
-                {
-                    gameController.addReceiver(self)
-                    gameController.addReceiver(emulatorCore)
-                }
-            }
-            else
-            {
-                gameController.removeReceiver(self)
-                gameController.removeReceiver(emulatorCore)
-            }
+            
+            Settings.localControllerPlayerIndex = nil
         }
         
         self.view.setNeedsLayout()
         self.view.layoutIfNeeded()
+        
+        if let emulatorCore = self.emulatorCore, let game = self.game
+        {
+            let controllers = [self.controllerView as GameController] + ExternalGameControllerManager.shared.connectedControllers
+            
+            for gameController in controllers
+            {
+                if gameController.playerIndex != nil
+                {
+                    if let inputMapping = GameControllerInputMapping.inputMapping(for: gameController, gameType: game.type, in: DatabaseManager.shared.viewContext)
+                    {
+                        gameController.addReceiver(self, inputMapping: inputMapping)
+                        gameController.addReceiver(emulatorCore, inputMapping: inputMapping)
+                    }
+                    else
+                    {
+                        gameController.addReceiver(self)
+                        gameController.addReceiver(emulatorCore)
+                    }
+                }
+                else
+                {
+                    gameController.removeReceiver(self)
+                    gameController.removeReceiver(emulatorCore)
+                }
+            }
+        }        
     }
     
     func updateControllerSkin()
@@ -751,7 +761,7 @@ extension GameViewController
         
         do
         {
-            if let quickSaveState = try fetchRequest.execute().first
+            if let quickSaveState = try DatabaseManager.shared.viewContext.fetch(fetchRequest).first
             {
                 self.load(quickSaveState)
             }

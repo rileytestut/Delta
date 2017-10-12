@@ -42,6 +42,8 @@ class SettingsViewController: UITableViewController
     
     fileprivate var selectionFeedbackGenerator: UISelectionFeedbackGenerator?
     
+    fileprivate var previousSelectedRowIndexPath: IndexPath?
+    
     required init?(coder aDecoder: NSCoder)
     {
         super.init(coder: aDecoder)
@@ -62,7 +64,7 @@ class SettingsViewController: UITableViewController
     {
         super.viewWillAppear(animated)
         
-        if let indexPath = self.tableView.indexPathForSelectedRow
+        if let indexPath = self.previousSelectedRowIndexPath
         {
             if indexPath.section == Section.controllers.rawValue
             {
@@ -88,6 +90,8 @@ class SettingsViewController: UITableViewController
             let cell = sender as? UITableViewCell,
             let indexPath = self.tableView.indexPath(for: cell)
         else { return }
+        
+        self.previousSelectedRowIndexPath = indexPath
         
         switch segueType
         {

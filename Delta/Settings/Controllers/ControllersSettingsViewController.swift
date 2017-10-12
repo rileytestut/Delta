@@ -22,7 +22,6 @@ extension ControllersSettingsViewController
     }
 }
 
-
 private class LocalDeviceController: NSObject, GameController
 {
     var name: String {
@@ -49,8 +48,17 @@ class ControllersSettingsViewController: UITableViewController
     
     fileprivate var gameController: GameController? {
         didSet {
-            oldValue?.playerIndex = nil
-            self.gameController?.playerIndex = self.playerIndex
+            // Order matters since localDeviceController changes Settings.localControllerPlayerIndex, which sends out NSNotification.
+            if oldValue == self.localDeviceController
+            {
+                self.gameController?.playerIndex = self.playerIndex
+                oldValue?.playerIndex = nil
+            }
+            else
+            {
+                oldValue?.playerIndex = nil
+                self.gameController?.playerIndex = self.playerIndex
+            }
         }
     }
     
@@ -150,7 +158,7 @@ private extension ControllersSettingsViewController
                 cell.accessoryType = .checkmark
             }
             else
-            {
+            {                
                 if let playerIndex = controller.playerIndex
                 {
                     cell.detailTextLabel?.text = NSLocalizedString("Player \(playerIndex + 1)", comment: "")
@@ -183,14 +191,29 @@ private extension ControllersSettingsViewController
         
         if let index = self.connectedControllers.index(where: { $0 == controller })
         {
+            self.tableView.beginUpdates()
+            
             if self.connectedControllers.count == 1
             {
                 self.tableView.insertSections(IndexSet(integer: Section.externalControllers.rawValue), with: .fade)
+                
+                if self.connectedControllers.first?.playerIndex == self.playerIndex
+                {
+                    self.tableView.insertSections(IndexSet(integer: Section.customizeControls.rawValue), with: .fade)
+                }
             }
             else
             {
                 self.tableView.insertRows(at: [IndexPath(row: index, section: Section.externalControllers.rawValue)], with: .automatic)
             }
+            
+            self.tableView.endUpdates()
+        }
+        
+        if controller.playerIndex == self.playerIndex
+        {
+            self.tableView.reloadSections(IndexSet(integer: Section.none.rawValue), with: .none)
+            self.tableView.reloadSections(IndexSet(integer: Section.localDevice.rawValue), with: .none)
         }
     }
     
@@ -202,19 +225,29 @@ private extension ControllersSettingsViewController
         {
             self.connectedControllers.remove(at: index)
             
+            self.tableView.beginUpdates()
+            
             if self.connectedControllers.count == 0
             {
                 self.tableView.deleteSections(IndexSet(integer: Section.externalControllers.rawValue), with: .fade)
+                
+                if controller.playerIndex != nil
+                {
+                    self.tableView.deleteSections(IndexSet(integer: Section.customizeControls.rawValue), with: .fade)
+                }
             }
             else
             {
                 self.tableView.deleteRows(at: [IndexPath(row: index, section: Section.externalControllers.rawValue)], with: .automatic)
             }
+            
+            self.tableView.endUpdates()
         }
         
         if controller.playerIndex == self.playerIndex
         {
             self.tableView.reloadSections(IndexSet(integer: Section.none.rawValue), with: .none)
+            self.tableView.reloadSections(IndexSet(integer: Section.localDevice.rawValue), with: .none)
         }
     }
 }
@@ -240,7 +273,7 @@ extension ControllersSettingsViewController
     {
         switch Section(rawValue: section)!
         {
-        case .none: return 1
+        case .none: return 0
         case .localDevice: return 1
         case .externalControllers: return self.connectedControllers.count
         case .customizeControls: return 1
@@ -265,6 +298,16 @@ extension ControllersSettingsViewController
         case .externalControllers: return self.connectedControllers.count > 0 ? NSLocalizedString("External Controllers", comment: "") : ""
         case .customizeControls: return nil
         }
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat
+    {
+        if section == Section.none.rawValue
+        {
+            return 1
+        }
+
+        return UITableViewAutomaticDimension
     }
 }
 
@@ -315,8 +358,7 @@ extension ControllersSettingsViewController
         }
         
         self.tableView.reloadRows(at: [indexPath], with: .none)
-        
-        
+
         if self.numberOfSections(in: self.tableView) > self.tableView.numberOfSections
         {
             self.tableView.insertSections(IndexSet(integer: Section.customizeControls.rawValue), with: .fade)
