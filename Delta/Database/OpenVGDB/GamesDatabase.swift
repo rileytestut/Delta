@@ -68,7 +68,7 @@ class GamesDatabase
 {
     static let version = -1
     
-    fileprivate let connection: Connection
+    private let connection: Connection
     
     init() throws
     {

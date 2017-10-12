@@ -43,16 +43,16 @@ class GameCollectionViewController: UICollectionViewController
     
     weak var activeEmulatorCore: EmulatorCore?
     
-    fileprivate var activeSaveState: SaveStateProtocol?
+    private var activeSaveState: SaveStateProtocol?
     
-    fileprivate let dataSource: RSTFetchedResultsCollectionViewPrefetchingDataSource<Game, UIImage>
-    fileprivate let prototypeCell = GridCollectionViewCell()
+    private let dataSource: RSTFetchedResultsCollectionViewPrefetchingDataSource<Game, UIImage>
+    private let prototypeCell = GridCollectionViewCell()
     
-    fileprivate var _performing3DTouchTransition = false
-    fileprivate weak var _destination3DTouchTransitionViewController: UIViewController?
+    private var _performing3DTouchTransition = false
+    private weak var _destination3DTouchTransitionViewController: UIViewController?
     
-    fileprivate var _renameAction: UIAlertAction?
-    fileprivate var _changingArtworkGame: Game?
+    private var _renameAction: UIAlertAction?
+    private var _changingArtworkGame: Game?
     
     required init?(coder aDecoder: NSCoder)
     {
@@ -340,7 +340,7 @@ private extension GameCollectionViewController
     
     func rename(_ game: Game, with name: String)
     {
-        guard name.characters.count > 0 else { return }
+        guard name.count > 0 else { return }
 
         DatabaseManager.shared.performBackgroundTask { (context) in
             let game = context.object(with: game.objectID) as! Game
@@ -401,7 +401,7 @@ private extension GameCollectionViewController
     @objc func textFieldTextDidChange(_ textField: UITextField)
     {
         let text = textField.text ?? ""
-        self._renameAction?.isEnabled = text.characters.count > 0
+        self._renameAction?.isEnabled = text.count > 0
     }
     
     @objc func handleLongPressGesture(_ gestureRecognizer: UILongPressGestureRecognizer)

@@ -10,8 +10,8 @@ import UIKit
 
 class PauseStoryboardSegue: UIStoryboardSegue
 {
-    fileprivate let animator: UIViewPropertyAnimator
-    fileprivate let presentationController: PausePresentationController
+    private let animator: UIViewPropertyAnimator
+    private let presentationController: PausePresentationController
     
     override init(identifier: String?, source: UIViewController, destination: UIViewController)
     {

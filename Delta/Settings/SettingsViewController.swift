@@ -12,7 +12,7 @@ import DeltaCore
 
 import Roxas
 
-fileprivate extension SettingsViewController
+private extension SettingsViewController
 {
     enum Section: Int
     {
@@ -37,12 +37,12 @@ fileprivate extension SettingsViewController
 
 class SettingsViewController: UITableViewController
 {
-    @IBOutlet fileprivate var controllerOpacityLabel: UILabel!
-    @IBOutlet fileprivate var controllerOpacitySlider: UISlider!
+    @IBOutlet private var controllerOpacityLabel: UILabel!
+    @IBOutlet private var controllerOpacitySlider: UISlider!
     
-    fileprivate var selectionFeedbackGenerator: UISelectionFeedbackGenerator?
+    private var selectionFeedbackGenerator: UISelectionFeedbackGenerator?
     
-    fileprivate var previousSelectedRowIndexPath: IndexPath?
+    private var previousSelectedRowIndexPath: IndexPath?
     
     required init?(coder aDecoder: NSCoder)
     {
@@ -153,12 +153,12 @@ private extension SettingsViewController
 
 private extension SettingsViewController
 {
-    dynamic func externalGameControllerDidConnect(_ notification: Notification)
+    @objc func externalGameControllerDidConnect(_ notification: Notification)
     {
         self.tableView.reloadSections(IndexSet(integer: Section.controllers.rawValue), with: .none)
     }
     
-    dynamic func externalGameControllerDidDisconnect(_ notification: Notification)
+    @objc func externalGameControllerDidDisconnect(_ notification: Notification)
     {
         self.tableView.reloadSections(IndexSet(integer: Section.controllers.rawValue), with: .none)
     }

@@ -33,7 +33,7 @@ class InputCalloutView: SMCalloutView
         }
     }
     
-    fileprivate let textLabel: UILabel
+    private let textLabel: UILabel
     
     init()
     {

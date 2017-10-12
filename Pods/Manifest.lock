@@ -1,15 +1,15 @@
 PODS:
-  - Crashlytics (3.8.4):
+  - Crashlytics (3.8.6):
     - Fabric (~> 1.6.3)
-  - Fabric (1.6.11)
+  - Fabric (1.6.13)
   - FileMD5Hash (2.0.0)
   - SDWebImage (3.8.2):
     - SDWebImage/Core (= 3.8.2)
   - SDWebImage/Core (3.8.2)
   - SMCalloutView (2.1.5)
-  - SQLite.swift (0.11.3):
-    - SQLite.swift/standard (= 0.11.3)
-  - SQLite.swift/standard (0.11.3)
+  - SQLite.swift (0.11.4):
+    - SQLite.swift/standard (= 0.11.4)
+  - SQLite.swift/standard (0.11.4)
 
 DEPENDENCIES:
   - Crashlytics (~> 3.8.0)
@@ -20,13 +20,13 @@ DEPENDENCIES:
   - SQLite.swift (~> 0.11.0)
 
 SPEC CHECKSUMS:
-  Crashlytics: 79e236942ca1e7fc641df1feb9a275360a78ab6a
-  Fabric: 5911403591946b8228ab1c51d98f1d7137e863c6
+  Crashlytics: 95d05f4e4c19a771250c4bd9ce344d996de32bbf
+  Fabric: 2fb5676bc811af011a04513451f463dac6803206
   FileMD5Hash: 3ed69cc19a21ff4d30ae8833fc104275ad2c7de0
   SDWebImage: '098e97e6176540799c27e804c96653ee0833d13c'
   SMCalloutView: 5c0ee363dc8e7204b2fda17dfad38c93e9e23481
-  SQLite.swift: 99b36c22084427f0abbeb957556ce1528cf10bb3
+  SQLite.swift: 3e3bee21da701b5b9f87c4a672cb54f233505692
 
-PODFILE CHECKSUM: 598f830560ac5b18bbe0eb40134a1719f38f12f1
+PODFILE CHECKSUM: a1fb0ce1f1bb0e73380460cc4f946d297a4d5ff1
 
 COCOAPODS: 1.2.1

@@ -72,11 +72,11 @@ class GameViewController: DeltaCore.GameViewController
     }
     
     //MARK: - Private Properties -
-    fileprivate var pauseViewController: PauseViewController?
-    fileprivate var pausingGameController: GameController?
+    private var pauseViewController: PauseViewController?
+    private var pausingGameController: GameController?
     
     // Prevents the same save state from being saved multiple times
-    fileprivate var pausedSaveState: PausedSaveState? {
+    private var pausedSaveState: PausedSaveState? {
         didSet
         {
             if let saveState = oldValue, self.pausedSaveState == nil
@@ -93,17 +93,17 @@ class GameViewController: DeltaCore.GameViewController
         }
     }
     
-    fileprivate var _isLoadingSaveState = false
+    private var _isLoadingSaveState = false
     
-    fileprivate var context = CIContext(options: [kCIContextWorkingColorSpace: NSNull()])
+    private var context = CIContext(options: [kCIContextWorkingColorSpace: NSNull()])
     
     // Sustain Buttons
-    fileprivate var isSelectingSustainedButtons = false
-    fileprivate var sustainInputsMapping: SustainInputsMapping?
+    private var isSelectingSustainedButtons = false
+    private var sustainInputsMapping: SustainInputsMapping?
     
-    fileprivate var sustainButtonsContentView: UIView!
-    fileprivate var sustainButtonsBlurView: UIVisualEffectView!
-    fileprivate var sustainButtonsBackgroundView: RSTPlaceholderView!
+    private var sustainButtonsContentView: UIView!
+    private var sustainButtonsBlurView: UIVisualEffectView!
+    private var sustainButtonsBackgroundView: RSTPlaceholderView!
     
     required init()
     {
@@ -460,7 +460,7 @@ private extension GameViewController
 /// Save States
 extension GameViewController: SaveStatesViewControllerDelegate
 {
-    fileprivate func updateAutoSaveState()
+    private func updateAutoSaveState()
     {
         // Ensures game is non-nil and also a Game subclass
         guard let game = self.game as? Game else { return }
@@ -513,7 +513,7 @@ extension GameViewController: SaveStatesViewControllerDelegate
         }
     }
     
-    fileprivate func update(_ saveState: SaveState, with replacementSaveState: SaveStateProtocol? = nil)
+    private func update(_ saveState: SaveState, with replacementSaveState: SaveStateProtocol? = nil)
     {
         let isRunning = (self.emulatorCore?.state == .running)
         
@@ -567,7 +567,7 @@ extension GameViewController: SaveStatesViewControllerDelegate
         }
     }
     
-    fileprivate func load(_ saveState: SaveStateProtocol)
+    private func load(_ saveState: SaveStateProtocol)
     {
         let isRunning = (self.emulatorCore?.state == .running)
         

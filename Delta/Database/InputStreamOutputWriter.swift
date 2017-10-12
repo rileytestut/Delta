@@ -15,9 +15,9 @@ class InputStreamOutputWriter: NSObject
     let inputStream: InputStream
     let outputStream: OutputStream
     
-    fileprivate var completion: ((Error?) -> Void)?
+    private var completion: ((Error?) -> Void)?
     
-    fileprivate var dataBuffer = Data(capacity: MaximumBufferLength * 2)
+    private var dataBuffer = Data(capacity: MaximumBufferLength * 2)
     
     init(inputStream: InputStream, outputStream: OutputStream)
     {

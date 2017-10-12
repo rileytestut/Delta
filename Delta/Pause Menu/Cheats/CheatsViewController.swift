@@ -29,7 +29,7 @@ class CheatsViewController: UITableViewController
     
     weak var delegate: CheatsViewControllerDelegate?
     
-    fileprivate let dataSource = RSTFetchedResultsTableViewDataSource<Cheat>(fetchedResultsController: NSFetchedResultsController())
+    private let dataSource = RSTFetchedResultsTableViewDataSource<Cheat>(fetchedResultsController: NSFetchedResultsController())
 }
 
 extension CheatsViewController

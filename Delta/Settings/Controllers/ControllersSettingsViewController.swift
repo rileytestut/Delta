@@ -13,7 +13,7 @@ import Roxas
 
 extension ControllersSettingsViewController
 {
-    fileprivate enum Section: Int
+    private enum Section: Int
     {
         case none
         case localDevice
@@ -46,7 +46,7 @@ class ControllersSettingsViewController: UITableViewController
         }
     }
     
-    fileprivate var gameController: GameController? {
+    private var gameController: GameController? {
         didSet {
             // Order matters since localDeviceController changes Settings.localControllerPlayerIndex, which sends out NSNotification.
             if oldValue == self.localDeviceController
@@ -62,9 +62,9 @@ class ControllersSettingsViewController: UITableViewController
         }
     }
     
-    fileprivate var connectedControllers = ExternalGameControllerManager.shared.connectedControllers.sorted(by: { $0.playerIndex ?? NSIntegerMax < $1.playerIndex ?? NSIntegerMax })
+    private var connectedControllers = ExternalGameControllerManager.shared.connectedControllers.sorted(by: { $0.playerIndex ?? NSIntegerMax < $1.playerIndex ?? NSIntegerMax })
     
-    fileprivate lazy var localDeviceController: LocalDeviceController = {
+    private lazy var localDeviceController: LocalDeviceController = {
         let device = LocalDeviceController()
         device.playerIndex = Settings.localControllerPlayerIndex
         
@@ -174,7 +174,7 @@ private extension ControllersSettingsViewController
 
 private extension ControllersSettingsViewController
 {
-    dynamic func externalGameControllerDidConnect(_ notification: Notification)
+    @objc func externalGameControllerDidConnect(_ notification: Notification)
     {
         guard let controller = notification.object as? GameController else { return }
         
@@ -217,7 +217,7 @@ private extension ControllersSettingsViewController
         }
     }
     
-    dynamic func externalGameControllerDidDisconnect(_ notification: Notification)
+    @objc func externalGameControllerDidDisconnect(_ notification: Notification)
     {
         guard let controller = notification.object as? GameController else { return }
         

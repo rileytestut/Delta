@@ -13,7 +13,7 @@ import DeltaCore
 @objc(GameControllerInputMapping)
 public class GameControllerInputMapping: _GameControllerInputMapping
 {
-    fileprivate var inputMapping: DeltaCore.GameControllerInputMapping {
+    private var inputMapping: DeltaCore.GameControllerInputMapping {
         get { return self.deltaCoreInputMapping as! DeltaCore.GameControllerInputMapping }
         set { self.deltaCoreInputMapping = newValue }
     }

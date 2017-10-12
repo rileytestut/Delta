@@ -60,7 +60,7 @@ final class DatabaseManager: NSPersistentContainer
 {
     static let shared = DatabaseManager()
     
-    fileprivate var gamesDatabase: GamesDatabase? = nil
+    private var gamesDatabase: GamesDatabase? = nil
     
     private init()
     {
@@ -97,7 +97,7 @@ extension DatabaseManager
 //MARK: - Preparation -
 private extension DatabaseManager
 {
-    func prepareDatabase(completion: @escaping (Void) -> Void)
+    func prepareDatabase(completion: @escaping () -> Void)
     {
         self.performBackgroundTask { (context) in
             

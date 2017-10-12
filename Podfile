@@ -11,15 +11,3 @@ target 'Delta' do
     pod 'Crashlytics', '~> 3.8.0'
     pod 'SMCalloutView'
 end
-
-post_install do |installer|
-  Dir.glob('Pods/SQLite.swift/Sources/SQLite/**/*.swift').each { |path|
-		begin
-			text = File.read(path)
-			text = text.gsub(/import CSQLite/, 'import SQLite3')
-			File.open(path, 'w') { |file| file.puts text }
-		rescue Exception
-			puts "Unable to patch #{path}: #{$!}"
-		end
-	}
-end

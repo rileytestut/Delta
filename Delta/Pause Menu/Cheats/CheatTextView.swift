@@ -13,7 +13,10 @@ import DeltaCore
 
 import Roxas
 
-private let CheatPrefixAttribute = "prefix"
+private extension NSAttributedStringKey
+{
+    static let cheatPrefix = NSAttributedStringKey("CheatPrefix")
+}
 
 class CheatTextView: UITextView
 {
@@ -23,7 +26,7 @@ class CheatTextView: UITextView
         }
     }
     
-    @NSCopying fileprivate var attributedFormat: NSAttributedString?
+    @NSCopying private var attributedFormat: NSAttributedString?
     
     required init?(coder aDecoder: NSCoder)
     {
@@ -44,9 +47,9 @@ extension CheatTextView
         
         if let format = self.cheatFormat, let font = self.font
         {
-            let characterWidth = ("A" as NSString).size(attributes: [NSFontAttributeName: font]).width
+            let characterWidth = ("A" as NSString).size(withAttributes: [.font: font]).width
 
-            let width = characterWidth * CGFloat(format.format.characters.count)
+            let width = characterWidth * CGFloat(format.format.count)
             self.textContainer.size = CGSize(width: width, height: 0)
         }
     }
@@ -79,7 +82,7 @@ private extension CheatTextView
             
             if let prefixString = prefixString, prefixString.length > 0
             {
-                attributedString.addAttribute(CheatPrefixAttribute, value: prefixString, range: NSRange(location: 0, length: 1))
+                attributedString.addAttribute(.cheatPrefix, value: prefixString, range: NSRange(location: 0, length: 1))
             }
             
             attributedFormat.append(attributedString)
@@ -105,7 +108,7 @@ private extension CheatTextView
 
 extension CheatTextView: NSLayoutManagerDelegate
 {
-    func layoutManager(_ layoutManager: NSLayoutManager, shouldGenerateGlyphs glyphs: UnsafePointer<CGGlyph>, properties props: UnsafePointer<NSGlyphProperty>, characterIndexes charIndexes: UnsafePointer<Int>, font aFont: UIFont, forGlyphRange glyphRange: NSRange) -> Int
+    func layoutManager(_ layoutManager: NSLayoutManager, shouldGenerateGlyphs glyphs: UnsafePointer<CGGlyph>, properties props: UnsafePointer<NSLayoutManager.GlyphProperty>, characterIndexes charIndexes: UnsafePointer<Int>, font aFont: UIFont, forGlyphRange glyphRange: NSRange) -> Int
     {
         // Returning 0 = let the layoutManager do the normal logic
         guard let attributedFormat = self.attributedFormat else { return 0 }
@@ -118,7 +121,7 @@ extension CheatTextView: NSLayoutManagerDelegate
         
         // Allocate our replacement buffers
         let glyphBuffer = UnsafeMutablePointer<CGGlyph>.allocate(capacity: bufferSize)
-        let propertyBuffer = UnsafeMutablePointer<NSGlyphProperty>.allocate(capacity: bufferSize)
+        let propertyBuffer = UnsafeMutablePointer<NSLayoutManager.GlyphProperty>.allocate(capacity: bufferSize)
         let characterBuffer = UnsafeMutablePointer<Int>.allocate(capacity: bufferSize)
         
         var offset = 0
@@ -128,10 +131,10 @@ extension CheatTextView: NSLayoutManagerDelegate
             // The index the actual character maps to in the cheat format
             let characterIndex = charIndexes[i] % attributedFormat.length
             
-            if let prefix = attributedFormat.attributes(at: characterIndex, effectiveRange: nil)[CheatPrefixAttribute] as? String
+            if let prefix = attributedFormat.attributes(at: characterIndex, effectiveRange: nil)[.cheatPrefix] as? String
             {
                 // If there is a prefix string, we insert the glyphs (and associated properties/character indexes) first
-                let prefixCount = prefix.characters.count
+                let prefixCount = prefix.count
                 
                 for j in 0 ..< prefixCount
                 {

@@ -26,7 +26,7 @@ class ControllerSkinsViewController: UITableViewController
         }
     }
     
-    fileprivate let dataSource: RSTFetchedResultsTableViewPrefetchingDataSource<ControllerSkin, UIImage>
+    private let dataSource: RSTFetchedResultsTableViewPrefetchingDataSource<ControllerSkin, UIImage>
     
     required init?(coder aDecoder: NSCoder)
     {

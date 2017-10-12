@@ -17,7 +17,7 @@ class ListMenuViewController: UITableViewController
         set { self.dataSource.items = newValue }
     }
     
-    fileprivate let dataSource = RSTArrayTableViewDataSource<MenuItem>(items: [])
+    private let dataSource = RSTArrayTableViewDataSource<MenuItem>(items: [])
     
     override var preferredContentSize: CGSize {
         get {

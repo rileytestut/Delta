@@ -51,7 +51,7 @@ struct CheatValidator
         // Remove newline characters (code should already be formatted)
         let sanitizedCode = (cheat.code as NSString).replacingOccurrences(of: "\n", with: "")
         
-        if sanitizedCode.characters.count % self.format.format.characters.count != 0
+        if sanitizedCode.count % self.format.format.count != 0
         {
             throw Error.invalidCode
         }

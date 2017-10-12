@@ -12,7 +12,7 @@ import DeltaCore
 
 extension SystemControllerSkinsViewController
 {
-    fileprivate enum Section: Int
+    private enum Section: Int
     {
         case portrait
         case landscape
@@ -23,8 +23,8 @@ class SystemControllerSkinsViewController: UITableViewController
 {
     var system: System!
     
-    @IBOutlet fileprivate var portraitImageView: UIImageView!
-    @IBOutlet fileprivate var landscapeImageView: UIImageView!
+    @IBOutlet private var portraitImageView: UIImageView!
+    @IBOutlet private var landscapeImageView: UIImageView!
 }
 
 extension SystemControllerSkinsViewController

@@ -10,7 +10,7 @@ import UIKit
 
 extension UINavigationBar
 {
-    fileprivate var defaultTitleTextAttributes: [String: Any]? {
+    fileprivate var defaultTitleTextAttributes: [NSAttributedStringKey: Any]? {
         if let textAttributes = self._defaultTitleTextAttributes
         {
             return textAttributes
@@ -35,7 +35,7 @@ extension UINavigationBar
         return textAttributes
     }
     
-    fileprivate var _defaultTitleTextAttributes: [String: Any]? {
+    private var _defaultTitleTextAttributes: [NSAttributedStringKey: Any]? {
         guard self.titleTextAttributes == nil else { return self.titleTextAttributes }
         
         guard
@@ -59,11 +59,11 @@ class PopoverMenuButton: UIControl
         }
     }
     
-    fileprivate let textLabel: UILabel
-    fileprivate let arrowLabel: UILabel
-    fileprivate let stackView: UIStackView
+    private let textLabel: UILabel
+    private let arrowLabel: UILabel
+    private let stackView: UIStackView
     
-    fileprivate var parentNavigationBar: UINavigationBar? {
+    private var parentNavigationBar: UINavigationBar? {
         guard let navigationController = self.parentViewController as? UINavigationController ?? self.parentViewController?.navigationController else { return nil }
         guard self.isDescendant(of: navigationController.navigationBar) else { return nil }
         

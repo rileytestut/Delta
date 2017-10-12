@@ -15,7 +15,7 @@ class PhotoLibraryImportOption: NSObject, ImportOption
     let image: UIImage? = nil
     
     private let presentingViewController: UIViewController
-    fileprivate var completionHandler: ((Set<URL>?) -> Void)?
+    private var completionHandler: ((Set<URL>?) -> Void)?
     
     init(presentingViewController: UIViewController)
     {

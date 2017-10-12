@@ -59,18 +59,18 @@ class SaveStatesViewController: UICollectionViewController
         }
     }
         
-    fileprivate var vibrancyView: UIVisualEffectView!
-    fileprivate var placeholderView: RSTPlaceholderView!
+    private var vibrancyView: UIVisualEffectView!
+    private var placeholderView: RSTPlaceholderView!
     
-    fileprivate var prototypeCell = GridCollectionViewCell()
-    fileprivate var prototypeCellWidthConstraint: NSLayoutConstraint!
-    fileprivate var prototypeHeader = SaveStatesCollectionHeaderView()
+    private var prototypeCell = GridCollectionViewCell()
+    private var prototypeCellWidthConstraint: NSLayoutConstraint!
+    private var prototypeHeader = SaveStatesCollectionHeaderView()
     
-    fileprivate let dataSource: RSTFetchedResultsCollectionViewPrefetchingDataSource<SaveState, UIImage>
+    private let dataSource: RSTFetchedResultsCollectionViewPrefetchingDataSource<SaveState, UIImage>
     
-    fileprivate var emulatorCoreSaveState: SaveStateProtocol?
+    private var emulatorCoreSaveState: SaveStateProtocol?
     
-    fileprivate let dateFormatter: DateFormatter
+    private let dateFormatter: DateFormatter
     
     required init?(coder aDecoder: NSCoder)
     {
@@ -377,7 +377,7 @@ private extension SaveStatesViewController
     func rename(_ saveState: SaveState, with name: String?)
     {
         var name = name
-        if (name ?? "").characters.count == 0
+        if (name ?? "").count == 0
         {
             // When text is nil, we know to show the timestamp instead
             name = nil
@@ -562,7 +562,7 @@ private extension SaveStatesViewController
 //MARK: - 3D Touch -
 extension SaveStatesViewController: UIViewControllerPreviewingDelegate
 {
-    fileprivate func prepareEmulatorCoreSaveState()
+    private func prepareEmulatorCoreSaveState()
     {
         guard let emulatorCore = self.emulatorCore else { return }
         
