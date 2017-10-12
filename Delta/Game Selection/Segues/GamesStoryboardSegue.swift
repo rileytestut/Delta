@@ -48,7 +48,7 @@ extension GamesStoryboardSegue: UIViewControllerTransitioningDelegate
     
     func presentationController(forPresented presentedViewController: UIViewController, presenting presentingViewController: UIViewController?, source: UIViewController) -> UIPresentationController?
     {
-        let presentationController = GamesPresentationController(presentedViewController: presentedViewController, presenting: presentingViewController)
+        let presentationController = GamesPresentationController(presentedViewController: presentedViewController, presenting: presentingViewController, animator: self.animator)
         return presentationController
     }
 }

@@ -12,8 +12,12 @@ class GamesPresentationController: UIPresentationController
 {
     private let blurView: UIVisualEffectView
     
-    override init(presentedViewController: UIViewController, presenting presentingViewController: UIViewController?)
+    private let animator: UIViewPropertyAnimator
+    
+    init(presentedViewController: UIViewController, presenting presentingViewController: UIViewController?, animator: UIViewPropertyAnimator)
     {
+        self.animator = animator
+        
         self.blurView = UIVisualEffectView(effect: nil)
         self.blurView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         
@@ -26,17 +30,17 @@ class GamesPresentationController: UIPresentationController
         
         self.blurView.frame = CGRect(x: 0, y: 0, width: containerView.bounds.width, height: containerView.bounds.height)
         containerView.addSubview(self.blurView)
-
-        self.presentedViewController.transitionCoordinator?.animate(alongsideTransition: { (context) in
+        
+        self.animator.addAnimations {
             self.blurView.effect = UIBlurEffect(style: .dark)
-        })
+        }
     }
     
     override func dismissalTransitionWillBegin()
     {
-        self.presentedViewController.transitionCoordinator?.animate(alongsideTransition: { (context) in
+        self.animator.addAnimations {
             self.blurView.effect = nil
-        })
+        }
     }
     
     override func dismissalTransitionDidEnd(_ completed: Bool)
