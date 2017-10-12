@@ -109,11 +109,15 @@ extension GamesViewController
     {
         super.viewDidLayoutSubviews()
         
-        if let viewControllers = self.pageViewController.viewControllers as? [GameCollectionViewController]
+        if #available(iOS 11.0, *) {}
+        else
         {
-            for viewController in viewControllers
+            if let viewControllers = self.pageViewController.viewControllers as? [GameCollectionViewController]
             {
-                viewController.collectionView?.contentInset.top = self.topLayoutGuide.length
+                for viewController in viewControllers
+                {
+                    viewController.collectionView?.contentInset.top = self.topLayoutGuide.length
+                }
             }
         }
     }
@@ -190,8 +194,12 @@ private extension GamesViewController
         viewController.theme = self.theme
         viewController.activeEmulatorCore = self.activeEmulatorCore
         
-        // Need to set content inset here AND willTransitionTo callback to ensure its correct for all edge cases
-        viewController.collectionView?.contentInset.top = self.topLayoutGuide.length
+        if #available(iOS 11.0, *) {}
+        else
+        {
+            // Need to set content inset here AND willTransitionTo callback to ensure its correct for all edge cases
+            viewController.collectionView?.contentInset.top = self.topLayoutGuide.length
+        }
         
         return viewController
     }
@@ -283,8 +291,13 @@ extension GamesViewController: ImportControllerDelegate
         self.present(importController, animated: true, completion: nil)
     }
     
-    func importController(_ importController: ImportController, didImportItemsAt urls: Set<URL>)
+    func importController(_ importController: ImportController, didImportItemsAt urls: Set<URL>, errors: [Error])
     {
+        for error in errors
+        {
+            print(error)
+        }
+        
         let gameURLs = urls.filter { $0.pathExtension.lowercased() != "deltaskin" }
         DatabaseManager.shared.importGames(at: Set(gameURLs)) { (games, errors) in
             if errors.count > 0
@@ -361,9 +374,13 @@ extension GamesViewController: UIPageViewControllerDataSource, UIPageViewControl
     {
         guard let viewControllers = pendingViewControllers as? [GameCollectionViewController] else { return }
         
-        for viewController in viewControllers
+        if #available(iOS 11.0, *) {}
+        else
         {
-            viewController.collectionView?.contentInset.top = self.topLayoutGuide.length
+            for viewController in viewControllers
+            {
+                viewController.collectionView?.contentInset.top = self.topLayoutGuide.length
+            }
         }
     }
     
