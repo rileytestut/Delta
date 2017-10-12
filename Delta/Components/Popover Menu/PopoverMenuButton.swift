@@ -10,7 +10,7 @@ import UIKit
 
 extension UINavigationBar
 {
-    fileprivate var defaultTitleTextAttributes: [String: Any]? {
+    fileprivate var defaultTitleTextAttributes: [NSAttributedStringKey: Any]? {
         if let textAttributes = self._defaultTitleTextAttributes
         {
             return textAttributes
@@ -35,7 +35,7 @@ extension UINavigationBar
         return textAttributes
     }
     
-    fileprivate var _defaultTitleTextAttributes: [String: Any]? {
+    fileprivate var _defaultTitleTextAttributes: [NSAttributedStringKey: Any]? {
         guard self.titleTextAttributes == nil else { return self.titleTextAttributes }
         
         guard

@@ -174,7 +174,7 @@ private extension ControllersSettingsViewController
 
 private extension ControllersSettingsViewController
 {
-    @objc dynamic func externalGameControllerDidConnect(_ notification: Notification)
+    @objc func externalGameControllerDidConnect(_ notification: Notification)
     {
         guard let controller = notification.object as? GameController else { return }
         
@@ -217,7 +217,7 @@ private extension ControllersSettingsViewController
         }
     }
     
-    @objc dynamic func externalGameControllerDidDisconnect(_ notification: Notification)
+    @objc func externalGameControllerDidDisconnect(_ notification: Notification)
     {
         guard let controller = notification.object as? GameController else { return }
         

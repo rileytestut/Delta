@@ -153,12 +153,12 @@ private extension SettingsViewController
 
 private extension SettingsViewController
 {
-    @objc dynamic func externalGameControllerDidConnect(_ notification: Notification)
+    @objc func externalGameControllerDidConnect(_ notification: Notification)
     {
         self.tableView.reloadSections(IndexSet(integer: Section.controllers.rawValue), with: .none)
     }
     
-    @objc dynamic func externalGameControllerDidDisconnect(_ notification: Notification)
+    @objc func externalGameControllerDidDisconnect(_ notification: Notification)
     {
         self.tableView.reloadSections(IndexSet(integer: Section.controllers.rawValue), with: .none)
     }

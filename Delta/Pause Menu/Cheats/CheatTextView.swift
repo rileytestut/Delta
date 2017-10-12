@@ -13,7 +13,10 @@ import DeltaCore
 
 import Roxas
 
-private let CheatPrefixAttribute = "prefix"
+private extension NSAttributedStringKey
+{
+    static let cheatPrefix = NSAttributedStringKey("CheatPrefix")
+}
 
 class CheatTextView: UITextView
 {
@@ -44,7 +47,7 @@ extension CheatTextView
         
         if let format = self.cheatFormat, let font = self.font
         {
-            let characterWidth = ("A" as NSString).size(withAttributes: [NSAttributedStringKey.font: font]).width
+            let characterWidth = ("A" as NSString).size(withAttributes: [.font: font]).width
 
             let width = characterWidth * CGFloat(format.format.characters.count)
             self.textContainer.size = CGSize(width: width, height: 0)
@@ -79,7 +82,7 @@ private extension CheatTextView
             
             if let prefixString = prefixString, prefixString.length > 0
             {
-                attributedString.addAttribute(NSAttributedStringKey(rawValue: CheatPrefixAttribute), value: prefixString, range: NSRange(location: 0, length: 1))
+                attributedString.addAttribute(.cheatPrefix, value: prefixString, range: NSRange(location: 0, length: 1))
             }
             
             attributedFormat.append(attributedString)
@@ -128,7 +131,7 @@ extension CheatTextView: NSLayoutManagerDelegate
             // The index the actual character maps to in the cheat format
             let characterIndex = charIndexes[i] % attributedFormat.length
             
-            if let prefix = attributedFormat.attributes(at: characterIndex, effectiveRange: nil)[CheatPrefixAttribute] as? String
+            if let prefix = attributedFormat.attributes(at: characterIndex, effectiveRange: nil)[.cheatPrefix] as? String
             {
                 // If there is a prefix string, we insert the glyphs (and associated properties/character indexes) first
                 let prefixCount = prefix.characters.count
