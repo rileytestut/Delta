@@ -29,6 +29,25 @@ private extension GameViewController
             self.gameType = gameType
         }
     }
+    
+    struct SustainInputsMapping: GameControllerInputMappingProtocol
+    {
+        let gameController: GameController
+        
+        var gameControllerInputType: GameControllerInputType {
+            return self.gameController.inputType
+        }
+        
+        func input(forControllerInput controllerInput: Input) -> Input?
+        {
+            if let mappedInput = self.gameController.defaultInputMapping?.input(forControllerInput: controllerInput), mappedInput == StandardGameControllerInput.menu
+            {
+                return mappedInput
+            }
+            
+            return controllerInput
+        }
+    }
 }
 
 class GameViewController: DeltaCore.GameViewController
@@ -79,10 +98,8 @@ class GameViewController: DeltaCore.GameViewController
     fileprivate var context = CIContext(options: [kCIContextWorkingColorSpace: NSNull()])
     
     // Sustain Buttons
-    fileprivate var updateSemaphores = Set<DispatchSemaphore>()
-    fileprivate var sustainedInputs = [ObjectIdentifier: [Input]]()
-    fileprivate var reactivateSustainedInputsQueue: OperationQueue
-    fileprivate var selectingSustainedButtons = false
+    fileprivate var isSelectingSustainedButtons = false
+    fileprivate var sustainInputsMapping: SustainInputsMapping?
     
     fileprivate var sustainButtonsContentView: UIView!
     fileprivate var sustainButtonsBlurView: UIVisualEffectView!
@@ -90,9 +107,6 @@ class GameViewController: DeltaCore.GameViewController
     
     required init()
     {
-        self.reactivateSustainedInputsQueue = OperationQueue()
-        self.reactivateSustainedInputsQueue.maxConcurrentOperationCount = 1
-        
         super.init()
         
         self.initialize()
@@ -100,9 +114,6 @@ class GameViewController: DeltaCore.GameViewController
     
     required init?(coder aDecoder: NSCoder)
     {
-        self.reactivateSustainedInputsQueue = OperationQueue()
-        self.reactivateSustainedInputsQueue.maxConcurrentOperationCount = 1
-        
         super.init(coder: aDecoder)
         
         self.initialize()
@@ -112,8 +123,8 @@ class GameViewController: DeltaCore.GameViewController
     {
         self.delegate = self
         
-        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.updateControllers), name: .externalControllerDidConnect, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.updateControllers), name: .externalControllerDidDisconnect, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.updateControllers), name: .externalGameControllerDidConnect, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.updateControllers), name: .externalGameControllerDidDisconnect, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.didEnterBackground(with:)), name: .UIApplicationDidEnterBackground, object: UIApplication.shared)
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.settingsDidChange(with:)), name: .settingsDidChange, object: nil)
     }
@@ -128,18 +139,41 @@ class GameViewController: DeltaCore.GameViewController
     {
         super.gameController(gameController, didActivate: input)
         
-        guard (input as? ControllerInput) != .menu else { return }
-        
-        if self.selectingSustainedButtons
+        if self.isSelectingSustainedButtons
         {
-            self.addSustainedInput(input, for: gameController)
-        }
-        else if let sustainedInputs = self.sustainedInputs[ObjectIdentifier(gameController)], sustainedInputs.contains(where: { $0.isEqual(input) })
-        {
-            // Perform on next run loop
-            DispatchQueue.main.async {
-                self.reactivateSustainedInput(input, for: gameController)
+            guard let pausingGameController = self.pausingGameController, gameController == pausingGameController else { return }
+            
+            if input != StandardGameControllerInput.menu
+            {
+                gameController.sustain(input)
             }
+        }
+        else if self.emulatorCore?.state == .running
+        {
+            guard let actionInput = ActionInput(input: input) else { return }
+            
+            switch actionInput
+            {
+            case .quickSave: self.performQuickSaveAction()
+            case .quickLoad: self.performQuickLoadAction()
+            case .fastForward: self.performFastForwardAction(activate: true)
+            }
+        }
+    }
+    
+    override func gameController(_ gameController: GameController, didDeactivate input: Input)
+    {
+        super.gameController(gameController, didDeactivate: input)
+        
+        guard !self.isSelectingSustainedButtons else { return }
+        
+        guard let actionInput = ActionInput(input: input) else { return }
+        
+        switch actionInput
+        {
+        case .quickSave: break
+        case .quickLoad: break
+        case .fastForward: self.performFastForwardAction(activate: false)
         }
     }
 }
@@ -243,22 +277,27 @@ extension GameViewController
             pauseViewController.saveStatesViewControllerDelegate = self
             pauseViewController.cheatsViewControllerDelegate = self
             
-            pauseViewController.fastForwardItem?.selected = (self.emulatorCore?.rate != self.emulatorCore?.deltaCore.supportedRates.lowerBound)
+            pauseViewController.fastForwardItem?.isSelected = (self.emulatorCore?.rate != self.emulatorCore?.deltaCore.supportedRates.lowerBound)
             pauseViewController.fastForwardItem?.action = { [unowned self] item in
-                guard let emulatorCore = self.emulatorCore else { return }
-                emulatorCore.rate = item.selected ? emulatorCore.deltaCore.supportedRates.upperBound : emulatorCore.deltaCore.supportedRates.lowerBound
+                self.performFastForwardAction(activate: item.isSelected)
             }
             
-            pauseViewController.sustainButtonsItem?.selected = (self.sustainedInputs[ObjectIdentifier(gameController)]?.count ?? 0) > 0
+            pauseViewController.sustainButtonsItem?.isSelected = gameController.sustainedInputs.count > 0
             pauseViewController.sustainButtonsItem?.action = { [unowned self, unowned pauseViewController] item in
                 
-                self.resetSustainedInputs(for: gameController)
+                for input in gameController.sustainedInputs
+                {
+                    gameController.unsustain(input)
+                }
                 
-                if item.selected
+                if item.isSelected
                 {
                     self.showSustainButtonView()
                     pauseViewController.dismiss()
                 }
+                
+                // Re-set gameController as pausingGameController.
+                self.pausingGameController = gameController
             }
             
             self.pauseViewController = pauseViewController
@@ -346,13 +385,14 @@ private extension GameViewController
 {
     @objc func updateControllers()
     {
-        var controllers = [GameController]()
-        controllers.append(self.controllerView)
+        let isExternalGameControllerConnected = ExternalGameControllerManager.shared.connectedControllers.contains(where: { $0.playerIndex != nil })
+        if !isExternalGameControllerConnected && Settings.localControllerPlayerIndex == nil
+        {
+            Settings.localControllerPlayerIndex = 0
+        }
         
-        // We need to map each item as a GameControllerProtocol due to a Swift bug
-        controllers.append(contentsOf: ExternalControllerManager.shared.connectedControllers.map { $0 as GameController })
-        
-        if let index = Settings.localControllerPlayerIndex
+        // If Settings.localControllerPlayerIndex is non-nil, and there isn't a connected controller with same playerIndex, show controller view.
+        if let index = Settings.localControllerPlayerIndex, !ExternalGameControllerManager.shared.connectedControllers.contains { $0.playerIndex == index }
         {
             self.controllerView.playerIndex = index
             self.controllerView.isHidden = false
@@ -361,35 +401,39 @@ private extension GameViewController
         {
             self.controllerView.playerIndex = nil
             self.controllerView.isHidden = true
-        }
-        
-        // Removing all game controllers from EmulatorCore will reset each controller's playerIndex to nil
-        // We temporarily cache their playerIndexes, and then we reset them after removing all controllers
-        var controllerIndexes = [ObjectIdentifier: Int?]()
-        controllers.forEach { controllerIndexes[ObjectIdentifier($0)] = $0.playerIndex }
-        
-        self.emulatorCore?.removeAllGameControllers()
-        
-        // Reset each controller's playerIndex to what it was before removing all controllers from EmulatorCore
-        controllers.forEach { $0.playerIndex = controllerIndexes[ObjectIdentifier($0)] ?? nil }
-        
-        for controller in controllers
-        {
-            if let index = controller.playerIndex
-            {
-                // We need to place the underscore here to silence erroneous unused result warning despite annotating function with @discardableResult
-                // Hopefully this bug won't be around for too long...
-                _ = self.emulatorCore?.setGameController(controller, at: index)
-                controller.addReceiver(self)
-            }
-            else
-            {
-                controller.removeReceiver(self)
-            }
+            
+            Settings.localControllerPlayerIndex = nil
         }
         
         self.view.setNeedsLayout()
         self.view.layoutIfNeeded()
+        
+        if let emulatorCore = self.emulatorCore, let game = self.game
+        {
+            let controllers = [self.controllerView as GameController] + ExternalGameControllerManager.shared.connectedControllers
+            
+            for gameController in controllers
+            {
+                if gameController.playerIndex != nil
+                {
+                    if let inputMapping = GameControllerInputMapping.inputMapping(for: gameController, gameType: game.type, in: DatabaseManager.shared.viewContext)
+                    {
+                        gameController.addReceiver(self, inputMapping: inputMapping)
+                        gameController.addReceiver(emulatorCore, inputMapping: inputMapping)
+                    }
+                    else
+                    {
+                        gameController.addReceiver(self)
+                        gameController.addReceiver(emulatorCore)
+                    }
+                }
+                else
+                {
+                    gameController.removeReceiver(self)
+                    gameController.removeReceiver(emulatorCore)
+                }
+            }
+        }        
     }
     
     func updateControllerSkin()
@@ -434,42 +478,37 @@ extension GameViewController: SaveStatesViewControllerDelegate
             
             let game = backgroundContext.object(with: game.objectID) as! Game
             
-            let predicate = NSPredicate(format: "%K == %d AND %K == %@", #keyPath(SaveState.type), SaveStateType.auto.rawValue, #keyPath(SaveState.game), game)
-            
-            let fetchRequest: NSFetchRequest<SaveState> = SaveState.fetchRequest()
-            fetchRequest.predicate = predicate
+            let fetchRequest = SaveState.fetchRequest(for: game, type: .auto)
             fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(SaveState.creationDate), ascending: true)]
-            
-            var saveStates: [SaveState]? = nil
             
             do
             {
-                saveStates = try fetchRequest.execute()
+                let saveStates = try fetchRequest.execute()
+                
+                if let saveState = saveStates.first, saveStates.count >= 2
+                {
+                    // If there are two or more auto save states, update the oldest one
+                    self.update(saveState, with: self.pausedSaveState)
+                    
+                    // Tiny hack: SaveStatesViewController sorts save states by creation date, so we update the creation date too
+                    // Simpler than deleting old save states ¯\_(ツ)_/¯
+                    saveState.creationDate = saveState.modifiedDate
+                }
+                else
+                {
+                    // Otherwise, create a new one
+                    let saveState = SaveState.insertIntoManagedObjectContext(backgroundContext)
+                    saveState.type = .auto
+                    saveState.game = game
+                    
+                    self.update(saveState, with: self.pausedSaveState)
+                }
             }
             catch
             {
                 print(error)
             }
-            
-            if let saveStates = saveStates, let saveState = saveStates.first, saveStates.count >= 2
-            {
-                // If there are two or more auto save states, update the oldest one
-                self.update(saveState, with: self.pausedSaveState)
-                
-                // Tiny hack; SaveStatesViewController sorts save states by creation date, so we update the creation date too
-                // Simpler than deleting old save states ¯\_(ツ)_/¯
-                saveState.creationDate = saveState.modifiedDate
-            }
-            else
-            {
-                // Otherwise, create a new one
-                let saveState = SaveState.insertIntoManagedObjectContext(backgroundContext)
-                saveState.type = .auto
-                saveState.game = game
-                
-                self.update(saveState, with: self.pausedSaveState)
-            }
-            
+
             backgroundContext.saveWithErrorLogging()
         }
     }
@@ -528,25 +567,14 @@ extension GameViewController: SaveStatesViewControllerDelegate
         }
     }
     
-    //MARK: - SaveStatesViewControllerDelegate
-    
-    func saveStatesViewController(_ saveStatesViewController: SaveStatesViewController, updateSaveState saveState: SaveState)
+    fileprivate func load(_ saveState: SaveStateProtocol)
     {
-        let updatingExistingSaveState = FileManager.default.fileExists(atPath: saveState.fileURL.path)
+        let isRunning = (self.emulatorCore?.state == .running)
         
-        self.update(saveState)
-        
-        // Dismiss if updating an existing save state.
-        // If creating a new one, don't dismiss.
-        if updatingExistingSaveState
+        if isRunning
         {
-            self.pauseViewController?.dismiss()
+            self.pauseEmulation()
         }
-    }
-    
-    func saveStatesViewController(_ saveStatesViewController: SaveStatesViewController, loadSaveState saveState: SaveStateProtocol)
-    {
-        self._isLoadingSaveState = true
         
         // If we're loading the auto save state, we need to create a temporary copy of saveState.
         // Then, we update the auto save state, but load our copy so everything works out.
@@ -590,16 +618,33 @@ extension GameViewController: SaveStatesViewControllerDelegate
             print(error)
         }
         
-        // Reactivate sustained inputs
-        for gameController in self.emulatorCore?.gameControllers ?? []
+        if isRunning
         {
-            guard let sustainedInputs = self.sustainedInputs[ObjectIdentifier(gameController)] else { continue }
-            
-            for input in sustainedInputs
-            {
-                self.reactivateSustainedInput(input, for: gameController)
-            }
+            self.resumeEmulation()
         }
+    }
+    
+    //MARK: - SaveStatesViewControllerDelegate
+    
+    func saveStatesViewController(_ saveStatesViewController: SaveStatesViewController, updateSaveState saveState: SaveState)
+    {
+        let updatingExistingSaveState = FileManager.default.fileExists(atPath: saveState.fileURL.path)
+        
+        self.update(saveState)
+        
+        // Dismiss if updating an existing save state.
+        // If creating a new one, don't dismiss.
+        if updatingExistingSaveState
+        {
+            self.pauseViewController?.dismiss()
+        }
+    }
+    
+    func saveStatesViewController(_ saveStatesViewController: SaveStatesViewController, loadSaveState saveState: SaveStateProtocol)
+    {
+        self._isLoadingSaveState = true
+        
+        self.load(saveState)
         
         self.pauseViewController?.dismiss()
     }
@@ -625,7 +670,12 @@ private extension GameViewController
 {
     func showSustainButtonView()
     {
-        self.selectingSustainedButtons = true
+        guard let gameController = self.pausingGameController else { return }
+        
+        self.isSelectingSustainedButtons = true
+        
+        let sustainInputsMapping = SustainInputsMapping(gameController: gameController)
+        gameController.addReceiver(self, inputMapping: sustainInputsMapping)
         
         let blurEffect = self.sustainButtonsBlurView.effect
         self.sustainButtonsBlurView.effect = nil
@@ -640,7 +690,18 @@ private extension GameViewController
     
     func hideSustainButtonView()
     {
-        self.selectingSustainedButtons = false
+        guard let gameController = self.pausingGameController else { return }
+        
+        self.isSelectingSustainedButtons = false
+        
+        self.updateControllers()
+        self.sustainInputsMapping = nil
+        
+        // Reactivate all sustained inputs, since they will now be mapped to game inputs.
+        for input in gameController.sustainedInputs
+        {
+            gameController.activate(input)
+        }
         
         let blurEffect = self.sustainButtonsBlurView.effect
         
@@ -652,94 +713,76 @@ private extension GameViewController
             self.sustainButtonsBlurView.effect = blurEffect
         }
     }
-    
-    func resetSustainedInputs(for gameController: GameController)
+}
+
+//MARK: - Action Inputs -
+/// Action Inputs
+extension GameViewController
+{
+    func performQuickSaveAction()
     {
-        if let previousInputs = self.sustainedInputs[ObjectIdentifier(gameController)]
-        {
-            let receivers = gameController.receivers
-            receivers.forEach { gameController.removeReceiver($0) }
-            
-            // Activate previousInputs without notifying anyone so we can then deactivate them
-            // We do this because deactivating an already deactivated input has no effect
-            previousInputs.forEach { gameController.activate($0) }
-            
-            receivers.forEach { gameController.addReceiver($0) }
-            
-            // Deactivate previously sustained inputs
-            previousInputs.forEach { gameController.deactivate($0) }
-        }
+        guard let game = self.game as? Game else { return }
         
-        self.sustainedInputs[ObjectIdentifier(gameController)] = []
-    }
-    
-    func addSustainedInput(_ input: Input, for gameController: GameController)
-    {
-        var inputs = self.sustainedInputs[ObjectIdentifier(gameController)] ?? []
-        
-        guard !inputs.contains(where: { $0.isEqual(input) }) else { return }
-        
-        inputs.append(input)
-        self.sustainedInputs[ObjectIdentifier(gameController)] = inputs
-        
-        let receivers = gameController.receivers
-        receivers.forEach { gameController.removeReceiver($0) }
-        
-        // Causes input to be considered deactivated, so gameController won't send a subsequent message to observers when user actually deactivates
-        // However, at this point the core still thinks it is activated, and is temporarily not a receiver, thus sustaining it
-        gameController.deactivate(input)
-        
-        receivers.forEach { gameController.addReceiver($0) }
-    }
-    
-    func reactivateSustainedInput(_ input: Input, for gameController: GameController)
-    {
-        // These MUST be performed serially, or else Bad Things Happen™ if multiple inputs are reactivated at once
-        self.reactivateSustainedInputsQueue.addOperation {
+        let backgroundContext = DatabaseManager.shared.newBackgroundContext()
+        backgroundContext.performAndWait {
             
-            // The manual activations/deactivations here are hidden implementation details, so we won't notify ourselves about them
-            gameController.removeReceiver(self)
+            let game = backgroundContext.object(with: game.objectID) as! Game
+            let fetchRequest = SaveState.fetchRequest(for: game, type: .quick)
             
-            // Must deactivate first so core recognizes a secondary activation
-            gameController.deactivate(input)
-            
-            let dispatchQueue = DispatchQueue(label: "com.rileytestut.Delta.sustainButtonsQueue")
-            dispatchQueue.async {
-                
-                let semaphore = DispatchSemaphore(value: 0)
-                self.updateSemaphores.insert(semaphore)
-                
-                // To ensure the emulator core recognizes us activating the input again, we need to wait at least two frames
-                // Unfortunately we cannot init DispatchSemaphore with value less than 0
-                // To compensate, we simply wait twice; once the first wait returns, we wait again
-                semaphore.wait()
-                semaphore.wait()
-                
-                // These MUST be performed serially, or else Bad Things Happen™ if multiple inputs are reactivated at once
-                self.reactivateSustainedInputsQueue.addOperation {
-                    
-                    self.updateSemaphores.remove(semaphore)
-                    
-                    // Ensure we still are not a receiver (to prevent rare race conditions)
-                    gameController.removeReceiver(self)
-                    
-                    gameController.activate(input)
-                    
-                    let receivers = gameController.receivers
-                    receivers.forEach { gameController.removeReceiver($0) }
-                    
-                    // Causes input to be considered deactivated, so gameController won't send a subsequent message to observers when user actually deactivates
-                    // However, at this point the core still thinks it is activated, and is temporarily not a receiver, thus sustaining it
-                    gameController.deactivate(input)
-                    
-                    receivers.forEach { gameController.addReceiver($0) }
+            do
+            {
+                if let quickSaveState = try fetchRequest.execute().first
+                {
+                    self.update(quickSaveState)
                 }
-                
-                // More Bad Things Happen™ if we add self as observer before ALL reactivations have occurred (notable, infinite loops)
-                self.reactivateSustainedInputsQueue.waitUntilAllOperationsAreFinished()
-                
-                gameController.addReceiver(self)
+                else
+                {
+                    let saveState = SaveState(context: backgroundContext)
+                    saveState.type = .quick
+                    saveState.game = game
+                    
+                    self.update(saveState)
+                }
             }
+            catch
+            {
+                print(error)
+            }
+            
+            backgroundContext.saveWithErrorLogging()
+        }
+    }
+    
+    func performQuickLoadAction()
+    {
+        guard let game = self.game as? Game else { return }
+        
+        let fetchRequest = SaveState.fetchRequest(for: game, type: .quick)
+        
+        do
+        {
+            if let quickSaveState = try DatabaseManager.shared.viewContext.fetch(fetchRequest).first
+            {
+                self.load(quickSaveState)
+            }
+        }
+        catch
+        {
+            print(error)
+        }
+    }
+    
+    func performFastForwardAction(activate: Bool)
+    {
+        guard let emulatorCore = self.emulatorCore else { return }
+        
+        if activate
+        {
+            emulatorCore.rate = emulatorCore.deltaCore.supportedRates.upperBound
+        }
+        else
+        {
+            emulatorCore.rate = emulatorCore.deltaCore.supportedRates.lowerBound
         }
     }
 }
@@ -750,12 +793,17 @@ extension GameViewController: GameViewControllerDelegate
 {
     func gameViewController(_ gameViewController: DeltaCore.GameViewController, handleMenuInputFrom gameController: GameController)
     {
-        if self.selectingSustainedButtons
+        if let pausingGameController = self.pausingGameController
+        {
+            guard pausingGameController == gameController else { return }
+        }
+        
+        if self.isSelectingSustainedButtons
         {
             self.hideSustainButtonView()
         }
         
-        if let pauseViewController = self.pauseViewController, !self.selectingSustainedButtons
+        if let pauseViewController = self.pauseViewController, !self.isSelectingSustainedButtons
         {
             pauseViewController.dismiss()
         }
@@ -768,15 +816,7 @@ extension GameViewController: GameViewControllerDelegate
     
     func gameViewControllerShouldResumeEmulation(_ gameViewController: DeltaCore.GameViewController) -> Bool
     {
-        return (self.presentedViewController == nil || self.presentedViewController?.isDisappearing == true) && !self.selectingSustainedButtons && self.view.window != nil
-    }
-    
-    func gameViewControllerDidUpdate(_ gameViewController: DeltaCore.GameViewController)
-    {
-        for semaphore in self.updateSemaphores
-        {
-            semaphore.signal()
-        }
+        return (self.presentedViewController == nil || self.presentedViewController?.isDisappearing == true) && !self.isSelectingSustainedButtons && self.view.window != nil
     }
 }
 

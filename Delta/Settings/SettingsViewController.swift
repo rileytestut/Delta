@@ -42,12 +42,14 @@ class SettingsViewController: UITableViewController
     
     fileprivate var selectionFeedbackGenerator: UISelectionFeedbackGenerator?
     
+    fileprivate var previousSelectedRowIndexPath: IndexPath?
+    
     required init?(coder aDecoder: NSCoder)
     {
         super.init(coder: aDecoder)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(SettingsViewController.externalControllerDidConnect(_:)), name: .externalControllerDidConnect, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(SettingsViewController.externalControllerDidDisconnect(_:)), name: .externalControllerDidDisconnect, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(SettingsViewController.externalGameControllerDidConnect(_:)), name: .externalGameControllerDidConnect, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(SettingsViewController.externalGameControllerDidDisconnect(_:)), name: .externalGameControllerDidDisconnect, object: nil)
     }
     
     override func viewDidLoad()
@@ -62,8 +64,15 @@ class SettingsViewController: UITableViewController
     {
         super.viewWillAppear(animated)
         
-        if let indexPath = self.tableView.indexPathForSelectedRow
+        if let indexPath = self.previousSelectedRowIndexPath
         {
+            if indexPath.section == Section.controllers.rawValue
+            {
+                // Update and temporarily re-select selected row.
+                self.tableView.reloadSections(IndexSet(integer: Section.controllers.rawValue), with: .none)
+                self.tableView.selectRow(at: indexPath, animated: false, scrollPosition: UITableViewScrollPosition.none)
+            }
+            
             self.tableView.deselectRow(at: indexPath, animated: true)
         }
     }
@@ -81,6 +90,8 @@ class SettingsViewController: UITableViewController
             let cell = sender as? UITableViewCell,
             let indexPath = self.tableView.indexPath(for: cell)
         else { return }
+        
+        self.previousSelectedRowIndexPath = indexPath
         
         switch segueType
         {
@@ -108,18 +119,6 @@ private extension SettingsViewController
     {
         let percentage = String(format: "%.f", Settings.translucentControllerSkinOpacity * 100) + "%"
         self.controllerOpacityLabel.text = percentage
-    }
-}
-
-private extension SettingsViewController
-{
-    @IBAction func unwindFromControllersSettingsViewController(_ segue: UIStoryboardSegue)
-    {
-        let indexPath = self.tableView.indexPathForSelectedRow
-        
-        self.tableView.reloadSections(IndexSet(integer: Section.controllers.rawValue), with: .none)
-        
-        self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: UITableViewScrollPosition.none)
     }
 }
 
@@ -154,12 +153,12 @@ private extension SettingsViewController
 
 private extension SettingsViewController
 {
-    dynamic func externalControllerDidConnect(_ notification: Notification)
+    dynamic func externalGameControllerDidConnect(_ notification: Notification)
     {
         self.tableView.reloadSections(IndexSet(integer: Section.controllers.rawValue), with: .none)
     }
     
-    dynamic func externalControllerDidDisconnect(_ notification: Notification)
+    dynamic func externalGameControllerDidDisconnect(_ notification: Notification)
     {
         self.tableView.reloadSections(IndexSet(integer: Section.controllers.rawValue), with: .none)
     }
@@ -190,9 +189,9 @@ extension SettingsViewController
             {
                 cell.detailTextLabel?.text = UIDevice.current.name
             }
-            else if let index = ExternalControllerManager.shared.connectedControllers.index(where: { $0.playerIndex == indexPath.row })
+            else if let index = ExternalGameControllerManager.shared.connectedControllers.index(where: { $0.playerIndex == indexPath.row })
             {
-                let controller = ExternalControllerManager.shared.connectedControllers[index]
+                let controller = ExternalGameControllerManager.shared.connectedControllers[index]
                 cell.detailTextLabel?.text = controller.name
             }
             else
@@ -211,7 +210,7 @@ extension SettingsViewController
     {
         let cell = tableView.cellForRow(at: indexPath)
         let section = Section(rawValue: indexPath.section)!
-        
+
         switch section
         {
         case Section.controllers: self.performSegue(withIdentifier: Segue.controllers.rawValue, sender: cell)

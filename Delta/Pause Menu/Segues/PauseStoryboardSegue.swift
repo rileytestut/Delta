@@ -29,6 +29,9 @@ class PauseStoryboardSegue: UIStoryboardSegue
         self.destination.modalPresentationStyle = .custom
         self.destination.modalPresentationCapturesStatusBarAppearance = true
         
+        // Manually set tint color, since calling layoutIfNeeded will cause view to load, but with default system tint color.
+        self.destination.view.tintColor = .white
+        
         // We need to force layout of destinationViewController.view _before_ animateTransition(using:)
         // Otherwise, we'll get "Unable to simultaneously satisfy constraints" errors
         self.destination.view.frame = self.source.view.frame

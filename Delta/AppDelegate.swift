@@ -40,7 +40,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         }
         
         // Controllers
-        ExternalControllerManager.shared.startMonitoringExternalControllers()
+        ExternalGameControllerManager.shared.startMonitoring()
                 
         return true
     }
