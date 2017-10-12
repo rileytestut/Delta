@@ -37,7 +37,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Games" id="pFk-as-3k4">
-                        <barButtonItem key="leftBarButtonItem" image="Settings_Button" id="2gg-lC-FhX">
+                        <barButtonItem key="leftBarButtonItem" image="SettingsButton" id="2gg-lC-FhX">
                             <connections>
                                 <segue destination="xMK-Cs-fAS" kind="presentation" id="uN5-PN-7FK"/>
                             </connections>
@@ -238,7 +238,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Settings_Button" width="22" height="22"/>
+        <image name="SettingsButton" width="16" height="16"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="Tey-6Z-UHp"/>
