@@ -35,11 +35,17 @@ class GamesViewController: UIViewController
         }
     }
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
     private var pageViewController: UIPageViewController!
     private var placeholderView: RSTPlaceholderView!
     private var pageControl: UIPageControl!
     
     private let fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>
+    
+    private var searchController: RSTSearchController?
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         fatalError("initWithNibName: not implemented")
@@ -87,6 +93,11 @@ extension GamesViewController
         
         self.navigationController?.navigationBar.barStyle = .blackTranslucent
         self.navigationController?.toolbar.barStyle = .blackTranslucent
+        
+        if #available(iOS 11.0, *)
+        {
+            self.prepareSearchController()
+        }
         
         self.updateTheme()
     }
@@ -153,6 +164,48 @@ extension GamesViewController
 /// UI
 private extension GamesViewController
 {
+    @available(iOS 11.0, *)
+    func prepareSearchController()
+    {
+        let searchResultsController = self.storyboard?.instantiateViewController(withIdentifier: "gameCollectionViewController") as! GameCollectionViewController
+        searchResultsController.gameCollection = nil
+        searchResultsController.theme = self.theme
+        searchResultsController.activeEmulatorCore = self.activeEmulatorCore
+        
+        let placeholderView = RSTPlaceholderView()
+        placeholderView.textLabel.text = NSLocalizedString("No Games Found", comment: "")
+        placeholderView.detailTextLabel.text = NSLocalizedString("Please make sure the name is correct, or try searching for another game.", comment: "")
+        
+        switch self.theme
+        {
+        case .opaque: searchResultsController.dataSource.placeholderView = placeholderView
+        case .translucent:
+            let vibrancyView = UIVisualEffectView(effect: UIVibrancyEffect(blurEffect: UIBlurEffect(style: .dark)))
+            vibrancyView.contentView.addSubview(placeholderView, pinningEdgesWith: .zero)
+            searchResultsController.dataSource.placeholderView = vibrancyView
+        }
+        
+        self.searchController = RSTSearchController(searchResultsController: searchResultsController)
+        self.searchController?.searchableKeyPaths = [#keyPath(Game.name)]
+        self.searchController?.searchHandler = { [weak searchController, weak searchResultsController] (searchValue, _) in
+            if searchController?.searchBar.text?.isEmpty == false
+            {
+                self.pageViewController.view.isHidden = true
+            }
+            else
+            {
+                self.pageViewController.view.isHidden = false
+            }
+            
+            searchResultsController?.dataSource.predicate = searchValue.predicate
+            return nil
+        }
+        self.navigationItem.searchController = self.searchController
+        self.navigationItem.hidesSearchBarWhenScrolling = false
+        
+        self.definesPresentationContext = true
+    }
+    
     func updateTheme()
     {
         switch self.theme
@@ -190,7 +243,7 @@ private extension GamesViewController
         let indexPath = IndexPath(row: safeIndex, section: 0)
         
         let viewController = self.storyboard?.instantiateViewController(withIdentifier: "gameCollectionViewController") as! GameCollectionViewController
-        viewController.gameCollection = self.fetchedResultsController.object(at: indexPath) as! GameCollection
+        viewController.gameCollection = self.fetchedResultsController.object(at: indexPath) as? GameCollection
         viewController.theme = self.theme
         viewController.activeEmulatorCore = self.activeEmulatorCore
         
@@ -399,6 +452,21 @@ extension GamesViewController: UIPageViewControllerDataSource, UIPageViewControl
         }
         
         self.title = pageViewController.viewControllers?.first?.title
+    }
+}
+
+extension GamesViewController: UISearchResultsUpdating
+{
+    func updateSearchResults(for searchController: UISearchController)
+    {
+        if searchController.searchBar.text?.isEmpty == false
+        {            
+            self.pageViewController.view.isHidden = true
+        }
+        else
+        {
+            self.pageViewController.view.isHidden = false
+        }
     }
 }
 
