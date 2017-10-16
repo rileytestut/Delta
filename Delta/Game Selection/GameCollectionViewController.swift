@@ -17,9 +17,9 @@ import SDWebImage
 
 class GameCollectionViewController: UICollectionViewController
 {
-    var gameCollection: GameCollection! {
+    var gameCollection: GameCollection? {
         didSet {
-            self.title = self.gameCollection.shortName
+            self.title = self.gameCollection?.shortName
             self.updateDataSource()
         }
     }
@@ -41,11 +41,12 @@ class GameCollectionViewController: UICollectionViewController
         }
     }
     
+    internal let dataSource: RSTFetchedResultsCollectionViewPrefetchingDataSource<Game, UIImage>
+    
     weak var activeEmulatorCore: EmulatorCore?
     
     private var activeSaveState: SaveStateProtocol?
     
-    private let dataSource: RSTFetchedResultsCollectionViewPrefetchingDataSource<Game, UIImage>
     private let prototypeCell = GridCollectionViewCell()
     
     private var _performing3DTouchTransition = false
@@ -215,7 +216,12 @@ private extension GameCollectionViewController
     func updateDataSource()
     {
         let fetchRequest: NSFetchRequest<Game> = Game.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "ANY %K == %@", #keyPath(Game.gameCollections), self.gameCollection)
+        
+        if let gameCollection = self.gameCollection
+        {
+            fetchRequest.predicate = NSPredicate(format: "ANY %K == %@", #keyPath(Game.gameCollections), gameCollection)
+        }
+        
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(Game.name), ascending: true)]
         fetchRequest.returnsObjectsAsFaults = false
         
@@ -424,7 +430,7 @@ extension GameCollectionViewController: UIViewControllerPreviewingDelegate
 {
     func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController?
     {
-        guard self.gameCollection.identifier != GameType.unknown.rawValue else { return nil }
+        guard self.gameCollection?.identifier != GameType.unknown.rawValue else { return nil }
         
         guard
             let collectionView = self.collectionView,
@@ -598,7 +604,7 @@ extension GameCollectionViewController
 {
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
     {
-        guard self.gameCollection.identifier != GameType.unknown.rawValue else { return }
+        guard self.gameCollection?.identifier != GameType.unknown.rawValue else { return }
         
         let cell = collectionView.cellForItem(at: indexPath)
         let game = self.dataSource.item(at: indexPath)
