@@ -17,13 +17,17 @@ protocol PauseInfoProviding
 
 class PausePresentationController: UIPresentationController
 {
+    let presentationAnimator: UIViewPropertyAnimator
+    
     private let blurringView: UIVisualEffectView
     private let vibrancyView: UIVisualEffectView
     
     private var contentView: UIView!
-    @IBOutlet private weak var pauseLabel: UILabel!
-    @IBOutlet private weak var pauseIconImageView: UIImageView!
-    @IBOutlet private weak var stackView: UIStackView!
+    
+    // Must not be weak, or else may result in crash when deallocating.
+    @IBOutlet private var pauseLabel: UILabel!
+    @IBOutlet private var pauseIconImageView: UIImageView!
+    @IBOutlet private var stackView: UIStackView!
     
     override var frameOfPresentedViewInContainerView: CGRect
     {
@@ -45,8 +49,10 @@ class PausePresentationController: UIPresentationController
         return frame
     }
     
-    override init(presentedViewController: UIViewController, presenting presentingViewController: UIViewController?)
+    init(presentedViewController: UIViewController, presenting presentingViewController: UIViewController?, presentationAnimator: UIViewPropertyAnimator)
     {
+        self.presentationAnimator = presentationAnimator
+        
         self.blurringView = UIVisualEffectView(effect: nil)
         self.vibrancyView = UIVisualEffectView(effect: nil)
         
@@ -83,16 +89,18 @@ class PausePresentationController: UIPresentationController
         self.contentView.alpha = 0.0
         self.vibrancyView.contentView.addSubview(self.contentView)
         
-        self.presentingViewController.transitionCoordinator?.animate(alongsideTransition: { context in
-            
+        self.presentationAnimator.addAnimations {
             let blurEffect = UIBlurEffect(style: .dark)
             
             self.blurringView.effect = blurEffect
             self.vibrancyView.effect = UIVibrancyEffect(blurEffect: blurEffect)
             
             self.contentView.alpha = 1.0
-            
-        }, completion: nil)
+        }
+        
+        // I have absolutely no clue why animating with transition coordinator results in no animation on iOS 11.
+        // Spent far too long trying to fix it, so just use the presentation animator.
+        // self.presentingViewController.transitionCoordinator?.animate(alongsideTransition: { context in }, completion: nil)
     }
     
     override func dismissalTransitionWillBegin()

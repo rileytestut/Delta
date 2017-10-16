@@ -9,8 +9,9 @@
 import UIKit
 
 import DeltaCore
-import SNESDeltaCore
-import GBADeltaCore
+
+import Fabric
+import Crashlytics
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate
@@ -19,10 +20,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool
     {
+        Fabric.with([Crashlytics.self])
+        
         Settings.registerDefaults()
         
-        Delta.register(SNES.core)
-        Delta.register(GBA.core)
+        System.supportedSystems.forEach { Delta.register($0.deltaCore) }
         
         self.configureAppearance()
         
@@ -38,7 +40,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         }
         
         // Controllers
-        ExternalControllerManager.shared.startMonitoringExternalControllers()
+        ExternalGameControllerManager.shared.startMonitoring()
                 
         return true
     }
@@ -77,7 +79,7 @@ extension AppDelegate
     {
         self.window?.tintColor = UIColor.deltaPurple
         
-        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).defaultTextAttributes[NSForegroundColorAttributeName] = UIColor.white
+        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).defaultTextAttributes[NSAttributedStringKey.foregroundColor.rawValue] = UIColor.white
     }
 }
 
@@ -88,12 +90,11 @@ extension AppDelegate
         return self.openURL(url)
     }
     
-    @discardableResult fileprivate func openURL(_ url: URL) -> Bool
+    @discardableResult private func openURL(_ url: URL) -> Bool
     {
         guard url.isFileURL else { return false }
         
-        let gameType = GameType.gameType(forFileExtension: url.pathExtension)
-        if gameType != .unknown || url.pathExtension.lowercased() == "zip"
+        if GameType(fileExtension: url.pathExtension) != nil || url.pathExtension.lowercased() == "zip"
         {
             return self.importGame(at: url)
         }

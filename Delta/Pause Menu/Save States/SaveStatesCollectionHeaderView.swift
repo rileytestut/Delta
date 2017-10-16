@@ -12,7 +12,7 @@ class SaveStatesCollectionHeaderView: UICollectionReusableView
 {
     let textLabel = UILabel()
     
-    fileprivate let vibrancyView = UIVisualEffectView(effect: UIVibrancyEffect(blurEffect: UIBlurEffect(style: .dark)))
+    private let vibrancyView = UIVisualEffectView(effect: UIVibrancyEffect(blurEffect: UIBlurEffect(style: .dark)))
     
     var isTextLabelVibrancyEnabled = true {
         didSet {

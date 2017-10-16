@@ -45,6 +45,11 @@ class LoadImageURLOperation: RSTLoadOperation<UIImage, NSURL>
         super.cancel()
         
         self.downloadOperation?.cancel()
+        
+        if self.isAsynchronous
+        {
+            self.finish()
+        }
     }
     
     override func loadResult(completion: @escaping (UIImage?, Swift.Error?) -> Void)
@@ -74,14 +79,12 @@ class LoadImageURLOperation: RSTLoadOperation<UIImage, NSURL>
     
     private func loadLocalImage(completion: @escaping (UIImage?, Error?) -> Void)
     {
-        let options: NSDictionary = [kCGImageSourceShouldCache as NSString: true]
-        
-        guard let imageSource = CGImageSourceCreateWithURL(self.url as CFURL, options) else {
+        guard let imageSource = CGImageSourceCreateWithURL(self.url as CFURL, nil) else {
             completion(nil, .doesNotExist)
             return
         }
         
-        guard let quartzImage = CGImageSourceCreateImageAtIndex(imageSource, 0, options) else {
+        guard let quartzImage = CGImageSourceCreateImageAtIndex(imageSource, 0, nil) else {
             completion(nil, .invalid)
             return
         }

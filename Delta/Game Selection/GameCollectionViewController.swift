@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MobileCoreServices
 
 import DeltaCore
 
@@ -16,9 +17,9 @@ import SDWebImage
 
 class GameCollectionViewController: UICollectionViewController
 {
-    var gameCollection: GameCollection! {
+    var gameCollection: GameCollection? {
         didSet {
-            self.title = self.gameCollection.shortName
+            self.title = self.gameCollection?.shortName
             self.updateDataSource()
         }
     }
@@ -40,17 +41,28 @@ class GameCollectionViewController: UICollectionViewController
         }
     }
     
+    internal let dataSource: RSTFetchedResultsCollectionViewPrefetchingDataSource<Game, UIImage>
+    
     weak var activeEmulatorCore: EmulatorCore?
     
-    fileprivate var activeSaveState: SaveStateProtocol?
+    private var activeSaveState: SaveStateProtocol?
     
-    fileprivate let dataSource = RSTFetchedResultsCollectionViewDataSource<Game>(fetchedResultsController: NSFetchedResultsController())
-    fileprivate let prototypeCell = GridCollectionViewCell()
+    private let prototypeCell = GridCollectionViewCell()
     
-    fileprivate var _performing3DTouchTransition = false
-    fileprivate weak var _destination3DTouchTransitionViewController: UIViewController?
+    private var _performing3DTouchTransition = false
+    private weak var _destination3DTouchTransitionViewController: UIViewController?
     
-    fileprivate var _renameAction: UIAlertAction?
+    private var _renameAction: UIAlertAction?
+    private var _changingArtworkGame: Game?
+    
+    required init?(coder aDecoder: NSCoder)
+    {
+        self.dataSource = RSTFetchedResultsCollectionViewPrefetchingDataSource<Game, UIImage>(fetchedResultsController: NSFetchedResultsController())
+
+        super.init(coder: aDecoder)
+        
+        self.prepareDataSource()
+    }
 }
 
 //MARK: - UIViewController -
@@ -61,11 +73,8 @@ extension GameCollectionViewController
     {
         super.viewDidLoad()
         
-        self.dataSource.cellConfigurationHandler = { [unowned self] (cell, item, indexPath) in
-            self.configure(cell as! GridCollectionViewCell, for: indexPath)
-        }
-        
         self.collectionView?.dataSource = self.dataSource
+        self.collectionView?.prefetchDataSource = self.dataSource
         self.collectionView?.delegate = self
         
         let layout = self.collectionViewLayout as! GridCollectionViewLayout
@@ -122,25 +131,7 @@ extension GameCollectionViewController
             saveStatesViewController.game = game
             saveStatesViewController.mode = .loading
             saveStatesViewController.theme = self.theme
-            
-        case "gamesDatabaseBrowser":
-            let game = sender as! Game
-            
-            let gamesDatabaseBrowserViewController = (segue.destination as! UINavigationController).topViewController as! GamesDatabaseBrowserViewController
-            gamesDatabaseBrowserViewController.selectionHandler = { (metadata) in
-                
-                DatabaseManager.shared.performBackgroundTask({ (context) in
-                    let temporaryGame = context.object(with: game.objectID) as! Game
-                    temporaryGame.artworkURL = metadata.artworkURL
-                    context.saveWithErrorLogging()
-                    
-                    DispatchQueue.main.async {
-                        gamesDatabaseBrowserViewController.dismiss(animated: true, completion: nil)
-                    }
-                })
-                
-            }
-            
+
         case "unwindFromGames":
             let destinationViewController = segue.destination as! GameViewController
             let cell = sender as! UICollectionViewCell
@@ -195,11 +186,42 @@ extension GameCollectionViewController
 //MARK: - Private Methods -
 private extension GameCollectionViewController
 {
-    //MARK: - Update
+    //MARK: - Data Source
+    func prepareDataSource()
+    {
+        self.dataSource.cellConfigurationHandler = { [unowned self] (cell, item, indexPath) in
+            self.configure(cell as! GridCollectionViewCell, for: indexPath)
+        }
+        
+        self.dataSource.prefetchHandler = { (game, indexPath, completionHandler) in
+            guard let artworkURL = game.artworkURL else { return nil }
+            
+            let imageOperation = LoadImageURLOperation(url: artworkURL)
+            imageOperation.resultHandler = { (image, error) in
+                completionHandler(image, error)
+            }
+            
+            return imageOperation
+        }
+        
+        self.dataSource.prefetchCompletionHandler = { (cell, image, indexPath, error) in
+            guard let image = image else { return }
+            
+            let cell = cell as! GridCollectionViewCell
+            cell.imageView.image = image
+            cell.isImageViewVibrancyEnabled = false
+        }
+    }
+    
     func updateDataSource()
     {
         let fetchRequest: NSFetchRequest<Game> = Game.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "ANY %K == %@", #keyPath(Game.gameCollections), self.gameCollection)
+        
+        if let gameCollection = self.gameCollection
+        {
+            fetchRequest.predicate = NSPredicate(format: "ANY %K == %@", #keyPath(Game.gameCollections), gameCollection)
+        }
+        
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(Game.name), ascending: true)]
         fetchRequest.returnsObjectsAsFaults = false
         
@@ -207,7 +229,7 @@ private extension GameCollectionViewController
     }
     
     //MARK: - Configure Cells
-    func configure(_ cell: GridCollectionViewCell, for indexPath: IndexPath, ignoreImageOperations: Bool = false)
+    func configure(_ cell: GridCollectionViewCell, for indexPath: IndexPath)
     {
         let game = self.dataSource.item(at: indexPath)
         
@@ -222,29 +244,11 @@ private extension GameCollectionViewController
             cell.isImageViewVibrancyEnabled = true
         }
         
+        cell.imageView.image = #imageLiteral(resourceName: "BoxArt")
+        
         cell.maximumImageSize = CGSize(width: 90, height: 90)
         cell.textLabel.text = game.name
         cell.textLabel.textColor = UIColor.gray
-                
-        if let artworkURL = game.artworkURL, !ignoreImageOperations
-        {
-            cell.imageView.sd_setImage(with: artworkURL, placeholderImage: #imageLiteral(resourceName: "BoxArt"), options: .continueInBackground) { (image, error, type, url) in
-                
-                if let error = error
-                {
-                    print(error)
-                }
-                
-                if image != nil
-                {
-                    cell.isImageViewVibrancyEnabled = false
-                }
-            }
-        }
-        else
-        {
-            cell.imageView.image = #imageLiteral(resourceName: "BoxArt")
-        }
     }
     
     //MARK: - Emulation
@@ -342,7 +346,7 @@ private extension GameCollectionViewController
     
     func rename(_ game: Game, with name: String)
     {
-        guard name.characters.count > 0 else { return }
+        guard name.count > 0 else { return }
 
         DatabaseManager.shared.performBackgroundTask { (context) in
             let game = context.object(with: game.objectID) as! Game
@@ -356,7 +360,16 @@ private extension GameCollectionViewController
     
     func changeArtwork(for game: Game)
     {
-        self.performSegue(withIdentifier: "gamesDatabaseBrowser", sender: game)
+        self._changingArtworkGame = game
+        
+        let clipboardImportOption = ClipboardImportOption()
+        let photoLibraryImportOption = PhotoLibraryImportOption(presentingViewController: self)
+        let gamesDatabaseImportOption = GamesDatabaseImportOption(presentingViewController: self)
+        
+        let importController = ImportController(documentTypes: [kUTTypeImage as String])
+        importController.delegate = self
+        importController.importOptions = [clipboardImportOption, photoLibraryImportOption, gamesDatabaseImportOption]
+        self.present(importController, animated: true, completion: nil)
     }
     
     func share(_ game: Game)
@@ -394,7 +407,7 @@ private extension GameCollectionViewController
     @objc func textFieldTextDidChange(_ textField: UITextField)
     {
         let text = textField.text ?? ""
-        self._renameAction?.isEnabled = text.characters.count > 0
+        self._renameAction?.isEnabled = text.count > 0
     }
     
     @objc func handleLongPressGesture(_ gestureRecognizer: UILongPressGestureRecognizer)
@@ -417,7 +430,7 @@ extension GameCollectionViewController: UIViewControllerPreviewingDelegate
 {
     func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController?
     {
-        guard self.gameCollection.identifier != GameType.unknown.rawValue else { return nil }
+        guard self.gameCollection?.identifier != GameType.unknown.rawValue else { return nil }
         
         guard
             let collectionView = self.collectionView,
@@ -452,7 +465,7 @@ extension GameCollectionViewController: UIViewControllerPreviewingDelegate
         let indexPath = self.dataSource.fetchedResultsController.indexPath(forObject: game)!
         let cell = self.collectionView?.cellForItem(at: indexPath)
         
-        let fileURL = FileManager.uniqueTemporaryURL()
+        let fileURL = FileManager.default.uniqueTemporaryURL()
         self.activeSaveState = gameViewController.emulatorCore?.saveSaveState(to: fileURL)
         
         gameViewController.emulatorCore?.stop()
@@ -493,13 +506,105 @@ extension GameCollectionViewController: SaveStatesViewControllerDelegate
     }
 }
 
+//MARK: - ImportControllerDelegate -
+/// ImportControllerDelegate
+extension GameCollectionViewController: ImportControllerDelegate
+{
+    func importController(_ importController: ImportController, didImportItemsAt urls: Set<URL>, errors: [Error])
+    {
+        guard let game = self._changingArtworkGame else { return }
+        
+        var errors = errors
+        
+        var imageURL: URL?
+        
+        if let url = urls.first
+        {
+            if url.isFileURL
+            {
+                do
+                {
+                    let imageData = try Data(contentsOf: url)
+                    
+                    if let image = UIImage(data: imageData)
+                    {
+                        let resizedImage = image.resizing(toFit: CGSize(width: 300, height: 300))
+                        
+                        if let resizedData = UIImageJPEGRepresentation(resizedImage, 0.85)
+                        {
+                            let destinationURL = DatabaseManager.artworkURL(for: game)
+                            try resizedData.write(to: destinationURL, options: .atomic)
+                            
+                            imageURL = destinationURL
+                        }
+                    }
+                }
+                catch
+                {
+                    errors.append(error)
+                }
+            }
+            else
+            {
+                imageURL = url
+            }
+        }
+        
+        for error in errors
+        {
+            print(error)
+        }
+        
+        if let imageURL = imageURL
+        {
+            // Remove previous artwork from cache.
+            self.dataSource.prefetchItemCache.removeObject(forKey: game)
+            
+            DatabaseManager.shared.performBackgroundTask { (context) in
+                let temporaryGame = context.object(with: game.objectID) as! Game
+                temporaryGame.artworkURL = imageURL
+                context.saveWithErrorLogging()
+                
+                DispatchQueue.main.async {
+                    self.presentedViewController?.dismiss(animated: true, completion: nil)
+                }
+            }
+        }
+        else
+        {
+            func presentAlertController()
+            {
+                let alertController = UIAlertController(title: NSLocalizedString("Unable to Change Artwork", comment: ""), message: NSLocalizedString("The image might be corrupted or in an unsupported format.", comment: ""), preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: RSTSystemLocalizedString("OK"), style: .cancel, handler: nil))
+                self.present(alertController, animated: true, completion: nil)
+            }
+            
+            if let presentedViewController = self.presentedViewController
+            {
+                presentedViewController.dismiss(animated: true) {
+                    presentAlertController()
+                }
+            }
+            else
+            {
+                presentAlertController()
+            }
+        }
+    }
+    
+    func importControllerDidCancel(_ importController: ImportController)
+    {
+        self.presentedViewController?.dismiss(animated: true, completion: nil)
+    }
+}
+
 //MARK: - UICollectionViewDelegate -
 /// UICollectionViewDelegate
 extension GameCollectionViewController
 {
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
     {
-        guard self.gameCollection.identifier != GameType.unknown.rawValue else { return }
+        guard self.gameCollection?.identifier != GameType.unknown.rawValue else { return }
         
         let cell = collectionView.cellForItem(at: indexPath)
         let game = self.dataSource.item(at: indexPath)
@@ -542,12 +647,6 @@ extension GameCollectionViewController
             self.launchGame(withSender: cell, clearScreen: true)
         }
     }
-    
-    override func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath)
-    {
-        let cell = cell as! GridCollectionViewCell
-        cell.imageView.sd_cancelCurrentImageLoad()
-    }
 }
 
 //MARK: - UICollectionViewDelegateFlowLayout -
@@ -562,7 +661,7 @@ extension GameCollectionViewController: UICollectionViewDelegateFlowLayout
         widthConstraint.isActive = true
         defer { widthConstraint.isActive = false }
         
-        self.configure(self.prototypeCell, for: indexPath, ignoreImageOperations: true)
+        self.configure(self.prototypeCell, for: indexPath)
         
         let size = self.prototypeCell.contentView.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
         return size

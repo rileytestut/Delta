@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16C68" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="SPq-Bk-fQl">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13528" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="SPq-Bk-fQl">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13526"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -32,13 +31,13 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="tmn-gd-5UN" secondAttribute="trailing" id="9Rq-HM-vqk"/>
-                            <constraint firstItem="0om-QB-N5a" firstAttribute="top" secondItem="tmn-gd-5UN" secondAttribute="bottom" id="DV5-hh-1VN"/>
                             <constraint firstItem="tmn-gd-5UN" firstAttribute="leading" secondItem="3Bk-k3-7J9" secondAttribute="leading" id="f1f-sa-dBA"/>
+                            <constraint firstAttribute="bottom" secondItem="tmn-gd-5UN" secondAttribute="bottom" id="ifM-Wa-u9y"/>
                             <constraint firstItem="tmn-gd-5UN" firstAttribute="top" secondItem="3Bk-k3-7J9" secondAttribute="top" id="nhS-aC-rUR"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Games" id="pFk-as-3k4">
-                        <barButtonItem key="leftBarButtonItem" image="Settings_Button" id="2gg-lC-FhX">
+                        <barButtonItem key="leftBarButtonItem" image="SettingsButton" id="2gg-lC-FhX">
                             <connections>
                                 <segue destination="xMK-Cs-fAS" kind="presentation" id="uN5-PN-7FK"/>
                             </connections>
@@ -49,91 +48,16 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
-                    <connections>
-                        <segue destination="6bq-zy-UZU" kind="presentation" identifier="gamesDatabaseBrowser" id="7TT-mP-bjt"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JYx-xE-nis" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1036" y="1002"/>
         </scene>
-        <!--Games Database-->
-        <scene sceneID="S7I-gw-igt">
-            <objects>
-                <tableViewController id="SB6-jW-dhZ" customClass="GamesDatabaseBrowserViewController" customModule="Delta" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="97" sectionHeaderHeight="28" sectionFooterHeight="28" id="bJf-Sa-ZOX">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="4cJ-4B-Kgt" customClass="GameMetadataTableViewCell" customModule="Delta" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="375" height="97"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="4cJ-4B-Kgt" id="7ze-s0-mpI">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="96"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DSH-Hk-snb" userLabel="Selected Background View">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="97"/>
-                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                            <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                        </view>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BoxArt" translatesAutoresizingMaskIntoConstraints="NO" id="tNY-2F-llo">
-                                            <rect key="frame" x="15" y="8" width="80" height="80"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" secondItem="tNY-2F-llo" secondAttribute="height" multiplier="1:1" id="f4E-bV-L96"/>
-                                            </constraints>
-                                        </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Super Mario World" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DND-Fv-FyB">
-                                            <rect key="frame" x="110" y="38.5" width="250" height="20.5"/>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="DND-Fv-FyB" firstAttribute="leading" secondItem="tNY-2F-llo" secondAttribute="trailing" constant="15" id="71e-t3-7Av"/>
-                                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="DND-Fv-FyB" secondAttribute="bottom" constant="1" id="9No-RE-0xx"/>
-                                        <constraint firstItem="DND-Fv-FyB" firstAttribute="top" relation="greaterThanOrEqual" secondItem="7ze-s0-mpI" secondAttribute="top" constant="1" id="F9q-6H-sqC"/>
-                                        <constraint firstAttribute="trailing" secondItem="DND-Fv-FyB" secondAttribute="trailing" constant="15" id="KFv-7n-LrD"/>
-                                        <constraint firstItem="DND-Fv-FyB" firstAttribute="centerY" secondItem="7ze-s0-mpI" secondAttribute="centerY" id="YBX-t4-jkR"/>
-                                        <constraint firstItem="tNY-2F-llo" firstAttribute="top" secondItem="7ze-s0-mpI" secondAttribute="top" constant="8" id="bYX-gA-QvB"/>
-                                        <constraint firstAttribute="bottom" secondItem="tNY-2F-llo" secondAttribute="bottom" constant="8" id="fxr-wr-I6X"/>
-                                        <constraint firstItem="tNY-2F-llo" firstAttribute="leading" secondItem="7ze-s0-mpI" secondAttribute="leading" constant="15" id="hX2-Gr-Bnz"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                                <connections>
-                                    <outlet property="artworkImageView" destination="tNY-2F-llo" id="GqY-jv-rso"/>
-                                    <outlet property="artworkImageViewLeadingConstraint" destination="hX2-Gr-Bnz" id="be8-dr-c8K"/>
-                                    <outlet property="artworkImageViewTrailingConstraint" destination="71e-t3-7Av" id="y62-KO-y1r"/>
-                                    <outlet property="nameLabel" destination="DND-Fv-FyB" id="LhN-cA-8Hy"/>
-                                    <outlet property="selectedBackgroundView" destination="DSH-Hk-snb" id="hLY-4k-VxU"/>
-                                </connections>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="SB6-jW-dhZ" id="2aq-ZA-84E"/>
-                            <outlet property="delegate" destination="SB6-jW-dhZ" id="WgY-cp-m7K"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" title="Games Database" id="rwF-kd-avR">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="BnB-5n-Rff">
-                            <connections>
-                                <segue destination="mUU-ug-yNs" kind="unwind" unwindAction="unwindFromGamesDatabaseBrowserWith:" id="zdg-Az-WwQ"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="f3a-hX-Qnu" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="mUU-ug-yNs" userLabel="Exit" sceneMemberID="exit"/>
-            </objects>
-            <point key="canvasLocation" x="2652" y="1001.649175412294"/>
-        </scene>
         <!--Game Collection View Controller-->
         <scene sceneID="qNA-NP-TiF">
             <objects>
                 <collectionViewController storyboardIdentifier="gameCollectionViewController" clearsSelectionOnViewWillAppear="NO" id="kqu-75-owz" customClass="GameCollectionViewController" customModule="Delta" customModuleProvider="target" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="OIq-Z8-kxO">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" indicatorStyle="white" dataMode="prototypes" id="OIq-Z8-kxO">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
@@ -161,7 +85,6 @@
                     <connections>
                         <segue destination="X2o-q6-XD5" kind="unwind" identifier="unwindFromGames" unwindAction="unwindFromGamesViewControllerWith:" id="k8C-Xn-maU"/>
                         <segue destination="MPk-bF-nkj" kind="presentation" identifier="saveStates" customClass="SaveStatesStoryboardSegue" customModule="Delta" customModuleProvider="target" id="1Xp-2J-0cq"/>
-                        <segue destination="6bq-zy-UZU" kind="presentation" identifier="gamesDatabaseBrowser" id="mzX-Bb-MaX"/>
                     </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bW1-t8-idm" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -260,12 +183,11 @@
                     <toolbarItems/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="wj9-1e-eev">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="M4r-sO-G4H">
-                        <rect key="frame" x="0.0" y="556" width="600" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </toolbar>
                     <connections>
@@ -290,7 +212,7 @@
                 <navigationController storyboardIdentifier="saveStatesNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="MPk-bF-nkj" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="twH-3X-6DV">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -314,31 +236,11 @@
             </objects>
             <point key="canvasLocation" x="3409" y="1716"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="REv-V5-eEz">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="6bq-zy-UZU" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" barStyle="black" id="uzY-vR-coL">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="SB6-jW-dhZ" kind="relationship" relationship="rootViewController" id="b0w-Fq-hrk"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Hr9-N6-XXA" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1854" y="1002"/>
-        </scene>
     </scenes>
     <resources>
-        <image name="BoxArt" width="100" height="100"/>
-        <image name="Settings_Button" width="22" height="22"/>
+        <image name="SettingsButton" width="16" height="16"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="mzX-Bb-MaX"/>
         <segue reference="Tey-6Z-UHp"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -7,37 +7,49 @@
 //
 
 import UIKit
+
 import DeltaCore
 
-extension SettingsViewController
+import Roxas
+
+private extension SettingsViewController
 {
-    fileprivate enum Section: Int
+    enum Section: Int
     {
         case controllers
         case controllerSkins
         case controllerOpacity
     }
     
-    fileprivate enum Segue: String
+    enum Segue: String
     {
         case controllers = "controllersSegue"
         case controllerSkins = "controllerSkinsSegue"
+    }
+    
+    enum ControllerSkinsRow: Int
+    {
+        case snes
+        case gba
+        case gbc
     }
 }
 
 class SettingsViewController: UITableViewController
 {
-    @IBOutlet fileprivate var controllerOpacityLabel: UILabel!
-    @IBOutlet fileprivate var controllerOpacitySlider: UISlider!
+    @IBOutlet private var controllerOpacityLabel: UILabel!
+    @IBOutlet private var controllerOpacitySlider: UISlider!
     
-    fileprivate var selectionFeedbackGenerator: UISelectionFeedbackGenerator?
+    private var selectionFeedbackGenerator: UISelectionFeedbackGenerator?
+    
+    private var previousSelectedRowIndexPath: IndexPath?
     
     required init?(coder aDecoder: NSCoder)
     {
         super.init(coder: aDecoder)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(SettingsViewController.externalControllerDidConnect(_:)), name: .externalControllerDidConnect, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(SettingsViewController.externalControllerDidDisconnect(_:)), name: .externalControllerDidDisconnect, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(SettingsViewController.externalGameControllerDidConnect(_:)), name: .externalGameControllerDidConnect, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(SettingsViewController.externalGameControllerDidDisconnect(_:)), name: .externalGameControllerDidDisconnect, object: nil)
     }
     
     override func viewDidLoad()
@@ -52,8 +64,15 @@ class SettingsViewController: UITableViewController
     {
         super.viewWillAppear(animated)
         
-        if let indexPath = self.tableView.indexPathForSelectedRow
+        if let indexPath = self.previousSelectedRowIndexPath
         {
+            if indexPath.section == Section.controllers.rawValue
+            {
+                // Update and temporarily re-select selected row.
+                self.tableView.reloadSections(IndexSet(integer: Section.controllers.rawValue), with: .none)
+                self.tableView.selectRow(at: indexPath, animated: false, scrollPosition: UITableViewScrollPosition.none)
+            }
+            
             self.tableView.deselectRow(at: indexPath, animated: true)
         }
     }
@@ -72,6 +91,8 @@ class SettingsViewController: UITableViewController
             let indexPath = self.tableView.indexPath(for: cell)
         else { return }
         
+        self.previousSelectedRowIndexPath = indexPath
+        
         switch segueType
         {
         case Segue.controllers:
@@ -79,13 +100,14 @@ class SettingsViewController: UITableViewController
             controllersSettingsViewController.playerIndex = indexPath.row
             
         case Segue.controllerSkins:
-            let gameTypeControllerSkinsViewController = segue.destination as! GameTypeControllerSkinsViewController
+            let systemControllerSkinsViewController = segue.destination as! SystemControllerSkinsViewController
             
-            switch indexPath.row
+            let row = ControllerSkinsRow(rawValue: indexPath.row)!
+            switch row
             {
-            case 0: gameTypeControllerSkinsViewController.gameType = .snes
-            case 1: gameTypeControllerSkinsViewController.gameType = .gba
-            default: break
+            case .snes: systemControllerSkinsViewController.system = .snes
+            case .gba: systemControllerSkinsViewController.system = .gba
+            case .gbc: systemControllerSkinsViewController.system = .gbc
             }            
         }
     }
@@ -97,18 +119,6 @@ private extension SettingsViewController
     {
         let percentage = String(format: "%.f", Settings.translucentControllerSkinOpacity * 100) + "%"
         self.controllerOpacityLabel.text = percentage
-    }
-}
-
-private extension SettingsViewController
-{
-    @IBAction func unwindFromControllersSettingsViewController(_ segue: UIStoryboardSegue)
-    {
-        let indexPath = self.tableView.indexPathForSelectedRow
-        
-        self.tableView.reloadSections(IndexSet(integer: Section.controllers.rawValue), with: .none)
-        
-        self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: UITableViewScrollPosition.none)
     }
 }
 
@@ -143,12 +153,12 @@ private extension SettingsViewController
 
 private extension SettingsViewController
 {
-    dynamic func externalControllerDidConnect(_ notification: Notification)
+    @objc func externalGameControllerDidConnect(_ notification: Notification)
     {
         self.tableView.reloadSections(IndexSet(integer: Section.controllers.rawValue), with: .none)
     }
     
-    dynamic func externalControllerDidDisconnect(_ notification: Notification)
+    @objc func externalGameControllerDidDisconnect(_ notification: Notification)
     {
         self.tableView.reloadSections(IndexSet(integer: Section.controllers.rawValue), with: .none)
     }
@@ -162,6 +172,7 @@ extension SettingsViewController
         switch section
         {
         case .controllers: return 1 // Temporarily hide other controller indexes until controller logic is finalized
+        case .controllerSkins: return System.supportedSystems.count
         default: return super.tableView(tableView, numberOfRowsInSection: sectionIndex)
         }
     }
@@ -169,24 +180,29 @@ extension SettingsViewController
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
-        
-        if indexPath.section == Section.controllers.rawValue
+
+        let section = Section(rawValue: indexPath.section)!
+        switch section
         {
+        case .controllers:
             if indexPath.row == Settings.localControllerPlayerIndex
             {
                 cell.detailTextLabel?.text = UIDevice.current.name
             }
-            else if let index = ExternalControllerManager.shared.connectedControllers.index(where: { $0.playerIndex == indexPath.row })
+            else if let index = ExternalGameControllerManager.shared.connectedControllers.index(where: { $0.playerIndex == indexPath.row })
             {
-                let controller = ExternalControllerManager.shared.connectedControllers[index]
+                let controller = ExternalGameControllerManager.shared.connectedControllers[index]
                 cell.detailTextLabel?.text = controller.name
             }
             else
             {
                 cell.detailTextLabel?.text = nil
             }
+            
+        case .controllerSkins: cell.textLabel?.text = System.supportedSystems[indexPath.row].localizedName
+        default: break
         }
-        
+
         return cell
     }
     
@@ -194,7 +210,7 @@ extension SettingsViewController
     {
         let cell = tableView.cellForRow(at: indexPath)
         let section = Section(rawValue: indexPath.section)!
-        
+
         switch section
         {
         case Section.controllers: self.performSegue(withIdentifier: Segue.controllers.rawValue, sender: cell)

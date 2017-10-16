@@ -9,8 +9,6 @@
 import Foundation
 
 import DeltaCore
-import SNESDeltaCore
-import GBADeltaCore
 
 import Roxas
 
@@ -25,7 +23,7 @@ extension Settings
     {
         case name
         
-        case gameType
+        case system
         case traits
     }
     
@@ -42,12 +40,14 @@ struct Settings
     /// Controllers
     static var localControllerPlayerIndex: Int? = 0 {
         didSet {
+            guard self.localControllerPlayerIndex != oldValue else { return }
             NotificationCenter.default.post(name: .settingsDidChange, object: nil, userInfo: [NotificationUserInfoKey.name: Name.localControllerPlayerIndex])
         }
     }
     
     static var translucentControllerSkinOpacity: CGFloat {
         set {
+            guard newValue != self.translucentControllerSkinOpacity else { return }
             UserDefaults.standard.translucentControllerSkinOpacity = newValue
             NotificationCenter.default.post(name: .settingsDidChange, object: nil, userInfo: [NotificationUserInfoKey.name: Name.translucentControllerSkinOpacity])
         }
@@ -72,9 +72,9 @@ struct Settings
         UserDefaults.standard.register(defaults: defaults)
     }
     
-    static func preferredControllerSkin(for gameType: GameType, traits: DeltaCore.ControllerSkin.Traits) -> ControllerSkin?
+    static func preferredControllerSkin(for system: System, traits: DeltaCore.ControllerSkin.Traits) -> ControllerSkin?
     {
-        guard let userDefaultsKey = self.preferredControllerSkinKey(for: gameType, traits: traits) else { return nil }
+        guard let userDefaultsKey = self.preferredControllerSkinKey(for: system, traits: traits) else { return nil }
         
         let identifier = UserDefaults.standard.string(forKey: userDefaultsKey)
         
@@ -86,7 +86,7 @@ struct Settings
             
             if let identifier = identifier
             {
-                fetchRequest.predicate = NSPredicate(format: "%K == %@ AND %K == %@", #keyPath(ControllerSkin.gameType), gameType.rawValue, #keyPath(ControllerSkin.identifier), identifier)
+                fetchRequest.predicate = NSPredicate(format: "%K == %@ AND %K == %@", #keyPath(ControllerSkin.gameType), system.gameType.rawValue, #keyPath(ControllerSkin.identifier), identifier)
                 
                 if let controllerSkin = try DatabaseManager.shared.viewContext.fetch(fetchRequest).first
                 {
@@ -96,11 +96,11 @@ struct Settings
             
             // Controller skin doesn't exist, so fall back to standard controller skin
             
-            fetchRequest.predicate = NSPredicate(format: "%K == %@ AND %K == YES", #keyPath(ControllerSkin.gameType), gameType.rawValue, #keyPath(ControllerSkin.isStandard))
+            fetchRequest.predicate = NSPredicate(format: "%K == %@ AND %K == YES", #keyPath(ControllerSkin.gameType), system.gameType.rawValue, #keyPath(ControllerSkin.isStandard))
             
             if let controllerSkin = try DatabaseManager.shared.viewContext.fetch(fetchRequest).first
             {
-                Settings.setPreferredControllerSkin(controllerSkin, for: gameType, traits: traits)
+                Settings.setPreferredControllerSkin(controllerSkin, for: system, traits: traits)
                 return controllerSkin
             }
         }
@@ -112,26 +112,29 @@ struct Settings
         return nil
     }
     
-    static func setPreferredControllerSkin(_ controllerSkin: ControllerSkin, for gameType: GameType, traits: DeltaCore.ControllerSkin.Traits)
+    static func setPreferredControllerSkin(_ controllerSkin: ControllerSkin, for system: System, traits: DeltaCore.ControllerSkin.Traits)
     {
-        guard let userDefaultKey = self.preferredControllerSkinKey(for: gameType, traits: traits) else { return }
+        guard let userDefaultKey = self.preferredControllerSkinKey(for: system, traits: traits) else { return }
+        
+        guard UserDefaults.standard.string(forKey: userDefaultKey) != controllerSkin.identifier else { return }
+        
         UserDefaults.standard.set(controllerSkin.identifier, forKey: userDefaultKey)
         
-        NotificationCenter.default.post(name: .settingsDidChange, object: controllerSkin, userInfo: [NotificationUserInfoKey.name: Name.preferredControllerSkin, NotificationUserInfoKey.gameType: gameType, NotificationUserInfoKey.traits: traits])
+        NotificationCenter.default.post(name: .settingsDidChange, object: controllerSkin, userInfo: [NotificationUserInfoKey.name: Name.preferredControllerSkin, NotificationUserInfoKey.system: system, NotificationUserInfoKey.traits: traits])
     }
 }
 
 private extension Settings
 {
-    static func preferredControllerSkinKey(for gameType: GameType, traits: DeltaCore.ControllerSkin.Traits) -> String?
+    static func preferredControllerSkinKey(for system: System, traits: DeltaCore.ControllerSkin.Traits) -> String?
     {
         let systemName: String
         
-        switch gameType
+        switch system
         {
-        case GameType.snes: systemName = "snes"
-        case GameType.gba: systemName = "gba"
-        default: return nil
+        case .snes: systemName = "snes"
+        case .gba: systemName = "gba"
+        case .gbc: systemName = "gbc"
         }
         
         let orientation: String

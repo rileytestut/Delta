@@ -61,7 +61,7 @@ public class ControllerSkin: _ControllerSkin
         return self.controllerSkin?.isDebugModeEnabled ?? false
     }
     
-    fileprivate lazy var controllerSkin: DeltaCore.ControllerSkin? = {
+    private lazy var controllerSkin: DeltaCore.ControllerSkin? = {
         let controllerSkin = self.isStandard ? DeltaCore.ControllerSkin.standardControllerSkin(for: self.gameType) : DeltaCore.ControllerSkin(fileURL: self.fileURL)
         return controllerSkin
     }()
@@ -88,9 +88,9 @@ extension ControllerSkin: ControllerSkinProtocol
         return self.controllerSkin?.image(for: traits, preferredSize: preferredSize)
     }
     
-    public func inputs(for traits: DeltaCore.ControllerSkin.Traits, point: CGPoint) -> [Input]?
+    public func inputs(for traits: DeltaCore.ControllerSkin.Traits, at point: CGPoint) -> [Input]?
     {
-        return self.controllerSkin?.inputs(for: traits, point: point)
+        return self.controllerSkin?.inputs(for: traits, at: point)
     }
     
     public func items(for traits: DeltaCore.ControllerSkin.Traits) -> [DeltaCore.ControllerSkin.Item]?

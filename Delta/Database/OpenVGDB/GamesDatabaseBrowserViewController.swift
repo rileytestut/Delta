@@ -15,11 +15,9 @@ class GamesDatabaseBrowserViewController: UITableViewController
 {
     var selectionHandler: ((GameMetadata) -> Void)?
     
-    fileprivate let database: GamesDatabase?
-    fileprivate let dataSource: RSTArrayTableViewDataSource<GameMetadata>
+    private let database: GamesDatabase?
     
-    fileprivate let operationQueue = RSTOperationQueue()
-    fileprivate let imageCache = NSCache<NSURL, UIImage>()
+    private let dataSource: RSTArrayTableViewPrefetchingDataSource<GameMetadata, UIImage>
     
     override init(style: UITableViewStyle) {
         fatalError()
@@ -37,39 +35,13 @@ class GamesDatabaseBrowserViewController: UITableViewController
             print(error)
         }
         
-        self.dataSource = RSTArrayTableViewDataSource<GameMetadata>(items: [])
-        
-        let placeholderView = RSTPlaceholderView()
-        placeholderView.textLabel.textColor = UIColor.lightText
-        placeholderView.detailTextLabel.textColor = UIColor.lightText
-        
-        self.dataSource.placeholderView = placeholderView
+        self.dataSource = RSTArrayTableViewPrefetchingDataSource<GameMetadata, UIImage>(items: [])
         
         super.init(coder: aDecoder)
         
-        self.dataSource.cellConfigurationHandler = { (cell, metadata, indexPath) in
-            self.configure(cell: cell as! GameMetadataTableViewCell, with: metadata, for: indexPath)
-        }
-        
-        if let database = self.database
-        {
-            self.dataSource.searchController.searchHandler = { [unowned database, unowned dataSource] (searchValue, previousSearchValue) in
-                
-                return RSTBlockOperation(executionBlock: { [unowned database, unowned dataSource] (operation) in
-                    let results = database.metadataResults(forGameName: searchValue.text)
-                    
-                    guard !operation.isCancelled else { return }
-                    
-                    dataSource.items = results
-                    
-                    rst_dispatch_sync_on_main_thread {
-                        self.updatePlaceholderView()
-                    }
-                })
-            }
-        }
-        
         self.definesPresentationContext = true
+        
+        self.prepareDataSource()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -83,6 +55,8 @@ class GamesDatabaseBrowserViewController: UITableViewController
         self.view.backgroundColor = UIColor.deltaDarkGray
         
         self.tableView.dataSource = self.dataSource
+        self.tableView.prefetchDataSource = self.dataSource
+        
         self.tableView.indicatorStyle = .white
         self.tableView.separatorColor = UIColor.gray
         
@@ -99,7 +73,73 @@ class GamesDatabaseBrowserViewController: UITableViewController
     }
 }
 
-extension GamesDatabaseBrowserViewController
+private extension GamesDatabaseBrowserViewController
+{
+    func prepareDataSource()
+    {
+        /* Placeholder View */
+        let placeholderView = RSTPlaceholderView()
+        placeholderView.textLabel.textColor = UIColor.lightText
+        placeholderView.detailTextLabel.textColor = UIColor.lightText
+        self.dataSource.placeholderView = placeholderView
+        
+        
+        /* Cell Configuration */
+        self.dataSource.cellConfigurationHandler = { [unowned self] (cell, metadata, indexPath) in
+            self.configure(cell: cell as! GameMetadataTableViewCell, with: metadata, for: indexPath)
+        }
+        
+        
+        /* Prefetching */
+        self.dataSource.prefetchHandler = { (metadata, indexPath, completionHandler) in
+            guard let artworkURL = metadata.artworkURL else { return nil }
+            
+            let operation = LoadImageURLOperation(url: artworkURL)
+            operation.resultHandler = { (image, error) in
+                completionHandler(image, error)
+            }
+            return operation
+        }
+
+        self.dataSource.prefetchCompletionHandler = { (cell, image, indexPath, error) in
+            guard let image = image else { return }
+            
+            let cell = cell as! GameMetadataTableViewCell
+            
+            let artworkDisplaySize = AVMakeRect(aspectRatio: image.size, insideRect: cell.artworkImageView.bounds)
+            let offset = (cell.artworkImageView.bounds.width - artworkDisplaySize.width) / 2
+            
+            // Offset artworkImageViewLeadingConstraint and artworkImageViewTrailingConstraint to right-align artworkImageView
+            cell.artworkImageViewLeadingConstraint.constant += offset
+            cell.artworkImageViewTrailingConstraint.constant -= offset
+            
+            cell.artworkImageView.image = image
+            cell.artworkImageView.superview?.layoutIfNeeded()
+        }
+        
+        
+        /* Searching */
+        if let database = self.database
+        {
+            self.dataSource.searchController.searchHandler = { [unowned self, unowned database] (searchValue, previousSearchValue) in
+                return RSTBlockOperation() { [unowned self, unowned database] (operation) in
+                    let results = database.metadataResults(forGameName: searchValue.text)
+                    
+                    guard !operation.isCancelled else { return }
+                    
+                    self.dataSource.items = results
+                    
+                    rst_dispatch_sync_on_main_thread {
+                        self.resetTableViewContentOffset()
+                        self.updatePlaceholderView()
+                    }
+                }
+            }
+        }
+    }
+}
+
+private extension GamesDatabaseBrowserViewController
 {
     func configure(cell: GameMetadataTableViewCell, with metadata: GameMetadata, for indexPath: IndexPath)
     {
@@ -112,30 +152,6 @@ extension GamesDatabaseBrowserViewController
         cell.artworkImageViewTrailingConstraint.constant = 15
         
         cell.separatorInset.left = cell.nameLabel.frame.minX
-        
-        if let artworkURL = metadata.artworkURL
-        {
-            let operation = LoadImageURLOperation(url: artworkURL)
-            operation.resultsCache = self.imageCache
-            operation.resultHandler = { (image, error) in
-                if let image = image
-                {
-                    let artworkDisplaySize = AVMakeRect(aspectRatio: image.size, insideRect: cell.artworkImageView.bounds)
-                    let offset = (cell.artworkImageView.bounds.width - artworkDisplaySize.width) / 2
-                    
-                    DispatchQueue.main.async {
-                        // Offset artworkImageViewLeadingConstraint and artworkImageViewTrailingConstraint to right-align artworkImageView
-                        cell.artworkImageViewLeadingConstraint.constant += offset
-                        cell.artworkImageViewTrailingConstraint.constant -= offset
-                        
-                        cell.artworkImageView.image = image
-                        cell.artworkImageView.superview?.layoutIfNeeded()
-                    }
-                }
-            }
-            
-            self.operationQueue.addOperation(operation, forKey: indexPath as NSIndexPath)
-        }
     }
     
     func updatePlaceholderView()
@@ -153,6 +169,12 @@ extension GamesDatabaseBrowserViewController
             placeholderView.detailTextLabel.text = NSLocalizedString("Please make sure the name is correct, or try searching for another game.", comment: "")
         }
     }
+    
+    func resetTableViewContentOffset()
+    {
+        self.tableView.setContentOffset(CGPoint.zero, animated: false)
+        self.tableView.setContentOffset(CGPoint(x: 0, y: -self.topLayoutGuide.length), animated: false)
+    }
 }
 
 extension GamesDatabaseBrowserViewController
@@ -166,12 +188,6 @@ extension GamesDatabaseBrowserViewController
         
         let metadata = self.dataSource.item(at: indexPath)
         self.selectionHandler?(metadata)
-    }
-    
-    override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath)
-    {
-        let operation = self.operationQueue[indexPath as NSIndexPath]
-        operation?.cancel()
     }
 }
 
@@ -193,7 +209,6 @@ extension GamesDatabaseBrowserViewController: UISearchControllerDelegate
     func didDismissSearchController(_ searchController: UISearchController)
     {
         // Fix potentially incorrect offset if user dismisses searchController while scrolling
-        self.tableView.setContentOffset(CGPoint.zero, animated: false)
-        self.tableView.setContentOffset(CGPoint(x: 0, y: -self.topLayoutGuide.length), animated: false)
+        self.resetTableViewContentOffset()
     }
 }
