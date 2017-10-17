@@ -114,7 +114,7 @@
         <attribute name="identifier" attributeType="String" syncable="YES"/>
         <attribute name="modifiedDate" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="type" attributeType="Integer 16" defaultValueString="1" usesScalarValueType="NO" syncable="YES">
+        <attribute name="type" attributeType="Integer 16" defaultValueString="2" usesScalarValueType="NO" syncable="YES">
             <userInfo>
                 <entry key="attributeValueScalarType" value="SaveStateType"/>
             </userInfo>
