@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13240" systemVersion="16G29" minimumToolsVersion="Xcode 7.0" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="1.0">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11759" systemVersion="16C68" minimumToolsVersion="Xcode 7.0" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="1.0">
     <entity name="Cheat" representedClassName="Cheat" syncable="YES">
         <attribute name="code" attributeType="String" syncable="YES"/>
         <attribute name="creationDate" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
@@ -79,31 +79,6 @@
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>
-    <entity name="GameControllerInputMapping" representedClassName="GameControllerInputMapping" syncable="YES">
-        <attribute name="deltaCoreInputMapping" attributeType="Transformable" valueTransformerName="GameControllerInputMappingTransformer" syncable="YES">
-            <userInfo>
-                <entry key="attributeValueClassName" value="Any"/>
-            </userInfo>
-        </attribute>
-        <attribute name="gameControllerInputType" attributeType="Transformable" valueTransformerName="" syncable="YES">
-            <userInfo>
-                <entry key="attributeValueClassName" value="GameControllerInputType"/>
-            </userInfo>
-        </attribute>
-        <attribute name="gameType" attributeType="Transformable" syncable="YES">
-            <userInfo>
-                <entry key="attributeValueClassName" value="GameType"/>
-            </userInfo>
-        </attribute>
-        <attribute name="playerIndex" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
-        <uniquenessConstraints>
-            <uniquenessConstraint>
-                <constraint value="gameControllerInputType"/>
-                <constraint value="gameType"/>
-                <constraint value="playerIndex"/>
-            </uniquenessConstraint>
-        </uniquenessConstraints>
-    </entity>
     <entity name="SaveState" representedClassName="SaveState" syncable="YES">
         <attribute name="creationDate" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="filename" attributeType="String" syncable="YES">
@@ -132,7 +107,6 @@
         <element name="ControllerSkin" positionX="-387" positionY="90" width="128" height="135"/>
         <element name="Game" positionX="-378" positionY="-54" width="128" height="180"/>
         <element name="GameCollection" positionX="-585" positionY="-27" width="128" height="90"/>
-        <element name="GameControllerInputMapping" positionX="-387" positionY="90" width="128" height="105"/>
         <element name="SaveState" positionX="-198" positionY="113" width="128" height="165"/>
     </elements>
 </model>
