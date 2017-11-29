@@ -33,7 +33,7 @@ class PausePresentationController: UIPresentationController
     {
         guard let containerView = self.containerView else { return super.frameOfPresentedViewInContainerView }
         
-        let frame: CGRect
+        var frame: CGRect
         let contentHeight = self.presentedViewController.preferredContentSize.height
         
         if contentHeight == 0
@@ -44,6 +44,11 @@ class PausePresentationController: UIPresentationController
         else
         {
             frame = CGRect(x: 0, y: containerView.bounds.height - contentHeight, width: containerView.bounds.width, height: containerView.bounds.height)
+            
+            if #available(iOS 11.0, *)
+            {
+                frame.origin.y -= containerView.safeAreaInsets.bottom
+            }
         }
         
         return frame
