@@ -62,7 +62,16 @@ class GamesDatabaseBrowserViewController: UITableViewController
         
         self.dataSource.searchController.delegate = self
         self.dataSource.searchController.searchBar.barStyle = .blackTranslucent
-        self.tableView.tableHeaderView = self.dataSource.searchController.searchBar
+        
+        if #available(iOS 11, *)
+        {
+            self.navigationItem.searchController = self.dataSource.searchController
+            self.navigationItem.hidesSearchBarWhenScrolling = false
+        }
+        else
+        {
+            self.tableView.tableHeaderView = self.dataSource.searchController.searchBar
+        }
         
         self.updatePlaceholderView()
     }
@@ -195,8 +204,12 @@ extension GamesDatabaseBrowserViewController: UISearchControllerDelegate
 {
     func didPresentSearchController(_ searchController: UISearchController)
     {
-        // Fix incorrect table view scroll indicator insets
-        self.tableView.scrollIndicatorInsets.top = self.navigationController!.navigationBar.bounds.height + UIApplication.shared.statusBarFrame.height
+        if #available(iOS 11, *) {}
+        else
+        {
+            // Fix incorrect table view scroll indicator insets
+            self.tableView.scrollIndicatorInsets.top = self.navigationController!.navigationBar.bounds.height + UIApplication.shared.statusBarFrame.height
+        }
     }
     
     func willDismissSearchController(_ searchController: UISearchController)
