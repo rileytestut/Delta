@@ -11,11 +11,14 @@
 
 typedef NS_OPTIONS(int16_t, ControllerSkinConfigurations)
 {
-    ControllerSkinConfigurationFullScreenPortrait   = 1 << 0,
-    ControllerSkinConfigurationFullScreenLandscape  = 1 << 1,
+    ControllerSkinConfigurationStandardPortrait   = 1 << 0,
+    ControllerSkinConfigurationStandardLandscape  = 1 << 1,
     
     ControllerSkinConfigurationSplitViewPortrait    = 1 << 2,
     ControllerSkinConfigurationSplitViewLandscape   = 1 << 3,
+    
+    ControllerSkinConfigurationEdgeToEdgePortrait    = 1 << 4,
+    ControllerSkinConfigurationEdgeToEdgeLandscape   = 1 << 5,
 };
 
 #endif /* ControllerSkinConfigurations_h */

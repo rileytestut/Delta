@@ -23,6 +23,10 @@ class LaunchViewController: UIViewController
         return self.gameViewController?.prefersStatusBarHidden ?? false
     }
     
+    override func childViewControllerForHomeIndicatorAutoHidden() -> UIViewController? {
+        return self.gameViewController
+    }
+    
     override func viewDidAppear(_ animated: Bool)
     {
         super.viewDidAppear(animated)

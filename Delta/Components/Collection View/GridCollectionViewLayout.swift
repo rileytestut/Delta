@@ -23,22 +23,52 @@ class GridCollectionViewLayout: UICollectionViewFlowLayout
     // If only one row, distribute the items equally horizontally
     var usesEqualHorizontalSpacingDistributionForSingleRow = false
     
+    private var contentInset: UIEdgeInsets {
+        guard let collectionView = self.collectionView else { return .zero }
+        
+        var contentInset = collectionView.contentInset
+        if #available(iOS 11, *)
+        {
+            contentInset.left += collectionView.safeAreaInsets.left
+            contentInset.right += collectionView.safeAreaInsets.right
+        }
+        
+        return contentInset
+    }
+    
+    private var contentWidth: CGFloat {
+        guard let collectionView = self.collectionView else { return 0.0 }
+        
+        let contentWidth = collectionView.bounds.width - (self.contentInset.left + self.contentInset.right)
+        return contentWidth
+    }
+    
+    private var maximumItemsPerRow: Int {
+        let maximumItemsPerRow = Int(floor((self.contentWidth - self.minimumInteritemSpacing) / (self.itemWidth + self.minimumInteritemSpacing)))
+        return maximumItemsPerRow
+    }
+    
+    private var interitemSpacing: CGFloat {
+        let interitemSpacing = (self.contentWidth - CGFloat(self.maximumItemsPerRow) * self.itemWidth) / CGFloat(self.maximumItemsPerRow + 1)
+        return interitemSpacing
+    }
+    
     override var estimatedItemSize: CGSize {
         didSet {
             fatalError("GridCollectionViewLayout does not support self-sizing cells.")
         }
     }
     
+    override func prepare()
+    {
+        super.prepare()
+        
+        self.sectionInset.left = self.interitemSpacing + self.contentInset.left
+        self.sectionInset.right = self.interitemSpacing + self.contentInset.right
+    }
+    
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]?
     {
-        guard let collectionView = self.collectionView else { return nil }
-        
-        let maximumItemsPerRow = floor((collectionView.bounds.width - self.minimumInteritemSpacing) / (self.itemWidth + self.minimumInteritemSpacing))
-        let interitemSpacing = (collectionView.bounds.width - maximumItemsPerRow * self.itemWidth) / (maximumItemsPerRow + 1)
-        
-        self.sectionInset.left = interitemSpacing
-        self.sectionInset.right = interitemSpacing
-        
         let layoutAttributes = super.layoutAttributesForElements(in: rect)?.map({ $0.copy() }) as! [UICollectionViewLayoutAttributes]
         
         var minimumY: CGFloat? = nil
@@ -58,7 +88,7 @@ class GridCollectionViewLayout: UICollectionViewFlowLayout
                 
                 if abs(attributes.frame.minX - self.sectionInset.left) > 1
                 {
-                    attributes.frame.origin.x = previousLayoutAttributes.frame.maxX + interitemSpacing
+                    attributes.frame.origin.x = previousLayoutAttributes.frame.maxX + self.interitemSpacing
                 }
             }
             
@@ -70,7 +100,7 @@ class GridCollectionViewLayout: UICollectionViewFlowLayout
                 {
                     isSingleRow = false
                     
-                    self.alignLayoutAttributes(tempLayoutAttributes, toMinimumY: minY)
+                    self.align(tempLayoutAttributes, toMinimumY: minY)
                     
                     // Reset tempLayoutAttributes
                     tempLayoutAttributes.removeAll()
@@ -97,15 +127,15 @@ class GridCollectionViewLayout: UICollectionViewFlowLayout
         // Handle the remaining tempLayoutAttributes
         if let minimumY = minimumY
         {
-            self.alignLayoutAttributes(tempLayoutAttributes, toMinimumY: minimumY)
+            self.align(tempLayoutAttributes, toMinimumY: minimumY)
             
             if isSingleRow && self.usesEqualHorizontalSpacingDistributionForSingleRow
             {
-                let spacing = (collectionView.bounds.width - (self.itemWidth * CGFloat(tempLayoutAttributes.count))) / (CGFloat(tempLayoutAttributes.count) + 1.0)
+                let spacing = (self.contentWidth - (self.itemWidth * CGFloat(tempLayoutAttributes.count))) / (CGFloat(tempLayoutAttributes.count) + 1.0)
                 
                 for (index, layoutAttributes) in tempLayoutAttributes.enumerated()
                 {
-                    layoutAttributes.frame.origin.x = spacing + (spacing + self.itemWidth) * CGFloat(index)
+                    layoutAttributes.frame.origin.x = spacing + (spacing + self.itemWidth) * CGFloat(index) + self.contentInset.left
                 }
             }
         }
@@ -117,7 +147,7 @@ class GridCollectionViewLayout: UICollectionViewFlowLayout
 
 private extension GridCollectionViewLayout
 {
-    func alignLayoutAttributes(_ layoutAttributes: [UICollectionViewLayoutAttributes], toMinimumY minimumY: CGFloat)
+    func align(_ layoutAttributes: [UICollectionViewLayoutAttributes], toMinimumY minimumY: CGFloat)
     {
         for attributes in layoutAttributes
         {

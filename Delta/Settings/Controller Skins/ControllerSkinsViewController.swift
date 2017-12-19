@@ -100,7 +100,24 @@ private extension ControllerSkinsViewController
         let configuration = ControllerSkinConfigurations(traits: traits)
         
         let fetchRequest: NSFetchRequest<ControllerSkin> = ControllerSkin.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "%K == %@ AND (%K & %d) == %d", #keyPath(ControllerSkin.gameType), system.gameType.rawValue, #keyPath(ControllerSkin.supportedConfigurations), configuration.rawValue, configuration.rawValue)
+        
+        if traits.device == .iphone && traits.displayType == .edgeToEdge
+        {
+            let fallbackConfiguration: ControllerSkinConfigurations = (traits.orientation == .landscape) ? .standardLandscape : .standardPortrait
+            
+            // Allow selecting skins that only support standard display types as well.
+            fetchRequest.predicate = NSPredicate(format: "%K == %@ AND ((%K & %d) != 0 OR (%K & %d) != 0)",
+                                                 #keyPath(ControllerSkin.gameType), system.gameType.rawValue,
+                                                 #keyPath(ControllerSkin.supportedConfigurations), configuration.rawValue,
+                                                 #keyPath(ControllerSkin.supportedConfigurations), fallbackConfiguration.rawValue)
+        }
+        else
+        {
+            fetchRequest.predicate = NSPredicate(format: "%K == %@ AND (%K & %d) != 0",
+                                                 #keyPath(ControllerSkin.gameType), system.gameType.rawValue,
+                                                 #keyPath(ControllerSkin.supportedConfigurations), configuration.rawValue)
+        }
+        
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(ControllerSkin.isStandard), ascending: false), NSSortDescriptor(key: #keyPath(ControllerSkin.name), ascending: true)]
         
         self.dataSource.fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DatabaseManager.shared.viewContext, sectionNameKeyPath: #keyPath(ControllerSkin.name), cacheName: nil)
@@ -130,11 +147,11 @@ extension ControllerSkinsViewController
     {
         let controllerSkin = self.dataSource.item(at: indexPath)
         
-        guard let size = controllerSkin.aspectRatio(for: self.traits) else { return 150 }
-        
+        guard let traits = controllerSkin.supportedTraits(for: self.traits), let size = controllerSkin.aspectRatio(for: traits) else { return 150 }
+                
         let scale = (self.view.bounds.width / size.width)
         
-        let height = size.height * scale
+        let height = min(size.height * scale, self.view.bounds.height - self.topLayoutGuide.length - self.bottomLayoutGuide.length - 30)
         
         return height
     }

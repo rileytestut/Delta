@@ -14,37 +14,14 @@ extension ControllerSkinConfigurations
 {
     init(traits: DeltaCore.ControllerSkin.Traits)
     {
-        switch traits.deviceType
+        switch (traits.displayType, traits.orientation)
         {
-        case .iphone:
-            
-            switch traits.orientation
-            {
-            case .portrait: self = .fullScreenPortrait
-            case .landscape: self = .fullScreenLandscape
-            }
-            
-        case .ipad:
-            
-            switch traits.displayMode
-            {
-            case .fullScreen:
-                
-                switch traits.orientation
-                {
-                case .portrait: self = .fullScreenPortrait
-                case .landscape: self = .fullScreenLandscape
-                }
-                
-            case .splitView:
-                
-                switch traits.orientation
-                {
-                case .portrait: self = .splitViewPortrait
-                case .landscape: self = .splitViewLandscape
-                }
-            }
-            
+        case (.standard, .portrait): self = .standardPortrait
+        case (.standard, .landscape): self = .standardLandscape
+        case (.edgeToEdge, .portrait): self = .edgeToEdgePortrait
+        case (.edgeToEdge, .landscape): self = .edgeToEdgeLandscape
+        case (.splitView, .portrait): self = .splitViewPortrait
+        case (.splitView, .landscape): self = .splitViewLandscape
         }
     }
 }

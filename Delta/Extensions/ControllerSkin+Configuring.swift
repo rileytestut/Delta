@@ -20,54 +20,18 @@ extension ControllerSkin
         
         var configurations = ControllerSkinConfigurations()
         
-        if UIDevice.current.userInterfaceIdiom == .pad
+        let device: DeltaCore.ControllerSkin.Device = (UIDevice.current.userInterfaceIdiom == .pad) ? .ipad : .iphone
+        
+        let traitCollections: [(displayType: DeltaCore.ControllerSkin.DisplayType, orientation: DeltaCore.ControllerSkin.Orientation)] =
+            [(.standard, .portrait), (.standard, .landscape), (.edgeToEdge, .portrait), (.edgeToEdge, .landscape), (.splitView, .portrait), (.splitView, .landscape)]
+        
+        for collection in traitCollections
         {
-            var portraitTraits = DeltaCore.ControllerSkin.Traits(deviceType: .ipad, displayMode: .fullScreen, orientation: .portrait)
-            
-            var landscapeTraits = portraitTraits
-            landscapeTraits.orientation = .landscape
-            
-            
-            if skin.supports(portraitTraits)
+            let traits = DeltaCore.ControllerSkin.Traits(device: device, displayType: collection.displayType, orientation: collection.orientation)
+            if skin.supports(traits)
             {
-                configurations.formUnion(.fullScreenPortrait)
-            }
-            
-            if skin.supports(landscapeTraits)
-            {
-                configurations.formUnion(.fullScreenLandscape)
-            }
-            
-            
-            portraitTraits.displayMode = .splitView
-            landscapeTraits.displayMode = .splitView
-            
-            
-            if skin.supports(portraitTraits)
-            {
-                configurations.formUnion(.splitViewPortrait)
-            }
-            
-            if skin.supports(landscapeTraits)
-            {
-                configurations.formUnion(.splitViewLandscape)
-            }
-        }
-        else
-        {
-            let portraitTraits = DeltaCore.ControllerSkin.Traits(deviceType: .iphone, displayMode: .fullScreen, orientation: .portrait)
-            
-            var landscapeTraits = portraitTraits
-            landscapeTraits.orientation = .landscape
-            
-            if skin.supports(portraitTraits)
-            {
-                configurations.formUnion(.fullScreenPortrait)
-            }
-            
-            if skin.supports(landscapeTraits)
-            {
-                configurations.formUnion(.fullScreenLandscape)
+                let configuration = ControllerSkinConfigurations(traits: traits)
+                configurations.formUnion(configuration)
             }
         }
         
