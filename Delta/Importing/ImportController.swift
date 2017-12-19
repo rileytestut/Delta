@@ -194,25 +194,30 @@ extension ImportController: UIDocumentBrowserViewControllerDelegate
             
             let intent = NSFileAccessIntent.readingIntent(with: url)
             self.fileCoordinator.coordinate(with: [intent], queue: self.importQueue) { (error) in
-                if let error = error
+                
+                do
                 {
-                    errors.append(error)
-                }
-                else
-                {
-                    let temporaryURL = FileManager.default.temporaryDirectory.appendingPathComponent(url.lastPathComponent)
-                    
-                    do
+                    if let error = error
                     {
-                        // Always access intent.url, as the system may have updated it when requesting access.
+                        throw error
+                    }
+                    else
+                    {
+                        // User intent.url, not url, as the system may have updated it when requesting access.
+                        guard intent.url.startAccessingSecurityScopedResource() else { throw CocoaError.error(.fileReadNoPermission) }
+                        defer { intent.url.stopAccessingSecurityScopedResource() }
+                        
+                        // Use url, not intent.url, to ensure the file name matches what was in the document browser.
+                        let temporaryURL = FileManager.default.temporaryDirectory.appendingPathComponent(url.lastPathComponent)
+                        
                         try FileManager.default.copyItem(at: intent.url, to: temporaryURL)
                         
                         coordinatedURLs.insert(temporaryURL)
                     }
-                    catch
-                    {
-                        errors.append(error)
-                    }
+                }
+                catch
+                {
+                    errors.append(error)
                 }
                 
                 dispatchGroup.leave()
