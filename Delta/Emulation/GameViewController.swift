@@ -192,6 +192,8 @@ extension GameViewController
         
         let gameViewContainerView = self.gameView.superview!
         
+        self.controllerView.translucentControllerSkinOpacity = Settings.translucentControllerSkinOpacity
+        
         self.sustainButtonsContentView = UIView(frame: CGRect(x: 0, y: 0, width: self.gameView.bounds.width, height: self.gameView.bounds.height))
         self.sustainButtonsContentView.translatesAutoresizingMaskIntoConstraints = false
         self.sustainButtonsContentView.isHidden = true
@@ -444,15 +446,6 @@ private extension GameViewController
         
         let controllerSkin = Settings.preferredControllerSkin(for: system, traits: traits)
         self.controllerView.controllerSkin = controllerSkin
-        
-        if controllerSkin?.isTranslucent(for: traits) ?? false
-        {
-            self.controllerView.alpha = Settings.translucentControllerSkinOpacity
-        }
-        else
-        {
-            self.controllerView.alpha = 1.0
-        }
     }
 }
 
@@ -860,14 +853,7 @@ private extension GameViewController
                 self.updateControllerSkin()
             }
             
-        case .translucentControllerSkinOpacity:
-            if let traits = self.controllerView.controllerSkinTraits
-            {
-                if self.controllerView.controllerSkin?.isTranslucent(for: traits) ?? false
-                {
-                    self.controllerView.alpha = Settings.translucentControllerSkinOpacity
-                }
-            }
+        case .translucentControllerSkinOpacity: self.controllerView.translucentControllerSkinOpacity = Settings.translucentControllerSkinOpacity
         }
     }
 }
