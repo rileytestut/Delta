@@ -39,6 +39,7 @@ class SettingsViewController: UITableViewController
 {
     @IBOutlet private var controllerOpacityLabel: UILabel!
     @IBOutlet private var controllerOpacitySlider: UISlider!
+    @IBOutlet private var versionLabel: UILabel!
     
     private var selectionFeedbackGenerator: UISelectionFeedbackGenerator?
     
@@ -58,6 +59,15 @@ class SettingsViewController: UITableViewController
         
         self.controllerOpacitySlider.value = Float(Settings.translucentControllerSkinOpacity)
         self.updateControllerOpacityLabel()
+        
+        if let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
+        {
+            self.versionLabel.text = NSLocalizedString(String(format: "Delta %@", version), comment: "Delta Version")
+        }
+        else
+        {
+            self.versionLabel.text = NSLocalizedString("Delta", comment: "")
+        }
     }
     
     override func viewWillAppear(_ animated: Bool)
