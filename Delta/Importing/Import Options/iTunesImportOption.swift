@@ -40,7 +40,7 @@ struct iTunesImportOption: ImportOption
                 
                 for url in itemURLs
                 {
-                    let destinationURL = FileManager.default.uniqueTemporaryURL().appendingPathExtension(url.pathExtension)
+                    let destinationURL = FileManager.default.temporaryDirectory.appendingPathComponent(url.lastPathComponent)
                     
                     do
                     {
