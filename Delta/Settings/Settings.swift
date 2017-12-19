@@ -145,15 +145,16 @@ private extension Settings
         case .landscape: orientation = "landscape"
         }
         
-        let displayMode: String
+        let displayType: String
         
-        switch traits.displayMode
+        switch traits.displayType
         {
-        case .fullScreen: displayMode = "fullscreen"
-        case .splitView: displayMode = "splitview"
+        case .standard: displayType = "standard"
+        case .edgeToEdge: displayType = "standard" // In this context, standard and edge-to-edge skins are treated the same.
+        case .splitView: displayType = "splitview"
         }
         
-        let key = systemName + "-" + orientation + "-" + displayMode + "-controller"
+        let key = systemName + "-" + orientation + "-" + displayType + "-controller"
         return key
     }
 }

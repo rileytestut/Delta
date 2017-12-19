@@ -25,6 +25,8 @@ class SystemControllerSkinsViewController: UITableViewController
     
     @IBOutlet private var portraitImageView: UIImageView!
     @IBOutlet private var landscapeImageView: UIImageView!
+    
+    private var _previousBoundsSize: CGSize?
 }
 
 extension SystemControllerSkinsViewController
@@ -35,27 +37,31 @@ extension SystemControllerSkinsViewController
         
         self.title = self.system.localizedShortName
     }
-    
-    override func viewWillAppear(_ animated: Bool)
-    {
-        self.updateControllerSkins()
-        
-        super.viewWillAppear(animated)
-    }
 
     override func didReceiveMemoryWarning()
     {
         super.didReceiveMemoryWarning()
     }
     
+    override func viewDidLayoutSubviews()
+    {
+        super.viewDidLayoutSubviews()
+        
+        if self.view.bounds.size != self._previousBoundsSize
+        {
+            self.updateControllerSkins()
+            self.tableView.reloadData()
+        }
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?)
     {
-        guard let cell = sender as? UITableViewCell, let indexPath = self.tableView.indexPath(for: cell) else { return }
+        guard let cell = sender as? UITableViewCell, let indexPath = self.tableView.indexPath(for: cell), let window = self.view.window else { return }
         
         let controllerSkinsViewController = segue.destination as! ControllerSkinsViewController
         controllerSkinsViewController.system = self.system
         
-        var traits = DeltaCore.ControllerSkin.Traits.defaults(for: self.view)
+        var traits = DeltaCore.ControllerSkin.Traits.defaults(for: window)
         
         let section = Section(rawValue: indexPath.section)!
         switch section
@@ -86,7 +92,7 @@ extension SystemControllerSkinsViewController
         
         let scale = (self.view.bounds.width / unwrappedImageSize.width)
         
-        let height = unwrappedImageSize.height * scale
+        let height = min(unwrappedImageSize.height * scale, self.view.bounds.height - self.topLayoutGuide.length - self.bottomLayoutGuide.length - 30)
         return height
     }
     
@@ -102,8 +108,17 @@ private extension SystemControllerSkinsViewController
 {
     func updateControllerSkins()
     {
-        let portraitTraits = DeltaCore.ControllerSkin.Traits(deviceType: .iphone, displayMode: DeltaCore.ControllerSkin.DisplayMode.fullScreen, orientation: .portrait)
-        let landscapeTraits = DeltaCore.ControllerSkin.Traits(deviceType: .iphone, displayMode: DeltaCore.ControllerSkin.DisplayMode.fullScreen, orientation: .landscape)
+        guard let window = self.view.window else { return }
+        
+        self._previousBoundsSize = self.view.bounds.size
+        
+        let defaultTraits = DeltaCore.ControllerSkin.Traits.defaults(for: window)
+        
+        var portraitTraits = defaultTraits
+        portraitTraits.orientation = .portrait
+        
+        var landscapeTraits = defaultTraits
+        landscapeTraits.orientation = .landscape
         
         let portraitControllerSkin = Settings.preferredControllerSkin(for: self.system, traits: portraitTraits)
         let landscapeControllerSkin = Settings.preferredControllerSkin(for: self.system, traits: landscapeTraits)

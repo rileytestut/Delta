@@ -440,9 +440,9 @@ private extension GameViewController
     
     func updateControllerSkin()
     {
-        guard let game = self.game, let system = System(gameType: game.type) else { return }
+        guard let game = self.game, let system = System(gameType: game.type), let window = self.view.window else { return }
         
-        let traits = DeltaCore.ControllerSkin.Traits.defaults(for: self.view)
+        let traits = DeltaCore.ControllerSkin.Traits.defaults(for: window)
         
         let controllerSkin = Settings.preferredControllerSkin(for: system, traits: traits)
         self.controllerView.controllerSkin = controllerSkin
@@ -846,9 +846,8 @@ private extension GameViewController
                 let system = notification.userInfo?[Settings.NotificationUserInfoKey.system] as? System,
                 let traits = notification.userInfo?[Settings.NotificationUserInfoKey.traits] as? DeltaCore.ControllerSkin.Traits
             else { return }
-            
-            let currentTraits = DeltaCore.ControllerSkin.Traits.defaults(for: self.view)
-            if system.gameType == self.game?.type && traits == currentTraits
+                        
+            if system.gameType == self.game?.type && traits.orientation == self.controllerView.controllerSkinTraits?.orientation
             {
                 self.updateControllerSkin()
             }
