@@ -526,17 +526,15 @@ extension GameCollectionViewController: ImportControllerDelegate
                 {
                     let imageData = try Data(contentsOf: url)
                     
-                    if let image = UIImage(data: imageData)
+                    if
+                        let image = UIImage(data: imageData),
+                        let resizedImage = image.resizing(toFit: CGSize(width: 300, height: 300)),
+                        let resizedData = UIImageJPEGRepresentation(resizedImage, 0.85)
                     {
-                        let resizedImage = image.resizing(toFit: CGSize(width: 300, height: 300))
+                        let destinationURL = DatabaseManager.artworkURL(for: game)
+                        try resizedData.write(to: destinationURL, options: .atomic)
                         
-                        if let resizedData = UIImageJPEGRepresentation(resizedImage, 0.85)
-                        {
-                            let destinationURL = DatabaseManager.artworkURL(for: game)
-                            try resizedData.write(to: destinationURL, options: .atomic)
-                            
-                            imageURL = destinationURL
-                        }
+                        imageURL = destinationURL
                     }
                 }
                 catch
