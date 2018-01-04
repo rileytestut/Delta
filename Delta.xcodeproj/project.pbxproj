@@ -810,7 +810,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "/usr/local/bin/mogenerator -m \"Delta/Database/Model/Model.xcdatamodel\" --human-dir \"Delta/Database/Model/Human\" --machine-dir \"Delta/Database/Model/Machine\" --swift --template-var scalarsWhenNonOptional=true --template-path \"Delta/Database/Model/mogenerator/templates\"";
+			shellScript = "/usr/local/bin/mogenerator -m \"Delta/Database/Model/Delta.xcdatamodeld\" --human-dir \"Delta/Database/Model/Human\" --machine-dir \"Delta/Database/Model/Machine\" --swift --template-var scalarsWhenNonOptional=true --template-path \"Delta/Database/Model/mogenerator/templates\"";
 		};
 		BF6BF3281EB897F6008E83CD /* Fabric */ = {
 			isa = PBXShellScriptBuildPhase;
