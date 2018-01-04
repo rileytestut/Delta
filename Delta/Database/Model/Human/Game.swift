@@ -57,6 +57,18 @@ public class Game: _Game, GameProtocol
 
 extension Game
 {
+    class var recentlyPlayedFetchRequest: NSFetchRequest<Game> {
+        let fetchRequest: NSFetchRequest<Game> = Game.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "%K != nil", #keyPath(Game.playedDate))
+        fetchRequest.sortDescriptors = [NSSortDescriptor(keyPath: \Game.playedDate, ascending: false), NSSortDescriptor(keyPath: \Game.name, ascending: true)]
+        fetchRequest.fetchLimit = 4
+        
+        return fetchRequest
+    }
+}
+
+extension Game
+{
     override public func prepareForDeletion()
     {
         super.prepareForDeletion()

@@ -22,6 +22,8 @@ public class _Game: NSManagedObject
 
     @NSManaged public var name: String
 
+    @NSManaged public var playedDate: Date?
+
     @NSManaged public var type: GameType
 
     // MARK: - Relationships

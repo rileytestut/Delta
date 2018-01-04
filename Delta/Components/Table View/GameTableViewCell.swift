@@ -1,5 +1,5 @@
 //
-//  GameMetadataTableViewCell.swift
+//  GameTableViewCell.swift
 //  Delta
 //
 //  Created by Riley Testut on 3/27/17.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class GameMetadataTableViewCell: UITableViewCell
+class GameTableViewCell: UITableViewCell
 {
     @IBOutlet private(set) var nameLabel: UILabel!
     @IBOutlet private(set) var artworkImageView: UIImageView!

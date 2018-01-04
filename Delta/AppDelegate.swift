@@ -17,6 +17,8 @@ import Crashlytics
 class AppDelegate: UIResponder, UIApplicationDelegate
 {
     var window: UIWindow?
+    
+    private let deepLinkController = DeepLinkController()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool
     {
@@ -35,12 +37,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         }
         
         // Database
-        
         DatabaseManager.shared.loadPersistentStores { (description, error) in
         }
         
         // Controllers
         ExternalGameControllerManager.shared.startMonitoring()
+        
+        // Deep Links
+        if let shortcut = launchOptions?[.shortcutItem] as? UIApplicationShortcutItem
+        {
+            self.deepLinkController.handle(.shortcut(shortcut))
+            
+            // false = we handled the deep link, so no need to call delegate method separately.
+            return false
+        }
                 
         return true
     }
@@ -78,8 +88,6 @@ extension AppDelegate
     func configureAppearance()
     {
         self.window?.tintColor = UIColor.deltaPurple
-        
-        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).defaultTextAttributes[NSAttributedStringKey.foregroundColor.rawValue] = UIColor.white
     }
 }
 
@@ -92,15 +100,20 @@ extension AppDelegate
     
     @discardableResult private func openURL(_ url: URL) -> Bool
     {
-        guard url.isFileURL else { return false }
-        
-        if GameType(fileExtension: url.pathExtension) != nil || url.pathExtension.lowercased() == "zip"
+        if url.isFileURL
         {
-            return self.importGame(at: url)
+            if GameType(fileExtension: url.pathExtension) != nil || url.pathExtension.lowercased() == "zip"
+            {
+                return self.importGame(at: url)
+            }
+            else if url.pathExtension.lowercased() == "deltaskin"
+            {
+                return self.importControllerSkin(at: url)
+            }
         }
-        else if url.pathExtension.lowercased() == "deltaskin"
+        else
         {
-            return self.importControllerSkin(at: url)
+            return self.deepLinkController.handle(.url(url))
         }
         
         return false
@@ -142,6 +155,15 @@ extension AppDelegate
         }
         
         rootViewController?.present(alertController, animated: true, completion: nil)
+    }
+}
+
+extension AppDelegate
+{
+    func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void)
+    {
+        let result = self.deepLinkController.handle(.shortcut(shortcutItem))
+        completionHandler(result)
     }
 }
 

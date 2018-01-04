@@ -130,11 +130,11 @@ extension SaveStatesViewController
         self.navigationController?.toolbar.barStyle = .blackTranslucent
         
         self.updateTheme()
-    }
+    }    
     
-    override func viewDidDisappear(_ animated: Bool)
+    override func viewWillDisappear(_ animated: Bool)
     {
-        super.viewDidDisappear(animated)
+        super.viewWillDisappear(animated)
         
         self.resetEmulatorCoreIfNeeded()
     }

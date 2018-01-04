@@ -93,6 +93,21 @@ class GameViewController: DeltaCore.GameViewController
         }
     }
     
+    private var _deepLinkResumingSaveState: SaveStateProtocol? {
+        didSet {
+            guard let saveState = oldValue, _deepLinkResumingSaveState == nil else { return }
+            
+            do
+            {
+                try FileManager.default.removeItem(at: saveState.fileURL)
+            }
+            catch
+            {
+                print(error)
+            }
+        }
+    }
+    
     private var _isLoadingSaveState = false
     
     private var context = CIContext(options: [kCIContextWorkingColorSpace: NSNull()])
@@ -127,6 +142,7 @@ class GameViewController: DeltaCore.GameViewController
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.updateControllers), name: .externalGameControllerDidDisconnect, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.didEnterBackground(with:)), name: .UIApplicationDidEnterBackground, object: UIApplication.shared)
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.settingsDidChange(with:)), name: .settingsDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.deepLinkControllerLaunchGame(with:)), name: .deepLinkControllerLaunchGame, object: nil)
     }
     
     deinit
@@ -364,7 +380,11 @@ extension GameViewController
     @IBAction private func unwindFromGamesViewController(with segue: UIStoryboardSegue)
     {
         self.pausedSaveState = nil
-        self.emulatorCore?.resume()
+        
+        if let emulatorCore = self.emulatorCore, emulatorCore.state == .paused
+        {
+            emulatorCore.resume()
+        }
     }
     
     // MARK: - KVO
@@ -375,9 +395,38 @@ extension GameViewController
         
         guard let rawValue = change?[.oldKey] as? Int, let previousState = EmulatorCore.State(rawValue: rawValue) else { return }
         
+        if let saveState = _deepLinkResumingSaveState, let emulatorCore = self.emulatorCore, emulatorCore.state == .running
+        {
+            emulatorCore.pause()
+            
+            do
+            {
+                try emulatorCore.load(saveState)
+            }
+            catch
+            {
+                print(error)
+            }
+            
+            _deepLinkResumingSaveState = nil
+            emulatorCore.resume()
+        }
+        
         if previousState == .stopped
         {
             self.emulatorCore?.updateCheats()
+        }
+        
+        if self.emulatorCore?.state == .running
+        {
+            DatabaseManager.shared.performBackgroundTask { (context) in
+                guard let game = self.game as? Game else { return }
+                
+                let backgroundGame = context.object(with: game.objectID) as! Game
+                backgroundGame.playedDate = Date()
+                
+                context.saveWithErrorLogging()
+            }
         }
     }
 }
@@ -812,7 +861,8 @@ extension GameViewController: GameViewControllerDelegate
     
     func gameViewControllerShouldResumeEmulation(_ gameViewController: DeltaCore.GameViewController) -> Bool
     {
-        return (self.presentedViewController == nil || self.presentedViewController?.isDisappearing == true) && !self.isSelectingSustainedButtons && self.view.window != nil
+        let result = (self.presentedViewController == nil || self.presentedViewController?.isDisappearing == true) && !self.isSelectingSustainedButtons && self.view.window != nil
+        return result
     }
 }
 
@@ -857,5 +907,45 @@ private extension GameViewController
             
         case .translucentControllerSkinOpacity: self.controllerView.translucentControllerSkinOpacity = Settings.translucentControllerSkinOpacity
         }
+    }
+    
+    @objc func deepLinkControllerLaunchGame(with notification: Notification)
+    {
+        guard let game = notification.userInfo?[DeepLink.Key.game] as? Game else { return }
+        
+        self.game = game
+        
+        if let pausedSaveState = self.pausedSaveState, game == (self.game as? Game)
+        {
+            // Launching current game via deep link, so we store a copy of the paused save state to resume when emulator core is started.
+            
+            do
+            {
+                let temporaryURL = FileManager.default.uniqueTemporaryURL()
+                try FileManager.default.copyItem(at: pausedSaveState.fileURL, to: temporaryURL)
+                
+                _deepLinkResumingSaveState = DeltaCore.SaveState(fileURL: temporaryURL, gameType: game.type)
+            }
+            catch
+            {
+                print(error)
+            }
+        }
+        
+        if let pauseViewController = self.pauseViewController
+        {
+            let segue = UIStoryboardSegue(identifier: "unwindFromPauseMenu", source: pauseViewController, destination: self)
+            self.unwindFromPauseViewController(segue)
+        }
+        else if
+            let navigationController = self.presentedViewController as? UINavigationController,
+            let pageViewController = navigationController.topViewController?.childViewControllers.first as? UIPageViewController,
+            let gameCollectionViewController = pageViewController.viewControllers?.first as? GameCollectionViewController
+        {
+            let segue = UIStoryboardSegue(identifier: "unwindFromGames", source: gameCollectionViewController, destination: self)
+            self.unwindFromGamesViewController(with: segue)
+        }
+        
+        self.dismiss(animated: true, completion: nil)
     }
 }
