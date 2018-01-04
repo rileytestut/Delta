@@ -412,8 +412,11 @@ private extension GameViewController
         
         if let emulatorCore = self.emulatorCore, let game = self.game
         {
-            let controllers = [self.controllerView as GameController] + ExternalGameControllerManager.shared.connectedControllers
-            
+            // Roundabout way of combining arrays to prevent rare runtime crash in + operator :(
+            var controllers = [GameController]()
+            controllers.append(self.controllerView)
+            controllers.append(contentsOf: ExternalGameControllerManager.shared.connectedControllers)
+
             for gameController in controllers
             {
                 if gameController.playerIndex != nil
