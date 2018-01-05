@@ -200,6 +200,8 @@ private extension GamesViewController
             searchResultsController?.dataSource.predicate = searchValue.predicate
             return nil
         }
+        self.searchController?.searchBar.barStyle = .black
+        
         self.navigationItem.searchController = self.searchController
         self.navigationItem.hidesSearchBarWhenScrolling = false
         

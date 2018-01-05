@@ -35,6 +35,15 @@ extension Settings
     }
 }
 
+extension Settings
+{
+    enum GameShortcutsMode: String
+    {
+        case recent
+        case manual
+    }
+}
+
 struct Settings
 {
     /// Controllers
@@ -66,9 +75,54 @@ struct Settings
         }
     }
     
+    static var gameShortcutsMode: GameShortcutsMode {
+        set { UserDefaults.standard.gameShortcutsMode = newValue.rawValue }
+        get {
+            let mode = GameShortcutsMode(rawValue: UserDefaults.standard.gameShortcutsMode) ?? .recent
+            return mode
+        }
+    }
+    
+    static var gameShortcuts: [Game] {
+        set {
+            let identifiers = newValue.map { $0.identifier }
+            UserDefaults.standard.gameShortcutIdentifiers = identifiers
+            
+            let shortcuts = newValue.map { UIApplicationShortcutItem(localizedTitle: $0.name, action: .launchGame(identifier: $0.identifier)) }
+            
+            DispatchQueue.main.async {
+                UIApplication.shared.shortcutItems = shortcuts
+            }
+        }
+        get {
+            let identifiers = UserDefaults.standard.gameShortcutIdentifiers
+            
+            do
+            {
+                let fetchRequest: NSFetchRequest<Game> = Game.fetchRequest()
+                fetchRequest.predicate = NSPredicate(format: "%K IN %@", #keyPath(Game.identifier), identifiers)
+                fetchRequest.returnsObjectsAsFaults = false
+                
+                let games = try DatabaseManager.shared.viewContext.fetch(fetchRequest).sorted(by: { (game1, game2) -> Bool in
+                    let index1 = identifiers.index(of: game1.identifier)!
+                    let index2 = identifiers.index(of: game2.identifier)!
+                    return index1 < index2
+                })
+                
+                return games
+            }
+            catch
+            {
+                print(error)
+            }
+            
+            return []
+        }
+    }
+    
     static func registerDefaults()
     {
-        let defaults = [#keyPath(UserDefaults.translucentControllerSkinOpacity): 0.7]
+        let defaults = [#keyPath(UserDefaults.translucentControllerSkinOpacity): 0.7, #keyPath(UserDefaults.gameShortcutsMode): GameShortcutsMode.recent.rawValue] as [String : Any]
         UserDefaults.standard.register(defaults: defaults)
     }
     
@@ -163,4 +217,7 @@ private extension UserDefaults
 {
     @NSManaged var translucentControllerSkinOpacity: CGFloat
     @NSManaged var previousGameCollectionIdentifier: String?
+    
+    @NSManaged var gameShortcutsMode: String
+    @NSManaged var gameShortcutIdentifiers: [String]
 }

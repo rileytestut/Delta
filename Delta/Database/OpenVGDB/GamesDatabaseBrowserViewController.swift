@@ -54,6 +54,8 @@ class GamesDatabaseBrowserViewController: UITableViewController
         
         self.view.backgroundColor = UIColor.deltaDarkGray
         
+        self.tableView.register(GameTableViewCell.nib!, forCellReuseIdentifier: RSTCellContentGenericCellIdentifier)
+        
         self.tableView.dataSource = self.dataSource
         self.tableView.prefetchDataSource = self.dataSource
         
@@ -61,7 +63,7 @@ class GamesDatabaseBrowserViewController: UITableViewController
         self.tableView.separatorColor = UIColor.gray
         
         self.dataSource.searchController.delegate = self
-        self.dataSource.searchController.searchBar.barStyle = .blackTranslucent
+        self.dataSource.searchController.searchBar.barStyle = .black
         
         if #available(iOS 11, *)
         {
@@ -95,7 +97,7 @@ private extension GamesDatabaseBrowserViewController
         
         /* Cell Configuration */
         self.dataSource.cellConfigurationHandler = { [unowned self] (cell, metadata, indexPath) in
-            self.configure(cell: cell as! GameMetadataTableViewCell, with: metadata, for: indexPath)
+            self.configure(cell: cell as! GameTableViewCell, with: metadata, for: indexPath)
         }
         
         
@@ -113,7 +115,7 @@ private extension GamesDatabaseBrowserViewController
         self.dataSource.prefetchCompletionHandler = { (cell, image, indexPath, error) in
             guard let image = image else { return }
             
-            let cell = cell as! GameMetadataTableViewCell
+            let cell = cell as! GameTableViewCell
             
             let artworkDisplaySize = AVMakeRect(aspectRatio: image.size, insideRect: cell.artworkImageView.bounds)
             let offset = (cell.artworkImageView.bounds.width - artworkDisplaySize.width) / 2
@@ -150,7 +152,7 @@ private extension GamesDatabaseBrowserViewController
 
 private extension GamesDatabaseBrowserViewController
 {
-    func configure(cell: GameMetadataTableViewCell, with metadata: GameMetadata, for indexPath: IndexPath)
+    func configure(cell: GameTableViewCell, with metadata: GameMetadata, for indexPath: IndexPath)
     {
         cell.backgroundColor = UIColor.deltaDarkGray
         

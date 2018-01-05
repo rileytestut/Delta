@@ -62,6 +62,8 @@ final class DatabaseManager: NSPersistentContainer
     
     private var gamesDatabase: GamesDatabase? = nil
     
+    private var validationManagedObjectContext: NSManagedObjectContext?
+    
     private init()
     {
         guard
@@ -94,11 +96,39 @@ extension DatabaseManager
     }
 }
 
+//MARK: - Update -
+private extension DatabaseManager
+{
+    func updateRecentGameShortcuts()
+    {
+        guard let managedObjectContext = self.validationManagedObjectContext else { return }
+        
+        guard Settings.gameShortcutsMode == .recent else { return }
+        
+        let fetchRequest = Game.recentlyPlayedFetchRequest
+        fetchRequest.returnsObjectsAsFaults = false
+        
+        do
+        {
+            let games = try managedObjectContext.fetch(fetchRequest)
+            Settings.gameShortcuts = games
+        }
+        catch
+        {
+            print(error)
+        }
+    }
+}
+
 //MARK: - Preparation -
 private extension DatabaseManager
 {
     func prepareDatabase(completion: @escaping () -> Void)
     {
+        self.validationManagedObjectContext = self.newBackgroundContext()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(DatabaseManager.validateManagedObjectContextSave(with:)), name: .NSManagedObjectContextDidSave, object: nil)
+        
         self.performBackgroundTask { (context) in
             
             for system in System.supportedSystems
@@ -137,7 +167,6 @@ private extension DatabaseManager
             }
             
             completion()
-            
         }
     }
 }
@@ -499,6 +528,28 @@ extension DatabaseManager
         
         let artworkURL = gameURL.deletingPathExtension().appendingPathExtension("jpg")
         return artworkURL
+    }
+}
+
+//MARK: - Notifications -
+private extension DatabaseManager
+{
+    @objc func validateManagedObjectContextSave(with notification: Notification)
+    {
+        guard (notification.object as? NSManagedObjectContext) != self.validationManagedObjectContext else { return }
+        
+        let insertedObjects = (notification.userInfo?[NSInsertedObjectsKey] as? Set<NSManagedObject>) ?? []
+        let updatedObjects = (notification.userInfo?[NSUpdatedObjectsKey] as? Set<NSManagedObject>) ?? []
+        let deletedObjects = (notification.userInfo?[NSDeletedObjectsKey] as? Set<NSManagedObject>) ?? []
+        
+        let allObjects = insertedObjects.union(updatedObjects).union(deletedObjects)
+
+        if allObjects.contains(where: { $0 is Game })
+        {
+            self.validationManagedObjectContext?.perform {
+                self.updateRecentGameShortcuts()
+            }
+        }
     }
 }
 

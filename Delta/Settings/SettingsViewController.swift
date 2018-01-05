@@ -19,6 +19,7 @@ private extension SettingsViewController
         case controllers
         case controllerSkins
         case controllerOpacity
+        case threeDTouch
     }
     
     enum Segue: String
@@ -130,6 +131,15 @@ private extension SettingsViewController
         let percentage = String(format: "%.f", Settings.translucentControllerSkinOpacity * 100) + "%"
         self.controllerOpacityLabel.text = percentage
     }
+    
+    func isSectionHidden(_ section: Section) -> Bool
+    {
+        switch section
+        {
+        case .threeDTouch: return self.view.traitCollection.forceTouchCapability != .available
+        default: return false
+        }
+    }
 }
 
 private extension SettingsViewController
@@ -183,7 +193,15 @@ extension SettingsViewController
         {
         case .controllers: return 1 // Temporarily hide other controller indexes until controller logic is finalized
         case .controllerSkins: return System.supportedSystems.count
-        default: return super.tableView(tableView, numberOfRowsInSection: sectionIndex)
+        default:
+            if isSectionHidden(section)
+            {
+                return 0
+            }
+            else
+            {
+                return super.tableView(tableView, numberOfRowsInSection: sectionIndex)
+            }
         }
     }
     
@@ -226,6 +244,64 @@ extension SettingsViewController
         case Section.controllers: self.performSegue(withIdentifier: Segue.controllers.rawValue, sender: cell)
         case Section.controllerSkins: self.performSegue(withIdentifier: Segue.controllerSkins.rawValue, sender: cell)
         case Section.controllerOpacity: break
+        case Section.threeDTouch: break
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String?
+    {
+        let section = Section(rawValue: section)!
+        
+        if isSectionHidden(section)
+        {
+            return nil
+        }
+        else
+        {
+            return super.tableView(tableView, titleForHeaderInSection: section.rawValue)
+        }
+    }
+    
+    
+    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String?
+    {
+        let section = Section(rawValue: section)!
+        
+        if isSectionHidden(section)
+        {
+            return nil
+        }
+        else
+        {
+            return super.tableView(tableView, titleForFooterInSection: section.rawValue)
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat
+    {
+        let section = Section(rawValue: section)!
+        
+        if isSectionHidden(section)
+        {
+            return 1
+        }
+        else
+        {
+            return super.tableView(tableView, heightForHeaderInSection: section.rawValue)
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat
+    {
+        let section = Section(rawValue: section)!
+        
+        if isSectionHidden(section)
+        {
+            return 1
+        }
+        else
+        {
+            return super.tableView(tableView, heightForFooterInSection: section.rawValue)
         }
     }
 }
