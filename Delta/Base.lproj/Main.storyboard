@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="SPq-Bk-fQl">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13528" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="SPq-Bk-fQl">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13526"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -31,13 +31,13 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="tmn-gd-5UN" secondAttribute="trailing" id="9Rq-HM-vqk"/>
-                            <constraint firstItem="0om-QB-N5a" firstAttribute="top" secondItem="tmn-gd-5UN" secondAttribute="bottom" id="DV5-hh-1VN"/>
                             <constraint firstItem="tmn-gd-5UN" firstAttribute="leading" secondItem="3Bk-k3-7J9" secondAttribute="leading" id="f1f-sa-dBA"/>
+                            <constraint firstAttribute="bottom" secondItem="tmn-gd-5UN" secondAttribute="bottom" id="ifM-Wa-u9y"/>
                             <constraint firstItem="tmn-gd-5UN" firstAttribute="top" secondItem="3Bk-k3-7J9" secondAttribute="top" id="nhS-aC-rUR"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Games" id="pFk-as-3k4">
-                        <barButtonItem key="leftBarButtonItem" image="Settings_Button" id="2gg-lC-FhX">
+                        <barButtonItem key="leftBarButtonItem" image="SettingsButton" id="2gg-lC-FhX">
                             <connections>
                                 <segue destination="xMK-Cs-fAS" kind="presentation" id="uN5-PN-7FK"/>
                             </connections>
@@ -57,7 +57,7 @@
         <scene sceneID="qNA-NP-TiF">
             <objects>
                 <collectionViewController storyboardIdentifier="gameCollectionViewController" clearsSelectionOnViewWillAppear="NO" id="kqu-75-owz" customClass="GameCollectionViewController" customModule="Delta" customModuleProvider="target" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="OIq-Z8-kxO">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" indicatorStyle="white" dataMode="prototypes" id="OIq-Z8-kxO">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
@@ -183,12 +183,11 @@
                     <toolbarItems/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="wj9-1e-eev">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="M4r-sO-G4H">
-                        <rect key="frame" x="0.0" y="556" width="600" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </toolbar>
                     <connections>
@@ -213,7 +212,7 @@
                 <navigationController storyboardIdentifier="saveStatesNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="MPk-bF-nkj" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="twH-3X-6DV">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -239,7 +238,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Settings_Button" width="22" height="22"/>
+        <image name="SettingsButton" width="16" height="16"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="Tey-6Z-UHp"/>

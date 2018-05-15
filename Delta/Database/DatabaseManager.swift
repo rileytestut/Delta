@@ -60,15 +60,14 @@ final class DatabaseManager: NSPersistentContainer
 {
     static let shared = DatabaseManager()
     
-    fileprivate var gamesDatabase: GamesDatabase? = nil
+    private var gamesDatabase: GamesDatabase? = nil
     
     private init()
     {
         guard
-            let modelURL = Bundle(for: DatabaseManager.self).url(forResource: "Model", withExtension: "mom"),
+            let modelURL = Bundle(for: DatabaseManager.self).url(forResource: "Delta", withExtension: "momd"),
             let managedObjectModel = NSManagedObjectModel(contentsOf: modelURL)
         else { fatalError("Core Data model cannot be found. Aborting.") }
-        
         
         super.init(name: "Delta", managedObjectModel: managedObjectModel)
         
@@ -98,7 +97,7 @@ extension DatabaseManager
 //MARK: - Preparation -
 private extension DatabaseManager
 {
-    func prepareDatabase(completion: @escaping (Void) -> Void)
+    func prepareDatabase(completion: @escaping () -> Void)
     {
         self.performBackgroundTask { (context) in
             

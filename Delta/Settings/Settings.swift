@@ -40,12 +40,14 @@ struct Settings
     /// Controllers
     static var localControllerPlayerIndex: Int? = 0 {
         didSet {
+            guard self.localControllerPlayerIndex != oldValue else { return }
             NotificationCenter.default.post(name: .settingsDidChange, object: nil, userInfo: [NotificationUserInfoKey.name: Name.localControllerPlayerIndex])
         }
     }
     
     static var translucentControllerSkinOpacity: CGFloat {
         set {
+            guard newValue != self.translucentControllerSkinOpacity else { return }
             UserDefaults.standard.translucentControllerSkinOpacity = newValue
             NotificationCenter.default.post(name: .settingsDidChange, object: nil, userInfo: [NotificationUserInfoKey.name: Name.translucentControllerSkinOpacity])
         }
@@ -113,6 +115,9 @@ struct Settings
     static func setPreferredControllerSkin(_ controllerSkin: ControllerSkin, for system: System, traits: DeltaCore.ControllerSkin.Traits)
     {
         guard let userDefaultKey = self.preferredControllerSkinKey(for: system, traits: traits) else { return }
+        
+        guard UserDefaults.standard.string(forKey: userDefaultKey) != controllerSkin.identifier else { return }
+        
         UserDefaults.standard.set(controllerSkin.identifier, forKey: userDefaultKey)
         
         NotificationCenter.default.post(name: .settingsDidChange, object: controllerSkin, userInfo: [NotificationUserInfoKey.name: Name.preferredControllerSkin, NotificationUserInfoKey.system: system, NotificationUserInfoKey.traits: traits])

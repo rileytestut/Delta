@@ -40,7 +40,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         }
         
         // Controllers
-        ExternalControllerManager.shared.startMonitoringExternalControllers()
+        ExternalGameControllerManager.shared.startMonitoring()
                 
         return true
     }
@@ -79,7 +79,7 @@ extension AppDelegate
     {
         self.window?.tintColor = UIColor.deltaPurple
         
-        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).defaultTextAttributes[NSForegroundColorAttributeName] = UIColor.white
+        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).defaultTextAttributes[NSAttributedStringKey.foregroundColor.rawValue] = UIColor.white
     }
 }
 
@@ -90,7 +90,7 @@ extension AppDelegate
         return self.openURL(url)
     }
     
-    @discardableResult fileprivate func openURL(_ url: URL) -> Bool
+    @discardableResult private func openURL(_ url: URL) -> Bool
     {
         guard url.isFileURL else { return false }
         

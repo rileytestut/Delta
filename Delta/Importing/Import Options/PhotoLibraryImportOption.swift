@@ -15,7 +15,7 @@ class PhotoLibraryImportOption: NSObject, ImportOption
     let image: UIImage? = nil
     
     private let presentingViewController: UIViewController
-    fileprivate var completionHandler: ((Set<URL>?) -> Void)?
+    private var completionHandler: ((Set<URL>?) -> Void)?
     
     init(presentingViewController: UIViewController)
     {
@@ -48,7 +48,7 @@ extension PhotoLibraryImportOption: UIImagePickerControllerDelegate, UINavigatio
         
         do
         {
-            let temporaryURL = FileManager.uniqueTemporaryURL()
+            let temporaryURL = FileManager.default.uniqueTemporaryURL()
             try data.write(to: temporaryURL, options: .atomic)
             
             self.completionHandler?([temporaryURL])

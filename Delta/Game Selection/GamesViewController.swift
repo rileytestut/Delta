@@ -35,11 +35,17 @@ class GamesViewController: UIViewController
         }
     }
     
-    fileprivate var pageViewController: UIPageViewController!
-    fileprivate var placeholderView: RSTPlaceholderView!
-    fileprivate var pageControl: UIPageControl!
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
     
-    fileprivate let fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>
+    private var pageViewController: UIPageViewController!
+    private var placeholderView: RSTPlaceholderView!
+    private var pageControl: UIPageControl!
+    
+    private let fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>
+    
+    private var searchController: RSTSearchController?
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         fatalError("initWithNibName: not implemented")
@@ -88,6 +94,11 @@ extension GamesViewController
         self.navigationController?.navigationBar.barStyle = .blackTranslucent
         self.navigationController?.toolbar.barStyle = .blackTranslucent
         
+        if #available(iOS 11.0, *)
+        {
+            self.prepareSearchController()
+        }
+        
         self.updateTheme()
     }
     
@@ -109,11 +120,15 @@ extension GamesViewController
     {
         super.viewDidLayoutSubviews()
         
-        if let viewControllers = self.pageViewController.viewControllers as? [GameCollectionViewController]
+        if #available(iOS 11.0, *) {}
+        else
         {
-            for viewController in viewControllers
+            if let viewControllers = self.pageViewController.viewControllers as? [GameCollectionViewController]
             {
-                viewController.collectionView?.contentInset.top = self.topLayoutGuide.length
+                for viewController in viewControllers
+                {
+                    viewController.collectionView?.contentInset.top = self.topLayoutGuide.length
+                }
             }
         }
     }
@@ -149,6 +164,48 @@ extension GamesViewController
 /// UI
 private extension GamesViewController
 {
+    @available(iOS 11.0, *)
+    func prepareSearchController()
+    {
+        let searchResultsController = self.storyboard?.instantiateViewController(withIdentifier: "gameCollectionViewController") as! GameCollectionViewController
+        searchResultsController.gameCollection = nil
+        searchResultsController.theme = self.theme
+        searchResultsController.activeEmulatorCore = self.activeEmulatorCore
+        
+        let placeholderView = RSTPlaceholderView()
+        placeholderView.textLabel.text = NSLocalizedString("No Games Found", comment: "")
+        placeholderView.detailTextLabel.text = NSLocalizedString("Please make sure the name is correct, or try searching for another game.", comment: "")
+        
+        switch self.theme
+        {
+        case .opaque: searchResultsController.dataSource.placeholderView = placeholderView
+        case .translucent:
+            let vibrancyView = UIVisualEffectView(effect: UIVibrancyEffect(blurEffect: UIBlurEffect(style: .dark)))
+            vibrancyView.contentView.addSubview(placeholderView, pinningEdgesWith: .zero)
+            searchResultsController.dataSource.placeholderView = vibrancyView
+        }
+        
+        self.searchController = RSTSearchController(searchResultsController: searchResultsController)
+        self.searchController?.searchableKeyPaths = [#keyPath(Game.name)]
+        self.searchController?.searchHandler = { [weak searchController, weak searchResultsController] (searchValue, _) in
+            if searchController?.searchBar.text?.isEmpty == false
+            {
+                self.pageViewController.view.isHidden = true
+            }
+            else
+            {
+                self.pageViewController.view.isHidden = false
+            }
+            
+            searchResultsController?.dataSource.predicate = searchValue.predicate
+            return nil
+        }
+        self.navigationItem.searchController = self.searchController
+        self.navigationItem.hidesSearchBarWhenScrolling = false
+        
+        self.definesPresentationContext = true
+    }
+    
     func updateTheme()
     {
         switch self.theme
@@ -186,12 +243,16 @@ private extension GamesViewController
         let indexPath = IndexPath(row: safeIndex, section: 0)
         
         let viewController = self.storyboard?.instantiateViewController(withIdentifier: "gameCollectionViewController") as! GameCollectionViewController
-        viewController.gameCollection = self.fetchedResultsController.object(at: indexPath) as! GameCollection
+        viewController.gameCollection = self.fetchedResultsController.object(at: indexPath) as? GameCollection
         viewController.theme = self.theme
         viewController.activeEmulatorCore = self.activeEmulatorCore
         
-        // Need to set content inset here AND willTransitionTo callback to ensure its correct for all edge cases
-        viewController.collectionView?.contentInset.top = self.topLayoutGuide.length
+        if #available(iOS 11.0, *) {}
+        else
+        {
+            // Need to set content inset here AND willTransitionTo callback to ensure its correct for all edge cases
+            viewController.collectionView?.contentInset.top = self.topLayoutGuide.length
+        }
         
         return viewController
     }
@@ -265,7 +326,7 @@ private extension GamesViewController
 /// Importing
 extension GamesViewController: ImportControllerDelegate
 {
-    @IBAction fileprivate func importFiles()
+    @IBAction private func importFiles()
     {
         var documentTypes = Set(System.supportedSystems.map { $0.gameType.rawValue })
         documentTypes.insert(kUTTypeZipArchive as String)
@@ -283,8 +344,13 @@ extension GamesViewController: ImportControllerDelegate
         self.present(importController, animated: true, completion: nil)
     }
     
-    func importController(_ importController: ImportController, didImportItemsAt urls: Set<URL>)
+    func importController(_ importController: ImportController, didImportItemsAt urls: Set<URL>, errors: [Error])
     {
+        for error in errors
+        {
+            print(error)
+        }
+        
         let gameURLs = urls.filter { $0.pathExtension.lowercased() != "deltaskin" }
         DatabaseManager.shared.importGames(at: Set(gameURLs)) { (games, errors) in
             if errors.count > 0
@@ -361,9 +427,13 @@ extension GamesViewController: UIPageViewControllerDataSource, UIPageViewControl
     {
         guard let viewControllers = pendingViewControllers as? [GameCollectionViewController] else { return }
         
-        for viewController in viewControllers
+        if #available(iOS 11.0, *) {}
+        else
         {
-            viewController.collectionView?.contentInset.top = self.topLayoutGuide.length
+            for viewController in viewControllers
+            {
+                viewController.collectionView?.contentInset.top = self.topLayoutGuide.length
+            }
         }
     }
     
@@ -382,6 +452,21 @@ extension GamesViewController: UIPageViewControllerDataSource, UIPageViewControl
         }
         
         self.title = pageViewController.viewControllers?.first?.title
+    }
+}
+
+extension GamesViewController: UISearchResultsUpdating
+{
+    func updateSearchResults(for searchController: UISearchController)
+    {
+        if searchController.searchBar.text?.isEmpty == false
+        {            
+            self.pageViewController.view.isHidden = true
+        }
+        else
+        {
+            self.pageViewController.view.isHidden = false
+        }
     }
 }
 

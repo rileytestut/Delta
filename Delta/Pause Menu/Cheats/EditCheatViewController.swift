@@ -43,19 +43,19 @@ class EditCheatViewController: UITableViewController
     
     var isPreviewing = false
     
-    fileprivate var supportedCheatFormats: [CheatFormat]!
+    private var supportedCheatFormats: [CheatFormat]!
     
-    fileprivate var selectedCheatFormat: CheatFormat {
+    private var selectedCheatFormat: CheatFormat {
         let cheatFormat = self.supportedCheatFormats[self.typeSegmentedControl.selectedSegmentIndex]
         return cheatFormat
     }
     
-    fileprivate var mutableCheat: Cheat!
-    fileprivate var managedObjectContext = DatabaseManager.shared.newBackgroundContext()
+    private var mutableCheat: Cheat!
+    private var managedObjectContext = DatabaseManager.shared.newBackgroundContext()
     
-    @IBOutlet fileprivate var nameTextField: UITextField!
-    @IBOutlet fileprivate var typeSegmentedControl: UISegmentedControl!
-    @IBOutlet fileprivate var codeTextView: CheatTextView!
+    @IBOutlet private var nameTextField: UITextField!
+    @IBOutlet private var typeSegmentedControl: UISegmentedControl!
+    @IBOutlet private var codeTextView: CheatTextView!
     
     override var previewActionItems: [UIPreviewActionItem]
     {
@@ -132,7 +132,7 @@ extension EditCheatViewController
         
         // Update UI
         
-        if name.characters.count == 0
+        if name.count == 0
         {
             self.title = NSLocalizedString("Cheat", comment: "")
         }
@@ -224,7 +224,7 @@ private extension EditCheatViewController
     @IBAction func updateCheatName(_ sender: UITextField)
     {
         var title = sender.text ?? ""
-        if title.characters.count == 0
+        if title.count == 0
         {
             title = NSLocalizedString("Cheat", comment: "")
         }
@@ -325,7 +325,7 @@ private extension EditCheatViewController
         sender.resignFirstResponder()
     }
     
-    func presentErrorAlert(title: String, message: String, handler: ((Void) -> Void)?)
+    func presentErrorAlert(title: String, message: String, handler: (() -> Void)?)
     {
         DispatchQueue.main.async {
             let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
@@ -382,7 +382,9 @@ extension EditCheatViewController: UITextViewDelegate
         
         // We need to manually add back the attributes when manually modifying the underlying text storage
         // Otherwise, pasting text into an empty text view will result in the wrong font being used
-        let attributedString = NSAttributedString(string: sanitizedText, attributes: textView.typingAttributes)
+        let attributes = Dictionary(uniqueKeysWithValues: textView.typingAttributes.map { (key, value) in (NSAttributedStringKey(key), value) })
+        
+        let attributedString = NSAttributedString(string: sanitizedText, attributes: attributes)
         textView.textStorage.replaceCharacters(in: range, with: attributedString)
         
         // We must add attributedString.length, not range.length, in case the attributed string's length differs

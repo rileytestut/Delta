@@ -45,6 +45,11 @@ class LoadImageURLOperation: RSTLoadOperation<UIImage, NSURL>
         super.cancel()
         
         self.downloadOperation?.cancel()
+        
+        if self.isAsynchronous
+        {
+            self.finish()
+        }
     }
     
     override func loadResult(completion: @escaping (UIImage?, Swift.Error?) -> Void)

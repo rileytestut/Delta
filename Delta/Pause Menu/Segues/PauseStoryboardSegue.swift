@@ -10,15 +10,15 @@ import UIKit
 
 class PauseStoryboardSegue: UIStoryboardSegue
 {
-    fileprivate let animator: UIViewPropertyAnimator
-    fileprivate let presentationController: PausePresentationController
+    private let animator: UIViewPropertyAnimator
+    private let presentationController: PausePresentationController
     
     override init(identifier: String?, source: UIViewController, destination: UIViewController)
     {
         let timingParameters = UISpringTimingParameters(mass: 3.0, stiffness: 750, damping: 65, initialVelocity: CGVector(dx: 0, dy: 0))
         self.animator = UIViewPropertyAnimator(duration: 0, timingParameters: timingParameters)
         
-        self.presentationController = PausePresentationController(presentedViewController: destination, presenting: source)
+        self.presentationController = PausePresentationController(presentedViewController: destination, presenting: source, presentationAnimator: self.animator)
         
         super.init(identifier: identifier, source: source, destination: destination)
     }
@@ -28,6 +28,9 @@ class PauseStoryboardSegue: UIStoryboardSegue
         self.destination.transitioningDelegate = self
         self.destination.modalPresentationStyle = .custom
         self.destination.modalPresentationCapturesStatusBarAppearance = true
+        
+        // Manually set tint color, since calling layoutIfNeeded will cause view to load, but with default system tint color.
+        self.destination.view.tintColor = .white
         
         // We need to force layout of destinationViewController.view _before_ animateTransition(using:)
         // Otherwise, we'll get "Unable to simultaneously satisfy constraints" errors

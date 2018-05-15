@@ -37,6 +37,13 @@ class PauseTransitionCoordinator: NSObject, UIViewControllerAnimatedTransitionin
         
         destinationViewController.view.layoutIfNeeded()
         
+        if let navigationController = destinationViewController.navigationController
+        {
+            // Layout before animation to prevent strange bar button item layout during animation.
+            navigationController.view.setNeedsLayout()
+            navigationController.view.layoutIfNeeded()
+        }
+        
         UIView.animate(withDuration: self.transitionDuration(using: transitionContext), delay:0, options:RSTSystemTransitionAnimationCurve, animations: {
             
             sourceViewController.view.frame.origin.y = self.presenting ? -sourceViewController.view.bounds.height : transitionContext.containerView.bounds.height
