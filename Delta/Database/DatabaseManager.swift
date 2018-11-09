@@ -11,7 +11,7 @@ import CoreData
 
 // Workspace
 import DeltaCore
-import ZipZap
+import ZIPFoundation
 
 // Pods
 import FileMD5Hash
@@ -346,7 +346,6 @@ extension DatabaseManager
     {
         DispatchQueue.global().async {
             
-            var semaphores = Set<DispatchSemaphore>()
             var outputURLs = Set<URL>()
             var errors = Set<ImportError>()
             
@@ -354,17 +353,20 @@ extension DatabaseManager
             {
                 var archiveContainsValidGameFile = false
                 
-                do
+                guard let archive = Archive(url: url, accessMode: .read) else {
+                    errors.insert(.invalid(url))
+                    continue
+                }
+                
+                for entry in archive
                 {
-                    let archive = try ZZArchive(url: url)
-                    
-                    for entry in archive.entries
+                    do
                     {
                         // Ensure entry is not in a subdirectory
-                        guard !entry.fileName.contains("/") else { continue }
+                        guard !entry.path.contains("/") else { continue }
                         
-                        let fileExtension = (entry.fileName as NSString).pathExtension
-
+                        let fileExtension = (entry.path as NSString).pathExtension
+                        
                         guard GameType(fileExtension: fileExtension) != nil else { continue }
                         
                         // At least one entry is a valid game file, so we set archiveContainsValidGameFile to true
@@ -372,65 +374,28 @@ extension DatabaseManager
                         // However, if this game file does turn out to be invalid when extracting, we'll return an ImportError.invalid error specific to this game file
                         archiveContainsValidGameFile = true
                         
-                        // ROMs may potentially be very large, so we extract using file streams and not raw Data
-                        let inputStream = try entry.newStream()
-                        
                         // Must use temporary directory, and not the directory containing zip file, since the latter might be read-only (such as when importing from Safari)
-                        let outputURL = FileManager.default.temporaryDirectory.appendingPathComponent(entry.fileName)
+                        let outputURL = FileManager.default.temporaryDirectory.appendingPathComponent(entry.path)
                         
                         if FileManager.default.fileExists(atPath: outputURL.path)
                         {
                             try FileManager.default.removeItem(at: outputURL)
                         }
                         
-                        guard let outputStream = OutputStream(url: outputURL, append: false) else { continue }
+                        _ = try archive.extract(entry, to: outputURL)
                         
-                        let semaphore = DispatchSemaphore(value: 0)
-                        semaphores.insert(semaphore)
-                        
-                        let outputWriter = InputStreamOutputWriter(inputStream: inputStream, outputStream: outputStream)
-                        outputWriter.start { (error) in
-                            if let error = error
-                            {
-                                if FileManager.default.fileExists(atPath: outputURL.path)
-                                {
-                                    do
-                                    {
-                                        try FileManager.default.removeItem(at: outputURL)
-                                    }
-                                    catch
-                                    {
-                                        print(error)
-                                    }
-                                }
-                                
-                                print(error)
-                                
-                                errors.insert(.invalid(outputURL))
-                            }
-                            else
-                            {
-                                outputURLs.insert(outputURL)
-                            }
-                            
-                            semaphore.signal()
-                        }
+                        outputURLs.insert(outputURL)
                     }
-                }
-                catch
-                {
-                    print(error)
+                    catch
+                    {
+                        print(error)
+                    }
                 }
                 
                 if !archiveContainsValidGameFile
                 {
                     errors.insert(.invalid(url))
                 }
-            }
-            
-            for semaphore in semaphores
-            {
-                semaphore.wait()
             }
             
             for url in urls
