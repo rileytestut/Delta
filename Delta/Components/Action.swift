@@ -17,7 +17,7 @@ extension Action
         case destructive
         case selected
         
-        var alertActionStyle: UIAlertActionStyle
+        var alertActionStyle: UIAlertAction.Style
         {
             switch self
             {
@@ -27,7 +27,7 @@ extension Action
             }
         }
         
-        var previewActionStyle: UIPreviewActionStyle?
+        var previewActionStyle: UIPreviewAction.Style?
         {
             switch self
             {
@@ -90,7 +90,7 @@ extension RangeReplaceableCollection where Iterator.Element == Action
     }
     
     var previewActions: [UIPreviewAction] {
-        let actions = self.flatMap { UIPreviewAction($0) }
+        let actions = self.compactMap { UIPreviewAction($0) }
         return actions
     }
 }

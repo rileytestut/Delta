@@ -677,7 +677,7 @@ extension SaveStatesViewController: UICollectionViewDelegateFlowLayout
     {
         self.configure(self.prototypeCell, for: indexPath)
         
-        let size = self.prototypeCell.contentView.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+        let size = self.prototypeCell.contentView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
         return size
     }
     
@@ -685,7 +685,7 @@ extension SaveStatesViewController: UICollectionViewDelegateFlowLayout
     {
         self.configure(self.prototypeHeader, forSection: section)
         
-        let size = self.prototypeHeader.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+        let size = self.prototypeHeader.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
         return size
     }
 }

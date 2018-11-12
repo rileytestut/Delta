@@ -29,11 +29,11 @@ extension UIApplicationShortcutItem
 {
     convenience init(localizedTitle: String, action: DeepLink.Action)
     {
-        var userInfo: [AnyHashable: Any]?
+        var userInfo: [String: NSSecureCoding]?
         
         switch action
         {
-        case .launchGame(let identifier): userInfo = [DeepLink.Key.identifier.rawValue: identifier]
+        case .launchGame(let identifier): userInfo = [DeepLink.Key.identifier.rawValue: identifier as NSString]
         }
         
         self.init(type: action.type.rawValue, localizedTitle: localizedTitle, localizedSubtitle: nil, icon: nil, userInfo: userInfo)

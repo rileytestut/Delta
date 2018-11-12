@@ -224,7 +224,7 @@ private extension ControllerInputsViewController
         else { return }
         
         // Implicit assumption that all skins used for controller input mapping don't have multiple items with same input.
-        let mappedInputs = items.flatMap { $0.inputs.allInputs.flatMap(controllerViewInputMapping.input(forControllerInput:)) } + (self.supportedActionInputs as [Input])
+        let mappedInputs = items.flatMap { $0.inputs.allInputs.compactMap(controllerViewInputMapping.input(forControllerInput:)) } + (self.supportedActionInputs as [Input])
         
         // Create callout view for each on-screen input.
         for input in mappedInputs

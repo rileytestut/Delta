@@ -307,7 +307,7 @@ extension ControllersSettingsViewController
             return 1
         }
 
-        return UITableViewAutomaticDimension
+        return UITableView.automaticDimension
     }
 }
 

@@ -26,7 +26,7 @@ class LaunchViewController: UIViewController
         return self.gameViewController?.prefersStatusBarHidden ?? false
     }
     
-    override func childViewControllerForHomeIndicatorAutoHidden() -> UIViewController? {
+    override var childForHomeIndicatorAutoHidden: UIViewController? {
         return self.gameViewController
     }
     
@@ -47,7 +47,7 @@ class LaunchViewController: UIViewController
             
             func showGameViewController()
             {
-                self.view.bringSubview(toFront: self.gameViewContainerView)
+                self.view.bringSubviewToFront(self.gameViewContainerView)
                 
                 self.setNeedsStatusBarAppearanceUpdate()
                 

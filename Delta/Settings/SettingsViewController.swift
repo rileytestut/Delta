@@ -81,7 +81,7 @@ class SettingsViewController: UITableViewController
             {
                 // Update and temporarily re-select selected row.
                 self.tableView.reloadSections(IndexSet(integer: Section.controllers.rawValue), with: .none)
-                self.tableView.selectRow(at: indexPath, animated: false, scrollPosition: UITableViewScrollPosition.none)
+                self.tableView.selectRow(at: indexPath, animated: false, scrollPosition: UITableView.ScrollPosition.none)
             }
             
             self.tableView.deselectRow(at: indexPath, animated: true)

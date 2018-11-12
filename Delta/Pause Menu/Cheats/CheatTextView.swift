@@ -13,9 +13,9 @@ import DeltaCore
 
 import Roxas
 
-private extension NSAttributedStringKey
+private extension NSAttributedString.Key
 {
-    static let cheatPrefix = NSAttributedStringKey("CheatPrefix")
+    static let cheatPrefix = NSAttributedString.Key("CheatPrefix")
 }
 
 class CheatTextView: UITextView

@@ -110,7 +110,7 @@ class GameViewController: DeltaCore.GameViewController
     
     private var _isLoadingSaveState = false
     
-    private var context = CIContext(options: [kCIContextWorkingColorSpace: NSNull()])
+    private var context = CIContext(options: convertToOptionalCIContextOptionDictionary([convertFromCIContextOption(CIContextOption.workingColorSpace): NSNull()]))
     
     // Sustain Buttons
     private var isSelectingSustainedButtons = false
@@ -140,7 +140,7 @@ class GameViewController: DeltaCore.GameViewController
         
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.updateControllers), name: .externalGameControllerDidConnect, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.updateControllers), name: .externalGameControllerDidDisconnect, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.didEnterBackground(with:)), name: .UIApplicationDidEnterBackground, object: UIApplication.shared)
+        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.didEnterBackground(with:)), name: UIApplication.didEnterBackgroundNotification, object: UIApplication.shared)
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.settingsDidChange(with:)), name: .settingsDidChange, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.deepLinkControllerLaunchGame(with:)), name: .deepLinkControllerLaunchGame, object: nil)
     }
@@ -592,7 +592,7 @@ extension GameViewController: SaveStatesViewControllerDelegate
         if
             let outputImage = self.gameView.outputImage,
             let quartzImage = self.context.createCGImage(outputImage, from: outputImage.extent),
-            let data = UIImagePNGRepresentation(UIImage(cgImage: quartzImage))
+            let data = UIImage(cgImage: quartzImage).pngData()
         {
             do
             {
@@ -939,7 +939,7 @@ private extension GameViewController
         }
         else if
             let navigationController = self.presentedViewController as? UINavigationController,
-            let pageViewController = navigationController.topViewController?.childViewControllers.first as? UIPageViewController,
+            let pageViewController = navigationController.topViewController?.children.first as? UIPageViewController,
             let gameCollectionViewController = pageViewController.viewControllers?.first as? GameCollectionViewController
         {
             let segue = UIStoryboardSegue(identifier: "unwindFromGames", source: gameCollectionViewController, destination: self)
@@ -948,4 +948,15 @@ private extension GameViewController
         
         self.dismiss(animated: true, completion: nil)
     }
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToOptionalCIContextOptionDictionary(_ input: [String: Any]?) -> [CIContextOption: Any]? {
+	guard let input = input else { return nil }
+	return Dictionary(uniqueKeysWithValues: input.map { key, value in (CIContextOption(rawValue: key), value)})
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromCIContextOption(_ input: CIContextOption) -> String {
+	return input.rawValue
 }

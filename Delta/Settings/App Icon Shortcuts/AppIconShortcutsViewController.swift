@@ -281,7 +281,7 @@ extension AppIconShortcutsViewController
         self.addShortcut(for: game)
     }
     
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath)
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath)
     {
         switch editingStyle
         {
@@ -307,7 +307,7 @@ extension AppIconShortcutsViewController
         return NSLocalizedString("Remove", comment: "")
     }
     
-    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle
+    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle
     {
         switch indexPath.section
         {

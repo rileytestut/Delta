@@ -529,7 +529,7 @@ extension GameCollectionViewController: ImportControllerDelegate
                     if
                         let image = UIImage(data: imageData),
                         let resizedImage = image.resizing(toFit: CGSize(width: 300, height: 300)),
-                        let resizedData = UIImageJPEGRepresentation(resizedImage, 0.85)
+                        let resizedData = resizedImage.jpegData(compressionQuality: 0.85)
                     {
                         let destinationURL = DatabaseManager.artworkURL(for: game)
                         try resizedData.write(to: destinationURL, options: .atomic)
@@ -661,7 +661,7 @@ extension GameCollectionViewController: UICollectionViewDelegateFlowLayout
         
         self.configure(self.prototypeCell, for: indexPath)
         
-        let size = self.prototypeCell.contentView.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+        let size = self.prototypeCell.contentView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
         return size
     }
 }

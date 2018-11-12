@@ -19,7 +19,7 @@ class GamesDatabaseBrowserViewController: UITableViewController
     
     private let dataSource: RSTArrayTableViewPrefetchingDataSource<GameMetadata, UIImage>
     
-    override init(style: UITableViewStyle) {
+    override init(style: UITableView.Style) {
         fatalError()
     }
     

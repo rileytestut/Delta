@@ -145,7 +145,7 @@ extension GridMenuViewController: UICollectionViewDelegateFlowLayout
     {
         self.configure(self.prototypeCell, for: indexPath)
         
-        let size = self.prototypeCell.contentView.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+        let size = self.prototypeCell.contentView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
         return size
     }
 }

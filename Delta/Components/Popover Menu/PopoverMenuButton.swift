@@ -10,7 +10,7 @@ import UIKit
 
 extension UINavigationBar
 {
-    fileprivate var defaultTitleTextAttributes: [NSAttributedStringKey: Any]? {
+    fileprivate var defaultTitleTextAttributes: [NSAttributedString.Key: Any]? {
         if let textAttributes = self._defaultTitleTextAttributes
         {
             return textAttributes
@@ -35,7 +35,7 @@ extension UINavigationBar
         return textAttributes
     }
     
-    private var _defaultTitleTextAttributes: [NSAttributedStringKey: Any]? {
+    private var _defaultTitleTextAttributes: [NSAttributedString.Key: Any]? {
         guard self.titleTextAttributes == nil else { return self.titleTextAttributes }
         
         guard
@@ -71,7 +71,7 @@ class PopoverMenuButton: UIControl
     }
     
     override var intrinsicContentSize: CGSize {
-        return self.stackView.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+        return self.stackView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
     }
     
     init()
@@ -90,7 +90,7 @@ class PopoverMenuButton: UIControl
         self.stackView.spacing = 4.0
         self.stackView.isUserInteractionEnabled = false
         
-        let intrinsicContentSize = self.stackView.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+        let intrinsicContentSize = self.stackView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
         super.init(frame: CGRect(origin: .zero, size: intrinsicContentSize))
         
         self.addSubview(self.stackView, pinningEdgesWith: .zero)
