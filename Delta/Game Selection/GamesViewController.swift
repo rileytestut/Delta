@@ -61,8 +61,6 @@ class GamesViewController: UIViewController
         super.init(coder: aDecoder)
         
         self.fetchedResultsController.delegate = self
-        
-        self.automaticallyAdjustsScrollViewInsets = false
     }
 }
 
@@ -94,10 +92,7 @@ extension GamesViewController
         self.navigationController?.navigationBar.barStyle = .blackTranslucent
         self.navigationController?.toolbar.barStyle = .blackTranslucent
         
-        if #available(iOS 11.0, *)
-        {
-            self.prepareSearchController()
-        }
+        self.prepareSearchController()
         
         self.updateTheme()
     }
@@ -116,23 +111,6 @@ extension GamesViewController
         }
     }
     
-    override func viewDidLayoutSubviews()
-    {
-        super.viewDidLayoutSubviews()
-        
-        if #available(iOS 11.0, *) {}
-        else
-        {
-            if let viewControllers = self.pageViewController.viewControllers as? [GameCollectionViewController]
-            {
-                for viewController in viewControllers
-                {
-                    viewController.collectionView?.contentInset.top = self.topLayoutGuide.length
-                }
-            }
-        }
-    }
-
     override func didReceiveMemoryWarning()
     {
         super.didReceiveMemoryWarning()
@@ -164,7 +142,6 @@ extension GamesViewController
 /// UI
 private extension GamesViewController
 {
-    @available(iOS 11.0, *)
     func prepareSearchController()
     {
         let searchResultsController = self.storyboard?.instantiateViewController(withIdentifier: "gameCollectionViewController") as! GameCollectionViewController
@@ -248,13 +225,6 @@ private extension GamesViewController
         viewController.gameCollection = self.fetchedResultsController.object(at: indexPath) as? GameCollection
         viewController.theme = self.theme
         viewController.activeEmulatorCore = self.activeEmulatorCore
-        
-        if #available(iOS 11.0, *) {}
-        else
-        {
-            // Need to set content inset here AND willTransitionTo callback to ensure its correct for all edge cases
-            viewController.collectionView?.contentInset.top = self.topLayoutGuide.length
-        }
         
         return viewController
     }
@@ -425,20 +395,6 @@ extension GamesViewController: UIPageViewControllerDataSource, UIPageViewControl
     }
     
     //MARK: - UIPageViewControllerDelegate
-    func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController])
-    {
-        guard let viewControllers = pendingViewControllers as? [GameCollectionViewController] else { return }
-        
-        if #available(iOS 11.0, *) {}
-        else
-        {
-            for viewController in viewControllers
-            {
-                viewController.collectionView?.contentInset.top = self.topLayoutGuide.length
-            }
-        }
-    }
-    
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool)
     {
         if let viewController = pageViewController.viewControllers?.first as? GameCollectionViewController, let gameCollection = viewController.gameCollection

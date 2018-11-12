@@ -38,15 +38,8 @@ class AppIconShortcutsViewController: UITableViewController
         
         self.tableView.register(GameTableViewCell.nib!, forCellReuseIdentifier: RSTCellContentGenericCellIdentifier)
         
-        if #available(iOS 11, *)
-        {
-            self.navigationItem.searchController = self.gamesDataSource.searchController
-            self.navigationItem.hidesSearchBarWhenScrolling = false
-        }
-        else
-        {
-            self.tableView.tableHeaderView = self.gamesDataSource.searchController.searchBar
-        }
+        self.navigationItem.searchController = self.gamesDataSource.searchController
+        self.navigationItem.hidesSearchBarWhenScrolling = false
         
         self.tableView.dataSource = self.dataSource
         self.tableView.allowsSelectionDuringEditing = true

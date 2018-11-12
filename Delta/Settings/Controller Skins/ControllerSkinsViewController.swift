@@ -151,7 +151,7 @@ extension ControllerSkinsViewController
                 
         let scale = (self.view.bounds.width / size.width)
         
-        let height = min(size.height * scale, self.view.bounds.height - self.topLayoutGuide.length - self.bottomLayoutGuide.length - 30)
+        let height = min(size.height * scale, self.view.bounds.height - self.view.safeAreaInsets.top - self.view.safeAreaInsets.bottom - 30)
         
         return height
     }

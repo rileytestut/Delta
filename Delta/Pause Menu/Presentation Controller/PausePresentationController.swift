@@ -44,11 +44,7 @@ class PausePresentationController: UIPresentationController
         else
         {
             frame = CGRect(x: 0, y: containerView.bounds.height - contentHeight, width: containerView.bounds.width, height: containerView.bounds.height)
-            
-            if #available(iOS 11.0, *)
-            {
-                frame.origin.y -= containerView.safeAreaInsets.bottom
-            }
+            frame.origin.y -= containerView.safeAreaInsets.bottom
         }
         
         return frame

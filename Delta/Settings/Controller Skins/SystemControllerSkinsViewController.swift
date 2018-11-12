@@ -92,7 +92,7 @@ extension SystemControllerSkinsViewController
         
         let scale = (self.view.bounds.width / unwrappedImageSize.width)
         
-        let height = min(unwrappedImageSize.height * scale, self.view.bounds.height - self.topLayoutGuide.length - self.bottomLayoutGuide.length - 30)
+        let height = min(unwrappedImageSize.height * scale, self.view.bounds.height - self.view.safeAreaInsets.top - self.view.safeAreaInsets.bottom - 30)
         return height
     }
     

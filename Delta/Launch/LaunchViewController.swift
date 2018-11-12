@@ -50,11 +50,7 @@ class LaunchViewController: UIViewController
                 self.view.bringSubviewToFront(self.gameViewContainerView)
                 
                 self.setNeedsStatusBarAppearanceUpdate()
-                
-                if #available(iOS 11.0, *)
-                {
-                    self.setNeedsUpdateOfHomeIndicatorAutoHidden()
-                }
+                self.setNeedsUpdateOfHomeIndicatorAutoHidden()
             }
             
             if let game = self.applicationLaunchDeepLinkGame
