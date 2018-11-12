@@ -17,6 +17,9 @@
       location = "group:Cores/GBCDeltaCore/GBCDeltaCore.xcodeproj">
    </FileRef>
    <FileRef
+      location = "group:External/Harmony/Harmony.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:External/Roxas/Roxas.xcodeproj">
    </FileRef>
    <FileRef
