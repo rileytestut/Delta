@@ -32,6 +32,7 @@ extension Settings
         case localControllerPlayerIndex
         case translucentControllerSkinOpacity
         case preferredControllerSkin
+        case syncingService
     }
 }
 
@@ -45,6 +46,15 @@ extension Settings
 }
 
 struct Settings
+{
+    static func registerDefaults()
+    {
+        let defaults = [#keyPath(UserDefaults.translucentControllerSkinOpacity): 0.7, #keyPath(UserDefaults.gameShortcutsMode): GameShortcutsMode.recent.rawValue] as [String : Any]
+        UserDefaults.standard.register(defaults: defaults)
+    }
+}
+
+extension Settings
 {
     /// Controllers
     static var localControllerPlayerIndex: Int? = 0 {
@@ -120,10 +130,12 @@ struct Settings
         }
     }
     
-    static func registerDefaults()
-    {
-        let defaults = [#keyPath(UserDefaults.translucentControllerSkinOpacity): 0.7, #keyPath(UserDefaults.gameShortcutsMode): GameShortcutsMode.recent.rawValue] as [String : Any]
-        UserDefaults.standard.register(defaults: defaults)
+    static var syncingService: SyncingService {
+        get { return SyncingService(rawValue: UserDefaults.standard.syncingService) ?? .none }
+        set {
+            UserDefaults.standard.syncingService = newValue.rawValue
+            NotificationCenter.default.post(name: .settingsDidChange, object: nil, userInfo: [NotificationUserInfoKey.name: Name.syncingService])
+        }
     }
     
     static func preferredControllerSkin(for system: System, traits: DeltaCore.ControllerSkin.Traits) -> ControllerSkin?
@@ -220,4 +232,6 @@ private extension UserDefaults
     
     @NSManaged var gameShortcutsMode: String
     @NSManaged var gameShortcutIdentifiers: [String]
+    
+    @NSManaged var syncingService: String
 }

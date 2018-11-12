@@ -49,6 +49,7 @@
 		BF4828841F9027B600028B97 /* Delta.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BF4828811F9027B600028B97 /* Delta.xcdatamodeld */; };
 		BF4828861F9028F500028B97 /* System.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF4828851F9028F500028B97 /* System.swift */; };
 		BF4828881F90290F00028B97 /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF4828871F90290F00028B97 /* Action.swift */; };
+		BF48F74E219A16DA00BC2FC1 /* SyncingServicesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF48F74D219A16DA00BC2FC1 /* SyncingServicesViewController.swift */; };
 		BF525EE81FF5F370004AA849 /* DeepLinkController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF525EE71FF5F370004AA849 /* DeepLinkController.swift */; };
 		BF525EEA1FF6CD12004AA849 /* DeepLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF525EE91FF6CD12004AA849 /* DeepLink.swift */; };
 		BF5942641E09BBB10051894B /* LoadControllerSkinImageOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5942611E09BBB10051894B /* LoadControllerSkinImageOperation.swift */; };
@@ -180,6 +181,7 @@
 		BF4828831F9027B600028B97 /* Delta.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Delta.xcdatamodel; sourceTree = "<group>"; };
 		BF4828851F9028F500028B97 /* System.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = System.swift; sourceTree = "<group>"; };
 		BF4828871F90290F00028B97 /* Action.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Action.swift; sourceTree = "<group>"; };
+		BF48F74D219A16DA00BC2FC1 /* SyncingServicesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncingServicesViewController.swift; sourceTree = "<group>"; };
 		BF525EE71FF5F370004AA849 /* DeepLinkController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkController.swift; sourceTree = "<group>"; };
 		BF525EE91FF6CD12004AA849 /* DeepLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLink.swift; sourceTree = "<group>"; };
 		BF5942611E09BBB10051894B /* LoadControllerSkinImageOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadControllerSkinImageOperation.swift; sourceTree = "<group>"; };
@@ -343,6 +345,14 @@
 				BFFC461A1D59820F00AF2CC6 /* Segues */,
 			);
 			path = "Game Selection";
+			sourceTree = "<group>";
+		};
+		BF48F74C219A16C100BC2FC1 /* Syncing */ = {
+			isa = PBXGroup;
+			children = (
+				BF48F74D219A16DA00BC2FC1 /* SyncingServicesViewController.swift */,
+			);
+			path = Syncing;
 			sourceTree = "<group>";
 		};
 		BF525EE61FF5F355004AA849 /* Deep Linking */ = {
@@ -564,6 +574,7 @@
 				BF71CF851FE8FFF1001F1613 /* App Icon Shortcuts */,
 				BF11734E1DA32CEC00047DF8 /* Controllers */,
 				BF1DAD5B1D9F574900E752A7 /* Controller Skins */,
+				BF48F74C219A16C100BC2FC1 /* Syncing */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -893,6 +904,7 @@
 				BF5942801E09BC830051894B /* SaveState.swift in Sources */,
 				BF59428E1E09BCFB0051894B /* ImportController.swift in Sources */,
 				BF13A7581D5D2FD9000BB055 /* EmulatorCore+Cheats.swift in Sources */,
+				BF48F74E219A16DA00BC2FC1 /* SyncingServicesViewController.swift in Sources */,
 				BF6424831F5B8F3F00D6AB44 /* ListMenuViewController.swift in Sources */,
 				BF1020E31F95B05B00313182 /* DeltaToDelta2.xcmappingmodel in Sources */,
 				BF6BF3131EB7E47F008E83CD /* ImportOption.swift in Sources */,

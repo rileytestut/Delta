@@ -19,6 +19,7 @@ private extension SettingsViewController
         case controllers
         case controllerSkins
         case controllerOpacity
+        case syncing
         case threeDTouch
     }
     
@@ -33,6 +34,11 @@ private extension SettingsViewController
         case snes
         case gba
         case gbc
+    }
+    
+    enum SyncingRow: Int
+    {
+        case service
     }
 }
 
@@ -50,6 +56,7 @@ class SettingsViewController: UITableViewController
     {
         super.init(coder: aDecoder)
         
+        NotificationCenter.default.addObserver(self, selector: #selector(SettingsViewController.settingsDidChange(with:)), name: .settingsDidChange, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(SettingsViewController.externalGameControllerDidConnect(_:)), name: .externalGameControllerDidConnect, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(SettingsViewController.externalGameControllerDidDisconnect(_:)), name: .externalGameControllerDidDisconnect, object: nil)
     }
@@ -173,6 +180,26 @@ private extension SettingsViewController
 
 private extension SettingsViewController
 {
+    @objc func settingsDidChange(with notification: Notification)
+    {
+        guard let settingsName = notification.userInfo?[Settings.NotificationUserInfoKey.name] as? Settings.Name else { return }
+        
+        switch settingsName
+        {
+        case .localControllerPlayerIndex, .preferredControllerSkin, .translucentControllerSkinOpacity: break
+        case .syncingService:
+            let selectedIndexPath = self.tableView.indexPathForSelectedRow
+            
+            let indexPath = IndexPath(row: SyncingRow.service.rawValue, section: Section.syncing.rawValue)
+            self.tableView.reloadRows(at: [indexPath], with: .none)
+            
+            if indexPath == selectedIndexPath
+            {
+                self.tableView.selectRow(at: selectedIndexPath, animated: true, scrollPosition: .none)
+            }
+        }
+    }
+
     @objc func externalGameControllerDidConnect(_ notification: Notification)
     {
         self.tableView.reloadSections(IndexSet(integer: Section.controllers.rawValue), with: .none)
@@ -228,7 +255,8 @@ extension SettingsViewController
             }
             
         case .controllerSkins: cell.textLabel?.text = System.supportedSystems[indexPath.row].localizedName
-        default: break
+        case .syncing: cell.detailTextLabel?.text = Settings.syncingService.localizedName
+        case .controllerOpacity, .threeDTouch: break
         }
 
         return cell
@@ -241,10 +269,9 @@ extension SettingsViewController
 
         switch section
         {
-        case Section.controllers: self.performSegue(withIdentifier: Segue.controllers.rawValue, sender: cell)
-        case Section.controllerSkins: self.performSegue(withIdentifier: Segue.controllerSkins.rawValue, sender: cell)
-        case Section.controllerOpacity: break
-        case Section.threeDTouch: break
+        case .controllers: self.performSegue(withIdentifier: Segue.controllers.rawValue, sender: cell)
+        case .controllerSkins: self.performSegue(withIdentifier: Segue.controllerSkins.rawValue, sender: cell)
+        case .controllerOpacity, .threeDTouch, .syncing: break
         }
     }
     
