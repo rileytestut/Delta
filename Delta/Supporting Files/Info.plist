@@ -91,8 +91,24 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>6</string>
+	<key>Fabric</key>
+	<dict>
+		<key>APIKey</key>
+		<string>d542629b4f6625cfd5564d27318550321272076d</string>
+		<key>Kits</key>
+		<array>
+			<dict>
+				<key>KitInfo</key>
+				<dict/>
+				<key>KitName</key>
+				<string>Crashlytics</string>
+			</dict>
+		</array>
+	</dict>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>LSSupportsOpeningDocumentsInPlace</key>
+	<false/>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSExceptionDomains</key>
@@ -108,6 +124,8 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Press "OK" to allow Delta to use images from your Photo Library as game artwork.</string>
 	<key>UIFileSharingEnabled</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
@@ -126,8 +144,6 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Press &quot;OK&quot; to allow Delta to use images from your Photo Library as game artwork.</string>
 	<key>UTExportedTypeDeclarations</key>
 	<array>
 		<dict>
@@ -214,19 +230,5 @@
 			</dict>
 		</dict>
 	</array>
-	<key>Fabric</key>
-	<dict>
-		<key>APIKey</key>
-		<string>d542629b4f6625cfd5564d27318550321272076d</string>
-		<key>Kits</key>
-		<array>
-			<dict>
-				<key>KitInfo</key>
-				<dict/>
-				<key>KitName</key>
-				<string>Crashlytics</string>
-			</dict>
-		</array>
-	</dict>
 </dict>
 </plist>
