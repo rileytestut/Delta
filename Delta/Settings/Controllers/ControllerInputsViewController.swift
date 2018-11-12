@@ -86,9 +86,9 @@ extension ControllerInputsViewController
         
         switch identifier
         {
-        case "embedGameViewController": self.gameViewController = segue.destination as! DeltaCore.GameViewController
+        case "embedGameViewController": self.gameViewController = segue.destination as? DeltaCore.GameViewController
         case "embedActionsMenuViewController":
-            self.actionsMenuViewController = segue.destination as! GridMenuViewController
+            self.actionsMenuViewController = segue.destination as? GridMenuViewController
             self.prepareActionsMenuViewController()
             
         case "cancelControllerInputs": break

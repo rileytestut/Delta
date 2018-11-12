@@ -63,7 +63,7 @@ class PausePresentationController: UIPresentationController
         
         super.init(presentedViewController: presentedViewController, presenting: presentingViewController)
         
-        self.contentView = Bundle.main.loadNibNamed("PausePresentationControllerContentView", owner: self, options: nil)?.first as! UIView
+        self.contentView = Bundle.main.loadNibNamed("PausePresentationControllerContentView", owner: self, options: nil)?.first as? UIView
     }
     
     override func presentationTransitionWillBegin()

@@ -159,9 +159,9 @@ extension CheatTextView: NSLayoutManagerDelegate
         layoutManager.setGlyphs(glyphBuffer, properties: propertyBuffer, characterIndexes: characterBuffer, font: aFont, forGlyphRange: NSRange(location: glyphRange.location, length: glyphCount + offset))
         
         // Clean up memory
-        characterBuffer.deallocate(capacity: bufferSize)
-        propertyBuffer.deallocate(capacity: bufferSize)
-        glyphBuffer.deallocate(capacity: bufferSize)
+        characterBuffer.deallocate()
+        propertyBuffer.deallocate()
+        glyphBuffer.deallocate()
         
         // Return total number of glyphs
         return glyphCount + offset

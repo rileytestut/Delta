@@ -80,7 +80,7 @@ extension PauseViewController
         switch identifier
         {
         case "embedNavigationController":
-            self.pauseNavigationController = segue.destination as! UINavigationController
+            self.pauseNavigationController = segue.destination as? UINavigationController
             self.pauseNavigationController.delegate = self
             self.pauseNavigationController.navigationBar.tintColor = UIColor.deltaPurple
             self.pauseNavigationController.view.backgroundColor = UIColor.clear

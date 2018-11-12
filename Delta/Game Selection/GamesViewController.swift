@@ -149,7 +149,7 @@ extension GamesViewController
     {
         guard let identifier = segue.identifier, identifier == "embedPageViewController" else { return }
         
-        self.pageViewController = segue.destination as! UIPageViewController
+        self.pageViewController = segue.destination as? UIPageViewController
         self.pageViewController.dataSource = self
         self.pageViewController.delegate = self
         self.pageViewController.view.isHidden = true
