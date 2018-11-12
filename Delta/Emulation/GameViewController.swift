@@ -110,7 +110,7 @@ class GameViewController: DeltaCore.GameViewController
     
     private var _isLoadingSaveState = false
     
-    private var context = CIContext(options: convertToOptionalCIContextOptionDictionary([convertFromCIContextOption(CIContextOption.workingColorSpace): NSNull()]))
+    private var context = CIContext(options: [.workingColorSpace: NSNull()])
     
     // Sustain Buttons
     private var isSelectingSustainedButtons = false
@@ -948,15 +948,4 @@ private extension GameViewController
         
         self.dismiss(animated: true, completion: nil)
     }
-}
-
-// Helper function inserted by Swift 4.2 migrator.
-fileprivate func convertToOptionalCIContextOptionDictionary(_ input: [String: Any]?) -> [CIContextOption: Any]? {
-	guard let input = input else { return nil }
-	return Dictionary(uniqueKeysWithValues: input.map { key, value in (CIContextOption(rawValue: key), value)})
-}
-
-// Helper function inserted by Swift 4.2 migrator.
-fileprivate func convertFromCIContextOption(_ input: CIContextOption) -> String {
-	return input.rawValue
 }

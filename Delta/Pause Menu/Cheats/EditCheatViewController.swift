@@ -382,9 +382,7 @@ extension EditCheatViewController: UITextViewDelegate
         
         // We need to manually add back the attributes when manually modifying the underlying text storage
         // Otherwise, pasting text into an empty text view will result in the wrong font being used
-        let attributes = Dictionary(uniqueKeysWithValues: convertFromNSAttributedStringKeyDictionary(textView.typingAttributes).map { (key, value) in (NSAttributedString.Key(key), value) })
-        
-        let attributedString = NSAttributedString(string: sanitizedText, attributes: attributes)
+        let attributedString = NSAttributedString(string: sanitizedText, attributes: textView.typingAttributes)
         textView.textStorage.replaceCharacters(in: range, with: attributedString)
         
         // We must add attributedString.length, not range.length, in case the attributed string's length differs
@@ -392,9 +390,4 @@ extension EditCheatViewController: UITextViewDelegate
         
         return false
     }
-}
-
-// Helper function inserted by Swift 4.2 migrator.
-fileprivate func convertFromNSAttributedStringKeyDictionary(_ input: [NSAttributedString.Key: Any]) -> [String: Any] {
-	return Dictionary(uniqueKeysWithValues: input.map {key, value in (key.rawValue, value)})
 }
