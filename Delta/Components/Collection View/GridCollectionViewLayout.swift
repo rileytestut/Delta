@@ -27,11 +27,8 @@ class GridCollectionViewLayout: UICollectionViewFlowLayout
         guard let collectionView = self.collectionView else { return .zero }
         
         var contentInset = collectionView.contentInset
-        if #available(iOS 11, *)
-        {
-            contentInset.left += collectionView.safeAreaInsets.left
-            contentInset.right += collectionView.safeAreaInsets.right
-        }
+        contentInset.left += collectionView.safeAreaInsets.left
+        contentInset.right += collectionView.safeAreaInsets.right
         
         return contentInset
     }

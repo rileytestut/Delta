@@ -65,15 +65,8 @@ class GamesDatabaseBrowserViewController: UITableViewController
         self.dataSource.searchController.delegate = self
         self.dataSource.searchController.searchBar.barStyle = .black
         
-        if #available(iOS 11, *)
-        {
-            self.navigationItem.searchController = self.dataSource.searchController
-            self.navigationItem.hidesSearchBarWhenScrolling = false
-        }
-        else
-        {
-            self.tableView.tableHeaderView = self.dataSource.searchController.searchBar
-        }
+        self.navigationItem.searchController = self.dataSource.searchController
+        self.navigationItem.hidesSearchBarWhenScrolling = false
         
         self.updatePlaceholderView()
     }
@@ -184,7 +177,7 @@ private extension GamesDatabaseBrowserViewController
     func resetTableViewContentOffset()
     {
         self.tableView.setContentOffset(CGPoint.zero, animated: false)
-        self.tableView.setContentOffset(CGPoint(x: 0, y: -self.topLayoutGuide.length), animated: false)
+        self.tableView.setContentOffset(CGPoint(x: 0, y: -self.view.safeAreaInsets.top), animated: false)
     }
 }
 
@@ -204,16 +197,6 @@ extension GamesDatabaseBrowserViewController
 
 extension GamesDatabaseBrowserViewController: UISearchControllerDelegate
 {
-    func didPresentSearchController(_ searchController: UISearchController)
-    {
-        if #available(iOS 11, *) {}
-        else
-        {
-            // Fix incorrect table view scroll indicator insets
-            self.tableView.scrollIndicatorInsets.top = self.navigationController!.navigationBar.bounds.height + UIApplication.shared.statusBarFrame.height
-        }
-    }
-    
     func willDismissSearchController(_ searchController: UISearchController)
     {
         // Manually set items to empty array to prevent crash if user dismissses searchController while scrolling

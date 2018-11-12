@@ -106,9 +106,12 @@ extension GamesStoryboardSegue: UIViewControllerAnimatedTransitioning
                     transitionContext.destinationView.insertSubview(topToolbar, at: 1)
                     
                     topToolbar.topAnchor.constraint(equalTo: navigationController.navigationBar.topAnchor, constant: -padding).isActive = true
-                    topToolbar.bottomAnchor.constraint(equalTo: navigationController.topViewController!.topLayoutGuide.bottomAnchor).isActive = true
                     topToolbar.leftAnchor.constraint(equalTo: navigationController.navigationBar.leftAnchor, constant: -padding).isActive = true
                     topToolbar.rightAnchor.constraint(equalTo: navigationController.navigationBar.rightAnchor, constant: padding).isActive = true
+                    
+                    // There is no easy way to determine the extra height necessary at this point of the transition, so hard code for now.
+                    let additionalSearchBarHeight = 44 as CGFloat
+                    topToolbar.heightAnchor.constraint(equalToConstant: navigationController.topViewController!.view.safeAreaInsets.top + additionalSearchBarHeight).isActive = true
                     
                     topPaddingToolbar = topToolbar
                 }

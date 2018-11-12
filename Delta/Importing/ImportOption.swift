@@ -10,16 +10,6 @@ import UIKit
 
 import DeltaCore
 
-extension UIDocumentMenuViewController
-{
-    func add(_ importOption: ImportOption, order: UIDocumentMenuOrder, completionHandler: @escaping (Set<URL>?) -> Void)
-    {
-        self.addOption(withTitle: importOption.title, image: importOption.image, order: order) {
-            importOption.import(withCompletionHandler: completionHandler)
-        }
-    }
-}
-
 extension UIAlertController
 {
     func add(_ importOption: ImportOption, completionHandler: @escaping (Set<URL>?) -> Void)

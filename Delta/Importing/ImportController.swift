@@ -65,43 +65,36 @@ class ImportController: NSObject
     {
         self.presentingViewController = presentingViewController
         
-        #if IMPACTOR
-            
-            let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-            alertController.addAction(UIAlertAction.cancel)
-            
-            if let importOptions = self.importOptions
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alertController.addAction(UIAlertAction.cancel)
+        
+        if let importOptions = self.importOptions
+        {
+            for importOption in importOptions
             {
-                for importOption in importOptions
-                {
-                    alertController.add(importOption) { [unowned self] (urls) in
-                        self.finish(with: urls, errors: [])
-                    }
+                alertController.add(importOption) { [unowned self] (urls) in
+                    self.finish(with: urls, errors: [])
                 }
             }
+        }
+        
+        let filesAction = UIAlertAction(title: NSLocalizedString("Files", comment: ""), style: .default) { (action) in
+            let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(ImportController.cancel))
             
-            self.presentedViewController = alertController
-            self.presentingViewController?.present(alertController, animated: true, completion: nil)
+            let documentBrowserViewController = UIDocumentBrowserViewController(forOpeningFilesWithContentTypes: Array(self.documentTypes))
+            documentBrowserViewController.delegate = self
+            documentBrowserViewController.browserUserInterfaceStyle = .dark
+            documentBrowserViewController.allowsPickingMultipleItems = true
+            documentBrowserViewController.allowsDocumentCreation = false
+            documentBrowserViewController.additionalTrailingNavigationBarButtonItems = [cancelButton]
             
-        #else
-            
-            let documentMenuController = UIDocumentMenuViewController(documentTypes: Array(self.documentTypes), in: .import)
-            documentMenuController.delegate = self
-            
-            if let reversedImportOptions = self.importOptions?.reversed()
-            {
-                for importOption in reversedImportOptions
-                {
-                    documentMenuController.add(importOption, order: .first) { [unowned self] (urls) in
-                        self.finish(with: urls, errors: [])
-                    }
-                }
-            }
-            
-            self.presentedViewController = documentMenuController
-            self.presentingViewController?.present(documentMenuController, animated: true, completion: nil)
-            
-        #endif
+            self.presentedViewController = documentBrowserViewController
+            self.presentingViewController?.present(documentBrowserViewController, animated: true, completion: nil)
+        }
+        alertController.addAction(filesAction)
+        
+        self.presentedViewController = alertController
+        self.presentingViewController?.present(alertController, animated: true, completion: nil)
     }
     
     @objc private func cancel()
@@ -126,59 +119,6 @@ class ImportController: NSObject
     }
 }
 
-
-extension ImportController: UIDocumentMenuDelegate
-{
-    func documentMenu(_ documentMenu: UIDocumentMenuViewController, didPickDocumentPicker documentPicker: UIDocumentPickerViewController)
-    {
-        if #available(iOS 11.0, *)
-        {
-            let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(ImportController.cancel))
-            
-            let documentBrowserViewController = UIDocumentBrowserViewController(forOpeningFilesWithContentTypes: Array(self.documentTypes))
-            documentBrowserViewController.delegate = self
-            documentBrowserViewController.browserUserInterfaceStyle = .dark
-            documentBrowserViewController.allowsPickingMultipleItems = true
-            documentBrowserViewController.allowsDocumentCreation = false
-            documentBrowserViewController.additionalTrailingNavigationBarButtonItems = [cancelButton]
-            
-            self.presentedViewController = documentBrowserViewController
-            self.presentingViewController?.present(documentBrowserViewController, animated: true, completion: nil)
-        }
-        else
-        {
-            documentPicker.delegate = self
-            
-            self.presentedViewController = documentPicker
-            self.presentingViewController?.present(documentPicker, animated: true, completion: nil)
-        }
-    }
-    
-    func documentMenuWasCancelled(_ documentMenu: UIDocumentMenuViewController)
-    {
-        self.finish(with: nil, errors: [])
-    }
-}
-
-extension ImportController: UIDocumentPickerDelegate
-{
-    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL)
-    {
-        self.finish(with: [url], errors: [])
-    }
-    
-    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL])
-    {
-        self.finish(with: Set(urls), errors: [])
-    }
-    
-    func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController)
-    {
-        self.finish(with: nil, errors: [])
-    }
-}
-
-@available(iOS 11.0, *)
 extension ImportController: UIDocumentBrowserViewControllerDelegate
 {
     func documentBrowser(_ controller: UIDocumentBrowserViewController, didPickDocumentURLs documentURLs: [URL])
