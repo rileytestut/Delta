@@ -8,6 +8,8 @@
 
 import UIKit
 
+import Harmony
+
 enum SyncingService: String, CaseIterable
 {
     case none
@@ -74,6 +76,13 @@ class SyncingServicesViewController: UITableViewController
             }
             
             self.tableView.reloadSections(IndexSet(integer: Section.service.rawValue), with: .none)
+            
+            if Settings.syncingService != .none && !SyncManager.shared.isAuthenticated
+            {
+                SyncManager.shared.authenticate(presentingViewController: self) { (error) in
+                    print("Authenticated with error:", error as Any)
+                }
+            }
             
         case .account, .signOut: break
         }

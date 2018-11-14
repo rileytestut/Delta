@@ -18,6 +18,8 @@ class LaunchViewController: RSTLaunchViewController
     
     private var applicationLaunchDeepLinkGame: Game?
     
+    private var didAttemptStartingSyncManager = false
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return self.gameViewController?.preferredStatusBarStyle ?? .lightContent
     }
@@ -51,8 +53,15 @@ extension LaunchViewController
         let isDatabaseManagerStarted = RSTLaunchCondition(condition: { DatabaseManager.shared.isStarted }) { (completionHandler) in
             DatabaseManager.shared.start(completionHandler: completionHandler)
         }
-
-        return [isDatabaseManagerStarted, isDatabaseManagerStarted]
+        
+        let isSyncingManagerStarted = RSTLaunchCondition(condition: { self.didAttemptStartingSyncManager }) { (completionHandler) in
+            SyncManager.shared.start { (error) in
+                self.didAttemptStartingSyncManager = true
+                completionHandler(nil)
+            }
+        }
+        
+        return [isDatabaseManagerStarted, isSyncingManagerStarted]
     }
     
     override func handleLaunchError(_ error: Error)

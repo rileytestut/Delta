@@ -109,6 +109,7 @@
 		BF9F4FD01AAD7B87004C9500 /* DeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BF9F4FCE1AAD7B87004C9500 /* DeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BFA0D1271D3AE1F600565894 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF63BDE91D389EEB00FCB040 /* GameViewController.swift */; };
 		BFAA1FED1B8AA4FA00495943 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFAA1FEC1B8AA4FA00495943 /* Settings.swift */; };
+		BFAB9F7D219A43380080EC7D /* SyncManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFAB9F7C219A43380080EC7D /* SyncManager.swift */; };
 		BFAB9F88219A4B670080EC7D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BFAB9F87219A4B670080EC7D /* GoogleService-Info.plist */; };
 		BFBAB2E31EB685A2004E0B0E /* DeltaCoreProtocol+Delta.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFBAB2E21EB685A2004E0B0E /* DeltaCoreProtocol+Delta.swift */; };
 		BFC6F7B81F435BC500221B96 /* Input+Display.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC6F7B71F435BC500221B96 /* Input+Display.swift */; };
@@ -250,6 +251,7 @@
 		BF99A5961DC2F9C400468E9E /* ControllerSkinTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControllerSkinTableViewCell.swift; sourceTree = "<group>"; };
 		BF9F4FCE1AAD7B87004C9500 /* DeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFAA1FEC1B8AA4FA00495943 /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		BFAB9F7C219A43380080EC7D /* SyncManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncManager.swift; sourceTree = "<group>"; };
 		BFAB9F87219A4B670080EC7D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		BFBAB2E21EB685A2004E0B0E /* DeltaCoreProtocol+Delta.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DeltaCoreProtocol+Delta.swift"; sourceTree = "<group>"; };
 		BFC134E01AAD82460087AD7B /* SNESDeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SNESDeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -599,6 +601,14 @@
 			path = Settings;
 			sourceTree = "<group>";
 		};
+		BFAB9F7B219A43270080EC7D /* Syncing */ = {
+			isa = PBXGroup;
+			children = (
+				BFAB9F7C219A43380080EC7D /* SyncManager.swift */,
+			);
+			path = Syncing;
+			sourceTree = "<group>";
+		};
 		BFC9B7371CEFCD08008629BB /* Cheats */ = {
 			isa = PBXGroup;
 			children = (
@@ -677,6 +687,7 @@
 				BF7AE7FA1C2E851F00B1B5BC /* Pause Menu */,
 				BFAA1FEB1B8AA4E800495943 /* Settings */,
 				BF59426C1E09BC450051894B /* Database */,
+				BFAB9F7B219A43270080EC7D /* Syncing */,
 				BF59428C1E09BCE50051894B /* Importing */,
 				BF930FFB1EB6D6EC00E8DBA0 /* Systems */,
 				BF525EE61FF5F355004AA849 /* Deep Linking */,
@@ -973,6 +984,7 @@
 				BF13A7561D5D29B0000BB055 /* PreviewGameViewController.swift in Sources */,
 				BF6866171DCAC8B900BF2D06 /* ControllerSkin+Configuring.swift in Sources */,
 				BF59427D1E09BC830051894B /* ControllerSkin.swift in Sources */,
+				BFAB9F7D219A43380080EC7D /* SyncManager.swift in Sources */,
 				BFCEA67E1D56FF640061A534 /* UIViewControllerContextTransitioning+Conveniences.swift in Sources */,
 				BF1173501DA32CF600047DF8 /* ControllersSettingsViewController.swift in Sources */,
 				BFFC461E1D59823500AF2CC6 /* GamesPresentationController.swift in Sources */,

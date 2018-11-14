@@ -109,6 +109,8 @@ extension GamesViewController
         DispatchQueue.global().async {
             self.activeEmulatorCore?.stop()
         }
+        
+        SyncManager.shared.sync()
     }
     
     override func didReceiveMemoryWarning()
