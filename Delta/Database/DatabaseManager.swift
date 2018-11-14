@@ -11,10 +11,9 @@ import CoreData
 
 // Workspace
 import DeltaCore
+import Harmony
+import Roxas
 import ZIPFoundation
-
-// Pods
-import FileMD5Hash
 
 extension DatabaseManager
 {
@@ -56,9 +55,11 @@ extension DatabaseManager
     }
 }
 
-final class DatabaseManager: NSPersistentContainer
+final class DatabaseManager: RSTPersistentContainer
 {
     static let shared = DatabaseManager()
+    
+    private(set) var isStarted = false
     
     private var gamesDatabase: GamesDatabase? = nil
     
@@ -68,29 +69,26 @@ final class DatabaseManager: NSPersistentContainer
     {
         guard
             let modelURL = Bundle(for: DatabaseManager.self).url(forResource: "Delta", withExtension: "momd"),
-            let managedObjectModel = NSManagedObjectModel(contentsOf: modelURL)
+            let managedObjectModel = NSManagedObjectModel(contentsOf: modelURL),
+            let harmonyModel = NSManagedObjectModel.harmonyModel(byMergingWith: [managedObjectModel])
         else { fatalError("Core Data model cannot be found. Aborting.") }
         
-        super.init(name: "Delta", managedObjectModel: managedObjectModel)
-        
-        self.viewContext.automaticallyMergesChangesFromParent = true
+        super.init(name: "Delta", managedObjectModel: harmonyModel)
     }
 }
 
 extension DatabaseManager
 {
-    override func newBackgroundContext() -> NSManagedObjectContext
+    func start(completionHandler: @escaping (Error?) -> Void)
     {
-        let context = super.newBackgroundContext()
-        context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
-        return context
-    }
-    
-    override func loadPersistentStores(completionHandler block: @escaping (NSPersistentStoreDescription, Error?) -> Void)
-    {
-        super.loadPersistentStores { (description, error) in
+        guard !self.isStarted else { return }
+        
+        self.loadPersistentStores { (description, error) in
+            guard error == nil else { return completionHandler(error) }
+            
             self.prepareDatabase {
-                block(description, error)
+                self.isStarted = true
+                completionHandler(nil)
             }
         }
     }
@@ -209,7 +207,18 @@ extension DatabaseManager
                     continue
                 }
                 
-                let identifier = FileHash.sha1HashOfFile(atPath: url.path) as String
+                let identifier: String
+                
+                do
+                {
+                    identifier = try RSTHasher.sha1HashOfFile(at: url)
+                }
+                catch let error as NSError
+                {
+                    errors.insert(.unknown(url, error))
+                    continue
+                }
+                
                 let filename = identifier + "." + url.pathExtension
                 
                 let game = Game(context: context)

@@ -2,7 +2,6 @@ PODS:
   - Crashlytics (3.8.6):
     - Fabric (~> 1.6.3)
   - Fabric (1.6.13)
-  - FileMD5Hash (2.0.0)
   - SDWebImage (3.8.2):
     - SDWebImage/Core (= 3.8.2)
   - SDWebImage/Core (3.8.2)
@@ -14,19 +13,25 @@ PODS:
 DEPENDENCIES:
   - Crashlytics (~> 3.8.0)
   - Fabric (~> 1.6.0)
-  - FileMD5Hash (~> 2.0.0)
   - SDWebImage (~> 3.8)
   - SMCalloutView
   - SQLite.swift (~> 0.11.0)
 
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - Crashlytics
+    - Fabric
+    - SDWebImage
+    - SMCalloutView
+    - SQLite.swift
+
 SPEC CHECKSUMS:
   Crashlytics: 95d05f4e4c19a771250c4bd9ce344d996de32bbf
   Fabric: 2fb5676bc811af011a04513451f463dac6803206
-  FileMD5Hash: 3ed69cc19a21ff4d30ae8833fc104275ad2c7de0
-  SDWebImage: '098e97e6176540799c27e804c96653ee0833d13c'
+  SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
   SMCalloutView: 5c0ee363dc8e7204b2fda17dfad38c93e9e23481
   SQLite.swift: 3e3bee21da701b5b9f87c4a672cb54f233505692
 
-PODFILE CHECKSUM: a1fb0ce1f1bb0e73380460cc4f946d297a4d5ff1
+PODFILE CHECKSUM: 1d7f9ff69da571c7991621312e07aa4b16a0a074
 
-COCOAPODS: 1.2.1
+COCOAPODS: 1.5.3

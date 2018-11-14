@@ -37,7 +37,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         }
         
         // Database
-        DatabaseManager.shared.loadPersistentStores { (description, error) in
+        DatabaseManager.shared.start { (error) in
+            print("Database started with error:", error as Any)
         }
         
         // Controllers
