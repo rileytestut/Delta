@@ -9,6 +9,7 @@
 import Foundation
 
 import DeltaCore
+import Harmony
 
 @objc public enum SaveStateType: Int16
 {
@@ -88,5 +89,28 @@ public class SaveState: _SaveState, SaveStateProtocol
         fetchRequest.predicate = predicate
         
         return fetchRequest
+    }
+}
+
+extension SaveState: Syncable
+{
+    public static var syncablePrimaryKey: AnyKeyPath {
+        return \SaveState.identifier
+    }
+    
+    public var syncableKeys: Set<AnyKeyPath> {
+        return [\SaveState.creationDate, \SaveState.filename, \SaveState.modifiedDate, \SaveState.name, \SaveState.type]
+    }
+    
+    public var syncableFiles: Set<File> {
+        return [File(identifier: "saveState", fileURL: self.fileURL), File(identifier: "thumbnail", fileURL: self.imageFileURL)]
+    }
+    
+    public var syncableRelationships: Set<AnyKeyPath> {
+        return [\SaveState.game]
+    }
+    
+    public var isSyncingEnabled: Bool {
+        return self.type != .auto && self.type != .quick
     }
 }
