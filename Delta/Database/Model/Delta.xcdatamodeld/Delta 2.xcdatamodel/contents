@@ -96,12 +96,16 @@
                 <entry key="attributeValueClassName" value="GameType"/>
             </userInfo>
         </attribute>
+        <attribute name="identifier" attributeType="String" syncable="YES"/>
         <attribute name="playerIndex" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="gameControllerInputType"/>
                 <constraint value="gameType"/>
                 <constraint value="playerIndex"/>
+            </uniquenessConstraint>
+            <uniquenessConstraint>
+                <constraint value="identifier"/>
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>
@@ -133,7 +137,7 @@
         <element name="ControllerSkin" positionX="-387" positionY="90" width="128" height="135"/>
         <element name="Game" positionX="-378" positionY="-54" width="128" height="195"/>
         <element name="GameCollection" positionX="-585" positionY="-27" width="128" height="90"/>
-        <element name="GameControllerInputMapping" positionX="-387" positionY="90" width="128" height="105"/>
+        <element name="GameControllerInputMapping" positionX="-387" positionY="90" width="128" height="120"/>
         <element name="SaveState" positionX="-198" positionY="113" width="128" height="165"/>
     </elements>
 </model>
