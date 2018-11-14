@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13772" systemVersion="16G1114" minimumToolsVersion="Xcode 7.0" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="1.0">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14460.32" systemVersion="18A391" minimumToolsVersion="Xcode 7.0" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="1.0">
     <entity name="Cheat" representedClassName="Cheat" syncable="YES">
         <attribute name="code" attributeType="String" syncable="YES"/>
         <attribute name="creationDate" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
@@ -61,7 +61,7 @@
             </userInfo>
         </attribute>
         <relationship name="cheats" toMany="YES" deletionRule="Cascade" destinationEntity="Cheat" inverseName="game" inverseEntity="Cheat" syncable="YES"/>
-        <relationship name="gameCollections" toMany="YES" deletionRule="Nullify" destinationEntity="GameCollection" inverseName="games" inverseEntity="GameCollection" syncable="YES"/>
+        <relationship name="gameCollection" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="GameCollection" inverseName="games" inverseEntity="GameCollection" syncable="YES"/>
         <relationship name="previewSaveState" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SaveState" inverseName="previewGame" inverseEntity="SaveState" syncable="YES"/>
         <relationship name="saveStates" toMany="YES" deletionRule="Cascade" destinationEntity="SaveState" inverseName="game" inverseEntity="SaveState" syncable="YES"/>
         <uniquenessConstraints>
@@ -73,7 +73,7 @@
     <entity name="GameCollection" representedClassName="GameCollection" syncable="YES">
         <attribute name="identifier" attributeType="String" syncable="YES"/>
         <attribute name="index" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
-        <relationship name="games" toMany="YES" deletionRule="Nullify" destinationEntity="Game" inverseName="gameCollections" inverseEntity="Game" syncable="YES"/>
+        <relationship name="games" toMany="YES" deletionRule="Nullify" destinationEntity="Game" inverseName="gameCollection" inverseEntity="Game" syncable="YES"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="identifier"/>

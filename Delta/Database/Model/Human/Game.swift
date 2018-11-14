@@ -90,7 +90,7 @@ extension Game
             print(error)
         }
         
-        for collection in self.gameCollections where collection.games.count == 1
+        if let collection = self.gameCollection, collection.games.count == 1
         {
             // Once this game is deleted, collection will have 0 games, so we should delete it
             managedObjectContext.delete(collection)

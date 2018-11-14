@@ -219,7 +219,7 @@ private extension GameCollectionViewController
         
         if let gameCollection = self.gameCollection
         {
-            fetchRequest.predicate = NSPredicate(format: "ANY %K == %@", #keyPath(Game.gameCollections), gameCollection)
+            fetchRequest.predicate = NSPredicate(format: "%K == %@", #keyPath(Game.gameCollection), gameCollection)
         }
         
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(Game.name), ascending: true)]

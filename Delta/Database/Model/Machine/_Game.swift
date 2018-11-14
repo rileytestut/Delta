@@ -30,7 +30,7 @@ public class _Game: NSManagedObject
 
     @NSManaged public var cheats: Set<Cheat>
 
-    @NSManaged public var gameCollections: Set<GameCollection>
+    @NSManaged public var gameCollection: GameCollection?
 
     @NSManaged public var previewSaveState: SaveState?
 
