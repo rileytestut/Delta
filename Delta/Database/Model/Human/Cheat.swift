@@ -9,6 +9,7 @@
 import Foundation
 
 import DeltaCore
+import Harmony
 
 @objc(Cheat)
 public class Cheat: _Cheat, CheatProtocol
@@ -28,4 +29,19 @@ public class Cheat: _Cheat, CheatProtocol
         self.primitiveCreationDate = date
         self.primitiveModifiedDate = date
     }
+}
+
+extension Cheat: Syncable
+{
+    public static var syncablePrimaryKey: AnyKeyPath {
+        return \Cheat.identifier
+    }
+    
+    public var syncableKeys: Set<AnyKeyPath> {
+        return [\Cheat.code, \Cheat.creationDate, \Cheat.modifiedDate, \Cheat.name, \Cheat.type]
+    }
+    
+    public var syncableRelationships: Set<AnyKeyPath> {
+        return [\Cheat.game as AnyKeyPath]
+    }    
 }
