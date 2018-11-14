@@ -9,6 +9,7 @@
 import CoreData
 
 import DeltaCore
+import Harmony
 
 @objc(GameCollection)
 public class GameCollection: _GameCollection
@@ -26,5 +27,16 @@ public class GameCollection: _GameCollection
         
         let system = System(gameType: gameType)
         return system
+    }
+}
+
+extension GameCollection: Syncable
+{
+    public static var syncablePrimaryKey: AnyKeyPath {
+        return \GameCollection.identifier
+    }
+    
+    public var syncableKeys: Set<AnyKeyPath> {
+        return [\GameCollection.index as AnyKeyPath]
     }
 }
