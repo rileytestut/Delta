@@ -36,11 +36,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate
             gestureRecognizer.delaysTouchesBegan = false
         }
         
-        // Database
-        DatabaseManager.shared.start { (error) in
-            print("Database started with error:", error as Any)
-        }
-        
         // Controllers
         ExternalGameControllerManager.shared.startMonitoring()
         

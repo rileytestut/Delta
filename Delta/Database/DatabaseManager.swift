@@ -74,6 +74,8 @@ final class DatabaseManager: RSTPersistentContainer
         else { fatalError("Core Data model cannot be found. Aborting.") }
         
         super.init(name: "Delta", managedObjectModel: harmonyModel)
+        
+        self.shouldAddStoresAsynchronously = true
     }
 }
 
