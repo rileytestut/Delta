@@ -110,7 +110,7 @@ extension GamesViewController
             self.activeEmulatorCore?.stop()
         }
         
-        SyncManager.shared.sync()
+        self.sync()
     }
     
     override func didReceiveMemoryWarning()
@@ -357,6 +357,11 @@ extension GamesViewController: ImportControllerDelegate
                 print("Imported Controller Skins:", controllerSkins.map { $0.name })
             }
         }
+    }
+    
+    @IBAction func sync()
+    {
+        SyncManager.shared.sync()
     }
 }
 
