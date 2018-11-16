@@ -555,13 +555,13 @@ extension GameCollectionViewController: ImportControllerDelegate
         
         if let imageURL = imageURL
         {
-            // Remove previous artwork from cache.
-            self.dataSource.prefetchItemCache.removeObject(forKey: game)
-            
             DatabaseManager.shared.performBackgroundTask { (context) in
                 let temporaryGame = context.object(with: game.objectID) as! Game
                 temporaryGame.artworkURL = imageURL
                 context.saveWithErrorLogging()
+                
+                // Local image URLs may not change despite being a different image, so manually mark record as updated.
+                SyncManager.shared.recordController.updateRecord(for: temporaryGame)
                 
                 DispatchQueue.main.async {
                     self.presentedViewController?.dismiss(animated: true, completion: nil)
