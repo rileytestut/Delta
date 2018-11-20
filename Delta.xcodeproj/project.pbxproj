@@ -99,6 +99,7 @@
 		BF7AE80A1C2E8C7600B1B5BC /* UIColor+Delta.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7AE8091C2E8C7600B1B5BC /* UIColor+Delta.swift */; };
 		BF80E1D21F13117000847008 /* ControllerInputsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF616A121F08184A0077F8B2 /* ControllerInputsViewController.swift */; };
 		BF8A333421A484A000A42FD4 /* BadgedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8A333321A484A000A42FD4 /* BadgedTableViewCell.swift */; };
+		BF8A334621A4926F00A42FD4 /* GameSyncStatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8A334521A4926F00A42FD4 /* GameSyncStatusViewController.swift */; };
 		BF8CA9361F5F651900499FDD /* PopoverMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8CA9351F5F651900499FDD /* PopoverMenuController.swift */; };
 		BF8DDD241F4F6C880088A21B /* InputCalloutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8DDD231F4F6C880088A21B /* InputCalloutView.swift */; };
 		BF95E2771E4977BF0030E7AD /* GameMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF95E2761E4977BF0030E7AD /* GameMetadata.swift */; };
@@ -247,6 +248,7 @@
 		BF7AE8041C2E858400B1B5BC /* GridMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GridMenuViewController.swift; sourceTree = "<group>"; };
 		BF7AE8091C2E8C7600B1B5BC /* UIColor+Delta.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Delta.swift"; sourceTree = "<group>"; };
 		BF8A333321A484A000A42FD4 /* BadgedTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgedTableViewCell.swift; sourceTree = "<group>"; };
+		BF8A334521A4926F00A42FD4 /* GameSyncStatusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSyncStatusViewController.swift; sourceTree = "<group>"; };
 		BF8CA9351F5F651900499FDD /* PopoverMenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverMenuController.swift; sourceTree = "<group>"; };
 		BF8DDD231F4F6C880088A21B /* InputCalloutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputCalloutView.swift; sourceTree = "<group>"; };
 		BF95E2761E4977BF0030E7AD /* GameMetadata.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameMetadata.swift; sourceTree = "<group>"; };
@@ -375,6 +377,7 @@
 			children = (
 				BF48F74D219A16DA00BC2FC1 /* SyncingServicesViewController.swift */,
 				BFDB3417219E4B1700595A62 /* SyncStatusViewController.swift */,
+				BF8A334521A4926F00A42FD4 /* GameSyncStatusViewController.swift */,
 			);
 			path = Syncing;
 			sourceTree = "<group>";
@@ -930,6 +933,7 @@
 				BFBAB2E31EB685A2004E0B0E /* DeltaCoreProtocol+Delta.swift in Sources */,
 				BF3540081C5DAFAD00C1184C /* PauseTransitionCoordinator.swift in Sources */,
 				BF525EEA1FF6CD12004AA849 /* DeepLink.swift in Sources */,
+				BF8A334621A4926F00A42FD4 /* GameSyncStatusViewController.swift in Sources */,
 				BF59427E1E09BC830051894B /* Game.swift in Sources */,
 				BFAA1FED1B8AA4FA00495943 /* Settings.swift in Sources */,
 				BFA0D1271D3AE1F600565894 /* GameViewController.swift in Sources */,

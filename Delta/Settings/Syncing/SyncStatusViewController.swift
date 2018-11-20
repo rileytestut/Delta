@@ -30,6 +30,18 @@ class SyncStatusViewController: UITableViewController
         
         self.fetchConflictedRecords()
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?)
+    {
+        guard segue.identifier == "showGame" else { return }
+        
+        guard let cell = sender as? UITableViewCell, let indexPath = self.tableView.indexPath(for: cell) else { return }
+        
+        let game = self.dataSource.item(at: indexPath)
+        
+        let gameSyncStatusViewController = segue.destination as! GameSyncStatusViewController
+        gameSyncStatusViewController.game = game
+    }
 }
 
 private extension SyncStatusViewController
@@ -92,20 +104,21 @@ private extension SyncStatusViewController
                 for record in records
                 {
                     guard let recordedObject = record.recordedObject else { continue }
-                    
-                    let conflictedGame: Game?
-                    
-                    switch recordedObject
-                    {
-                    case let game as Game: conflictedGame = game
-                    case let saveState as SaveState: conflictedGame = saveState.game
-                    case let cheat as Cheat: conflictedGame = cheat.game
-                    default: conflictedGame = nil
+                    recordedObject.managedObjectContext?.performAndWait {
+                        let conflictedGame: Game?
+                        
+                        switch recordedObject
+                        {
+                        case let game as Game: conflictedGame = game
+                        case let saveState as SaveState: conflictedGame = saveState.game
+                        case let cheat as Cheat: conflictedGame = cheat.game
+                        default: conflictedGame = nil
+                        }
+                        
+                        guard let game = conflictedGame else { return }
+                        
+                        gameConflictsCount[game.objectID.uriRepresentation(), default: 0] += 1
                     }
-                    
-                    guard let game = conflictedGame else { continue }
-                    
-                    gameConflictsCount[game.objectID.uriRepresentation(), default: 0] += 1
                 }
                 
                 self.gameConflictsCount = gameConflictsCount
