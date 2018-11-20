@@ -17,6 +17,10 @@ final class SyncManager
         return self.syncCoordinator.service
     }
     
+    var recordController: RecordController {
+        return self.syncCoordinator.recordController
+    }
+    
     private(set) var isAuthenticated = false
     
     private let syncCoordinator = SyncCoordinator(service: DriveService.shared, persistentContainer: DatabaseManager.shared)
