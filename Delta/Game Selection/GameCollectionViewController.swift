@@ -189,8 +189,8 @@ private extension GameCollectionViewController
     //MARK: - Data Source
     func prepareDataSource()
     {
-        self.dataSource.cellConfigurationHandler = { [unowned self] (cell, item, indexPath) in
-            self.configure(cell as! GridCollectionViewCell, for: indexPath)
+        self.dataSource.cellConfigurationHandler = { [weak self] (cell, item, indexPath) in
+            self?.configure(cell as! GridCollectionViewCell, for: indexPath)
         }
         
         self.dataSource.prefetchHandler = { (game, indexPath, completionHandler) in
