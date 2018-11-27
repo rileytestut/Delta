@@ -80,6 +80,8 @@
 		BF5942951E09BD1A0051894B /* NSManagedObjectContext+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5942921E09BD1A0051894B /* NSManagedObjectContext+Conveniences.swift */; };
 		BF5E7F441B9A650B00AE44F8 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5E7F431B9A650B00AE44F8 /* SettingsViewController.swift */; };
 		BF5E7F461B9A652600AE44F8 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF5E7F451B9A652600AE44F8 /* Settings.storyboard */; };
+		BF63A1A321A4AAAE00EE8F61 /* RecordSyncStatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF63A1A221A4AAAE00EE8F61 /* RecordSyncStatusViewController.swift */; };
+		BF63A1B521A4B76E00EE8F61 /* RecordVersionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF63A1B421A4B76E00EE8F61 /* RecordVersionsViewController.swift */; };
 		BF6424831F5B8F3F00D6AB44 /* ListMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6424821F5B8F3F00D6AB44 /* ListMenuViewController.swift */; };
 		BF6424851F5CBDC900D6AB44 /* UIView+ParentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6424841F5CBDC900D6AB44 /* UIView+ParentViewController.swift */; };
 		BF6866171DCAC8B900BF2D06 /* ControllerSkin+Configuring.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6866161DCAC8B900BF2D06 /* ControllerSkin+Configuring.swift */; };
@@ -227,6 +229,8 @@
 		BF5E7F431B9A650B00AE44F8 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		BF5E7F451B9A652600AE44F8 /* Settings.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Settings.storyboard; path = Delta/Base.lproj/Settings.storyboard; sourceTree = SOURCE_ROOT; };
 		BF616A121F08184A0077F8B2 /* ControllerInputsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerInputsViewController.swift; sourceTree = "<group>"; };
+		BF63A1A221A4AAAE00EE8F61 /* RecordSyncStatusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordSyncStatusViewController.swift; sourceTree = "<group>"; };
+		BF63A1B421A4B76E00EE8F61 /* RecordVersionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordVersionsViewController.swift; sourceTree = "<group>"; };
 		BF63BDE91D389EEB00FCB040 /* GameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		BF6424821F5B8F3F00D6AB44 /* ListMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListMenuViewController.swift; sourceTree = "<group>"; };
 		BF6424841F5CBDC900D6AB44 /* UIView+ParentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+ParentViewController.swift"; sourceTree = "<group>"; };
@@ -381,6 +385,8 @@
 				BF48F74D219A16DA00BC2FC1 /* SyncingServicesViewController.swift */,
 				BFDB3417219E4B1700595A62 /* SyncStatusViewController.swift */,
 				BF8A334521A4926F00A42FD4 /* GameSyncStatusViewController.swift */,
+				BF63A1A221A4AAAE00EE8F61 /* RecordSyncStatusViewController.swift */,
+				BF63A1B421A4B76E00EE8F61 /* RecordVersionsViewController.swift */,
 			);
 			path = Syncing;
 			sourceTree = "<group>";
@@ -938,6 +944,7 @@
 				BF525EEA1FF6CD12004AA849 /* DeepLink.swift in Sources */,
 				BF8A334621A4926F00A42FD4 /* GameSyncStatusViewController.swift in Sources */,
 				BF59427E1E09BC830051894B /* Game.swift in Sources */,
+				BF63A1A321A4AAAE00EE8F61 /* RecordSyncStatusViewController.swift in Sources */,
 				BFAA1FED1B8AA4FA00495943 /* Settings.swift in Sources */,
 				BFA0D1271D3AE1F600565894 /* GameViewController.swift in Sources */,
 				BF59428A1E09BC8B0051894B /* _SaveState.swift in Sources */,
@@ -945,6 +952,7 @@
 				BF59428E1E09BCFB0051894B /* ImportController.swift in Sources */,
 				BF13A7581D5D2FD9000BB055 /* EmulatorCore+Cheats.swift in Sources */,
 				BF48F74E219A16DA00BC2FC1 /* SyncingServicesViewController.swift in Sources */,
+				BF63A1B521A4B76E00EE8F61 /* RecordVersionsViewController.swift in Sources */,
 				BF6424831F5B8F3F00D6AB44 /* ListMenuViewController.swift in Sources */,
 				BF1020E31F95B05B00313182 /* DeltaToDelta2.xcmappingmodel in Sources */,
 				BF6BF3131EB7E47F008E83CD /* ImportOption.swift in Sources */,

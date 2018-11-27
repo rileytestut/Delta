@@ -51,6 +51,20 @@ class GameSyncStatusViewController: UITableViewController
         self.fetchRecords()
         
         super.viewWillAppear(animated)
+        
+        self.tableView.reloadData()
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?)
+    {
+        guard segue.identifier == "showRecord" else { return }
+        
+        guard let cell = sender as? UITableViewCell, let indexPath = self.tableView.indexPath(for: cell) else { return }
+        
+        let recordedObject = self.dataSource.item(at: indexPath) as! SyncableManagedObject
+        
+        let recordSyncStatusViewController = segue.destination as! RecordSyncStatusViewController
+        recordSyncStatusViewController.recordedObject = recordedObject
     }
 }
 
@@ -72,7 +86,7 @@ private extension GameSyncStatusViewController
         
         let gameDataSource = RSTArrayTableViewDataSource<Game>(items: [self.game])
         gameDataSource.cellConfigurationHandler = { (cell, game, indexPath) in
-            cell.textLabel?.text = game.name
+            cell.textLabel?.text = NSLocalizedString("Game", comment: "")
             
             configure(cell, recordedObject: game)
         }
