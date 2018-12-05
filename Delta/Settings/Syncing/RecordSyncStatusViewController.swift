@@ -64,6 +64,23 @@ class RecordSyncStatusViewController: UITableViewController
     }
 }
 
+extension RecordSyncStatusViewController
+{
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?)
+    {
+        guard segue.identifier == "showVersions" else { return }
+        
+        let navigationController = segue.destination as! UINavigationController
+        
+        let recordVersionsViewController = navigationController.viewControllers[0] as! RecordVersionsViewController
+        recordVersionsViewController.record = self.record
+    }
+    
+    @IBAction private func unwindToRecordSyncStatusViewController(_ segue: UIStoryboardSegue)
+    {
+    }
+}
+
 private extension RecordSyncStatusViewController
 {
     func update()

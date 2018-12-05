@@ -23,7 +23,7 @@ final class SyncManager
     
     private(set) var isAuthenticated = false
     
-    private let syncCoordinator = SyncCoordinator(service: DriveService.shared, persistentContainer: DatabaseManager.shared)
+    let syncCoordinator = SyncCoordinator(service: DriveService.shared, persistentContainer: DatabaseManager.shared)
     
     private init()
     {
