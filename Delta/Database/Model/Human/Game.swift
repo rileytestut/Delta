@@ -133,4 +133,8 @@ extension Game: Syncable
     public var syncableRelationships: Set<AnyKeyPath> {
         return [\Game.gameCollection]
     }
+    
+    public var syncableLocalizedName: String? {
+        return self.name
+    }
 }

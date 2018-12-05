@@ -404,18 +404,29 @@ private extension GamesViewController
     @objc func syncingDidFinish(_ notification: Notification)
     {        
         DispatchQueue.main.async {
-            guard let result = notification.userInfo?[SyncCoordinator.syncResultKey] as? Result<[Result<Void>]> else { return }
+            guard let result = notification.userInfo?[SyncCoordinator.syncResultKey] as? SyncResult else { return }
             
             let toastView: RSTToastView
             
             switch result
             {
             case .success: toastView = RSTToastView(text: NSLocalizedString("Sync Complete", comment: ""), detailText: nil)
-            case .failure(let error): toastView = RSTToastView(error: error)
+            case .failure(let error as HarmonyError): toastView = RSTToastView(text: NSLocalizedString("Sync Failed", comment: ""), detailText: error.failureReason)
+            case .failure(let error): toastView = RSTToastView(text: NSLocalizedString("Sync Failed", comment: ""), detailText: error.localizedDescription)
             }
+            
+            toastView.addTarget(self, action: #selector(GamesViewController.presentSyncResultsViewController), for: .touchUpInside)
             
             toastView.show(in: self.view, duration: 2.0)
         }
+    }
+    
+    @objc func presentSyncResultsViewController()
+    {
+        guard let result = SyncManager.shared.previousSyncResult else { return }
+        
+        let navigationController = SyncResultViewController.make(result: result)
+        self.present(navigationController, animated: true, completion: nil)
     }
 }
 

@@ -109,4 +109,8 @@ extension ControllerSkin: Syncable
     public var isSyncingEnabled: Bool {
         return !self.isStandard
     }
+    
+    public var syncableLocalizedName: String? {
+        return self.name
+    }
 }

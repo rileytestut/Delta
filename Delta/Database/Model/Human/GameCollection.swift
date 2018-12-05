@@ -39,4 +39,8 @@ extension GameCollection: Syncable
     public var syncableKeys: Set<AnyKeyPath> {
         return [\GameCollection.index as AnyKeyPath]
     }
+    
+    public var syncableLocalizedName: String? {
+        return self.name
+    }
 }

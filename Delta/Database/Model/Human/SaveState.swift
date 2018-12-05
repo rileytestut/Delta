@@ -125,4 +125,13 @@ extension SaveState: Syncable
     public var isSyncingEnabled: Bool {
         return self.type != .auto && self.type != .quick
     }
+    
+    public var syncableMetadata: [HarmonyMetadataKey : String] {
+        guard let game = self.game else { return [:] }
+        return [.gameID: game.identifier, .gameName: game.name]
+    }
+    
+    public var syncableLocalizedName: String? {
+        return self.localizedName
+    }
 }

@@ -43,5 +43,14 @@ extension Cheat: Syncable
     
     public var syncableRelationships: Set<AnyKeyPath> {
         return [\Cheat.game as AnyKeyPath]
-    }    
+    }
+    
+    public var syncableMetadata: [HarmonyMetadataKey : String] {
+        guard let game = self.game else { return [:] }
+        return [.gameID: game.identifier, .gameName: game.name]
+    }
+    
+    public var syncableLocalizedName: String? {
+        return self.name
+    }
 }

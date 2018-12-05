@@ -96,4 +96,8 @@ extension GameControllerInputMapping: Syncable
                 \GameControllerInputMapping.gameType,
                 \GameControllerInputMapping.playerIndex]
     }
+    
+    public var syncableLocalizedName: String? {
+        return self.name
+    }
 }
