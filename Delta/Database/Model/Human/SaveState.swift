@@ -22,6 +22,13 @@ import Harmony
 @objc(SaveState)
 public class SaveState: _SaveState, SaveStateProtocol
 {
+    public static let localizedDateFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeStyle = .short
+        dateFormatter.dateStyle = .short
+        return dateFormatter
+    }()
+    
     public var fileURL: URL {
         let fileURL = DatabaseManager.saveStatesDirectoryURL(for: self.game!).appendingPathComponent(self.filename)
         return fileURL
@@ -35,6 +42,11 @@ public class SaveState: _SaveState, SaveStateProtocol
     
     public var gameType: GameType {
         return self.game!.type
+    }
+    
+    public var localizedName: String {
+        let localizedName = self.name ?? SaveState.localizedDateFormatter.string(from: self.modifiedDate)
+        return localizedName
     }
     
     @NSManaged private var primitiveFilename: String

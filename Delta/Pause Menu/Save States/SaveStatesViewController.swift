@@ -70,15 +70,9 @@ class SaveStatesViewController: UICollectionViewController
     
     private var emulatorCoreSaveState: SaveStateProtocol?
     
-    private let dateFormatter: DateFormatter
-    
     required init?(coder aDecoder: NSCoder)
     {
         self.dataSource = RSTFetchedResultsCollectionViewPrefetchingDataSource<SaveState, UIImage>(fetchedResultsController: NSFetchedResultsController())
-        
-        self.dateFormatter = DateFormatter()
-        self.dateFormatter.timeStyle = .short
-        self.dateFormatter.dateStyle = .short
         
         super.init(coder: aDecoder)
         
@@ -255,9 +249,7 @@ private extension SaveStatesViewController
         cell.maximumImageSize = CGSize(width: self.prototypeCellWidthConstraint.constant, height: (self.prototypeCellWidthConstraint.constant / dimensions.width) * dimensions.height)
         
         cell.textLabel.font = UIFont.preferredFont(forTextStyle: .subheadline)
-        
-        let name = saveState.name ?? self.dateFormatter.string(from: saveState.modifiedDate)
-        cell.textLabel.text = name
+        cell.textLabel.text = saveState.localizedName
     }
     
     func configure(_ headerView: SaveStatesCollectionHeaderView, forSection section: Int)

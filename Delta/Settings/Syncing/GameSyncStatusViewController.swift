@@ -27,14 +27,6 @@ class GameSyncStatusViewController: UITableViewController
     
     private lazy var dataSource = self.makeDataSource()
     
-    private let dateFormatter: DateFormatter = {
-        let dateFormatter = DateFormatter()
-        dateFormatter.timeStyle = .short
-        dateFormatter.dateStyle = .short
-        
-        return dateFormatter
-    }()
-    
     private var recordsByObjectURI = [URL: Record<NSManagedObject>]()
     
     override func viewDidLoad()
@@ -100,15 +92,7 @@ private extension GameSyncStatusViewController
         
         let saveStatesDataSource = RSTFetchedResultsTableViewDataSource(fetchRequest: saveStatesFetchRequest, managedObjectContext: DatabaseManager.shared.viewContext)
         saveStatesDataSource.cellConfigurationHandler = { (cell, saveState, indexPath) in
-            if let name = saveState.name
-            {
-                cell.textLabel?.text = name
-            }
-            else
-            {
-                cell.textLabel?.text = self.dateFormatter.string(from: saveState.modifiedDate)
-            }
-            
+            cell.textLabel?.text = saveState.localizedName
             configure(cell, recordedObject: saveState)
         }
         
