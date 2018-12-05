@@ -18,11 +18,11 @@ extension EmulatorCore
         }
         catch EmulatorCore.CheatError.invalid
         {
-            print("Invalid cheat:", cheat.name ?? "Unnamed Cheat", cheat.code)
+            print("Invalid cheat:", cheat.name, cheat.code)
         }
         catch
         {
-            print("Unknown Cheat Error:", error, cheat.name ?? "Unnamed Cheat", cheat.code)
+            print("Unknown Cheat Error:", error, cheat.name, cheat.code)
         }
     }
     

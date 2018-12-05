@@ -24,7 +24,7 @@ public class _Cheat: NSManagedObject
 
     @NSManaged public var modifiedDate: Date
 
-    @NSManaged public var name: String?
+    @NSManaged public var name: String
 
     @NSManaged public var type: CheatType
 

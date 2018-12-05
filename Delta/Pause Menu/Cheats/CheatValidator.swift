@@ -16,6 +16,7 @@ extension CheatValidator
     {
         case invalidCode
         case invalidName
+        case invalidGame
         case duplicateName
         case duplicateCode
     }
@@ -28,7 +29,10 @@ struct CheatValidator
     
     func validate(_ cheat: Cheat) throws
     {
-        guard let name = cheat.name, let game = cheat.game else { throw Error.invalidName }
+        let name = cheat.name
+        guard !name.isEmpty else { throw Error.invalidName }
+        
+        guard let game = cheat.game else { throw Error.invalidGame }
         
         let code = cheat.code
         
