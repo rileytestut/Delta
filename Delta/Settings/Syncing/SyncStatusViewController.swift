@@ -33,20 +33,30 @@ class SyncStatusViewController: UITableViewController
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?)
     {
-        guard segue.identifier == "showGame" else { return }
+        guard let identifier = segue.identifier else { return }
         
-        guard let cell = sender as? UITableViewCell, let indexPath = self.tableView.indexPath(for: cell) else { return }
-        
-        let game = self.dataSource.item(at: indexPath)
-        
-        let gameSyncStatusViewController = segue.destination as! GameSyncStatusViewController
-        gameSyncStatusViewController.game = game
+        switch identifier
+        {
+        case "showGame":
+            guard let cell = sender as? UITableViewCell, let indexPath = self.tableView.indexPath(for: cell) else { return }
+            
+            let game = self.dataSource.item(at: indexPath)
+            
+            let gameSyncStatusViewController = segue.destination as! GameSyncStatusViewController
+            gameSyncStatusViewController.game = game
+            
+        case "showPreviousSyncResults":
+            let syncResultViewController = segue.destination as! SyncResultViewController
+            syncResultViewController.result = SyncManager.shared.previousSyncResult
+            
+        default: break
+        }
     }
 }
 
 private extension SyncStatusViewController
 {
-    func makeDataSource() -> RSTFetchedResultsTableViewDataSource<Game>
+    func makeDataSource() -> RSTCompositeTableViewDataSource<Game>
     {
         let fetchRequest = Game.fetchRequest() as NSFetchRequest<Game>
         fetchRequest.returnsObjectsAsFaults = false
@@ -54,10 +64,9 @@ private extension SyncStatusViewController
         
         let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DatabaseManager.shared.viewContext, sectionNameKeyPath: #keyPath(Game.gameCollection.name), cacheName: nil)
         
-        let dataSource = RSTFetchedResultsTableViewDataSource(fetchedResultsController: fetchedResultsController)
-        dataSource.proxy = self
-        dataSource.searchController.searchableKeyPaths = [#keyPath(Game.name)]
-        dataSource.cellConfigurationHandler = { (cell, game, indexPath) in
+        let fetchedDataSource = RSTFetchedResultsTableViewDataSource(fetchedResultsController: fetchedResultsController)
+        fetchedDataSource.searchController.searchableKeyPaths = [#keyPath(Game.name)]
+        fetchedDataSource.cellConfigurationHandler = { (cell, game, indexPath) in
             let cell = cell as! BadgedTableViewCell
             cell.textLabel?.text = game.name
             cell.textLabel?.numberOfLines = 0
@@ -89,6 +98,14 @@ private extension SyncStatusViewController
             }
         }
         
+        let dynamicDataSource = RSTDynamicTableViewDataSource<Game>()
+        dynamicDataSource.numberOfSectionsHandler = { (SyncManager.shared.previousSyncResult != nil) ? 1 : 0 }
+        dynamicDataSource.numberOfItemsHandler = { _ in 1 }
+        dynamicDataSource.cellIdentifierHandler = { _ in "PreviousSyncCell" }
+        dynamicDataSource.cellConfigurationHandler = { (cell, _, indexPath) in }
+        
+        let dataSource = RSTCompositeTableViewDataSource(dataSources: [dynamicDataSource, fetchedDataSource])
+        dataSource.proxy = self
         return dataSource
     }
     
@@ -149,7 +166,18 @@ extension SyncStatusViewController
 {
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String?
     {
-        let section = self.dataSource.fetchedResultsController.sections?[section]
-        return section?.name
+        var section = section
+        
+        if SyncManager.shared.previousSyncResult != nil
+        {
+            guard section > 0 else { return nil }
+            
+            section -= 1
+        }
+        
+        let dataSource = self.dataSource.dataSources[1] as! RSTFetchedResultsTableViewDataSource
+        
+        let sectionInfo = dataSource.fetchedResultsController.sections?[section]
+        return sectionInfo?.name
     }
 }

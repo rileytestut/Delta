@@ -47,7 +47,7 @@ extension SyncResultViewController
 
 class SyncResultViewController: UITableViewController
 {
-    private(set) var result: Result<[Record<NSManagedObject>: Result<Void, RecordError>], SyncError>!
+    var result: Result<[Record<NSManagedObject>: Result<Void, RecordError>], SyncError>!
     
     private lazy var dataSource = self.makeDataSource()
     
