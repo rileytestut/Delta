@@ -52,6 +52,7 @@
                                 <connections>
                                     <outlet property="errorLabel" destination="gzf-2D-v9F" id="QL8-uA-FvI"/>
                                     <outlet property="nameLabel" destination="E5a-nn-ak9" id="iBv-cv-b6G"/>
+                                    <segue destination="Cj8-UD-irg" kind="show" identifier="showRecordStatus" id="bKJ-Fa-4lQ"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -72,6 +73,14 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5W-HZ-Oy6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="365.60000000000002" y="-179.46026986506749"/>
+        </scene>
+        <!--recordSyncStatusViewController-->
+        <scene sceneID="rqP-Wm-wlP">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Settings" referencedIdentifier="recordSyncStatusViewController" id="Cj8-UD-irg" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xWn-zn-1t0" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1177" y="-179"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="d6h-g9-dij">

@@ -47,7 +47,7 @@ extension SyncResultViewController
 
 class SyncResultViewController: UITableViewController
 {
-    private(set) var result: Result<[Record<NSManagedObject>: Result<Void>]>!
+    private(set) var result: Result<[Record<NSManagedObject>: Result<Void, RecordError>], SyncError>!
     
     private lazy var dataSource = self.makeDataSource()
     
@@ -70,11 +70,23 @@ class SyncResultViewController: UITableViewController
         
         self.tableView.dataSource = self.dataSource
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?)
+    {
+        guard segue.identifier == "showRecordStatus" else { return }
+        
+        guard let cell = sender as? UITableViewCell, let indexPath = self.tableView.indexPath(for: cell) else { return }
+        
+        guard let recordError = self.dataSource.item(at: indexPath).value as? RecordError else { return }
+        
+        let recordSyncStatusViewController = segue.destination as! RecordSyncStatusViewController
+        recordSyncStatusViewController.record = recordError.record
+    }
 }
 
 extension SyncResultViewController
 {
-    class func make(result: Result<[Record<NSManagedObject>: Result<Void>]>) -> UINavigationController
+    class func make(result: Result<[Record<NSManagedObject>: Result<Void, RecordError>], SyncError>) -> UINavigationController
     {
         let storyboard = UIStoryboard(name: "SyncResultsViewController", bundle: nil)
         
@@ -169,7 +181,7 @@ private extension SyncResultViewController
                 errors.append(error)
             }
         }
-        catch SyncError.cancelled
+        catch SyncError.other(.cancelled)
         {
             // Do nothing
         }
@@ -324,6 +336,17 @@ extension SyncResultViewController
             {
                 return NSLocalizedString("Cheats", comment: "")
             }
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath?
+    {
+        let section = self.sortedErrors[indexPath.section]
+        
+        switch section.group
+        {
+        case .other: return nil
+        default: return indexPath
         }
     }
 }

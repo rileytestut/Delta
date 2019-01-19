@@ -55,8 +55,17 @@ class GameSyncStatusViewController: UITableViewController
         
         let recordedObject = self.dataSource.item(at: indexPath) as! SyncableManagedObject
         
-        let recordSyncStatusViewController = segue.destination as! RecordSyncStatusViewController
-        recordSyncStatusViewController.recordedObject = recordedObject
+        do
+        {
+            let records = try SyncManager.shared.recordController.fetchRecords(for: [recordedObject])
+            
+            let recordSyncStatusViewController = segue.destination as! RecordSyncStatusViewController
+            recordSyncStatusViewController.record = records.first
+        }
+        catch
+        {
+            print(error)
+        }
     }
 }
 

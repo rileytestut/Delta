@@ -242,7 +242,7 @@ private extension RecordVersionsViewController
         
         guard let indexPath = self._selectedVersionIndexPath else { return }
         
-        func finish(_ result: Result<Record<NSManagedObject>>)
+        func finish<T: Error>(_ result: Result<AnyRecord, T>)
         {
             DispatchQueue.main.async {
                 

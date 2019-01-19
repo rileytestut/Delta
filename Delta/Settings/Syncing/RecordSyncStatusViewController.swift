@@ -35,7 +35,6 @@ extension RecordSyncStatusViewController
 
 class RecordSyncStatusViewController: UITableViewController
 {
-    var recordedObject: SyncableManagedObject!
     var record: Record<NSManagedObject>?
     
     private let dateFormatter: DateFormatter = {
@@ -85,16 +84,6 @@ private extension RecordSyncStatusViewController
 {
     func update()
     {
-        do
-        {
-            let records = try SyncManager.shared.recordController.fetchRecords(for: [self.recordedObject])
-            self.record = records.first
-        }
-        catch
-        {
-            print(error)
-        }
-        
         if let record = self.record
         {
             self.syncingEnabledSwitch.isEnabled = !record.isConflicted

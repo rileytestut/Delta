@@ -84,7 +84,7 @@ extension SyncManager
                         
                         self.isAuthenticated = true
                     }
-                    catch let error as _AuthenticationError where error.code == .noSavedCredentials
+                    catch AuthenticationError.noSavedCredentials
                     {
                         // Ignore
                     }
