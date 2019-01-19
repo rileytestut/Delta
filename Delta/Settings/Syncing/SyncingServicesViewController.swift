@@ -33,11 +33,23 @@ extension SyncingServicesViewController
     {
         case service
         case account
-        case signOut
+        case authenticate
     }
 }
 
 class SyncingServicesViewController: UITableViewController
+{
+    func isSectionHidden(_ section: Section) -> Bool
+    {
+        switch section
+        {
+        case .account: return SyncManager.shared.syncCoordinator.account == nil
+        default: return false
+        }
+    }
+}
+
+extension SyncingServicesViewController
 {
     override func numberOfSections(in tableView: UITableView) -> Int
     {
@@ -56,7 +68,20 @@ class SyncingServicesViewController: UITableViewController
             let service = SyncingService.allCases[indexPath.row]
             cell.accessoryType = (service == Settings.syncingService) ? .checkmark : .none
             
-        case .account, .signOut: break
+        case .account:
+            cell.textLabel?.text = SyncManager.shared.syncCoordinator.account?.name ?? NSLocalizedString("Unknown Account", comment: "")
+            
+        case .authenticate:
+            if SyncManager.shared.syncCoordinator.isAuthenticated
+            {
+                cell.textLabel?.textColor = .red
+                cell.textLabel?.text = NSLocalizedString("Sign Out", comment: "")
+            }
+            else
+            {
+                cell.textLabel?.textColor = .deltaPurple
+                cell.textLabel?.text = NSLocalizedString("Sign In", comment: "")
+            }
         }
         
         return cell
@@ -71,32 +96,109 @@ class SyncingServicesViewController: UITableViewController
             
             if Settings.syncingService == .none && self.tableView.numberOfSections > 1
             {
-                self.tableView.deleteSections(IndexSet(integersIn: Section.account.rawValue ... Section.signOut.rawValue), with: .fade)
+                self.tableView.deleteSections(IndexSet(integersIn: Section.account.rawValue ... Section.authenticate.rawValue), with: .fade)
             }
             else if Settings.syncingService != .none && self.tableView.numberOfSections == 1
             {
-                self.tableView.insertSections(IndexSet(integersIn: Section.account.rawValue ... Section.signOut.rawValue), with: .fade)
+                self.tableView.insertSections(IndexSet(integersIn: Section.account.rawValue ... Section.authenticate.rawValue), with: .fade)
             }
             
             self.tableView.reloadSections(IndexSet(integer: Section.service.rawValue), with: .none)
             
-            if Settings.syncingService != .none && !SyncManager.shared.isAuthenticated
+        case .account: break
+            
+        case .authenticate:
+            if SyncManager.shared.syncCoordinator.isAuthenticated
             {
-                SyncManager.shared.authenticate(presentingViewController: self) { (error) in
-                    print("Authenticated with error:", error as Any)
+                SyncManager.shared.syncCoordinator.deauthenticate { (result) in
+                    DispatchQueue.main.async {
+                        do
+                        {
+                            try result.verify()
+                            self.tableView.reloadData()
+                        }
+                        catch
+                        {
+                            let alertController = UIAlertController(title: NSLocalizedString("Failed to Sign Out", comment: ""), error: error)
+                            self.present(alertController, animated: true, completion: nil)
+                        }
+                    }
                 }
             }
-            
-        case .account, .signOut: break
+            else
+            {
+                SyncManager.shared.syncCoordinator.authenticate(presentingViewController: self) { (result) in
+                    DispatchQueue.main.async {
+                        do
+                        {
+                            try result.verify()
+                            self.tableView.reloadData()
+                        }
+                        catch
+                        {
+                            
+                            let alertController = UIAlertController(title: NSLocalizedString("Failed to Sign In", comment: ""), error: error)
+                            self.present(alertController, animated: true, completion: nil)
+                        }
+                    }
+                }
+            }
         }
     }
     
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
-        switch Section.allCases[indexPath.section]
+        let section = Section.allCases[section]
+        
+        if self.isSectionHidden(section)
         {
-        case .service: return super.tableView(tableView, heightForRowAt: indexPath)
-        case .account, .signOut: return (Settings.syncingService == .none) ? 0 : super.tableView(tableView, heightForRowAt: indexPath)
+            return 0
+        }
+        else
+        {
+            return super.tableView(tableView, numberOfRowsInSection: section.rawValue)
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String?
+    {
+        let section = Section.allCases[section]
+        
+        if self.isSectionHidden(section)
+        {
+            return nil
+        }
+        else
+        {
+            return super.tableView(tableView, titleForHeaderInSection: section.rawValue)
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat
+    {
+        let section = Section.allCases[section]
+        
+        if self.isSectionHidden(section)
+        {
+            return 1
+        }
+        else
+        {
+            return super.tableView(tableView, heightForHeaderInSection: section.rawValue)
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat
+    {
+        let section = Section.allCases[section]
+        
+        if self.isSectionHidden(section)
+        {
+            return 1
+        }
+        else
+        {
+            return super.tableView(tableView, heightForFooterInSection: section.rawValue)
         }
     }
 }

@@ -56,8 +56,6 @@ final class SyncManager
     
     private(set) var previousSyncResult: SyncResult?
     
-    private(set) var isAuthenticated = false
-    
     let syncCoordinator = SyncCoordinator(service: DriveService.shared, persistentContainer: DatabaseManager.shared)
     
     private init()
@@ -70,58 +68,9 @@ final class SyncManager
 
 extension SyncManager
 {
-    func start(completionHandler: @escaping (Error?) -> Void)
-    {
-        self.syncCoordinator.start { (result) in
-            do
-            {
-                _ = try result.verify()
-                                
-                self.syncCoordinator.service.authenticateInBackground { (result) in
-                    do
-                    {
-                        _ = try result.verify()
-                        
-                        self.isAuthenticated = true
-                    }
-                    catch AuthenticationError.noSavedCredentials
-                    {
-                        // Ignore
-                    }
-                    catch
-                    {
-                        return completionHandler(error)
-                    }
-                    
-                    completionHandler(nil)
-                }
-            }
-            catch
-            {
-                completionHandler(error)
-            }
-        }
-    }
-    
-    func authenticate(presentingViewController: UIViewController, completionHandler: @escaping (Error?) -> Void)
-    {
-        guard !self.isAuthenticated else { return completionHandler(nil) }
-        
-        self.service.authenticate(withPresentingViewController: presentingViewController) { (result) in
-            switch result
-            {
-            case .success:
-                self.isAuthenticated = true
-                completionHandler(nil)
-                
-            case .failure(let error): completionHandler(error)
-            }
-        }
-    }
-    
     func sync()
     {
-        guard self.isAuthenticated else { return }
+        guard Settings.syncingService != .none else { return }
         
         self.syncCoordinator.sync()
     }
