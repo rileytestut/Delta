@@ -102,6 +102,15 @@ private extension RecordSyncStatusViewController
             {
                 self.remoteDateLabel.text = "-"
             }
+            
+            if let date = record.localModificationDate
+            {
+                self.localDateLabel.text = self.dateFormatter.string(from: date)
+            }
+            else
+            {
+                self.localDateLabel.text = "-"
+            }
         }
         else
         {
