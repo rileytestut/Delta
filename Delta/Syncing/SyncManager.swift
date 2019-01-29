@@ -19,6 +19,7 @@ extension SyncManager
         case saveState = "SaveState"
         case controllerSkin = "ControllerSkin"
         case gameControllerInputMapping = "GameControllerInputMapping"
+        case gameSave = "GameSave"
         
         var localizedName: String {
             switch self
@@ -29,6 +30,7 @@ extension SyncManager
             case .saveState: return NSLocalizedString("Save State", comment: "")
             case .controllerSkin: return NSLocalizedString("Controller Skin", comment: "")
             case .gameControllerInputMapping: return NSLocalizedString("Game Controller Input Mapping", comment: "")
+            case .gameSave: return NSLocalizedString("Game Save", comment: "")
             }
         }
     }

@@ -85,11 +85,18 @@ private extension GameSyncStatusViewController
             }
         }
         
-        let gameDataSource = RSTArrayTableViewDataSource<Game>(items: [self.game])
-        gameDataSource.cellConfigurationHandler = { (cell, game, indexPath) in
-            cell.textLabel?.text = NSLocalizedString("Game", comment: "")
+        let gameDataSource = RSTArrayTableViewDataSource<NSManagedObject>(items: [self.game, self.game.gameSave].compactMap { $0 })
+        gameDataSource.cellConfigurationHandler = { (cell, item, indexPath) in
+            if item is Game
+            {
+                cell.textLabel?.text = NSLocalizedString("Game", comment: "")
+            }
+            else
+            {
+                cell.textLabel?.text = NSLocalizedString("Game Save", comment: "")
+            }
             
-            configure(cell, recordedObject: game)
+            configure(cell, recordedObject: item)
         }
         
         let saveStatesFetchRequest = SaveState.fetchRequest() as NSFetchRequest<SaveState>
@@ -129,7 +136,7 @@ private extension GameSyncStatusViewController
         
         do
         {
-            let recordedObjects = ([self.game!] + Array(self.game.saveStates) + Array(self.game.cheats)) as! [SyncableManagedObject]
+            let recordedObjects = ([self.game, self.game.gameSave].compactMap { $0 } + Array(self.game.saveStates) + Array(self.game.cheats)) as! [SyncableManagedObject]
             let records = try SyncManager.shared.recordController.fetchRecords(for: recordedObjects)
             
             for record in records
@@ -156,7 +163,7 @@ extension GameSyncStatusViewController
         
         switch Section.allCases[section]
         {
-        case .game: return NSLocalizedString("Game", comment: "")
+        case .game: return nil
         case .saveStates: return NSLocalizedString("Save States", comment: "")
         case .cheats: return NSLocalizedString("Cheats", comment: "")
         }

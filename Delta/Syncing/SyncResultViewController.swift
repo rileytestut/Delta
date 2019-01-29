@@ -119,6 +119,7 @@ private extension SyncResultViewController
                     switch recordType
                     {
                     case .game: title = NSLocalizedString("Game", comment: "")
+                    case .gameSave: title = NSLocalizedString("Game Save", comment: "")
                     case .saveState, .cheat, .controllerSkin, .gameCollection, .gameControllerInputMapping: title = error.record.localizedName ?? recordType.localizedName
                     }
                     
@@ -210,6 +211,7 @@ private extension SyncResultViewController
                 switch recordType
                 {
                 case .game: group = .game(error.record.recordID)
+                case .gameSave: group = .game(error.record.recordID)
                 case .gameCollection: group = .gameCollection
                 case .controllerSkin: group = .controllerSkin
                 case .gameControllerInputMapping: group = .gameControllerInputMapping

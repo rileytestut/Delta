@@ -129,6 +129,7 @@ private extension SyncStatusViewController
                         case let game as Game: conflictedGame = game
                         case let saveState as SaveState: conflictedGame = saveState.game
                         case let cheat as Cheat: conflictedGame = cheat.game
+                        case let gameSave as GameSave: conflictedGame = gameSave.game
                         default: conflictedGame = nil
                         }
                         
