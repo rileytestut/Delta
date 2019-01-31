@@ -52,6 +52,8 @@
 		BF3540001C5DA3C500C1184C /* PausePresentationControllerContentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF353FFE1C5DA3C500C1184C /* PausePresentationControllerContentView.xib */; };
 		BF3540021C5DA3D500C1184C /* PauseStoryboardSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3540011C5DA3D500C1184C /* PauseStoryboardSegue.swift */; };
 		BF3540081C5DAFAD00C1184C /* PauseTransitionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3540071C5DAFAD00C1184C /* PauseTransitionCoordinator.swift */; };
+		BF3D6C512202865F0083E05A /* Delta2ToDelta3.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = BF3D6C502202865F0083E05A /* Delta2ToDelta3.xcmappingmodel */; };
+		BF3D6C53220286750083E05A /* Delta3ToDelta4.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = BF3D6C52220286750083E05A /* Delta3ToDelta4.xcmappingmodel */; };
 		BF4828841F9027B600028B97 /* Delta.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BF4828811F9027B600028B97 /* Delta.xcdatamodeld */; };
 		BF4828861F9028F500028B97 /* System.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF4828851F9028F500028B97 /* System.swift */; };
 		BF4828881F90290F00028B97 /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF4828871F90290F00028B97 /* Action.swift */; };
@@ -62,6 +64,7 @@
 		BF48F75C219A1F8A00BC2FC1 /* Harmony_Drive.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BF48F75A219A1F8300BC2FC1 /* Harmony_Drive.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF525EE81FF5F370004AA849 /* DeepLinkController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF525EE71FF5F370004AA849 /* DeepLinkController.swift */; };
 		BF525EEA1FF6CD12004AA849 /* DeepLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF525EE91FF6CD12004AA849 /* DeepLink.swift */; };
+		BF56450D220239B800A8EA26 /* GameControllerInputMappingMigrationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF56450C220239B800A8EA26 /* GameControllerInputMappingMigrationPolicy.swift */; };
 		BF5942641E09BBB10051894B /* LoadControllerSkinImageOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5942611E09BBB10051894B /* LoadControllerSkinImageOperation.swift */; };
 		BF5942661E09BBB10051894B /* LoadImageURLOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5942631E09BBB10051894B /* LoadImageURLOperation.swift */; };
 		BF59426A1E09BBD00051894B /* GridCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5942681E09BBD00051894B /* GridCollectionViewCell.swift */; };
@@ -177,6 +180,7 @@
 		BF0418131D01E93400E85BCF /* GBADeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = GBADeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF04E6FE1DB8625C000F35D3 /* ControllerSkinsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControllerSkinsViewController.swift; sourceTree = "<group>"; };
 		BF07200E219A3A9500F05DA4 /* ZIPFoundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ZIPFoundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BF0758DE2202827C005110F2 /* Delta 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Delta 4.xcdatamodel"; sourceTree = "<group>"; };
 		BF090CF11B490D8300DCAB45 /* Delta-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Delta-Bridging-Header.h"; sourceTree = "<group>"; };
 		BF1020E21F95B05B00313182 /* DeltaToDelta2.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = DeltaToDelta2.xcmappingmodel; sourceTree = "<group>"; };
 		BF107EC31BF413F000E0C32C /* GamesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GamesViewController.swift; sourceTree = "<group>"; };
@@ -205,6 +209,8 @@
 		BF3540011C5DA3D500C1184C /* PauseStoryboardSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PauseStoryboardSegue.swift; sourceTree = "<group>"; };
 		BF3540041C5DA70400C1184C /* SaveStatesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SaveStatesViewController.swift; sourceTree = "<group>"; };
 		BF3540071C5DAFAD00C1184C /* PauseTransitionCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PauseTransitionCoordinator.swift; sourceTree = "<group>"; };
+		BF3D6C502202865F0083E05A /* Delta2ToDelta3.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = Delta2ToDelta3.xcmappingmodel; sourceTree = "<group>"; };
+		BF3D6C52220286750083E05A /* Delta3ToDelta4.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = Delta3ToDelta4.xcmappingmodel; sourceTree = "<group>"; };
 		BF4828821F9027B600028B97 /* Delta 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Delta 2.xcdatamodel"; sourceTree = "<group>"; };
 		BF4828831F9027B600028B97 /* Delta.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Delta.xcdatamodel; sourceTree = "<group>"; };
 		BF4828851F9028F500028B97 /* System.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = System.swift; sourceTree = "<group>"; };
@@ -214,6 +220,8 @@
 		BF48F75A219A1F8300BC2FC1 /* Harmony_Drive.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Harmony_Drive.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF525EE71FF5F370004AA849 /* DeepLinkController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkController.swift; sourceTree = "<group>"; };
 		BF525EE91FF6CD12004AA849 /* DeepLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLink.swift; sourceTree = "<group>"; };
+		BF5645092202381000A8EA26 /* Delta 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Delta 3.xcdatamodel"; sourceTree = "<group>"; };
+		BF56450C220239B800A8EA26 /* GameControllerInputMappingMigrationPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameControllerInputMappingMigrationPolicy.swift; sourceTree = "<group>"; };
 		BF5942611E09BBB10051894B /* LoadControllerSkinImageOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadControllerSkinImageOperation.swift; sourceTree = "<group>"; };
 		BF5942631E09BBB10051894B /* LoadImageURLOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadImageURLOperation.swift; sourceTree = "<group>"; };
 		BF5942681E09BBD00051894B /* GridCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GridCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -680,6 +688,8 @@
 			isa = PBXGroup;
 			children = (
 				BF1020E21F95B05B00313182 /* DeltaToDelta2.xcmappingmodel */,
+				BF3D6C502202865F0083E05A /* Delta2ToDelta3.xcmappingmodel */,
+				BF3D6C52220286750083E05A /* Delta3ToDelta4.xcmappingmodel */,
 				BFEF24F11F7DD4BE00454C62 /* Policies */,
 			);
 			path = Migrations;
@@ -689,6 +699,7 @@
 			isa = PBXGroup;
 			children = (
 				BFEF24F21F7DD4FB00454C62 /* SaveStateMigrationPolicy.swift */,
+				BF56450C220239B800A8EA26 /* GameControllerInputMappingMigrationPolicy.swift */,
 			);
 			path = Policies;
 			sourceTree = "<group>";
@@ -1006,7 +1017,9 @@
 				BF5942701E09BC5D0051894B /* GamesDatabase.swift in Sources */,
 				BF34FA071CF0F510006624C7 /* EditCheatViewController.swift in Sources */,
 				BF1F45A421AF274D00EF9895 /* SyncResultViewController.swift in Sources */,
+				BF3D6C53220286750083E05A /* Delta3ToDelta4.xcmappingmodel in Sources */,
 				BF5942881E09BC8B0051894B /* _Game.swift in Sources */,
+				BF56450D220239B800A8EA26 /* GameControllerInputMappingMigrationPolicy.swift in Sources */,
 				BF95E2771E4977BF0030E7AD /* GameMetadata.swift in Sources */,
 				BFFC461F1D59823500AF2CC6 /* GamesStoryboardSegue.swift in Sources */,
 				BF2B98E61C97E32F00F6D57D /* SaveStatesCollectionHeaderView.swift in Sources */,
@@ -1027,6 +1040,7 @@
 				BF8A333421A484A000A42FD4 /* BadgedTableViewCell.swift in Sources */,
 				BF3540021C5DA3D500C1184C /* PauseStoryboardSegue.swift in Sources */,
 				BF107EC41BF413F000E0C32C /* GamesViewController.swift in Sources */,
+				BF3D6C512202865F0083E05A /* Delta2ToDelta3.xcmappingmodel in Sources */,
 				BF59426F1E09BC5D0051894B /* DatabaseManager.swift in Sources */,
 				BF4828861F9028F500028B97 /* System.swift in Sources */,
 				BF13A7561D5D29B0000BB055 /* PreviewGameViewController.swift in Sources */,
@@ -1302,10 +1316,12 @@
 		BF4828811F9027B600028B97 /* Delta.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				BF0758DE2202827C005110F2 /* Delta 4.xcdatamodel */,
+				BF5645092202381000A8EA26 /* Delta 3.xcdatamodel */,
 				BF4828821F9027B600028B97 /* Delta 2.xcdatamodel */,
 				BF4828831F9027B600028B97 /* Delta.xcdatamodel */,
 			);
-			currentVersion = BF4828821F9027B600028B97 /* Delta 2.xcdatamodel */;
+			currentVersion = BF0758DE2202827C005110F2 /* Delta 4.xcdatamodel */;
 			path = Delta.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
