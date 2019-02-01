@@ -104,6 +104,26 @@ extension Input
             case .rightTrigger: return NSLocalizedString("R2", comment: "")
             }
             
+        case .controller(.keyboard):
+            let input = KeyboardGameController.Input(input: self)!
+            switch input
+            {
+            case .up: return NSLocalizedString("↑", comment: "")
+            case .down: return NSLocalizedString("↓", comment: "")
+            case .left: return NSLocalizedString("←", comment: "")
+            case .right: return NSLocalizedString("→", comment: "")
+            case .escape: return NSLocalizedString("⎋", comment: "")
+            case .shift: return NSLocalizedString("⇧", comment: "")
+            case .command: return NSLocalizedString("⌘", comment: "")
+            case .option: return NSLocalizedString("⌥", comment: "")
+            case .control: return NSLocalizedString("Ctrl", comment: "")
+            case .capsLock: return NSLocalizedString("⇪", comment: "")
+            case .space: return NSLocalizedString("Space", comment: "")
+            case .return: return NSLocalizedString("↩\u{FE0E}", comment: "")
+            case .tab: return NSLocalizedString("⇥", comment: "")
+            default: return input.stringValue.uppercased()
+            }
+            
         default: break
         }
         

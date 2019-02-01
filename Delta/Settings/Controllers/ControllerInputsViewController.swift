@@ -42,6 +42,10 @@ class ControllerInputsViewController: UIViewController
     
     @IBOutlet private var actionsMenuViewControllerHeightConstraint: NSLayoutConstraint!
     @IBOutlet private var cancelTapGestureRecognizer: UITapGestureRecognizer!
+    
+    public override var next: UIResponder? {
+        return KeyboardResponder(nextResponder: super.next)
+    }
         
     override func viewDidLoad()
     {
