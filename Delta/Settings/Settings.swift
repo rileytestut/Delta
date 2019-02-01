@@ -186,9 +186,10 @@ private extension Settings
         
         switch system
         {
+        case .nes: systemName = "nes"
         case .snes: systemName = "snes"
-        case .gba: systemName = "gba"
         case .gbc: systemName = "gbc"
+        case .gba: systemName = "gba"
         }
         
         let orientation: String

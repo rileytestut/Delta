@@ -13,3 +13,6 @@
 [submodule "Cores/GBCDeltaCore"]
 	path = Cores/GBCDeltaCore
 	url = git@github.com:rileytestut/GBCDeltaCore.git
+[submodule "Cores/NESDeltaCore"]
+	path = Cores/NESDeltaCore
+	url = git@github.com:rileytestut/NESDeltaCore.git

@@ -42,6 +42,20 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "BF3C12F220438F3F0079A4B5"
+               BuildableName = "NESDeltaCore.framework"
+               BlueprintName = "NESDeltaCore"
+               ReferencedContainer = "container:Cores/NESDeltaCore/NESDeltaCore.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "BF9F4FDB1AAD8070004C9500"
                BuildableName = "SNESDeltaCore.framework"
                BlueprintName = "SNESDeltaCore"
@@ -56,10 +70,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "BFE8E9C91D010AF7009D623D"
-               BuildableName = "GBADeltaCore.framework"
-               BlueprintName = "GBADeltaCore"
-               ReferencedContainer = "container:Cores/GBADeltaCore/GBADeltaCore.xcodeproj">
+               BlueprintIdentifier = "BF8F2AAD1E9C879300F89F15"
+               BuildableName = "GBCDeltaCore.framework"
+               BlueprintName = "GBCDeltaCore"
+               ReferencedContainer = "container:Cores/GBCDeltaCore/GBCDeltaCore.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -70,10 +84,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "BF8F2AAD1E9C879300F89F15"
-               BuildableName = "GBCDeltaCore.framework"
-               BlueprintName = "GBCDeltaCore"
-               ReferencedContainer = "container:Cores/GBCDeltaCore/GBCDeltaCore.xcodeproj">
+               BlueprintIdentifier = "BFE8E9C91D010AF7009D623D"
+               BuildableName = "GBADeltaCore.framework"
+               BlueprintName = "GBADeltaCore"
+               ReferencedContainer = "container:Cores/GBADeltaCore/GBADeltaCore.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry

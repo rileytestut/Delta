@@ -27,13 +27,6 @@ private extension SettingsViewController
         case controllers = "controllersSegue"
         case controllerSkins = "controllerSkinsSegue"
     }
-    
-    enum ControllerSkinsRow: Int
-    {
-        case snes
-        case gba
-        case gbc
-    }
 }
 
 class SettingsViewController: UITableViewController
@@ -113,13 +106,8 @@ class SettingsViewController: UITableViewController
         case Segue.controllerSkins:
             let systemControllerSkinsViewController = segue.destination as! SystemControllerSkinsViewController
             
-            let row = ControllerSkinsRow(rawValue: indexPath.row)!
-            switch row
-            {
-            case .snes: systemControllerSkinsViewController.system = .snes
-            case .gba: systemControllerSkinsViewController.system = .gba
-            case .gbc: systemControllerSkinsViewController.system = .gbc
-            }            
+            let system = System.allCases[indexPath.row]
+            systemControllerSkinsViewController.system = system
         }
     }
 }
@@ -192,7 +180,7 @@ extension SettingsViewController
         switch section
         {
         case .controllers: return 1 // Temporarily hide other controller indexes until controller logic is finalized
-        case .controllerSkins: return System.supportedSystems.count
+        case .controllerSkins: return System.allCases.count
         default:
             if isSectionHidden(section)
             {
@@ -227,7 +215,7 @@ extension SettingsViewController
                 cell.detailTextLabel?.text = nil
             }
             
-        case .controllerSkins: cell.textLabel?.text = System.supportedSystems[indexPath.row].localizedName
+        case .controllerSkins: cell.textLabel?.text = System.allCases[indexPath.row].localizedName
         default: break
         }
 

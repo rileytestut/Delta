@@ -26,7 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         
         Settings.registerDefaults()
         
-        System.supportedSystems.forEach { Delta.register($0.deltaCore) }
+        System.allCases.forEach { Delta.register($0.deltaCore) }
         
         self.configureAppearance()
         

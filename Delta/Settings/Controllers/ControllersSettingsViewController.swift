@@ -106,7 +106,6 @@ extension ControllersSettingsViewController
         case "controllerInputsSegue":
             let controllerInputsViewController = (segue.destination as! UINavigationController).topViewController as! ControllerInputsViewController
             controllerInputsViewController.gameController = self.gameController
-            controllerInputsViewController.system = .snes
             
         default: break
         }
