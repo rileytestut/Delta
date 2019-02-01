@@ -85,13 +85,25 @@ extension DatabaseManager
     {
         guard !self.isStarted else { return }
         
-        self.loadPersistentStores { (description, error) in
-            guard error == nil else { return completionHandler(error) }
-            
-            self.prepareDatabase {
-                self.isStarted = true
-                completionHandler(nil)
+        do
+        {
+            if !FileManager.default.fileExists(atPath: DatabaseManager.backupDirectoryURL.path)
+            {
+                try FileManager.default.copyItem(at: DatabaseManager.defaultDirectoryURL(), to: DatabaseManager.backupDirectoryURL)
             }
+            
+            self.loadPersistentStores { (description, error) in
+                guard error == nil else { return completionHandler(error) }
+                
+                self.prepareDatabase {
+                    self.isStarted = true
+                    completionHandler(nil)
+                }
+            }
+        }
+        catch
+        {
+            completionHandler(error)
         }
     }
 }
@@ -504,6 +516,12 @@ extension DatabaseManager
         
         let artworkURL = gameURL.deletingPathExtension().appendingPathExtension("jpg")
         return artworkURL
+    }
+    
+    class var backupDirectoryURL: URL
+    {
+        let backupDirectoryURL = FileManager.default.documentsDirectory.appendingPathComponent("Database-Backup")        
+        return backupDirectoryURL
     }
 }
 
