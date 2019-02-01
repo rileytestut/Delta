@@ -35,6 +35,21 @@ extension Input
             case .rightTrigger: return 500
             default: break
             }
+        
+        case .controller(.keyboard):
+            let input = KeyboardGameController.Input(input: self)!
+            
+            // We prefer to display keys with special characters (e.g. arrow keys, shift) over regular keys.
+            // If the input's localizedName == it's string value, we can assume it's a normal key, and return a lower priority.
+            // Otherwise, it has a special display character, and so we return a higher priority.
+            if input.localizedName == input.stringValue.uppercased()
+            {
+                return 500
+            }
+            else
+            {
+                return 1000
+            }
             
         default: break
         }
