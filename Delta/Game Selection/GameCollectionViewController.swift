@@ -12,8 +12,18 @@ import MobileCoreServices
 import DeltaCore
 
 import Roxas
+import Harmony
 
 import SDWebImage
+
+extension GameCollectionViewController
+{
+    private enum LaunchError: Error
+    {
+        case alreadyRunning
+        case downloadingGameSave
+    }
+}
 
 class GameCollectionViewController: UICollectionViewController
 {
@@ -252,14 +262,113 @@ private extension GameCollectionViewController
     }
     
     //MARK: - Emulation
-    func launchGame(withSender sender: AnyObject?, clearScreen: Bool)
+    func launchGame(at indexPath: IndexPath, clearScreen: Bool, ignoreAlreadyRunningError: Bool = false)
     {
-        if clearScreen
+        func launchGame(ignoringErrors ignoredErrors: [Error])
         {
-            self.activeEmulatorCore?.gameViews.forEach { $0.inputImage = nil }
+            let game = self.dataSource.item(at: indexPath)
+            
+            do
+            {
+                try self.validateLaunchingGame(game, ignoringErrors: ignoredErrors)
+                
+                if clearScreen
+                {
+                    self.activeEmulatorCore?.gameViews.forEach { $0.inputImage = nil }
+                }
+                
+                let cell = self.collectionView.cellForItem(at: indexPath)
+                self.performSegue(withIdentifier: "unwindFromGames", sender: cell)
+            }
+            catch LaunchError.alreadyRunning
+            {
+                let alertController = UIAlertController(title: NSLocalizedString("Game Paused", comment: ""), message: NSLocalizedString("Would you like to resume where you left off, or restart the game?", comment: ""), preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
+                alertController.addAction(UIAlertAction(title: NSLocalizedString("Resume", comment: ""), style: .default, handler: { (action) in
+                    
+                    let fetchRequest = SaveState.rst_fetchRequest() as! NSFetchRequest<SaveState>
+                    fetchRequest.predicate = NSPredicate(format: "%K == %@ AND %K == %d", #keyPath(SaveState.game), game, #keyPath(SaveState.type), SaveStateType.auto.rawValue)
+                    fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(SaveState.creationDate), ascending: true)]
+                    
+                    do
+                    {
+                        let saveStates = try game.managedObjectContext?.fetch(fetchRequest)
+                        self.activeSaveState = saveStates?.last
+                    }
+                    catch
+                    {
+                        print(error)
+                    }
+                    
+                    // Disable videoManager to prevent flash of black
+                    self.activeEmulatorCore?.videoManager.isEnabled = false
+                    
+                    launchGame(ignoringErrors: [LaunchError.alreadyRunning])
+                    
+                    // The game hasn't changed, so the activeEmulatorCore is the same as before, so we need to enable videoManager it again
+                    self.activeEmulatorCore?.videoManager.isEnabled = true
+                }))
+                alertController.addAction(UIAlertAction(title: NSLocalizedString("Restart", comment: ""), style: .destructive, handler: { (action) in
+                    launchGame(ignoringErrors: [LaunchError.alreadyRunning])
+                }))
+                self.present(alertController, animated: true)
+            }
+            catch LaunchError.downloadingGameSave
+            {
+                let alertController = UIAlertController(title: NSLocalizedString("Downloading Save File", comment: ""), message: NSLocalizedString("Please wait until after this game's save file has been downloaded before playing to prevent losing save data.", comment: ""), preferredStyle: .alert)
+                alertController.addAction(.ok)
+                self.present(alertController, animated: true, completion: nil)
+            }
+            catch
+            {
+                let alertController = UIAlertController(title: NSLocalizedString("Unable to Launch Game", comment: ""), error: error)
+                self.present(alertController, animated: true, completion: nil)
+            }
         }
         
-        self.performSegue(withIdentifier: "unwindFromGames", sender: sender)
+        if ignoreAlreadyRunningError
+        {
+            launchGame(ignoringErrors: [LaunchError.alreadyRunning])
+        }
+        else
+        {
+            launchGame(ignoringErrors: [])
+        }
+    }
+    
+    func validateLaunchingGame(_ game: Game, ignoringErrors ignoredErrors: [Error]) throws
+    {
+        let ignoredErrors = ignoredErrors.map { $0 as NSError }
+        
+        if !ignoredErrors.contains(where: { $0.domain == (LaunchError.alreadyRunning as NSError).domain && $0.code == (LaunchError.alreadyRunning as NSError).code })
+        {
+            guard game.fileURL != self.activeEmulatorCore?.game.fileURL else { throw LaunchError.alreadyRunning }
+        }
+        
+        if SyncManager.shared.syncCoordinator.isSyncing
+        {
+            if let gameSave = game.gameSave
+            {
+                do
+                {
+                    if let record = try SyncManager.shared.recordController.fetchRecords(for: [gameSave]).first
+                    {
+                        if record.isSyncingEnabled && !record.isConflicted && (record.localStatus == nil || record.remoteStatus == .updated)
+                        {
+                            throw LaunchError.downloadingGameSave
+                        }
+                    }
+                }
+                catch let error as LaunchError
+                {
+                    throw error
+                }
+                catch
+                {
+                    print("Error fetching record for game save.", error)
+                }
+            }
+        }
     }
 }
 
@@ -463,8 +572,7 @@ extension GameCollectionViewController: UIViewControllerPreviewingDelegate
         let game = gameViewController.game as! Game
         
         let indexPath = self.dataSource.fetchedResultsController.indexPath(forObject: game)!
-        let cell = self.collectionView?.cellForItem(at: indexPath)
-        
+
         let fileURL = FileManager.default.uniqueTemporaryURL()
         self.activeSaveState = gameViewController.emulatorCore?.saveSaveState(to: fileURL)
         
@@ -472,7 +580,7 @@ extension GameCollectionViewController: UIViewControllerPreviewingDelegate
         
         _performing3DTouchTransition = true
         
-        self.launchGame(withSender: cell, clearScreen: true)
+        self.launchGame(at: indexPath, clearScreen: true, ignoreAlreadyRunningError: true)
         
         do
         {
@@ -499,9 +607,7 @@ extension GameCollectionViewController: SaveStatesViewControllerDelegate
         
         self.dismiss(animated: true) {
             let indexPath = self.dataSource.fetchedResultsController.indexPath(forObject: saveStatesViewController.game)!
-            let cell = self.collectionView?.cellForItem(at: indexPath)
-            
-            self.launchGame(withSender: cell, clearScreen: false)
+            self.launchGame(at: indexPath, clearScreen: false, ignoreAlreadyRunningError: true)
         }
     }
 }
@@ -604,46 +710,7 @@ extension GameCollectionViewController
     {
         guard self.gameCollection?.identifier != GameType.unknown.rawValue else { return }
         
-        let cell = collectionView.cellForItem(at: indexPath)
-        let game = self.dataSource.item(at: indexPath)
-        
-        if game.fileURL == self.activeEmulatorCore?.game.fileURL
-        {
-            let alertController = UIAlertController(title: NSLocalizedString("Game Paused", comment: ""), message: NSLocalizedString("Would you like to resume where you left off, or restart the game?", comment: ""), preferredStyle: .alert)
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Resume", comment: ""), style: .default, handler: { (action) in
-                
-                let fetchRequest = SaveState.rst_fetchRequest() as! NSFetchRequest<SaveState>
-                fetchRequest.predicate = NSPredicate(format: "%K == %@ AND %K == %d", #keyPath(SaveState.game), game, #keyPath(SaveState.type), SaveStateType.auto.rawValue)
-                fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(SaveState.creationDate), ascending: true)]
-                
-                do
-                {
-                    let saveStates = try game.managedObjectContext?.fetch(fetchRequest)
-                    self.activeSaveState = saveStates?.last
-                }
-                catch
-                {
-                    print(error)
-                }
-                
-                // Disable videoManager to prevent flash of black
-                self.activeEmulatorCore?.videoManager.isEnabled = false
-                
-                self.launchGame(withSender: cell, clearScreen: false)
-                
-                // The game hasn't changed, so the activeEmulatorCore is the same as before, so we need to enable videoManager it again
-                self.activeEmulatorCore?.videoManager.isEnabled = true
-            }))
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Restart", comment: ""), style: .destructive, handler: { (action) in
-                self.launchGame(withSender: cell, clearScreen: true)
-            }))
-            self.present(alertController, animated: true)
-        }
-        else
-        {
-            self.launchGame(withSender: cell, clearScreen: true)
-        }
+        self.launchGame(at: indexPath, clearScreen: true)
     }
 }
 
