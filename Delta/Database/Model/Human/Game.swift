@@ -9,6 +9,7 @@
 import Foundation
 
 import DeltaCore
+import Harmony
 
 @objc(Game)
 public class Game: _Game, GameProtocol
@@ -90,7 +91,7 @@ extension Game
             print(error)
         }
         
-        for collection in self.gameCollections where collection.games.count == 1
+        if let collection = self.gameCollection, collection.games.count == 1
         {
             // Once this game is deleted, collection will have 0 games, so we should delete it
             managedObjectContext.delete(collection)
@@ -107,5 +108,33 @@ extension Game
         {
             managedObjectContext.saveWithErrorLogging()
         }
+    }
+}
+
+extension Game: Syncable
+{
+    public static var syncablePrimaryKey: AnyKeyPath {
+        return \Game.identifier
+    }
+    
+    public var syncableKeys: Set<AnyKeyPath> {
+        return [\Game.artworkURL, \Game.filename, \Game.name, \Game.type]
+    }
+    
+    public var syncableFiles: Set<File> {
+        let gameFile = File(identifier: "game", fileURL: self.fileURL)
+        
+        let artworkURL = DatabaseManager.artworkURL(for: self)
+        let artworkFile = File(identifier: "artwork", fileURL: artworkURL)
+        
+        return [gameFile, artworkFile]
+    }
+    
+    public var syncableRelationships: Set<AnyKeyPath> {
+        return [\Game.gameCollection]
+    }
+    
+    public var syncableLocalizedName: String? {
+        return self.name
     }
 }

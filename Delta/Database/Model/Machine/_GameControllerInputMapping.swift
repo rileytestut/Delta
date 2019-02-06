@@ -20,6 +20,8 @@ public class _GameControllerInputMapping: NSManagedObject
 
     @NSManaged public var gameType: GameType
 
+    @NSManaged public var identifier: String
+
     @NSManaged public var playerIndex: Int16
 
     // MARK: - Relationships

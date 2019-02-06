@@ -9,6 +9,7 @@
 import Foundation
 
 import DeltaCore
+import Harmony
 
 extension ControllerSkinConfigurations
 {
@@ -88,5 +89,28 @@ extension ControllerSkin: ControllerSkinProtocol
     public func aspectRatio(for traits: DeltaCore.ControllerSkin.Traits) -> CGSize?
     {
         return self.controllerSkin?.aspectRatio(for: traits)
+    }
+}
+
+extension ControllerSkin: Syncable
+{
+    public static var syncablePrimaryKey: AnyKeyPath {
+        return \ControllerSkin.identifier
+    }
+    
+    public var syncableKeys: Set<AnyKeyPath> {
+        return [\ControllerSkin.filename, \ControllerSkin.gameType, \ControllerSkin.name, \ControllerSkin.supportedConfigurations]
+    }
+    
+    public var syncableFiles: Set<File> {
+        return [File(identifier: "skin", fileURL: self.fileURL)]
+    }
+    
+    public var isSyncingEnabled: Bool {
+        return !self.isStandard
+    }
+    
+    public var syncableLocalizedName: String? {
+        return self.name
     }
 }

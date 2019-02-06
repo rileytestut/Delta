@@ -1,6 +1,0 @@
-framework module FileMD5Hash {
-  umbrella header "FileMD5Hash-umbrella.h"
-
-  export *
-  module * { export * }
-}

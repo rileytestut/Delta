@@ -13,6 +13,7 @@ import MobileCoreServices
 import DeltaCore
 
 import Roxas
+import Harmony
 
 class GamesViewController: UIViewController
 {
@@ -61,6 +62,9 @@ class GamesViewController: UIViewController
         super.init(coder: aDecoder)
         
         self.fetchedResultsController.delegate = self
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(GamesViewController.syncingDidStart(_:)), name: SyncCoordinator.didStartSyncingNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(GamesViewController.syncingDidFinish(_:)), name: SyncCoordinator.didFinishSyncingNotification, object: nil)
     }
 }
 
@@ -109,6 +113,8 @@ extension GamesViewController
         DispatchQueue.global().async {
             self.activeEmulatorCore?.stop()
         }
+        
+        self.sync()
     }
     
     override func didReceiveMemoryWarning()
@@ -251,6 +257,11 @@ private extension GamesViewController
             
         }
         
+        if self.pageViewController.viewControllers?.count == 0
+        {
+            resetPageViewController = true
+        }
+        
         self.navigationController?.setToolbarHidden(sections < 2, animated: animated)
         
         if sections > 0
@@ -351,6 +362,11 @@ extension GamesViewController: ImportControllerDelegate
             }
         }
     }
+    
+    @IBAction func sync()
+    {
+        SyncManager.shared.sync()
+    }
 }
 
 private extension GamesViewController
@@ -374,6 +390,42 @@ private extension GamesViewController
                 self.theme = .opaque
             }
         }
+    }
+    
+    @objc func syncingDidStart(_ notification: Notification)
+    {
+        DispatchQueue.main.async {
+            let toastView = RSTToastView(text: NSLocalizedString("Syncing...", comment: ""), detailText: nil)
+            toastView.activityIndicatorView.startAnimating()
+            toastView.show(in: self.view)
+        }
+    }
+    
+    @objc func syncingDidFinish(_ notification: Notification)
+    {        
+        DispatchQueue.main.async {
+            guard let result = notification.userInfo?[SyncCoordinator.syncResultKey] as? SyncResult else { return }
+            
+            let toastView: RSTToastView
+            
+            switch result
+            {
+            case .success: toastView = RSTToastView(text: NSLocalizedString("Sync Complete", comment: ""), detailText: nil)
+            case .failure(let error): toastView = RSTToastView(text: NSLocalizedString("Sync Failed", comment: ""), detailText: error.failureReason)
+            }
+            
+            toastView.addTarget(self, action: #selector(GamesViewController.presentSyncResultsViewController), for: .touchUpInside)
+            
+            toastView.show(in: self.view, duration: 2.0)
+        }
+    }
+    
+    @objc func presentSyncResultsViewController()
+    {
+        guard let result = SyncManager.shared.previousSyncResult else { return }
+        
+        let navigationController = SyncResultViewController.make(result: result)
+        self.present(navigationController, animated: true, completion: nil)
     }
 }
 

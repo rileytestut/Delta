@@ -36,10 +36,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate
             gestureRecognizer.delaysTouchesBegan = false
         }
         
-        // Database
-        DatabaseManager.shared.loadPersistentStores { (description, error) in
-        }
-        
         // Controllers
         ExternalGameControllerManager.shared.startMonitoring()
         

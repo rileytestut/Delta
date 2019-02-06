@@ -84,6 +84,34 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "BFA1C8D31ECD01C100DEA99D"
+               BuildableName = "Harmony.framework"
+               BlueprintName = "Harmony"
+               ReferencedContainer = "container:External/Harmony/Harmony.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "BFECF9F82016982D0012B9FC"
+               BuildableName = "Harmony_Drive.framework"
+               BlueprintName = "Harmony-Drive"
+               ReferencedContainer = "container:External/Harmony/Backends/Drive/Harmony-Drive.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "BFFA71D61AAC406100EE9DD1"
                BuildableName = "Delta.app"
                BlueprintName = "Delta"
@@ -145,7 +173,7 @@
          <EnvironmentVariable
             key = "OS_ACTIVITY_MODE"
             value = "disable"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </EnvironmentVariable>
       </EnvironmentVariables>
       <AdditionalOptions>

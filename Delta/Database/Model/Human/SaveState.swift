@@ -9,6 +9,7 @@
 import Foundation
 
 import DeltaCore
+import Harmony
 
 @objc public enum SaveStateType: Int16
 {
@@ -21,6 +22,13 @@ import DeltaCore
 @objc(SaveState)
 public class SaveState: _SaveState, SaveStateProtocol
 {
+    public static let localizedDateFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeStyle = .short
+        dateFormatter.dateStyle = .short
+        return dateFormatter
+    }()
+    
     public var fileURL: URL {
         let fileURL = DatabaseManager.saveStatesDirectoryURL(for: self.game!).appendingPathComponent(self.filename)
         return fileURL
@@ -34,6 +42,11 @@ public class SaveState: _SaveState, SaveStateProtocol
     
     public var gameType: GameType {
         return self.game!.type
+    }
+    
+    public var localizedName: String {
+        let localizedName = self.name ?? SaveState.localizedDateFormatter.string(from: self.modifiedDate)
+        return localizedName
     }
     
     @NSManaged private var primitiveFilename: String
@@ -88,5 +101,37 @@ public class SaveState: _SaveState, SaveStateProtocol
         fetchRequest.predicate = predicate
         
         return fetchRequest
+    }
+}
+
+extension SaveState: Syncable
+{
+    public static var syncablePrimaryKey: AnyKeyPath {
+        return \SaveState.identifier
+    }
+    
+    public var syncableKeys: Set<AnyKeyPath> {
+        return [\SaveState.creationDate, \SaveState.filename, \SaveState.modifiedDate, \SaveState.name, \SaveState.type]
+    }
+    
+    public var syncableFiles: Set<File> {
+        return [File(identifier: "saveState", fileURL: self.fileURL), File(identifier: "thumbnail", fileURL: self.imageFileURL)]
+    }
+    
+    public var syncableRelationships: Set<AnyKeyPath> {
+        return [\SaveState.game]
+    }
+    
+    public var isSyncingEnabled: Bool {
+        return self.type != .auto && self.type != .quick
+    }
+    
+    public var syncableMetadata: [HarmonyMetadataKey : String] {
+        guard let game = self.game else { return [:] }
+        return [.gameID: game.identifier, .gameName: game.name]
+    }
+    
+    public var syncableLocalizedName: String? {
+        return self.localizedName
     }
 }

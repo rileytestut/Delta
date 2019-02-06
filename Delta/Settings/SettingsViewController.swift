@@ -19,6 +19,7 @@ private extension SettingsViewController
         case controllers
         case controllerSkins
         case controllerOpacity
+        case syncing
         case threeDTouch
     }
     
@@ -34,22 +35,34 @@ private extension SettingsViewController
         case gba
         case gbc
     }
+    
+    enum SyncingRow: Int, CaseIterable
+    {
+        case service
+        case status
+    }
 }
 
 class SettingsViewController: UITableViewController
 {
     @IBOutlet private var controllerOpacityLabel: UILabel!
     @IBOutlet private var controllerOpacitySlider: UISlider!
+    
     @IBOutlet private var versionLabel: UILabel!
+    
+    @IBOutlet private var syncingServiceLabel: UILabel!
     
     private var selectionFeedbackGenerator: UISelectionFeedbackGenerator?
     
     private var previousSelectedRowIndexPath: IndexPath?
     
+    private var syncingConflictsCount = 0
+    
     required init?(coder aDecoder: NSCoder)
     {
         super.init(coder: aDecoder)
         
+        NotificationCenter.default.addObserver(self, selector: #selector(SettingsViewController.settingsDidChange(with:)), name: .settingsDidChange, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(SettingsViewController.externalGameControllerDidConnect(_:)), name: .externalGameControllerDidConnect, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(SettingsViewController.externalGameControllerDidDisconnect(_:)), name: .externalGameControllerDidDisconnect, object: nil)
     }
@@ -57,9 +70,6 @@ class SettingsViewController: UITableViewController
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        
-        self.controllerOpacitySlider.value = Float(Settings.translucentControllerSkinOpacity)
-        self.updateControllerOpacityLabel()
         
         if let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
         {
@@ -86,6 +96,8 @@ class SettingsViewController: UITableViewController
             
             self.tableView.deselectRow(at: indexPath, animated: true)
         }
+        
+        self.update()
     }
 
     override func didReceiveMemoryWarning()
@@ -126,6 +138,26 @@ class SettingsViewController: UITableViewController
 
 private extension SettingsViewController
 {
+    func update()
+    {
+        self.controllerOpacitySlider.value = Float(Settings.translucentControllerSkinOpacity)
+        self.updateControllerOpacityLabel()
+        
+        self.syncingServiceLabel.text = Settings.syncingService.localizedName
+        
+        do
+        {
+            let records = try SyncManager.shared.recordController.fetchConflictedRecords()
+            self.syncingConflictsCount = records.count
+        }
+        catch
+        {
+            print(error)
+        }
+        
+        self.tableView.reloadData()
+    }
+    
     func updateControllerOpacityLabel()
     {
         let percentage = String(format: "%.f", Settings.translucentControllerSkinOpacity * 100) + "%"
@@ -173,6 +205,26 @@ private extension SettingsViewController
 
 private extension SettingsViewController
 {
+    @objc func settingsDidChange(with notification: Notification)
+    {
+        guard let settingsName = notification.userInfo?[Settings.NotificationUserInfoKey.name] as? Settings.Name else { return }
+        
+        switch settingsName
+        {
+        case .localControllerPlayerIndex, .preferredControllerSkin, .translucentControllerSkinOpacity: break
+        case .syncingService:
+            let selectedIndexPath = self.tableView.indexPathForSelectedRow
+            
+            let indexPath = IndexPath(row: SyncingRow.service.rawValue, section: Section.syncing.rawValue)
+            self.tableView.reloadRows(at: [indexPath], with: .none)
+            
+            if indexPath == selectedIndexPath
+            {
+                self.tableView.selectRow(at: selectedIndexPath, animated: true, scrollPosition: .none)
+            }
+        }
+    }
+
     @objc func externalGameControllerDidConnect(_ notification: Notification)
     {
         self.tableView.reloadSections(IndexSet(integer: Section.controllers.rawValue), with: .none)
@@ -228,7 +280,18 @@ extension SettingsViewController
             }
             
         case .controllerSkins: cell.textLabel?.text = System.supportedSystems[indexPath.row].localizedName
-        default: break
+        case .syncing:
+            switch SyncingRow.allCases[indexPath.row]
+            {
+            case .status:
+                let cell = cell as! BadgedTableViewCell
+                cell.badgeLabel.text = self.syncingConflictsCount.description
+                cell.badgeLabel.isHidden = (self.syncingConflictsCount == 0)
+                
+            case .service: break
+            }
+            
+        case .controllerOpacity, .threeDTouch: break
         }
 
         return cell
@@ -241,10 +304,9 @@ extension SettingsViewController
 
         switch section
         {
-        case Section.controllers: self.performSegue(withIdentifier: Segue.controllers.rawValue, sender: cell)
-        case Section.controllerSkins: self.performSegue(withIdentifier: Segue.controllerSkins.rawValue, sender: cell)
-        case Section.controllerOpacity: break
-        case Section.threeDTouch: break
+        case .controllers: self.performSegue(withIdentifier: Segue.controllers.rawValue, sender: cell)
+        case .controllerSkins: self.performSegue(withIdentifier: Segue.controllerSkins.rawValue, sender: cell)
+        case .controllerOpacity, .threeDTouch, .syncing: break
         }
     }
     

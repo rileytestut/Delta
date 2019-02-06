@@ -10,13 +10,6 @@ import UIKit
 
 extension UIColor
 {
-    class var deltaPurple: UIColor
-    {
-        return UIColor(red: 139.0/255.0, green: 40.0/255.0, blue: 247.0/255.0, alpha: 1.0)
-    }
-    
-    class var deltaDarkGray: UIColor
-    {
-        return UIColor(white: 0.15, alpha: 1.0)
-    }
+    static let deltaPurple = UIColor(named: "Purple")!
+    static let deltaDarkGray = UIColor(named: "DarkGray")!
 }

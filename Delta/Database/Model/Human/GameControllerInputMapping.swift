@@ -9,6 +9,7 @@
 import Foundation
 
 import DeltaCore
+import Harmony
 
 @objc(GameControllerInputMapping)
 public class GameControllerInputMapping: _GameControllerInputMapping
@@ -23,6 +24,13 @@ public class GameControllerInputMapping: _GameControllerInputMapping
         self.init(entity: GameControllerInputMapping.entity(), insertInto: context)
         
         self.inputMapping = inputMapping
+    }
+    
+    public override func awakeFromInsert()
+    {
+        super.awakeFromInsert()
+        
+        self.identifier = UUID().uuidString
     }
 }
 
@@ -73,5 +81,23 @@ extension GameControllerInputMapping: GameControllerInputMappingProtocol
     func set(_ input: Input?, forControllerInput controllerInput: Input)
     {
         self.inputMapping.set(input, forControllerInput: controllerInput)
+    }
+}
+
+extension GameControllerInputMapping: Syncable
+{
+    public static var syncablePrimaryKey: AnyKeyPath {
+        return \GameControllerInputMapping.identifier
+    }
+
+    public var syncableKeys: Set<AnyKeyPath> {
+        return [\GameControllerInputMapping.deltaCoreInputMapping,
+                \GameControllerInputMapping.gameControllerInputType,
+                \GameControllerInputMapping.gameType,
+                \GameControllerInputMapping.playerIndex]
+    }
+    
+    public var syncableLocalizedName: String? {
+        return self.name
     }
 }

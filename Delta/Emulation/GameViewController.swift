@@ -66,6 +66,8 @@ class GameViewController: DeltaCore.GameViewController
             let game = self.game as? Game
             NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.managedObjectContextDidChange(with:)), name: .NSManagedObjectContextObjectsDidChange, object: game?.managedObjectContext)
             
+            self.emulatorCore?.saveHandler = { [weak self] _ in self?.updateGameSave() }
+            
             self.updateControllerSkin()
             self.updateControllers()
         }
@@ -501,6 +503,40 @@ private extension GameViewController
     }
 }
 
+//MARK: - Game Saves -
+/// Game Saves
+private extension GameViewController
+{
+    func updateGameSave()
+    {
+        guard let game = self.game as? Game else { return }
+        
+        DatabaseManager.shared.performBackgroundTask { (context) in
+            let game = context.object(with: game.objectID) as! Game
+            
+            if let gameSave = game.gameSave
+            {
+                gameSave.modifiedDate = Date()
+            }
+            else
+            {
+                let gameSave = GameSave(context: context)
+                gameSave.identifier = game.identifier
+                game.gameSave = gameSave
+            }
+            
+            do
+            {
+                try context.save()
+            }
+            catch
+            {
+                print("Error updating game save.", error)
+            }
+        }
+    }
+}
+
 //MARK: - Save States -
 /// Save States
 extension GameViewController: SaveStatesViewControllerDelegate
@@ -906,6 +942,8 @@ private extension GameViewController
             }
             
         case .translucentControllerSkinOpacity: self.controllerView.translucentControllerSkinOpacity = Settings.translucentControllerSkinOpacity
+            
+        case .syncingService: break
         }
     }
     

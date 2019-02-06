@@ -9,7 +9,7 @@
 import UIKit
 import Roxas
 
-class LaunchViewController: UIViewController
+class LaunchViewController: RSTLaunchViewController
 {
     @IBOutlet private var gameViewContainerView: UIView!
     private var gameViewController: GameViewController!
@@ -17,6 +17,8 @@ class LaunchViewController: UIViewController
     private var presentedGameViewController: Bool = false
     
     private var applicationLaunchDeepLinkGame: Game?
+    
+    private var didAttemptStartingSyncManager = false
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return self.gameViewController?.preferredStatusBarStyle ?? .lightContent
@@ -37,45 +39,81 @@ class LaunchViewController: UIViewController
         NotificationCenter.default.addObserver(self, selector: #selector(LaunchViewController.deepLinkControllerLaunchGame(with:)), name: .deepLinkControllerLaunchGame, object: nil)
     }
     
-    override func viewDidAppear(_ animated: Bool)
-    {
-        super.viewDidAppear(animated)
-        
-        if !self.presentedGameViewController
-        {
-            self.presentedGameViewController = true
-            
-            func showGameViewController()
-            {
-                self.view.bringSubviewToFront(self.gameViewContainerView)
-                
-                self.setNeedsStatusBarAppearanceUpdate()
-                self.setNeedsUpdateOfHomeIndicatorAutoHidden()
-            }
-            
-            if let game = self.applicationLaunchDeepLinkGame
-            {
-                self.gameViewController.game = game
-                
-                UIView.transition(with: self.view, duration: 0.3, options: [.transitionCrossDissolve], animations: {
-                    showGameViewController()
-                }, completion: nil)
-            }
-            else
-            {
-                self.gameViewController.performSegue(withIdentifier: "showInitialGamesViewController", sender: nil)
-                self.transitionCoordinator?.animate(alongsideTransition: nil, completion: { (context) in
-                    showGameViewController()
-                })
-            }
-        }
-    }
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?)
     {
         guard segue.identifier == "embedGameViewController" else { return }
         
         self.gameViewController = segue.destination as? GameViewController
+    }
+}
+
+extension LaunchViewController
+{
+    override var launchConditions: [RSTLaunchCondition] {
+        let isDatabaseManagerStarted = RSTLaunchCondition(condition: { DatabaseManager.shared.isStarted }) { (completionHandler) in
+            DatabaseManager.shared.start(completionHandler: completionHandler)
+        }
+        
+        let isSyncingManagerStarted = RSTLaunchCondition(condition: { self.didAttemptStartingSyncManager }) { (completionHandler) in
+            SyncManager.shared.syncCoordinator.start { (error) in
+                self.didAttemptStartingSyncManager = true
+                completionHandler(nil)
+            }
+        }
+        
+        let isRecordControllerSeeded = RSTLaunchCondition(condition: { SyncManager.shared.syncCoordinator.recordController.isSeeded }) { (completionHandler) in
+            SyncManager.shared.syncCoordinator.recordController.seedFromPersistentContainer() { (result) in
+                switch result
+                {
+                case .success: completionHandler(nil)
+                case .failure(let error): completionHandler(error.error)
+                }
+            }
+        }
+        
+        return [isDatabaseManagerStarted, isSyncingManagerStarted, isRecordControllerSeeded]
+    }
+    
+    override func handleLaunchError(_ error: Error)
+    {
+        let alertController = UIAlertController(title: NSLocalizedString("Unable to Launch Delta", comment: ""), message: error.localizedDescription, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Retry", comment: ""), style: .default, handler: { (action) in
+            self.handleLaunchConditions()
+        }))
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    override func finishLaunching()
+    {
+        super.finishLaunching()
+        
+        guard !self.presentedGameViewController else { return }
+        
+        self.presentedGameViewController = true
+        
+        func showGameViewController()
+        {
+            self.view.bringSubviewToFront(self.gameViewContainerView)
+            
+            self.setNeedsStatusBarAppearanceUpdate()
+            self.setNeedsUpdateOfHomeIndicatorAutoHidden()
+        }
+        
+        if let game = self.applicationLaunchDeepLinkGame
+        {
+            self.gameViewController.game = game
+            
+            UIView.transition(with: self.view, duration: 0.3, options: [.transitionCrossDissolve], animations: {
+                showGameViewController()
+            }, completion: nil)
+        }
+        else
+        {
+            self.gameViewController.performSegue(withIdentifier: "showInitialGamesViewController", sender: nil)
+            self.transitionCoordinator?.animate(alongsideTransition: nil, completion: { (context) in
+                showGameViewController()
+            })
+        }
     }
 }
 
