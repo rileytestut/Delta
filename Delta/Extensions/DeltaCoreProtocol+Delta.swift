@@ -15,9 +15,10 @@ extension DeltaCoreProtocol
         
         switch system
         {
+        case .nes: return 1...4
         case .snes: return 1...4
-        case .gba: return 1...3
         case .gbc: return 1...4
+        case .gba: return 1...3
         }
     }
 }

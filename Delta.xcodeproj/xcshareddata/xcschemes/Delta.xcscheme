@@ -42,10 +42,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "BF9F4FDB1AAD8070004C9500"
-               BuildableName = "SNESDeltaCore.framework"
-               BlueprintName = "SNESDeltaCore"
-               ReferencedContainer = "container:Cores/SNESDeltaCore/SNESDeltaCore.xcodeproj">
+               BlueprintIdentifier = "BF3C12F220438F3F0079A4B5"
+               BuildableName = "NESDeltaCore.framework"
+               BlueprintName = "NESDeltaCore"
+               ReferencedContainer = "container:Cores/NESDeltaCore/NESDeltaCore.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -56,10 +56,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "BFE8E9C91D010AF7009D623D"
-               BuildableName = "GBADeltaCore.framework"
-               BlueprintName = "GBADeltaCore"
-               ReferencedContainer = "container:Cores/GBADeltaCore/GBADeltaCore.xcodeproj">
+               BlueprintIdentifier = "BF9F4FDB1AAD8070004C9500"
+               BuildableName = "SNESDeltaCore.framework"
+               BlueprintName = "SNESDeltaCore"
+               ReferencedContainer = "container:Cores/SNESDeltaCore/SNESDeltaCore.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -84,24 +84,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "BFA1C8D31ECD01C100DEA99D"
-               BuildableName = "Harmony.framework"
-               BlueprintName = "Harmony"
-               ReferencedContainer = "container:External/Harmony/Harmony.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "BFECF9F82016982D0012B9FC"
-               BuildableName = "Harmony_Drive.framework"
-               BlueprintName = "Harmony-Drive"
-               ReferencedContainer = "container:External/Harmony/Backends/Drive/Harmony-Drive.xcodeproj">
+               BlueprintIdentifier = "BFE8E9C91D010AF7009D623D"
+               BuildableName = "GBADeltaCore.framework"
+               BlueprintName = "GBADeltaCore"
+               ReferencedContainer = "container:Cores/GBADeltaCore/GBADeltaCore.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry

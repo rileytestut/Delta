@@ -35,6 +35,28 @@ extension Input
             case .rightTrigger: return 500
             default: break
             }
+        
+        case .controller(.keyboard):
+            let input = KeyboardGameController.Input(input: self)!
+            
+            if input == .escape
+            {
+                // The iPad Smart Keyboard doesn't have an escape key, so return lower priority
+                // to ensure it only appears if there is no other key mapped to the same input.
+                return 100
+            }
+            
+            // We prefer to display keys with special characters (e.g. arrow keys, shift) over regular keys.
+            // If the input's localizedName == it's string value, we can assume it's a normal key, and return a lower priority.
+            // Otherwise, it has a special display character, and so we return a higher priority.
+            if input.localizedName == input.stringValue.uppercased()
+            {
+                return 500
+            }
+            else
+            {
+                return 1000
+            }
             
         default: break
         }

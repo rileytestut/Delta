@@ -16,3 +16,6 @@
 [submodule "External/Harmony"]
 	path = External/Harmony
 	url = https://github.com/rileytestut/Harmony.git
+[submodule "Cores/NESDeltaCore"]
+	path = Cores/NESDeltaCore
+	url = git@github.com:rileytestut/NESDeltaCore.git

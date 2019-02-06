@@ -21,7 +21,7 @@ class ControllerInputsViewController: UIViewController
         }
     }
     
-    var system: System = .snes {
+    var system: System = System.allCases[0] {
         didSet {
             guard self.system != oldValue else { return }
             self.updateSystem()
@@ -167,7 +167,7 @@ private extension ControllerInputsViewController
         let popoverMenuController = PopoverMenuController(popoverViewController: navigationController)
         self.navigationItem.popoverMenuController = popoverMenuController
         
-        let items = System.supportedSystems.map { [unowned self, weak popoverMenuController, weak listMenuViewController] system -> MenuItem in
+        let items = System.allCases.map { [unowned self, weak popoverMenuController, weak listMenuViewController] system -> MenuItem in
             let item = MenuItem(text: system.localizedShortName, image: #imageLiteral(resourceName: "CheatCodes")) { [weak popoverMenuController, weak listMenuViewController] item in
                 listMenuViewController?.items.forEach { $0.isSelected = ($0 == item) }
                 popoverMenuController?.isActive = false

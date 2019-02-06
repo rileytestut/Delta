@@ -8,13 +8,16 @@
       location = "group:Cores/DeltaCore/DeltaCore.xcodeproj">
    </FileRef>
    <FileRef
+      location = "group:Cores/NESDeltaCore/NESDeltaCore.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:Cores/SNESDeltaCore/SNESDeltaCore.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:Cores/GBADeltaCore/GBADeltaCore.xcodeproj">
+      location = "group:Cores/GBCDeltaCore/GBCDeltaCore.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:Cores/GBCDeltaCore/GBCDeltaCore.xcodeproj">
+      location = "group:Cores/GBADeltaCore/GBADeltaCore.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:External/Harmony/Harmony.xcodeproj">

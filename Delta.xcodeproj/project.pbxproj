@@ -113,6 +113,8 @@
 		BF8DDD241F4F6C880088A21B /* InputCalloutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8DDD231F4F6C880088A21B /* InputCalloutView.swift */; };
 		BF95E2771E4977BF0030E7AD /* GameMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF95E2761E4977BF0030E7AD /* GameMetadata.swift */; };
 		BF95E2791E4982A10030E7AD /* GamesDatabaseBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF95E2781E4982A10030E7AD /* GamesDatabaseBrowserViewController.swift */; };
+		BF98C9822204D9AB006B95AC /* NESDeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF98C9812204D9A1006B95AC /* NESDeltaCore.framework */; };
+		BF98C9832204D9AB006B95AC /* NESDeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BF98C9812204D9A1006B95AC /* NESDeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF99A5971DC2F9C400468E9E /* ControllerSkinTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF99A5961DC2F9C400468E9E /* ControllerSkinTableViewCell.swift */; };
 		BF99C6941D0A9AA600BA92BC /* SNESDeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFC134E01AAD82460087AD7B /* SNESDeltaCore.framework */; };
 		BF99C6951D0A9AA600BA92BC /* SNESDeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BFC134E01AAD82460087AD7B /* SNESDeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -164,6 +166,7 @@
 				BFF0742D1E9DC17500ACDF4A /* GBCDeltaCore.framework in Embed Frameworks */,
 				BFEC732E1AAECC4A00650035 /* Roxas.framework in Embed Frameworks */,
 				BF0418151D01E93400E85BCF /* GBADeltaCore.framework in Embed Frameworks */,
+				BF98C9832204D9AB006B95AC /* NESDeltaCore.framework in Embed Frameworks */,
 				BF99C6951D0A9AA600BA92BC /* SNESDeltaCore.framework in Embed Frameworks */,
 				BF072011219A3A9D00F05DA4 /* ZIPFoundation.framework in Embed Frameworks */,
 			);
@@ -276,6 +279,7 @@
 		BF8DDD231F4F6C880088A21B /* InputCalloutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputCalloutView.swift; sourceTree = "<group>"; };
 		BF95E2761E4977BF0030E7AD /* GameMetadata.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameMetadata.swift; sourceTree = "<group>"; };
 		BF95E2781E4982A10030E7AD /* GamesDatabaseBrowserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GamesDatabaseBrowserViewController.swift; sourceTree = "<group>"; };
+		BF98C9812204D9A1006B95AC /* NESDeltaCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = NESDeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF99A5961DC2F9C400468E9E /* ControllerSkinTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControllerSkinTableViewCell.swift; sourceTree = "<group>"; };
 		BF9F4FCE1AAD7B87004C9500 /* DeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFAA1FEC1B8AA4FA00495943 /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
@@ -319,6 +323,7 @@
 				BFEC732D1AAECC4A00650035 /* Roxas.framework in Frameworks */,
 				BF48F75B219A1F8A00BC2FC1 /* Harmony_Drive.framework in Frameworks */,
 				BF99C6941D0A9AA600BA92BC /* SNESDeltaCore.framework in Frameworks */,
+				BF98C9822204D9AB006B95AC /* NESDeltaCore.framework in Frameworks */,
 				BF0418141D01E93400E85BCF /* GBADeltaCore.framework in Frameworks */,
 				BF072010219A3A9D00F05DA4 /* ZIPFoundation.framework in Frameworks */,
 				BFF0742C1E9DC17500ACDF4A /* GBCDeltaCore.framework in Frameworks */,
@@ -612,6 +617,7 @@
 		BF9F4FCD1AAD7B25004C9500 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BF98C9812204D9A1006B95AC /* NESDeltaCore.framework */,
 				BF07200E219A3A9500F05DA4 /* ZIPFoundation.framework */,
 				BF48F754219A1EEB00BC2FC1 /* Harmony.framework */,
 				BF48F75A219A1F8300BC2FC1 /* Harmony_Drive.framework */,
