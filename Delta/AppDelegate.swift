@@ -22,11 +22,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool
     {
-        Fabric.with([Crashlytics.self])
-        
         Settings.registerDefaults()
         
         System.allCases.forEach { Delta.register($0.deltaCore) }
+        
+        // Must go AFTER registering cores, or else NESDeltaCore may not work correctly when not connected to debugger 🤷‍♂️
+        Fabric.with([Crashlytics.self])
         
         self.configureAppearance()
         
