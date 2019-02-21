@@ -104,8 +104,13 @@ private extension SyncStatusViewController
         dynamicDataSource.cellIdentifierHandler = { _ in "PreviousSyncCell" }
         dynamicDataSource.cellConfigurationHandler = { (cell, _, indexPath) in }
         
+        let placeholderView = RSTPlaceholderView()
+        placeholderView.textLabel.text = NSLocalizedString("No Games", comment: "")
+        placeholderView.detailTextLabel.text = NSLocalizedString("Check back here after adding games to Delta to see their sync status.", comment: "")
+        
         let dataSource = RSTCompositeTableViewDataSource(dataSources: [dynamicDataSource, fetchedDataSource])
         dataSource.proxy = self
+        dataSource.placeholderView = placeholderView
         return dataSource
     }
     
