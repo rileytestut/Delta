@@ -17,6 +17,11 @@ import ZIPFoundation
 
 extension DatabaseManager
 {
+    static let didStartNotification = Notification.Name("databaseManagerDidStartNotification")
+}
+
+extension DatabaseManager
+{
     enum ImportError: Error, Hashable
     {
         case doesNotExist(URL)
@@ -97,6 +102,9 @@ extension DatabaseManager
                 
                 self.prepareDatabase {
                     self.isStarted = true
+                    
+                    NotificationCenter.default.post(name: DatabaseManager.didStartNotification, object: self)
+                    
                     completionHandler(nil)
                 }
             }

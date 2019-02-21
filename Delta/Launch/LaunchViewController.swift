@@ -105,7 +105,9 @@ extension LaunchViewController
             
             UIView.transition(with: self.view, duration: 0.3, options: [.transitionCrossDissolve], animations: {
                 showGameViewController()
-            }, completion: nil)
+            }) { (finished) in
+                self.gameViewController.startEmulation()
+            }
         }
         else
         {

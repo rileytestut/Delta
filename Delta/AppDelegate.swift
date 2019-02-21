@@ -19,6 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
     var window: UIWindow?
     
     private let deepLinkController = DeepLinkController()
+    private var appLaunchDeepLink: DeepLink?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool
     {
@@ -40,10 +41,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         // Controllers
         ExternalGameControllerManager.shared.startMonitoring()
         
+        // Notifications
+        NotificationCenter.default.addObserver(self, selector: #selector(AppDelegate.databaseManagerDidStart(_:)), name: DatabaseManager.didStartNotification, object: DatabaseManager.shared)
+        
         // Deep Links
         if let shortcut = launchOptions?[.shortcutItem] as? UIApplicationShortcutItem
         {
-            self.deepLinkController.handle(.shortcut(shortcut))
+            self.appLaunchDeepLink = .shortcut(shortcut)
             
             // false = we handled the deep link, so no need to call delegate method separately.
             return false
@@ -161,6 +165,18 @@ extension AppDelegate
     {
         let result = self.deepLinkController.handle(.shortcut(shortcutItem))
         completionHandler(result)
+    }
+}
+
+private extension AppDelegate
+{
+    @objc func databaseManagerDidStart(_ notification: Notification)
+    {
+        guard let deepLink = self.appLaunchDeepLink else { return }
+        
+        DispatchQueue.main.async {
+            self.deepLinkController.handle(deepLink)
+        }
     }
 }
 
