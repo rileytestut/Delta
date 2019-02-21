@@ -28,6 +28,34 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "BFA1C8D31ECD01C100DEA99D"
+               BuildableName = "Harmony.framework"
+               BlueprintName = "Harmony"
+               ReferencedContainer = "container:External/Harmony/Harmony.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "BFECF9F82016982D0012B9FC"
+               BuildableName = "Harmony_Drive.framework"
+               BlueprintName = "Harmony-Drive"
+               ReferencedContainer = "container:External/Harmony/Backends/Drive/Harmony-Drive.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "BF46895C1AACF36800A2586D"
                BuildableName = "DeltaCore.framework"
                BlueprintName = "DeltaCore"
@@ -88,6 +116,20 @@
                BuildableName = "GBADeltaCore.framework"
                BlueprintName = "GBADeltaCore"
                ReferencedContainer = "container:Cores/GBADeltaCore/GBADeltaCore.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "1AC0A77D7D4F472C1693D90C57B90DD5"
+               BuildableName = "Pods_Delta.framework"
+               BlueprintName = "Pods-Delta"
+               ReferencedContainer = "container:Pods/Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
