@@ -203,10 +203,10 @@ private extension SettingsViewController
         case .syncingService:
             let selectedIndexPath = self.tableView.indexPathForSelectedRow
             
-            let indexPath = IndexPath(row: SyncingRow.service.rawValue, section: Section.syncing.rawValue)
-            self.tableView.reloadRows(at: [indexPath], with: .none)
+            self.tableView.reloadSections(IndexSet(integer: Section.syncing.rawValue), with: .none)
             
-            if indexPath == selectedIndexPath
+            let syncingServiceIndexPath = IndexPath(row: SyncingRow.service.rawValue, section: Section.syncing.rawValue)
+            if selectedIndexPath == syncingServiceIndexPath
             {
                 self.tableView.selectRow(at: selectedIndexPath, animated: true, scrollPosition: .none)
             }
@@ -233,6 +233,7 @@ extension SettingsViewController
         {
         case .controllers: return 1 // Temporarily hide other controller indexes until controller logic is finalized
         case .controllerSkins: return System.allCases.count
+        case .syncing: return Settings.syncingService == .none ? 1 : super.tableView(tableView, numberOfRowsInSection: sectionIndex)
         default:
             if isSectionHidden(section)
             {
