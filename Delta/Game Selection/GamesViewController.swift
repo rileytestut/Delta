@@ -244,7 +244,7 @@ private extension GamesViewController
         
         if let viewController = self.pageViewController.viewControllers?.first as? GameCollectionViewController, let gameCollection = viewController.gameCollection
         {
-            if let index = self.fetchedResultsController.fetchedObjects?.index(where: { $0 as! GameCollection == gameCollection })
+            if let index = self.fetchedResultsController.fetchedObjects?.firstIndex(where: { $0 as! GameCollection == gameCollection })
             {
                 self.pageControl.currentPage = index
             }
@@ -273,7 +273,7 @@ private extension GamesViewController
                 
                 if let gameCollection = Settings.previousGameCollection
                 {
-                    if let gameCollectionIndex = self.fetchedResultsController.fetchedObjects?.index(where: { $0 as! GameCollection == gameCollection })
+                    if let gameCollectionIndex = self.fetchedResultsController.fetchedObjects?.firstIndex(where: { $0 as! GameCollection == gameCollection })
                     {
                         index = gameCollectionIndex
                     }
@@ -451,7 +451,7 @@ extension GamesViewController: UIPageViewControllerDataSource, UIPageViewControl
     {
         if let viewController = pageViewController.viewControllers?.first as? GameCollectionViewController, let gameCollection = viewController.gameCollection
         {
-            let index = self.fetchedResultsController.fetchedObjects?.index(where: { $0 as! GameCollection == gameCollection }) ?? 0
+            let index = self.fetchedResultsController.fetchedObjects?.firstIndex(where: { $0 as! GameCollection == gameCollection }) ?? 0
             self.pageControl.currentPage = index
             
             Settings.previousGameCollection = gameCollection

@@ -114,8 +114,8 @@ extension Settings
                 fetchRequest.returnsObjectsAsFaults = false
                 
                 let games = try DatabaseManager.shared.viewContext.fetch(fetchRequest).sorted(by: { (game1, game2) -> Bool in
-                    let index1 = identifiers.index(of: game1.identifier)!
-                    let index2 = identifiers.index(of: game2.identifier)!
+                    let index1 = identifiers.firstIndex(of: game1.identifier)!
+                    let index2 = identifiers.firstIndex(of: game2.identifier)!
                     return index1 < index2
                 })
                 

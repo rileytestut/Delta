@@ -327,7 +327,7 @@ private extension ControllerInputsViewController
         
         let menuItem: MenuItem?
         
-        if let input = self.calloutViews.first(where: { $0.value == calloutView })?.key, let index = self.supportedActionInputs.index(where: { $0 == input })
+        if let input = self.calloutViews.first(where: { $0.value == calloutView })?.key, let index = self.supportedActionInputs.firstIndex(where: { $0 == input })
         {
             menuItem = self.actionsMenuViewController.items[index]
         }
@@ -455,7 +455,7 @@ private extension ControllerInputsViewController
                 return presentationFrame
             }
         }
-        else if let index = self.supportedActionInputs.index(where: { $0 == input })
+        else if let index = self.supportedActionInputs.firstIndex(where: { $0 == input })
         {
             // Input is an ActionInput.
             

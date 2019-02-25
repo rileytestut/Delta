@@ -151,7 +151,7 @@ extension EditCheatViewController
             self.typeSegmentedControl.insertSegment(withTitle: format.name, at: index, animated: false)
         }
         
-        if let index = self.supportedCheatFormats.index(where: { $0.type == type })
+        if let index = self.supportedCheatFormats.firstIndex(where: { $0.type == type })
         {
             self.typeSegmentedControl.selectedSegmentIndex = index
         }

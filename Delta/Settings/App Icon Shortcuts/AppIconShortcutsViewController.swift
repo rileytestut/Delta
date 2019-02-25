@@ -290,6 +290,8 @@ extension AppIconShortcutsViewController
         case .insert:
             let game = self.dataSource.item(at: indexPath)
             self.addShortcut(for: game)
+            
+        @unknown default: break
         }
         
         self.updateShortcuts()

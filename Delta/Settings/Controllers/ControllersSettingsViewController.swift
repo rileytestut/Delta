@@ -188,7 +188,7 @@ private extension ControllersSettingsViewController
             self.connectedControllers.append(controller)
         }
         
-        if let index = self.connectedControllers.index(where: { $0 == controller })
+        if let index = self.connectedControllers.firstIndex(where: { $0 == controller })
         {
             self.tableView.beginUpdates()
             
@@ -220,7 +220,7 @@ private extension ControllersSettingsViewController
     {
         guard let controller = notification.object as? GameController else { return }
         
-        if let index = self.connectedControllers.index(where: { $0 == controller })
+        if let index = self.connectedControllers.firstIndex(where: { $0 == controller })
         {
             self.connectedControllers.remove(at: index)
             
@@ -322,7 +322,7 @@ extension ControllersSettingsViewController
             {
                 previousIndexPath = IndexPath(row: 0, section: Section.localDevice.rawValue)
             }
-            else if let row = self.connectedControllers.index(where: { $0 == gameController })
+            else if let row = self.connectedControllers.firstIndex(where: { $0 == gameController })
             {
                 previousIndexPath = IndexPath(row: row, section: Section.externalControllers.rawValue)
             }

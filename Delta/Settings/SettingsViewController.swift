@@ -258,7 +258,7 @@ extension SettingsViewController
             {
                 cell.detailTextLabel?.text = UIDevice.current.name
             }
-            else if let index = ExternalGameControllerManager.shared.connectedControllers.index(where: { $0.playerIndex == indexPath.row })
+            else if let index = ExternalGameControllerManager.shared.connectedControllers.firstIndex(where: { $0.playerIndex == indexPath.row })
             {
                 let controller = ExternalGameControllerManager.shared.connectedControllers[index]
                 cell.detailTextLabel?.text = controller.name

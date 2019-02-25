@@ -22,41 +22,13 @@ extension DatabaseManager
 
 extension DatabaseManager
 {
-    enum ImportError: Error, Hashable
+    enum ImportError: Error, Hashable, Equatable
     {
         case doesNotExist(URL)
         case invalid(URL)
         case unsupported(URL)
         case unknown(URL, NSError)
         case saveFailed(Set<URL>, NSError)
-        
-        var hashValue: Int {
-            switch self
-            {
-            case .doesNotExist: return 0
-            case .invalid: return 1
-            case .unsupported: return 2
-            case .unknown: return 3
-            case .saveFailed: return 4
-            }
-        }
-        
-        static func ==(lhs: ImportError, rhs: ImportError) -> Bool
-        {
-            switch (lhs, rhs)
-            {
-            case (let .doesNotExist(url1), let .doesNotExist(url2)) where url1 == url2: return true
-            case (let .invalid(url1), let .invalid(url2)) where url1 == url2: return true
-            case (let .unsupported(url1), let .unsupported(url2)) where url1 == url2: return true
-            case (let .unknown(url1, error1), let .unknown(url2, error2)) where url1 == url2 && error1 == error2: return true
-            case (let .saveFailed(urls1, error1), let .saveFailed(urls2, error2)) where urls1 == urls2 && error1 == error2: return true
-            case (.doesNotExist, _): return false
-            case (.invalid, _): return false
-            case (.unsupported, _): return false
-            case (.unknown, _): return false
-            case (.saveFailed, _): return false
-            }
-        }
     }
 }
 
