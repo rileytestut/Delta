@@ -53,7 +53,7 @@ class GameSyncStatusViewController: UITableViewController
         
         guard let cell = sender as? UITableViewCell, let indexPath = self.tableView.indexPath(for: cell) else { return }
         
-        let recordedObject = self.dataSource.item(at: indexPath) as! SyncableManagedObject
+        let recordedObject = self.dataSource.item(at: indexPath) as! Syncable
         
         do
         {
@@ -136,7 +136,7 @@ private extension GameSyncStatusViewController
         
         do
         {
-            let recordedObjects = ([self.game, self.game.gameSave].compactMap { $0 } + Array(self.game.saveStates) + Array(self.game.cheats)) as! [SyncableManagedObject]
+            let recordedObjects = ([self.game, self.game.gameSave].compactMap { $0 } + Array(self.game.saveStates) + Array(self.game.cheats)) as! [Syncable]
             let records = try SyncManager.shared.recordController.fetchRecords(for: recordedObjects)
             
             for record in records

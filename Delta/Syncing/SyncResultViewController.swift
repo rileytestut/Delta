@@ -170,30 +170,22 @@ private extension SyncResultViewController
     {
         var errors = [Error]()
         
-        do
+        switch self.result!
         {
-            try self.result.verify()
-        }
-        catch SyncError.partial(let recordResults)
-        {
+        case .success: break
+        case .failure(.partial(let recordResults)):
             for (_, result) in recordResults
             {
                 guard case .failure(let error) = result else { continue }
                 errors.append(error)
             }
-        }
-        catch SyncError.other(.cancelled)
-        {
+        
+        case .failure(.other(GeneralError.cancelled)):
             // Do nothing
-        }
-        catch let error as SyncError
-        {
+            break
+            
+        case .failure(let error):
             let error = error.underlyingError ?? error
-            errors.append(error)
-        }
-        catch
-        {
-            assertionFailure("Non-SyncError thrown by sync result.")
             errors.append(error)
         }
         

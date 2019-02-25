@@ -66,7 +66,7 @@ extension LaunchViewController
                 switch result
                 {
                 case .success: completionHandler(nil)
-                case .failure(let error): completionHandler(error.error)
+                case .failure(let error): completionHandler(error)
                 }
             }
         }

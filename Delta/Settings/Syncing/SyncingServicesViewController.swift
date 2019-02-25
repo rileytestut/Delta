@@ -114,7 +114,7 @@ extension SyncingServicesViewController
                     DispatchQueue.main.async {
                         do
                         {
-                            try result.verify()
+                            try result.get()
                             self.tableView.reloadData()
                         }
                         catch
@@ -131,7 +131,7 @@ extension SyncingServicesViewController
                     DispatchQueue.main.async {
                         do
                         {
-                            try result.verify()
+                            _ = try result.get()
                             self.tableView.reloadData()
                         }
                         catch

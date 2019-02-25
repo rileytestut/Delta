@@ -199,7 +199,7 @@ private extension RecordVersionsViewController
         SyncManager.shared.syncCoordinator.fetchVersions(for: self.record) { (result) in
             do
             {
-                let versions = try result.value().map(Version.init)
+                let versions = try result.get().map(Version.init)
                 self.versions = versions
                 
                 DispatchQueue.main.async {
@@ -267,7 +267,7 @@ private extension RecordVersionsViewController
                 
                 do
                 {
-                    let record = try result.value()
+                    let record = try result.get()
                     self.record = record
                     
                     self.progressView.setProgress(1.0, animated: true)
