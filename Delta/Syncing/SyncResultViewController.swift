@@ -135,6 +135,7 @@ private extension SyncResultViewController
                         
                         errorMessage = messages.joined(separator: "\n")
                         
+                    case .other(_, let error as NSError): errorMessage = error.localizedFailureReason ?? error.localizedDescription
                     default: errorMessage = error.failureReason
                     }
                     
