@@ -48,6 +48,8 @@ class GamesViewController: UIViewController
     
     private var searchController: RSTSearchController?
     
+    private var syncingToastView: RSTToastView?
+    
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         fatalError("initWithNibName: not implemented")
     }
@@ -364,13 +366,65 @@ extension GamesViewController: ImportControllerDelegate
             }
         }
     }
-    
+}
+
+//MARK: - Syncing -
+/// Syncing
+private extension GamesViewController
+{
     @IBAction func sync()
     {
+        // Show toast view in case sync started before this view controller existed.
+        self.showSyncingToastViewIfNeeded()
+        
         SyncManager.shared.sync()
+    }
+    
+    func showSyncingToastViewIfNeeded()
+    {
+        guard SyncManager.shared.syncCoordinator.isSyncing && self.syncingToastView == nil else { return }
+        
+        let toastView = RSTToastView(text: NSLocalizedString("Syncing...", comment: ""), detailText: nil)
+        toastView.activityIndicatorView.startAnimating()
+        toastView.addTarget(self, action: #selector(GamesViewController.hideSyncingToastView), for: .touchUpInside)
+        toastView.show(in: self.view)
+        
+        self.syncingToastView = toastView
+    }
+    
+    func showSyncFinishedToastView(result: SyncResult)
+    {
+        let toastView: RSTToastView
+        
+        switch result
+        {
+        case .success: toastView = RSTToastView(text: NSLocalizedString("Sync Complete", comment: ""), detailText: nil)
+        case .failure(let error): toastView = RSTToastView(text: NSLocalizedString("Sync Failed", comment: ""), detailText: error.failureReason)
+        }
+        
+        toastView.addTarget(self, action: #selector(GamesViewController.presentSyncResultsViewController), for: .touchUpInside)
+        
+        toastView.show(in: self.view, duration: 2.0)
+        
+        self.syncingToastView = nil
+    }
+    
+    @objc func hideSyncingToastView()
+    {
+        self.syncingToastView = nil
+    }
+    
+    @objc func presentSyncResultsViewController()
+    {
+        guard let result = SyncManager.shared.previousSyncResult else { return }
+        
+        let navigationController = SyncResultViewController.make(result: result)
+        self.present(navigationController, animated: true, completion: nil)
     }
 }
 
+//MARK: - Notifications -
+/// Notifications
 private extension GamesViewController
 {
     @objc func managedObjectContextDidChange(with notification: Notification)
@@ -397,9 +451,7 @@ private extension GamesViewController
     @objc func syncingDidStart(_ notification: Notification)
     {
         DispatchQueue.main.async {
-            let toastView = RSTToastView(text: NSLocalizedString("Syncing...", comment: ""), detailText: nil)
-            toastView.activityIndicatorView.startAnimating()
-            toastView.show(in: self.view)
+            self.showSyncingToastViewIfNeeded()
         }
     }
     
@@ -407,27 +459,8 @@ private extension GamesViewController
     {        
         DispatchQueue.main.async {
             guard let result = notification.userInfo?[SyncCoordinator.syncResultKey] as? SyncResult else { return }
-            
-            let toastView: RSTToastView
-            
-            switch result
-            {
-            case .success: toastView = RSTToastView(text: NSLocalizedString("Sync Complete", comment: ""), detailText: nil)
-            case .failure(let error): toastView = RSTToastView(text: NSLocalizedString("Sync Failed", comment: ""), detailText: error.failureReason)
-            }
-            
-            toastView.addTarget(self, action: #selector(GamesViewController.presentSyncResultsViewController), for: .touchUpInside)
-            
-            toastView.show(in: self.view, duration: 2.0)
+            self.showSyncFinishedToastView(result: result)
         }
-    }
-    
-    @objc func presentSyncResultsViewController()
-    {
-        guard let result = SyncManager.shared.previousSyncResult else { return }
-        
-        let navigationController = SyncResultViewController.make(result: result)
-        self.present(navigationController, animated: true, completion: nil)
     }
 }
 

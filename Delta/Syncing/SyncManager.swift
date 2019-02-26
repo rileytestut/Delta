@@ -65,6 +65,8 @@ final class SyncManager
         DriveService.shared.clientID = "457607414709-5puj6lcv779gpu3ql43e6k3smjj40dmu.apps.googleusercontent.com"
         
         NotificationCenter.default.addObserver(self, selector: #selector(SyncManager.syncingDidFinish(_:)), name: SyncCoordinator.didFinishSyncingNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(SyncManager.didEnterBackground(_:)), name: UIApplication.didEnterBackgroundNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(SyncManager.willEnterForeground(_:)), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
 }
 
@@ -84,5 +86,15 @@ private extension SyncManager
     {
         guard let result = notification.userInfo?[SyncCoordinator.syncResultKey] as? SyncResult else { return }
         self.previousSyncResult = result
+    }
+    
+    @objc func didEnterBackground(_ notification: Notification)
+    {
+        self.sync()
+    }
+    
+    @objc func willEnterForeground(_ notification: Notification)
+    {
+        self.sync()
     }
 }
