@@ -132,7 +132,7 @@ private extension RecordVersionsViewController
         
         let localVersionsDataSource = RSTDynamicTableViewDataSource<Version>()
         localVersionsDataSource.numberOfSectionsHandler = { 1 }
-        localVersionsDataSource.numberOfItemsHandler = { _ in self.record.localModificationDate != nil ? 1 : 0 }
+        localVersionsDataSource.numberOfItemsHandler = { [weak self] _ in self?.record.localModificationDate != nil ? 1 : 0 }
         localVersionsDataSource.cellConfigurationHandler = { [weak self] (cell, _, indexPath) in
             guard let `self` = self else { return }
             
@@ -157,7 +157,7 @@ private extension RecordVersionsViewController
         
         let loadingDataSource = RSTDynamicTableViewDataSource<Version>()
         loadingDataSource.numberOfSectionsHandler = { 1 }
-        loadingDataSource.numberOfItemsHandler = { _ in (self.versions == nil) ? 1 : 0 }
+        loadingDataSource.numberOfItemsHandler = { [weak self] _ in (self?.versions == nil) ? 1 : 0 }
         loadingDataSource.cellIdentifierHandler = { _ in "LoadingCell" }
         loadingDataSource.cellConfigurationHandler = { (_, _, _) in }
         

@@ -66,12 +66,12 @@ private extension SyncStatusViewController
         
         let fetchedDataSource = RSTFetchedResultsTableViewDataSource(fetchedResultsController: fetchedResultsController)
         fetchedDataSource.searchController.searchableKeyPaths = [#keyPath(Game.name)]
-        fetchedDataSource.cellConfigurationHandler = { (cell, game, indexPath) in
+        fetchedDataSource.cellConfigurationHandler = { [weak self] (cell, game, indexPath) in
             let cell = cell as! BadgedTableViewCell
             cell.textLabel?.text = game.name
             cell.textLabel?.numberOfLines = 0
             
-            if let gameConflictsCount = self.gameConflictsCount
+            if let gameConflictsCount = self?.gameConflictsCount
             {
                 if let count = gameConflictsCount[game.objectID.uriRepresentation()], count > 0
                 {

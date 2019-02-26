@@ -73,9 +73,9 @@ private extension GameSyncStatusViewController
 {
     private func makeDataSource() -> RSTCompositeTableViewDataSource<NSManagedObject>
     {
-        func configure(_ cell: UITableViewCell, recordedObject: NSManagedObject)
-        {
-            if let record = self.recordsByObjectURI[recordedObject.objectID.uriRepresentation()], record.isConflicted
+        // Use closure instead of local function to allow us to capture `self` weakly.
+        let configure = { [weak self] (cell: UITableViewCell, recordedObject: NSManagedObject) in
+            if let record = self?.recordsByObjectURI[recordedObject.objectID.uriRepresentation()], record.isConflicted
             {
                 cell.textLabel?.textColor = .red
             }
@@ -96,7 +96,7 @@ private extension GameSyncStatusViewController
                 cell.textLabel?.text = NSLocalizedString("Game Save", comment: "")
             }
             
-            configure(cell, recordedObject: item)
+            configure(cell, item)
         }
         
         let saveStatesFetchRequest = SaveState.fetchRequest() as NSFetchRequest<SaveState>
@@ -109,7 +109,7 @@ private extension GameSyncStatusViewController
         let saveStatesDataSource = RSTFetchedResultsTableViewDataSource(fetchRequest: saveStatesFetchRequest, managedObjectContext: DatabaseManager.shared.viewContext)
         saveStatesDataSource.cellConfigurationHandler = { (cell, saveState, indexPath) in
             cell.textLabel?.text = saveState.localizedName
-            configure(cell, recordedObject: saveState)
+            configure(cell, saveState)
         }
         
         let cheatsFetchRequest = Cheat.fetchRequest() as NSFetchRequest<Cheat>
@@ -120,7 +120,7 @@ private extension GameSyncStatusViewController
         cheatsDataSource.cellConfigurationHandler = { (cell, cheat, indexPath) in
             cell.textLabel?.text = cheat.name
             
-            configure(cell, recordedObject: cheat)
+            configure(cell, cheat)
         }
         
         let dataSources = [gameDataSource, saveStatesDataSource, cheatsDataSource] as! [RSTArrayTableViewDataSource<NSManagedObject>]

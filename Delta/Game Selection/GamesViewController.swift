@@ -170,8 +170,10 @@ private extension GamesViewController
         
         self.searchController = RSTSearchController(searchResultsController: searchResultsController)
         self.searchController?.searchableKeyPaths = [#keyPath(Game.name)]
-        self.searchController?.searchHandler = { [weak searchController, weak searchResultsController] (searchValue, _) in
-            if searchController?.searchBar.text?.isEmpty == false
+        self.searchController?.searchHandler = { [weak self, weak searchResultsController] (searchValue, _) in
+            guard let self = self else { return nil }
+            
+            if self.searchController?.searchBar.text?.isEmpty == false
             {
                 self.pageViewController.view.isHidden = true
             }
