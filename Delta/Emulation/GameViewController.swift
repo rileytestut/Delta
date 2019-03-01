@@ -9,6 +9,7 @@
 import UIKit
 
 import DeltaCore
+import GBADeltaCore
 
 import Roxas
 
@@ -70,6 +71,8 @@ class GameViewController: DeltaCore.GameViewController
             
             self.updateControllerSkin()
             self.updateControllers()
+            
+            self.presentedGyroAlert = false
         }
     }
     
@@ -122,6 +125,13 @@ class GameViewController: DeltaCore.GameViewController
     private var sustainButtonsBlurView: UIVisualEffectView!
     private var sustainButtonsBackgroundView: RSTPlaceholderView!
     
+    private var isGyroActive = false
+    private var presentedGyroAlert = false
+    
+    override var shouldAutorotate: Bool {
+        return !self.isGyroActive
+    }
+    
     required init()
     {
         super.init()
@@ -142,9 +152,14 @@ class GameViewController: DeltaCore.GameViewController
         
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.updateControllers), name: .externalGameControllerDidConnect, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.updateControllers), name: .externalGameControllerDidDisconnect, object: nil)
+        
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.didEnterBackground(with:)), name: UIApplication.didEnterBackgroundNotification, object: UIApplication.shared)
+        
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.settingsDidChange(with:)), name: .settingsDidChange, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.deepLinkControllerLaunchGame(with:)), name: .deepLinkControllerLaunchGame, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.didActivateGyro(with:)), name: GBA.didActivateGyroNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.didDeactivateGyro(with:)), name: GBA.didDeactivateGyroNotification, object: nil)
     }
     
     deinit
@@ -985,5 +1000,47 @@ private extension GameViewController
         }
         
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    @objc func didActivateGyro(with notification: Notification)
+    {
+        self.isGyroActive = true
+        
+        guard !self.presentedGyroAlert else { return }
+        
+        self.presentedGyroAlert = true
+        
+        func presentToastView()
+        {
+            let toastView = RSTToastView(text: NSLocalizedString("Autorotation Disabled", comment: ""), detailText: NSLocalizedString("Pause game to change orientation.", comment: ""))
+            toastView.textLabel.textAlignment = .center
+            toastView.presentationEdge = .bottom
+            
+            if let traits = self.controllerView.controllerSkinTraits, traits.orientation == .landscape, self.controllerView?.controllerSkin?.gameScreenFrame(for: traits) == nil
+            {
+                // Only change landscape vertical offset if there is no custom game screen frame for the current controller skin.
+                toastView.edgeOffset.vertical = 30
+            }
+            
+            toastView.show(in: self.gameView, duration: 3.0)
+        }
+        
+        DispatchQueue.main.async {
+            if let transitionCoordinator = self.transitionCoordinator
+            {
+                transitionCoordinator.animate(alongsideTransition: nil) { (context) in
+                    presentToastView()
+                }
+            }
+            else
+            {
+                presentToastView()
+            }
+        }
+    }
+    
+    @objc func didDeactivateGyro(with notification: Notification)
+    {
+        self.isGyroActive = false
     }
 }

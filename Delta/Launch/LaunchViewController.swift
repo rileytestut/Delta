@@ -32,6 +32,10 @@ class LaunchViewController: RSTLaunchViewController
         return self.gameViewController
     }
     
+    override var shouldAutorotate: Bool {
+        return self.gameViewController?.shouldAutorotate ?? true
+    }
+    
     required init?(coder aDecoder: NSCoder)
     {
         super.init(coder: aDecoder)
