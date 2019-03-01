@@ -76,25 +76,19 @@ class ImportController: NSObject
                     self.finish(with: urls, errors: [])
                 }
             }
-        }
-        
-        let filesAction = UIAlertAction(title: NSLocalizedString("Files", comment: ""), style: .default) { (action) in
-            let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(ImportController.cancel))
             
-            let documentBrowserViewController = UIDocumentBrowserViewController(forOpeningFilesWithContentTypes: Array(self.documentTypes))
-            documentBrowserViewController.delegate = self
-            documentBrowserViewController.browserUserInterfaceStyle = .dark
-            documentBrowserViewController.allowsPickingMultipleItems = true
-            documentBrowserViewController.allowsDocumentCreation = false
-            documentBrowserViewController.additionalTrailingNavigationBarButtonItems = [cancelButton]
+            let filesAction = UIAlertAction(title: NSLocalizedString("Files", comment: ""), style: .default) { (action) in
+                self.presentDocumentBrowser()
+            }
+            alertController.addAction(filesAction)
             
-            self.presentedViewController = documentBrowserViewController
-            self.presentingViewController?.present(documentBrowserViewController, animated: true, completion: nil)
+            self.presentedViewController = alertController
+            self.presentingViewController?.present(alertController, animated: true, completion: nil)
         }
-        alertController.addAction(filesAction)
-        
-        self.presentedViewController = alertController
-        self.presentingViewController?.present(alertController, animated: true, completion: nil)
+        else
+        {
+            self.presentDocumentBrowser()
+        }
     }
     
     @objc private func cancel()
@@ -116,6 +110,21 @@ class ImportController: NSObject
         self.presentedViewController?.dismiss(animated: true)
         
         self.presentingViewController?.importController = nil
+    }
+    
+    private func presentDocumentBrowser()
+    {
+        let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(ImportController.cancel))
+        
+        let documentBrowserViewController = UIDocumentBrowserViewController(forOpeningFilesWithContentTypes: Array(self.documentTypes))
+        documentBrowserViewController.delegate = self
+        documentBrowserViewController.browserUserInterfaceStyle = .dark
+        documentBrowserViewController.allowsPickingMultipleItems = true
+        documentBrowserViewController.allowsDocumentCreation = false
+        documentBrowserViewController.additionalTrailingNavigationBarButtonItems = [cancelButton]
+        
+        self.presentedViewController = documentBrowserViewController
+        self.presentingViewController?.present(documentBrowserViewController, animated: true, completion: nil)
     }
 }
 
@@ -149,8 +158,7 @@ extension ImportController: UIDocumentBrowserViewControllerDelegate
                         
                         // Use url, not intent.url, to ensure the file name matches what was in the document browser.
                         let temporaryURL = FileManager.default.temporaryDirectory.appendingPathComponent(url.lastPathComponent)
-                        
-                        try FileManager.default.copyItem(at: intent.url, to: temporaryURL)
+                        try FileManager.default.copyItem(at: intent.url, to: temporaryURL, shouldReplace: true)
                         
                         coordinatedURLs.insert(temporaryURL)
                     }

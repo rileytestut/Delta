@@ -64,6 +64,7 @@ class GameCollectionViewController: UICollectionViewController
     
     private var _renameAction: UIAlertAction?
     private var _changingArtworkGame: Game?
+    private var _importingSaveFileGame: Game?
     
     required init?(coder aDecoder: NSCoder)
     {
@@ -395,6 +396,10 @@ private extension GameCollectionViewController
             self.viewSaveStates(for: game)
         })
         
+        let importSaveFile = Action(title: NSLocalizedString("Import Save File", comment: ""), style: .default) { [unowned self] _ in
+            self.importSaveFile(for: game)
+        }
+        
         let deleteAction = Action(title: NSLocalizedString("Delete", comment: ""), style: .destructive, action: { [unowned self] action in
             self.delete(game)
         })
@@ -402,7 +407,7 @@ private extension GameCollectionViewController
         switch game.type
         {
         case GameType.unknown: return [cancelAction, renameAction, changeArtworkAction, shareAction, deleteAction]
-        default: return [cancelAction, renameAction, changeArtworkAction, shareAction, saveStatesAction, deleteAction]
+        default: return [cancelAction, renameAction, changeArtworkAction, shareAction, saveStatesAction, importSaveFile, deleteAction]
         }
     }
     
@@ -481,6 +486,87 @@ private extension GameCollectionViewController
         self.present(importController, animated: true, completion: nil)
     }
     
+    func changeArtwork(for game: Game, toImageAt url: URL?, errors: [Error])
+    {
+        var errors = errors
+        
+        var imageURL: URL?
+        
+        if let url = url
+        {
+            if url.isFileURL
+            {
+                do
+                {
+                    let imageData = try Data(contentsOf: url)
+                    
+                    if
+                        let image = UIImage(data: imageData),
+                        let resizedImage = image.resizing(toFit: CGSize(width: 300, height: 300)),
+                        let resizedData = resizedImage.jpegData(compressionQuality: 0.85)
+                    {
+                        let destinationURL = DatabaseManager.artworkURL(for: game)
+                        try resizedData.write(to: destinationURL, options: .atomic)
+                        
+                        imageURL = destinationURL
+                    }
+                }
+                catch
+                {
+                    errors.append(error)
+                }
+            }
+            else
+            {
+                imageURL = url
+            }
+        }
+        
+        for error in errors
+        {
+            print(error)
+        }
+        
+        if let imageURL = imageURL
+        {
+            DatabaseManager.shared.performBackgroundTask { (context) in
+                let temporaryGame = context.object(with: game.objectID) as! Game
+                temporaryGame.artworkURL = imageURL
+                context.saveWithErrorLogging()
+                
+                // Local image URLs may not change despite being a different image, so manually mark record as updated.
+                SyncManager.shared.recordController.updateRecord(for: temporaryGame)
+                
+                DispatchQueue.main.async {
+                    self.presentedViewController?.dismiss(animated: true, completion: nil)
+                }
+            }
+        }
+        else
+        {
+            DispatchQueue.main.async {
+                func presentAlertController()
+                {
+                    
+                    let alertController = UIAlertController(title: NSLocalizedString("Unable to Change Artwork", comment: ""), message: NSLocalizedString("The image might be corrupted or in an unsupported format.", comment: ""), preferredStyle: .alert)
+                    alertController.addAction(UIAlertAction(title: RSTSystemLocalizedString("OK"), style: .cancel, handler: nil))
+                    self.present(alertController, animated: true, completion: nil)
+                }
+                
+                if let presentedViewController = self.presentedViewController
+                {
+                    presentedViewController.dismiss(animated: true) {
+                        presentAlertController()
+                    }
+                }
+                else
+                {
+                    presentAlertController()
+                }
+            }
+        }
+    }
+    
     func share(_ game: Game)
     {
         let temporaryDirectory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
@@ -511,6 +597,54 @@ private extension GameCollectionViewController
             }
         }
         self.present(activityViewController, animated: true, completion: nil)
+    }
+    
+    func importSaveFile(for game: Game)
+    {
+        self._importingSaveFileGame = game
+        
+        let importController = ImportController(documentTypes: [kUTTypeItem as String])
+        importController.delegate = self
+        self.present(importController, animated: true, completion: nil)
+    }
+    
+    func importSaveFile(for game: Game, from fileURL: URL?, error: Error?)
+    {
+        // Dispatch to main queue so we can access game.gameSaveURL on its context's thread (main thread).
+        DispatchQueue.main.async {
+            do
+            {
+                if let error = error
+                {
+                    throw error
+                }
+                
+                if let fileURL = fileURL
+                {
+                    try FileManager.default.copyItem(at: fileURL, to: game.gameSaveURL, shouldReplace: true)
+                    
+                    if let gameSave = game.gameSave
+                    {
+                        SyncManager.shared.recordController.updateRecord(for: gameSave)
+                    }
+                }
+            }
+            catch
+            {
+                let alertController = UIAlertController(title: NSLocalizedString("Failed to Import Save File", comment: ""), error: error)
+                
+                if let presentedViewController = self.presentedViewController
+                {
+                    presentedViewController.dismiss(animated: true) {
+                        self.present(alertController, animated: true, completion: nil)
+                    }
+                }
+                else
+                {
+                    self.present(alertController, animated: true, completion: nil)
+                }
+            }
+        }
     }
     
     @objc func textFieldTextDidChange(_ textField: UITextField)
@@ -618,82 +752,17 @@ extension GameCollectionViewController: ImportControllerDelegate
 {
     func importController(_ importController: ImportController, didImportItemsAt urls: Set<URL>, errors: [Error])
     {
-        guard let game = self._changingArtworkGame else { return }
-        
-        var errors = errors
-        
-        var imageURL: URL?
-        
-        if let url = urls.first
+        if let game = self._changingArtworkGame
         {
-            if url.isFileURL
-            {
-                do
-                {
-                    let imageData = try Data(contentsOf: url)
-                    
-                    if
-                        let image = UIImage(data: imageData),
-                        let resizedImage = image.resizing(toFit: CGSize(width: 300, height: 300)),
-                        let resizedData = resizedImage.jpegData(compressionQuality: 0.85)
-                    {
-                        let destinationURL = DatabaseManager.artworkURL(for: game)
-                        try resizedData.write(to: destinationURL, options: .atomic)
-                        
-                        imageURL = destinationURL
-                    }
-                }
-                catch
-                {
-                    errors.append(error)
-                }
-            }
-            else
-            {
-                imageURL = url
-            }
+            self.changeArtwork(for: game, toImageAt: urls.first, errors: errors)
+        }
+        else if let game = self._importingSaveFileGame
+        {
+            self.importSaveFile(for: game, from: urls.first, error: errors.first)
         }
         
-        for error in errors
-        {
-            print(error)
-        }
-        
-        if let imageURL = imageURL
-        {
-            DatabaseManager.shared.performBackgroundTask { (context) in
-                let temporaryGame = context.object(with: game.objectID) as! Game
-                temporaryGame.artworkURL = imageURL
-                context.saveWithErrorLogging()
-                
-                // Local image URLs may not change despite being a different image, so manually mark record as updated.
-                SyncManager.shared.recordController.updateRecord(for: temporaryGame)
-                
-                DispatchQueue.main.async {
-                    self.presentedViewController?.dismiss(animated: true, completion: nil)
-                }
-            }
-        }
-        else
-        {
-            func presentAlertController()
-            {
-                let alertController = UIAlertController(title: NSLocalizedString("Unable to Change Artwork", comment: ""), message: NSLocalizedString("The image might be corrupted or in an unsupported format.", comment: ""), preferredStyle: .alert)
-                alertController.addAction(UIAlertAction(title: RSTSystemLocalizedString("OK"), style: .cancel, handler: nil))
-                self.present(alertController, animated: true, completion: nil)
-            }
-            
-            if let presentedViewController = self.presentedViewController
-            {
-                presentedViewController.dismiss(animated: true) {
-                    presentAlertController()
-                }
-            }
-            else
-            {
-                presentAlertController()
-            }
-        }
+        self._changingArtworkGame = nil
+        self._importingSaveFileGame = nil
     }
     
     func importControllerDidCancel(_ importController: ImportController)
