@@ -196,7 +196,7 @@ private extension RecordVersionsViewController
     
     func fetchVersions()
     {
-        SyncManager.shared.syncCoordinator.fetchVersions(for: self.record) { (result) in
+        SyncManager.shared.coordinator?.fetchVersions(for: self.record) { (result) in
             do
             {
                 let versions = try result.get().map(Version.init)
@@ -241,6 +241,8 @@ private extension RecordVersionsViewController
         guard !self.isSyncingRecord else { return }
         
         guard let indexPath = self._selectedVersionIndexPath else { return }
+        
+        guard let coordinator = SyncManager.shared.coordinator else { return }
         
         func finish<T: Error>(_ result: Result<AnyRecord, T>)
         {
@@ -298,19 +300,19 @@ private extension RecordVersionsViewController
         case (.restoreVersion, _):
             let version = self.dataSource.item(at: indexPath)
             
-            progress = SyncManager.shared.syncCoordinator.restore(self.record, to: version.version) { (result) in
+            progress = coordinator.restore(self.record, to: version.version) { (result) in
                 finish(result)
             }
             
         case (.resolveConflict, .local):
-            progress = SyncManager.shared.syncCoordinator.resolveConflictedRecord(self.record, resolution: .local) { (result) in
+            progress = coordinator.resolveConflictedRecord(self.record, resolution: .local) { (result) in
                 finish(result)
             }
             
         case (.resolveConflict, .remote):
             let version = self.dataSource.item(at: indexPath)
             
-            progress = SyncManager.shared.syncCoordinator.resolveConflictedRecord(self.record, resolution: .remote(version.version)) { (result) in
+            progress = coordinator.resolveConflictedRecord(self.record, resolution: .remote(version.version)) { (result) in
                 finish(result)
             }
             

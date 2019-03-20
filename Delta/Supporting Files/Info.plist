@@ -113,6 +113,14 @@
 				<string>com.googleusercontent.apps.457607414709-7oc45nq59frd7rre6okq22fafftd55g1</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>db-f5btgysf9ma9bb6</string>
+			</array>
+			<key>CFBundleURLName</key>
+			<string></string>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>7</string>
@@ -150,7 +158,7 @@
 		</dict>
 	</dict>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Press "OK" to allow Delta to use images from your Photo Library as game artwork.</string>
+	<string>Press &quot;OK&quot; to allow Delta to use images from your Photo Library as game artwork.</string>
 	<key>UIFileSharingEnabled</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
@@ -271,6 +279,11 @@
 				</array>
 			</dict>
 		</dict>
+	</array>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>dbapi-8-emm</string>
+		<string>dbapi-2</string>
 	</array>
 </dict>
 </plist>

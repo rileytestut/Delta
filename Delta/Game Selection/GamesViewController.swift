@@ -382,7 +382,7 @@ private extension GamesViewController
     
     func showSyncingToastViewIfNeeded()
     {
-        guard SyncManager.shared.syncCoordinator.isSyncing && self.syncingToastView == nil else { return }
+        guard let coordinator = SyncManager.shared.coordinator, coordinator.isSyncing && self.syncingToastView == nil else { return }
         
         let toastView = RSTToastView(text: NSLocalizedString("Syncing...", comment: ""), detailText: nil)
         toastView.activityIndicatorView.startAnimating()

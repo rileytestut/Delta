@@ -130,10 +130,13 @@ extension Settings
         }
     }
     
-    static var syncingService: SyncingService {
-        get { return SyncingService(rawValue: UserDefaults.standard.syncingService) ?? .none }
+    static var syncingService: SyncManager.Service? {
+        get {
+            guard let syncingService = UserDefaults.standard.syncingService else { return nil }
+            return SyncManager.Service(rawValue: syncingService)
+        }
         set {
-            UserDefaults.standard.syncingService = newValue.rawValue
+            UserDefaults.standard.syncingService = newValue?.rawValue
             NotificationCenter.default.post(name: .settingsDidChange, object: nil, userInfo: [NotificationUserInfoKey.name: Name.syncingService])
         }
     }
@@ -234,5 +237,5 @@ private extension UserDefaults
     @NSManaged var gameShortcutsMode: String
     @NSManaged var gameShortcutIdentifiers: [String]
     
-    @NSManaged var syncingService: String
+    @NSManaged var syncingService: String?
 }

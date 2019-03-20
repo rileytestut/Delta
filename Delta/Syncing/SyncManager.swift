@@ -8,6 +8,7 @@
 
 import Harmony
 import Harmony_Drive
+import Harmony_Dropbox
 
 extension SyncManager
 {
@@ -34,6 +35,40 @@ extension SyncManager
             }
         }
     }
+    
+    enum Service: String, CaseIterable
+    {
+        case googleDrive = "com.rileytestut.Harmony.Drive"
+        case dropbox = "com.rileytestut.Harmony.Dropbox"
+        
+        var localizedName: String {
+            switch self
+            {
+            case .googleDrive: return NSLocalizedString("Google Drive", comment: "")
+            case .dropbox: return NSLocalizedString("Dropbox", comment: "")
+            }
+        }
+        
+        var service: Harmony.Service {
+            switch self
+            {
+            case .googleDrive: return DriveService.shared
+            case .dropbox: return DropboxService.shared
+            }
+        }
+    }
+    
+    enum Error: LocalizedError
+    {
+        case nilService
+        
+        var errorDescription: String? {
+            switch self
+            {
+            case .nilService: return NSLocalizedString("There is no chosen service for syncing.", comment: "")
+            }
+        }
+    }
 }
 
 extension Syncable where Self: NSManagedObject
@@ -48,21 +83,25 @@ final class SyncManager
 {
     static let shared = SyncManager()
     
-    var service: Service {
-        return self.syncCoordinator.service
+    var service: Service? {
+        guard let service = self.coordinator?.service else { return nil }
+        return Service(rawValue: service.identifier)
     }
     
-    var recordController: RecordController {
-        return self.syncCoordinator.recordController
+    var recordController: RecordController? {
+        return self.coordinator?.recordController
     }
     
     private(set) var previousSyncResult: SyncResult?
     
-    let syncCoordinator = SyncCoordinator(service: DriveService.shared, persistentContainer: DatabaseManager.shared)
+    private(set) var coordinator: SyncCoordinator?
     
     private init()
     {
         DriveService.shared.clientID = "457607414709-7oc45nq59frd7rre6okq22fafftd55g1.apps.googleusercontent.com"
+        
+        DropboxService.shared.clientID = "f5btgysf9ma9bb6"
+        DropboxService.shared.preferredDirectoryName = "Delta Emulator"
         
         NotificationCenter.default.addObserver(self, selector: #selector(SyncManager.syncingDidFinish(_:)), name: SyncCoordinator.didFinishSyncingNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(SyncManager.didEnterBackground(_:)), name: UIApplication.didEnterBackgroundNotification, object: nil)
@@ -72,11 +111,83 @@ final class SyncManager
 
 extension SyncManager
 {
+    func start(service: Service?, completionHandler: @escaping (Result<Void, Swift.Error>) -> Void)
+    {
+        guard let service = service else { return completionHandler(.success) }
+        
+        let coordinator = SyncCoordinator(service: service.service, persistentContainer: DatabaseManager.shared)
+        coordinator.start { (result) in
+            do
+            {
+                _ = try result.get()
+                
+                self.coordinator = coordinator
+                
+                completionHandler(.success)
+            }
+            catch
+            {
+                completionHandler(.failure(error))
+            }
+        }
+    }
+    
+    func reset(for service: Service?, completionHandler: @escaping (Result<Void, Swift.Error>) -> Void)
+    {
+        if let coordinator = self.coordinator
+        {
+            coordinator.deauthenticate { (result) in
+                self.coordinator = nil
+                self.start(service: service, completionHandler: completionHandler)
+            }
+        }
+        else
+        {
+            self.start(service: service, completionHandler: completionHandler)
+        }
+    }
+    
+    func authenticate(presentingViewController: UIViewController? = nil, completionHandler: @escaping (Result<Account, AuthenticationError>) -> Void)
+    {
+        guard let coordinator = self.coordinator else { return completionHandler(.failure(AuthenticationError(Error.nilService))) }
+        
+        coordinator.authenticate(presentingViewController: presentingViewController) { (result) in
+            do
+            {
+                let account = try result.get()
+                
+                if !coordinator.recordController.isSeeded
+                {
+                    coordinator.recordController.seedFromPersistentContainer { (result) in
+                        switch result
+                        {
+                        case .success: completionHandler(.success(account))
+                        case .failure(let error): completionHandler(.failure(AuthenticationError(error)))
+                        }
+                    }
+                }
+                else
+                {
+                    completionHandler(.success(account))
+                }
+            }
+            catch
+            {
+                completionHandler(.failure(AuthenticationError(error)))
+            }
+        }
+    }
+    
+    func deauthenticate(completionHandler: @escaping (Result<Void, DeauthenticationError>) -> Void)
+    {
+        guard let coordinator = self.coordinator else { return completionHandler(.success) }
+        
+        coordinator.deauthenticate(completionHandler: completionHandler)
+    }
+    
     func sync()
     {
-        guard Settings.syncingService != .none else { return }
-        
-        self.syncCoordinator.sync()
+        self.coordinator?.sync()
     }
 }
 
@@ -86,6 +197,8 @@ private extension SyncManager
     {
         guard let result = notification.userInfo?[SyncCoordinator.syncResultKey] as? SyncResult else { return }
         self.previousSyncResult = result
+        
+        print("Finished syncing!")
     }
     
     @objc func didEnterBackground(_ notification: Notification)

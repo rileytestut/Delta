@@ -59,14 +59,9 @@ extension LaunchViewController
         }
         
         let isSyncingManagerStarted = RSTLaunchCondition(condition: { self.didAttemptStartingSyncManager }) { (completionHandler) in
-            SyncManager.shared.syncCoordinator.start { (error) in
-                self.didAttemptStartingSyncManager = true
-                completionHandler(nil)
-            }
-        }
-        
-        let isRecordControllerSeeded = RSTLaunchCondition(condition: { SyncManager.shared.syncCoordinator.recordController.isSeeded }) { (completionHandler) in
-            SyncManager.shared.syncCoordinator.recordController.seedFromPersistentContainer() { (result) in
+            self.didAttemptStartingSyncManager = true
+            
+            SyncManager.shared.start(service: Settings.syncingService) { (result) in
                 switch result
                 {
                 case .success: completionHandler(nil)
@@ -75,7 +70,7 @@ extension LaunchViewController
             }
         }
         
-        return [isDatabaseManagerStarted, isSyncingManagerStarted, isRecordControllerSeeded]
+        return [isDatabaseManagerStarted, isSyncingManagerStarted]
     }
     
     override func handleLaunchError(_ error: Error)

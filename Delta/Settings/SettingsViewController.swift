@@ -131,11 +131,11 @@ private extension SettingsViewController
         self.controllerOpacitySlider.value = Float(Settings.translucentControllerSkinOpacity)
         self.updateControllerOpacityLabel()
         
-        self.syncingServiceLabel.text = Settings.syncingService.localizedName
+        self.syncingServiceLabel.text = Settings.syncingService?.localizedName
         
         do
         {
-            let records = try SyncManager.shared.recordController.fetchConflictedRecords()
+            let records = try SyncManager.shared.recordController?.fetchConflictedRecords() ?? []
             self.syncingConflictsCount = records.count
         }
         catch
@@ -233,7 +233,7 @@ extension SettingsViewController
         {
         case .controllers: return 1 // Temporarily hide other controller indexes until controller logic is finalized
         case .controllerSkins: return System.allCases.count
-        case .syncing: return Settings.syncingService == .none ? 1 : super.tableView(tableView, numberOfRowsInSection: sectionIndex)
+        case .syncing: return SyncManager.shared.coordinator?.account == nil ? 1 : super.tableView(tableView, numberOfRowsInSection: sectionIndex)
         default:
             if isSectionHidden(section)
             {

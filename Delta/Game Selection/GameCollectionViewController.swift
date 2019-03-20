@@ -346,13 +346,13 @@ private extension GameCollectionViewController
             guard game.fileURL != self.activeEmulatorCore?.game.fileURL else { throw LaunchError.alreadyRunning }
         }
         
-        if SyncManager.shared.syncCoordinator.isSyncing
+        if let coordinator = SyncManager.shared.coordinator, coordinator.isSyncing
         {
             if let gameSave = game.gameSave
             {
                 do
                 {
-                    if let record = try SyncManager.shared.recordController.fetchRecords(for: [gameSave]).first
+                    if let record = try coordinator.recordController.fetchRecords(for: [gameSave]).first
                     {
                         if record.isSyncingEnabled && !record.isConflicted && (record.localStatus == nil || record.remoteStatus == .updated)
                         {
@@ -535,7 +535,7 @@ private extension GameCollectionViewController
                 context.saveWithErrorLogging()
                 
                 // Local image URLs may not change despite being a different image, so manually mark record as updated.
-                SyncManager.shared.recordController.updateRecord(for: temporaryGame)
+                SyncManager.shared.recordController?.updateRecord(for: temporaryGame)
                 
                 DispatchQueue.main.async {
                     self.presentedViewController?.dismiss(animated: true, completion: nil)
@@ -625,7 +625,7 @@ private extension GameCollectionViewController
                     
                     if let gameSave = game.gameSave
                     {
-                        SyncManager.shared.recordController.updateRecord(for: gameSave)
+                        SyncManager.shared.recordController?.updateRecord(for: gameSave)
                     }
                 }
             }

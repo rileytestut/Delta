@@ -57,7 +57,7 @@ class GameSyncStatusViewController: UITableViewController
         
         do
         {
-            let records = try SyncManager.shared.recordController.fetchRecords(for: [recordedObject])
+            let records = try SyncManager.shared.recordController?.fetchRecords(for: [recordedObject]) ?? []
             
             let recordSyncStatusViewController = segue.destination as! RecordSyncStatusViewController
             recordSyncStatusViewController.record = records.first
@@ -132,12 +132,14 @@ private extension GameSyncStatusViewController
     
     func fetchRecords()
     {
+        guard let recordController = SyncManager.shared.recordController else { return }
+        
         var recordsByObjectURI = [URL: Record<NSManagedObject>]()
         
         do
         {
             let recordedObjects = ([self.game, self.game.gameSave].compactMap { $0 } + Array(self.game.saveStates) + Array(self.game.cheats)) as! [Syncable]
-            let records = try SyncManager.shared.recordController.fetchRecords(for: recordedObjects)
+            let records = try recordController.fetchRecords(for: recordedObjects)
             
             for record in records
             {

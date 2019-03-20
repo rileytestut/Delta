@@ -116,12 +116,14 @@ private extension SyncStatusViewController
     
     func fetchConflictedRecords()
     {
+        guard let recordController = SyncManager.shared.recordController else { return }
+        
         DispatchQueue.global().async {
             do
             {
                 var gameConflictsCount = [URL: Int]()
                 
-                let records = try SyncManager.shared.recordController.fetchConflictedRecords()
+                let records = try recordController.fetchConflictedRecords()
                 
                 for record in records
                 {
