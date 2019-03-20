@@ -21,7 +21,9 @@ class SyncStatusViewController: UITableViewController
         super.viewDidLoad()
         
         self.tableView.dataSource = self.dataSource
-        self.navigationItem.searchController = self.dataSource.searchController
+        
+        let fetchedDataSource = self.dataSource.dataSources.last
+        self.navigationItem.searchController = fetchedDataSource?.searchController
     }
     
     override func viewWillAppear(_ animated: Bool)
