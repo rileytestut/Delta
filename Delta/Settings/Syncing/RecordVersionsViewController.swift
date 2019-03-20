@@ -17,7 +17,6 @@ extension RecordVersionsViewController
     {
         case local
         case remote
-        case confirm
     }
     
     private enum Mode
@@ -42,6 +41,7 @@ class RecordVersionsViewController: UITableViewController
     var record: Record<NSManagedObject>! {
         didSet {
             self.mode = self.record.isConflicted ? .resolveConflict : .restoreVersion
+            self.update()
         }
     }
     
@@ -80,6 +80,8 @@ class RecordVersionsViewController: UITableViewController
     
     private var _progressObservation: NSKeyValueObservation?
     
+    @IBOutlet private var restoreButton: UIBarButtonItem!
+    
     override func viewDidLoad()
     {
         super.viewDidLoad()
@@ -98,6 +100,8 @@ class RecordVersionsViewController: UITableViewController
         }
         
         self.tableView.dataSource = self.dataSource
+        
+        self.update()
     }
     
     override func viewWillAppear(_ animated: Bool)
@@ -164,34 +168,27 @@ private extension RecordVersionsViewController
         let remoteVersionsLoadingDataSource = RSTCompositeTableViewDataSource(dataSources: [loadingDataSource, remoteVersionsDataSource])
         remoteVersionsLoadingDataSource.shouldFlattenSections = true
         
-        let restoreVersionDataSource = RSTDynamicTableViewDataSource<Version>()
-        restoreVersionDataSource.numberOfSectionsHandler = { 1 }
-        restoreVersionDataSource.numberOfItemsHandler = { _ in 1}
-        restoreVersionDataSource.cellIdentifierHandler = { _ in "ConfirmCell" }
-        restoreVersionDataSource.cellConfigurationHandler = { [weak self] (cell, _, indexPath) in
-            guard let `self` = self else { return }
-            
-            switch self.mode
-            {
-            case .restoreVersion:
-                cell.textLabel?.text = NSLocalizedString("Restore Version", comment: "")
-                cell.textLabel?.textColor = .deltaPurple
-                
-                let isEnabled = (self._selectedVersionIndexPath?.section == Section.remote.rawValue && !self.isSyncingRecord)
-                configure(cell, isSelected: false, isEnabled: isEnabled)
-                
-            case .resolveConflict:
-                cell.textLabel?.text = NSLocalizedString("Resolve Conflict", comment: "")
-                cell.textLabel?.textColor = .red
-                
-                let isEnabled = (self._selectedVersionIndexPath != nil && !self.isSyncingRecord)
-                configure(cell, isSelected: false, isEnabled: isEnabled)
-            }
-        }
-        
-        let dataSource = RSTCompositeTableViewDataSource(dataSources: [localVersionsDataSource, remoteVersionsLoadingDataSource, restoreVersionDataSource])
+        let dataSource = RSTCompositeTableViewDataSource(dataSources: [localVersionsDataSource, remoteVersionsLoadingDataSource])
         dataSource.proxy = self
         return dataSource
+    }
+    
+    func update()
+    {
+        switch self.mode
+        {
+        case .restoreVersion:
+            self.restoreButton.title = NSLocalizedString("Restore", comment: "")
+            self.restoreButton.tintColor = .deltaPurple
+            
+            self.restoreButton.isEnabled = (self._selectedVersionIndexPath?.section == Section.remote.rawValue)
+            
+        case .resolveConflict:
+            self.restoreButton.title = NSLocalizedString("Resolve", comment: "")
+            self.restoreButton.tintColor = .red
+            
+            self.restoreButton.isEnabled = (self._selectedVersionIndexPath != nil)
+        }
     }
     
     func fetchVersions()
@@ -255,10 +252,11 @@ private extension RecordVersionsViewController
                     self._progressObservation = nil
                     
                     self.progressView.setHidden(true, animated: true)
+                    self.navigationItem.rightBarButtonItem?.isIndicatingActivity = false
+                    
+                    self.update()
                     
                     self.tableView.reloadData()
-                    
-                    self.navigationItem.rightBarButtonItem?.isIndicatingActivity = false
                     
                     switch result
                     {
@@ -315,8 +313,6 @@ private extension RecordVersionsViewController
             progress = coordinator.resolveConflictedRecord(self.record, resolution: .remote(version.version)) { (result) in
                 finish(result)
             }
-            
-        case (.resolveConflict, .confirm): return
         }
         
         self.isSyncingRecord = true
@@ -335,15 +331,50 @@ private extension RecordVersionsViewController
     }
 }
 
+private extension RecordVersionsViewController
+{
+    @IBAction func restore(_ sender: UIBarButtonItem)
+    {
+        let message: String
+        let actionTitle: String
+        
+        switch self.mode
+        {
+        case .restoreVersion:
+            message = NSLocalizedString("Restoring a remote version will cause any local changes to be lost.", comment: "")
+            actionTitle = NSLocalizedString("Restore Version", comment: "")
+            
+        case .resolveConflict:
+            if self._selectedVersionIndexPath?.section == Section.local.rawValue
+            {
+                message = NSLocalizedString("The local version will be uploaded and synced to your other devices.", comment: "")
+            }
+            else
+            {
+                message = NSLocalizedString("Selecting a remote version will cause any local changes to be lost.", comment: "")
+            }
+            
+            actionTitle = NSLocalizedString("Resolve Conflict", comment: "")
+        }
+        
+        let alertController = UIAlertController(title: nil, message: message, preferredStyle: .actionSheet)
+        alertController.addAction(.cancel)
+        alertController.addAction(UIAlertAction(title: actionTitle, style: .destructive) { (action) in
+            self.restoreVersion()
+        })
+        
+        self.present(alertController, animated: true, completion: nil)
+    }
+}
+
 extension RecordVersionsViewController
 {
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String?
     {
         switch Section.allCases[section]
         {
-        case .local: return NSLocalizedString("Local", comment: "")
-        case .remote: return NSLocalizedString("Remote", comment: "")
-        case .confirm: return nil
+        case .local: return NSLocalizedString("On Device", comment: "")
+        case .remote: return NSLocalizedString("Cloud", comment: "")
         }
     }
     
@@ -353,44 +384,11 @@ extension RecordVersionsViewController
         
         guard let cell = tableView.cellForRow(at: indexPath), cell.selectionStyle != .none else { return }
         
-        switch Section.allCases[indexPath.section]
-        {
-        case .local, .remote:
-            let indexPaths = [indexPath, self._selectedVersionIndexPath, IndexPath(item: 0, section: Section.confirm.rawValue)].compactMap { $0 }
-            self._selectedVersionIndexPath = indexPath
-            
-            tableView.reloadRows(at: indexPaths, with: .none)
-            
-        case .confirm:
-            let message: String
-            let actionTitle: String
-            
-            switch self.mode
-            {
-            case .restoreVersion:
-                message = NSLocalizedString("Restoring a remote version will cause any local changes to be lost.", comment: "")
-                actionTitle = NSLocalizedString("Restore Version", comment: "")
-                
-            case .resolveConflict:
-                if self._selectedVersionIndexPath?.section == Section.local.rawValue
-                {
-                    message = NSLocalizedString("The local version will be uploaded and synced to your other devices.", comment: "")
-                }
-                else
-                {
-                    message = NSLocalizedString("Selecting a remote version will cause any local changes to be lost.", comment: "")
-                }
-                
-                actionTitle = NSLocalizedString("Resolve Conflict", comment: "")
-            }
-            
-            let alertController = UIAlertController(title: nil, message: message, preferredStyle: .actionSheet)
-            alertController.addAction(.cancel)
-            alertController.addAction(UIAlertAction(title: actionTitle, style: .destructive) { (action) in
-                self.restoreVersion()
-            })
-            
-            self.present(alertController, animated: true, completion: nil)
-        }
+        let indexPaths = [indexPath, self._selectedVersionIndexPath].compactMap { $0 }
+        self._selectedVersionIndexPath = indexPath
+        
+        tableView.reloadRows(at: indexPaths, with: .none)
+        
+        self.update()
     }
 }

@@ -997,7 +997,7 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection headerTitle="Local" id="vpJ-Pg-nU9">
+                            <tableViewSection headerTitle="On Device" id="vpJ-Pg-nU9">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="Cell" textLabel="npF-wl-PPC" detailTextLabel="SYD-cR-5TY" style="IBUITableViewCellStyleValue1" id="9Dq-cm-tka">
                                         <rect key="frame" x="0.0" y="135" width="375" height="44"/>
@@ -1049,7 +1049,7 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection headerTitle="Remote" id="Bct-0y-ptf">
+                            <tableViewSection headerTitle="Cloud" id="Bct-0y-ptf">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="Cell" textLabel="aeh-me-gZl" detailTextLabel="0Rm-b2-HX5" style="IBUITableViewCellStyleValue1" id="djI-O4-xho">
                                         <rect key="frame" x="0.0" y="279" width="375" height="44"/>
@@ -1218,23 +1218,6 @@
                                     </constraints>
                                 </tableViewCellContentView>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="gray" indentationWidth="10" reuseIdentifier="ConfirmCell" textLabel="saf-eQ-eJc" style="IBUITableViewCellStyleDefault" id="x0b-KE-P94">
-                                <rect key="frame" x="0.0" y="143.5" width="375" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="x0b-KE-P94" id="ufh-yE-uv2">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Restore Version" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="saf-eQ-eJc">
-                                            <rect key="frame" x="16" y="0.0" width="343" height="43.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                </tableViewCellContentView>
-                            </tableViewCell>
                         </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="PGW-Yp-czd" id="O27-2u-XUE"/>
@@ -1242,12 +1225,21 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Versions" id="GLC-Lc-6VM">
-                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="LMc-KQ-vea">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="LMc-KQ-vea">
                             <connections>
                                 <segue destination="oyk-u7-Dn0" kind="unwind" unwindAction="unwindToRecordSyncStatusViewController:" id="JOO-Bj-i1E"/>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" enabled="NO" title="Restore" style="done" id="I8z-cN-A01">
+                            <color key="tintColor" red="1" green="0.14901960780000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <connections>
+                                <action selector="restore:" destination="PGW-Yp-czd" id="wQ3-0j-AXC"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="restoreButton" destination="I8z-cN-A01" id="9Bi-Qg-usS"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="p6Y-9f-cL2" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="oyk-u7-Dn0" userLabel="Exit" sceneMemberID="exit"/>
