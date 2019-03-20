@@ -62,7 +62,7 @@ final class SyncManager
     
     private init()
     {
-        DriveService.shared.clientID = "457607414709-5puj6lcv779gpu3ql43e6k3smjj40dmu.apps.googleusercontent.com"
+        DriveService.shared.clientID = "457607414709-7oc45nq59frd7rre6okq22fafftd55g1.apps.googleusercontent.com"
         
         NotificationCenter.default.addObserver(self, selector: #selector(SyncManager.syncingDidFinish(_:)), name: SyncCoordinator.didFinishSyncingNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(SyncManager.didEnterBackground(_:)), name: UIApplication.didEnterBackgroundNotification, object: nil)
