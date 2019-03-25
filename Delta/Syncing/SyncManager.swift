@@ -92,6 +92,8 @@ final class SyncManager
         return self.coordinator?.recordController
     }
     
+    private(set) var syncProgress: Progress?
+        
     private(set) var previousSyncResult: SyncResult?
     
     private(set) var coordinator: SyncCoordinator?
@@ -187,7 +189,8 @@ extension SyncManager
     
     func sync()
     {
-        self.coordinator?.sync()
+        let progress = self.coordinator?.sync()
+        self.syncProgress = progress
     }
 }
 
@@ -197,6 +200,8 @@ private extension SyncManager
     {
         guard let result = notification.userInfo?[SyncCoordinator.syncResultKey] as? SyncResult else { return }
         self.previousSyncResult = result
+        
+        self.syncProgress = nil
         
         print("Finished syncing!")
     }
