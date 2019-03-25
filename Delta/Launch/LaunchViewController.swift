@@ -9,6 +9,8 @@
 import UIKit
 import Roxas
 
+import Harmony
+
 class LaunchViewController: RSTLaunchViewController
 {
     @IBOutlet private var gameViewContainerView: UIView!
@@ -75,11 +77,23 @@ extension LaunchViewController
     
     override func handleLaunchError(_ error: Error)
     {
-        let alertController = UIAlertController(title: NSLocalizedString("Unable to Launch Delta", comment: ""), message: error.localizedDescription, preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Retry", comment: ""), style: .default, handler: { (action) in
+        do
+        {
+            throw error
+        }
+        catch is HarmonyError
+        {
+            // Ignore
             self.handleLaunchConditions()
-        }))
-        self.present(alertController, animated: true, completion: nil)
+        }
+        catch
+        {
+            let alertController = UIAlertController(title: NSLocalizedString("Unable to Launch Delta", comment: ""), message: error.localizedDescription, preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Retry", comment: ""), style: .default, handler: { (action) in
+                self.handleLaunchConditions()
+            }))
+            self.present(alertController, animated: true, completion: nil)
+        }
     }
     
     override func finishLaunching()

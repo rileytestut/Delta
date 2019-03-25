@@ -124,11 +124,39 @@ extension SyncManager
                 _ = try result.get()
                 
                 self.coordinator = coordinator
-                
                 completionHandler(.success)
+            }
+            catch let authError as AuthenticationError
+            {
+                // Authentication failed, but otherwise started successfully so still assign self.coordinator.
+                self.coordinator = coordinator
+                
+                switch authError
+                {
+                case .other(ServiceError.connectionFailed):
+                    // Authentication failed due to network connection, but otherwise started successfully so we ignore this error.
+                    completionHandler(.success)
+                    
+                default:
+                    // Another authentication error occured, so we'll deauthenticate ourselves.
+                    print("SyncManager.start auth error:", authError)
+                    
+                    self.deauthenticate() { (result) in
+                        switch result
+                        {
+                        case .success:
+                            completionHandler(.success)
+                            
+                        case .failure:
+                            // authError is more useful than result's error.
+                            completionHandler(.failure(authError))
+                        }
+                    }
+                }
             }
             catch
             {
+                print("SyncManager.start error:", error)
                 completionHandler(.failure(error))
             }
         }
