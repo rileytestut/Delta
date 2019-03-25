@@ -22,6 +22,12 @@ extension SyncingServicesViewController
         case account
         case authenticate
     }
+    
+    enum AccountRow: Int, CaseIterable
+    {
+        case name
+        case emailAddress
+    }
 }
 
 class SyncingServicesViewController: UITableViewController
@@ -128,7 +134,14 @@ extension SyncingServicesViewController
             cell.accessoryType = (service == self.selectedSyncingService) ? .checkmark : .none
             
         case .account:
-            cell.textLabel?.text = SyncManager.shared.coordinator?.account?.name ?? NSLocalizedString("Unknown Account", comment: "")
+            guard let account = SyncManager.shared.coordinator?.account else { return cell }
+            
+            let row = AccountRow(rawValue: indexPath.row)!
+            switch row
+            {
+            case .name: cell.textLabel?.text = account.name
+            case .emailAddress: cell.textLabel?.text = account.emailAddress
+            }
             
         case .authenticate:
             if SyncManager.shared.coordinator?.account != nil
@@ -223,13 +236,11 @@ extension SyncingServicesViewController
     {
         let section = Section.allCases[section]
         
-        if self.isSectionHidden(section)
+        switch section
         {
-            return 0
-        }
-        else
-        {
-            return super.tableView(tableView, numberOfRowsInSection: section.rawValue)
+        case let section where self.isSectionHidden(section): return 0
+        case .account where SyncManager.shared.coordinator?.account?.emailAddress == nil: return 1
+        default: return super.tableView(tableView, numberOfRowsInSection: section.rawValue)
         }
     }
     
