@@ -10,6 +10,11 @@ import Harmony
 import Harmony_Drive
 import Harmony_Dropbox
 
+private extension UserDefaults
+{
+    @NSManaged var didValidateHarmonyBetaDatabase: Bool
+}
+
 extension SyncManager
 {
     enum RecordType: String, Hashable
@@ -118,6 +123,31 @@ extension SyncManager
         guard let service = service else { return completionHandler(.success) }
         
         let coordinator = SyncCoordinator(service: service.service, persistentContainer: DatabaseManager.shared)
+        
+        if !UserDefaults.standard.didValidateHarmonyBetaDatabase
+        {
+            UserDefaults.standard.didValidateHarmonyBetaDatabase = true
+            
+            coordinator.deauthenticate { (result) in
+                do
+                {
+                    try FileManager.default.removeItem(at: RecordController.defaultDirectoryURL())
+                }
+                catch CocoaError.fileNoSuchFile
+                {
+                    // Ignore
+                }
+                catch
+                {
+                    print("Failed to remove Harmony database.", error)
+                }
+                
+                self.start(service: service, completionHandler: completionHandler)
+            }
+            
+            return
+        }
+        
         coordinator.start { (result) in
             do
             {

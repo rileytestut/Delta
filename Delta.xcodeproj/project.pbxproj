@@ -103,6 +103,7 @@
 		BF6BF3271EB87EB8008E83CD /* PhotoLibraryImportOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6BF3261EB87EB8008E83CD /* PhotoLibraryImportOption.swift */; };
 		BF6EE5E91F7C5F860051AD6C /* _GameControllerInputMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6EE5E81F7C5F860051AD6C /* _GameControllerInputMapping.swift */; };
 		BF6EE5EB1F7C5F8F0051AD6C /* GameControllerInputMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6EE5EA1F7C5F8F0051AD6C /* GameControllerInputMapping.swift */; };
+		BF713C0822499ED4004A1A2B /* PreviousHarmony.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BF713C0622499ED3004A1A2B /* PreviousHarmony.xcdatamodeld */; };
 		BF71CF871FE90006001F1613 /* AppIconShortcutsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF71CF861FE90006001F1613 /* AppIconShortcutsViewController.swift */; };
 		BF71CF8A1FE904B1001F1613 /* GameTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF71CF891FE904B1001F1613 /* GameTableViewCell.xib */; };
 		BF797A2D1C2D339F00F1A000 /* UILabel+FontSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF797A2C1C2D339F00F1A000 /* UILabel+FontSize.swift */; };
@@ -277,6 +278,7 @@
 		BF6EE5E81F7C5F860051AD6C /* _GameControllerInputMapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = _GameControllerInputMapping.swift; sourceTree = "<group>"; };
 		BF6EE5EA1F7C5F8F0051AD6C /* GameControllerInputMapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameControllerInputMapping.swift; sourceTree = "<group>"; };
 		BF70798B1B6B464B0019077C /* ZipZap.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ZipZap.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BF713C0722499ED3004A1A2B /* Harmony.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Harmony.xcdatamodel; sourceTree = "<group>"; };
 		BF71CF861FE90006001F1613 /* AppIconShortcutsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIconShortcutsViewController.swift; sourceTree = "<group>"; };
 		BF71CF891FE904B1001F1613 /* GameTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GameTableViewCell.xib; sourceTree = "<group>"; };
 		BF797A2C1C2D339F00F1A000 /* UILabel+FontSize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+FontSize.swift"; sourceTree = "<group>"; };
@@ -485,6 +487,7 @@
 		BF5942711E09BC690051894B /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				BF713C0622499ED3004A1A2B /* PreviousHarmony.xcdatamodeld */,
 				BF4828811F9027B600028B97 /* Delta.xcdatamodeld */,
 				BF5942741E09BC740051894B /* Human */,
 				BF5942751E09BC780051894B /* Machine */,
@@ -877,6 +880,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -1069,6 +1073,7 @@
 				BF4828861F9028F500028B97 /* System.swift in Sources */,
 				BF13A7561D5D29B0000BB055 /* PreviewGameViewController.swift in Sources */,
 				BF6866171DCAC8B900BF2D06 /* ControllerSkin+Configuring.swift in Sources */,
+				BF713C0822499ED4004A1A2B /* PreviousHarmony.xcdatamodeld in Sources */,
 				BF59427D1E09BC830051894B /* ControllerSkin.swift in Sources */,
 				BFAB9F7D219A43380080EC7D /* SyncManager.swift in Sources */,
 				BFCEA67E1D56FF640061A534 /* UIViewControllerContextTransitioning+Conveniences.swift in Sources */,
@@ -1347,6 +1352,16 @@
 			);
 			currentVersion = BF0758DE2202827C005110F2 /* Delta 4.xcdatamodel */;
 			path = Delta.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+		BF713C0622499ED3004A1A2B /* PreviousHarmony.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				BF713C0722499ED3004A1A2B /* Harmony.xcdatamodel */,
+			);
+			currentVersion = BF713C0722499ED3004A1A2B /* Harmony.xcdatamodel */;
+			path = PreviousHarmony.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
