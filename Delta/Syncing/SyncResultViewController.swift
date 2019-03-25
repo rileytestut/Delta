@@ -83,6 +83,11 @@ class SyncResultViewController: UITableViewController
         super.viewDidLoad()
         
         self.tableView.dataSource = self.dataSource
+        
+        if let navigationController = self.navigationController, navigationController.viewControllers.count != 1
+        {
+            self.navigationItem.rightBarButtonItem = nil
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?)
