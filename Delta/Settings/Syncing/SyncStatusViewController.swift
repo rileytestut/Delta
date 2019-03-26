@@ -20,8 +20,12 @@ class SyncStatusViewController: UITableViewController
     {
         super.viewDidLoad()
         
+        self.definesPresentationContext = true
+        
         self.tableView.dataSource = self.dataSource
-        self.navigationItem.searchController = self.dataSource.searchController
+        
+        let fetchedDataSource = self.dataSource.dataSources.last
+        self.navigationItem.searchController = fetchedDataSource?.searchController
     }
     
     override func viewWillAppear(_ animated: Bool)
@@ -116,12 +120,14 @@ private extension SyncStatusViewController
     
     func fetchConflictedRecords()
     {
+        guard let recordController = SyncManager.shared.recordController else { return }
+        
         DispatchQueue.global().async {
             do
             {
                 var gameConflictsCount = [URL: Int]()
                 
-                let records = try SyncManager.shared.recordController.fetchConflictedRecords()
+                let records = try recordController.fetchConflictedRecords()
                 
                 for record in records
                 {

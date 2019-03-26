@@ -9,6 +9,8 @@
 import UIKit
 import Roxas
 
+import Harmony
+
 class LaunchViewController: RSTLaunchViewController
 {
     @IBOutlet private var gameViewContainerView: UIView!
@@ -59,14 +61,9 @@ extension LaunchViewController
         }
         
         let isSyncingManagerStarted = RSTLaunchCondition(condition: { self.didAttemptStartingSyncManager }) { (completionHandler) in
-            SyncManager.shared.syncCoordinator.start { (error) in
-                self.didAttemptStartingSyncManager = true
-                completionHandler(nil)
-            }
-        }
-        
-        let isRecordControllerSeeded = RSTLaunchCondition(condition: { SyncManager.shared.syncCoordinator.recordController.isSeeded }) { (completionHandler) in
-            SyncManager.shared.syncCoordinator.recordController.seedFromPersistentContainer() { (result) in
+            self.didAttemptStartingSyncManager = true
+            
+            SyncManager.shared.start(service: Settings.syncingService) { (result) in
                 switch result
                 {
                 case .success: completionHandler(nil)
@@ -75,16 +72,28 @@ extension LaunchViewController
             }
         }
         
-        return [isDatabaseManagerStarted, isSyncingManagerStarted, isRecordControllerSeeded]
+        return [isDatabaseManagerStarted, isSyncingManagerStarted]
     }
     
     override func handleLaunchError(_ error: Error)
     {
-        let alertController = UIAlertController(title: NSLocalizedString("Unable to Launch Delta", comment: ""), message: error.localizedDescription, preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Retry", comment: ""), style: .default, handler: { (action) in
+        do
+        {
+            throw error
+        }
+        catch is HarmonyError
+        {
+            // Ignore
             self.handleLaunchConditions()
-        }))
-        self.present(alertController, animated: true, completion: nil)
+        }
+        catch
+        {
+            let alertController = UIAlertController(title: NSLocalizedString("Unable to Launch Delta", comment: ""), message: error.localizedDescription, preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Retry", comment: ""), style: .default, handler: { (action) in
+                self.handleLaunchConditions()
+            }))
+            self.present(alertController, animated: true, completion: nil)
+        }
     }
     
     override func finishLaunching()

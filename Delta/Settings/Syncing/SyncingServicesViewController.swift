@@ -13,37 +13,106 @@ import Harmony_Drive
 
 import Roxas
 
-enum SyncingService: String, CaseIterable
-{
-    case none
-    case googleDrive
-    
-    var localizedName: String {
-        switch self
-        {
-        case .none: return NSLocalizedString("None", comment: "")
-        case .googleDrive: return NSLocalizedString("Google Drive", comment: "")
-        }
-    }
-}
-
 extension SyncingServicesViewController
 {
     enum Section: Int, CaseIterable
     {
+        case syncing
         case service
         case account
         case authenticate
+    }
+    
+    enum AccountRow: Int, CaseIterable
+    {
+        case name
+        case emailAddress
     }
 }
 
 class SyncingServicesViewController: UITableViewController
 {
+    @IBOutlet private var syncingEnabledSwitch: UISwitch!
+    
+    private var selectedSyncingService = Settings.syncingService
+    
+    override func viewDidLoad()
+    {
+        super.viewDidLoad()
+        
+        self.syncingEnabledSwitch.onTintColor = .deltaPurple
+        self.syncingEnabledSwitch.isOn = (self.selectedSyncingService != nil)
+    }
+}
+
+private extension SyncingServicesViewController
+{
+    @IBAction func toggleSyncing(_ sender: UISwitch)
+    {
+        if sender.isOn
+        {
+            self.changeService(to: SyncManager.Service.allCases.first)
+        }
+        else
+        {
+            if SyncManager.shared.coordinator?.account != nil
+            {
+                let alertController = UIAlertController(title: NSLocalizedString("Disable Syncing?", comment: ""), message: NSLocalizedString("Enabling syncing again later may result in conflicts that must be resolved manually.", comment: ""), preferredStyle: .alert)
+                alertController.addAction(.cancel)
+                alertController.addAction(UIAlertAction(title: NSLocalizedString("Disable", comment: ""), style: .default) { (action) in
+                    self.changeService(to: nil)
+                })
+                self.present(alertController, animated: true, completion: nil)
+            }
+            else
+            {
+                self.changeService(to: nil)
+            }
+        }
+    }
+    
+    func changeService(to service: SyncManager.Service?)
+    {
+        SyncManager.shared.reset(for: service) { (result) in
+            DispatchQueue.main.async {
+                do
+                {
+                    try result.get()
+                    
+                    let previousService = self.selectedSyncingService
+                    self.selectedSyncingService = service
+                    
+                    // Set to non-nil if we later authenticate.
+                    Settings.syncingService = nil
+                                        
+                    if (previousService == nil && service != nil) || (previousService != nil && service == nil)
+                    {
+                        self.tableView.reloadSections(IndexSet(integersIn: Section.service.rawValue ... Section.authenticate.rawValue), with: .fade)
+                    }
+                    else
+                    {
+                        self.tableView.reloadData()
+                    }
+                }
+                catch
+                {
+                    let alertController = UIAlertController(title: NSLocalizedString("Unable to Change Syncing Service", comment: ""), error: error)
+                    self.present(alertController, animated: true, completion: nil)
+                }
+            }
+        }
+    }
+}
+
+private extension SyncingServicesViewController
+{
     func isSectionHidden(_ section: Section) -> Bool
     {
         switch section
         {
-        case .account: return SyncManager.shared.syncCoordinator.account == nil
+        case .service: return !self.syncingEnabledSwitch.isOn
+        case .account: return !self.syncingEnabledSwitch.isOn || SyncManager.shared.coordinator?.account == nil
+        case .authenticate: return !self.syncingEnabledSwitch.isOn
         default: return false
         }
     }
@@ -51,28 +120,31 @@ class SyncingServicesViewController: UITableViewController
 
 extension SyncingServicesViewController
 {
-    override func numberOfSections(in tableView: UITableView) -> Int
-    {
-        guard Settings.syncingService != .none else { return 1 }
-        
-        return super.numberOfSections(in: tableView)
-    }
-    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
         
         switch Section.allCases[indexPath.section]
         {
+        case .syncing:
+            cell.textLabel?.text = NSLocalizedString("Syncing", comment: "")
+            
         case .service:
-            let service = SyncingService.allCases[indexPath.row]
-            cell.accessoryType = (service == Settings.syncingService) ? .checkmark : .none
+            let service = SyncManager.Service.allCases[indexPath.row]
+            cell.accessoryType = (service == self.selectedSyncingService) ? .checkmark : .none
             
         case .account:
-            cell.textLabel?.text = SyncManager.shared.syncCoordinator.account?.name ?? NSLocalizedString("Unknown Account", comment: "")
+            guard let account = SyncManager.shared.coordinator?.account else { return cell }
+            
+            let row = AccountRow(rawValue: indexPath.row)!
+            switch row
+            {
+            case .name: cell.textLabel?.text = account.name
+            case .emailAddress: cell.textLabel?.text = account.emailAddress
+            }
             
         case .authenticate:
-            if SyncManager.shared.syncCoordinator.isAuthenticated
+            if SyncManager.shared.coordinator?.account != nil
             {
                 cell.textLabel?.textColor = .red
                 cell.textLabel?.text = NSLocalizedString("Sign Out", comment: "")
@@ -91,31 +163,40 @@ extension SyncingServicesViewController
     {
         switch Section.allCases[indexPath.section]
         {
+        case .syncing: break
+            
         case .service:
-            Settings.syncingService = SyncingService.allCases[indexPath.row]
+            let syncingService = SyncManager.Service.allCases[indexPath.row]
+            guard syncingService != self.selectedSyncingService else { return }
             
-            if Settings.syncingService == .none && self.tableView.numberOfSections > 1
+            if SyncManager.shared.coordinator?.account != nil
             {
-                self.tableView.deleteSections(IndexSet(integersIn: Section.account.rawValue ... Section.authenticate.rawValue), with: .fade)
+                let alertController = UIAlertController(title: NSLocalizedString("Are you sure you want to change sync services?", comment: ""), message: NSLocalizedString("Switching back later may result in conflicts that must be resolved manually.", comment: ""), preferredStyle: .actionSheet)
+                alertController.addAction(.cancel)
+                alertController.addAction(UIAlertAction(title: NSLocalizedString("Change Sync Service", comment: ""), style: .destructive, handler: { (action) in
+                    self.changeService(to: syncingService)
+                }))
+                
+                self.present(alertController, animated: true, completion: nil)
             }
-            else if Settings.syncingService != .none && self.tableView.numberOfSections == 1
+            else
             {
-                self.tableView.insertSections(IndexSet(integersIn: Section.account.rawValue ... Section.authenticate.rawValue), with: .fade)
+                self.changeService(to: syncingService)
             }
-            
-            self.tableView.reloadSections(IndexSet(integer: Section.service.rawValue), with: .none)
             
         case .account: break
             
-        case .authenticate:
-            if SyncManager.shared.syncCoordinator.isAuthenticated
+        case .authenticate:            
+            if SyncManager.shared.coordinator?.account != nil
             {
-                SyncManager.shared.syncCoordinator.deauthenticate { (result) in
+                SyncManager.shared.deauthenticate { (result) in
                     DispatchQueue.main.async {
                         do
                         {
                             try result.get()
                             self.tableView.reloadData()
+                            
+                            Settings.syncingService = nil
                         }
                         catch
                         {
@@ -127,16 +208,21 @@ extension SyncingServicesViewController
             }
             else
             {
-                SyncManager.shared.syncCoordinator.authenticate(presentingViewController: self) { (result) in
+                SyncManager.shared.authenticate(presentingViewController: self) { (result) in
                     DispatchQueue.main.async {
                         do
                         {
                             _ = try result.get()
                             self.tableView.reloadData()
+                            
+                            Settings.syncingService = self.selectedSyncingService
+                        }
+                        catch GeneralError.cancelled.self
+                        {
+                            // Ignore
                         }
                         catch
                         {
-                            
                             let alertController = UIAlertController(title: NSLocalizedString("Failed to Sign In", comment: ""), error: error)
                             self.present(alertController, animated: true, completion: nil)
                         }
@@ -150,13 +236,11 @@ extension SyncingServicesViewController
     {
         let section = Section.allCases[section]
         
-        if self.isSectionHidden(section)
+        switch section
         {
-            return 0
-        }
-        else
-        {
-            return super.tableView(tableView, numberOfRowsInSection: section.rawValue)
+        case let section where self.isSectionHidden(section): return 0
+        case .account where SyncManager.shared.coordinator?.account?.emailAddress == nil: return 1
+        default: return super.tableView(tableView, numberOfRowsInSection: section.rawValue)
         }
     }
     

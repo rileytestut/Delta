@@ -48,7 +48,15 @@ class GamesViewController: UIViewController
     
     private var searchController: RSTSearchController?
     
-    private var syncingToastView: RSTToastView?
+    private var syncingToastView: RSTToastView? {
+        didSet {
+            if self.syncingToastView == nil
+            {
+                self.syncingProgressObservation = nil
+            }
+        }
+    }
+    private var syncingProgressObservation: NSKeyValueObservation?
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         fatalError("initWithNibName: not implemented")
@@ -382,12 +390,20 @@ private extension GamesViewController
     
     func showSyncingToastViewIfNeeded()
     {
-        guard SyncManager.shared.syncCoordinator.isSyncing && self.syncingToastView == nil else { return }
-        
-        let toastView = RSTToastView(text: NSLocalizedString("Syncing...", comment: ""), detailText: nil)
+        guard let coordinator = SyncManager.shared.coordinator, let syncProgress = SyncManager.shared.syncProgress, coordinator.isSyncing && self.syncingToastView == nil else { return }
+
+        let toastView = RSTToastView(text: NSLocalizedString("Syncing...", comment: ""), detailText: syncProgress.localizedAdditionalDescription)
         toastView.activityIndicatorView.startAnimating()
         toastView.addTarget(self, action: #selector(GamesViewController.hideSyncingToastView), for: .touchUpInside)
         toastView.show(in: self.view)
+        
+        self.syncingProgressObservation = syncProgress.observe(\.localizedAdditionalDescription) { [weak toastView, weak self] (progress, change) in
+            DispatchQueue.main.async {
+                // Prevent us from updating text right as we're dismissing the toast view.
+                guard self?.syncingToastView != nil else { return }
+                toastView?.detailTextLabel.text = progress.localizedAdditionalDescription
+            }
+        }
         
         self.syncingToastView = toastView
     }
@@ -402,6 +418,7 @@ private extension GamesViewController
         case .failure(let error): toastView = RSTToastView(text: NSLocalizedString("Sync Failed", comment: ""), detailText: error.failureReason)
         }
         
+        toastView.textLabel.textAlignment = .center
         toastView.addTarget(self, action: #selector(GamesViewController.presentSyncResultsViewController), for: .touchUpInside)
         
         toastView.show(in: self.view, duration: 2.0)

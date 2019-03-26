@@ -527,22 +527,32 @@ private extension GameViewController
         guard let game = self.game as? Game else { return }
         
         DatabaseManager.shared.performBackgroundTask { (context) in
-            let game = context.object(with: game.objectID) as! Game
-            
-            if let gameSave = game.gameSave
-            {
-                gameSave.modifiedDate = Date()
-            }
-            else
-            {
-                let gameSave = GameSave(context: context)
-                gameSave.identifier = game.identifier
-                game.gameSave = gameSave
-            }
-            
             do
             {
+                let game = context.object(with: game.objectID) as! Game
+                
+                let hash = try RSTHasher.sha1HashOfFile(at: game.gameSaveURL)
+                let previousHash = game.gameSaveURL.extendedAttribute(name: "com.rileytestut.delta.sha1Hash")
+                
+                guard hash != previousHash else { return }
+                
+                if let gameSave = game.gameSave
+                {
+                    gameSave.modifiedDate = Date()
+                }
+                else
+                {
+                    let gameSave = GameSave(context: context)
+                    gameSave.identifier = game.identifier
+                    game.gameSave = gameSave
+                }
+                
                 try context.save()
+                try game.gameSaveURL.setExtendedAttribute(name: "com.rileytestut.delta.sha1Hash", value: hash)
+            }
+            catch CocoaError.fileNoSuchFile
+            {
+                // Ignore
             }
             catch
             {

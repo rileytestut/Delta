@@ -45,6 +45,20 @@ extension SyncResultViewController
     }
 }
 
+extension Record
+{
+    var localizedTitle: String {
+        guard let type = SyncManager.RecordType(rawValue: self.recordID.type) else { return self.localizedName ?? NSLocalizedString("Unknown", comment: "") }
+        
+        switch type
+        {
+        case .game: return NSLocalizedString("Game", comment: "")
+        case .gameSave: return NSLocalizedString("Game Save", comment: "")
+        case .saveState, .cheat, .controllerSkin, .gameCollection, .gameControllerInputMapping: return self.localizedName ?? type.localizedName
+        }
+    }
+}
+
 class SyncResultViewController: UITableViewController
 {
     var result: Result<[Record<NSManagedObject>: Result<Void, RecordError>], SyncError>!
@@ -69,6 +83,11 @@ class SyncResultViewController: UITableViewController
         super.viewDidLoad()
         
         self.tableView.dataSource = self.dataSource
+        
+        if let navigationController = self.navigationController, navigationController.viewControllers.count != 1
+        {
+            self.navigationItem.rightBarButtonItem = nil
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?)
@@ -114,14 +133,7 @@ private extension SyncResultViewController
                 switch error.value
                 {
                 case let error as RecordError:
-                    guard let recordType = SyncManager.RecordType(rawValue: error.record.recordID.type) else { return }                    
-                    
-                    switch recordType
-                    {
-                    case .game: title = NSLocalizedString("Game", comment: "")
-                    case .gameSave: title = NSLocalizedString("Game Save", comment: "")
-                    case .saveState, .cheat, .controllerSkin, .gameCollection, .gameControllerInputMapping: title = error.record.localizedName ?? recordType.localizedName
-                    }
+                    title = error.record.localizedTitle
                     
                     switch error
                     {
@@ -204,10 +216,15 @@ private extension SyncResultViewController
                 switch recordType
                 {
                 case .game: group = .game(error.record.recordID)
-                case .gameSave: group = .game(error.record.recordID)
                 case .gameCollection: group = .gameCollection
                 case .controllerSkin: group = .controllerSkin
                 case .gameControllerInputMapping: group = .gameControllerInputMapping
+                    
+                case .gameSave:
+                    guard let gameID = error.record.metadata?[.gameID] else { continue }
+                    
+                    let recordID = RecordID(type: SyncManager.RecordType.game.rawValue, identifier: gameID)
+                    group = .game(recordID)
                     
                 case .saveState:
                     guard let gameID = error.record.metadata?[.gameID] else { continue }
@@ -226,6 +243,16 @@ private extension SyncResultViewController
             }
             
             errorsByGroup[group, default: []].append(error)
+        }
+        
+        for (group, errors) in errorsByGroup
+        {
+            let sortedErrors = errors.sorted { (a, b) -> Bool in
+                guard let a = a as? RecordError, let b = b as? RecordError else { return false }
+                return a.record.localizedTitle < b.record.localizedTitle
+            }
+            
+            errorsByGroup[group] = sortedErrors
         }
         
         let sortedErrors = errorsByGroup.sorted { (a, b) in

@@ -33,6 +33,8 @@
 		BF1173501DA32CF600047DF8 /* ControllersSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF11734F1DA32CF600047DF8 /* ControllersSettingsViewController.swift */; };
 		BF13A7561D5D29B0000BB055 /* PreviewGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF13A7551D5D29B0000BB055 /* PreviewGameViewController.swift */; };
 		BF13A7581D5D2FD9000BB055 /* EmulatorCore+Cheats.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF13A7571D5D2FD9000BB055 /* EmulatorCore+Cheats.swift */; };
+		BF144C642238511400C387E1 /* Harmony_Dropbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFDE2CC6222DF345008038E0 /* Harmony_Dropbox.framework */; };
+		BF144C652238511400C387E1 /* Harmony_Dropbox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BFDE2CC6222DF345008038E0 /* Harmony_Dropbox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF15AF841F54B43B009B6AAB /* ActionInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF15AF831F54B43B009B6AAB /* ActionInput.swift */; };
 		BF18B61F1E2985F900F70067 /* UIAlertController+Importing.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF18B61E1E2985F900F70067 /* UIAlertController+Importing.swift */; };
 		BF1DAD5D1D9F576000E752A7 /* SystemControllerSkinsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1DAD5C1D9F576000E752A7 /* SystemControllerSkinsViewController.swift */; };
@@ -101,6 +103,7 @@
 		BF6BF3271EB87EB8008E83CD /* PhotoLibraryImportOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6BF3261EB87EB8008E83CD /* PhotoLibraryImportOption.swift */; };
 		BF6EE5E91F7C5F860051AD6C /* _GameControllerInputMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6EE5E81F7C5F860051AD6C /* _GameControllerInputMapping.swift */; };
 		BF6EE5EB1F7C5F8F0051AD6C /* GameControllerInputMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6EE5EA1F7C5F8F0051AD6C /* GameControllerInputMapping.swift */; };
+		BF713C0822499ED4004A1A2B /* PreviousHarmony.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BF713C0622499ED3004A1A2B /* PreviousHarmony.xcdatamodeld */; };
 		BF71CF871FE90006001F1613 /* AppIconShortcutsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF71CF861FE90006001F1613 /* AppIconShortcutsViewController.swift */; };
 		BF71CF8A1FE904B1001F1613 /* GameTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF71CF891FE904B1001F1613 /* GameTableViewCell.xib */; };
 		BF797A2D1C2D339F00F1A000 /* UILabel+FontSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF797A2C1C2D339F00F1A000 /* UILabel+FontSize.swift */; };
@@ -132,6 +135,10 @@
 		BFD097211D3A01B8005A44C2 /* SaveStatesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3540041C5DA70400C1184C /* SaveStatesViewController.swift */; };
 		BFDB3418219E4B1700595A62 /* SyncStatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDB3417219E4B1700595A62 /* SyncStatusViewController.swift */; };
 		BFDD04F11D5E2C27002D450E /* GameCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDD04F01D5E2C27002D450E /* GameCollectionViewController.swift */; };
+		BFDE2CD1222DF36A008038E0 /* SwiftyDropbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFDE2CC8222DF345008038E0 /* SwiftyDropbox.framework */; };
+		BFDE2CD2222DF36A008038E0 /* SwiftyDropbox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BFDE2CC8222DF345008038E0 /* SwiftyDropbox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BFDE2CD3222DF36A008038E0 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFDE2CC7222DF345008038E0 /* Alamofire.framework */; };
+		BFDE2CD4222DF36A008038E0 /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BFDE2CC7222DF345008038E0 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BFE022A01F5B57FF0052D888 /* PopoverMenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE0229F1F5B577D0052D888 /* PopoverMenuButton.swift */; };
 		BFE4269E1D9C68E600DC913F /* SaveStatesStoryboardSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE4269D1D9C68E600DC913F /* SaveStatesStoryboardSegue.swift */; };
 		BFE593CA21F3F8B7003412A6 /* GameSave.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE593C921F3F8B7003412A6 /* GameSave.swift */; };
@@ -145,6 +152,7 @@
 		BFFA4C091E8A24D600D87934 /* GameTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFA4C081E8A24D600D87934 /* GameTableViewCell.swift */; };
 		BFFA71DD1AAC406100EE9DD1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFA71DC1AAC406100EE9DD1 /* AppDelegate.swift */; };
 		BFFA71E21AAC406100EE9DD1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BFFA71E01AAC406100EE9DD1 /* Main.storyboard */; };
+		BFFBD3D9224A0756002EFC79 /* URL+ExtendedAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFBD3D8224A0756002EFC79 /* URL+ExtendedAttributes.swift */; };
 		BFFC461E1D59823500AF2CC6 /* GamesPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFC461B1D59823500AF2CC6 /* GamesPresentationController.swift */; };
 		BFFC461F1D59823500AF2CC6 /* GamesStoryboardSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFC461C1D59823500AF2CC6 /* GamesStoryboardSegue.swift */; };
 		BFFC46201D59823500AF2CC6 /* InitialGamesStoryboardSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFC461D1D59823500AF2CC6 /* InitialGamesStoryboardSegue.swift */; };
@@ -161,11 +169,14 @@
 			dstSubfolderSpec = 10;
 			files = (
 				BF9F4FD01AAD7B87004C9500 /* DeltaCore.framework in Embed Frameworks */,
+				BFDE2CD2222DF36A008038E0 /* SwiftyDropbox.framework in Embed Frameworks */,
 				BF48F75C219A1F8A00BC2FC1 /* Harmony_Drive.framework in Embed Frameworks */,
 				BF48F756219A1EF000BC2FC1 /* Harmony.framework in Embed Frameworks */,
 				BFF0742D1E9DC17500ACDF4A /* GBCDeltaCore.framework in Embed Frameworks */,
 				BFEC732E1AAECC4A00650035 /* Roxas.framework in Embed Frameworks */,
 				BF0418151D01E93400E85BCF /* GBADeltaCore.framework in Embed Frameworks */,
+				BFDE2CD4222DF36A008038E0 /* Alamofire.framework in Embed Frameworks */,
+				BF144C652238511400C387E1 /* Harmony_Dropbox.framework in Embed Frameworks */,
 				BF98C9832204D9AB006B95AC /* NESDeltaCore.framework in Embed Frameworks */,
 				BF99C6951D0A9AA600BA92BC /* SNESDeltaCore.framework in Embed Frameworks */,
 				BF072011219A3A9D00F05DA4 /* ZIPFoundation.framework in Embed Frameworks */,
@@ -268,6 +279,7 @@
 		BF6EE5E81F7C5F860051AD6C /* _GameControllerInputMapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = _GameControllerInputMapping.swift; sourceTree = "<group>"; };
 		BF6EE5EA1F7C5F8F0051AD6C /* GameControllerInputMapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameControllerInputMapping.swift; sourceTree = "<group>"; };
 		BF70798B1B6B464B0019077C /* ZipZap.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ZipZap.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BF713C0722499ED3004A1A2B /* Harmony.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Harmony.xcdatamodel; sourceTree = "<group>"; };
 		BF71CF861FE90006001F1613 /* AppIconShortcutsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIconShortcutsViewController.swift; sourceTree = "<group>"; };
 		BF71CF891FE904B1001F1613 /* GameTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GameTableViewCell.xib; sourceTree = "<group>"; };
 		BF797A2C1C2D339F00F1A000 /* UILabel+FontSize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+FontSize.swift"; sourceTree = "<group>"; };
@@ -293,6 +305,9 @@
 		BFCEA67D1D56FF640061A534 /* UIViewControllerContextTransitioning+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewControllerContextTransitioning+Conveniences.swift"; sourceTree = "<group>"; };
 		BFDB3417219E4B1700595A62 /* SyncStatusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncStatusViewController.swift; sourceTree = "<group>"; };
 		BFDD04F01D5E2C27002D450E /* GameCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameCollectionViewController.swift; sourceTree = "<group>"; };
+		BFDE2CC6222DF345008038E0 /* Harmony_Dropbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Harmony_Dropbox.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BFDE2CC7222DF345008038E0 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Alamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BFDE2CC8222DF345008038E0 /* SwiftyDropbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SwiftyDropbox.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFE0229F1F5B577D0052D888 /* PopoverMenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverMenuButton.swift; sourceTree = "<group>"; };
 		BFE4269D1D9C68E600DC913F /* SaveStatesStoryboardSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SaveStatesStoryboardSegue.swift; sourceTree = "<group>"; };
 		BFE593C921F3F8B7003412A6 /* GameSave.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameSave.swift; sourceTree = "<group>"; };
@@ -305,6 +320,7 @@
 		BFFA71DB1AAC406100EE9DD1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BFFA71DC1AAC406100EE9DD1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BFFA71E11AAC406100EE9DD1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		BFFBD3D8224A0756002EFC79 /* URL+ExtendedAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+ExtendedAttributes.swift"; sourceTree = "<group>"; };
 		BFFC461B1D59823500AF2CC6 /* GamesPresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GamesPresentationController.swift; sourceTree = "<group>"; };
 		BFFC461C1D59823500AF2CC6 /* GamesStoryboardSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GamesStoryboardSegue.swift; sourceTree = "<group>"; };
 		BFFC461D1D59823500AF2CC6 /* InitialGamesStoryboardSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitialGamesStoryboardSegue.swift; sourceTree = "<group>"; };
@@ -321,11 +337,14 @@
 			files = (
 				BF9F4FCF1AAD7B87004C9500 /* DeltaCore.framework in Frameworks */,
 				BFEC732D1AAECC4A00650035 /* Roxas.framework in Frameworks */,
+				BFDE2CD3222DF36A008038E0 /* Alamofire.framework in Frameworks */,
 				BF48F75B219A1F8A00BC2FC1 /* Harmony_Drive.framework in Frameworks */,
 				BF99C6941D0A9AA600BA92BC /* SNESDeltaCore.framework in Frameworks */,
 				BF98C9822204D9AB006B95AC /* NESDeltaCore.framework in Frameworks */,
 				BF0418141D01E93400E85BCF /* GBADeltaCore.framework in Frameworks */,
 				BF072010219A3A9D00F05DA4 /* ZIPFoundation.framework in Frameworks */,
+				BFDE2CD1222DF36A008038E0 /* SwiftyDropbox.framework in Frameworks */,
+				BF144C642238511400C387E1 /* Harmony_Dropbox.framework in Frameworks */,
 				BFF0742C1E9DC17500ACDF4A /* GBCDeltaCore.framework in Frameworks */,
 				BF48F755219A1EF000BC2FC1 /* Harmony.framework in Frameworks */,
 				4FE8465FD28810191C3E5212 /* Pods_Delta.framework in Frameworks */,
@@ -353,6 +372,7 @@
 				BF6424841F5CBDC900D6AB44 /* UIView+ParentViewController.swift */,
 				BFC3627F21ADE2BA00EF2BE6 /* UIAlertController+Error.swift */,
 				BF1F45AC21AF57BA00EF9895 /* HarmonyMetadataKey+Keys.swift */,
+				BFFBD3D8224A0756002EFC79 /* URL+ExtendedAttributes.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -470,6 +490,7 @@
 		BF5942711E09BC690051894B /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				BF713C0622499ED3004A1A2B /* PreviousHarmony.xcdatamodeld */,
 				BF4828811F9027B600028B97 /* Delta.xcdatamodeld */,
 				BF5942741E09BC740051894B /* Human */,
 				BF5942751E09BC780051894B /* Machine */,
@@ -617,6 +638,9 @@
 		BF9F4FCD1AAD7B25004C9500 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BFDE2CC6222DF345008038E0 /* Harmony_Dropbox.framework */,
+				BFDE2CC8222DF345008038E0 /* SwiftyDropbox.framework */,
+				BFDE2CC7222DF345008038E0 /* Alamofire.framework */,
 				BF98C9812204D9A1006B95AC /* NESDeltaCore.framework */,
 				BF07200E219A3A9500F05DA4 /* ZIPFoundation.framework */,
 				BF48F754219A1EEB00BC2FC1 /* Harmony.framework */,
@@ -859,6 +883,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -1051,6 +1076,8 @@
 				BF4828861F9028F500028B97 /* System.swift in Sources */,
 				BF13A7561D5D29B0000BB055 /* PreviewGameViewController.swift in Sources */,
 				BF6866171DCAC8B900BF2D06 /* ControllerSkin+Configuring.swift in Sources */,
+				BFFBD3D9224A0756002EFC79 /* URL+ExtendedAttributes.swift in Sources */,
+				BF713C0822499ED4004A1A2B /* PreviousHarmony.xcdatamodeld in Sources */,
 				BF59427D1E09BC830051894B /* ControllerSkin.swift in Sources */,
 				BFAB9F7D219A43380080EC7D /* SyncManager.swift in Sources */,
 				BFCEA67E1D56FF640061A534 /* UIViewControllerContextTransitioning+Conveniences.swift in Sources */,
@@ -1329,6 +1356,16 @@
 			);
 			currentVersion = BF0758DE2202827C005110F2 /* Delta 4.xcdatamodel */;
 			path = Delta.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+		BF713C0622499ED3004A1A2B /* PreviousHarmony.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				BF713C0722499ED3004A1A2B /* Harmony.xcdatamodel */,
+			);
+			currentVersion = BF713C0722499ED3004A1A2B /* Harmony.xcdatamodel */;
+			path = PreviousHarmony.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

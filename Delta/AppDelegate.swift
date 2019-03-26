@@ -9,6 +9,7 @@
 import UIKit
 
 import DeltaCore
+import Harmony_Dropbox
 
 import Fabric
 import Crashlytics
@@ -111,6 +112,10 @@ extension AppDelegate
             {
                 return self.importControllerSkin(at: url)
             }
+        }
+        else if DropboxService.shared.handleDropboxURL(url)
+        {
+            return true
         }
         else
         {

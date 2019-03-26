@@ -86,6 +86,19 @@ private extension RecordSyncStatusViewController
     {
         if let record = self.record
         {
+            var title: String?
+            
+            if let recordType = SyncManager.RecordType(rawValue: record.recordID.type)
+            {
+                switch recordType
+                {
+                case .game, .gameSave: title = recordType.localizedName
+                case .cheat, .controllerSkin, .gameCollection, .gameControllerInputMapping, .saveState: break
+                }
+            }
+            
+            self.title = title ?? record.localizedName
+
             self.syncingEnabledSwitch.isEnabled = !record.isConflicted
             self.syncingEnabledSwitch.isOn = record.isSyncingEnabled
             
