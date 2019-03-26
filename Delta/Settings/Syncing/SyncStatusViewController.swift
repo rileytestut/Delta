@@ -20,6 +20,8 @@ class SyncStatusViewController: UITableViewController
     {
         super.viewDidLoad()
         
+        self.definesPresentationContext = true
+        
         self.tableView.dataSource = self.dataSource
         
         let fetchedDataSource = self.dataSource.dataSources.last
