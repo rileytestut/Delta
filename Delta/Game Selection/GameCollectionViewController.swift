@@ -705,6 +705,8 @@ extension GameCollectionViewController: UIViewControllerPreviewingDelegate
         let gameViewController = viewControllerToCommit as! PreviewGameViewController
         let game = gameViewController.game as! Game
         
+        gameViewController.pauseEmulation()
+        
         let indexPath = self.dataSource.fetchedResultsController.indexPath(forObject: game)!
 
         let fileURL = FileManager.default.uniqueTemporaryURL()
