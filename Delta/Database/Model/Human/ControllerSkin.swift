@@ -66,6 +66,11 @@ extension ControllerSkin: ControllerSkinProtocol
         return self.controllerSkin?.image(for: traits, preferredSize: preferredSize)
     }
     
+    public func thumbstick(for item: DeltaCore.ControllerSkin.Item, traits: DeltaCore.ControllerSkin.Traits, preferredSize: DeltaCore.ControllerSkin.Size) -> (UIImage, CGSize)?
+    {
+        return self.controllerSkin?.thumbstick(for: item, traits: traits, preferredSize: preferredSize)
+    }
+    
     public func inputs(for traits: DeltaCore.ControllerSkin.Traits, at point: CGPoint) -> [Input]?
     {
         return self.controllerSkin?.inputs(for: traits, at: point)

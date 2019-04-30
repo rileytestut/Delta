@@ -123,6 +123,7 @@ private extension ControllerInputsViewController
         
         // Update controller view's controller skin.
         self.gameViewController.controllerView.controllerSkin = DeltaCore.ControllerSkin.standardControllerSkin(for: self.system.gameType)
+        self.gameViewController.view.setNeedsUpdateConstraints()
         
         // Fetch input mapping if it hasn't already been fetched.
         if let gameController = self.gameController, let playerIndex = gameController.playerIndex, self.inputMappings[self.system] == nil
@@ -417,31 +418,32 @@ private extension ControllerInputsViewController
             {
             case .standard: itemFrame = item.frame
             case let .directional(up, down, left, right):
+                let frame = (item.kind == .thumbstick) ? item.extendedFrame : item.frame
                 
                 switch input.stringValue
                 {
                 case up.stringValue:
-                    itemFrame = CGRect(x: item.frame.minX + item.frame.width / 3,
-                                       y: item.frame.minY,
-                                       width: item.frame.width / 3,
-                                       height: item.frame.height / 3)
+                    itemFrame = CGRect(x: frame.minX + frame.width / 3,
+                                       y: frame.minY,
+                                       width: frame.width / 3,
+                                       height: frame.height / 3)
                 case down.stringValue:
-                    itemFrame = CGRect(x: item.frame.minX + item.frame.width / 3,
-                                       y: item.frame.minY + (item.frame.height / 3) * 2,
-                                       width: item.frame.width / 3,
-                                       height: item.frame.height / 3)
+                    itemFrame = CGRect(x: frame.minX + frame.width / 3,
+                                       y: frame.minY + (frame.height / 3) * 2,
+                                       width: frame.width / 3,
+                                       height: frame.height / 3)
                     
                 case left.stringValue:
-                    itemFrame = CGRect(x: item.frame.minX,
-                                       y: item.frame.minY + (item.frame.height / 3),
-                                       width: item.frame.width / 3,
-                                       height: item.frame.height / 3)
+                    itemFrame = CGRect(x: frame.minX,
+                                       y: frame.minY + (frame.height / 3),
+                                       width: frame.width / 3,
+                                       height: frame.height / 3)
                     
                 case right.stringValue:
-                    itemFrame = CGRect(x: item.frame.minX + (item.frame.width / 3) * 2,
-                                       y: item.frame.minY + (item.frame.height / 3),
-                                       width: item.frame.width / 3,
-                                       height: item.frame.height / 3)
+                    itemFrame = CGRect(x: frame.minX + (frame.width / 3) * 2,
+                                       y: frame.minY + (frame.height / 3),
+                                       width: frame.width / 3,
+                                       height: frame.height / 3)
                     
                 default: itemFrame = nil
                 }
@@ -478,7 +480,7 @@ private extension ControllerInputsViewController
 
 extension ControllerInputsViewController: GameControllerReceiver
 {
-    func gameController(_ gameController: GameController, didActivate controllerInput: DeltaCore.Input)
+    func gameController(_ gameController: GameController, didActivate controllerInput: DeltaCore.Input, value: Double)
     {
         guard self.isViewLoaded else { return }
         

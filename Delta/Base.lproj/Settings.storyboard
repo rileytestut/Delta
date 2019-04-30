@@ -372,7 +372,7 @@
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="KkE-ji-6Y8" firstAttribute="centerY" secondItem="cPg-qa-ERT" secondAttribute="centerY" placeholder="YES" id="4wi-cL-aCQ"/>
-                            <constraint firstItem="Z6c-bc-h6l" firstAttribute="top" secondItem="6Wl-el-X30" secondAttribute="bottom" id="Bmp-yB-Yf1"/>
+                            <constraint firstAttribute="bottom" secondItem="6Wl-el-X30" secondAttribute="bottom" id="Bmp-yB-Yf1"/>
                             <constraint firstAttribute="trailing" secondItem="KkE-ji-6Y8" secondAttribute="trailing" id="Jeb-8K-VYw"/>
                             <constraint firstItem="6Wl-el-X30" firstAttribute="top" secondItem="cH1-gu-g2u" secondAttribute="bottom" id="TD2-bx-DJC"/>
                             <constraint firstAttribute="trailing" secondItem="6Wl-el-X30" secondAttribute="trailing" id="Xph-DL-tBk"/>
