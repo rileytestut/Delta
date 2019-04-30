@@ -50,7 +50,9 @@ extension CheatTextView
             let characterWidth = ("A" as NSString).size(withAttributes: [.font: font]).width
 
             let width = characterWidth * CGFloat(format.format.count)
-            self.textContainer.size = CGSize(width: width, height: 0)
+            
+            let adjustedInset = (self.bounds.width - self.textContainerInset.left) - width
+            self.textContainerInset.right = adjustedInset
         }
     }
 }
