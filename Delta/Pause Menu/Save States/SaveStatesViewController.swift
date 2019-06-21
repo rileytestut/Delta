@@ -596,7 +596,7 @@ extension SaveStatesViewController: UIViewControllerPreviewingDelegate
     func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController)
     {
         let gameViewController = viewControllerToCommit as! PreviewGameViewController        
-        gameViewController.emulatorCore?.pause()
+        gameViewController.pauseEmulation()
         
         let fileURL = FileManager.default.uniqueTemporaryURL()
         if let saveState = gameViewController.emulatorCore?.saveSaveState(to: fileURL)
