@@ -19,6 +19,7 @@ extension DeltaCoreProtocol
         case .snes: return 1...4
         case .gbc: return 1...4
         case .gba: return 1...3
+        case .n64: return 1...3
         }
     }
 }
