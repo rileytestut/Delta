@@ -928,7 +928,12 @@ extension GameViewController: GameViewControllerDelegate
     
     func gameViewControllerShouldResumeEmulation(_ gameViewController: DeltaCore.GameViewController) -> Bool
     {
-        let result = (self.presentedViewController == nil || self.presentedViewController?.isDisappearing == true) && !self.isSelectingSustainedButtons && self.view.window != nil
+        var result = false
+        
+        rst_dispatch_sync_on_main_thread {
+            result = (self.presentedViewController == nil || self.presentedViewController?.isDisappearing == true) && !self.isSelectingSustainedButtons && self.view.window != nil
+        }
+        
         return result
     }
 }
