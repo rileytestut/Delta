@@ -64,6 +64,13 @@ class PauseViewController: UIViewController, PauseInfoProviding
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
+    
+    override func viewDidLayoutSubviews()
+    {
+        super.viewDidLayoutSubviews()
+        
+        self.updateSafeAreaInsets()
+    }
 }
 
 extension PauseViewController
@@ -121,6 +128,11 @@ extension PauseViewController: UINavigationControllerDelegate
         transitionCoordinator.presenting = (operation == .push)
         return transitionCoordinator
     }
+    
+    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool)
+    {
+        self.updateSafeAreaInsets()
+    }
 }
 
 private extension PauseViewController
@@ -151,5 +163,19 @@ private extension PauseViewController
         
         self.fastForwardItem = MenuItem(text: NSLocalizedString("Fast Forward", comment: ""), image: #imageLiteral(resourceName: "FastForward"), action: { _ in })
         self.sustainButtonsItem = MenuItem(text: NSLocalizedString("Sustain Buttons", comment: ""), image: #imageLiteral(resourceName: "SustainButtons"), action: { _ in })
+    }
+    
+    func updateSafeAreaInsets()
+    {
+        if self.navigationController?.topViewController == self.navigationController?.viewControllers.first
+        {
+            self.additionalSafeAreaInsets.left = self.view.window?.safeAreaInsets.left ?? 0
+            self.additionalSafeAreaInsets.right = self.view.window?.safeAreaInsets.right ?? 0
+        }
+        else
+        {
+            self.additionalSafeAreaInsets.left = 0
+            self.additionalSafeAreaInsets.right = 0
+        }
     }
 }
