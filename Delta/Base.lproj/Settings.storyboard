@@ -716,7 +716,7 @@
         <!--Navigation Controller-->
         <scene sceneID="bwW-s2-fcE">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="0QR-U9-gtx" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="0QR-U9-gtx" customClass="RSTNavigationController" sceneMemberID="viewController">
                     <toolbarItems/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" barStyle="black" id="Y5H-O6-CQ5">

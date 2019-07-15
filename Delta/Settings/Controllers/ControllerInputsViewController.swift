@@ -46,6 +46,18 @@ class ControllerInputsViewController: UIViewController
     public override var next: UIResponder? {
         return KeyboardResponder(nextResponder: super.next)
     }
+    
+    override var shouldAutorotate: Bool {
+        return false
+    }
+    
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .portrait
+    }
+    
+    override var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
+        return .portrait
+    }
         
     override func viewDidLoad()
     {
