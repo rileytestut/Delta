@@ -113,13 +113,9 @@ extension AppDelegate
                 return self.importControllerSkin(at: url)
             }
         }
-        else if DropboxService.shared.handleDropboxURL(url)
+        else if url.scheme?.hasPrefix("db-") == true
         {
-            return true
-        }
-        else
-        {
-            return self.deepLinkController.handle(.url(url))
+            return DropboxService.shared.handleDropboxURL(url)
         }
         
         return false
