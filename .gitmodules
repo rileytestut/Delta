@@ -22,3 +22,6 @@
 [submodule "Cores/N64DeltaCore"]
 	path = Cores/N64DeltaCore
 	url = git@github.com:rileytestut/N64DeltaCore.git
+[submodule "Cores/DSDeltaCore"]
+	path = Cores/DSDeltaCore
+	url = https://github.com/rileytestut/DSDeltaCore.git

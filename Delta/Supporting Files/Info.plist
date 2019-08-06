@@ -102,6 +102,20 @@
 				<string>com.rileytestut.delta.game.n64</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeIconFiles</key>
+			<array/>
+			<key>CFBundleTypeName</key>
+			<string>DS Game</string>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+			<key>LSHandlerRank</key>
+			<string>Owner</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>com.rileytestut.delta.game.ds</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
@@ -315,6 +329,26 @@
 				<array>
 					<string>n64</string>
 					<string>z64</string>
+				</array>
+			</dict>
+		</dict>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>com.rileytestut.delta.game</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>DS Game</string>
+			<key>UTTypeIconFiles</key>
+			<array/>
+			<key>UTTypeIdentifier</key>
+			<string>com.rileytestut.delta.game.ds</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>nds</string>
+					<string>ds</string>
 				</array>
 			</dict>
 		</dict>

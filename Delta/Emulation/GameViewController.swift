@@ -131,6 +131,10 @@ class GameViewController: DeltaCore.GameViewController
         return !self.isGyroActive
     }
     
+    override var preferredScreenEdgesDeferringSystemGestures: UIRectEdge {
+        return .all
+    }
+    
     required init()
     {
         super.init()
@@ -340,6 +344,13 @@ extension GameViewController
                 
                 // Re-set gameController as pausingGameController.
                 self.pausingGameController = gameController
+            }
+            
+            if self.game?.type == .ds
+            {
+                // Cheats and Fast Forwarding are not yet supported for DS games.
+                pauseViewController.cheatCodesItem = nil
+                pauseViewController.fastForwardItem = nil
             }
             
             self.pauseViewController = pauseViewController
