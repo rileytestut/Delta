@@ -429,6 +429,7 @@ private extension ControllerInputsViewController
             switch item.inputs
             {
             case .standard: itemFrame = item.frame
+            case .touch: itemFrame = item.frame
             case let .directional(up, down, left, right):
                 let frame = (item.kind == .thumbstick) ? item.extendedFrame : item.frame
                 

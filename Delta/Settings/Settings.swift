@@ -206,6 +206,7 @@ private extension Settings
         case .gbc: systemName = "gbc"
         case .gba: systemName = "gba"
         case .n64: systemName = "n64"
+        case .ds: systemName = "ds"
         }
         
         let orientation: String

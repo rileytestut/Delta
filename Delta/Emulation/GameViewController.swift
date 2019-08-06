@@ -346,6 +346,13 @@ extension GameViewController
                 self.pausingGameController = gameController
             }
             
+            if self.game?.type == .ds
+            {
+                // Cheats and Fast Forwarding are not yet supported for DS games.
+                pauseViewController.cheatCodesItem = nil
+                pauseViewController.fastForwardItem = nil
+            }
+            
             self.pauseViewController = pauseViewController
             
         default: break
