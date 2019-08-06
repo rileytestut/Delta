@@ -34,6 +34,10 @@ class LaunchViewController: RSTLaunchViewController
         return self.gameViewController
     }
     
+    override var childForScreenEdgesDeferringSystemGestures: UIViewController? {
+        return self.gameViewController
+    }
+    
     override var shouldAutorotate: Bool {
         return self.gameViewController?.shouldAutorotate ?? true
     }

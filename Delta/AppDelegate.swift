@@ -33,12 +33,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         
         self.configureAppearance()
         
-        // Disable system gestures that delay touches on left edge of screen
-        for gestureRecognizer in self.window?.gestureRecognizers ?? [] where NSStringFromClass(type(of: gestureRecognizer)).contains("GateGesture")
-        {
-            gestureRecognizer.delaysTouchesBegan = false
-        }
-        
         // Controllers
         ExternalGameControllerManager.shared.startMonitoring()
         

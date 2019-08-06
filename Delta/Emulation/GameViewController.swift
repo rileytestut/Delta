@@ -131,6 +131,10 @@ class GameViewController: DeltaCore.GameViewController
         return !self.isGyroActive
     }
     
+    override var preferredScreenEdgesDeferringSystemGestures: UIRectEdge {
+        return .all
+    }
+    
     required init()
     {
         super.init()
