@@ -69,6 +69,11 @@ class GameViewController: DeltaCore.GameViewController
             
             self.emulatorCore?.saveHandler = { [weak self] _ in self?.updateGameSave() }
             
+            if oldValue?.fileURL != game?.fileURL
+            {
+                self.shouldResetSustainedInputs = true
+            }
+            
             self.updateControllerSkin()
             self.updateControllers()
             
@@ -118,6 +123,7 @@ class GameViewController: DeltaCore.GameViewController
     // Sustain Buttons
     private var isSelectingSustainedButtons = false
     private var sustainInputsMapping: SustainInputsMapping?
+    private var shouldResetSustainedInputs = false
     
     private var sustainButtonsContentView: UIView!
     private var sustainButtonsBlurView: UIVisualEffectView!
@@ -494,13 +500,13 @@ private extension GameViewController
         self.view.setNeedsLayout()
         self.view.layoutIfNeeded()
         
+        // Roundabout way of combining arrays to prevent rare runtime crash in + operator :(
+        var controllers = [GameController]()
+        controllers.append(self.controllerView)
+        controllers.append(contentsOf: ExternalGameControllerManager.shared.connectedControllers)
+        
         if let emulatorCore = self.emulatorCore, let game = self.game
         {
-            // Roundabout way of combining arrays to prevent rare runtime crash in + operator :(
-            var controllers = [GameController]()
-            controllers.append(self.controllerView)
-            controllers.append(contentsOf: ExternalGameControllerManager.shared.connectedControllers)
-
             for gameController in controllers
             {
                 if gameController.playerIndex != nil
@@ -522,7 +528,20 @@ private extension GameViewController
                     gameController.removeReceiver(emulatorCore)
                 }
             }
-        }        
+        }
+        
+        if self.shouldResetSustainedInputs
+        {
+            for controller in controllers
+            {
+                for input in controller.sustainedInputs.keys
+                {
+                    controller.unsustain(input)
+                }
+            }
+            
+            self.shouldResetSustainedInputs = false
+        }
     }
     
     func updateControllerSkin()
