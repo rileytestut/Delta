@@ -585,7 +585,9 @@ private extension GameCollectionViewController
             print(error)
         }
         
-        let activityViewController = UIActivityViewController(activityItems: [symbolicURL], applicationActivities: nil)
+        let copyDeepLinkActivity = CopyDeepLinkActivity()
+        
+        let activityViewController = UIActivityViewController(activityItems: [symbolicURL, game], applicationActivities: [copyDeepLinkActivity])
         activityViewController.completionWithItemsHandler = { (activityType, finished, returnedItems, error) in
             do
             {

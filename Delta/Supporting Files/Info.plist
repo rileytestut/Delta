@@ -149,6 +149,16 @@
 				<string>db-f5btgysf9ma9bb6</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>Delta</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>delta</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>10</string>

@@ -134,6 +134,7 @@
 		BFB359452278FD8100CFD920 /* N64DeltaCore_RSP.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFB359422278FD6800CFD920 /* N64DeltaCore_RSP.framework */; };
 		BFB359462278FD8100CFD920 /* N64DeltaCore_RSP.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BFB359422278FD6800CFD920 /* N64DeltaCore_RSP.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BFBAB2E31EB685A2004E0B0E /* DeltaCoreProtocol+Delta.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFBAB2E21EB685A2004E0B0E /* DeltaCoreProtocol+Delta.swift */; };
+		BFC1F2CC22F9515F00606A45 /* CopyDeepLinkActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC1F2CB22F9515F00606A45 /* CopyDeepLinkActivity.swift */; };
 		BFC3628021ADE2BA00EF2BE6 /* UIAlertController+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC3627F21ADE2BA00EF2BE6 /* UIAlertController+Error.swift */; };
 		BFC6F7B81F435BC500221B96 /* Input+Display.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC6F7B71F435BC500221B96 /* Input+Display.swift */; };
 		BFC9B7391CEFCD34008629BB /* CheatsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC9B7381CEFCD34008629BB /* CheatsViewController.swift */; };
@@ -314,6 +315,7 @@
 		BFB359422278FD6800CFD920 /* N64DeltaCore_RSP.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = N64DeltaCore_RSP.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFBAB2E21EB685A2004E0B0E /* DeltaCoreProtocol+Delta.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DeltaCoreProtocol+Delta.swift"; sourceTree = "<group>"; };
 		BFC134E01AAD82460087AD7B /* SNESDeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SNESDeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BFC1F2CB22F9515F00606A45 /* CopyDeepLinkActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyDeepLinkActivity.swift; sourceTree = "<group>"; };
 		BFC3627F21ADE2BA00EF2BE6 /* UIAlertController+Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIAlertController+Error.swift"; sourceTree = "<group>"; };
 		BFC6F7B71F435BC500221B96 /* Input+Display.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Input+Display.swift"; sourceTree = "<group>"; };
 		BFC9B7381CEFCD34008629BB /* CheatsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheatsViewController.swift; sourceTree = "<group>"; };
@@ -462,6 +464,7 @@
 			children = (
 				BF525EE91FF6CD12004AA849 /* DeepLink.swift */,
 				BF525EE71FF5F370004AA849 /* DeepLinkController.swift */,
+				BFC1F2CB22F9515F00606A45 /* CopyDeepLinkActivity.swift */,
 			);
 			path = "Deep Linking";
 			sourceTree = "<group>";
@@ -1035,6 +1038,7 @@
 				BFAA1FED1B8AA4FA00495943 /* Settings.swift in Sources */,
 				BFA0D1271D3AE1F600565894 /* GameViewController.swift in Sources */,
 				BF59428A1E09BC8B0051894B /* _SaveState.swift in Sources */,
+				BFC1F2CC22F9515F00606A45 /* CopyDeepLinkActivity.swift in Sources */,
 				BF5942801E09BC830051894B /* SaveState.swift in Sources */,
 				BF59428E1E09BCFB0051894B /* ImportController.swift in Sources */,
 				BF13A7581D5D2FD9000BB055 /* EmulatorCore+Cheats.swift in Sources */,

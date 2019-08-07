@@ -111,6 +111,10 @@ extension AppDelegate
         {
             return DropboxService.shared.handleDropboxURL(url)
         }
+        else if url.scheme?.lowercased() == "delta"
+        {
+            return self.deepLinkController.handle(.url(url))
+        }
         
         return false
     }

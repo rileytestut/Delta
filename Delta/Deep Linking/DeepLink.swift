@@ -12,16 +12,12 @@ extension URL
 {
     init(action: DeepLink.Action)
     {
-        var components = URLComponents()
-        components.host = action.type.rawValue
-        
         switch action
         {
-        case .launchGame(let identifier): components.path = identifier
+        case .launchGame(let identifier):
+            let deepLinkURL = URL(string: "delta://\(action.type.rawValue)/\(identifier)")!
+            self = deepLinkURL
         }
-        
-        let url = components.url!
-        self = url
     }
 }
 
