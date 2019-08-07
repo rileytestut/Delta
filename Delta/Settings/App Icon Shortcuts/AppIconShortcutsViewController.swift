@@ -264,6 +264,7 @@ extension AppIconShortcutsViewController
         {
         case (0, .recent): return NSLocalizedString("Your most recently played games will appear as shortcuts when 3D touching the app icon.", comment: "")
         case (0, .manual): return NSLocalizedString("The games you've selected below will appear as shortcuts when 3D touching the app icon.", comment: "")
+        case (1, .recent) where self.shortcutsDataSource.itemCount == 0: return NSLocalizedString("You have no recently played games.", comment: "")
         case (1, .recent): return " " // Return non-empty string since empty string changes vertical offset of section for some reason.
         case (1, .manual): return NSLocalizedString("You may have up to 4 shortcuts.", comment: "")
             
