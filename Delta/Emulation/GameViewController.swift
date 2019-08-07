@@ -998,9 +998,10 @@ private extension GameViewController
     {
         guard let game = notification.userInfo?[DeepLink.Key.game] as? Game else { return }
         
+        let previousGame = self.game
         self.game = game
         
-        if let pausedSaveState = self.pausedSaveState, game == (self.game as? Game)
+        if let pausedSaveState = self.pausedSaveState, game == (previousGame as? Game)
         {
             // Launching current game via deep link, so we store a copy of the paused save state to resume when emulator core is started.
             
