@@ -264,7 +264,7 @@ extension GameViewController
         
         self.sustainButtonsBackgroundView = RSTPlaceholderView(frame: CGRect(x: 0, y: 0, width: vibrancyView.contentView.bounds.width, height: vibrancyView.contentView.bounds.height))
         self.sustainButtonsBackgroundView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        self.sustainButtonsBackgroundView.textLabel.text = NSLocalizedString("Select Buttons to Sustain", comment: "")
+        self.sustainButtonsBackgroundView.textLabel.text = NSLocalizedString("Select Buttons to Hold Down", comment: "")
         self.sustainButtonsBackgroundView.textLabel.numberOfLines = 1
         self.sustainButtonsBackgroundView.textLabel.minimumScaleFactor = 0.5
         self.sustainButtonsBackgroundView.textLabel.adjustsFontSizeToFitWidth = true
