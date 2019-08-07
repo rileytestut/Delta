@@ -189,22 +189,28 @@ extension SyncingServicesViewController
         case .authenticate:            
             if SyncManager.shared.coordinator?.account != nil
             {
-                SyncManager.shared.deauthenticate { (result) in
-                    DispatchQueue.main.async {
-                        do
-                        {
-                            try result.get()
-                            self.tableView.reloadData()
-                            
-                            Settings.syncingService = nil
-                        }
-                        catch
-                        {
-                            let alertController = UIAlertController(title: NSLocalizedString("Failed to Sign Out", comment: ""), error: error)
-                            self.present(alertController, animated: true, completion: nil)
+                let alertController = UIAlertController(title: NSLocalizedString("Are you sure you want to sign out?", comment: ""), message: NSLocalizedString("Signing in again later may result in conflicts that must be resolved manually.", comment: ""), preferredStyle: .actionSheet)
+                alertController.addAction(.cancel)
+                alertController.addAction(UIAlertAction(title: NSLocalizedString("Sign Out", comment: ""), style: .destructive) { (action) in
+                    SyncManager.shared.deauthenticate { (result) in
+                        DispatchQueue.main.async {
+                            do
+                            {
+                                try result.get()
+                                self.tableView.reloadData()
+                                
+                                Settings.syncingService = nil
+                            }
+                            catch
+                            {
+                                let alertController = UIAlertController(title: NSLocalizedString("Failed to Sign Out", comment: ""), error: error)
+                                self.present(alertController, animated: true, completion: nil)
+                            }
                         }
                     }
-                }
+                })
+                
+                self.present(alertController, animated: true, completion: nil)
             }
             else
             {
@@ -230,6 +236,8 @@ extension SyncingServicesViewController
                 }
             }
         }
+        
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
