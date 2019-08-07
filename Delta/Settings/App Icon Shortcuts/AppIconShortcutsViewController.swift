@@ -54,7 +54,7 @@ private extension AppIconShortcutsViewController
     {
         // Mode
         self.modeDataSource.numberOfSectionsHandler = { 1 }
-        self.modeDataSource.numberOfItemsHandler = { _ in 1 }
+        self.modeDataSource.numberOfItemsHandler = { [weak self] _ in (self?.gamesDataSource.itemCount ?? 0) > 0 ? 1 : 0 }
         self.modeDataSource.cellIdentifierHandler = { _ in "SwitchCell" }
         
         // Shortcuts
@@ -111,6 +111,11 @@ private extension AppIconShortcutsViewController
             cell.artworkImageView.superview?.layoutIfNeeded()
         }
         self.dataSource.rowAnimation = .fade
+        
+        let placeholderView = RSTPlaceholderView()
+        placeholderView.textLabel.text = NSLocalizedString("No App Icon Shortcuts", comment: "")
+        placeholderView.detailTextLabel.text = NSLocalizedString("You can customize the shortcuts that appear when 3D Touching the app icon once you've added some games.", comment: "")
+        self.dataSource.placeholderView = placeholderView
     }
     
     func configureModeCell(_ cell: SwitchTableViewCell, for indexPath: IndexPath)
@@ -237,6 +242,8 @@ extension AppIconShortcutsViewController
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String?
     {
+        guard self.dataSource.itemCount > 0 else { return nil }
+        
         switch section
         {
         case 0: return nil
@@ -251,6 +258,8 @@ extension AppIconShortcutsViewController
     
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String?
     {
+        guard self.dataSource.itemCount > 0 else { return nil }
+        
         switch (section, Settings.gameShortcutsMode)
         {
         case (0, .recent): return NSLocalizedString("Your most recently played games will appear as shortcuts when 3D touching the app icon.", comment: "")
