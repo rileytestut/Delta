@@ -42,6 +42,7 @@ class AppIconShortcutsViewController: UITableViewController
         self.navigationItem.hidesSearchBarWhenScrolling = false
         
         self.tableView.dataSource = self.dataSource
+        self.tableView.prefetchDataSource = self.dataSource
         self.tableView.allowsSelectionDuringEditing = true
         
         self.updateShortcuts()
