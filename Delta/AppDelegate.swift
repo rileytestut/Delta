@@ -14,6 +14,18 @@ import Harmony_Dropbox
 import Fabric
 import Crashlytics
 
+private extension CFNotificationName
+{
+    static let altstoreRequestAppState: CFNotificationName = CFNotificationName("com.altstore.RequestAppState.com.rileytestut.Delta" as CFString)
+    static let altstoreAppIsRunning: CFNotificationName = CFNotificationName("com.altstore.AppState.Running.com.rileytestut.Delta" as CFString)
+}
+
+private let ReceivedApplicationState: @convention(c) (CFNotificationCenter?, UnsafeMutableRawPointer?, CFNotificationName?, UnsafeRawPointer?, CFDictionary?) -> Void =
+{ (center, observer, name, object, userInfo) in
+    guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+    appDelegate.receivedApplicationStateRequest()
+}
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate
 {
@@ -52,8 +64,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         ExternalGameControllerManager.shared.startMonitoring()
         
         // Notifications
+        let center = CFNotificationCenterGetDarwinNotifyCenter()
+        CFNotificationCenterAddObserver(center, nil, ReceivedApplicationState, CFNotificationName.altstoreRequestAppState.rawValue, nil, .deliverImmediately)
+        
         NotificationCenter.default.addObserver(self, selector: #selector(AppDelegate.databaseManagerDidStart(_:)), name: DatabaseManager.didStartNotification, object: DatabaseManager.shared)
         
+
         // Deep Links
         if let shortcut = launchOptions?[.shortcutItem] as? UIApplicationShortcutItem
         {
@@ -191,6 +207,12 @@ private extension AppDelegate
         DispatchQueue.main.async {
             self.deepLinkController.handle(deepLink)
         }
+    }
+    
+    func receivedApplicationStateRequest()
+    {
+        let center = CFNotificationCenterGetDarwinNotifyCenter()
+        CFNotificationCenterPostNotification(center!, CFNotificationName(CFNotificationName.altstoreAppIsRunning.rawValue), nil, nil, true)
     }
 }
 
