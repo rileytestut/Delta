@@ -647,7 +647,7 @@ extension QueryType {
             whereClause
         ]
 
-        return Insert(" ".join(clauses.flatMap { $0 }).expression)
+        return Insert(" ".join(clauses.compactMap { $0 }).expression)
     }
 
     /// Runs an `INSERT` statement against the query with `DEFAULT VALUES`.
@@ -690,7 +690,7 @@ extension QueryType {
             limitOffsetClause
         ]
 
-        return Update(" ".join(clauses.flatMap { $0 }).expression)
+        return Update(" ".join(clauses.compactMap { $0 }).expression)
     }
 
     // MARK: DELETE
@@ -704,7 +704,7 @@ extension QueryType {
             limitOffsetClause
         ]
 
-        return Delete(" ".join(clauses.flatMap { $0 }).expression)
+        return Delete(" ".join(clauses.compactMap { $0 }).expression)
     }
 
     // MARK: EXISTS
@@ -789,7 +789,7 @@ extension QueryType {
             limitOffsetClause
         ]
 
-        return " ".join(clauses.flatMap { $0 }).expression
+        return " ".join(clauses.compactMap { $0 }).expression
     }
 
 }
@@ -938,7 +938,7 @@ extension Connection {
     private func columnNamesForQuery(_ query: QueryType) throws -> [String: Int] {
         var (columnNames, idx) = ([String: Int](), 0)
         column: for each in query.clauses.select.columns {
-            var names = each.expression.template.characters.split { $0 == "." }.map(String.init)
+            var names = each.expression.template.split { $0 == "." }.map(String.init)
             let column = names.removeLast()
             let namespace = names.joined(separator: ".")
             

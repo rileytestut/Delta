@@ -56,7 +56,7 @@ let SQLITE_TRANSIENT = unsafeBitCast(-1, to: sqlite3_destructor_type.self)
 extension String {
 
     func quote(_ mark: Character = "\"") -> String {
-        let escaped = characters.reduce("") { string, character in
+        let escaped = reduce("") { string, character in
             string + (character == mark ? "\(mark)\(mark)" : "\(character)")
         }
         return "\(mark)\(escaped)\(mark)"
@@ -96,18 +96,6 @@ extension String {
         return wrap(", ".join(expressions))
     }
 
-}
-
-func infix<T>(_ lhs: Expressible, _ rhs: Expressible, wrap: Bool = true, function: String = #function) -> Expression<T> {
-    return function.infix(lhs, rhs, wrap: wrap)
-}
-
-func wrap<T>(_ expression: Expressible, function: String = #function) -> Expression<T> {
-    return function.wrap(expression)
-}
-
-func wrap<T>(_ expressions: [Expressible], function: String = #function) -> Expression<T> {
-    return function.wrap(", ".join(expressions))
 }
 
 func transcode(_ literal: Binding?) -> String {
