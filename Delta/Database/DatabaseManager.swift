@@ -201,6 +201,13 @@ extension DatabaseManager
                     continue
                 }
                 
+                #if !BETA
+                guard system != .ds else {
+                    errors.insert(.unsupported(url))
+                    continue
+                }
+                #endif
+                
                 let identifier: String
                 
                 do

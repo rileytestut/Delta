@@ -38,7 +38,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate
     {
         Settings.registerDefaults()
         
+        #if BETA
         System.allCases.forEach { Delta.register($0.deltaCore) }
+        #else
+        System.allCases.filter { $0 != .ds }.forEach { Delta.register($0.deltaCore) }
+        #endif
         
         #if DEBUG
         

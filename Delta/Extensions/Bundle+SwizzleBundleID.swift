@@ -13,7 +13,11 @@ extension Bundle
 {
     @objc private var swizzled_infoDictionary: [String : Any]? {
         var infoDictionary = self.swizzled_infoDictionary
+        #if BETA
+        infoDictionary?[kCFBundleIdentifierKey as String] = "com.rileytestut.Delta.AltStore.Beta"
+        #else
         infoDictionary?[kCFBundleIdentifierKey as String] = "com.rileytestut.Delta.AltStore"
+        #endif
         return infoDictionary
     }
 

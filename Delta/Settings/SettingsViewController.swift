@@ -232,7 +232,13 @@ extension SettingsViewController
         switch section
         {
         case .controllers: return 1 // Temporarily hide other controller indexes until controller logic is finalized
-        case .controllerSkins: return System.allCases.count
+        case .controllerSkins:
+            #if BETA
+            return System.allCases.count
+            #else
+            return System.allCases.filter { $0 != .ds}.count
+            #endif
+            
         case .syncing: return SyncManager.shared.coordinator?.account == nil ? 1 : super.tableView(tableView, numberOfRowsInSection: sectionIndex)
         default:
             if isSectionHidden(section)

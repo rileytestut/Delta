@@ -323,7 +323,13 @@ extension GamesViewController: ImportControllerDelegate
 {
     @IBAction private func importFiles()
     {
-        var documentTypes = Set(System.allCases.map { $0.gameType.rawValue })
+        #if BETA
+        let systems = System.allCases
+        #else
+        let systems = System.allCases.filter { $0 != .ds }
+        #endif
+        
+        var documentTypes = Set(systems.map { $0.gameType.rawValue })
         documentTypes.insert(kUTTypeZipArchive as String)
         
         // Add GBA4iOS's exported UTIs in case user has GBA4iOS installed (which may override Delta's UTI declarations)
