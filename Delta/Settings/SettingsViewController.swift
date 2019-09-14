@@ -66,11 +66,19 @@ class SettingsViewController: UITableViewController
         
         if let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
         {
+            #if LITE
+            self.versionLabel.text = NSLocalizedString(String(format: "Delta Lite %@", version), comment: "Delta Version")
+            #else
             self.versionLabel.text = NSLocalizedString(String(format: "Delta %@", version), comment: "Delta Version")
+            #endif
         }
         else
         {
+            #if LITE
+            self.versionLabel.text = NSLocalizedString("Delta Lite", comment: "")
+            #else
             self.versionLabel.text = NSLocalizedString("Delta", comment: "")
+            #endif
         }
     }
     
@@ -118,7 +126,7 @@ class SettingsViewController: UITableViewController
         case Segue.controllerSkins:
             let systemControllerSkinsViewController = segue.destination as! SystemControllerSkinsViewController
             
-            let system = System.allCases[indexPath.row]
+            let system = System.registeredSystems[indexPath.row]
             systemControllerSkinsViewController.system = system
         }
     }
@@ -232,13 +240,7 @@ extension SettingsViewController
         switch section
         {
         case .controllers: return 1 // Temporarily hide other controller indexes until controller logic is finalized
-        case .controllerSkins:
-            #if BETA
-            return System.allCases.count
-            #else
-            return System.allCases.filter { $0 != .ds}.count
-            #endif
-            
+        case .controllerSkins: return System.registeredSystems.count
         case .syncing: return SyncManager.shared.coordinator?.account == nil ? 1 : super.tableView(tableView, numberOfRowsInSection: sectionIndex)
         default:
             if isSectionHidden(section)
@@ -274,7 +276,9 @@ extension SettingsViewController
                 cell.detailTextLabel?.text = nil
             }
             
-        case .controllerSkins: cell.textLabel?.text = System.allCases[indexPath.row].localizedName
+        case .controllerSkins:
+            cell.textLabel?.text = System.registeredSystems[indexPath.row].localizedName
+            
         case .syncing:
             switch SyncingRow.allCases[indexPath.row]
             {

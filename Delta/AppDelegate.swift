@@ -38,11 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
     {
         Settings.registerDefaults()
         
-        #if BETA
-        System.allCases.forEach { Delta.register($0.deltaCore) }
-        #else
-        System.allCases.filter { $0 != .ds }.forEach { Delta.register($0.deltaCore) }
-        #endif
+        self.registerCores()
         
         #if DEBUG
         
@@ -114,8 +110,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate
     }
 }
 
-extension AppDelegate
+private extension AppDelegate
 {
+    func registerCores()
+    {
+        #if LITE
+        
+        #if BETA
+        Delta.register(System.nes.deltaCore)
+        Delta.register(System.gbc.deltaCore)
+        #else
+        Delta.register(System.nes.deltaCore)
+        #endif
+        
+        #else
+        
+        #if BETA
+        System.allCases.forEach { Delta.register($0.deltaCore) }
+        #else
+        System.allCases.filter { $0 != .ds }.forEach { Delta.register($0.deltaCore) }
+        #endif
+        
+        #endif
+    }
+    
     func configureAppearance()
     {
         self.window?.tintColor = UIColor.deltaPurple

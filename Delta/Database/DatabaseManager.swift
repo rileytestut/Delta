@@ -201,12 +201,10 @@ extension DatabaseManager
                     continue
                 }
                 
-                #if !BETA
-                guard system != .ds else {
+                guard System.registeredSystems.contains(system) else {
                     errors.insert(.unsupported(url))
                     continue
                 }
-                #endif
                 
                 let identifier: String
                 

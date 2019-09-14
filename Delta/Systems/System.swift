@@ -23,6 +23,11 @@ enum System: CaseIterable
     case gbc
     case gba
     case ds
+    
+    static var registeredSystems: [System] {
+        let systems = System.allCases.filter { Delta.registeredCores.keys.contains($0.gameType) }
+        return systems
+    }
 }
 
 extension System
