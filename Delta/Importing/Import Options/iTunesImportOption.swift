@@ -44,6 +44,11 @@ struct iTunesImportOption: ImportOption
                     
                     do
                     {
+                        if FileManager.default.fileExists(atPath: destinationURL.path)
+                        {
+                            try FileManager.default.removeItem(at: destinationURL)
+                        }
+                        
                         try FileManager.default.moveItem(at: url, to: destinationURL)
                         importedURLs.insert(destinationURL)
                     }
