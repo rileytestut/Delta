@@ -138,14 +138,30 @@ private extension SyncResultViewController
                     switch error
                     {
                     case .filesFailed(_, let errors):
-                        var messages = [String]()
                         
-                        for error in errors
+                        let isRestricted = errors.contains(where: { (error) -> Bool in
+                            switch error
+                            {
+                            case .restricted: return true
+                            default: return false
+                            }
+                        })
+                        
+                        if isRestricted
                         {
-                            messages.append(error.localizedDescription)
+                            errorMessage = NSLocalizedString("Dropbox has flagged this game as copyrighted material, so it cannot be downloaded. Please re-import this game to continue syncing.", comment: "")
                         }
-                        
-                        errorMessage = messages.joined(separator: "\n")
+                        else
+                        {
+                            var messages = [String]()
+                            
+                            for error in errors
+                            {
+                                messages.append(error.localizedDescription)
+                            }
+                            
+                            errorMessage = messages.joined(separator: "\n")
+                        }
                         
                     case .other(_, let error as NSError): errorMessage = error.localizedFailureReason ?? error.localizedDescription
                     default: errorMessage = error.failureReason
@@ -213,6 +229,8 @@ private extension SyncResultViewController
             case let error as RecordError:
                 guard let recordType = SyncManager.RecordType(rawValue: error.record.recordID.type) else { continue }
                 
+                let metadata = error.record.localMetadata ?? error.record.remoteMetadata
+                
                 switch recordType
                 {
                 case .game: group = .game(error.record.recordID)
@@ -221,19 +239,19 @@ private extension SyncResultViewController
                 case .gameControllerInputMapping: group = .gameControllerInputMapping
                     
                 case .gameSave:
-                    guard let gameID = error.record.metadata?[.gameID] else { continue }
+                    guard let gameID = metadata?[.gameID] else { continue }
                     
                     let recordID = RecordID(type: SyncManager.RecordType.game.rawValue, identifier: gameID)
                     group = .game(recordID)
                     
                 case .saveState:
-                    guard let gameID = error.record.metadata?[.gameID] else { continue }
+                    guard let gameID = metadata?[.gameID] else { continue }
                     
                     let recordID = RecordID(type: SyncManager.RecordType.game.rawValue, identifier: gameID)
                     group = .saveState(gameID: recordID)
                     
                 case .cheat:
-                    guard let gameID = error.record.metadata?[.gameID] else { continue }
+                    guard let gameID = metadata?[.gameID] else { continue }
                     
                     let recordID = RecordID(type: SyncManager.RecordType.game.rawValue, identifier: gameID)
                     group = .cheat(gameID: recordID)
@@ -338,7 +356,7 @@ extension SyncResultViewController
         case .saveState(let gameID):
             guard let error = section.errors.first as? RecordError else { return nil }
             
-            if let gameName = self.gameNamesByRecordID[gameID] ?? error.record.metadata?[.gameName]
+            if let gameName = self.gameNamesByRecordID[gameID] ?? error.record.localMetadata?[.gameName] ?? error.record.remoteMetadata?[.gameName]
             {
                 return gameName + " - " + NSLocalizedString("Save States", comment: "")
             }
@@ -350,7 +368,7 @@ extension SyncResultViewController
         case .cheat(let gameID):
             guard let error = section.errors.first as? RecordError else { return nil }
             
-            if let gameName = self.gameNamesByRecordID[gameID] ?? error.record.metadata?[.gameName]
+            if let gameName = self.gameNamesByRecordID[gameID] ?? error.record.localMetadata?[.gameName] ?? error.record.remoteMetadata?[.gameName]
             {
                 return gameName + " - " + NSLocalizedString("Cheats", comment: "")
             }
