@@ -98,18 +98,20 @@ class ImportController: NSObject
     
     private func finish(with urls: Set<URL>?, errors: [Error])
     {
-        if let urls = urls
-        {
-            self.delegate?.importController(self, didImportItemsAt: urls, errors: errors)
+        DispatchQueue.main.async {
+            if let urls = urls
+            {
+                self.delegate?.importController(self, didImportItemsAt: urls, errors: errors)
+            }
+            else
+            {
+                self.delegate?.importControllerDidCancel(self)
+            }
+            
+            self.presentedViewController?.dismiss(animated: true)
+            
+            self.presentingViewController?.importController = nil
         }
-        else
-        {
-            self.delegate?.importControllerDidCancel(self)
-        }
-        
-        self.presentedViewController?.dismiss(animated: true)
-        
-        self.presentingViewController?.importController = nil
     }
     
     private func presentDocumentBrowser()
