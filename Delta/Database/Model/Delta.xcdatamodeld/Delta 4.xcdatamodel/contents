@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14460.32" systemVersion="18C54" minimumToolsVersion="Xcode 7.0" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="1.0">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14492.1" systemVersion="18G95" minimumToolsVersion="Xcode 7.0" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="1.0">
     <entity name="Cheat" representedClassName="Cheat" syncable="YES">
         <attribute name="code" attributeType="String" syncable="YES"/>
         <attribute name="creationDate" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
@@ -7,7 +7,7 @@
         <attribute name="isEnabled" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="modifiedDate" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
-        <attribute name="type" attributeType="Transformable" syncable="YES">
+        <attribute name="type" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" syncable="YES">
             <userInfo>
                 <entry key="attributeValueClassName" value="CheatType"/>
             </userInfo>
@@ -21,7 +21,7 @@
     </entity>
     <entity name="ControllerSkin" representedClassName="ControllerSkin" syncable="YES">
         <attribute name="filename" attributeType="String" syncable="YES"/>
-        <attribute name="gameType" attributeType="Transformable" syncable="YES">
+        <attribute name="gameType" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" syncable="YES">
             <userInfo>
                 <entry key="attributeValueClassName" value="GameType"/>
             </userInfo>
@@ -42,7 +42,7 @@
         </uniquenessConstraints>
     </entity>
     <entity name="Game" representedClassName="Game" syncable="YES">
-        <attribute name="artworkURL" optional="YES" attributeType="Transformable" syncable="YES">
+        <attribute name="artworkURL" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" syncable="YES">
             <userInfo>
                 <entry key="attributeValueClassName" value="URL"/>
             </userInfo>
@@ -55,7 +55,7 @@
         <attribute name="identifier" attributeType="String" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
         <attribute name="playedDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="type" attributeType="Transformable" syncable="YES">
+        <attribute name="type" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" syncable="YES">
             <userInfo>
                 <entry key="attributeValueClassName" value="GameType"/>
             </userInfo>
@@ -87,12 +87,12 @@
                 <entry key="attributeValueClassName" value="Any"/>
             </userInfo>
         </attribute>
-        <attribute name="gameControllerInputType" attributeType="Transformable" valueTransformerName="" syncable="YES">
+        <attribute name="gameControllerInputType" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" syncable="YES">
             <userInfo>
                 <entry key="attributeValueClassName" value="GameControllerInputType"/>
             </userInfo>
         </attribute>
-        <attribute name="gameType" attributeType="Transformable" syncable="YES">
+        <attribute name="gameType" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" syncable="YES">
             <userInfo>
                 <entry key="attributeValueClassName" value="GameType"/>
             </userInfo>
@@ -146,7 +146,7 @@
     <elements>
         <element name="Cheat" positionX="-198" positionY="-63" width="128" height="165"/>
         <element name="ControllerSkin" positionX="-387" positionY="90" width="128" height="135"/>
-        <element name="Game" positionX="-378" positionY="-54" width="128" height="30"/>
+        <element name="Game" positionX="-378" positionY="-54" width="128" height="210"/>
         <element name="GameCollection" positionX="-585" positionY="-27" width="128" height="90"/>
         <element name="GameControllerInputMapping" positionX="-387" positionY="90" width="128" height="120"/>
         <element name="GameSave" positionX="-387" positionY="90" width="128" height="90"/>
