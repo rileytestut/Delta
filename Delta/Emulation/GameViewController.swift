@@ -352,11 +352,18 @@ extension GameViewController
                 self.pausingGameController = gameController
             }
             
-            if self.game?.type == .ds
+            switch self.game?.type
             {
+            case .n64? where !UIDevice.current.hasA9ProcessorOrBetter:
+                // A8 processors and earlier aren't powerful enough to run N64 games faster than 1x speed.
+                pauseViewController.fastForwardItem = nil
+            
+            case .ds?:
                 // Cheats and Fast Forwarding are not yet supported for DS games.
                 pauseViewController.cheatCodesItem = nil
                 pauseViewController.fastForwardItem = nil
+                
+            default: break
             }
             
             self.pauseViewController = pauseViewController
