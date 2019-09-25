@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SafariServices
 
 import DeltaCore
 
@@ -21,6 +22,8 @@ private extension SettingsViewController
         case controllerOpacity
         case syncing
         case threeDTouch
+        case patreon
+        case credits
     }
     
     enum Segue: String
@@ -33,6 +36,14 @@ private extension SettingsViewController
     {
         case service
         case status
+    }
+    
+    enum CreditsRow: Int, CaseIterable
+    {
+        case riley
+        case caroline
+        case grant
+        case softwareLicenses
     }
 }
 
@@ -197,6 +208,28 @@ private extension SettingsViewController
         sender.value = Float(Settings.translucentControllerSkinOpacity)
         self.selectionFeedbackGenerator = nil
     }
+    
+    func openTwitter(username: String)
+    {
+        let twitterAppURL = URL(string: "twitter://user?screen_name=" + username)!
+        UIApplication.shared.open(twitterAppURL, options: [:]) { (success) in
+            if success
+            {
+                if let selectedIndexPath = self.tableView.indexPathForSelectedRow
+                {
+                    self.tableView.deselectRow(at: selectedIndexPath, animated: true)
+                }
+            }
+            else
+            {
+                let safariURL = URL(string: "https://twitter.com/" + username)!
+                
+                let safariViewController = SFSafariViewController(url: safariURL)
+                safariViewController.preferredControlTintColor = .deltaPurple
+                self.present(safariViewController, animated: true, completion: nil)
+            }
+        }
+    }
 }
 
 private extension SettingsViewController
@@ -290,7 +323,7 @@ extension SettingsViewController
             case .service: break
             }
             
-        case .controllerOpacity, .threeDTouch: break
+        case .controllerOpacity, .threeDTouch, .patreon, .credits: break
         }
 
         return cell
@@ -306,6 +339,28 @@ extension SettingsViewController
         case .controllers: self.performSegue(withIdentifier: Segue.controllers.rawValue, sender: cell)
         case .controllerSkins: self.performSegue(withIdentifier: Segue.controllerSkins.rawValue, sender: cell)
         case .controllerOpacity, .threeDTouch, .syncing: break
+        case .patreon:
+            let patreonURL = URL(string: "altstore://patreon")!
+            
+            UIApplication.shared.open(patreonURL, options: [:]) { (success) in
+                guard !success else { return }
+                
+                let alertController = UIAlertController(title: NSLocalizedString("AltStore Not Installed", comment: ""), message: NSLocalizedString("You must have AltStore installed to receive Patreon benefits.", comment: ""), preferredStyle: .alert)
+                alertController.addAction(.ok)
+                self.present(alertController, animated: true, completion: nil)
+            }
+            
+            tableView.deselectRow(at: indexPath, animated: true)
+            
+        case .credits:
+            let row = CreditsRow(rawValue: indexPath.row)!
+            switch row
+            {
+            case .riley: self.openTwitter(username: "rileytestut")
+            case .caroline: self.openTwitter(username: "1carolinemoore")
+            case .grant: self.openTwitter(username: "grantgliner")
+            case .softwareLicenses: break
+            }
         }
     }
     
