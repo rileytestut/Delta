@@ -70,6 +70,13 @@ class GamesDatabaseBrowserViewController: UITableViewController
         
         self.updatePlaceholderView()
     }
+    
+    override func viewDidAppear(_ animated: Bool)
+    {
+        super.viewDidAppear(animated)
+        
+        self.dataSource.searchController.isActive = true
+    }
 
     override func didReceiveMemoryWarning()
     {
@@ -197,6 +204,13 @@ extension GamesDatabaseBrowserViewController
 
 extension GamesDatabaseBrowserViewController: UISearchControllerDelegate
 {
+    func didPresentSearchController(_ searchController: UISearchController)
+    {
+        DispatchQueue.main.async {
+            searchController.searchBar.becomeFirstResponder()
+        }
+    }
+    
     func willDismissSearchController(_ searchController: UISearchController)
     {
         // Manually set items to empty array to prevent crash if user dismissses searchController while scrolling
