@@ -151,6 +151,7 @@ extension GamesViewController
     
     @IBAction private func unwindFromSettingsViewController(_ segue: UIStoryboardSegue)
     {
+        self.sync()
     }
 }
 
