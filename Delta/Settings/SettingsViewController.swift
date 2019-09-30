@@ -173,6 +173,10 @@ private extension SettingsViewController
     
     func isSectionHidden(_ section: Section) -> Bool
     {
+        if #available(iOS 13.0, *) {
+            return false
+        }
+        
         switch section
         {
         case .threeDTouch: return self.view.traitCollection.forceTouchCapability != .available

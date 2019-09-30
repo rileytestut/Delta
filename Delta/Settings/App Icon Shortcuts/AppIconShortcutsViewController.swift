@@ -130,9 +130,14 @@ private extension AppIconShortcutsViewController
     
     func configureGameCell(_ cell: GameTableViewCell, with game: Game, for indexPath: IndexPath)
     {
-        cell.nameLabel.textColor = .darkText
-        cell.backgroundColor = .white
-        
+        if #available(iOS 13.0, *) {
+            cell.nameLabel.textColor = .label
+            cell.backgroundColor = .secondarySystemGroupedBackground
+        } else {
+            cell.nameLabel.textColor = .darkText
+            cell.backgroundColor = .white
+        }
+
         cell.nameLabel.text = game.name
         cell.artworkImageView.image = #imageLiteral(resourceName: "BoxArt")
         
@@ -236,9 +241,9 @@ extension AppIconShortcutsViewController
 {
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
     {
-        guard indexPath.section == 0 else { return super.tableView(tableView, heightForRowAt: indexPath) }
-        
-        return 44
+        guard indexPath.section == 0 else { return 97 }
+
+        return UITableView.automaticDimension
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String?

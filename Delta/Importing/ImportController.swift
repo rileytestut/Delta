@@ -82,6 +82,10 @@ class ImportController: NSObject
             }
             alertController.addAction(filesAction)
             
+            if let popoverController = alertController.popoverPresentationController {
+                popoverController.barButtonItem = presentingViewController.navigationItem.rightBarButtonItem
+            }
+            
             self.presentedViewController = alertController
             self.presentingViewController?.present(alertController, animated: true, completion: nil)
         }

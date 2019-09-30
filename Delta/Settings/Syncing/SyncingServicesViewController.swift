@@ -127,6 +127,7 @@ extension SyncingServicesViewController
         switch Section.allCases[indexPath.section]
         {
         case .syncing:
+            cell.textLabel?.font = UIFont.preferredFont(forTextStyle: .body)
             cell.textLabel?.text = NSLocalizedString("Syncing", comment: "")
             
         case .service:

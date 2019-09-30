@@ -200,26 +200,28 @@ private extension RecordVersionsViewController
                 self.versions = versions
                 
                 DispatchQueue.main.async {
-                    let count = self.tableView.numberOfRows(inSection: Section.remote.rawValue)
-                    
-                    let deletions = (0 ..< count).map { (row) -> RSTCellContentChange in
-                        let change = RSTCellContentChange(type: .delete,
-                                                          currentIndexPath: IndexPath(row: row, section: 0),
-                                                          destinationIndexPath: nil)
-                        change.rowAnimation = .fade
-                        return change
-                    }
-                    
-                    let inserts = (0 ..< versions.count).map { (row) -> RSTCellContentChange in
-                        let change = RSTCellContentChange(type: .insert,
-                                                          currentIndexPath: nil,
-                                                          destinationIndexPath: IndexPath(row: row, section: 0))
-                        change.rowAnimation = .fade
-                        return change
-                    }
-                    
-                    let changes = deletions + inserts
-                    self.remoteVersionsDataSource.setItems(versions, with: changes)
+                    UIView.transition(with: self.tableView, duration: 0.3, options: [.transitionCrossDissolve, .allowUserInteraction], animations: {
+                        UIView.performWithoutAnimation {
+                            let count = self.tableView.numberOfRows(inSection: Section.remote.rawValue)
+                        
+                            let deletions = (0 ..< count).map { (row) -> RSTCellContentChange in
+                                let change = RSTCellContentChange(type: .delete,
+                                                                  currentIndexPath: IndexPath(row: row, section: 0),
+                                                                  destinationIndexPath: nil)
+                                return change
+                            }
+                            
+                            let inserts = (0 ..< versions.count).map { (row) -> RSTCellContentChange in
+                                let change = RSTCellContentChange(type: .insert,
+                                                                  currentIndexPath: nil,
+                                                                  destinationIndexPath: IndexPath(row: row, section: 0))
+                                return change
+                            }
+
+                            let changes = deletions + inserts
+                            self.remoteVersionsDataSource.setItems(versions, with: changes)
+                        }
+                    }, completion: nil)
                 }
             }
             catch
