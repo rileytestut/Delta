@@ -345,9 +345,11 @@ extension SettingsViewController
             UIApplication.shared.open(patreonURL, options: [:]) { (success) in
                 guard !success else { return }
                 
-                let alertController = UIAlertController(title: NSLocalizedString("AltStore Not Installed", comment: ""), message: NSLocalizedString("You must have AltStore installed to receive Patreon benefits.", comment: ""), preferredStyle: .alert)
-                alertController.addAction(.ok)
-                self.present(alertController, animated: true, completion: nil)
+                let patreonURL = URL(string: "https://www.patreon.com/rileytestut")!
+                
+                let safariViewController = SFSafariViewController(url: patreonURL)
+                safariViewController.preferredControlTintColor = .deltaPurple
+                self.present(safariViewController, animated: true, completion: nil)
             }
             
             tableView.deselectRow(at: indexPath, animated: true)
