@@ -113,9 +113,14 @@ extension ControllersSettingsViewController
             
         default: break
         }
+        
+        if let indexPath = self.tableView.indexPathForSelectedRow
+        {
+            self.tableView.deselectRow(at: indexPath, animated: true)
+        }
     }
     
-    @IBAction private func unwindFromControllerControlsViewController(_ segue: UIStoryboardSegue)
+    @IBAction private func unwindFromControllerInputsViewController(_ segue: UIStoryboardSegue)
     {
     }
 }

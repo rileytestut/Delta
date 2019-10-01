@@ -120,6 +120,22 @@ extension ControllerInputsViewController
 
 private extension ControllerInputsViewController
 {
+    func makeDefaultInputMapping() -> GameControllerInputMapping
+    {
+        let deltaCoreInputMapping = self.gameController.defaultInputMapping as? DeltaCore.GameControllerInputMapping ?? DeltaCore.GameControllerInputMapping(gameControllerInputType: gameController.inputType)
+        
+        let inputMapping = GameControllerInputMapping(inputMapping: deltaCoreInputMapping, context: self.managedObjectContext)
+        inputMapping.gameControllerInputType = gameController.inputType
+        inputMapping.gameType = self.system.gameType
+        
+        if let controller = self.gameController, let playerIndex = controller.playerIndex
+        {
+            inputMapping.playerIndex = Int16(playerIndex)
+        }
+        
+        return inputMapping
+    }
+    
     func updateSystem()
     {
         guard self.isViewLoaded else { return }
@@ -138,19 +154,10 @@ private extension ControllerInputsViewController
         self.gameViewController.view.setNeedsUpdateConstraints()
         
         // Fetch input mapping if it hasn't already been fetched.
-        if let gameController = self.gameController, let playerIndex = gameController.playerIndex, self.inputMappings[self.system] == nil
+        if let gameController = self.gameController, self.inputMappings[self.system] == nil
         {
             self.managedObjectContext.performAndWait {
-                let inputMapping = GameControllerInputMapping.inputMapping(for: gameController, gameType: self.system.gameType, in: self.managedObjectContext) ?? {
-                    let deltaCoreInputMapping = gameController.defaultInputMapping as? DeltaCore.GameControllerInputMapping ?? DeltaCore.GameControllerInputMapping(gameControllerInputType: gameController.inputType)
-                    
-                    let inputMapping = GameControllerInputMapping(inputMapping: deltaCoreInputMapping, context: self.managedObjectContext)
-                    inputMapping.gameControllerInputType = gameController.inputType
-                    inputMapping.gameType = self.system.gameType
-                    inputMapping.playerIndex = Int16(playerIndex)
-                    
-                    return inputMapping
-                }()
+                let inputMapping = GameControllerInputMapping.inputMapping(for: gameController, gameType: self.system.gameType, in: self.managedObjectContext) ?? self.makeDefaultInputMapping()
                 
                 inputMapping.name = String.localizedStringWithFormat("Custom %@", gameController.name)
                 
@@ -371,6 +378,30 @@ private extension ControllerInputsViewController
                 calloutView.presentCallout(from: presentationRect, in: self.view, constrainedTo: self.view, animated: true)
             }
         }
+    }
+    
+    @IBAction func resetInputMapping(_ sender: UIBarButtonItem)
+    {
+        func reset()
+        {
+            self.managedObjectContext.perform {
+                guard let inputMapping = self.inputMappings[self.system] else { return }
+                
+                self.managedObjectContext.delete(inputMapping)
+                self.inputMappings[self.system] = nil
+                
+                DispatchQueue.main.async {
+                    self.updateSystem()
+                }
+            }
+        }
+        
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alertController.addAction(.cancel)
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Reset Controls to Defaults", comment: ""), style: .destructive, handler: { (action) in
+            reset()
+        }))
+        self.present(alertController, animated: true, completion: nil)
     }
 }
 

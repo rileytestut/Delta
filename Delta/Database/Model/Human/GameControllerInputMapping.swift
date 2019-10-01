@@ -50,7 +50,7 @@ extension GameControllerInputMapping
         {
             let inputMappings = try managedObjectContext.fetch(fetchRequest)
             
-            let inputMapping = inputMappings.first
+            let inputMapping = inputMappings.first(where: { !$0.isDeleted })
             return inputMapping
         }
         catch
