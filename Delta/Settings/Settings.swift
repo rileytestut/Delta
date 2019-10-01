@@ -33,6 +33,8 @@ extension Settings
         case translucentControllerSkinOpacity
         case preferredControllerSkin
         case syncingService
+        case isButtonHapticFeedbackEnabled
+        case isThumbstickHapticFeedbackEnabled
     }
 }
 
@@ -49,7 +51,10 @@ struct Settings
 {
     static func registerDefaults()
     {
-        let defaults = [#keyPath(UserDefaults.translucentControllerSkinOpacity): 0.7, #keyPath(UserDefaults.gameShortcutsMode): GameShortcutsMode.recent.rawValue] as [String : Any]
+        let defaults = [#keyPath(UserDefaults.translucentControllerSkinOpacity): 0.7,
+                        #keyPath(UserDefaults.gameShortcutsMode): GameShortcutsMode.recent.rawValue,
+                        #keyPath(UserDefaults.isButtonHapticFeedbackEnabled): true,
+                        #keyPath(UserDefaults.isThumbstickHapticFeedbackEnabled): true] as [String : Any]
         UserDefaults.standard.register(defaults: defaults)
     }
 }
@@ -138,6 +143,28 @@ extension Settings
         set {
             UserDefaults.standard.syncingService = newValue?.rawValue
             NotificationCenter.default.post(name: .settingsDidChange, object: nil, userInfo: [NotificationUserInfoKey.name: Name.syncingService])
+        }
+    }
+    
+    static var isButtonHapticFeedbackEnabled: Bool {
+        get {
+            let isEnabled = UserDefaults.standard.isButtonHapticFeedbackEnabled
+            return isEnabled
+        }
+        set {
+            UserDefaults.standard.isButtonHapticFeedbackEnabled = newValue
+            NotificationCenter.default.post(name: .settingsDidChange, object: nil, userInfo: [NotificationUserInfoKey.name: Name.isButtonHapticFeedbackEnabled])
+        }
+    }
+    
+    static var isThumbstickHapticFeedbackEnabled: Bool {
+        get {
+            let isEnabled = UserDefaults.standard.isThumbstickHapticFeedbackEnabled
+            return isEnabled
+        }
+        set {
+            UserDefaults.standard.isThumbstickHapticFeedbackEnabled = newValue
+            NotificationCenter.default.post(name: .settingsDidChange, object: nil, userInfo: [NotificationUserInfoKey.name: Name.isThumbstickHapticFeedbackEnabled])
         }
     }
     
@@ -240,4 +267,7 @@ private extension UserDefaults
     @NSManaged var gameShortcutIdentifiers: [String]
     
     @NSManaged var syncingService: String?
+    
+    @NSManaged var isButtonHapticFeedbackEnabled: Bool
+    @NSManaged var isThumbstickHapticFeedbackEnabled: Bool
 }
