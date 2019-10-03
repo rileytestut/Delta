@@ -141,12 +141,22 @@ extension GamesViewController
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?)
     {
-        guard let identifier = segue.identifier, identifier == "embedPageViewController" else { return }
+        guard let identifier = segue.identifier else { return }
         
-        self.pageViewController = segue.destination as? UIPageViewController
-        self.pageViewController.dataSource = self
-        self.pageViewController.delegate = self
-        self.pageViewController.view.isHidden = true
+        switch identifier
+        {
+        case "embedPageViewController":
+            self.pageViewController = segue.destination as? UIPageViewController
+            self.pageViewController.dataSource = self
+            self.pageViewController.delegate = self
+            self.pageViewController.view.isHidden = true
+        
+        case "showSettings":
+            let destinationViewController = segue.destination
+            destinationViewController.presentationController?.delegate = self
+            
+        default: break
+        }
     }
     
     @IBAction private func unwindFromSettingsViewController(_ segue: UIStoryboardSegue)
@@ -540,5 +550,13 @@ extension GamesViewController: NSFetchedResultsControllerDelegate
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>)
     {
         self.updateSections(animated: true)
+    }
+}
+
+extension GamesViewController: UIAdaptivePresentationControllerDelegate
+{
+    func presentationControllerWillDismiss(_ presentationController: UIPresentationController)
+    {
+        self.sync()
     }
 }
