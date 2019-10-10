@@ -562,6 +562,8 @@ private extension GameViewController
         
         let controllerSkin = Settings.preferredControllerSkin(for: system, traits: traits)
         self.controllerView.controllerSkin = controllerSkin
+        
+        self.view.setNeedsUpdateConstraints()
     }
 }
 
