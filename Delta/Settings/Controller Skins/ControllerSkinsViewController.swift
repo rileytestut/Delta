@@ -74,14 +74,6 @@ private extension ControllerSkinsViewController
                 completionHandler(image, error)
             }
             
-            // Ensure initially visible cells have loaded their image before they appear to prevent potential flickering from placeholder to thumbnail
-            if self.isAppearing
-            {
-                imageOperation.start()
-                imageOperation.waitUntilFinished()
-                return nil
-            }
-            
             return imageOperation
         }
         

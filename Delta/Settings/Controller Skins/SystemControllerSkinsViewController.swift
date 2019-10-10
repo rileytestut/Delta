@@ -27,6 +27,8 @@ class SystemControllerSkinsViewController: UITableViewController
     @IBOutlet private var landscapeImageView: UIImageView!
     
     private var _previousBoundsSize: CGSize?
+    private var portraitControllerSkin: ControllerSkin?
+    private var landscapeControllerSkin: ControllerSkin?
 }
 
 extension SystemControllerSkinsViewController
@@ -36,6 +38,13 @@ extension SystemControllerSkinsViewController
         super.viewDidLoad()
         
         self.title = self.system.localizedShortName
+    }
+    
+    override func viewDidDisappear(_ animated: Bool)
+    {
+        super.viewDidDisappear(animated)
+        
+        self._previousBoundsSize = nil
     }
 
     override func didReceiveMemoryWarning()
@@ -78,21 +87,23 @@ extension SystemControllerSkinsViewController
 {
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
     {
+        guard let window = self.view.window else { return 44.0 }
+        
         let section = Section(rawValue: indexPath.section)!
         
-        let imageSize: CGSize?
+        let aspectRatio: CGSize?
         
         switch section
         {
-        case .portrait: imageSize = self.portraitImageView.image?.size
-        case .landscape: imageSize = self.landscapeImageView.image?.size
+        case .portrait: aspectRatio = self.portraitControllerSkin?.aspectRatio(for: self.makeTraits(orientation: .portrait, in: window))
+        case .landscape: aspectRatio = self.landscapeControllerSkin?.aspectRatio(for: self.makeTraits(orientation: .landscape, in: window))
         }
         
-        guard let unwrappedImageSize = imageSize else { return super.tableView(tableView, heightForRowAt: indexPath) }
+        guard let unwrappedAspectRatio = aspectRatio else { return super.tableView(tableView, heightForRowAt: indexPath) }
         
-        let scale = (self.view.bounds.width / unwrappedImageSize.width)
+        let scale = (self.view.bounds.width / unwrappedAspectRatio.width)
         
-        let height = min(unwrappedImageSize.height * scale, self.view.bounds.height - self.view.safeAreaInsets.top - self.view.safeAreaInsets.bottom - 30)
+        let height = min(unwrappedAspectRatio.height * scale, self.view.bounds.height - self.view.safeAreaInsets.top - self.view.safeAreaInsets.bottom - 30)
         return height
     }
     
@@ -111,19 +122,67 @@ private extension SystemControllerSkinsViewController
         guard let window = self.view.window else { return }
         
         self._previousBoundsSize = self.view.bounds.size
-        
-        let defaultTraits = DeltaCore.ControllerSkin.Traits.defaults(for: window)
-        
-        var portraitTraits = defaultTraits
-        portraitTraits.orientation = .portrait
-        
-        var landscapeTraits = defaultTraits
-        landscapeTraits.orientation = .landscape
+                
+        let portraitTraits = self.makeTraits(orientation: .portrait, in: window)
+        let landscapeTraits = self.makeTraits(orientation: .landscape, in: window)
         
         let portraitControllerSkin = Settings.preferredControllerSkin(for: self.system, traits: portraitTraits)
-        let landscapeControllerSkin = Settings.preferredControllerSkin(for: self.system, traits: landscapeTraits)
+        if portraitControllerSkin != self.portraitControllerSkin
+        {
+            self.portraitImageView.image = nil
+            self.portraitImageView.isIndicatingActivity = true
+            
+            self.portraitControllerSkin = portraitControllerSkin
+        }
         
-        self.portraitImageView.image = portraitControllerSkin?.image(for: portraitTraits, preferredSize: UIScreen.main.defaultControllerSkinSize)
-        self.landscapeImageView.image = landscapeControllerSkin?.image(for: landscapeTraits, preferredSize: UIScreen.main.defaultControllerSkinSize)
+        let landscapeControllerSkin = Settings.preferredControllerSkin(for: self.system, traits: landscapeTraits)
+        if landscapeControllerSkin != self.landscapeControllerSkin
+        {
+            self.landscapeImageView.image = nil
+            self.landscapeImageView.isIndicatingActivity = true
+            
+            self.landscapeControllerSkin = landscapeControllerSkin
+        }
+        
+        DatabaseManager.shared.performBackgroundTask { (context) in
+            
+            let portraitImage: UIImage?
+            let landscapeImage: UIImage?
+            
+            if let portraitControllerSkin = self.portraitControllerSkin
+            {
+                let skin = context.object(with: portraitControllerSkin.objectID) as! ControllerSkin
+                portraitImage = skin.image(for: portraitTraits, preferredSize: UIScreen.main.defaultControllerSkinSize)
+            }
+            else
+            {
+                portraitImage = nil
+            }
+            
+            if let landscapeControllerSkin = self.landscapeControllerSkin
+            {
+                let skin = context.object(with: landscapeControllerSkin.objectID) as! ControllerSkin
+                landscapeImage = skin.image(for: landscapeTraits, preferredSize: UIScreen.main.defaultControllerSkinSize)
+            }
+            else
+            {
+                landscapeImage = nil
+            }
+            
+            DispatchQueue.main.async {
+                self.portraitImageView.isIndicatingActivity = false
+                self.portraitImageView.image = portraitImage
+                
+                self.landscapeImageView.isIndicatingActivity = false
+                self.landscapeImageView.image = landscapeImage
+            }
+        }
+    }
+    
+    func makeTraits(orientation: DeltaCore.ControllerSkin.Orientation, in window: UIWindow) -> DeltaCore.ControllerSkin.Traits
+    {
+        var traits = DeltaCore.ControllerSkin.Traits.defaults(for: window)
+        traits.orientation = orientation
+        return traits
     }
 }
