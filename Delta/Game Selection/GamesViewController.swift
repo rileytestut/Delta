@@ -342,6 +342,8 @@ extension GamesViewController: ImportControllerDelegate
         documentTypes.insert("com.rileytestut.gbc")
         documentTypes.insert("com.rileytestut.gb")
         
+        documentTypes.insert("com.rileytestut.delta.skin")
+        
         let itunesImportOption = iTunesImportOption(presentingViewController: self)
         
         let importController = ImportController(documentTypes: documentTypes)
