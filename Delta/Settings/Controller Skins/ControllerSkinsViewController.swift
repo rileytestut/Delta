@@ -123,6 +123,31 @@ extension ControllerSkinsViewController
         let controllerSkin = self.dataSource.item(at: IndexPath(row: 0, section: section))
         return controllerSkin.name
     }
+    
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool
+    {
+        let controllerSkin = self.dataSource.item(at: indexPath)
+        return !controllerSkin.isStandard
+    }
+        
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath)
+    {
+        let controllerSkin = self.dataSource.item(at: indexPath)
+        
+        DatabaseManager.shared.performBackgroundTask { (context) in
+            let controllerSkin = context.object(with: controllerSkin.objectID) as! ControllerSkin
+            context.delete(controllerSkin)
+            
+            do
+            {
+                try context.save()
+            }
+            catch
+            {
+                print("Error deleting controller skin:", error)
+            }
+        }
+    }
 }
 
 extension ControllerSkinsViewController
