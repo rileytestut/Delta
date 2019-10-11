@@ -103,8 +103,26 @@ extension GamesViewController
         self.pageControl.centerXAnchor.constraint(equalTo: (self.navigationController?.toolbar.centerXAnchor)!, constant: 0).isActive = true
         self.pageControl.centerYAnchor.constraint(equalTo: (self.navigationController?.toolbar.centerYAnchor)!, constant: 0).isActive = true
         
-        self.navigationController?.navigationBar.barStyle = .blackTranslucent
-        self.navigationController?.toolbar.barStyle = .blackTranslucent
+        if let navigationController = self.navigationController
+        {
+            if #available(iOS 13.0, *)
+            {
+                navigationController.overrideUserInterfaceStyle = .dark
+                
+                let navigationBarAppearance = navigationController.navigationBar.standardAppearance.copy()
+                navigationBarAppearance.backgroundEffect = UIBlurEffect(style: .dark)
+                navigationController.navigationBar.standardAppearance = navigationBarAppearance
+                
+                let toolbarAppearance = navigationController.toolbar.standardAppearance.copy()
+                toolbarAppearance.backgroundEffect = UIBlurEffect(style: .dark)
+                navigationController.toolbar.standardAppearance = toolbarAppearance                
+            }
+            else
+            {
+                navigationController.navigationBar.barStyle = .blackTranslucent
+                navigationController.toolbar.barStyle = .blackTranslucent
+            }            
+        }
         
         self.prepareSearchController()
         
