@@ -93,6 +93,22 @@ extension PauseViewController
             self.pauseNavigationController.view.backgroundColor = UIColor.clear
             
             let gridMenuViewController = self.pauseNavigationController.topViewController as! GridMenuViewController
+            
+            if #available(iOS 13.0, *)
+            {
+                let navigationBarAppearance = self.pauseNavigationController.navigationBar.standardAppearance.copy()
+                navigationBarAppearance.backgroundEffect = UIBlurEffect(style: .dark)
+                navigationBarAppearance.backgroundColor = UIColor.black.withAlphaComponent(0.2)
+                navigationBarAppearance.shadowColor = UIColor.white.withAlphaComponent(0.2)
+                navigationBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.white]
+                self.pauseNavigationController.navigationBar.standardAppearance = navigationBarAppearance
+                
+                let transparentBarAppearance = navigationBarAppearance.copy()
+                transparentBarAppearance.backgroundColor = nil
+                transparentBarAppearance.backgroundEffect = nil
+                gridMenuViewController.navigationItem.standardAppearance = transparentBarAppearance
+            }
+            
             gridMenuViewController.items = self.pauseItems
             
         case "saveStates":
