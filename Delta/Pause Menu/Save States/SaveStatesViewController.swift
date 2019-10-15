@@ -267,12 +267,16 @@ private extension SaveStatesViewController
         }
         
         headerView.textLabel.text = title
-        headerView.textLabel.textColor = UIColor.white
         
         switch self.theme
         {
-        case .opaque: headerView.isTextLabelVibrancyEnabled = false
-        case .translucent: headerView.isTextLabelVibrancyEnabled = true
+        case .opaque:
+            headerView.textLabel.textColor = UIColor.lightGray
+            headerView.isTextLabelVibrancyEnabled = false
+            
+        case .translucent:
+            headerView.textLabel.textColor = UIColor.white
+            headerView.isTextLabelVibrancyEnabled = true
         }
     }
     
