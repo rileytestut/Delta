@@ -120,6 +120,7 @@ class ImportController: NSObject
         
         let documentBrowserViewController = UIDocumentBrowserViewController(forOpeningFilesWithContentTypes: Array(self.documentTypes))
         documentBrowserViewController.delegate = self
+        documentBrowserViewController.modalPresentationStyle = .fullScreen
         documentBrowserViewController.browserUserInterfaceStyle = .dark
         documentBrowserViewController.allowsPickingMultipleItems = true
         documentBrowserViewController.allowsDocumentCreation = false

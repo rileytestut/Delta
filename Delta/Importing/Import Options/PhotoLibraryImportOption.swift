@@ -30,6 +30,7 @@ class PhotoLibraryImportOption: NSObject, ImportOption
         
         let imagePickerController = UIImagePickerController()
         imagePickerController.delegate = self
+        imagePickerController.modalPresentationStyle = .fullScreen
         imagePickerController.sourceType = .photoLibrary
         imagePickerController.mediaTypes = [kUTTypeImage as String]
         imagePickerController.view.backgroundColor = .white

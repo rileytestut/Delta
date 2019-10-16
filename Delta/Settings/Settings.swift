@@ -54,7 +54,8 @@ struct Settings
         let defaults = [#keyPath(UserDefaults.translucentControllerSkinOpacity): 0.7,
                         #keyPath(UserDefaults.gameShortcutsMode): GameShortcutsMode.recent.rawValue,
                         #keyPath(UserDefaults.isButtonHapticFeedbackEnabled): true,
-                        #keyPath(UserDefaults.isThumbstickHapticFeedbackEnabled): true] as [String : Any]
+                        #keyPath(UserDefaults.isThumbstickHapticFeedbackEnabled): true,
+                        #keyPath(UserDefaults.sortSaveStatesByOldestFirst): true] as [String : Any]
         UserDefaults.standard.register(defaults: defaults)
     }
 }
@@ -168,6 +169,14 @@ extension Settings
         }
     }
     
+    static var sortSaveStatesByOldestFirst: Bool {
+        set { UserDefaults.standard.sortSaveStatesByOldestFirst = newValue }
+        get {
+            let sortByOldestFirst = UserDefaults.standard.sortSaveStatesByOldestFirst
+            return sortByOldestFirst
+        }
+    }
+    
     static func preferredControllerSkin(for system: System, traits: DeltaCore.ControllerSkin.Traits) -> ControllerSkin?
     {
         guard let userDefaultsKey = self.preferredControllerSkinKey(for: system, traits: traits) else { return nil }
@@ -270,4 +279,6 @@ private extension UserDefaults
     
     @NSManaged var isButtonHapticFeedbackEnabled: Bool
     @NSManaged var isThumbstickHapticFeedbackEnabled: Bool
+    
+    @NSManaged var sortSaveStatesByOldestFirst: Bool
 }

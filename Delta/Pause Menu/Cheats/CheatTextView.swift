@@ -33,9 +33,6 @@ class CheatTextView: UITextView
         super.init(coder: aDecoder)
         
         self.layoutManager.delegate = self
-        
-        self.textContainer.widthTracksTextView = false
-        self.textContainer.heightTracksTextView = false
     }
 }
 
