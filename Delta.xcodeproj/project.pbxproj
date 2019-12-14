@@ -21,6 +21,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		2FE6782B99E57AACDB66708C /* Pods_DeltaTV.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D45EEC17097490DDE7216B7 /* Pods_DeltaTV.framework */; };
 		4FE8465FD28810191C3E5212 /* Pods_Delta.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 695E8C07A709B16AAD83AEC8 /* Pods_Delta.framework */; };
 		BF02D5DA1DDEBB3000A5E131 /* openvgdb.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = BF02D5D91DDEBB3000A5E131 /* openvgdb.sqlite */; };
 		BF0418141D01E93400E85BCF /* GBADeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF0418131D01E93400E85BCF /* GBADeltaCore.framework */; };
@@ -179,6 +180,114 @@
 		CA942B4323A4DAF4002DFFF2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFA71DC1AAC406100EE9DD1 /* AppDelegate.swift */; };
 		CA942B4623A4DB39002DFFF2 /* DeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA942B4523A4DB39002DFFF2 /* DeltaCore.framework */; };
 		CA942B4723A4DB39002DFFF2 /* DeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CA942B4523A4DB39002DFFF2 /* DeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CACEABD523A4DFC2002F8B6E /* Harmony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CACEABD323A4DFC2002F8B6E /* Harmony.framework */; };
+		CACEABD623A4DFC2002F8B6E /* Harmony.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CACEABD323A4DFC2002F8B6E /* Harmony.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CACEABD723A4DFC2002F8B6E /* Harmony_Dropbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CACEABD423A4DFC2002F8B6E /* Harmony_Dropbox.framework */; };
+		CACEABD823A4DFC2002F8B6E /* Harmony_Dropbox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CACEABD423A4DFC2002F8B6E /* Harmony_Dropbox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CACEABDA23A4DFC8002F8B6E /* Roxas.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CACEABD923A4DFC8002F8B6E /* Roxas.framework */; };
+		CACEABDB23A4DFC8002F8B6E /* Roxas.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CACEABD923A4DFC8002F8B6E /* Roxas.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CACEABE423A4E0F2002F8B6E /* SwiftyDropbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CACEABE323A4E0F2002F8B6E /* SwiftyDropbox.framework */; };
+		CACEABE523A4E0F2002F8B6E /* SwiftyDropbox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CACEABE323A4E0F2002F8B6E /* SwiftyDropbox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CACEABE623A4E2E5002F8B6E /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFC46221D5984A000AF2CC6 /* LaunchViewController.swift */; };
+		CACEABE723A4E2E5002F8B6E /* GamesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF107EC31BF413F000E0C32C /* GamesViewController.swift */; };
+		CACEABE823A4E2E5002F8B6E /* GameCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDD04F01D5E2C27002D450E /* GameCollectionViewController.swift */; };
+		CACEABE923A4E2E5002F8B6E /* InitialGamesStoryboardSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFC461D1D59823500AF2CC6 /* InitialGamesStoryboardSegue.swift */; };
+		CACEABEA23A4E2E5002F8B6E /* GamesStoryboardSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFC461C1D59823500AF2CC6 /* GamesStoryboardSegue.swift */; };
+		CACEABEB23A4E2E5002F8B6E /* GamesPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFC461B1D59823500AF2CC6 /* GamesPresentationController.swift */; };
+		CACEABEC23A4E2E5002F8B6E /* SaveStatesStoryboardSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE4269D1D9C68E600DC913F /* SaveStatesStoryboardSegue.swift */; };
+		CACEABED23A4E2E5002F8B6E /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF63BDE91D389EEB00FCB040 /* GameViewController.swift */; };
+		CACEABEE23A4E2E5002F8B6E /* PreviewGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF13A7551D5D29B0000BB055 /* PreviewGameViewController.swift */; };
+		CACEABEF23A4E2E5002F8B6E /* ActionInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF15AF831F54B43B009B6AAB /* ActionInput.swift */; };
+		CACEABF023A4E2E5002F8B6E /* PauseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF353FF11C5D7FB000C1184C /* PauseViewController.swift */; };
+		CACEABF123A4E2E5002F8B6E /* GridMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7AE8041C2E858400B1B5BC /* GridMenuViewController.swift */; };
+		CACEABF223A4E2E5002F8B6E /* MenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF353FF81C5D870B00C1184C /* MenuItem.swift */; };
+		CACEABF323A4E2E5002F8B6E /* SaveStatesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3540041C5DA70400C1184C /* SaveStatesViewController.swift */; };
+		CACEABF423A4E2E5002F8B6E /* SaveStatesCollectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2B98E51C97E32F00F6D57D /* SaveStatesCollectionHeaderView.swift */; };
+		CACEABF523A4E2E5002F8B6E /* CheatsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC9B7381CEFCD34008629BB /* CheatsViewController.swift */; };
+		CACEABF623A4E2E5002F8B6E /* CheatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFC464B1D5998D600AF2CC6 /* CheatTableViewCell.swift */; };
+		CACEABF723A4E2E5002F8B6E /* EditCheatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF34FA061CF0F510006624C7 /* EditCheatViewController.swift */; };
+		CACEABF823A4E2E5002F8B6E /* CheatTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF34FA101CF1899D006624C7 /* CheatTextView.swift */; };
+		CACEABF923A4E2E5002F8B6E /* CheatValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF31878A1D489AAA00BD020D /* CheatValidator.swift */; };
+		CACEABFA23A4E2E5002F8B6E /* PausePresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF353FFD1C5DA3C500C1184C /* PausePresentationController.swift */; };
+		CACEABFB23A4E2E5002F8B6E /* PauseStoryboardSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3540011C5DA3D500C1184C /* PauseStoryboardSegue.swift */; };
+		CACEABFC23A4E2E5002F8B6E /* PauseTransitionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3540071C5DAFAD00C1184C /* PauseTransitionCoordinator.swift */; };
+		CACEABFD23A4E2E5002F8B6E /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFAA1FEC1B8AA4FA00495943 /* Settings.swift */; };
+		CACEABFE23A4E2E5002F8B6E /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5E7F431B9A650B00AE44F8 /* SettingsViewController.swift */; };
+		CACEABFF23A4E2E5002F8B6E /* LicensesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB3645723245A6000CD0EB1 /* LicensesViewController.swift */; };
+		CACEAC0023A4E2E5002F8B6E /* AppIconShortcutsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF71CF861FE90006001F1613 /* AppIconShortcutsViewController.swift */; };
+		CACEAC0123A4E2E5002F8B6E /* ControllersSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF11734F1DA32CF600047DF8 /* ControllersSettingsViewController.swift */; };
+		CACEAC0223A4E2E5002F8B6E /* ControllerInputsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF616A121F08184A0077F8B2 /* ControllerInputsViewController.swift */; };
+		CACEAC0323A4E2E5002F8B6E /* InputCalloutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8DDD231F4F6C880088A21B /* InputCalloutView.swift */; };
+		CACEAC0423A4E2E5002F8B6E /* SystemControllerSkinsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1DAD5C1D9F576000E752A7 /* SystemControllerSkinsViewController.swift */; };
+		CACEAC0523A4E2E5002F8B6E /* ControllerSkinsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF04E6FE1DB8625C000F35D3 /* ControllerSkinsViewController.swift */; };
+		CACEAC0623A4E2E6002F8B6E /* ControllerSkinTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF99A5961DC2F9C400468E9E /* ControllerSkinTableViewCell.swift */; };
+		CACEAC0723A4E2E6002F8B6E /* SyncingServicesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF48F74D219A16DA00BC2FC1 /* SyncingServicesViewController.swift */; };
+		CACEAC0823A4E2E6002F8B6E /* SyncStatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDB3417219E4B1700595A62 /* SyncStatusViewController.swift */; };
+		CACEAC0923A4E2E6002F8B6E /* GameSyncStatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8A334521A4926F00A42FD4 /* GameSyncStatusViewController.swift */; };
+		CACEAC0A23A4E2E6002F8B6E /* RecordSyncStatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF63A1A221A4AAAE00EE8F61 /* RecordSyncStatusViewController.swift */; };
+		CACEAC0B23A4E2E6002F8B6E /* RecordVersionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF63A1B421A4B76E00EE8F61 /* RecordVersionsViewController.swift */; };
+		CACEAC0C23A4E2E6002F8B6E /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF59426D1E09BC5D0051894B /* DatabaseManager.swift */; };
+		CACEAC0D23A4E2E6002F8B6E /* Cheat.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5942771E09BC830051894B /* Cheat.swift */; };
+		CACEAC0E23A4E2E6002F8B6E /* ControllerSkin.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5942781E09BC830051894B /* ControllerSkin.swift */; };
+		CACEAC0F23A4E2E6002F8B6E /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5942791E09BC830051894B /* Game.swift */; };
+		CACEAC1023A4E2E6002F8B6E /* GameCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF59427A1E09BC830051894B /* GameCollection.swift */; };
+		CACEAC1123A4E2E6002F8B6E /* GameControllerInputMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6EE5EA1F7C5F8F0051AD6C /* GameControllerInputMapping.swift */; };
+		CACEAC1223A4E2E6002F8B6E /* GameSave.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE593C921F3F8B7003412A6 /* GameSave.swift */; };
+		CACEAC1323A4E2E6002F8B6E /* SaveState.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF59427B1E09BC830051894B /* SaveState.swift */; };
+		CACEAC1423A4E2E6002F8B6E /* _Cheat.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5942811E09BC8B0051894B /* _Cheat.swift */; };
+		CACEAC1523A4E2E6002F8B6E /* _ControllerSkin.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5942821E09BC8B0051894B /* _ControllerSkin.swift */; };
+		CACEAC1623A4E2E6002F8B6E /* _Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5942831E09BC8B0051894B /* _Game.swift */; };
+		CACEAC1723A4E2E6002F8B6E /* _GameCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5942841E09BC8B0051894B /* _GameCollection.swift */; };
+		CACEAC1823A4E2E6002F8B6E /* _GameControllerInputMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6EE5E81F7C5F860051AD6C /* _GameControllerInputMapping.swift */; };
+		CACEAC1923A4E2E6002F8B6E /* _GameSave.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE593CB21F3F8C2003412A6 /* _GameSave.swift */; };
+		CACEAC1A23A4E2E6002F8B6E /* _SaveState.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5942851E09BC8B0051894B /* _SaveState.swift */; };
+		CACEAC1B23A4E2E6002F8B6E /* GameControllerInputMappingTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6B82A41F7CC2A300042BFB /* GameControllerInputMappingTransformer.swift */; };
+		CACEAC1C23A4E2E6002F8B6E /* SaveStateMigrationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEF24F21F7DD4FB00454C62 /* SaveStateMigrationPolicy.swift */; };
+		CACEAC1D23A4E2E6002F8B6E /* GameControllerInputMappingMigrationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF56450C220239B800A8EA26 /* GameControllerInputMappingMigrationPolicy.swift */; };
+		CACEAC1E23A4E2E6002F8B6E /* GamesDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF59426E1E09BC5D0051894B /* GamesDatabase.swift */; };
+		CACEAC1F23A4E2E6002F8B6E /* GameMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF95E2761E4977BF0030E7AD /* GameMetadata.swift */; };
+		CACEAC2023A4E2E6002F8B6E /* GamesDatabaseBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF95E2781E4982A10030E7AD /* GamesDatabaseBrowserViewController.swift */; };
+		CACEAC2123A4E2E6002F8B6E /* SyncManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFAB9F7C219A43380080EC7D /* SyncManager.swift */; };
+		CACEAC2223A4E2E6002F8B6E /* SyncResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1F45A321AF274D00EF9895 /* SyncResultViewController.swift */; };
+		CACEAC2323A4E2E6002F8B6E /* ImportController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF59428D1E09BCFB0051894B /* ImportController.swift */; };
+		CACEAC2423A4E2E6002F8B6E /* ImportOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6BF3121EB7E47F008E83CD /* ImportOption.swift */; };
+		CACEAC2523A4E2E6002F8B6E /* iTunesImportOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6BF3171EB82111008E83CD /* iTunesImportOption.swift */; };
+		CACEAC2623A4E2E6002F8B6E /* ClipboardImportOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6BF3191EB82146008E83CD /* ClipboardImportOption.swift */; };
+		CACEAC2723A4E2E6002F8B6E /* PhotoLibraryImportOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6BF3261EB87EB8008E83CD /* PhotoLibraryImportOption.swift */; };
+		CACEAC2823A4E2E6002F8B6E /* GamesDatabaseImportOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6BF31B1EB821A0008E83CD /* GamesDatabaseImportOption.swift */; };
+		CACEAC2923A4E2E6002F8B6E /* System.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF4828851F9028F500028B97 /* System.swift */; };
+		CACEAC2A23A4E2E6002F8B6E /* DeepLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF525EE91FF6CD12004AA849 /* DeepLink.swift */; };
+		CACEAC2B23A4E2E6002F8B6E /* DeepLinkController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF525EE71FF5F370004AA849 /* DeepLinkController.swift */; };
+		CACEAC2C23A4E2E6002F8B6E /* CopyDeepLinkActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC1F2CB22F9515F00606A45 /* CopyDeepLinkActivity.swift */; };
+		CACEAC2D23A4E2E6002F8B6E /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF4828871F90290F00028B97 /* Action.swift */; };
+		CACEAC2E23A4E2E6002F8B6E /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1F45BE21AF676F00EF9895 /* Box.swift */; };
+		CACEAC2F23A4E2E6002F8B6E /* PopoverMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8CA9351F5F651900499FDD /* PopoverMenuController.swift */; };
+		CACEAC3023A4E2E6002F8B6E /* PopoverMenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE0229F1F5B577D0052D888 /* PopoverMenuButton.swift */; };
+		CACEAC3123A4E2E6002F8B6E /* ListMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6424821F5B8F3F00D6AB44 /* ListMenuViewController.swift */; };
+		CACEAC3223A4E2E6002F8B6E /* GridCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5942681E09BBD00051894B /* GridCollectionViewCell.swift */; };
+		CACEAC3323A4E2E6002F8B6E /* GridCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5942691E09BBD00051894B /* GridCollectionViewLayout.swift */; };
+		CACEAC3423A4E2E6002F8B6E /* GameTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFA4C081E8A24D600D87934 /* GameTableViewCell.swift */; };
+		CACEAC3523A4E2E6002F8B6E /* BadgedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8A333321A484A000A42FD4 /* BadgedTableViewCell.swift */; };
+		CACEAC3623A4E2E6002F8B6E /* LoadImageURLOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5942631E09BBB10051894B /* LoadImageURLOperation.swift */; };
+		CACEAC3723A4E2E6002F8B6E /* LoadControllerSkinImageOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5942611E09BBB10051894B /* LoadControllerSkinImageOperation.swift */; };
+		CACEAC3823A4E2E6002F8B6E /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF696B7F1D9B2B02009639E0 /* Theme.swift */; };
+		CACEAC3923A4E2E6002F8B6E /* UILabel+FontSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF797A2C1C2D339F00F1A000 /* UILabel+FontSize.swift */; };
+		CACEAC3A23A4E2E6002F8B6E /* UIColor+Delta.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7AE8091C2E8C7600B1B5BC /* UIColor+Delta.swift */; };
+		CACEAC3B23A4E2E6002F8B6E /* UIViewControllerContextTransitioning+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFCEA67D1D56FF640061A534 /* UIViewControllerContextTransitioning+Conveniences.swift */; };
+		CACEAC3C23A4E2E6002F8B6E /* EmulatorCore+Cheats.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF13A7571D5D2FD9000BB055 /* EmulatorCore+Cheats.swift */; };
+		CACEAC3D23A4E2E6002F8B6E /* ControllerSkin+Configuring.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6866161DCAC8B900BF2D06 /* ControllerSkin+Configuring.swift */; };
+		CACEAC3E23A4E2E6002F8B6E /* NSFetchedResultsController+Conveniences.m in Sources */ = {isa = PBXBuildFile; fileRef = BF5942901E09BD1A0051894B /* NSFetchedResultsController+Conveniences.m */; };
+		CACEAC3F23A4E2E6002F8B6E /* NSManagedObject+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5942911E09BD1A0051894B /* NSManagedObject+Conveniences.swift */; };
+		CACEAC4023A4E2E6002F8B6E /* NSManagedObjectContext+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5942921E09BD1A0051894B /* NSManagedObjectContext+Conveniences.swift */; };
+		CACEAC4123A4E2E6002F8B6E /* DeltaCoreProtocol+Delta.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFBAB2E21EB685A2004E0B0E /* DeltaCoreProtocol+Delta.swift */; };
+		CACEAC4223A4E2E6002F8B6E /* UIAlertController+Importing.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF18B61E1E2985F900F70067 /* UIAlertController+Importing.swift */; };
+		CACEAC4323A4E2E6002F8B6E /* Input+Display.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC6F7B71F435BC500221B96 /* Input+Display.swift */; };
+		CACEAC4423A4E2E6002F8B6E /* UIView+ParentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6424841F5CBDC900D6AB44 /* UIView+ParentViewController.swift */; };
+		CACEAC4523A4E2E6002F8B6E /* UIAlertController+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC3627F21ADE2BA00EF2BE6 /* UIAlertController+Error.swift */; };
+		CACEAC4623A4E2E6002F8B6E /* HarmonyMetadataKey+Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1F45AC21AF57BA00EF9895 /* HarmonyMetadataKey+Keys.swift */; };
+		CACEAC4723A4E2E6002F8B6E /* URL+ExtendedAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFBD3D8224A0756002EFC79 /* URL+ExtendedAttributes.swift */; };
+		CACEAC4823A4E2E6002F8B6E /* Bundle+SwizzleBundleID.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF647A6922FB8FCE0061D76D /* Bundle+SwizzleBundleID.swift */; };
+		CACEAC4923A4E2E6002F8B6E /* UIDevice+Processor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD1EF3F2336BD8800D197CF /* UIDevice+Processor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -214,7 +323,11 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				CACEABDB23A4DFC8002F8B6E /* Roxas.framework in Embed Frameworks */,
 				CA942B4723A4DB39002DFFF2 /* DeltaCore.framework in Embed Frameworks */,
+				CACEABD623A4DFC2002F8B6E /* Harmony.framework in Embed Frameworks */,
+				CACEABE523A4E0F2002F8B6E /* SwiftyDropbox.framework in Embed Frameworks */,
+				CACEABD823A4DFC2002F8B6E /* Harmony_Dropbox.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -223,8 +336,11 @@
 
 /* Begin PBXFileReference section */
 		22506DA00971C4300AF90A35 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5D45EEC17097490DDE7216B7 /* Pods_DeltaTV.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DeltaTV.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		695E8C07A709B16AAD83AEC8 /* Pods_Delta.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Delta.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9DFA04DFC269929CCE72E0D8 /* Pods-DeltaTV.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DeltaTV.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DeltaTV/Pods-DeltaTV.debug.xcconfig"; sourceTree = "<group>"; };
 		A19FF50F55441BC2B2248241 /* Pods-Delta.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Delta.release.xcconfig"; path = "Pods/Target Support Files/Pods-Delta/Pods-Delta.release.xcconfig"; sourceTree = "<group>"; };
+		BA53877AD017AFF3019037A6 /* Pods-DeltaTV.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DeltaTV.release.xcconfig"; path = "Pods/Target Support Files/Pods-DeltaTV/Pods-DeltaTV.release.xcconfig"; sourceTree = "<group>"; };
 		BF02D5D91DDEBB3000A5E131 /* openvgdb.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = openvgdb.sqlite; sourceTree = "<group>"; };
 		BF0418131D01E93400E85BCF /* GBADeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = GBADeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF04E6FE1DB8625C000F35D3 /* ControllerSkinsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControllerSkinsViewController.swift; sourceTree = "<group>"; };
@@ -379,6 +495,10 @@
 		CA942B3D23A4DA9E002DFFF2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CA942B3F23A4DA9E002DFFF2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CA942B4523A4DB39002DFFF2 /* DeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CACEABD323A4DFC2002F8B6E /* Harmony.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Harmony.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CACEABD423A4DFC2002F8B6E /* Harmony_Dropbox.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Harmony_Dropbox.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CACEABD923A4DFC8002F8B6E /* Roxas.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Roxas.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CACEABE323A4E0F2002F8B6E /* SwiftyDropbox.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwiftyDropbox.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -410,7 +530,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CACEABDA23A4DFC8002F8B6E /* Roxas.framework in Frameworks */,
+				CACEABE423A4E0F2002F8B6E /* SwiftyDropbox.framework in Frameworks */,
+				CACEABD723A4DFC2002F8B6E /* Harmony_Dropbox.framework in Frameworks */,
 				CA942B4623A4DB39002DFFF2 /* DeltaCore.framework in Frameworks */,
+				CACEABD523A4DFC2002F8B6E /* Harmony.framework in Frameworks */,
+				2FE6782B99E57AACDB66708C /* Pods_DeltaTV.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -704,6 +829,10 @@
 		BF9F4FCD1AAD7B25004C9500 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CACEABE323A4E0F2002F8B6E /* SwiftyDropbox.framework */,
+				CACEABD923A4DFC8002F8B6E /* Roxas.framework */,
+				CACEABD323A4DFC2002F8B6E /* Harmony.framework */,
+				CACEABD423A4DFC2002F8B6E /* Harmony_Dropbox.framework */,
 				CA942B4523A4DB39002DFFF2 /* DeltaCore.framework */,
 				BFDF71DA22F94CDF0074D92E /* DSDeltaCore.framework */,
 				BFB359412278FD6700CFD920 /* N64DeltaCore_Video.framework */,
@@ -726,6 +855,7 @@
 				BFC134E01AAD82460087AD7B /* SNESDeltaCore.framework */,
 				22506DA00971C4300AF90A35 /* Pods.framework */,
 				695E8C07A709B16AAD83AEC8 /* Pods_Delta.framework */,
+				5D45EEC17097490DDE7216B7 /* Pods_DeltaTV.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -909,6 +1039,8 @@
 			children = (
 				C786AF1D2DDB6223BE2063CC /* Pods-Delta.debug.xcconfig */,
 				A19FF50F55441BC2B2248241 /* Pods-Delta.release.xcconfig */,
+				9DFA04DFC269929CCE72E0D8 /* Pods-DeltaTV.debug.xcconfig */,
+				BA53877AD017AFF3019037A6 /* Pods-DeltaTV.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -941,10 +1073,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CA942B4023A4DA9E002DFFF2 /* Build configuration list for PBXNativeTarget "DeltaTV" */;
 			buildPhases = (
+				EE991D8453B3DDE81AD253F2 /* [CP] Check Pods Manifest.lock */,
 				CA942B2B23A4DA9D002DFFF2 /* Sources */,
 				CA942B2C23A4DA9D002DFFF2 /* Frameworks */,
 				CA942B2D23A4DA9D002DFFF2 /* Resources */,
 				CA942B4823A4DB39002DFFF2 /* Embed Frameworks */,
+				49A499836027EC820FCC0932 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1042,6 +1176,26 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		49A499836027EC820FCC0932 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-DeltaTV/Pods-DeltaTV-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/SDWebImage-tvOS/SDWebImage.framework",
+				"${BUILT_PRODUCTS_DIR}/SQLite.swift-tvOS/SQLite.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SQLite.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DeltaTV/Pods-DeltaTV-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		B444B2BB31CBCEE7D86E943D /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1049,9 +1203,9 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Delta/Pods-Delta-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
+				"${BUILT_PRODUCTS_DIR}/SDWebImage-iOS/SDWebImage.framework",
 				"${BUILT_PRODUCTS_DIR}/SMCalloutView/SMCalloutView.framework",
-				"${BUILT_PRODUCTS_DIR}/SQLite.swift/SQLite.framework",
+				"${BUILT_PRODUCTS_DIR}/SQLite.swift-iOS/SQLite.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -1104,6 +1258,28 @@
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-Delta-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EE991D8453B3DDE81AD253F2 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-DeltaTV-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1230,9 +1406,109 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CACEABE923A4E2E5002F8B6E /* InitialGamesStoryboardSegue.swift in Sources */,
+				CACEAC3323A4E2E6002F8B6E /* GridCollectionViewLayout.swift in Sources */,
+				CACEAC0F23A4E2E6002F8B6E /* Game.swift in Sources */,
+				CACEAC1123A4E2E6002F8B6E /* GameControllerInputMapping.swift in Sources */,
+				CACEABE823A4E2E5002F8B6E /* GameCollectionViewController.swift in Sources */,
+				CACEAC3C23A4E2E6002F8B6E /* EmulatorCore+Cheats.swift in Sources */,
+				CACEAC3223A4E2E6002F8B6E /* GridCollectionViewCell.swift in Sources */,
 				CA942B4323A4DAF4002DFFF2 /* AppDelegate.swift in Sources */,
+				CACEAC2B23A4E2E6002F8B6E /* DeepLinkController.swift in Sources */,
+				CACEAC0023A4E2E5002F8B6E /* AppIconShortcutsViewController.swift in Sources */,
+				CACEAC1023A4E2E6002F8B6E /* GameCollection.swift in Sources */,
+				CACEABF923A4E2E5002F8B6E /* CheatValidator.swift in Sources */,
+				CACEABF623A4E2E5002F8B6E /* CheatTableViewCell.swift in Sources */,
+				CACEAC2123A4E2E6002F8B6E /* SyncManager.swift in Sources */,
+				CACEAC2623A4E2E6002F8B6E /* ClipboardImportOption.swift in Sources */,
+				CACEABEC23A4E2E5002F8B6E /* SaveStatesStoryboardSegue.swift in Sources */,
+				CACEAC2423A4E2E6002F8B6E /* ImportOption.swift in Sources */,
+				CACEAC4823A4E2E6002F8B6E /* Bundle+SwizzleBundleID.swift in Sources */,
+				CACEABFA23A4E2E5002F8B6E /* PausePresentationController.swift in Sources */,
 				CA942B3623A4DA9D002DFFF2 /* SecondViewController.swift in Sources */,
+				CACEABF523A4E2E5002F8B6E /* CheatsViewController.swift in Sources */,
+				CACEABF023A4E2E5002F8B6E /* PauseViewController.swift in Sources */,
+				CACEAC1523A4E2E6002F8B6E /* _ControllerSkin.swift in Sources */,
+				CACEAC1823A4E2E6002F8B6E /* _GameControllerInputMapping.swift in Sources */,
+				CACEABEA23A4E2E5002F8B6E /* GamesStoryboardSegue.swift in Sources */,
+				CACEAC2E23A4E2E6002F8B6E /* Box.swift in Sources */,
+				CACEAC3A23A4E2E6002F8B6E /* UIColor+Delta.swift in Sources */,
+				CACEAC2323A4E2E6002F8B6E /* ImportController.swift in Sources */,
+				CACEAC0923A4E2E6002F8B6E /* GameSyncStatusViewController.swift in Sources */,
+				CACEABFB23A4E2E5002F8B6E /* PauseStoryboardSegue.swift in Sources */,
+				CACEAC2223A4E2E6002F8B6E /* SyncResultViewController.swift in Sources */,
+				CACEAC3923A4E2E6002F8B6E /* UILabel+FontSize.swift in Sources */,
+				CACEABEB23A4E2E5002F8B6E /* GamesPresentationController.swift in Sources */,
+				CACEAC2923A4E2E6002F8B6E /* System.swift in Sources */,
+				CACEAC1223A4E2E6002F8B6E /* GameSave.swift in Sources */,
+				CACEAC1C23A4E2E6002F8B6E /* SaveStateMigrationPolicy.swift in Sources */,
+				CACEABF123A4E2E5002F8B6E /* GridMenuViewController.swift in Sources */,
+				CACEAC0B23A4E2E6002F8B6E /* RecordVersionsViewController.swift in Sources */,
+				CACEAC3E23A4E2E6002F8B6E /* NSFetchedResultsController+Conveniences.m in Sources */,
+				CACEAC1923A4E2E6002F8B6E /* _GameSave.swift in Sources */,
 				CA942B3423A4DA9D002DFFF2 /* FirstViewController.swift in Sources */,
+				CACEAC4323A4E2E6002F8B6E /* Input+Display.swift in Sources */,
+				CACEAC0623A4E2E6002F8B6E /* ControllerSkinTableViewCell.swift in Sources */,
+				CACEABF423A4E2E5002F8B6E /* SaveStatesCollectionHeaderView.swift in Sources */,
+				CACEAC0D23A4E2E6002F8B6E /* Cheat.swift in Sources */,
+				CACEAC0C23A4E2E6002F8B6E /* DatabaseManager.swift in Sources */,
+				CACEABE623A4E2E5002F8B6E /* LaunchViewController.swift in Sources */,
+				CACEAC3623A4E2E6002F8B6E /* LoadImageURLOperation.swift in Sources */,
+				CACEAC4723A4E2E6002F8B6E /* URL+ExtendedAttributes.swift in Sources */,
+				CACEAC4223A4E2E6002F8B6E /* UIAlertController+Importing.swift in Sources */,
+				CACEAC4923A4E2E6002F8B6E /* UIDevice+Processor.swift in Sources */,
+				CACEABF723A4E2E5002F8B6E /* EditCheatViewController.swift in Sources */,
+				CACEABF823A4E2E5002F8B6E /* CheatTextView.swift in Sources */,
+				CACEABEE23A4E2E5002F8B6E /* PreviewGameViewController.swift in Sources */,
+				CACEAC0223A4E2E5002F8B6E /* ControllerInputsViewController.swift in Sources */,
+				CACEAC1723A4E2E6002F8B6E /* _GameCollection.swift in Sources */,
+				CACEAC2D23A4E2E6002F8B6E /* Action.swift in Sources */,
+				CACEAC1F23A4E2E6002F8B6E /* GameMetadata.swift in Sources */,
+				CACEAC4623A4E2E6002F8B6E /* HarmonyMetadataKey+Keys.swift in Sources */,
+				CACEAC4423A4E2E6002F8B6E /* UIView+ParentViewController.swift in Sources */,
+				CACEABED23A4E2E5002F8B6E /* GameViewController.swift in Sources */,
+				CACEAC3423A4E2E6002F8B6E /* GameTableViewCell.swift in Sources */,
+				CACEAC0E23A4E2E6002F8B6E /* ControllerSkin.swift in Sources */,
+				CACEABF323A4E2E5002F8B6E /* SaveStatesViewController.swift in Sources */,
+				CACEAC3F23A4E2E6002F8B6E /* NSManagedObject+Conveniences.swift in Sources */,
+				CACEABF223A4E2E5002F8B6E /* MenuItem.swift in Sources */,
+				CACEAC3523A4E2E6002F8B6E /* BadgedTableViewCell.swift in Sources */,
+				CACEAC1E23A4E2E6002F8B6E /* GamesDatabase.swift in Sources */,
+				CACEAC2C23A4E2E6002F8B6E /* CopyDeepLinkActivity.swift in Sources */,
+				CACEABFE23A4E2E5002F8B6E /* SettingsViewController.swift in Sources */,
+				CACEAC4523A4E2E6002F8B6E /* UIAlertController+Error.swift in Sources */,
+				CACEAC0723A4E2E6002F8B6E /* SyncingServicesViewController.swift in Sources */,
+				CACEAC2023A4E2E6002F8B6E /* GamesDatabaseBrowserViewController.swift in Sources */,
+				CACEAC3D23A4E2E6002F8B6E /* ControllerSkin+Configuring.swift in Sources */,
+				CACEAC3B23A4E2E6002F8B6E /* UIViewControllerContextTransitioning+Conveniences.swift in Sources */,
+				CACEAC1B23A4E2E6002F8B6E /* GameControllerInputMappingTransformer.swift in Sources */,
+				CACEAC0423A4E2E5002F8B6E /* SystemControllerSkinsViewController.swift in Sources */,
+				CACEAC1A23A4E2E6002F8B6E /* _SaveState.swift in Sources */,
+				CACEAC0A23A4E2E6002F8B6E /* RecordSyncStatusViewController.swift in Sources */,
+				CACEABE723A4E2E5002F8B6E /* GamesViewController.swift in Sources */,
+				CACEAC1323A4E2E6002F8B6E /* SaveState.swift in Sources */,
+				CACEAC1423A4E2E6002F8B6E /* _Cheat.swift in Sources */,
+				CACEAC1D23A4E2E6002F8B6E /* GameControllerInputMappingMigrationPolicy.swift in Sources */,
+				CACEAC1623A4E2E6002F8B6E /* _Game.swift in Sources */,
+				CACEABFD23A4E2E5002F8B6E /* Settings.swift in Sources */,
+				CACEAC3123A4E2E6002F8B6E /* ListMenuViewController.swift in Sources */,
+				CACEAC2723A4E2E6002F8B6E /* PhotoLibraryImportOption.swift in Sources */,
+				CACEAC4023A4E2E6002F8B6E /* NSManagedObjectContext+Conveniences.swift in Sources */,
+				CACEAC3723A4E2E6002F8B6E /* LoadControllerSkinImageOperation.swift in Sources */,
+				CACEAC3823A4E2E6002F8B6E /* Theme.swift in Sources */,
+				CACEAC4123A4E2E6002F8B6E /* DeltaCoreProtocol+Delta.swift in Sources */,
+				CACEAC2F23A4E2E6002F8B6E /* PopoverMenuController.swift in Sources */,
+				CACEABFF23A4E2E5002F8B6E /* LicensesViewController.swift in Sources */,
+				CACEAC2823A4E2E6002F8B6E /* GamesDatabaseImportOption.swift in Sources */,
+				CACEAC0523A4E2E5002F8B6E /* ControllerSkinsViewController.swift in Sources */,
+				CACEAC0823A4E2E6002F8B6E /* SyncStatusViewController.swift in Sources */,
+				CACEAC0123A4E2E5002F8B6E /* ControllersSettingsViewController.swift in Sources */,
+				CACEAC3023A4E2E6002F8B6E /* PopoverMenuButton.swift in Sources */,
+				CACEABFC23A4E2E5002F8B6E /* PauseTransitionCoordinator.swift in Sources */,
+				CACEABEF23A4E2E5002F8B6E /* ActionInput.swift in Sources */,
+				CACEAC2A23A4E2E6002F8B6E /* DeepLink.swift in Sources */,
+				CACEAC0323A4E2E5002F8B6E /* InputCalloutView.swift in Sources */,
+				CACEAC2523A4E2E6002F8B6E /* iTunesImportOption.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1473,6 +1749,7 @@
 		};
 		CA942B4123A4DA9E002DFFF2 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9DFA04DFC269929CCE72E0D8 /* Pods-DeltaTV.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -1501,6 +1778,7 @@
 		};
 		CA942B4223A4DA9E002DFFF2 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BA53877AD017AFF3019037A6 /* Pods-DeltaTV.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				CLANG_ANALYZER_NONNULL = YES;

@@ -7,7 +7,9 @@
 //
 
 import Harmony
+#if os(iOS)
 import Harmony_Drive
+#endif
 import Harmony_Dropbox
 
 private extension UserDefaults

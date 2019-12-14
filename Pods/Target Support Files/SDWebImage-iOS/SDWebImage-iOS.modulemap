@@ -1,5 +1,5 @@
 framework module SDWebImage {
-  umbrella header "SDWebImage-umbrella.h"
+  umbrella header "SDWebImage-iOS-umbrella.h"
 
   export *
   module * { export * }

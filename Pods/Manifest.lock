@@ -18,7 +18,7 @@ DEPENDENCIES:
   - SQLite.swift (~> 0.11.0)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  https://github.com/CocoaPods/Specs.git:
     - Crashlytics
     - Fabric
     - SDWebImage
@@ -32,6 +32,6 @@ SPEC CHECKSUMS:
   SMCalloutView: 5c0ee363dc8e7204b2fda17dfad38c93e9e23481
   SQLite.swift: 46d890be8601964454bd3392527f863d1b802d45
 
-PODFILE CHECKSUM: 1d7f9ff69da571c7991621312e07aa4b16a0a074
+PODFILE CHECKSUM: 943f3e4214d15548f7d6e96b00a95317d02cff66
 
-COCOAPODS: 1.6.1
+COCOAPODS: 1.8.4

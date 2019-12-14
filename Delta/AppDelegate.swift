@@ -11,8 +11,10 @@ import UIKit
 import DeltaCore
 import Harmony_Dropbox
 
+#if os(iOS)
 import Fabric
 import Crashlytics
+#endif
 
 private extension CFNotificationName
 {
