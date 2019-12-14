@@ -171,6 +171,14 @@
 		BFFC46231D5984A000AF2CC6 /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFC46221D5984A000AF2CC6 /* LaunchViewController.swift */; };
 		BFFC46461D59861000AF2CC6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BFFC46441D59861000AF2CC6 /* LaunchScreen.storyboard */; };
 		BFFC464C1D5998D600AF2CC6 /* CheatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFC464B1D5998D600AF2CC6 /* CheatTableViewCell.swift */; };
+		CA942B3423A4DA9D002DFFF2 /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA942B3323A4DA9D002DFFF2 /* FirstViewController.swift */; };
+		CA942B3623A4DA9D002DFFF2 /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA942B3523A4DA9D002DFFF2 /* SecondViewController.swift */; };
+		CA942B3923A4DA9D002DFFF2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CA942B3723A4DA9D002DFFF2 /* Main.storyboard */; };
+		CA942B3B23A4DA9E002DFFF2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA942B3A23A4DA9E002DFFF2 /* Assets.xcassets */; };
+		CA942B3E23A4DA9E002DFFF2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CA942B3C23A4DA9E002DFFF2 /* LaunchScreen.storyboard */; };
+		CA942B4323A4DAF4002DFFF2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFA71DC1AAC406100EE9DD1 /* AppDelegate.swift */; };
+		CA942B4623A4DB39002DFFF2 /* DeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA942B4523A4DB39002DFFF2 /* DeltaCore.framework */; };
+		CA942B4723A4DB39002DFFF2 /* DeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CA942B4523A4DB39002DFFF2 /* DeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -196,6 +204,17 @@
 				BF98C9832204D9AB006B95AC /* NESDeltaCore.framework in Embed Frameworks */,
 				BF99C6951D0A9AA600BA92BC /* SNESDeltaCore.framework in Embed Frameworks */,
 				BF072011219A3A9D00F05DA4 /* ZIPFoundation.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CA942B4823A4DB39002DFFF2 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				CA942B4723A4DB39002DFFF2 /* DeltaCore.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -352,6 +371,14 @@
 		BFFC46451D59861000AF2CC6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BFFC464B1D5998D600AF2CC6 /* CheatTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheatTableViewCell.swift; sourceTree = "<group>"; };
 		C786AF1D2DDB6223BE2063CC /* Pods-Delta.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Delta.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Delta/Pods-Delta.debug.xcconfig"; sourceTree = "<group>"; };
+		CA942B2F23A4DA9D002DFFF2 /* DeltaTV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DeltaTV.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CA942B3323A4DA9D002DFFF2 /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
+		CA942B3523A4DA9D002DFFF2 /* SecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
+		CA942B3823A4DA9D002DFFF2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		CA942B3A23A4DA9E002DFFF2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		CA942B3D23A4DA9E002DFFF2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		CA942B3F23A4DA9E002DFFF2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CA942B4523A4DB39002DFFF2 /* DeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -376,6 +403,14 @@
 				BFF0742C1E9DC17500ACDF4A /* GBCDeltaCore.framework in Frameworks */,
 				BF48F755219A1EF000BC2FC1 /* Harmony.framework in Frameworks */,
 				4FE8465FD28810191C3E5212 /* Pods_Delta.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CA942B2C23A4DA9D002DFFF2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CA942B4623A4DB39002DFFF2 /* DeltaCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -669,6 +704,7 @@
 		BF9F4FCD1AAD7B25004C9500 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CA942B4523A4DB39002DFFF2 /* DeltaCore.framework */,
 				BFDF71DA22F94CDF0074D92E /* DSDeltaCore.framework */,
 				BFB359412278FD6700CFD920 /* N64DeltaCore_Video.framework */,
 				BFB359422278FD6800CFD920 /* N64DeltaCore_RSP.framework */,
@@ -774,6 +810,7 @@
 			isa = PBXGroup;
 			children = (
 				BFFA71D91AAC406100EE9DD1 /* Delta */,
+				CA942B3023A4DA9D002DFFF2 /* DeltaTV */,
 				BF9F4FCD1AAD7B25004C9500 /* Frameworks */,
 				BFEC732F1AAECCBD00650035 /* Resources */,
 				BFFA71D81AAC406100EE9DD1 /* Products */,
@@ -785,6 +822,7 @@
 			isa = PBXGroup;
 			children = (
 				BFFA71D71AAC406100EE9DD1 /* Delta.app */,
+				CA942B2F23A4DA9D002DFFF2 /* DeltaTV.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -853,6 +891,19 @@
 			path = Launch;
 			sourceTree = "<group>";
 		};
+		CA942B3023A4DA9D002DFFF2 /* DeltaTV */ = {
+			isa = PBXGroup;
+			children = (
+				CA942B3323A4DA9D002DFFF2 /* FirstViewController.swift */,
+				CA942B3523A4DA9D002DFFF2 /* SecondViewController.swift */,
+				CA942B3723A4DA9D002DFFF2 /* Main.storyboard */,
+				CA942B3A23A4DA9E002DFFF2 /* Assets.xcassets */,
+				CA942B3C23A4DA9E002DFFF2 /* LaunchScreen.storyboard */,
+				CA942B3F23A4DA9E002DFFF2 /* Info.plist */,
+			);
+			path = DeltaTV;
+			sourceTree = "<group>";
+		};
 		FD1E8AE87FA2DB8793F7B937 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -886,6 +937,24 @@
 			productReference = BFFA71D71AAC406100EE9DD1 /* Delta.app */;
 			productType = "com.apple.product-type.application";
 		};
+		CA942B2E23A4DA9D002DFFF2 /* DeltaTV */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CA942B4023A4DA9E002DFFF2 /* Build configuration list for PBXNativeTarget "DeltaTV" */;
+			buildPhases = (
+				CA942B2B23A4DA9D002DFFF2 /* Sources */,
+				CA942B2C23A4DA9D002DFFF2 /* Frameworks */,
+				CA942B2D23A4DA9D002DFFF2 /* Resources */,
+				CA942B4823A4DB39002DFFF2 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DeltaTV;
+			productName = DeltaTV;
+			productReference = CA942B2F23A4DA9D002DFFF2 /* DeltaTV.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -893,7 +962,7 @@
 			isa = PBXProject;
 			attributes = {
 				DefaultBuildSystemTypeForWorkspace = Original;
-				LastSwiftUpdateCheck = 0700;
+				LastSwiftUpdateCheck = 1120;
 				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = "Riley Testut";
 				TargetAttributes = {
@@ -913,6 +982,11 @@
 							};
 						};
 					};
+					CA942B2E23A4DA9D002DFFF2 = {
+						CreatedOnToolsVersion = 11.2.1;
+						DevelopmentTeam = 9273989G8F;
+						ProvisioningStyle = Automatic;
+					};
 				};
 			};
 			buildConfigurationList = BFFA71D21AAC406100EE9DD1 /* Build configuration list for PBXProject "Delta" */;
@@ -931,6 +1005,7 @@
 			targets = (
 				BFFA71D61AAC406100EE9DD1 /* Delta */,
 				BF14D8941DE7A512002CA1BE /* mogenerator */,
+				CA942B2E23A4DA9D002DFFF2 /* DeltaTV */,
 			);
 		};
 /* End PBXProject section */
@@ -951,6 +1026,16 @@
 				BF1F45AB21AF4B5800EF9895 /* SyncResultsViewController.storyboard in Resources */,
 				BF353FF61C5D837600C1184C /* PauseMenu.storyboard in Resources */,
 				BF27CC8E1BC9FEA200A20D89 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CA942B2D23A4DA9D002DFFF2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CA942B3E23A4DA9E002DFFF2 /* LaunchScreen.storyboard in Resources */,
+				CA942B3B23A4DA9E002DFFF2 /* Assets.xcassets in Resources */,
+				CA942B3923A4DA9D002DFFF2 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1141,6 +1226,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CA942B2B23A4DA9D002DFFF2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CA942B4323A4DAF4002DFFF2 /* AppDelegate.swift in Sources */,
+				CA942B3623A4DA9D002DFFF2 /* SecondViewController.swift in Sources */,
+				CA942B3423A4DA9D002DFFF2 /* FirstViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
@@ -1179,6 +1274,22 @@
 			name = LaunchScreen.storyboard;
 			path = Delta;
 			sourceTree = SOURCE_ROOT;
+		};
+		CA942B3723A4DA9D002DFFF2 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CA942B3823A4DA9D002DFFF2 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		CA942B3C23A4DA9E002DFFF2 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CA942B3D23A4DA9E002DFFF2 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
 
@@ -1360,6 +1471,58 @@
 			};
 			name = Release;
 		};
+		CA942B4123A4DA9E002DFFF2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 9273989G8F;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = DeltaTV/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rileytestut.DeltaTV;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 13.2;
+			};
+			name = Debug;
+		};
+		CA942B4223A4DA9E002DFFF2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = DeltaTV/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rileytestut.DeltaTV;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 13.2;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1386,6 +1549,15 @@
 			buildConfigurations = (
 				BFFA71F71AAC406100EE9DD1 /* Debug */,
 				BFFA71F81AAC406100EE9DD1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CA942B4023A4DA9E002DFFF2 /* Build configuration list for PBXNativeTarget "DeltaTV" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CA942B4123A4DA9E002DFFF2 /* Debug */,
+				CA942B4223A4DA9E002DFFF2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
