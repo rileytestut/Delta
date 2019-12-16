@@ -294,6 +294,8 @@
 		CACEAC6523A740B9002F8B6E /* GBADeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CACEAC6323A740B9002F8B6E /* GBADeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CACEAC6723A74102002F8B6E /* GBADeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CACEAC6623A74102002F8B6E /* GBADeltaCore.framework */; };
 		CACEAC6823A74102002F8B6E /* GBADeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CACEAC6623A74102002F8B6E /* GBADeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CACEAC6A23A7E244002F8B6E /* GBCDeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CACEAC6923A7E244002F8B6E /* GBCDeltaCore.framework */; };
+		CACEAC6B23A7E244002F8B6E /* GBCDeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CACEAC6923A7E244002F8B6E /* GBCDeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -336,6 +338,7 @@
 				CACEABE523A4E0F2002F8B6E /* SwiftyDropbox.framework in Embed Frameworks */,
 				CACEABD823A4DFC2002F8B6E /* Harmony_Dropbox.framework in Embed Frameworks */,
 				CACEAC6523A740B9002F8B6E /* GBADeltaCore.framework in Embed Frameworks */,
+				CACEAC6B23A7E244002F8B6E /* GBCDeltaCore.framework in Embed Frameworks */,
 				CACEAC6823A74102002F8B6E /* GBADeltaCore.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -511,6 +514,7 @@
 		CACEAC6023A73F9D002F8B6E /* SNESDeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SNESDeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CACEAC6323A740B9002F8B6E /* GBADeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = GBADeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CACEAC6623A74102002F8B6E /* GBADeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = GBADeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CACEAC6923A7E244002F8B6E /* GBCDeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = GBCDeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -543,6 +547,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CACEABDA23A4DFC8002F8B6E /* Roxas.framework in Frameworks */,
+				CACEAC6A23A7E244002F8B6E /* GBCDeltaCore.framework in Frameworks */,
 				CACEABE423A4E0F2002F8B6E /* SwiftyDropbox.framework in Frameworks */,
 				CACEABD723A4DFC2002F8B6E /* Harmony_Dropbox.framework in Frameworks */,
 				CA942B4623A4DB39002DFFF2 /* DeltaCore.framework in Frameworks */,
@@ -844,6 +849,7 @@
 		BF9F4FCD1AAD7B25004C9500 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CACEAC6923A7E244002F8B6E /* GBCDeltaCore.framework */,
 				CACEAC6623A74102002F8B6E /* GBADeltaCore.framework */,
 				CACEAC6323A740B9002F8B6E /* GBADeltaCore.framework */,
 				CACEAC6023A73F9D002F8B6E /* SNESDeltaCore.framework */,
