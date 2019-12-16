@@ -3,9 +3,121 @@
    LastUpgradeVersion = "1120"
    version = "1.3">
    <BuildAction
-      parallelizeBuildables = "YES"
+      parallelizeBuildables = "NO"
       buildImplicitDependencies = "YES">
       <BuildActionEntries>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "BFADAFF719AE7BB70050CF31"
+               BuildableName = "Roxas.framework"
+               BlueprintName = "Roxas"
+               ReferencedContainer = "container:External/Roxas/Roxas.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "BFA1C8D31ECD01C100DEA99D"
+               BuildableName = "Harmony.framework"
+               BlueprintName = "Harmony"
+               ReferencedContainer = "container:External/Harmony/Harmony.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "BF46895C1AACF36800A2586D"
+               BuildableName = "DeltaCore.framework"
+               BlueprintName = "DeltaCore"
+               ReferencedContainer = "container:Cores/DeltaCore/DeltaCore.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "BF3C12F220438F3F0079A4B5"
+               BuildableName = "NESDeltaCore.framework"
+               BlueprintName = "NESDeltaCore"
+               ReferencedContainer = "container:Cores/NESDeltaCore/NESDeltaCore.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "BF9F4FDB1AAD8070004C9500"
+               BuildableName = "SNESDeltaCore.framework"
+               BlueprintName = "SNESDeltaCore"
+               ReferencedContainer = "container:Cores/SNESDeltaCore/SNESDeltaCore.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "BF8F2AAD1E9C879300F89F15"
+               BuildableName = "GBCDeltaCore.framework"
+               BlueprintName = "GBCDeltaCore"
+               ReferencedContainer = "container:Cores/GBCDeltaCore/GBCDeltaCore.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "BFE8E9C91D010AF7009D623D"
+               BuildableName = "GBADeltaCore.framework"
+               BlueprintName = "GBADeltaCore"
+               ReferencedContainer = "container:Cores/GBADeltaCore/GBADeltaCore.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "BF2EF80C224C1BF60032AD78"
+               BuildableName = "N64DeltaCore_Video.framework"
+               BlueprintName = "N64DeltaCore-Video"
+               ReferencedContainer = "container:Cores/N64DeltaCore/N64DeltaCore.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
          <BuildActionEntry
             buildForTesting = "YES"
             buildForRunning = "YES"

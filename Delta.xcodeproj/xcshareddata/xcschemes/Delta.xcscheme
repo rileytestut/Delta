@@ -126,7 +126,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "1FA9B463D7545DEE19FBE853AC3BFD31"
+               BlueprintIdentifier = "33C94426DAF58519DC6806AF4C44C9E7"
                BuildableName = "Pods_Delta.framework"
                BlueprintName = "Pods-Delta"
                ReferencedContainer = "container:Pods/Pods.xcodeproj">
