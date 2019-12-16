@@ -11,7 +11,9 @@ import Roxas
 
 import DeltaCore
 
+#if os(iOS)
 import SMCalloutView
+#endif
 
 class ControllerInputsViewController: UIViewController
 {

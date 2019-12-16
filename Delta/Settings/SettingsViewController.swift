@@ -7,7 +7,10 @@
 //
 
 import UIKit
+
+#if os(iOS)
 import SafariServices
+#endif
 
 import DeltaCore
 

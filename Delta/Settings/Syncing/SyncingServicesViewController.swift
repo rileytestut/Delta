@@ -9,7 +9,9 @@
 import UIKit
 
 import Harmony
+#if os(iOS)
 import Harmony_Drive
+#endif
 
 import Roxas
 
