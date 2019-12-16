@@ -296,6 +296,8 @@
 		CACEAC6823A74102002F8B6E /* GBADeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CACEAC6623A74102002F8B6E /* GBADeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CACEAC6A23A7E244002F8B6E /* GBCDeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CACEAC6923A7E244002F8B6E /* GBCDeltaCore.framework */; };
 		CACEAC6B23A7E244002F8B6E /* GBCDeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CACEAC6923A7E244002F8B6E /* GBCDeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CACEAC6D23A7E2DA002F8B6E /* NESDeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CACEAC6C23A7E2DA002F8B6E /* NESDeltaCore.framework */; };
+		CACEAC6E23A7E2DA002F8B6E /* NESDeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CACEAC6C23A7E2DA002F8B6E /* NESDeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -340,6 +342,7 @@
 				CACEAC6523A740B9002F8B6E /* GBADeltaCore.framework in Embed Frameworks */,
 				CACEAC6B23A7E244002F8B6E /* GBCDeltaCore.framework in Embed Frameworks */,
 				CACEAC6823A74102002F8B6E /* GBADeltaCore.framework in Embed Frameworks */,
+				CACEAC6E23A7E2DA002F8B6E /* NESDeltaCore.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -515,6 +518,7 @@
 		CACEAC6323A740B9002F8B6E /* GBADeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = GBADeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CACEAC6623A74102002F8B6E /* GBADeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = GBADeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CACEAC6923A7E244002F8B6E /* GBCDeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = GBCDeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CACEAC6C23A7E2DA002F8B6E /* NESDeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = NESDeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -555,6 +559,7 @@
 				CACEAC6723A74102002F8B6E /* GBADeltaCore.framework in Frameworks */,
 				2FE6782B99E57AACDB66708C /* Pods_DeltaTV.framework in Frameworks */,
 				CACEAC6123A73F9D002F8B6E /* SNESDeltaCore.framework in Frameworks */,
+				CACEAC6D23A7E2DA002F8B6E /* NESDeltaCore.framework in Frameworks */,
 				CACEAC6423A740B9002F8B6E /* GBADeltaCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -849,6 +854,7 @@
 		BF9F4FCD1AAD7B25004C9500 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CACEAC6C23A7E2DA002F8B6E /* NESDeltaCore.framework */,
 				CACEAC6923A7E244002F8B6E /* GBCDeltaCore.framework */,
 				CACEAC6623A74102002F8B6E /* GBADeltaCore.framework */,
 				CACEAC6323A740B9002F8B6E /* GBADeltaCore.framework */,
