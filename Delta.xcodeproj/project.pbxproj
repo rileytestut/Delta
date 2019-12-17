@@ -172,8 +172,6 @@
 		BFFC46231D5984A000AF2CC6 /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFC46221D5984A000AF2CC6 /* LaunchViewController.swift */; };
 		BFFC46461D59861000AF2CC6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BFFC46441D59861000AF2CC6 /* LaunchScreen.storyboard */; };
 		BFFC464C1D5998D600AF2CC6 /* CheatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFC464B1D5998D600AF2CC6 /* CheatTableViewCell.swift */; };
-		CA942B3423A4DA9D002DFFF2 /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA942B3323A4DA9D002DFFF2 /* FirstViewController.swift */; };
-		CA942B3623A4DA9D002DFFF2 /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA942B3523A4DA9D002DFFF2 /* SecondViewController.swift */; };
 		CA942B3923A4DA9D002DFFF2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CA942B3723A4DA9D002DFFF2 /* Main.storyboard */; };
 		CA942B3B23A4DA9E002DFFF2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA942B3A23A4DA9E002DFFF2 /* Assets.xcassets */; };
 		CA942B3E23A4DA9E002DFFF2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CA942B3C23A4DA9E002DFFF2 /* LaunchScreen.storyboard */; };
@@ -306,6 +304,13 @@
 		CACEAC7723A81863002F8B6E /* N64DeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CACEAC7123A81863002F8B6E /* N64DeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CACEAC7A23A81D72002F8B6E /* DSDeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CACEAC7923A81D72002F8B6E /* DSDeltaCore.framework */; };
 		CACEAC7B23A81D72002F8B6E /* DSDeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CACEAC7923A81D72002F8B6E /* DSDeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CACEAC7C23A83F46002F8B6E /* PreviousHarmony.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BF713C0622499ED3004A1A2B /* PreviousHarmony.xcdatamodeld */; };
+		CACEAC7D23A83F4A002F8B6E /* Delta.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BF4828811F9027B600028B97 /* Delta.xcdatamodeld */; };
+		CACEAC7E23A83F60002F8B6E /* DeltaToDelta2.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = BF1020E21F95B05B00313182 /* DeltaToDelta2.xcmappingmodel */; };
+		CACEAC7F23A83F62002F8B6E /* Delta2ToDelta3.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = BF3D6C502202865F0083E05A /* Delta2ToDelta3.xcmappingmodel */; };
+		CACEAC8023A83F64002F8B6E /* Delta3ToDelta4.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = BF3D6C52220286750083E05A /* Delta3ToDelta4.xcmappingmodel */; };
+		CACEAC8123A84039002F8B6E /* openvgdb.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = BF02D5D91DDEBB3000A5E131 /* openvgdb.sqlite */; };
+		CACEAC8223A8403E002F8B6E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF6BB2451BB73FE800CCF94A /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -515,8 +520,6 @@
 		BFFC464B1D5998D600AF2CC6 /* CheatTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheatTableViewCell.swift; sourceTree = "<group>"; };
 		C786AF1D2DDB6223BE2063CC /* Pods-Delta.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Delta.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Delta/Pods-Delta.debug.xcconfig"; sourceTree = "<group>"; };
 		CA942B2F23A4DA9D002DFFF2 /* DeltaTV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DeltaTV.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		CA942B3323A4DA9D002DFFF2 /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
-		CA942B3523A4DA9D002DFFF2 /* SecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
 		CA942B3823A4DA9D002DFFF2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		CA942B3A23A4DA9E002DFFF2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CA942B3D23A4DA9E002DFFF2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -1078,8 +1081,6 @@
 		CA942B3023A4DA9D002DFFF2 /* DeltaTV */ = {
 			isa = PBXGroup;
 			children = (
-				CA942B3323A4DA9D002DFFF2 /* FirstViewController.swift */,
-				CA942B3523A4DA9D002DFFF2 /* SecondViewController.swift */,
 				CA942B3723A4DA9D002DFFF2 /* Main.storyboard */,
 				CA942B3A23A4DA9E002DFFF2 /* Assets.xcassets */,
 				CA942B3C23A4DA9E002DFFF2 /* LaunchScreen.storyboard */,
@@ -1221,9 +1222,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CACEAC8123A84039002F8B6E /* openvgdb.sqlite in Resources */,
 				CA942B3E23A4DA9E002DFFF2 /* LaunchScreen.storyboard in Resources */,
 				CA942B3B23A4DA9E002DFFF2 /* Assets.xcassets in Resources */,
 				CA942B3923A4DA9D002DFFF2 /* Main.storyboard in Resources */,
+				CACEAC8223A8403E002F8B6E /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1463,6 +1466,7 @@
 				CACEABE923A4E2E5002F8B6E /* InitialGamesStoryboardSegue.swift in Sources */,
 				CACEAC3323A4E2E6002F8B6E /* GridCollectionViewLayout.swift in Sources */,
 				CACEAC0F23A4E2E6002F8B6E /* Game.swift in Sources */,
+				CACEAC7E23A83F60002F8B6E /* DeltaToDelta2.xcmappingmodel in Sources */,
 				CACEAC1123A4E2E6002F8B6E /* GameControllerInputMapping.swift in Sources */,
 				CACEABE823A4E2E5002F8B6E /* GameCollectionViewController.swift in Sources */,
 				CACEAC3C23A4E2E6002F8B6E /* EmulatorCore+Cheats.swift in Sources */,
@@ -1479,7 +1483,6 @@
 				CACEAC2423A4E2E6002F8B6E /* ImportOption.swift in Sources */,
 				CACEAC4823A4E2E6002F8B6E /* Bundle+SwizzleBundleID.swift in Sources */,
 				CACEABFA23A4E2E5002F8B6E /* PausePresentationController.swift in Sources */,
-				CA942B3623A4DA9D002DFFF2 /* SecondViewController.swift in Sources */,
 				CACEABF523A4E2E5002F8B6E /* CheatsViewController.swift in Sources */,
 				CACEABF023A4E2E5002F8B6E /* PauseViewController.swift in Sources */,
 				CACEAC1523A4E2E6002F8B6E /* _ControllerSkin.swift in Sources */,
@@ -1500,7 +1503,6 @@
 				CACEAC0B23A4E2E6002F8B6E /* RecordVersionsViewController.swift in Sources */,
 				CACEAC3E23A4E2E6002F8B6E /* NSFetchedResultsController+Conveniences.m in Sources */,
 				CACEAC1923A4E2E6002F8B6E /* _GameSave.swift in Sources */,
-				CA942B3423A4DA9D002DFFF2 /* FirstViewController.swift in Sources */,
 				CACEAC4323A4E2E6002F8B6E /* Input+Display.swift in Sources */,
 				CACEAC0623A4E2E6002F8B6E /* ControllerSkinTableViewCell.swift in Sources */,
 				CACEABF423A4E2E5002F8B6E /* SaveStatesCollectionHeaderView.swift in Sources */,
@@ -1512,6 +1514,8 @@
 				CACEAC4223A4E2E6002F8B6E /* UIAlertController+Importing.swift in Sources */,
 				CACEAC4923A4E2E6002F8B6E /* UIDevice+Processor.swift in Sources */,
 				CACEABF723A4E2E5002F8B6E /* EditCheatViewController.swift in Sources */,
+				CACEAC7F23A83F62002F8B6E /* Delta2ToDelta3.xcmappingmodel in Sources */,
+				CACEAC7D23A83F4A002F8B6E /* Delta.xcdatamodeld in Sources */,
 				CACEABF823A4E2E5002F8B6E /* CheatTextView.swift in Sources */,
 				CACEABEE23A4E2E5002F8B6E /* PreviewGameViewController.swift in Sources */,
 				CACEAC0223A4E2E5002F8B6E /* ControllerInputsViewController.swift in Sources */,
@@ -1555,12 +1559,14 @@
 				CACEABFF23A4E2E5002F8B6E /* LicensesViewController.swift in Sources */,
 				CACEAC2823A4E2E6002F8B6E /* GamesDatabaseImportOption.swift in Sources */,
 				CACEAC0523A4E2E5002F8B6E /* ControllerSkinsViewController.swift in Sources */,
+				CACEAC7C23A83F46002F8B6E /* PreviousHarmony.xcdatamodeld in Sources */,
 				CACEAC0823A4E2E6002F8B6E /* SyncStatusViewController.swift in Sources */,
 				CACEAC0123A4E2E5002F8B6E /* ControllersSettingsViewController.swift in Sources */,
 				CACEAC3023A4E2E6002F8B6E /* PopoverMenuButton.swift in Sources */,
 				CACEABFC23A4E2E5002F8B6E /* PauseTransitionCoordinator.swift in Sources */,
 				CACEABEF23A4E2E5002F8B6E /* ActionInput.swift in Sources */,
 				CACEAC2A23A4E2E6002F8B6E /* DeepLink.swift in Sources */,
+				CACEAC8023A83F64002F8B6E /* Delta3ToDelta4.xcmappingmodel in Sources */,
 				CACEAC0323A4E2E5002F8B6E /* InputCalloutView.swift in Sources */,
 				CACEAC2523A4E2E6002F8B6E /* iTunesImportOption.swift in Sources */,
 			);

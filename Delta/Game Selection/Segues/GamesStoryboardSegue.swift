@@ -26,7 +26,9 @@ class GamesStoryboardSegue: UIStoryboardSegue
     {
         self.destination.transitioningDelegate = self
         self.destination.modalPresentationStyle = .custom
+        #if os(iOS)
         self.destination.modalPresentationCapturesStatusBarAppearance = true
+        #endif
         
         super.perform()
     }
@@ -87,8 +89,10 @@ extension GamesStoryboardSegue: UIViewControllerAnimatedTransitioning
         transitionContext.containerView.addSubview(snapshotView)
         
         // We add extra padding around the existing navigation bar and toolbar so they never appear to be detached from the edges of the screen during the overshooting of the spring animation
+        #if os(iOS)
         var topPaddingToolbar: UIToolbar? = nil
         var bottomPaddingToolbar: UIToolbar? = nil
+        #endif
         
         // Must be wrapped in no-animation block to prevent iOS 11 search bar from not appearing.
         UIView.performWithoutAnimation {
@@ -100,6 +104,7 @@ extension GamesStoryboardSegue: UIViewControllerAnimatedTransitioning
                 let padding: CGFloat = 44
                 let topViewController = navigationController.viewControllers[0]
                 
+                #if os(iOS)
                 if !navigationController.isNavigationBarHidden
                 {
                     let topToolbar = UIToolbar(frame: CGRect.zero)
@@ -158,6 +163,7 @@ extension GamesStoryboardSegue: UIViewControllerAnimatedTransitioning
                     
                     bottomPaddingToolbar = bottomToolbar
                 }
+                #endif
             }
         }
         
@@ -170,9 +176,11 @@ extension GamesStoryboardSegue: UIViewControllerAnimatedTransitioning
             transitionContext.completeTransition(position == .end)
             
             snapshotView.removeFromSuperview()
-            
+
+            #if os(iOS)
             topPaddingToolbar?.removeFromSuperview()
             bottomPaddingToolbar?.removeFromSuperview()
+            #endif
             
             transitionContext.sourceViewController.endAppearanceTransition()
         }

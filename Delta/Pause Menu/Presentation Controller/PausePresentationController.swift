@@ -38,7 +38,11 @@ class PausePresentationController: UIPresentationController
         
         if contentHeight == 0
         {
+            #if os(iOS)
             let statusBarHeight = UIApplication.shared.statusBarFrame.height
+            #else
+            let statusBarHeight: CGFloat = 30 // TODO FIXME
+            #endif
             frame = CGRect(x: 0, y: statusBarHeight, width: containerView.bounds.width, height: containerView.bounds.height - statusBarHeight)
         }
         else
@@ -152,7 +156,11 @@ class PausePresentationController: UIPresentationController
         self.contentView.removeFromSuperview()
         
         // Temporarily match the bounds of self.containerView (accounting for the status bar)
+        #if os(iOS)
         let statusBarHeight = UIApplication.shared.statusBarFrame.height
+        #else
+        let statusBarHeight: CGFloat = 30 // TODO FIXME
+        #endif
         self.contentView.frame = CGRect(x: 0, y: statusBarHeight, width: self.containerView!.bounds.width, height: self.containerView!.bounds.height - statusBarHeight)
         
         // Layout content view

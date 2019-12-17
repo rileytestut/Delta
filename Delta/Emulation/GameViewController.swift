@@ -133,6 +133,7 @@ class GameViewController: DeltaCore.GameViewController
     private var isGyroActive = false
     private var presentedGyroAlert = false
     
+    #if os(iOS)
     override var shouldAutorotate: Bool {
         return !self.isGyroActive
     }
@@ -140,6 +141,7 @@ class GameViewController: DeltaCore.GameViewController
     override var preferredScreenEdgesDeferringSystemGestures: UIRectEdge {
         return .all
     }
+    #endif
     
     required init()
     {

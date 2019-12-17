@@ -58,7 +58,9 @@ extension CheatsViewController
         }
         self.tableView.dataSource = self.dataSource
         
+        #if os(iOS)
         self.tableView.separatorEffect = vibrancyEffect
+        #endif
         
         self.registerForPreviewing(with: self, sourceView: self.tableView)
     }
@@ -165,6 +167,7 @@ extension CheatsViewController
         self.tableView.reloadRows(at: [indexPath], with: .none)
     }
     
+    #if os(iOS)
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]?
     {
         let cheat = self.dataSource.item(at: indexPath)
@@ -180,6 +183,7 @@ extension CheatsViewController
         
         return [deleteAction, editAction]
     }
+    #endif
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath)
     {

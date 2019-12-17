@@ -61,9 +61,11 @@ class PauseViewController: UIViewController, PauseInfoProviding
         return self.pauseNavigationController
     }
     
+    #if os(iOS)
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
+    #endif
     
     override func viewDidLayoutSubviews()
     {

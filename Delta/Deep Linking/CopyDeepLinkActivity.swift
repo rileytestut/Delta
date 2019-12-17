@@ -8,6 +8,7 @@
 
 import UIKit
 
+#if os(iOS)
 extension UIActivity.ActivityType
 {
     static let copyDeepLink = UIActivity.ActivityType("com.rileytestut.Delta.CopyDeepLink")
@@ -51,3 +52,4 @@ class CopyDeepLinkActivity: UIActivity
         UIPasteboard.general.url = deepLink
     }
 }
+#endif
