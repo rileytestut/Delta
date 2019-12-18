@@ -6,7 +6,7 @@
 //  Copyright © 2017 Riley Testut. All rights reserved.
 //
 
-#if os(iOS) // this whole controller is based heavily using callout view. Will need another way for tvOS
+#if os(iOS) // this whole controller is based heavily using callout view. Will need another way for tvOS, unfortunately
 import UIKit
 import Roxas
 

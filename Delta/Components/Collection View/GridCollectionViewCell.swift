@@ -133,10 +133,10 @@ class GridCollectionViewCell: UICollectionViewCell
         
         
         #if os(tvOS)
-            self.textLabelVerticalSpacingConstraint.active = false
+            self.textLabelVerticalSpacingConstraint.isActive = false
             
-            self.textLabelFocusedVerticalSpacingConstraint = self.textLabel.topAnchor.constraintEqualToAnchor(self.imageView.focusedFrameGuide.bottomAnchor, constant: 0)
-            self.textLabelFocusedVerticalSpacingConstraint?.active = true
+            self.textLabelFocusedVerticalSpacingConstraint = self.textLabel.topAnchor.constraint(equalTo: self.imageView.focusedFrameGuide.bottomAnchor, constant: 0)
+            self.textLabelFocusedVerticalSpacingConstraint?.isActive = true
         #else
             self.textLabelVerticalSpacingConstraint.isActive = true
         #endif

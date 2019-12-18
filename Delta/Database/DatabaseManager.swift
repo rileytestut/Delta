@@ -79,6 +79,7 @@ extension DatabaseManager
 //MARK: - Update -
 private extension DatabaseManager
 {
+    #if os(iOS)
     func updateRecentGameShortcuts()
     {
         guard let managedObjectContext = self.validationManagedObjectContext else { return }
@@ -98,6 +99,7 @@ private extension DatabaseManager
             print(error)
         }
     }
+    #endif
 }
 
 //MARK: - Preparation -
@@ -508,7 +510,9 @@ private extension DatabaseManager
         if allObjects.contains(where: { $0 is Game })
         {
             self.validationManagedObjectContext?.perform {
+                #if os(iOS)
                 self.updateRecentGameShortcuts()
+                #endif
             }
         }
     }

@@ -107,10 +107,11 @@ extension ControllersSettingsViewController
         
         switch identifier
         {
+            #if os(iOS)
         case "controllerInputsSegue":
             let controllerInputsViewController = (segue.destination as! UINavigationController).topViewController as! ControllerInputsViewController
             controllerInputsViewController.gameController = self.gameController
-            
+            #endif
         default: break
         }
         

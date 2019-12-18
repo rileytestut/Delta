@@ -6,6 +6,7 @@
 //  Copyright © 2017 Riley Testut. All rights reserved.
 //
 
+#if os(iOS) // this controller is all about shortcuts, which tvOS does not supporrt
 import UIKit
 
 import DeltaCore
@@ -38,10 +39,8 @@ class AppIconShortcutsViewController: UITableViewController
         
         self.tableView.register(GameTableViewCell.nib!, forCellReuseIdentifier: RSTCellContentGenericCellIdentifier)
 
-        #if os(iOS)
         self.navigationItem.searchController = self.gamesDataSource.searchController
         self.navigationItem.hidesSearchBarWhenScrolling = false
-        #endif
         
         self.tableView.dataSource = self.dataSource
         self.tableView.prefetchDataSource = self.dataSource
@@ -132,11 +131,7 @@ private extension AppIconShortcutsViewController
     
     func configureGameCell(_ cell: GameTableViewCell, with game: Game, for indexPath: IndexPath)
     {
-        #if os(iOS)
         cell.nameLabel.textColor = .darkText
-        #else
-        cell.nameLabel.textColor = .darkGray
-        #endif
         cell.backgroundColor = .white
         
         cell.nameLabel.text = game.name
@@ -145,9 +140,7 @@ private extension AppIconShortcutsViewController
         cell.artworkImageViewLeadingConstraint.constant = 15
         cell.artworkImageViewTrailingConstraint.constant = 15
         
-        #if os(iOS)
         cell.separatorInset.left = cell.nameLabel.frame.minX
-        #endif
         
         cell.selectedBackgroundView = nil
         
@@ -316,12 +309,10 @@ extension AppIconShortcutsViewController
         self.updateShortcuts()
     }
 
-    #if os(iOS)
     override func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String?
     {
         return NSLocalizedString("Remove", comment: "")
     }
-    #endif
     
     override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle
     {
@@ -369,3 +360,4 @@ extension AppIconShortcutsViewController
         self.updateShortcuts()
     }
 }
+#endif
