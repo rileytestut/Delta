@@ -180,9 +180,9 @@
 		CA6B568423AA032A0048A064 /* ZIPFoundation.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CA6B568223AA032A0048A064 /* ZIPFoundation.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CA6B568623AA03320048A064 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA6B568523AA03320048A064 /* Alamofire.framework */; };
 		CA6B568723AA03320048A064 /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CA6B568523AA03320048A064 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		CA6B568923AA08270048A064 /* Harmony_Drive.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA6B568823AA08270048A064 /* Harmony_Drive.framework */; };
-		CA6B568A23AA08270048A064 /* Harmony_Drive.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CA6B568823AA08270048A064 /* Harmony_Drive.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CA6B568B23AA08750048A064 /* _ControllerSkin.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5942821E09BC8B0051894B /* _ControllerSkin.swift */; };
+		CA6B569623AA8AE10048A064 /* GBADeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA6B569523AA8AE10048A064 /* GBADeltaCore.framework */; };
+		CA6B569723AA8AE10048A064 /* GBADeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CA6B569523AA8AE10048A064 /* GBADeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CA942B3923A4DA9D002DFFF2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CA942B3723A4DA9D002DFFF2 /* Main.storyboard */; };
 		CA942B3B23A4DA9E002DFFF2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA942B3A23A4DA9E002DFFF2 /* Assets.xcassets */; };
 		CA942B3E23A4DA9E002DFFF2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CA942B3C23A4DA9E002DFFF2 /* LaunchScreen.storyboard */; };
@@ -294,10 +294,6 @@
 		CACEAC4923A4E2E6002F8B6E /* UIDevice+Processor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD1EF3F2336BD8800D197CF /* UIDevice+Processor.swift */; };
 		CACEAC6123A73F9D002F8B6E /* SNESDeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CACEAC6023A73F9D002F8B6E /* SNESDeltaCore.framework */; };
 		CACEAC6223A73F9D002F8B6E /* SNESDeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CACEAC6023A73F9D002F8B6E /* SNESDeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		CACEAC6423A740B9002F8B6E /* GBADeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CACEAC6323A740B9002F8B6E /* GBADeltaCore.framework */; };
-		CACEAC6523A740B9002F8B6E /* GBADeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CACEAC6323A740B9002F8B6E /* GBADeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		CACEAC6723A74102002F8B6E /* GBADeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CACEAC6623A74102002F8B6E /* GBADeltaCore.framework */; };
-		CACEAC6823A74102002F8B6E /* GBADeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CACEAC6623A74102002F8B6E /* GBADeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CACEAC6A23A7E244002F8B6E /* GBCDeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CACEAC6923A7E244002F8B6E /* GBCDeltaCore.framework */; };
 		CACEAC6B23A7E244002F8B6E /* GBCDeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CACEAC6923A7E244002F8B6E /* GBCDeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CACEAC6D23A7E2DA002F8B6E /* NESDeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CACEAC6C23A7E2DA002F8B6E /* NESDeltaCore.framework */; };
@@ -357,12 +353,10 @@
 				CA6B568123AA02DB0048A064 /* Harmony.framework in Embed Frameworks */,
 				CACEABE523A4E0F2002F8B6E /* SwiftyDropbox.framework in Embed Frameworks */,
 				CACEABD823A4DFC2002F8B6E /* Harmony_Dropbox.framework in Embed Frameworks */,
+				CA6B569723AA8AE10048A064 /* GBADeltaCore.framework in Embed Frameworks */,
 				CA6B567C23A9F4FA0048A064 /* Roxas.framework in Embed Frameworks */,
-				CACEAC6523A740B9002F8B6E /* GBADeltaCore.framework in Embed Frameworks */,
 				CACEAC6B23A7E244002F8B6E /* GBCDeltaCore.framework in Embed Frameworks */,
 				CACEAC7B23A81D72002F8B6E /* DSDeltaCore.framework in Embed Frameworks */,
-				CA6B568A23AA08270048A064 /* Harmony_Drive.framework in Embed Frameworks */,
-				CACEAC6823A74102002F8B6E /* GBADeltaCore.framework in Embed Frameworks */,
 				CACEAC6E23A7E2DA002F8B6E /* NESDeltaCore.framework in Embed Frameworks */,
 				CA6B568423AA032A0048A064 /* ZIPFoundation.framework in Embed Frameworks */,
 				CA6B568723AA03320048A064 /* Alamofire.framework in Embed Frameworks */,
@@ -532,6 +526,7 @@
 		CA6B568223AA032A0048A064 /* ZIPFoundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ZIPFoundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA6B568523AA03320048A064 /* Alamofire.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Alamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA6B568823AA08270048A064 /* Harmony_Drive.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Harmony_Drive.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CA6B569523AA8AE10048A064 /* GBADeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = GBADeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA942B2F23A4DA9D002DFFF2 /* DeltaTV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DeltaTV.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA942B3823A4DA9D002DFFF2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		CA942B3A23A4DA9E002DFFF2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -587,10 +582,8 @@
 				CACEAC7623A81863002F8B6E /* N64DeltaCore.framework in Frameworks */,
 				CA6B568623AA03320048A064 /* Alamofire.framework in Frameworks */,
 				CACEABD723A4DFC2002F8B6E /* Harmony_Dropbox.framework in Frameworks */,
-				CA6B568923AA08270048A064 /* Harmony_Drive.framework in Frameworks */,
 				CA942B4623A4DB39002DFFF2 /* DeltaCore.framework in Frameworks */,
 				CACEAC7223A81863002F8B6E /* N64DeltaCore_RSP.framework in Frameworks */,
-				CACEAC6723A74102002F8B6E /* GBADeltaCore.framework in Frameworks */,
 				2FE6782B99E57AACDB66708C /* Pods_DeltaTV.framework in Frameworks */,
 				CA6B567B23A9F4FA0048A064 /* Roxas.framework in Frameworks */,
 				CACEAC6123A73F9D002F8B6E /* SNESDeltaCore.framework in Frameworks */,
@@ -598,7 +591,7 @@
 				CACEAC7423A81863002F8B6E /* N64DeltaCore_Video.framework in Frameworks */,
 				CA6B568323AA032A0048A064 /* ZIPFoundation.framework in Frameworks */,
 				CA6B568023AA02DB0048A064 /* Harmony.framework in Frameworks */,
-				CACEAC6423A740B9002F8B6E /* GBADeltaCore.framework in Frameworks */,
+				CA6B569623AA8AE10048A064 /* GBADeltaCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -892,6 +885,7 @@
 		BF9F4FCD1AAD7B25004C9500 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CA6B569523AA8AE10048A064 /* GBADeltaCore.framework */,
 				CA6B568823AA08270048A064 /* Harmony_Drive.framework */,
 				CA6B568523AA03320048A064 /* Alamofire.framework */,
 				CA6B568223AA032A0048A064 /* ZIPFoundation.framework */,

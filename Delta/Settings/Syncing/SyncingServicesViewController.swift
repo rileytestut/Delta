@@ -34,21 +34,26 @@ extension SyncingServicesViewController
 
 class SyncingServicesViewController: UITableViewController
 {
+    #if os(iOS)
     @IBOutlet private var syncingEnabledSwitch: UISwitch!
+    #endif
     
     private var selectedSyncingService = Settings.syncingService
     
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        
+
+        #if os(iOS)
         self.syncingEnabledSwitch.onTintColor = .deltaPurple
         self.syncingEnabledSwitch.isOn = (self.selectedSyncingService != nil)
+        #endif
     }
 }
 
 private extension SyncingServicesViewController
 {
+    #if os(iOS)
     @IBAction func toggleSyncing(_ sender: UISwitch)
     {
         if sender.isOn
@@ -72,6 +77,7 @@ private extension SyncingServicesViewController
             }
         }
     }
+    #endif
     
     func changeService(to service: SyncManager.Service?)
     {
@@ -110,6 +116,7 @@ private extension SyncingServicesViewController
 {
     func isSectionHidden(_ section: Section) -> Bool
     {
+        #if os(iOS)
         switch section
         {
         case .service: return !self.syncingEnabledSwitch.isOn
@@ -117,6 +124,9 @@ private extension SyncingServicesViewController
         case .authenticate: return !self.syncingEnabledSwitch.isOn
         default: return false
         }
+        #else
+        return false
+        #endif
     }
 }
 

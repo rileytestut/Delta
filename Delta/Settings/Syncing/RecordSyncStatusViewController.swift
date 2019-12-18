@@ -45,7 +45,9 @@ class RecordSyncStatusViewController: UITableViewController
         return dateFormatter
     }()
     
+    #if os(iOS)
     @IBOutlet private var syncingEnabledSwitch: UISwitch!
+    #endif
     
     @IBOutlet private var localStatusLabel: UILabel!
     @IBOutlet private var localDateLabel: UILabel!
@@ -99,8 +101,10 @@ private extension RecordSyncStatusViewController
             
             self.title = title ?? record.localizedName
 
+            #if os(iOS)
             self.syncingEnabledSwitch.isEnabled = !record.isConflicted
             self.syncingEnabledSwitch.isOn = record.isSyncingEnabled
+            #endif
             
             self.localStatusLabel.text = record.localStatus?.localizedDescription ?? "-"
             self.remoteStatusLabel.text = record.remoteStatus?.localizedDescription ?? "-"
@@ -127,8 +131,10 @@ private extension RecordSyncStatusViewController
         }
         else
         {
+            #if os(iOS)
             self.syncingEnabledSwitch.isEnabled = false
             self.syncingEnabledSwitch.isOn = false
+            #endif
             
             self.localStatusLabel.text = "-"
             self.localDateLabel.text = "-"
@@ -138,7 +144,8 @@ private extension RecordSyncStatusViewController
             self.remoteDeviceLabel.text = "-"
         }
     }
-    
+
+    #if os(iOS)
     @IBAction func toggleSyncingEnabled(_ sender: UISwitch)
     {
         do
@@ -155,6 +162,7 @@ private extension RecordSyncStatusViewController
         
         self.update()
     }
+    #endif
 }
 
 extension RecordSyncStatusViewController
