@@ -6,6 +6,7 @@
 //  Copyright © 2017 Riley Testut. All rights reserved.
 //
 
+#if os(iOS)
 import UIKit
 import MobileCoreServices
 
@@ -60,3 +61,4 @@ extension PhotoLibraryImportOption: UIImagePickerControllerDelegate, UINavigatio
         }
     }
 }
+#endif

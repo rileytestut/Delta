@@ -35,10 +35,12 @@ class GamesViewController: UIViewController
             }
         }
     }
-    
+
+    #if os(iOS)
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
+    #endif
     
     private var pageViewController: UIPageViewController!
     private var placeholderView: RSTPlaceholderView!
@@ -98,11 +100,14 @@ extension GamesViewController
         self.pageControl.numberOfPages = 3
         self.pageControl.currentPageIndicatorTintColor = UIColor.deltaPurple
         self.pageControl.pageIndicatorTintColor = UIColor.lightGray
+        #if os(iOS)
         self.navigationController?.toolbar.addSubview(self.pageControl)
         
         self.pageControl.centerXAnchor.constraint(equalTo: (self.navigationController?.toolbar.centerXAnchor)!, constant: 0).isActive = true
         self.pageControl.centerYAnchor.constraint(equalTo: (self.navigationController?.toolbar.centerYAnchor)!, constant: 0).isActive = true
-        
+        #endif
+
+        #if os(iOS)
         if let navigationController = self.navigationController
         {
             if #available(iOS 13.0, *)
@@ -115,14 +120,15 @@ extension GamesViewController
                 
                 let toolbarAppearance = navigationController.toolbar.standardAppearance.copy()
                 toolbarAppearance.backgroundEffect = UIBlurEffect(style: .dark)
-                navigationController.toolbar.standardAppearance = toolbarAppearance                
+                navigationController.toolbar.standardAppearance = toolbarAppearance
             }
             else
             {
                 navigationController.navigationBar.barStyle = .blackTranslucent
                 navigationController.toolbar.barStyle = .blackTranslucent
-            }            
+            }
         }
+        #endif
         
         self.prepareSearchController()
         
@@ -224,10 +230,12 @@ private extension GamesViewController
             searchResultsController?.dataSource.predicate = searchValue.predicate
             return nil
         }
+        #if os(iOS)
         self.searchController?.searchBar.barStyle = .black
         
         self.navigationItem.searchController = self.searchController
         self.navigationItem.hidesSearchBarWhenScrolling = false
+        #endif
         
         self.definesPresentationContext = true
     }
@@ -303,7 +311,9 @@ private extension GamesViewController
             resetPageViewController = true
         }
         
+        #if os(iOS)
         self.navigationController?.setToolbarHidden(sections < 2, animated: animated)
+        #endif
         
         if sections > 0
         {

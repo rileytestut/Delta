@@ -99,6 +99,7 @@ extension Settings
         }
     }
     
+    #if os(iOS)
     static var gameShortcuts: [Game] {
         set {
             let identifiers = newValue.map { $0.identifier }
@@ -135,6 +136,7 @@ extension Settings
             return []
         }
     }
+    #endif
     
     static var syncingService: SyncManager.Service? {
         get {

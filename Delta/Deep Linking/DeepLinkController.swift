@@ -8,6 +8,7 @@
 
 import UIKit
 
+#if os(iOS)
 extension Notification.Name
 {
     static let deepLinkControllerLaunchGame = Notification.Name("deepLinkControllerLaunchGame")
@@ -81,3 +82,4 @@ private extension DeepLinkController
         return true
     }
 }
+#endif

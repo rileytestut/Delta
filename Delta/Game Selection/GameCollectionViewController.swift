@@ -388,27 +388,39 @@ private extension GameCollectionViewController
             self.changeArtwork(for: game)
         }
         
+        #if os(iOS)
         let shareAction = Action(title: NSLocalizedString("Share", comment: ""), style: .default, action: { [unowned self] action in
             self.share(game)
         })
+        #endif
         
         let saveStatesAction = Action(title: NSLocalizedString("Save States", comment: ""), style: .default, action: { [unowned self] action in
             self.viewSaveStates(for: game)
         })
         
+        #if os(iOS)
         let importSaveFile = Action(title: NSLocalizedString("Import Save File", comment: ""), style: .default) { [unowned self] _ in
             self.importSaveFile(for: game)
         }
+        #endif
         
         let deleteAction = Action(title: NSLocalizedString("Delete", comment: ""), style: .destructive, action: { [unowned self] action in
             self.delete(game)
         })
         
+        #if os(iOS)
         switch game.type
         {
         case GameType.unknown: return [cancelAction, renameAction, changeArtworkAction, shareAction, deleteAction]
         default: return [cancelAction, renameAction, changeArtworkAction, shareAction, saveStatesAction, importSaveFile, deleteAction]
         }
+        #else
+        switch game.type
+        {
+        case GameType.unknown: return [cancelAction, renameAction, changeArtworkAction, deleteAction]
+        default: return [cancelAction, renameAction, changeArtworkAction, saveStatesAction, deleteAction]
+        }
+        #endif
     }
     
     func delete(_ game: Game)
@@ -475,14 +487,19 @@ private extension GameCollectionViewController
     func changeArtwork(for game: Game)
     {
         self._changingArtworkGame = game
-        
+        #if os(iOS)
         let clipboardImportOption = ClipboardImportOption()
         let photoLibraryImportOption = PhotoLibraryImportOption(presentingViewController: self)
+        #endif
         let gamesDatabaseImportOption = GamesDatabaseImportOption(presentingViewController: self)
         
         let importController = ImportController(documentTypes: [kUTTypeImage as String])
         importController.delegate = self
+        #if os(iOS)
         importController.importOptions = [clipboardImportOption, photoLibraryImportOption, gamesDatabaseImportOption]
+        #else
+        importController.importOptions = [gamesDatabaseImportOption]
+        #endif
         self.present(importController, animated: true, completion: nil)
     }
     
@@ -567,6 +584,7 @@ private extension GameCollectionViewController
         }
     }
     
+    #if os(iOS)
     func share(_ game: Game)
     {
         let temporaryDirectory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
@@ -609,6 +627,7 @@ private extension GameCollectionViewController
         importController.delegate = self
         self.present(importController, animated: true, completion: nil)
     }
+    #endif
     
     func importSaveFile(for game: Game, from fileURL: URL?, error: Error?)
     {

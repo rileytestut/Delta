@@ -22,6 +22,7 @@ class LaunchViewController: RSTLaunchViewController
     
     private var didAttemptStartingSyncManager = false
     
+    #if os(iOS)
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return self.gameViewController?.preferredStatusBarStyle ?? .lightContent
     }
@@ -41,12 +42,15 @@ class LaunchViewController: RSTLaunchViewController
     override var shouldAutorotate: Bool {
         return self.gameViewController?.shouldAutorotate ?? true
     }
+    #endif
     
     required init?(coder aDecoder: NSCoder)
     {
         super.init(coder: aDecoder)
-        
+
+        #if os(iOS)
         NotificationCenter.default.addObserver(self, selector: #selector(LaunchViewController.deepLinkControllerLaunchGame(with:)), name: .deepLinkControllerLaunchGame, object: nil)
+        #endif
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?)
@@ -112,8 +116,10 @@ extension LaunchViewController
         {
             self.view.bringSubviewToFront(self.gameViewContainerView)
             
+            #if os(iOS)
             self.setNeedsStatusBarAppearanceUpdate()
             self.setNeedsUpdateOfHomeIndicatorAutoHidden()
+            #endif
         }
         
         if let game = self.applicationLaunchDeepLinkGame
@@ -136,6 +142,7 @@ extension LaunchViewController
     }
 }
 
+#if os(iOS)
 private extension LaunchViewController
 {
     @objc func deepLinkControllerLaunchGame(with notification: Notification)
@@ -147,3 +154,4 @@ private extension LaunchViewController
         self.applicationLaunchDeepLinkGame = game
     }
 }
+#endif

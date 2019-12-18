@@ -122,8 +122,10 @@ extension SaveStatesViewController
         
         self.registerForPreviewing(with: self, sourceView: self.collectionView!)
         
+        #if os(iOS)
         self.navigationController?.navigationBar.barStyle = .blackTranslucent
         self.navigationController?.toolbar.barStyle = .blackTranslucent
+        #endif
         
         self.update()
     }    

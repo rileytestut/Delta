@@ -53,17 +53,21 @@ private extension SettingsViewController
 
 class SettingsViewController: UITableViewController
 {
+    #if os(iOS)
     @IBOutlet private var controllerOpacityLabel: UILabel!
     @IBOutlet private var controllerOpacitySlider: UISlider!
     
     @IBOutlet private var buttonHapticFeedbackEnabledSwitch: UISwitch!
     @IBOutlet private var thumbstickHapticFeedbackEnabledSwitch: UISwitch!
+    #endif
     
     @IBOutlet private var versionLabel: UILabel!
     
     @IBOutlet private var syncingServiceLabel: UILabel!
-    
+
+    #if os(iOS)
     private var selectionFeedbackGenerator: UISelectionFeedbackGenerator?
+    #endif
     
     private var previousSelectedRowIndexPath: IndexPath?
     
@@ -154,8 +158,10 @@ private extension SettingsViewController
 {
     func update()
     {
+        #if os(iOS)
         self.controllerOpacitySlider.value = Float(Settings.translucentControllerSkinOpacity)
         self.updateControllerOpacityLabel()
+        #endif
         
         self.syncingServiceLabel.text = Settings.syncingService?.localizedName
         
@@ -168,18 +174,22 @@ private extension SettingsViewController
         {
             print(error)
         }
-        
+
+        #if os(iOS)
         self.buttonHapticFeedbackEnabledSwitch.isOn = Settings.isButtonHapticFeedbackEnabled
         self.thumbstickHapticFeedbackEnabledSwitch.isOn = Settings.isThumbstickHapticFeedbackEnabled
+        #endif
         
         self.tableView.reloadData()
     }
     
+    #if os(iOS)
     func updateControllerOpacityLabel()
     {
         let percentage = String(format: "%.f", Settings.translucentControllerSkinOpacity * 100) + "%"
         self.controllerOpacityLabel.text = percentage
     }
+    #endif
     
     func isSectionHidden(_ section: Section) -> Bool
     {
@@ -193,6 +203,7 @@ private extension SettingsViewController
 
 private extension SettingsViewController
 {
+    #if os(iOS)
     @IBAction func beginChangingControllerOpacity(with sender: UISlider)
     {
         self.selectionFeedbackGenerator = UISelectionFeedbackGenerator()
@@ -228,9 +239,11 @@ private extension SettingsViewController
     {
         Settings.isThumbstickHapticFeedbackEnabled = sender.isOn
     }
+    #endif
     
     func openTwitter(username: String)
     {
+        #if os(iOS)
         let twitterAppURL = URL(string: "twitter://user?screen_name=" + username)!
         UIApplication.shared.open(twitterAppURL, options: [:]) { (success) in
             if success
@@ -249,6 +262,7 @@ private extension SettingsViewController
                 self.present(safariViewController, animated: true, completion: nil)
             }
         }
+        #endif
     }
 }
 
@@ -361,6 +375,7 @@ extension SettingsViewController
         case .controllerSkins: self.performSegue(withIdentifier: Segue.controllerSkins.rawValue, sender: cell)
         case .controllerOpacity, .hapticFeedback, .threeDTouch, .syncing: break
         case .patreon:
+            #if os(iOS)
             let patreonURL = URL(string: "altstore://patreon")!
             
             UIApplication.shared.open(patreonURL, options: [:]) { (success) in
@@ -372,6 +387,7 @@ extension SettingsViewController
                 safariViewController.preferredControlTintColor = .deltaPurple
                 self.present(safariViewController, animated: true, completion: nil)
             }
+            #endif
             
             tableView.deselectRow(at: indexPath, animated: true)
             

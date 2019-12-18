@@ -6,14 +6,13 @@
 //  Copyright © 2017 Riley Testut. All rights reserved.
 //
 
+#if os(iOS) // this whole controller is based heavily using callout view. Will need another way for tvOS
 import UIKit
 import Roxas
 
 import DeltaCore
 
-#if os(iOS)
 import SMCalloutView
-#endif
 
 class ControllerInputsViewController: UIViewController
 {
@@ -558,3 +557,4 @@ extension ControllerInputsViewController: SMCalloutViewDelegate
         self.toggle(calloutView)
     }
 }
+#endif

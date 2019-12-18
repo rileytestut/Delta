@@ -44,9 +44,11 @@ class GamesDatabaseBrowserViewController: UITableViewController
         self.prepareDataSource()
     }
     
+    #if os(iOS)
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
+    #endif
     
     override func viewDidLoad()
     {
@@ -60,13 +62,17 @@ class GamesDatabaseBrowserViewController: UITableViewController
         self.tableView.prefetchDataSource = self.dataSource
         
         self.tableView.indicatorStyle = .white
+        #if os(iOS)
         self.tableView.separatorColor = UIColor.gray
+        #endif
         
         self.dataSource.searchController.delegate = self
+        #if os(iOS)
         self.dataSource.searchController.searchBar.barStyle = .black
         
         self.navigationItem.searchController = self.dataSource.searchController
         self.navigationItem.hidesSearchBarWhenScrolling = false
+        #endif
         
         self.updatePlaceholderView()
     }
@@ -90,8 +96,13 @@ private extension GamesDatabaseBrowserViewController
     {
         /* Placeholder View */
         let placeholderView = RSTPlaceholderView()
+        #if os(iOS)
         placeholderView.textLabel.textColor = UIColor.lightText
         placeholderView.detailTextLabel.textColor = UIColor.lightText
+        #else
+        placeholderView.textLabel.textColor = UIColor.lightGray
+        placeholderView.detailTextLabel.textColor = UIColor.lightGray
+        #endif
         self.dataSource.placeholderView = placeholderView
         
         
@@ -162,7 +173,9 @@ private extension GamesDatabaseBrowserViewController
         cell.artworkImageViewLeadingConstraint.constant = 15
         cell.artworkImageViewTrailingConstraint.constant = 15
         
+        #if os(iOS)
         cell.separatorInset.left = cell.nameLabel.frame.minX
+        #endif
     }
     
     func updatePlaceholderView()

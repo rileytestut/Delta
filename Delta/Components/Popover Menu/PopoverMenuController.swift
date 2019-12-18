@@ -71,8 +71,12 @@ private extension PopoverMenuController
         
         guard let presentingViewController = self.popoverMenuButton.parentViewController else { return }
         
+        #if os(iOS)
         self.popoverViewController.modalPresentationStyle = .popover
         self.popoverViewController.popoverPresentationController?.delegate = self
+        #else
+        self.popoverViewController.modalPresentationStyle = .fullScreen
+        #endif
         self.popoverViewController.popoverPresentationController?.sourceView = self.popoverMenuButton.superview
         self.popoverViewController.popoverPresentationController?.sourceRect = self.popoverMenuButton.frame
         
@@ -87,6 +91,7 @@ private extension PopoverMenuController
     }
 }
 
+#if os(iOS)
 extension PopoverMenuController: UIPopoverPresentationControllerDelegate
 {
     func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle
@@ -100,3 +105,4 @@ extension PopoverMenuController: UIPopoverPresentationControllerDelegate
         self.isActive = false
     }
 }
+#endif

@@ -32,9 +32,11 @@ private let ReceivedApplicationState: @convention(c) (CFNotificationCenter?, Uns
 class AppDelegate: UIResponder, UIApplicationDelegate
 {
     var window: UIWindow?
-    
+
+    #if os(iOS)
     private let deepLinkController = DeepLinkController()
     private var appLaunchDeepLink: DeepLink?
+    #endif
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool
     {
@@ -45,7 +47,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         #if DEBUG
         
         // Must go AFTER registering cores, or else NESDeltaCore may not work correctly when not connected to debugger 🤷‍♂️
+
+        #if os(iOS)
         Fabric.with([Crashlytics.self])
+        #endif
         
         #else
         
@@ -72,6 +77,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         NotificationCenter.default.addObserver(self, selector: #selector(AppDelegate.databaseManagerDidStart(_:)), name: DatabaseManager.didStartNotification, object: DatabaseManager.shared)
         
 
+        #if os(iOS)
         // Deep Links
         if let shortcut = launchOptions?[.shortcutItem] as? UIApplicationShortcutItem
         {
@@ -80,6 +86,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
             // false = we handled the deep link, so no need to call delegate method separately.
             return false
         }
+        #endif
                 
         return true
     }
@@ -168,7 +175,9 @@ extension AppDelegate
         }
         else if url.scheme?.lowercased() == "delta"
         {
+            #if os(iOS)
             return self.deepLinkController.handle(.url(url))
+            #endif
         }
         
         return false
@@ -213,6 +222,7 @@ extension AppDelegate
     }
 }
 
+#if os(iOS)
 extension AppDelegate
 {
     func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void)
@@ -221,16 +231,19 @@ extension AppDelegate
         completionHandler(result)
     }
 }
+#endif
 
 private extension AppDelegate
 {
     @objc func databaseManagerDidStart(_ notification: Notification)
     {
+        #if os(iOS)
         guard let deepLink = self.appLaunchDeepLink else { return }
         
         DispatchQueue.main.async {
             self.deepLinkController.handle(deepLink)
         }
+        #endif
     }
     
     func receivedApplicationStateRequest()

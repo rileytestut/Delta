@@ -167,7 +167,9 @@ class GameViewController: DeltaCore.GameViewController
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.didEnterBackground(with:)), name: UIApplication.didEnterBackgroundNotification, object: UIApplication.shared)
         
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.settingsDidChange(with:)), name: .settingsDidChange, object: nil)
+        #if os(iOS)
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.deepLinkControllerLaunchGame(with:)), name: .deepLinkControllerLaunchGame, object: nil)
+        #endif
         
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.didActivateGyro(with:)), name: GBA.didActivateGyroNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.didDeactivateGyro(with:)), name: GBA.didDeactivateGyroNotification, object: nil)
@@ -1027,7 +1029,8 @@ private extension GameViewController
         case .syncingService: break
         }
     }
-    
+
+    #if os(iOS)
     @objc func deepLinkControllerLaunchGame(with notification: Notification)
     {
         guard let game = notification.userInfo?[DeepLink.Key.game] as? Game else { return }
@@ -1068,6 +1071,7 @@ private extension GameViewController
         
         self.dismiss(animated: true, completion: nil)
     }
+    #endif
     
     @objc func didActivateGyro(with notification: Notification)
     {

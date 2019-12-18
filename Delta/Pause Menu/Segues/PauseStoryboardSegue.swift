@@ -27,7 +27,9 @@ class PauseStoryboardSegue: UIStoryboardSegue
     {
         self.destination.transitioningDelegate = self
         self.destination.modalPresentationStyle = .custom
+        #if os(iOS)
         self.destination.modalPresentationCapturesStatusBarAppearance = true
+        #endif
         
         // Manually set tint color, since calling layoutIfNeeded will cause view to load, but with default system tint color.
         self.destination.view.tintColor = .white

@@ -11,6 +11,7 @@ import MobileCoreServices
 
 import Roxas
 
+#if os(iOS)
 struct ClipboardImportOption: ImportOption
 {
     let title = NSLocalizedString("Clipboard", comment: "")
@@ -37,3 +38,4 @@ struct ClipboardImportOption: ImportOption
         }
     }
 }
+#endif

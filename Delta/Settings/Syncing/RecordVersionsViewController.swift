@@ -85,8 +85,11 @@ class RecordVersionsViewController: UITableViewController
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        
+        #if os(iOS)
         self.progressView = UIProgressView(progressViewStyle: .bar)
+        #else
+        self.progressView = UIProgressView(progressViewStyle: .default)
+        #endif
         self.progressView.translatesAutoresizingMaskIntoConstraints = false
         self.progressView.progress = 0
         

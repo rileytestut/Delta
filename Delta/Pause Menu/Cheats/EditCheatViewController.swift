@@ -61,9 +61,11 @@ class EditCheatViewController: UITableViewController
     {
         guard let cheat = self.cheat else { return [] }
         
+        #if os(iOS)
         let copyCodeAction = UIPreviewAction(title: NSLocalizedString("Copy Code", comment: ""), style: .default) { (action, viewController) in
             UIPasteboard.general.string = cheat.code
         }
+        #endif
         
         let presentingViewController = self.presentingViewController!
         
@@ -91,7 +93,11 @@ class EditCheatViewController: UITableViewController
         
         let deleteActionGroup = UIPreviewActionGroup(title: NSLocalizedString("Delete", comment: ""), style: .destructive, actions: [deleteAction, cancelDeleteAction])
         
+        #if os(iOS)
         return [copyCodeAction, editCheatAction, deleteActionGroup]
+        #else
+        return [editCheatAction, deleteActionGroup]
+        #endif
     }
 }
 
@@ -213,7 +219,9 @@ internal extension EditCheatViewController
     {
         let navigationController = RSTNavigationController(rootViewController: self)
         navigationController.modalPresentationStyle = .overFullScreen // Keeps PausePresentationController active to ensure layout is not messed up
+        #if os(iOS)
         navigationController.modalPresentationCapturesStatusBarAppearance = true
+        #endif
         
         presentingViewController.present(navigationController, animated: true, completion: nil)
     }

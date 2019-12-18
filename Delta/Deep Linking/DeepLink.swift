@@ -8,6 +8,7 @@
 
 import UIKit
 
+#if os(iOS)
 extension URL
 {
     init(action: DeepLink.Action)
@@ -97,3 +98,4 @@ enum DeepLink
         }
     }
 }
+#endif

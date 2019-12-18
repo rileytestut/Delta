@@ -116,6 +116,7 @@ class ImportController: NSObject
     
     private func presentDocumentBrowser()
     {
+        #if os(iOS)
         let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(ImportController.cancel))
         
         let documentBrowserViewController = UIDocumentBrowserViewController(forOpeningFilesWithContentTypes: Array(self.documentTypes))
@@ -128,9 +129,11 @@ class ImportController: NSObject
         
         self.presentedViewController = documentBrowserViewController
         self.presentingViewController?.present(documentBrowserViewController, animated: true, completion: nil)
+        #endif
     }
 }
 
+#if os(iOS)
 extension ImportController: UIDocumentBrowserViewControllerDelegate
 {
     func documentBrowser(_ controller: UIDocumentBrowserViewController, didPickDocumentURLs documentURLs: [URL])
@@ -180,6 +183,7 @@ extension ImportController: UIDocumentBrowserViewControllerDelegate
         }
     }
 }
+#endif
 
 private var ImportControllerKey: UInt8 = 0
 
