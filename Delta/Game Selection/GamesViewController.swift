@@ -175,10 +175,11 @@ extension GamesViewController
             self.pageViewController.delegate = self
             self.pageViewController.view.isHidden = true
         
+            #if os(iOS) // tvOS uses a tab bar to get to settings
         case "showSettings":
             let destinationViewController = segue.destination
             destinationViewController.presentationController?.delegate = self
-            
+            #endif
         default: break
         }
     }

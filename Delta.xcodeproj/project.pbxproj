@@ -183,6 +183,9 @@
 		CA6B568B23AA08750048A064 /* _ControllerSkin.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5942821E09BC8B0051894B /* _ControllerSkin.swift */; };
 		CA6B569623AA8AE10048A064 /* GBADeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA6B569523AA8AE10048A064 /* GBADeltaCore.framework */; };
 		CA6B569723AA8AE10048A064 /* GBADeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CA6B569523AA8AE10048A064 /* GBADeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CA6B569A23AD4CEC0048A064 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CA6B569923AD4CEC0048A064 /* Settings.storyboard */; };
+		CA6B569C23AD4D350048A064 /* PauseMenu.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CA6B569B23AD4D350048A064 /* PauseMenu.storyboard */; };
+		CA6B569E23AD6B020048A064 /* DeltaTVTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6B569D23AD6B020048A064 /* DeltaTVTabBarController.swift */; };
 		CA942B3923A4DA9D002DFFF2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CA942B3723A4DA9D002DFFF2 /* Main.storyboard */; };
 		CA942B3B23A4DA9E002DFFF2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA942B3A23A4DA9E002DFFF2 /* Assets.xcassets */; };
 		CA942B3E23A4DA9E002DFFF2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CA942B3C23A4DA9E002DFFF2 /* LaunchScreen.storyboard */; };
@@ -527,6 +530,9 @@
 		CA6B568523AA03320048A064 /* Alamofire.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Alamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA6B568823AA08270048A064 /* Harmony_Drive.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Harmony_Drive.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA6B569523AA8AE10048A064 /* GBADeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = GBADeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CA6B569923AD4CEC0048A064 /* Settings.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
+		CA6B569B23AD4D350048A064 /* PauseMenu.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = PauseMenu.storyboard; sourceTree = "<group>"; };
+		CA6B569D23AD6B020048A064 /* DeltaTVTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeltaTVTabBarController.swift; sourceTree = "<group>"; };
 		CA942B2F23A4DA9D002DFFF2 /* DeltaTV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DeltaTV.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA942B3823A4DA9D002DFFF2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		CA942B3A23A4DA9E002DFFF2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -1097,10 +1103,13 @@
 		CA942B3023A4DA9D002DFFF2 /* DeltaTV */ = {
 			isa = PBXGroup;
 			children = (
-				CA942B3723A4DA9D002DFFF2 /* Main.storyboard */,
-				CA942B3A23A4DA9E002DFFF2 /* Assets.xcassets */,
 				CA942B3C23A4DA9E002DFFF2 /* LaunchScreen.storyboard */,
+				CA942B3723A4DA9D002DFFF2 /* Main.storyboard */,
+				CA6B569923AD4CEC0048A064 /* Settings.storyboard */,
+				CA6B569B23AD4D350048A064 /* PauseMenu.storyboard */,
+				CA942B3A23A4DA9E002DFFF2 /* Assets.xcassets */,
 				CA942B3F23A4DA9E002DFFF2 /* Info.plist */,
+				CA6B569D23AD6B020048A064 /* DeltaTVTabBarController.swift */,
 			);
 			path = DeltaTV;
 			sourceTree = "<group>";
@@ -1241,7 +1250,9 @@
 				CACEAC8123A84039002F8B6E /* openvgdb.sqlite in Resources */,
 				CA942B3E23A4DA9E002DFFF2 /* LaunchScreen.storyboard in Resources */,
 				CA942B3B23A4DA9E002DFFF2 /* Assets.xcassets in Resources */,
+				CA6B569A23AD4CEC0048A064 /* Settings.storyboard in Resources */,
 				CA942B3923A4DA9D002DFFF2 /* Main.storyboard in Resources */,
+				CA6B569C23AD4D350048A064 /* PauseMenu.storyboard in Resources */,
 				CACEAC8223A8403E002F8B6E /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1537,6 +1548,7 @@
 				CACEAC0223A4E2E5002F8B6E /* ControllerInputsViewController.swift in Sources */,
 				CACEAC1723A4E2E6002F8B6E /* _GameCollection.swift in Sources */,
 				CACEAC2D23A4E2E6002F8B6E /* Action.swift in Sources */,
+				CA6B569E23AD6B020048A064 /* DeltaTVTabBarController.swift in Sources */,
 				CACEAC1F23A4E2E6002F8B6E /* GameMetadata.swift in Sources */,
 				CACEAC4623A4E2E6002F8B6E /* HarmonyMetadataKey+Keys.swift in Sources */,
 				CACEAC4423A4E2E6002F8B6E /* UIView+ParentViewController.swift in Sources */,

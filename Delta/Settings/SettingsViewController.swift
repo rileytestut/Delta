@@ -20,6 +20,7 @@ private extension SettingsViewController
 {
     enum Section: Int
     {
+        #if os(iOS)
         case controllers
         case controllerSkins
         case controllerOpacity
@@ -28,6 +29,11 @@ private extension SettingsViewController
         case threeDTouch
         case patreon
         case credits
+        #else
+        case controllers
+        case syncing
+        case credits
+        #endif
     }
     
     enum Segue: String
@@ -195,7 +201,9 @@ private extension SettingsViewController
     {
         switch section
         {
+            #if os(iOS)
         case .threeDTouch: return self.view.traitCollection.forceTouchCapability != .available
+            #endif
         default: return false
         }
     }
@@ -308,7 +316,9 @@ extension SettingsViewController
         switch section
         {
         case .controllers: return 1 // Temporarily hide other controller indexes until controller logic is finalized
+            #if os(iOS)
         case .controllerSkins: return System.registeredSystems.count
+            #endif
         case .syncing: return SyncManager.shared.coordinator?.account == nil ? 1 : super.tableView(tableView, numberOfRowsInSection: sectionIndex)
         default:
             if isSectionHidden(section)
@@ -344,8 +354,10 @@ extension SettingsViewController
                 cell.detailTextLabel?.text = nil
             }
             
+            #if os(iOS)
         case .controllerSkins:
             cell.textLabel?.text = System.registeredSystems[indexPath.row].localizedName
+            #endif
                         
         case .syncing:
             switch SyncingRow.allCases[indexPath.row]
@@ -357,8 +369,12 @@ extension SettingsViewController
                 
             case .service: break
             }
-            
+
+            #if os(iOS)
         case .controllerOpacity, .hapticFeedback, .threeDTouch, .patreon, .credits: break
+            #else
+        case .credits: break
+            #endif
         }
 
         return cell
@@ -372,10 +388,10 @@ extension SettingsViewController
         switch section
         {
         case .controllers: self.performSegue(withIdentifier: Segue.controllers.rawValue, sender: cell)
+        #if os(iOS)
         case .controllerSkins: self.performSegue(withIdentifier: Segue.controllerSkins.rawValue, sender: cell)
         case .controllerOpacity, .hapticFeedback, .threeDTouch, .syncing: break
         case .patreon:
-            #if os(iOS)
             let patreonURL = URL(string: "altstore://patreon")!
             
             UIApplication.shared.open(patreonURL, options: [:]) { (success) in
@@ -387,9 +403,11 @@ extension SettingsViewController
                 safariViewController.preferredControlTintColor = .deltaPurple
                 self.present(safariViewController, animated: true, completion: nil)
             }
-            #endif
             
             tableView.deselectRow(at: indexPath, animated: true)
+        #else
+        case .syncing: break
+        #endif
             
         case .credits:
             let row = CreditsRow(rawValue: indexPath.row)!

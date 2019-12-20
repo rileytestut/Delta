@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.AppleTV.Storyboard" version="3.0" toolsVersion="15505" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="49e-Tb-3d3">
-    <device id="appleTV" appearance="light"/>
+<document type="com.apple.InterfaceBuilder.AppleTV.Storyboard" version="3.0" toolsVersion="15505" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="XqJ-BQ-Dgn">
+    <device id="appleTV" appearance="dark"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--First-->
+        <!--Games-->
         <scene sceneID="hNz-n2-bh7">
             <objects>
                 <viewController id="9pv-A4-QxB" sceneMemberID="viewController">
@@ -40,15 +40,52 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="EDn-GT-5E5"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="First" image="first" id="acW-dT-cKf"/>
+                    <tabBarItem key="tabBarItem" title="Games" image="first" id="acW-dT-cKf"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W5J-7L-Pyd" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2246" y="-640"/>
+            <point key="canvasLocation" x="3680" y="-953"/>
         </scene>
-        <!--Second-->
+        <!--Game Collection View Controller-->
+        <scene sceneID="YZb-M5-NeY">
+            <objects>
+                <collectionViewController id="aFl-vD-VO0" customClass="GameCollectionViewController" customModule="DeltaTV" customModuleProvider="target" sceneMemberID="viewController">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="Kql-yP-tgj">
+                        <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="ddd-Ql-v4b">
+                            <size key="itemSize" width="50" height="50"/>
+                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        </collectionViewFlowLayout>
+                        <cells>
+                            <collectionViewCell opaque="NO" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Cell" id="97r-40-wU5" customClass="GridCollectionViewCell" customModule="DeltaTV" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="172" height="258"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                    <rect key="frame" x="0.0" y="0.0" width="172" height="258"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </collectionViewCellContentView>
+                            </collectionViewCell>
+                        </cells>
+                        <connections>
+                            <outlet property="dataSource" destination="aFl-vD-VO0" id="Jy6-p8-xUo"/>
+                            <outlet property="delegate" destination="aFl-vD-VO0" id="2Ye-dL-7WQ"/>
+                        </connections>
+                    </collectionView>
+                    <connections>
+                        <outlet property="tabBarObservedScrollView" destination="Kql-yP-tgj" id="5wr-z3-Z9L"/>
+                    </connections>
+                </collectionViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Psa-Db-fyS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6546" y="-172"/>
+        </scene>
+        <!--Settings-->
         <scene sceneID="wg7-f3-ORb">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4Nw-L8-lE0" sceneMemberID="firstResponder"/>
                 <viewController id="8rJ-Kc-sve" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="L7p-HK-0SC"/>
@@ -69,6 +106,13 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="h2b-jv-Hns">
+                                <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <connections>
+                                    <segue destination="ve3-WK-Dna" kind="embed" id="AXe-Hr-iLB"/>
+                                </connections>
+                            </containerView>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -79,16 +123,25 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Tzs-WY-Qt2"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Second" image="second" id="cPa-gy-q4n"/>
+                    <tabBarItem key="tabBarItem" title="Settings" image="SettingsButton" id="cPa-gy-q4n"/>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="4Nw-L8-lE0" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2246" y="624"/>
+            <point key="canvasLocation" x="3680" y="787"/>
         </scene>
-        <!--Tab Bar Controller-->
+        <!--Settings-->
+        <scene sceneID="eHz-bf-tgK">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="YOd-qh-neV" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <viewControllerPlaceholder storyboardName="Settings" id="ve3-WK-Dna" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Item" id="2QR-Z4-pzI"/>
+                </viewControllerPlaceholder>
+            </objects>
+            <point key="canvasLocation" x="4995" y="787"/>
+        </scene>
+        <!--DeltaTV Tab Bar Controller-->
         <scene sceneID="yl2-sM-qoP">
             <objects>
-                <tabBarController id="49e-Tb-3d3" sceneMemberID="viewController">
+                <tabBarController id="49e-Tb-3d3" customClass="DeltaTVTabBarController" customModule="DeltaTV" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBar key="tabBar" contentMode="scaleToFill" id="W28-zg-YXA">
                         <rect key="frame" x="0.0" y="0.0" width="1920" height="120"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
@@ -103,9 +156,69 @@
             </objects>
             <point key="canvasLocation" x="0.0" y="0.0"/>
         </scene>
+        <!--Launch View Controller-->
+        <scene sceneID="tyE-7B-GAz">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fO0-Rb-HeH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <viewController id="XqJ-BQ-Dgn" customClass="LaunchViewController" customModule="DeltaTV" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="0f1-ff-RZo"/>
+                        <viewControllerLayoutGuide type="bottom" id="0dW-9i-nsg"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="p7c-o8-nwR">
+                        <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UW6-IW-JSs">
+                                <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
+                                <connections>
+                                    <segue destination="q4M-i8-Odi" kind="embed" identifier="embedGameViewController" id="vl7-eE-T3M"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="UW6-IW-JSs" firstAttribute="leading" secondItem="p7c-o8-nwR" secondAttribute="leading" id="5ZI-8m-RBI"/>
+                            <constraint firstItem="UW6-IW-JSs" firstAttribute="top" secondItem="p7c-o8-nwR" secondAttribute="topMargin" constant="-60" id="DgP-8w-Wke"/>
+                            <constraint firstItem="UW6-IW-JSs" firstAttribute="centerY" secondItem="p7c-o8-nwR" secondAttribute="centerY" id="cg9-Yt-rRs"/>
+                            <constraint firstItem="UW6-IW-JSs" firstAttribute="centerX" secondItem="p7c-o8-nwR" secondAttribute="centerX" id="lW8-ni-R4S"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="C0K-Qa-McK"/>
+                    </view>
+                    <connections>
+                        <outlet property="gameViewContainerView" destination="UW6-IW-JSs" id="F3V-Z3-Mxe"/>
+                    </connections>
+                </viewController>
+            </objects>
+            <point key="canvasLocation" x="-3182" y="-3027"/>
+        </scene>
+        <!--Game View Controller-->
+        <scene sceneID="rAB-la-xM8">
+            <objects>
+                <viewController id="q4M-i8-Odi" customClass="GameViewController" customModule="DeltaTV" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="D7L-xZ-Gvq"/>
+                        <viewControllerLayoutGuide type="bottom" id="16a-FU-59h"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Nra-md-9la">
+                        <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="8d8-Ul-wav"/>
+                    </view>
+                    <connections>
+                        <segue destination="49e-Tb-3d3" kind="presentation" identifier="showInitialGamesViewController" customClass="InitialGamesStoryboardSegue" customModule="DeltaTV" customModuleProvider="target" id="eEy-vP-NF0"/>
+                        <segue destination="49e-Tb-3d3" kind="presentation" identifier="showGamesViewController" customClass="GamesStoryboardSegue" customModule="DeltaTV" customModuleProvider="target" id="7KG-Lj-QQf"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="moO-2u-mCR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3182" y="0.0"/>
+        </scene>
     </scenes>
     <resources>
+        <image name="SettingsButton" width="22" height="22"/>
         <image name="first" width="30" height="30"/>
-        <image name="second" width="30" height="30"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="7KG-Lj-QQf"/>
+    </inferredMetricsTieBreakers>
 </document>
