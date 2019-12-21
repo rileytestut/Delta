@@ -42,9 +42,17 @@ class GamesViewController: UIViewController
     }
     #endif
     
+    #if os(iOS)
     private var pageViewController: UIPageViewController!
+    #endif
     private var placeholderView: RSTPlaceholderView!
     private var pageControl: UIPageControl!
+    
+    #if os(tvOS)
+    @IBOutlet var systemsSegmentedControl: UISegmentedControl!
+    @IBOutlet var gamesContainerView: UIView!
+    var lastAddedGameViewController: GameCollectionViewController?
+    #endif
     
     private let fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>
     
@@ -78,6 +86,27 @@ class GamesViewController: UIViewController
         NotificationCenter.default.addObserver(self, selector: #selector(GamesViewController.syncingDidStart(_:)), name: SyncCoordinator.didStartSyncingNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GamesViewController.syncingDidFinish(_:)), name: SyncCoordinator.didFinishSyncingNotification, object: nil)
     }
+    
+    
+    @IBAction func systemsSegmentedControlValueChanged(_ sender: Any) {
+        let activeSystemShortName = systemsSegmentedControl.titleForSegment(at: systemsSegmentedControl.selectedSegmentIndex)
+        var selectedGameCollection: GameCollection?
+        
+        for gameC in getActiveGameCollections() {
+            if gameC.shortName == activeSystemShortName {
+                selectedGameCollection = gameC
+                break
+            }
+        }
+        
+        if let selectedGameCollection = selectedGameCollection {
+            let index = self.fetchedResultsController.fetchedObjects?.firstIndex(where: { $0 as! GameCollection == selectedGameCollection }) ?? 0
+            if let viewController = self.viewControllerForIndex(index)
+            {
+                loadGameViewControllerIntoContainer(viewController)
+            }
+        }
+    }
 }
 
 //MARK: - UIViewController -
@@ -91,7 +120,11 @@ extension GamesViewController
         self.placeholderView = RSTPlaceholderView(frame: self.view.bounds)
         self.placeholderView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.placeholderView.textLabel.text = NSLocalizedString("No Games", comment: "")
+        #if os(iOS)
         self.placeholderView.detailTextLabel.text = NSLocalizedString("You can import games by pressing the + button in the top right.", comment: "")
+        #elseif os(tvOS)
+        self.placeholderView.detailTextLabel.text = NSLocalizedString("You can import games by using a syncing service.", comment: "")
+        #endif
         self.view.insertSubview(self.placeholderView, at: 0)
         
         self.pageControl = UIPageControl()
@@ -170,10 +203,12 @@ extension GamesViewController
         switch identifier
         {
         case "embedPageViewController":
+            #if os(iOS) // tvOS uses a container view controller to display games
             self.pageViewController = segue.destination as? UIPageViewController
             self.pageViewController.dataSource = self
             self.pageViewController.delegate = self
             self.pageViewController.view.isHidden = true
+            #endif
         
             #if os(iOS) // tvOS uses a tab bar to get to settings
         case "showSettings":
@@ -221,11 +256,15 @@ private extension GamesViewController
             
             if self.searchController?.searchBar.text?.isEmpty == false
             {
+                #if os(iOS)
                 self.pageViewController.view.isHidden = true
+                #endif
             }
             else
             {
+                #if os(iOS)
                 self.pageViewController.view.isHidden = false
+                #endif
             }
             
             searchResultsController?.dataSource.predicate = searchValue.predicate
@@ -249,6 +288,7 @@ private extension GamesViewController
         case .translucent: self.view.backgroundColor = nil
         }
                 
+        #if os(iOS)
         if let viewControllers = self.pageViewController.viewControllers as? [GameCollectionViewController]
         {
             for collectionViewController in viewControllers
@@ -256,6 +296,11 @@ private extension GamesViewController
                 collectionViewController.theme = self.theme
             }
         }
+        #elseif os(tvOS)
+        if let viewController = self.lastAddedGameViewController {
+            viewController.theme = self.theme
+        }
+        #endif
     }
 }
 
@@ -287,11 +332,19 @@ private extension GamesViewController
     
     func updateSections(animated: Bool)
     {
+        #if os(tvOS)
+        systemsSegmentedControl.removeAllSegments()
+        for gameC in getActiveGameCollections() {
+            systemsSegmentedControl.insertSegment(withTitle: gameC.shortName, at: systemsSegmentedControl.numberOfSegments, animated: false)
+        }
+        #endif
+        
         let sections = self.fetchedResultsController.sections?.first?.numberOfObjects ?? 0
         self.pageControl.numberOfPages = sections
         
         var resetPageViewController = false
         
+        #if os(iOS)
         if let viewController = self.pageViewController.viewControllers?.first as? GameCollectionViewController, let gameCollection = viewController.gameCollection
         {
             if let index = self.fetchedResultsController.fetchedObjects?.firstIndex(where: { $0 as! GameCollection == gameCollection })
@@ -312,12 +365,12 @@ private extension GamesViewController
             resetPageViewController = true
         }
         
-        #if os(iOS)
         self.navigationController?.setToolbarHidden(sections < 2, animated: animated)
         #endif
         
         if sections > 0
         {
+            #if os(iOS)
             // Reset page view controller if currently hidden or current child should view controller no longer exists
             if self.pageViewController.view.isHidden || resetPageViewController
             {
@@ -346,12 +399,38 @@ private extension GamesViewController
             {
                 self.pageViewController.setViewControllers(self.pageViewController.viewControllers, direction: .forward, animated: false, completion: nil)
             }
+            #elseif os(tvOS)
+            var index = 0
+            
+            if let gameCollection = Settings.previousGameCollection
+            {
+                if let gameCollectionIndex = self.fetchedResultsController.fetchedObjects?.firstIndex(where: { $0 as! GameCollection == gameCollection })
+                {
+                    index = gameCollectionIndex
+                }
+                
+                for segmentIndex in 0..<systemsSegmentedControl.numberOfSegments {
+                    let activeSystemShortName = systemsSegmentedControl.titleForSegment(at: segmentIndex)
+                    if gameCollection.shortName == activeSystemShortName {
+                        systemsSegmentedControl.selectedSegmentIndex = segmentIndex
+                        break
+                    }
+                }
+            }
+            
+            if let viewController = self.viewControllerForIndex(index)
+            {
+                loadGameViewControllerIntoContainer(viewController)
+            }
+            #endif
         }
         else
         {
             self.title = NSLocalizedString("Games", comment: "")
             
+            #if os(iOS)
             self.pageViewController.view.setHidden(true, animated: animated)
+            #endif
             self.placeholderView.setHidden(false, animated: animated)
         }
     }
@@ -564,12 +643,16 @@ extension GamesViewController: UISearchResultsUpdating
     func updateSearchResults(for searchController: UISearchController)
     {
         if searchController.searchBar.text?.isEmpty == false
-        {            
+        {
+            #if os(iOS)
             self.pageViewController.view.isHidden = true
+            #endif
         }
         else
         {
+            #if os(iOS)
             self.pageViewController.view.isHidden = false
+            #endif
         }
     }
 }
@@ -591,3 +674,73 @@ extension GamesViewController: UIAdaptivePresentationControllerDelegate
         self.sync()
     }
 }
+
+//MARK: ChildViewController methods -
+#if os(tvOS)
+extension GamesViewController {
+    
+    func getActiveGameCollections() -> [GameCollection] {
+        
+        var activeCollections = [GameCollection]()
+        let sections = self.fetchedResultsController.sections?.first?.numberOfObjects ?? 0
+
+        for section in 0..<sections {
+        
+            var safeIndex = section % sections
+            if safeIndex < 0
+            {
+                safeIndex = sections + safeIndex
+            }
+            
+            let indexPath = IndexPath(row: safeIndex, section: 0)
+            if let gameC = self.fetchedResultsController.object(at: indexPath) as? GameCollection {
+                activeCollections.append(gameC)
+            }
+            
+        }
+        
+        return activeCollections
+    }
+    
+    func loadGameViewControllerIntoContainer(_ viewController: GameCollectionViewController) {
+        if let oldView = lastAddedGameViewController {
+           remove(asChildViewController: oldView)
+        }
+        lastAddedGameViewController = viewController
+        Settings.previousGameCollection = viewController.gameCollection
+        add(asChildViewController: viewController)
+        
+        self.placeholderView.setHidden(viewController.gameCollection?.games.count ?? 0 > 0, animated: true)
+   }
+
+    fileprivate func add(asChildViewController viewController: UIViewController) {
+        // Add Child View Controller
+        addChild(viewController) // MAYYYYBBBBEEEE?????
+        
+        // Add Child View as Subview
+        gamesContainerView.addSubview(viewController.view)
+        
+        // Configure Child View
+        viewController.view.frame = gamesContainerView.bounds
+        viewController.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        
+        // Notify Child View Controller
+        viewController.didMove(toParent: self) // MAYYYYYYBE????
+    }
+    
+    private func remove(asChildViewController viewController: UIViewController) {
+        // Notify Child View Controller
+        viewController.willMove(toParent: nil)
+        
+        // Remove Child View From Superview
+        viewController.view.removeFromSuperview()
+        
+        // Notify Child View Controller
+        viewController.removeFromParent()
+        
+        viewController.didMove(toParent: nil) // this is in my app, is it needed??
+    }
+    
+}
+
+#endif

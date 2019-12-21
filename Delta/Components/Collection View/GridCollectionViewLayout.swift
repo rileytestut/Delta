@@ -50,11 +50,13 @@ class GridCollectionViewLayout: UICollectionViewFlowLayout
         return interitemSpacing
     }
     
+    #if os(iOS) // this is always called (and therefore crashes) on tvOS, not sure why
     override var estimatedItemSize: CGSize {
         didSet {
             fatalError("GridCollectionViewLayout does not support self-sizing cells.")
         }
     }
+    #endif
     
     override func prepare()
     {

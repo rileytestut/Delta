@@ -11,7 +11,7 @@
         <!--Games-->
         <scene sceneID="hNz-n2-bh7">
             <objects>
-                <viewController id="9pv-A4-QxB" sceneMemberID="viewController">
+                <viewController id="9pv-A4-QxB" customClass="GamesViewController" customModule="DeltaTV" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Ia1-K6-d13"/>
                         <viewControllerLayoutGuide type="bottom" id="4ug-Mw-9AY"/>
@@ -20,28 +20,37 @@
                         <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="First View" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="KQZ-1w-vlD">
-                                <rect key="frame" x="884.5" y="518.5" width="151" height="43"/>
-                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="36"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loaded by FirstViewController" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A5M-7J-77L">
-                                <rect key="frame" x="862.5" y="569.5" width="195" height="17"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6MS-fG-sEQ">
+                                <rect key="frame" x="90" y="271" width="1740" height="749"/>
+                            </containerView>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="sBL-Xf-TXw">
+                                <rect key="frame" x="785" y="157" width="350" height="70"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.10000000000000001" colorSpace="calibratedWhite"/>
+                                <segments>
+                                    <segment title="First"/>
+                                    <segment title="Second"/>
+                                </segments>
+                                <connections>
+                                    <action selector="systemsSegmentedControlValueChanged:" destination="9pv-A4-QxB" eventType="valueChanged" id="VVn-e8-bGX"/>
+                                </connections>
+                            </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="centerX" secondItem="KQZ-1w-vlD" secondAttribute="centerX" id="6BV-lF-sBN"/>
-                            <constraint firstItem="A5M-7J-77L" firstAttribute="top" secondItem="KQZ-1w-vlD" secondAttribute="bottom" constant="8" symbolic="YES" id="cfb-er-3JN"/>
-                            <constraint firstItem="A5M-7J-77L" firstAttribute="centerX" secondItem="KQZ-1w-vlD" secondAttribute="centerX" id="e1l-AV-tCB"/>
-                            <constraint firstAttribute="centerY" secondItem="KQZ-1w-vlD" secondAttribute="centerY" id="exm-UA-ej4"/>
+                            <constraint firstItem="4ug-Mw-9AY" firstAttribute="top" secondItem="6MS-fG-sEQ" secondAttribute="bottom" id="AIZ-fK-A6y"/>
+                            <constraint firstItem="EDn-GT-5E5" firstAttribute="trailing" secondItem="6MS-fG-sEQ" secondAttribute="trailing" id="CfP-T4-lAs"/>
+                            <constraint firstItem="sBL-Xf-TXw" firstAttribute="top" secondItem="Ia1-K6-d13" secondAttribute="bottom" id="RPb-la-JDb"/>
+                            <constraint firstItem="sBL-Xf-TXw" firstAttribute="centerX" secondItem="EDn-GT-5E5" secondAttribute="centerX" id="Y2V-VE-m7P"/>
+                            <constraint firstItem="6MS-fG-sEQ" firstAttribute="top" secondItem="sBL-Xf-TXw" secondAttribute="bottom" constant="45" id="hST-ho-LEM"/>
+                            <constraint firstItem="6MS-fG-sEQ" firstAttribute="leading" secondItem="EDn-GT-5E5" secondAttribute="leading" id="lLe-Sy-kuB"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="EDn-GT-5E5"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Games" image="first" id="acW-dT-cKf"/>
+                    <connections>
+                        <outlet property="gamesContainerView" destination="6MS-fG-sEQ" id="Y90-MG-VRW"/>
+                        <outlet property="systemsSegmentedControl" destination="sBL-Xf-TXw" id="hvk-rF-w86"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W5J-7L-Pyd" sceneMemberID="firstResponder"/>
             </objects>
@@ -50,11 +59,11 @@
         <!--Game Collection View Controller-->
         <scene sceneID="YZb-M5-NeY">
             <objects>
-                <collectionViewController id="aFl-vD-VO0" customClass="GameCollectionViewController" customModule="DeltaTV" customModuleProvider="target" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="Kql-yP-tgj">
+                <collectionViewController storyboardIdentifier="gameCollectionViewController" id="aFl-vD-VO0" customClass="GameCollectionViewController" customModule="DeltaTV" customModuleProvider="target" sceneMemberID="viewController">
+                    <collectionView key="view" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="Kql-yP-tgj">
                         <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="ddd-Ql-v4b">
+                        <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="ddd-Ql-v4b" customClass="GridCollectionViewLayout" customModule="DeltaTV" customModuleProvider="target">
                             <size key="itemSize" width="50" height="50"/>
                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
@@ -77,11 +86,13 @@
                     </collectionView>
                     <connections>
                         <outlet property="tabBarObservedScrollView" destination="Kql-yP-tgj" id="5wr-z3-Z9L"/>
+                        <segue destination="9aY-sK-eWW" kind="unwind" identifier="unwindFromGames" unwindAction="unwindFromGamesViewControllerWith:" id="9ED-1b-uG3"/>
                     </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Psa-Db-fyS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="9aY-sK-eWW" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="6546" y="-172"/>
+            <point key="canvasLocation" x="6139" y="-953"/>
         </scene>
         <!--DeltaTV Tab Bar Controller-->
         <scene sceneID="yl2-sM-qoP">
@@ -166,7 +177,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FV0-29-7Nb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5761" y="2226"/>
+            <point key="canvasLocation" x="2762" y="0.0"/>
         </scene>
     </scenes>
     <resources>
