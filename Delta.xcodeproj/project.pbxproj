@@ -196,6 +196,7 @@
 		CAB0FD3B23AE0271003ABCC0 /* Roxas.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFEC732C1AAECC4A00650035 /* Roxas.framework */; };
 		CAB0FD3C23AE0271003ABCC0 /* Roxas.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BFEC732C1AAECC4A00650035 /* Roxas.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CAB6425B23AD9BFF00F9AF02 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CAB6425923AD9BFF00F9AF02 /* Settings.storyboard */; };
+		CAC125A223AE2AB500FDE0EA /* PausePresentationControllerContentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CAC125A123AE2AB400FDE0EA /* PausePresentationControllerContentView.xib */; };
 		CACEABD723A4DFC2002F8B6E /* Harmony_Dropbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CACEABD423A4DFC2002F8B6E /* Harmony_Dropbox.framework */; };
 		CACEABD823A4DFC2002F8B6E /* Harmony_Dropbox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CACEABD423A4DFC2002F8B6E /* Harmony_Dropbox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CACEABE423A4E0F2002F8B6E /* SwiftyDropbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CACEABE323A4E0F2002F8B6E /* SwiftyDropbox.framework */; };
@@ -545,6 +546,7 @@
 		CA942B3F23A4DA9E002DFFF2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CA942B4523A4DB39002DFFF2 /* DeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CAB6425A23AD9BFF00F9AF02 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Settings.storyboard; sourceTree = "<group>"; };
+		CAC125A123AE2AB400FDE0EA /* PausePresentationControllerContentView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PausePresentationControllerContentView.xib; sourceTree = "<group>"; };
 		CACEABD323A4DFC2002F8B6E /* Harmony.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Harmony.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CACEABD423A4DFC2002F8B6E /* Harmony_Dropbox.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Harmony_Dropbox.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CACEABD923A4DFC8002F8B6E /* Roxas.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Roxas.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1111,13 +1113,14 @@
 		CA942B3023A4DA9D002DFFF2 /* DeltaTV */ = {
 			isa = PBXGroup;
 			children = (
-				CAB6425923AD9BFF00F9AF02 /* Settings.storyboard */,
 				CA942B3723A4DA9D002DFFF2 /* Main.storyboard */,
-				CA942B3C23A4DA9E002DFFF2 /* LaunchScreen.storyboard */,
+				CAB6425923AD9BFF00F9AF02 /* Settings.storyboard */,
 				CA6B569B23AD4D350048A064 /* PauseMenu.storyboard */,
+				CA942B3C23A4DA9E002DFFF2 /* LaunchScreen.storyboard */,
 				CA942B3A23A4DA9E002DFFF2 /* Assets.xcassets */,
 				CA942B3F23A4DA9E002DFFF2 /* Info.plist */,
 				CA6B569D23AD6B020048A064 /* DeltaTVTabBarController.swift */,
+				CAC125A123AE2AB400FDE0EA /* PausePresentationControllerContentView.xib */,
 			);
 			path = DeltaTV;
 			sourceTree = "<group>";
@@ -1262,6 +1265,7 @@
 				CA6B569C23AD4D350048A064 /* PauseMenu.storyboard in Resources */,
 				CACEAC8223A8403E002F8B6E /* Assets.xcassets in Resources */,
 				CAB6425B23AD9BFF00F9AF02 /* Settings.storyboard in Resources */,
+				CAC125A223AE2AB500FDE0EA /* PausePresentationControllerContentView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

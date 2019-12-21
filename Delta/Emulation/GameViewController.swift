@@ -143,6 +143,14 @@ class GameViewController: DeltaCore.GameViewController
     }
     #endif
     
+    #if os(tvOS)
+    lazy var menuTapGestureRecognizer: UITapGestureRecognizer = {
+        let menuGesture = UITapGestureRecognizer(target: self, action: #selector(GameViewController.handleMenuGesture(_:)))
+        menuGesture.allowedPressTypes = [NSNumber(value: UIPress.PressType.menu.rawValue)]
+        return menuGesture
+    }()
+    #endif
+    
     required init()
     {
         super.init()
@@ -284,6 +292,30 @@ extension GameViewController
         
         self.updateControllerSkin()
         self.updateControllers()
+        
+        #if os(tvOS)
+        self.view.addGestureRecognizer(menuTapGestureRecognizer)
+        #endif
+    }
+    
+    @objc func handleMenuGesture(_ tap: UITapGestureRecognizer)
+    {
+        // copied from "func gameViewController(_ gameViewController: DeltaCore.GameViewController, handleMenuInputFrom gameController: GameController)", try to reuse later
+        
+        if self.isSelectingSustainedButtons
+        {
+            self.hideSustainButtonView()
+        }
+        
+        if let pauseViewController = self.pauseViewController, !self.isSelectingSustainedButtons
+        {
+            pauseViewController.dismiss()
+        }
+        else if self.presentedViewController == nil
+        {
+            self.pauseEmulation()
+            self.performSegue(withIdentifier: "pause", sender: self) // double check that sender is ok
+        }
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator)

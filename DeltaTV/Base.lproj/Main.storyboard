@@ -21,7 +21,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6MS-fG-sEQ">
-                                <rect key="frame" x="90" y="271" width="1740" height="749"/>
+                                <rect key="frame" x="90" y="274" width="1740" height="746"/>
                             </containerView>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="sBL-Xf-TXw">
                                 <rect key="frame" x="785" y="157" width="350" height="70"/>
@@ -41,7 +41,7 @@
                             <constraint firstItem="EDn-GT-5E5" firstAttribute="trailing" secondItem="6MS-fG-sEQ" secondAttribute="trailing" id="CfP-T4-lAs"/>
                             <constraint firstItem="sBL-Xf-TXw" firstAttribute="top" secondItem="Ia1-K6-d13" secondAttribute="bottom" id="RPb-la-JDb"/>
                             <constraint firstItem="sBL-Xf-TXw" firstAttribute="centerX" secondItem="EDn-GT-5E5" secondAttribute="centerX" id="Y2V-VE-m7P"/>
-                            <constraint firstItem="6MS-fG-sEQ" firstAttribute="top" secondItem="sBL-Xf-TXw" secondAttribute="bottom" constant="45" id="hST-ho-LEM"/>
+                            <constraint firstItem="6MS-fG-sEQ" firstAttribute="top" secondItem="sBL-Xf-TXw" secondAttribute="bottom" constant="48" id="hST-ho-LEM"/>
                             <constraint firstItem="6MS-fG-sEQ" firstAttribute="leading" secondItem="EDn-GT-5E5" secondAttribute="leading" id="lLe-Sy-kuB"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="EDn-GT-5E5"/>
@@ -163,11 +163,20 @@
                     <connections>
                         <segue destination="49e-Tb-3d3" kind="presentation" identifier="showInitialGamesViewController" customClass="InitialGamesStoryboardSegue" customModule="DeltaTV" customModuleProvider="target" id="eEy-vP-NF0"/>
                         <segue destination="49e-Tb-3d3" kind="presentation" identifier="showGamesViewController" customClass="GamesStoryboardSegue" customModule="DeltaTV" customModuleProvider="target" id="7KG-Lj-QQf"/>
+                        <segue destination="XYc-Ti-ksB" kind="presentation" identifier="pause" customClass="PauseStoryboardSegue" customModule="DeltaTV" customModuleProvider="target" id="fdH-Wf-LFV"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="moO-2u-mCR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-3182" y="0.0"/>
+        </scene>
+        <!--PauseMenu-->
+        <scene sceneID="pVC-cn-Vza">
+            <objects>
+                <viewControllerPlaceholder storyboardName="PauseMenu" id="XYc-Ti-ksB" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="XsB-Lh-oXg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3182" y="1093"/>
         </scene>
         <!--Settings-->
         <scene sceneID="Ygv-ED-khA">

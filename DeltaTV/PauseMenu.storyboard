@@ -1,7 +1,115 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder.AppleTV.Storyboard" version="3.0" toolsVersion="13142" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder.AppleTV.Storyboard" version="3.0" toolsVersion="15505" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="q9o-cK-3MW">
+    <device id="appleTV" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12042"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="collection view cell content view" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
-    <scenes/>
+    <scenes>
+        <!--Pause View Controller-->
+        <scene sceneID="fjW-bQ-Zyv">
+            <objects>
+                <viewController id="q9o-cK-3MW" customClass="PauseViewController" customModule="DeltaTV" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="z66-aR-rkf"/>
+                        <viewControllerLayoutGuide type="bottom" id="ZbZ-qs-eMK"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="g4e-jL-s7W">
+                        <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hdq-rb-NB1">
+                                <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="eJT-iL-zdM" userLabel="Blur Content View">
+                                    <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="25X-Ta-FNU">
+                                            <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
+                                            <connections>
+                                                <segue destination="8y0-6h-XZg" kind="embed" id="zDN-CM-pay"/>
+                                            </connections>
+                                        </containerView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="25X-Ta-FNU" secondAttribute="trailing" id="DCB-p7-mcE"/>
+                                        <constraint firstItem="25X-Ta-FNU" firstAttribute="leading" secondItem="eJT-iL-zdM" secondAttribute="leading" id="Qcg-XQ-6me"/>
+                                        <constraint firstAttribute="bottom" secondItem="25X-Ta-FNU" secondAttribute="bottom" id="cV5-OH-y14"/>
+                                        <constraint firstItem="25X-Ta-FNU" firstAttribute="top" secondItem="eJT-iL-zdM" secondAttribute="top" id="n7J-Kl-IW5"/>
+                                    </constraints>
+                                </view>
+                                <blurEffect style="dark"/>
+                            </visualEffectView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="hdq-rb-NB1" firstAttribute="top" secondItem="g4e-jL-s7W" secondAttribute="top" id="0j4-Th-OWc"/>
+                            <constraint firstAttribute="trailing" secondItem="hdq-rb-NB1" secondAttribute="trailing" id="8eo-Kn-4Fd"/>
+                            <constraint firstItem="hdq-rb-NB1" firstAttribute="leading" secondItem="g4e-jL-s7W" secondAttribute="leading" id="gtW-ZL-r7u"/>
+                            <constraint firstAttribute="bottom" secondItem="hdq-rb-NB1" secondAttribute="bottom" id="pjD-6O-Sbu"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="uQD-Uv-geN"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="j4o-yS-u92" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-672" y="-350"/>
+        </scene>
+        <!--Paused-->
+        <scene sceneID="ZUh-zS-0Kq">
+            <objects>
+                <collectionViewController id="ZPZ-Su-Tug" customClass="GridMenuViewController" customModule="DeltaTV" customModuleProvider="target" sceneMemberID="viewController">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="160-44-gU7">
+                        <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="IIb-OR-lmH" customClass="GridCollectionViewLayout" customModule="DeltaTV" customModuleProvider="target">
+                            <size key="itemSize" width="50" height="50"/>
+                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        </collectionViewFlowLayout>
+                        <cells>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Cell" id="mNV-u8-kOK" customClass="GridCollectionViewCell" customModule="DeltaTV" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="50" height="258"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="yyt-Y8-wq2">
+                                    <rect key="frame" x="0.0" y="0.0" width="50" height="258"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </collectionViewCellContentView>
+                            </collectionViewCell>
+                        </cells>
+                        <connections>
+                            <outlet property="dataSource" destination="ZPZ-Su-Tug" id="PWn-1p-EGt"/>
+                            <outlet property="delegate" destination="ZPZ-Su-Tug" id="rFD-WP-cY6"/>
+                        </connections>
+                    </collectionView>
+                    <navigationItem key="navigationItem" title="Paused" id="sqp-wL-3pZ"/>
+                    <connections>
+                        <outlet property="tabBarObservedScrollView" destination="160-44-gU7" id="Bpf-AE-7NS"/>
+                    </connections>
+                </collectionViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dtC-Du-6Kr" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3897" y="-350"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="erH-TH-Tk6">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="8y0-6h-XZg" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="uFC-wl-Bnu">
+                        <rect key="frame" x="0.0" y="60" width="1920" height="145"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="ZPZ-Su-Tug" kind="relationship" relationship="rootViewController" id="1ld-UI-NTO"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="PXZ-LO-8KY" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1611" y="-350"/>
+        </scene>
+    </scenes>
 </document>
