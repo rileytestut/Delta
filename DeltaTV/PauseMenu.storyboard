@@ -51,8 +51,12 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="uQD-Uv-geN"/>
                     </view>
+                    <connections>
+                        <segue destination="234-Hx-3Qe" kind="unwind" identifier="unwindFromPauseMenu" unwindAction="unwindFromPauseViewController:" id="Lr9-TZ-oY9"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="j4o-yS-u92" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="234-Hx-3Qe" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="-672" y="-350"/>
         </scene>
@@ -87,9 +91,11 @@
                     <navigationItem key="navigationItem" title="Paused" id="sqp-wL-3pZ"/>
                     <connections>
                         <outlet property="tabBarObservedScrollView" destination="160-44-gU7" id="Bpf-AE-7NS"/>
+                        <segue destination="i5D-OE-whz" kind="unwind" identifier="unwindFromPauseMenu" unwindAction="unwindFromPauseViewController:" id="zZt-P3-7Zo"/>
                     </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dtC-Du-6Kr" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="i5D-OE-whz" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="3897" y="-350"/>
         </scene>

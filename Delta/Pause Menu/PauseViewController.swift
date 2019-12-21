@@ -67,11 +67,24 @@ class PauseViewController: UIViewController, PauseInfoProviding
     }
     #endif
     
+    #if os(tvOS)
+    lazy var menuTapGestureRecognizer: UITapGestureRecognizer = {
+        let menuGesture = UITapGestureRecognizer(target: self, action: #selector(PauseViewController.handleMenuGesture(_:)))
+        menuGesture.allowedPressTypes = [NSNumber(value: UIPress.PressType.menu.rawValue)]
+        return menuGesture
+    }()
+    #endif
+    
     override func viewDidLayoutSubviews()
     {
         super.viewDidLayoutSubviews()
         
         self.updateSafeAreaInsets()
+        
+        #if os(tvOS)
+        self.view.removeGestureRecognizer(menuTapGestureRecognizer)
+        self.view.addGestureRecognizer(menuTapGestureRecognizer)
+        #endif
     }
 }
 
@@ -96,6 +109,7 @@ extension PauseViewController
             
             let gridMenuViewController = self.pauseNavigationController.topViewController as! GridMenuViewController
             
+            #if os(iOS)
             if #available(iOS 13.0, *)
             {
                 let navigationBarAppearance = self.pauseNavigationController.navigationBar.standardAppearance.copy()
@@ -110,6 +124,7 @@ extension PauseViewController
                 transparentBarAppearance.backgroundEffect = nil
                 gridMenuViewController.navigationItem.standardAppearance = transparentBarAppearance
             }
+            #endif
             
             gridMenuViewController.items = self.pauseItems
             
@@ -135,6 +150,11 @@ extension PauseViewController
     func dismiss()
     {
         self.performSegue(withIdentifier: "unwindFromPauseMenu", sender: self)
+    }
+    
+    @objc func handleMenuGesture(_ tap: UITapGestureRecognizer)
+    {
+        dismiss() // may be better to go back to main? Or maybe add option to return to main in pause menu. Yeahhh
     }
 }
 
