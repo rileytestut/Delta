@@ -29,7 +29,7 @@
                                         <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="25X-Ta-FNU">
                                             <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
                                             <connections>
-                                                <segue destination="8y0-6h-XZg" kind="embed" id="zDN-CM-pay"/>
+                                                <segue destination="8y0-6h-XZg" kind="embed" identifier="embedNavigationController" id="zDN-CM-pay"/>
                                             </connections>
                                         </containerView>
                                     </subviews>

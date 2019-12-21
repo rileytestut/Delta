@@ -314,7 +314,7 @@ extension GameViewController
         else if self.presentedViewController == nil
         {
             self.pauseEmulation()
-            self.performSegue(withIdentifier: "pause", sender: self) // double check that sender is ok
+            self.performSegue(withIdentifier: "pause", sender: self.controllerView)
         }
     }
     
