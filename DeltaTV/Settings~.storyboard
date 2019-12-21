@@ -160,7 +160,6 @@
         <!--Settings View Controller-->
         <scene sceneID="5el-P3-1j5">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="RSs-T1-7n9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <tableViewController id="rfX-Nb-E8E" customClass="SettingsViewController" customModule="DeltaTV" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="-1" sectionHeaderHeight="7" sectionFooterHeight="7" id="mIK-YU-rAg">
                         <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
@@ -346,10 +345,10 @@
                             <tableViewSection headerTitle="Credits" id="cVq-YH-Whf">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="DetailCell" id="8Ry-N2-lDu">
-                                        <rect key="frame" x="106" y="800" width="1708" height="66"/>
+                                        <rect key="frame" x="0.0" y="800" width="1708" height="66"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="8Ry-N2-lDu" id="vMl-Il-Rtz">
-                                            <rect key="frame" x="0.0" y="0.0" width="1668" height="66"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="1680" height="66"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Riley Testut" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Hm-oM-D4W">
@@ -370,10 +369,10 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="DetailCell" id="CJG-N9-NjW">
-                                        <rect key="frame" x="106" y="880" width="1708" height="66"/>
+                                        <rect key="frame" x="0.0" y="880" width="1708" height="66"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="CJG-N9-NjW" id="taa-Nm-P1T">
-                                            <rect key="frame" x="0.0" y="0.0" width="1668" height="66"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="1680" height="66"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Caroline Moore" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F3n-UZ-zdf">
@@ -394,10 +393,10 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="DetailCell" id="mOV-Ny-xxM">
-                                        <rect key="frame" x="106" y="960" width="1708" height="66"/>
+                                        <rect key="frame" x="0.0" y="960" width="1708" height="66"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="mOV-Ny-xxM" id="Blh-b6-vRt">
-                                            <rect key="frame" x="0.0" y="0.0" width="1668" height="66"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="1680" height="66"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Grant Gliner" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xLo-u3-MEw">
@@ -434,7 +433,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="py7-YS-PIR" kind="presentation" id="wKK-V5-cB3"/>
+                                            <segue destination="o54-GE-9Q6" kind="show" id="wKK-V5-cB3"/>
                                         </connections>
                                     </tableViewCell>
                                 </cells>
@@ -452,14 +451,14 @@
                         <outlet property="versionLabel" destination="aao-Wc-Oir" id="Mj7-Ay-SfR"/>
                     </connections>
                 </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="RSs-T1-7n9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="7893" y="2226"/>
         </scene>
-        <!--Licenses-->
+        <!--View Controller-->
         <scene sceneID="s4P-Ob-hPY">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="F3G-cZ-ckE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-                <viewController id="o54-GE-9Q6" customClass="LicensesViewController" customModule="DeltaTV" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="o54-GE-9Q6" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="pxr-Z5-1uB"/>
                         <viewControllerLayoutGuide type="bottom" id="gRW-jP-nfy"/>
@@ -568,16 +567,13 @@ Delta uses OpenVGDB to provide automatic artwork for imported games.</mutableStr
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                         </subviews>
-                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <viewLayoutGuide key="safeArea" id="wbN-Aw-mQT"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Licenses" id="ISm-fv-SYU"/>
-                    <connections>
-                        <outlet property="textView" destination="YRw-wj-ySA" id="PNw-fj-b6G"/>
-                    </connections>
+                    <navigationItem key="navigationItem" id="ISm-fv-SYU"/>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="F3G-cZ-ckE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="10766" y="4659"/>
+            <point key="canvasLocation" x="8634" y="4659"/>
         </scene>
         <!--Settings-->
         <scene sceneID="5Aw-m6-Zle">
@@ -597,24 +593,6 @@ Delta uses OpenVGDB to provide automatic artwork for imported games.</mutableStr
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PR9-FZ-p8f" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="5761" y="2226"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="14l-LT-gss">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="py7-YS-PIR" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="geK-x9-ceP">
-                        <rect key="frame" x="0.0" y="60" width="1920" height="145"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="o54-GE-9Q6" kind="relationship" relationship="rootViewController" id="5z8-2D-0BF"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="jNO-hK-d5U" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="8634" y="4659"/>
         </scene>
     </scenes>
     <resources>

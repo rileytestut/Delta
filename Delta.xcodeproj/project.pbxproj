@@ -183,9 +183,10 @@
 		CA6B568B23AA08750048A064 /* _ControllerSkin.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5942821E09BC8B0051894B /* _ControllerSkin.swift */; };
 		CA6B569623AA8AE10048A064 /* GBADeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA6B569523AA8AE10048A064 /* GBADeltaCore.framework */; };
 		CA6B569723AA8AE10048A064 /* GBADeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CA6B569523AA8AE10048A064 /* GBADeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		CA6B569A23AD4CEC0048A064 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CA6B569923AD4CEC0048A064 /* Settings.storyboard */; };
 		CA6B569C23AD4D350048A064 /* PauseMenu.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CA6B569B23AD4D350048A064 /* PauseMenu.storyboard */; };
 		CA6B569E23AD6B020048A064 /* DeltaTVTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6B569D23AD6B020048A064 /* DeltaTVTabBarController.swift */; };
+		CA6B56AC23AD8C5A0048A064 /* UIApplication+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6B56AB23AD8C5A0048A064 /* UIApplication+Extensions.swift */; };
+		CA6B56AD23AD8C5A0048A064 /* UIApplication+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6B56AB23AD8C5A0048A064 /* UIApplication+Extensions.swift */; };
 		CA942B3923A4DA9D002DFFF2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CA942B3723A4DA9D002DFFF2 /* Main.storyboard */; };
 		CA942B3B23A4DA9E002DFFF2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA942B3A23A4DA9E002DFFF2 /* Assets.xcassets */; };
 		CA942B3E23A4DA9E002DFFF2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CA942B3C23A4DA9E002DFFF2 /* LaunchScreen.storyboard */; };
@@ -530,9 +531,9 @@
 		CA6B568523AA03320048A064 /* Alamofire.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Alamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA6B568823AA08270048A064 /* Harmony_Drive.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Harmony_Drive.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA6B569523AA8AE10048A064 /* GBADeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = GBADeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		CA6B569923AD4CEC0048A064 /* Settings.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
 		CA6B569B23AD4D350048A064 /* PauseMenu.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = PauseMenu.storyboard; sourceTree = "<group>"; };
 		CA6B569D23AD6B020048A064 /* DeltaTVTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeltaTVTabBarController.swift; sourceTree = "<group>"; };
+		CA6B56AB23AD8C5A0048A064 /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
 		CA942B2F23A4DA9D002DFFF2 /* DeltaTV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DeltaTV.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA942B3823A4DA9D002DFFF2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		CA942B3A23A4DA9E002DFFF2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -625,6 +626,7 @@
 				BFFBD3D8224A0756002EFC79 /* URL+ExtendedAttributes.swift */,
 				BF647A6922FB8FCE0061D76D /* Bundle+SwizzleBundleID.swift */,
 				BFD1EF3F2336BD8800D197CF /* UIDevice+Processor.swift */,
+				CA6B56AB23AD8C5A0048A064 /* UIApplication+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1103,9 +1105,8 @@
 		CA942B3023A4DA9D002DFFF2 /* DeltaTV */ = {
 			isa = PBXGroup;
 			children = (
-				CA942B3C23A4DA9E002DFFF2 /* LaunchScreen.storyboard */,
 				CA942B3723A4DA9D002DFFF2 /* Main.storyboard */,
-				CA6B569923AD4CEC0048A064 /* Settings.storyboard */,
+				CA942B3C23A4DA9E002DFFF2 /* LaunchScreen.storyboard */,
 				CA6B569B23AD4D350048A064 /* PauseMenu.storyboard */,
 				CA942B3A23A4DA9E002DFFF2 /* Assets.xcassets */,
 				CA942B3F23A4DA9E002DFFF2 /* Info.plist */,
@@ -1250,7 +1251,6 @@
 				CACEAC8123A84039002F8B6E /* openvgdb.sqlite in Resources */,
 				CA942B3E23A4DA9E002DFFF2 /* LaunchScreen.storyboard in Resources */,
 				CA942B3B23A4DA9E002DFFF2 /* Assets.xcassets in Resources */,
-				CA6B569A23AD4CEC0048A064 /* Settings.storyboard in Resources */,
 				CA942B3923A4DA9D002DFFF2 /* Main.storyboard in Resources */,
 				CA6B569C23AD4D350048A064 /* PauseMenu.storyboard in Resources */,
 				CACEAC8223A8403E002F8B6E /* Assets.xcassets in Resources */,
@@ -1457,6 +1457,7 @@
 				BF8A333421A484A000A42FD4 /* BadgedTableViewCell.swift in Sources */,
 				BF3540021C5DA3D500C1184C /* PauseStoryboardSegue.swift in Sources */,
 				BF107EC41BF413F000E0C32C /* GamesViewController.swift in Sources */,
+				CA6B56AC23AD8C5A0048A064 /* UIApplication+Extensions.swift in Sources */,
 				BF3D6C512202865F0083E05A /* Delta2ToDelta3.xcmappingmodel in Sources */,
 				BF59426F1E09BC5D0051894B /* DatabaseManager.swift in Sources */,
 				BF4828861F9028F500028B97 /* System.swift in Sources */,
@@ -1564,6 +1565,7 @@
 				CACEABFE23A4E2E5002F8B6E /* SettingsViewController.swift in Sources */,
 				CACEAC4523A4E2E6002F8B6E /* UIAlertController+Error.swift in Sources */,
 				CACEAC0723A4E2E6002F8B6E /* SyncingServicesViewController.swift in Sources */,
+				CA6B56AD23AD8C5A0048A064 /* UIApplication+Extensions.swift in Sources */,
 				CACEAC2023A4E2E6002F8B6E /* GamesDatabaseBrowserViewController.swift in Sources */,
 				CACEAC3D23A4E2E6002F8B6E /* ControllerSkin+Configuring.swift in Sources */,
 				CACEAC3B23A4E2E6002F8B6E /* UIViewControllerContextTransitioning+Conveniences.swift in Sources */,
