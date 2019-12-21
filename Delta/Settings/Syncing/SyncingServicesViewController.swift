@@ -36,6 +36,8 @@ class SyncingServicesViewController: UITableViewController
 {
     #if os(iOS)
     @IBOutlet private var syncingEnabledSwitch: UISwitch!
+    #elseif os(tvOS)
+    var isSyncingEnabled: Bool = false
     #endif
     
     private var selectedSyncingService = Settings.syncingService
@@ -47,6 +49,8 @@ class SyncingServicesViewController: UITableViewController
         #if os(iOS)
         self.syncingEnabledSwitch.onTintColor = .deltaPurple
         self.syncingEnabledSwitch.isOn = (self.selectedSyncingService != nil)
+        #elseif os(tvOS)
+        self.isSyncingEnabled = (self.selectedSyncingService != nil)
         #endif
     }
 }
@@ -57,6 +61,31 @@ private extension SyncingServicesViewController
     @IBAction func toggleSyncing(_ sender: UISwitch)
     {
         if sender.isOn
+        {
+            self.changeService(to: SyncManager.Service.allCases.first)
+        }
+        else
+        {
+            if SyncManager.shared.coordinator?.account != nil
+            {
+                let alertController = UIAlertController(title: NSLocalizedString("Disable Syncing?", comment: ""), message: NSLocalizedString("Enabling syncing again later may result in conflicts that must be resolved manually.", comment: ""), preferredStyle: .alert)
+                alertController.addAction(.cancel)
+                alertController.addAction(UIAlertAction(title: NSLocalizedString("Disable", comment: ""), style: .default) { (action) in
+                    self.changeService(to: nil)
+                })
+                self.present(alertController, animated: true, completion: nil)
+            }
+            else
+            {
+                self.changeService(to: nil)
+            }
+        }
+    }
+    #elseif os(tvOS)
+    func toggleSyncing() {
+        self.isSyncingEnabled.toggle()
+        
+        if self.isSyncingEnabled
         {
             self.changeService(to: SyncManager.Service.allCases.first)
         }
@@ -95,7 +124,11 @@ private extension SyncingServicesViewController
                                         
                     if (previousService == nil && service != nil) || (previousService != nil && service == nil)
                     {
+                        #if os(tvOS)
+                        self.tableView.reloadData()
+                        #else
                         self.tableView.reloadSections(IndexSet(integersIn: Section.service.rawValue ... Section.authenticate.rawValue), with: .fade)
+                        #endif
                     }
                     else
                     {
@@ -124,8 +157,14 @@ private extension SyncingServicesViewController
         case .authenticate: return !self.syncingEnabledSwitch.isOn
         default: return false
         }
-        #else
-        return false
+        #elseif os(tvOS)
+        switch section
+        {
+        case .service: return !self.isSyncingEnabled
+        case .account: return !self.isSyncingEnabled || SyncManager.shared.coordinator?.account == nil
+        case .authenticate: return !self.isSyncingEnabled
+        default: return false
+        }
         #endif
     }
 }
@@ -140,6 +179,11 @@ extension SyncingServicesViewController
         {
         case .syncing:
             cell.textLabel?.text = NSLocalizedString("Syncing", comment: "")
+            #if os(tvOS)
+            cell.detailTextLabel?.text = self.isSyncingEnabled
+                ? NSLocalizedString("On", comment: "")
+                : NSLocalizedString("Off", comment: "")
+            #endif
             
         case .service:
             let service = SyncManager.Service.allCases[indexPath.row]
@@ -175,7 +219,12 @@ extension SyncingServicesViewController
     {
         switch Section.allCases[indexPath.section]
         {
-        case .syncing: break
+        case .syncing:
+            #if os(tvOS)
+            toggleSyncing()
+            #else
+            break
+            #endif
             
         case .service:
             let syncingService = SyncManager.Service.allCases[indexPath.row]
