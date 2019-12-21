@@ -1,0 +1,6 @@
+framework module Voucher {
+  umbrella header "Voucher-iOS-umbrella.h"
+
+  export *
+  module * { export * }
+}

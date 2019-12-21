@@ -164,11 +164,13 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/SDWebImage-iOS/SDWebImage.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SMCalloutView/SMCalloutView.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SQLite.swift-iOS/SQLite.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/Voucher-iOS/Voucher.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/SDWebImage-iOS/SDWebImage.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SMCalloutView/SMCalloutView.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SQLite.swift-iOS/SQLite.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/Voucher-iOS/Voucher.framework"
 fi
 if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then
   wait

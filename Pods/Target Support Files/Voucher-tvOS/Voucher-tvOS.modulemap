@@ -1,0 +1,6 @@
+framework module Voucher {
+  umbrella header "Voucher-tvOS-umbrella.h"
+
+  export *
+  module * { export * }
+}

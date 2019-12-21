@@ -20,7 +20,11 @@ private extension SettingsViewController
 {
     enum Section: Int
     {
-        #if os(iOS)
+        #if os(tvOS)
+        case controllers
+        case syncing
+        case credits
+        #else
         case controllers
         case controllerSkins
         case controllerOpacity
@@ -28,10 +32,6 @@ private extension SettingsViewController
         case syncing
         case threeDTouch
         case patreon
-        case credits
-        #else
-        case controllers
-        case syncing
         case credits
         #endif
     }

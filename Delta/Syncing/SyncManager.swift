@@ -217,11 +217,11 @@ extension SyncManager
         }
     }
     
-    func authenticate(presentingViewController: UIViewController? = nil, completionHandler: @escaping (Result<Account, AuthenticationError>) -> Void)
+    func authenticate(presentingViewController: UIViewController? = nil, accessTokenString: String? = nil, completionHandler: @escaping (Result<Account, AuthenticationError>) -> Void)
     {
         guard let coordinator = self.coordinator else { return completionHandler(.failure(AuthenticationError(Error.nilService))) }
         
-        coordinator.authenticate(presentingViewController: presentingViewController) { (result) in
+        coordinator.authenticate(presentingViewController: presentingViewController, accessTokenString: accessTokenString) { (result) in
             do
             {
                 let account = try result.get()

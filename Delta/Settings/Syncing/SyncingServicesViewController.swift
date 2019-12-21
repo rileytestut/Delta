@@ -15,6 +15,8 @@ import Harmony_Drive
 
 import Roxas
 
+import Voucher
+
 extension SyncingServicesViewController
 {
     enum Section: Int, CaseIterable
@@ -22,6 +24,7 @@ extension SyncingServicesViewController
         case syncing
         case service
         case account
+        case voucher
         case authenticate
     }
     
@@ -41,6 +44,21 @@ class SyncingServicesViewController: UITableViewController
     #endif
     
     private var selectedSyncingService = Settings.syncingService
+    
+    #if os(iOS)
+    private var voucherServer: VoucherServer?
+    #elseif os(tvOS)
+    private var voucherClient: VoucherClient?
+    #endif
+    enum VoucherState: Int, CaseIterable
+    {
+        case offline
+        case online
+        case waitingForConnection
+        case connected
+    }
+    var voucherState: VoucherState = VoucherState.offline
+    var connectedClientName: String? = nil
     
     override func viewDidLoad()
     {
@@ -108,6 +126,103 @@ private extension SyncingServicesViewController
     }
     #endif
     
+    func toggleVoucher() {
+        let voucherUniqueSharedId = "com.rileytestut.delta.VoucherID"
+        
+        #if os(tvOS)
+
+        if voucherState != VoucherState.offline {
+            self.voucherClient?.stop()
+            self.tableView.reloadData()
+        } else {
+            self.voucherClient = VoucherClient(uniqueSharedId: voucherUniqueSharedId)
+            self.voucherClient?.delegate = self
+            
+            self.voucherClient?.startSearching { [unowned self] (authData, displayName, error) -> Void in
+
+                defer {
+                    self.voucherClient?.stop()
+                }
+
+                // handle error states
+                guard let authData = authData, let responderName = displayName else {
+                    if let error = error {
+                        print("Encountered error retrieving data: \(error)")
+                    }
+                    
+                    let alertController = UIAlertController(title: NSLocalizedString("Authentication Failed", comment: ""), message: NSLocalizedString("The iOS App denied our authentication request", comment: ""), preferredStyle: .alert)
+                    alertController.addAction(.ok)
+                    self.present(alertController, animated: true, completion: nil)
+                    
+                    return
+                }
+                
+                // success!
+                let tokenString = String(data: authData, encoding: String.Encoding.utf8)!
+                
+                let alert = UIAlertController(title: NSLocalizedString("Received Access Token!", comment: ""), message: NSLocalizedString("Successfully received auth data from '\(responderName)'. Do you still wish to use it to log into \(self.selectedSyncingService?.localizedName ?? "the service")?", comment: ""), preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Accept", style: .default, handler: { [unowned self] action in
+                    
+                    SyncManager.shared.authenticate(presentingViewController: nil, accessTokenString: tokenString) { (result) in
+                        DispatchQueue.main.async {
+                            do
+                            {
+                                _ = try result.get()
+                                self.tableView.reloadData()
+                                
+                                Settings.syncingService = self.selectedSyncingService
+                            }
+                            catch
+                            {
+                                let alertController = UIAlertController(title: NSLocalizedString("Error", comment: ""), error: error)
+                                alertController.addAction(.ok)
+                                self.present(alertController, animated: true, completion: nil)
+                            }
+                        }
+                    }
+                }))
+                alert.addAction(.cancel)
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
+        
+        #elseif os(iOS)
+        
+        if voucherState != VoucherState.offline {
+            self.voucherServer?.stop()
+            self.tableView.reloadSections(IndexSet(integer: Section.voucher.rawValue), with: .none)
+        } else {
+            guard
+                let syncingService = self.selectedSyncingService,
+                let token = syncingService.service.getAccessToken()
+                else {
+                    let alertController = UIAlertController(title: NSLocalizedString("Unable to Start Voucher", comment: ""), message: NSLocalizedString("Unable to Start Voucher", comment: "Please ensure that you are properly authenticated and try again."), preferredStyle: .alert)
+                    alertController.addAction(.ok)
+                    self.present(alertController, animated: true, completion: nil)
+                    return
+            }
+            
+            self.voucherServer = VoucherServer(uniqueSharedId: voucherUniqueSharedId)
+            self.voucherServer?.delegate = self
+
+            self.voucherServer?.startAdvertising { (displayName, responseHandler) -> Void in
+
+                let alertController = UIAlertController(title: "Connected", message: "Do you wish to continue and allow \"\(displayName)\" access to your \(syncingService.localizedName) access token?", preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: "Not Now", style: .cancel, handler: { action in
+                    responseHandler(nil, nil)
+                }))
+                alertController.addAction(UIAlertAction(title: "Allow", style: .default, handler: { action in
+                    // Encode the token string into data to be later retrieved and converted back into a string
+                    let authData = token.data(using: String.Encoding.utf8)!
+                    responseHandler(authData, nil)
+                }))
+                self.present(alertController, animated: true, completion: nil)
+            }
+        }
+        
+        #endif
+    }
+    
     func changeService(to service: SyncManager.Service?)
     {
         SyncManager.shared.reset(for: service) { (result) in
@@ -155,6 +270,9 @@ private extension SyncingServicesViewController
         case .service: return !self.syncingEnabledSwitch.isOn
         case .account: return !self.syncingEnabledSwitch.isOn || SyncManager.shared.coordinator?.account == nil
         case .authenticate: return !self.syncingEnabledSwitch.isOn
+        case .voucher:
+            // only available post-auth
+            return !self.syncingEnabledSwitch.isOn || SyncManager.shared.coordinator?.account == nil
         default: return false
         }
         #elseif os(tvOS)
@@ -162,7 +280,10 @@ private extension SyncingServicesViewController
         {
         case .service: return !self.isSyncingEnabled
         case .account: return !self.isSyncingEnabled || SyncManager.shared.coordinator?.account == nil
-        case .authenticate: return !self.isSyncingEnabled
+        case .authenticate:
+             // cannot signin on tvOS, but need option to signout once authenticated through voucher
+            return !(self.isSyncingEnabled && SyncManager.shared.coordinator?.account != nil)
+        case .voucher: return !(self.isSyncingEnabled && SyncManager.shared.coordinator?.account == nil)
         default: return false
         }
         #endif
@@ -210,6 +331,43 @@ extension SyncingServicesViewController
                 cell.textLabel?.textColor = .deltaPurple
                 cell.textLabel?.text = NSLocalizedString("Sign In", comment: "")
             }
+            
+        case .voucher:
+            var mainText = ""
+            var detailText = ""
+            #if os(tvOS)
+            switch voucherState {
+            case .offline:
+                mainText = "Start"
+                detailText = "❌ Not Searching"
+            case .online:
+                mainText = "Stop"
+                detailText = "📡 Searching for Voucher Servers..."
+            case .waitingForConnection:
+                mainText = "Stop"
+                detailText = "😴 Not Connected Yet"
+            case .connected:
+                mainText = "Stop"
+                detailText = "✅ Connected to '\(connectedClientName ?? "unknown")'"
+            }
+            #else
+            switch voucherState {
+            case .offline:
+                mainText = "Start"
+                detailText = "❌ Server Offline"
+            case .online:
+                mainText = "Stop"
+                detailText = "✅ Server Online"
+            case .waitingForConnection:
+                mainText = "Stop"
+                detailText = "📡 Waiting for Connection..."
+            case .connected:
+                mainText = "Stop"
+                detailText = "✅ Connected"
+            }
+            #endif
+            cell.textLabel?.text = NSLocalizedString(mainText, comment: "")
+            cell.detailTextLabel?.text = NSLocalizedString(detailText, comment: "")
         }
         
         return cell
@@ -223,7 +381,7 @@ extension SyncingServicesViewController
             #if os(tvOS)
             toggleSyncing()
             #else
-            break
+            break // handled by ib outlet
             #endif
             
         case .service:
@@ -258,6 +416,9 @@ extension SyncingServicesViewController
                             do
                             {
                                 try result.get()
+                                #if os(tvOS)
+                                self.isSyncingEnabled = false
+                                #endif
                                 self.tableView.reloadData()
                                 
                                 Settings.syncingService = nil
@@ -291,11 +452,30 @@ extension SyncingServicesViewController
                         catch
                         {
                             let alertController = UIAlertController(title: NSLocalizedString("Failed to Sign In", comment: ""), error: error)
+                            alertController.addAction(.ok)
                             self.present(alertController, animated: true, completion: nil)
                         }
                     }
                 }
             }
+        case .voucher:
+            
+            #if os(iOS)
+            guard SyncManager.shared.coordinator?.account != nil else {
+                return
+            }
+            #endif
+            
+            #if os(tvOS)
+            guard self.selectedSyncingService == SyncManager.Service.dropbox else {
+                let alertController = UIAlertController(title: NSLocalizedString("Option Not Available", comment: ""), message: NSLocalizedString("Delta TV syncing currently only supports Dropbox.", comment: ""), preferredStyle: .alert)
+                alertController.addAction(.ok)
+                self.present(alertController, animated: true, completion: nil)
+                return
+            }
+            #endif
+            
+            toggleVoucher()
         }
         
         tableView.deselectRow(at: indexPath, animated: true)
@@ -327,6 +507,20 @@ extension SyncingServicesViewController
         }
     }
     
+    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String?
+    {
+        let section = Section.allCases[section]
+        
+        if self.isSectionHidden(section)
+        {
+            return nil
+        }
+        else
+        {
+            return super.tableView(tableView, titleForFooterInSection: section.rawValue)
+        }
+    }
+    
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat
     {
         let section = Section.allCases[section]
@@ -355,3 +549,46 @@ extension SyncingServicesViewController
         }
     }
 }
+
+#if os(tvOS)
+extension SyncingServicesViewController: VoucherClientDelegate {
+    func voucherClient(_ client: VoucherClient, didUpdateSearching isSearching: Bool) {
+        self.voucherState = VoucherState.offline
+        if isSearching {
+            self.voucherState = VoucherState.online
+        }
+
+        self.tableView.reloadData()
+    }
+
+    func voucherClient(_ client: VoucherClient, didUpdateConnectionToServer isConnectedToServer: Bool, serverName: String?) {
+        self.connectedClientName = serverName
+        self.voucherState = VoucherState.waitingForConnection
+        if isConnectedToServer {
+            self.voucherState = VoucherState.connected
+        }
+
+        self.tableView.reloadData()
+    }
+}
+#elseif os(iOS)
+extension SyncingServicesViewController: VoucherServerDelegate {
+    func voucherServer(_ server: VoucherServer, didUpdateAdvertising isAdvertising: Bool) {
+        self.voucherState = VoucherState.offline
+        if (isAdvertising) {
+            self.voucherState = VoucherState.online
+        }
+        
+        self.tableView.reloadSections(IndexSet(integer: Section.voucher.rawValue), with: .none)
+    }
+
+    func voucherServer(_ server: VoucherServer, didUpdateConnectionToClient isConnectedToClient: Bool) {
+        self.voucherState = VoucherState.waitingForConnection
+        if (isConnectedToClient) {
+            self.voucherState = VoucherState.connected
+        }
+        
+        self.tableView.reloadSections(IndexSet(integer: Section.voucher.rawValue), with: .none)
+    }
+}
+#endif

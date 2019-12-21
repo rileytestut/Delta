@@ -193,6 +193,8 @@
 		CA942B4323A4DAF4002DFFF2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFA71DC1AAC406100EE9DD1 /* AppDelegate.swift */; };
 		CA942B4623A4DB39002DFFF2 /* DeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA942B4523A4DB39002DFFF2 /* DeltaCore.framework */; };
 		CA942B4723A4DB39002DFFF2 /* DeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CA942B4523A4DB39002DFFF2 /* DeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CAB0FD3B23AE0271003ABCC0 /* Roxas.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFEC732C1AAECC4A00650035 /* Roxas.framework */; };
+		CAB0FD3C23AE0271003ABCC0 /* Roxas.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BFEC732C1AAECC4A00650035 /* Roxas.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CAB6425B23AD9BFF00F9AF02 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CAB6425923AD9BFF00F9AF02 /* Settings.storyboard */; };
 		CACEABD723A4DFC2002F8B6E /* Harmony_Dropbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CACEABD423A4DFC2002F8B6E /* Harmony_Dropbox.framework */; };
 		CACEABD823A4DFC2002F8B6E /* Harmony_Dropbox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CACEABD423A4DFC2002F8B6E /* Harmony_Dropbox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -333,6 +335,7 @@
 				BFB359462278FD8100CFD920 /* N64DeltaCore_RSP.framework in Embed Frameworks */,
 				BFF0742D1E9DC17500ACDF4A /* GBCDeltaCore.framework in Embed Frameworks */,
 				BF0418151D01E93400E85BCF /* GBADeltaCore.framework in Embed Frameworks */,
+				CAB0FD3C23AE0271003ABCC0 /* Roxas.framework in Embed Frameworks */,
 				BFDE2CD4222DF36A008038E0 /* Alamofire.framework in Embed Frameworks */,
 				BFB359442278FD7E00CFD920 /* N64DeltaCore_Video.framework in Embed Frameworks */,
 				BFDF71DE22F94CF70074D92E /* DSDeltaCore.framework in Embed Frameworks */,
@@ -569,6 +572,7 @@
 				BFDF71DD22F94CF70074D92E /* DSDeltaCore.framework in Frameworks */,
 				BFB359452278FD8100CFD920 /* N64DeltaCore_RSP.framework in Frameworks */,
 				BF99C6941D0A9AA600BA92BC /* SNESDeltaCore.framework in Frameworks */,
+				CAB0FD3B23AE0271003ABCC0 /* Roxas.framework in Frameworks */,
 				BF98C9822204D9AB006B95AC /* NESDeltaCore.framework in Frameworks */,
 				BFB359432278FD7E00CFD920 /* N64DeltaCore_Video.framework in Frameworks */,
 				BF0418141D01E93400E85BCF /* GBADeltaCore.framework in Frameworks */,
@@ -1273,11 +1277,13 @@
 				"${PODS_ROOT}/Target Support Files/Pods-DeltaTV/Pods-DeltaTV-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage-tvOS/SDWebImage.framework",
 				"${BUILT_PRODUCTS_DIR}/SQLite.swift-tvOS/SQLite.framework",
+				"${BUILT_PRODUCTS_DIR}/Voucher-tvOS/Voucher.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SQLite.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Voucher.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1294,12 +1300,14 @@
 				"${BUILT_PRODUCTS_DIR}/SDWebImage-iOS/SDWebImage.framework",
 				"${BUILT_PRODUCTS_DIR}/SMCalloutView/SMCalloutView.framework",
 				"${BUILT_PRODUCTS_DIR}/SQLite.swift-iOS/SQLite.framework",
+				"${BUILT_PRODUCTS_DIR}/Voucher-iOS/Voucher.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SMCalloutView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SQLite.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Voucher.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
