@@ -29,7 +29,6 @@ class DeltaTVTabBarController: UITabBarController {
     }
     
     func handleFocusCheckResult(isAtTop: Bool) {
-        print("<><><> finishFocusCheck: \(isAtTop)")
         if isAtTop {
             self.view.addGestureRecognizer(menuTapGestureRecognizer)
         } else {
@@ -75,17 +74,7 @@ class DeltaTVTabBarController: UITabBarController {
             }
         }
 
-        
-        print("<><><><>")
-        print("<><><><>")
-        print("<><><><> - didUpdateFocus")
-        
-        for vc in topLevelViewControllers {
-            print("<> - toplevelvc:\(NSStringFromClass(vc.classForCoder))")
-        }
-
         if let topSelected = topViewController(selected), topLevelViewControllers.contains(topSelected) {
-            print("<><><><> - topSelected:\(NSStringFromClass(topSelected.classForCoder))")
             handleFocusCheckResult(isAtTop: true)
         } else {
             handleFocusCheckResult(isAtTop: false)
