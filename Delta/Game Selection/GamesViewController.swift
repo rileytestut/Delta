@@ -202,8 +202,8 @@ extension GamesViewController
         
         switch identifier
         {
-        case "embedPageViewController":
             #if os(iOS) // tvOS uses a container view controller to display games
+        case "embedPageViewController":
             self.pageViewController = segue.destination as? UIPageViewController
             self.pageViewController.dataSource = self
             self.pageViewController.delegate = self
