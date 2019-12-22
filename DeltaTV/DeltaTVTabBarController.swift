@@ -100,6 +100,21 @@ class DeltaTVTabBarController: UITabBarController {
 
 }
 
+extension DeltaTVTabBarController {
+    func getGamesViewController() -> GamesViewController? {
+        
+        guard let tabVCs = viewControllers else { return nil}
+        
+        for vc in tabVCs {
+            if let gamesVC = vc as? GamesViewController {
+                return gamesVC
+            }
+        }
+        
+        return nil
+    }
+}
+
 extension DeltaTVTabBarController: UITabBarControllerDelegate {
     override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
         // check on every time the tab bar focus changes

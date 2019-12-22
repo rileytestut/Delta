@@ -337,7 +337,11 @@ extension GameViewController
         switch identifier
         {
         case "showGamesViewController":
+            #if os(tvOS)
+            let gamesViewController = (segue.destination as! DeltaTVTabBarController).getGamesViewController()!
+            #else
             let gamesViewController = (segue.destination as! UINavigationController).topViewController as! GamesViewController
+            #endif
             gamesViewController.theme = .translucent
             gamesViewController.activeEmulatorCore = self.emulatorCore
             
@@ -414,12 +418,6 @@ extension GameViewController
         self.pausingGameController = nil
         
         guard let identifier = segue.identifier else { return }
-        
-        print("<><><><><><> GVC - unwindFromPauseViewController - 1")
-        print("<><><><><><> GVC - unwindFromPauseViewController - 2")
-        print("<><><><><><> GVC - unwindFromPauseViewController - 3")
-        print("<><><><><><> GVC - unwindFromPauseViewController - 4")
-        print("<><><><><><> GVC - unwindFromPauseViewController - 5")
     
         switch identifier
         {
