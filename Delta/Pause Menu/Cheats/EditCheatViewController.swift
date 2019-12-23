@@ -57,6 +57,16 @@ class EditCheatViewController: UITableViewController
     @IBOutlet private var typeSegmentedControl: UISegmentedControl!
     @IBOutlet private var codeTextView: CheatTextView!
     
+    #if os(tvOS)
+    enum FocusedField: Int
+    {
+        case name
+        case code
+        case none
+    }
+    var focusedField = FocusedField.none
+    #endif
+    
     override var previewActionItems: [UIPreviewActionItem]
     {
         guard let cheat = self.cheat else { return [] }
@@ -168,6 +178,11 @@ extension EditCheatViewController
         
         self.updateCheatType(self.typeSegmentedControl)
         self.updateSaveButtonState()
+        
+        #if os(tvOS)
+        self.view.backgroundColor = .groupTableViewBackground
+        self.codeTextView.isSelectable = true
+        #endif
     }
     
     override func viewDidAppear(_ animated: Bool)
@@ -370,6 +385,46 @@ extension EditCheatViewController
             }
         }
     }
+    
+    #if os(tvOS)
+    override func tableView(_ tableView: UITableView, canFocusRowAt indexPath: IndexPath) -> Bool {
+        // where possible, the focus should be on the elements delcared inside of the cells, not on the cells themselves
+        return indexPath.section != Section.type.rawValue
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch Section(rawValue: indexPath.section)!
+        {
+        case .name:
+            focusedField = .name
+            self.setNeedsFocusUpdate()
+            self.updateFocusIfNeeded()
+            focusedField = .none
+            
+        case .code:
+            focusedField = .code
+            self.setNeedsFocusUpdate()
+            self.updateFocusIfNeeded()
+            focusedField = .none
+            
+        default:
+            break
+        }
+    }
+    
+    override var preferredFocusEnvironments: [UIFocusEnvironment] {
+        switch focusedField {
+        case .name:
+            return [nameTextField]
+            
+        case .code:
+            return [codeTextView]
+            
+        default:
+            return []
+        }
+    }
+    #endif
 }
 
 extension EditCheatViewController: UITextViewDelegate
