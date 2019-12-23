@@ -54,6 +54,7 @@
                     <connections>
                         <segue destination="234-Hx-3Qe" kind="unwind" identifier="unwindFromPauseMenu" unwindAction="unwindFromPauseViewController:" id="Lr9-TZ-oY9"/>
                         <segue destination="DvO-sy-hIL" kind="show" identifier="saveStates" id="GAH-WY-0Mh"/>
+                        <segue destination="m1H-0O-5rU" kind="show" identifier="cheats" id="gtA-Dj-rK8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="j4o-yS-u92" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -111,6 +112,58 @@
             </objects>
             <point key="canvasLocation" x="3897" y="-350"/>
         </scene>
+        <!--Edit Cheat View Controller-->
+        <scene sceneID="Kq8-AX-ef6">
+            <objects>
+                <tableViewController storyboardIdentifier="editCheatViewController" id="O3X-9F-VFm" customClass="EditCheatViewController" customModule="DeltaTV" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="-1" sectionHeaderHeight="7" sectionFooterHeight="7" id="ldk-xW-i40">
+                        <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <sections>
+                            <tableViewSection id="VeV-xL-N2d">
+                                <cells>
+                                    <tableViewCell contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="zcO-v8-O2h">
+                                        <rect key="frame" x="106" y="35" width="1708" height="66"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="zcO-v8-O2h" id="9g9-fM-zns">
+                                            <rect key="frame" x="0.0" y="0.0" width="1708" height="66"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="Frv-SU-KwJ">
+                                        <rect key="frame" x="106" y="115" width="1708" height="66"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Frv-SU-KwJ" id="bFw-ne-0HU">
+                                            <rect key="frame" x="0.0" y="0.0" width="1708" height="66"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="gKZ-fP-yd4">
+                                        <rect key="frame" x="106" y="195" width="1708" height="66"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="gKZ-fP-yd4" id="zDV-9e-EB9">
+                                            <rect key="frame" x="0.0" y="0.0" width="1708" height="66"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                        </sections>
+                        <connections>
+                            <outlet property="dataSource" destination="O3X-9F-VFm" id="dJq-Gi-wZU"/>
+                            <outlet property="delegate" destination="O3X-9F-VFm" id="aav-7k-26c"/>
+                        </connections>
+                    </tableView>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <connections>
+                        <outlet property="tabBarObservedScrollView" destination="ldk-xW-i40" id="aF4-1g-9mL"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dEj-ky-4Qh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3897" y="1258"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="erH-TH-Tk6">
             <objects>
@@ -128,6 +181,98 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PXZ-LO-8KY" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1611" y="-350"/>
+        </scene>
+        <!--Cheats View Controller-->
+        <scene sceneID="X8Y-hT-FmB">
+            <objects>
+                <tableViewController id="m1H-0O-5rU" customClass="CheatsViewController" customModule="DeltaTV" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" sectionHeaderHeight="66" sectionFooterHeight="66" id="OMm-vD-uNH">
+                        <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="vyb-sT-M6k" customClass="CheatTableViewCell" customModule="DeltaTV" customModuleProvider="target">
+                                <rect key="frame" x="106" y="66" width="1708" height="66"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="vyb-sT-M6k" id="9gY-Kl-FEE">
+                                    <rect key="frame" x="0.0" y="0.0" width="1708" height="66"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <visualEffectView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3es-mk-nOQ">
+                                            <rect key="frame" x="0.0" y="0.0" width="1708" height="66"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" insetsLayoutMarginsFromSafeArea="NO" id="9vn-Kl-T5Q">
+                                                <rect key="frame" x="0.0" y="0.0" width="1708" height="66"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                <subviews>
+                                                    <visualEffectView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VNB-Sy-bcd">
+                                                        <rect key="frame" x="0.0" y="0.0" width="1468" height="0.0"/>
+                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" insetsLayoutMarginsFromSafeArea="NO" id="75z-Mp-qAh">
+                                                            <rect key="frame" x="0.0" y="0.0" width="1468" height="0.0"/>
+                                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                        </view>
+                                                        <vibrancyEffect>
+                                                            <blurEffect style="regular"/>
+                                                        </vibrancyEffect>
+                                                    </visualEffectView>
+                                                </subviews>
+                                            </view>
+                                            <vibrancyEffect>
+                                                <blurEffect style="dark"/>
+                                            </vibrancyEffect>
+                                        </visualEffectView>
+                                        <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KHG-Ss-bs5">
+                                            <rect key="frame" x="0.0" y="0.0" width="1708" height="66"/>
+                                            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="Owo-wj-oMG">
+                                                <rect key="frame" x="0.0" y="0.0" width="1708" height="66"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                <subviews>
+                                                    <visualEffectView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1xy-HO-kYK">
+                                                        <rect key="frame" x="0.0" y="0.0" width="1468" height="0.0"/>
+                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" insetsLayoutMarginsFromSafeArea="NO" id="Iok-qd-Ek5">
+                                                            <rect key="frame" x="0.0" y="0.0" width="1468" height="0.0"/>
+                                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                        </view>
+                                                        <vibrancyEffect>
+                                                            <blurEffect style="regular"/>
+                                                        </vibrancyEffect>
+                                                    </visualEffectView>
+                                                </subviews>
+                                            </view>
+                                            <vibrancyEffect>
+                                                <blurEffect style="dark"/>
+                                            </vibrancyEffect>
+                                        </visualEffectView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="bottom" secondItem="KHG-Ss-bs5" secondAttribute="bottom" id="6px-ay-TU8"/>
+                                        <constraint firstItem="KHG-Ss-bs5" firstAttribute="top" secondItem="9gY-Kl-FEE" secondAttribute="top" id="ll8-XT-gsb"/>
+                                        <constraint firstItem="KHG-Ss-bs5" firstAttribute="leading" secondItem="9gY-Kl-FEE" secondAttribute="leading" id="w9c-a9-Bgh"/>
+                                        <constraint firstAttribute="trailing" secondItem="KHG-Ss-bs5" secondAttribute="trailing" id="zUr-ac-fEi"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="vibrancyView" destination="KHG-Ss-bs5" id="jAp-b3-Zmv"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="m1H-0O-5rU" id="1bO-MY-TGG"/>
+                            <outlet property="delegate" destination="m1H-0O-5rU" id="G4g-Vy-a8v"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="7H4-ow-hbU">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="ScN-wt-Ay7"/>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <connections>
+                        <outlet property="tabBarObservedScrollView" destination="OMm-vD-uNH" id="y5T-M2-9WL"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iCx-nA-KIs" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1611" y="1258"/>
         </scene>
         <!--Save State-->
         <scene sceneID="xYb-S8-1wh">
@@ -163,20 +308,10 @@
                     </collectionView>
                     <navigationItem key="navigationItem" title="Save State" id="UtP-BA-mu1">
                         <rightBarButtonItems>
-                            <barButtonItem style="plain" id="92E-aT-YV0">
-                                <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="xFN-3s-PzE">
-                                    <rect key="frame" x="1710" y="55" width="120" height="86"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
-                                    <state key="normal" title="+"/>
-                                    <connections>
-                                        <action selector="addSaveState" destination="DvO-sy-hIL" eventType="primaryActionTriggered" id="xpj-dr-oYM"/>
-                                    </connections>
-                                </button>
-                            </barButtonItem>
+                            <barButtonItem style="plain" systemItem="add" id="92E-aT-YV0"/>
                             <barButtonItem style="plain" id="NN9-6m-GXz">
                                 <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="JOG-Cr-NWT">
-                                    <rect key="frame" x="1566" y="55" width="120" height="86"/>
+                                    <rect key="frame" x="1595" y="63" width="110" height="70"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                                     <state key="normal" title="▼"/>
