@@ -7,6 +7,7 @@
 //
 
 #if os(iOS) // this whole controller is based heavily using callout view. Will need another way for tvOS, unfortunately
+// TODO: will be hard, but try to refactor for tvOS. Use a simple tableview
 import UIKit
 import Roxas
 

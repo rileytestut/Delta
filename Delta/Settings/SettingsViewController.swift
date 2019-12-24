@@ -148,7 +148,11 @@ class SettingsViewController: UITableViewController
         switch segueType
         {
         case Segue.controllers:
+            #if os(tvOS)
+            let controllersSettingsViewController = (segue.destination as! UINavigationController).topViewController as! ControllersSettingsViewController
+            #else
             let controllersSettingsViewController = segue.destination as! ControllersSettingsViewController
+            #endif
             controllersSettingsViewController.playerIndex = indexPath.row
             
         case Segue.controllerSkins:

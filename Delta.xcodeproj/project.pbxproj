@@ -1119,7 +1119,6 @@
 				CA942B3A23A4DA9E002DFFF2 /* Assets.xcassets */,
 				CA942B3F23A4DA9E002DFFF2 /* Info.plist */,
 				CA6B569D23AD6B020048A064 /* DeltaTVTabBarController.swift */,
-				CAC125A123AE2AB400FDE0EA /* PausePresentationControllerContentView.xib */,
 			);
 			path = DeltaTV;
 			sourceTree = "<group>";
@@ -1132,6 +1131,7 @@
 				CA6B569B23AD4D350048A064 /* PauseMenu.storyboard */,
 				CA942B3C23A4DA9E002DFFF2 /* LaunchScreen.storyboard */,
 				CAABDEAE23B20E89006E0BC5 /* SyncResultsViewController.storyboard */,
+				CAC125A123AE2AB400FDE0EA /* PausePresentationControllerContentView.xib */,
 			);
 			path = Storyboards;
 			sourceTree = "<group>";

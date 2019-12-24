@@ -227,10 +227,10 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="DetailCell" textLabel="cBX-mO-YP7" detailTextLabel="OWH-4E-zlh" style="IBUITableViewCellStyleValue1" id="mOV-Ny-xxM">
-                                        <rect key="frame" x="106" y="880" width="1708" height="66"/>
+                                        <rect key="frame" x="0.0" y="880" width="1708" height="66"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="mOV-Ny-xxM" id="Blh-b6-vRt">
-                                            <rect key="frame" x="0.0" y="0.0" width="1668" height="66"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="1680" height="66"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Grant Gliner" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="cBX-mO-YP7">
@@ -241,7 +241,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Icon Guy" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="OWH-4E-zlh">
-                                                    <rect key="frame" x="1504" y="10" width="144" height="46"/>
+                                                    <rect key="frame" x="1516" y="10" width="144" height="46"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="38"/>
                                                     <color key="textColor" systemColor="secondaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
@@ -251,14 +251,14 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="DetailCell" textLabel="FYa-8S-hTY" style="IBUITableViewCellStyleDefault" id="bcQ-1m-hoL">
-                                        <rect key="frame" x="106" y="960" width="1708" height="66"/>
+                                        <rect key="frame" x="0.0" y="960" width="1708" height="66"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="bcQ-1m-hoL" id="htb-mR-6CK">
-                                            <rect key="frame" x="0.0" y="0.0" width="1668" height="66"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="1680" height="66"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Licenses" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="FYa-8S-hTY">
-                                                    <rect key="frame" x="20" y="0.0" width="1628" height="66"/>
+                                                    <rect key="frame" x="20" y="0.0" width="1640" height="66"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="38"/>
                                                     <nil key="textColor"/>
@@ -283,6 +283,7 @@
                         <outlet property="syncingServiceLabel" destination="GKw-fx-Y58" id="m1J-wE-cnP"/>
                         <outlet property="tabBarObservedScrollView" destination="mIK-YU-rAg" id="XaH-iW-0i0"/>
                         <outlet property="versionLabel" destination="aao-Wc-Oir" id="Mj7-Ay-SfR"/>
+                        <segue destination="R64-y6-NLs" kind="presentation" identifier="controllersSegue" id="qeA-GO-Qqv"/>
                     </connections>
                 </tableViewController>
             </objects>
@@ -849,6 +850,71 @@ Delta uses OpenVGDB to provide automatic artwork for imported games.</string>
             </objects>
             <point key="canvasLocation" x="18664" y="1594"/>
         </scene>
+        <!--Controllers-->
+        <scene sceneID="O7b-SI-tES">
+            <objects>
+                <tableViewController id="4sb-Vi-zqS" customClass="ControllersSettingsViewController" customModule="DeltaTV" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" sectionHeaderHeight="7" sectionFooterHeight="7" id="n7o-41-h1H">
+                        <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" textLabel="5ef-gc-vhE" detailTextLabel="Kfc-XR-dfT" style="IBUITableViewCellStyleValue1" id="KeT-r8-tIK">
+                                <rect key="frame" x="106" y="80" width="1708" height="66"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="KeT-r8-tIK" id="klx-x8-UtW">
+                                    <rect key="frame" x="0.0" y="0.0" width="1708" height="66"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Controller Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="5ef-gc-vhE">
+                                            <rect key="frame" x="20" y="10" width="264" height="46"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="38"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Player 1" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Kfc-XR-dfT">
+                                            <rect key="frame" x="1562" y="10" width="126" height="46"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="38"/>
+                                            <color key="textColor" systemColor="secondaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="NoControllers" textLabel="CaA-jR-eRu" style="IBUITableViewCellStyleDefault" id="VlI-YL-x6f">
+                                <rect key="frame" x="106" y="160" width="1708" height="66"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="VlI-YL-x6f" id="yoP-wq-hbl">
+                                    <rect key="frame" x="0.0" y="0.0" width="1708" height="66"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="No Connected Controllers" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="CaA-jR-eRu">
+                                            <rect key="frame" x="20" y="0.0" width="1668" height="66"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="38"/>
+                                            <color key="textColor" systemColor="secondaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="4sb-Vi-zqS" id="7Yj-JY-OVL"/>
+                            <outlet property="delegate" destination="4sb-Vi-zqS" id="wRc-Tq-V67"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Controllers" id="eFn-OW-i0m"/>
+                    <connections>
+                        <outlet property="tabBarObservedScrollView" destination="n7o-41-h1H" id="dH7-94-qvr"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Lzk-P3-iok" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="13922" y="-1600"/>
+        </scene>
         <!--Syncing Service-->
         <scene sceneID="xWb-Sw-ryY">
             <objects>
@@ -1063,6 +1129,24 @@ Delta uses OpenVGDB to provide automatic artwork for imported games.</string>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0gZ-Q9-fIb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="18664" y="-3"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="pkv-C5-0SY">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="R64-y6-NLs" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="ARD-BH-InP">
+                        <rect key="frame" x="0.0" y="60" width="1920" height="145"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="4sb-Vi-zqS" kind="relationship" relationship="rootViewController" id="1bk-P1-MNU"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="rFK-HL-FGI" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="11522" y="-1600"/>
         </scene>
     </scenes>
     <resources>
