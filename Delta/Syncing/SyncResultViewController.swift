@@ -199,6 +199,7 @@ private extension SyncResultViewController
     {
         var errors = [Error]()
         
+        #if os(iOS)
         switch self.result!
         {
         case .success: break
@@ -217,6 +218,29 @@ private extension SyncResultViewController
             let error = error.underlyingError ?? error
             errors.append(error)
         }
+        #else
+        switch self.result
+        {
+        case .success: break
+        case .failure(.partial(let recordResults)):
+            for (_, result) in recordResults
+            {
+                guard case .failure(let error) = result else { continue }
+                errors.append(error)
+            }
+
+        case .failure(.other(GeneralError.cancelled)):
+            // Do nothing
+            break
+
+        case .failure(let error):
+            let error = error.underlyingError ?? error
+            errors.append(error)
+        case .none:
+            // Do nothing
+            break
+        }
+        #endif
         
         var errorsByGroup = [Group: [Error]]()
         
