@@ -47,6 +47,9 @@ class RecordSyncStatusViewController: UITableViewController
     
     #if os(iOS)
     @IBOutlet private var syncingEnabledSwitch: UISwitch!
+    #elseif os(tvOS)
+    var isSyncingEnableable: Bool = false
+    var isSyncingEnabled: Bool = false
     #endif
     
     @IBOutlet private var localStatusLabel: UILabel!
@@ -104,6 +107,9 @@ private extension RecordSyncStatusViewController
             #if os(iOS)
             self.syncingEnabledSwitch.isEnabled = !record.isConflicted
             self.syncingEnabledSwitch.isOn = record.isSyncingEnabled
+            #elseif os(tvOS)
+            self.isSyncingEnableable = !record.isConflicted
+            self.isSyncingEnabled = record.isSyncingEnabled
             #endif
             
             self.localStatusLabel.text = record.localStatus?.localizedDescription ?? "-"
@@ -134,6 +140,9 @@ private extension RecordSyncStatusViewController
             #if os(iOS)
             self.syncingEnabledSwitch.isEnabled = false
             self.syncingEnabledSwitch.isOn = false
+            #elseif os(tvOS)
+            self.isSyncingEnableable = false
+            self.isSyncingEnabled = false
             #endif
             
             self.localStatusLabel.text = "-"
@@ -162,6 +171,23 @@ private extension RecordSyncStatusViewController
         
         self.update()
     }
+    #elseif os(tvOS)
+    func toggleSyncingEnabled() {
+        self.isSyncingEnabled.toggle()
+        do
+        {
+            try self.record?.setSyncingEnabled(self.isSyncingEnabled)
+        }
+        catch
+        {
+            let title = self.isSyncingEnabled ? NSLocalizedString("Failed to Enable Syncing", comment: "") : NSLocalizedString("Failed to Disable Syncing", comment: "")
+            
+            let alertController = UIAlertController(title: title, error: error)
+            self.present(alertController, animated: true, completion: nil)
+        }
+        
+        self.update()
+    }
     #endif
 }
 
@@ -173,6 +199,13 @@ extension RecordSyncStatusViewController
         
         switch Section.allCases[indexPath.section]
         {
+            #if os(tvOS)
+        case .syncingEnabled:
+            cell.textLabel?.text = NSLocalizedString("Syncing Enabled", comment: "")
+            cell.detailTextLabel?.text = self.isSyncingEnabled
+                ? NSLocalizedString("On", comment: "")
+                : NSLocalizedString("Off", comment: "")
+            #endif
         case .versions:
             cell.textLabel?.alpha = (self.record != nil) ? 1.0 : 0.33
             
@@ -192,4 +225,17 @@ extension RecordSyncStatusViewController
         
         return cell
     }
+    
+    #if os(tvOS)
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch Section.allCases[indexPath.section]
+        {
+        case .syncingEnabled:
+            if isSyncingEnableable {
+                toggleSyncingEnabled()
+            }
+        default: break
+        }
+    }
+    #endif
 }

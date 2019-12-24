@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder.AppleTV.Storyboard" version="3.0" toolsVersion="15505" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="fQu-mO-Tve">
+    <device id="appleTV" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Results-->
+        <scene sceneID="EQ1-VF-NWb">
+            <objects>
+                <tableViewController storyboardIdentifier="syncResultViewController" id="8AS-uk-Rda" customClass="SyncResultViewController" customModule="DeltaTV" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" sectionHeaderHeight="7" sectionFooterHeight="7" id="dYn-Mp-sfF">
+                        <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" rowHeight="100" id="wkD-fD-HYz" customClass="SyncResultTableViewCell">
+                                <rect key="frame" x="106" y="80" width="1708" height="100"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="wkD-fD-HYz" id="6Yo-Au-DkU">
+                                    <rect key="frame" x="0.0" y="0.0" width="1708" height="100"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4.5" translatesAutoresizingMaskIntoConstraints="NO" id="xrB-bE-oA5">
+                                            <rect key="frame" x="0.0" y="0.0" width="1708" height="100"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Title Screen" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PeG-hg-H4z">
+                                                    <rect key="frame" x="0.0" y="0.0" width="1708" height="60.5"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="The record could not be uploaded because an error occured." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nmx-Ir-PSe">
+                                                    <rect key="frame" x="0.0" y="65" width="1708" height="35"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </stackView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="xrB-bE-oA5" firstAttribute="top" secondItem="6Yo-Au-DkU" secondAttribute="top" id="6LV-EM-DGy"/>
+                                        <constraint firstAttribute="trailing" secondItem="xrB-bE-oA5" secondAttribute="trailing" id="ICe-WK-3kQ"/>
+                                        <constraint firstItem="xrB-bE-oA5" firstAttribute="leading" secondItem="6Yo-Au-DkU" secondAttribute="leading" id="Km2-Bw-93t"/>
+                                        <constraint firstAttribute="bottom" secondItem="xrB-bE-oA5" secondAttribute="bottom" id="Wbz-0f-CXy"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="errorLabel" destination="Nmx-Ir-PSe" id="3uW-cj-meV"/>
+                                    <outlet property="nameLabel" destination="PeG-hg-H4z" id="TPK-3Y-PVj"/>
+                                    <segue destination="NVd-Mr-yXK" kind="show" identifier="showRecordStatus" id="VKh-PI-u5G"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="8AS-uk-Rda" id="alp-hd-zke"/>
+                            <outlet property="delegate" destination="8AS-uk-Rda" id="0d9-H1-rMJ"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Results" id="BaF-X8-ney"/>
+                    <connections>
+                        <outlet property="tabBarObservedScrollView" destination="dYn-Mp-sfF" id="HT1-iy-NMJ"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4px-Yl-GFa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1703" y="-3"/>
+        </scene>
+        <!--recordSyncStatusViewController-->
+        <scene sceneID="doA-7W-mcs">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Settings" referencedIdentifier="recordSyncStatusViewController" id="NVd-Mr-yXK" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="Hbl-aP-0AP"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mg3-dK-Kt1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3123" y="-3"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="deG-cS-qHu">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="fQu-mO-Tve" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="C5A-aH-u7K">
+                        <rect key="frame" x="0.0" y="60" width="1920" height="145"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="8AS-uk-Rda" kind="relationship" relationship="rootViewController" id="iTO-A5-Yde"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="E6A-Sb-DoU" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-531" y="-3"/>
+        </scene>
+    </scenes>
+</document>

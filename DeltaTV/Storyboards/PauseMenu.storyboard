@@ -367,12 +367,12 @@
                     </collectionView>
                     <navigationItem key="navigationItem" title="Save State" id="UtP-BA-mu1">
                         <rightBarButtonItems>
-                            <barButtonItem style="plain" systemItem="add" id="92E-aT-YV0">
+                            <barButtonItem style="done" systemItem="add" id="92E-aT-YV0">
                                 <connections>
                                     <action selector="addSaveState" destination="DvO-sy-hIL" id="ATI-yB-wMo"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem style="plain" id="NN9-6m-GXz">
+                            <barButtonItem style="done" id="NN9-6m-GXz">
                                 <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="JOG-Cr-NWT">
                                     <rect key="frame" x="1595" y="63" width="110" height="70"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
