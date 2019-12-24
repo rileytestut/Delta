@@ -3,13 +3,13 @@
     {
       "size" : "1280x768",
       "idiom" : "tv",
-      "filename" : "App Icon - App Store.imagestack",
+      "filename" : "App Icon - Large.imagestack",
       "role" : "primary-app-icon"
     },
     {
       "size" : "400x240",
       "idiom" : "tv",
-      "filename" : "App Icon.imagestack",
+      "filename" : "App Icon - Small.imagestack",
       "role" : "primary-app-icon"
     },
     {
