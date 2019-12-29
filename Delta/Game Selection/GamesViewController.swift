@@ -87,7 +87,7 @@ class GamesViewController: UIViewController
         NotificationCenter.default.addObserver(self, selector: #selector(GamesViewController.syncingDidFinish(_:)), name: SyncCoordinator.didFinishSyncingNotification, object: nil)
     }
     
-    
+    #if os(tvOS)
     @IBAction func systemsSegmentedControlValueChanged(_ sender: Any) {
         let activeSystemShortName = systemsSegmentedControl.titleForSegment(at: systemsSegmentedControl.selectedSegmentIndex)
         var selectedGameCollection: GameCollection?
@@ -107,6 +107,7 @@ class GamesViewController: UIViewController
             }
         }
     }
+    #endif
 }
 
 //MARK: - UIViewController -

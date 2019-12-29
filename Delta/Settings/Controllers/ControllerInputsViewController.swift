@@ -6,14 +6,14 @@
 //  Copyright © 2017 Riley Testut. All rights reserved.
 //
 
-#if os(iOS) // this whole controller is based heavily using callout view. Will need another way for tvOS, unfortunately
-// TODO: will be hard, but try to refactor for tvOS. Use a simple tableview
 import UIKit
 import Roxas
 
 import DeltaCore
 
+#if os (iOS)
 import SMCalloutView
+#endif
 
 class ControllerInputsViewController: UIViewController
 {
@@ -37,18 +37,21 @@ class ControllerInputsViewController: UIViewController
     
     private var gameViewController: DeltaCore.GameViewController!
     private var actionsMenuViewController: GridMenuViewController!
-    
+
+    #if os (iOS)
     private var calloutViews = [AnyInput: InputCalloutView]()
     
     private var activeCalloutView: InputCalloutView?
     
     @IBOutlet private var actionsMenuViewControllerHeightConstraint: NSLayoutConstraint!
     @IBOutlet private var cancelTapGestureRecognizer: UITapGestureRecognizer!
+    #endif
     
     public override var next: UIResponder? {
         return KeyboardResponder(nextResponder: super.next)
     }
     
+    #if os (iOS)
     override var shouldAutorotate: Bool {
         return false
     }
@@ -60,6 +63,7 @@ class ControllerInputsViewController: UIViewController
     override var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
         return .portrait
     }
+    #endif
         
     override func viewDidLoad()
     {
@@ -67,7 +71,9 @@ class ControllerInputsViewController: UIViewController
         
         self.gameViewController.controllerView.addReceiver(self)
         
+        #if os (iOS)
         self.navigationController?.navigationBar.barStyle = .black
+        #endif
         
         NSLayoutConstraint.activate([self.gameViewController.gameView.centerYAnchor.constraint(equalTo: self.actionsMenuViewController.view.centerYAnchor)])
         
@@ -75,6 +81,7 @@ class ControllerInputsViewController: UIViewController
         self.updateSystem()
     }
     
+    #if os (iOS)
     override func viewDidLayoutSubviews()
     {
         super.viewDidLayoutSubviews()
@@ -94,6 +101,7 @@ class ControllerInputsViewController: UIViewController
             self.prepareCallouts()
         }
     }
+    #endif
 }
 
 extension ControllerInputsViewController
@@ -166,7 +174,7 @@ private extension ControllerInputsViewController
                 self.inputMappings[self.system] = inputMapping
             }
         }
-        
+        #if os (iOS)
         // Update callouts, if view is already on screen.
         if self.view.window != nil
         {
@@ -177,6 +185,9 @@ private extension ControllerInputsViewController
                 self.prepareCallouts()
             }
         }
+        #elseif os (tvOS)
+        // TODO: the thing
+        #endif
     }
     
     func preparePopoverMenuController()
@@ -228,8 +239,12 @@ private extension ControllerInputsViewController
             }
             
             let item = MenuItem(text: text, image: image) { [unowned self] (item) in
+                #if os (iOS)
                 guard let calloutView = self.calloutViews[AnyInput(input)] else { return }
                 self.toggle(calloutView)
+                #elseif os (tvOS)
+                // TODO: this, but for tvOS
+                #endif
             }
             
             items.append(item)
@@ -255,9 +270,13 @@ private extension ControllerInputsViewController
         // Create callout view for each on-screen input.
         for input in mappedInputs
         {
+            #if os (iOS)
             let calloutView = InputCalloutView()
             calloutView.delegate = self
             self.calloutViews[AnyInput(input)] = calloutView
+            #elseif os (tvOS)
+            // TODO: this, but for tvOS
+            #endif
         }
         
         self.managedObjectContext.performAndWait {
@@ -266,6 +285,7 @@ private extension ControllerInputsViewController
             {
                 let mappedInput = self.mappedInput(for: input)
                 
+                #if os (iOS)
                 if let calloutView = self.calloutViews[mappedInput]
                 {
                     if let previousInput = calloutView.input
@@ -278,9 +298,13 @@ private extension ControllerInputsViewController
                         calloutView.input = input
                     }
                 }
+                #elseif os (tvOS)
+                // TODO: this, but for tvOS
+                #endif
             }
         }
         
+        #if os (iOS)
         // Present only callout views that are associated with a controller input.
         for calloutView in self.calloutViews.values
         {
@@ -289,11 +313,15 @@ private extension ControllerInputsViewController
                 calloutView.presentCallout(from: presentationRect, in: self.view, constrainedTo: self.view, animated: true)
             }
         }
+        #elseif os (tvOS)
+        // TODO: this, but for tvOS
+        #endif
     }
 }
 
 private extension ControllerInputsViewController
 {
+    #if os (iOS)
     func updateActiveCalloutView(with controllerInput: Input?)
     {
         guard let inputMapping = self.inputMappings[self.system] else { return }
@@ -381,6 +409,7 @@ private extension ControllerInputsViewController
             }
         }
     }
+    #endif
     
     @IBAction func resetInputMapping(_ sender: UIBarButtonItem)
     {
@@ -407,6 +436,7 @@ private extension ControllerInputsViewController
     }
 }
 
+#if os (iOS)
 extension ControllerInputsViewController: UIGestureRecognizerDelegate
 {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool
@@ -419,6 +449,7 @@ extension ControllerInputsViewController: UIGestureRecognizerDelegate
         self.updateActiveCalloutView(with: nil)
     }
 }
+#endif
 
 private extension ControllerInputsViewController
 {
@@ -442,7 +473,8 @@ private extension ControllerInputsViewController
         
         return AnyInput(mappedInput)
     }
-    
+
+    #if os (iOS)
     func presentationRect(for calloutView: InputCalloutView) -> CGRect?
     {
         guard let input = self.calloutViews.first(where: { $0.value == calloutView })?.key else { return nil }
@@ -522,6 +554,7 @@ private extension ControllerInputsViewController
         
         return nil
     }
+    #endif
 }
 
 extension ControllerInputsViewController: GameControllerReceiver
@@ -533,12 +566,21 @@ extension ControllerInputsViewController: GameControllerReceiver
         switch gameController
         {
         case self.gameViewController.controllerView:
+            #if os (iOS)
             if let calloutView = self.calloutViews[AnyInput(controllerInput)]
             {
                 self.toggle(calloutView)
             }
+            #elseif os(tvOS)
+            // TODO: this, but for tvOS
+            #endif
             
-        case self.gameController: self.updateActiveCalloutView(with: controllerInput)
+        case self.gameController:
+            #if os (iOS)
+            self.updateActiveCalloutView(with: controllerInput)
+            #elseif os(tvOS)
+            // TODO: this, but for tvOS
+            #endif
             
         default: break
         }
@@ -549,6 +591,7 @@ extension ControllerInputsViewController: GameControllerReceiver
     }
 }
 
+#if os (iOS)
 extension ControllerInputsViewController: SMCalloutViewDelegate
 {
     func calloutViewClicked(_ calloutView: SMCalloutView)
