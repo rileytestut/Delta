@@ -186,7 +186,9 @@ private extension ControllerInputsViewController
             }
         }
         #elseif os (tvOS)
-        // TODO: the thing
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            self.prepareCallouts()
+        }
         #endif
     }
     

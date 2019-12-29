@@ -5,6 +5,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -909,11 +910,58 @@ Delta uses OpenVGDB to provide automatic artwork for imported games.</string>
                     <navigationItem key="navigationItem" title="Controllers" id="eFn-OW-i0m"/>
                     <connections>
                         <outlet property="tabBarObservedScrollView" destination="n7o-41-h1H" id="dH7-94-qvr"/>
+                        <segue destination="2I9-n9-4BW" kind="presentation" identifier="controllerInputsSegue" id="XGa-ws-2sa"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Lzk-P3-iok" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="13922" y="-1600"/>
+        </scene>
+        <!--Controller Inputs View Controller-->
+        <scene sceneID="eQR-F1-TyN">
+            <objects>
+                <viewController id="Axu-QH-drI" customClass="ControllerInputsViewController" customModule="DeltaTV" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="cga-FL-rYA"/>
+                        <viewControllerLayoutGuide type="bottom" id="aGI-iW-4hI"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="phB-HO-ZlM">
+                        <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="737-Vv-w4b">
+                                <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
+                                <connections>
+                                    <segue destination="jfV-hM-0zJ" kind="embed" identifier="embedGameViewController" id="cOm-GV-ISR"/>
+                                </connections>
+                            </containerView>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uXE-PU-4v3">
+                                <rect key="frame" x="90" y="512.5" width="1740" height="200"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="200" id="89n-HN-ypu"/>
+                                </constraints>
+                                <connections>
+                                    <segue destination="dmD-Bq-4X6" kind="embed" identifier="embedActionsMenuViewController" id="DBK-O4-jeA"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="737-Vv-w4b" firstAttribute="leading" secondItem="phB-HO-ZlM" secondAttribute="leading" id="4ZN-lK-eqt"/>
+                            <constraint firstItem="YMT-pb-G0L" firstAttribute="trailing" secondItem="uXE-PU-4v3" secondAttribute="trailing" id="SZ9-A3-Xo9"/>
+                            <constraint firstAttribute="bottom" secondItem="737-Vv-w4b" secondAttribute="bottom" id="Xs8-mX-uwQ"/>
+                            <constraint firstItem="737-Vv-w4b" firstAttribute="top" secondItem="phB-HO-ZlM" secondAttribute="top" id="gM5-pQ-TaD"/>
+                            <constraint firstItem="uXE-PU-4v3" firstAttribute="leading" secondItem="YMT-pb-G0L" secondAttribute="leading" id="qXL-Jc-3QS"/>
+                            <constraint firstItem="uXE-PU-4v3" firstAttribute="centerY" secondItem="YMT-pb-G0L" secondAttribute="centerY" id="rmd-Zx-iw7"/>
+                            <constraint firstAttribute="trailing" secondItem="737-Vv-w4b" secondAttribute="trailing" id="s8P-MB-XJq"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="YMT-pb-G0L"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="NqK-Mm-dCs"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xPf-ME-o5m" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="18664" y="-1597"/>
         </scene>
         <!--Syncing Service-->
         <scene sceneID="xWb-Sw-ryY">
@@ -1147,6 +1195,73 @@ Delta uses OpenVGDB to provide automatic artwork for imported games.</string>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rFK-HL-FGI" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="11522" y="-1600"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="7sP-Dn-O5F">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="2I9-n9-4BW" customClass="RSTNavigationController" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="x1P-5M-tF5">
+                        <rect key="frame" x="0.0" y="60" width="1920" height="145"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="Axu-QH-drI" kind="relationship" relationship="rootViewController" id="ML7-tM-x2a"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="SRL-yx-oBG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="16341" y="-1597"/>
+        </scene>
+        <!--Grid Menu View Controller-->
+        <scene sceneID="SJ3-uJ-eBC">
+            <objects>
+                <collectionViewController id="dmD-Bq-4X6" customClass="GridMenuViewController" customModule="DeltaTV" customModuleProvider="target" sceneMemberID="viewController">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="kWw-At-u5P">
+                        <rect key="frame" x="0.0" y="0.0" width="1740" height="200"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="PHa-la-Dbu" customClass="GridCollectionViewLayout" customModule="DeltaTV" customModuleProvider="target">
+                            <size key="itemSize" width="50" height="50"/>
+                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        </collectionViewFlowLayout>
+                        <cells>
+                            <collectionViewCell opaque="NO" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Cell" id="nub-yF-3n5" customClass="GridCollectionViewCell" customModule="DeltaTV" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="50" height="258"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="b7h-Il-2tP">
+                                    <rect key="frame" x="0.0" y="0.0" width="50" height="258"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </collectionViewCellContentView>
+                            </collectionViewCell>
+                        </cells>
+                        <connections>
+                            <outlet property="dataSource" destination="dmD-Bq-4X6" id="gMN-WY-a3m"/>
+                            <outlet property="delegate" destination="dmD-Bq-4X6" id="Fm3-Ot-6dL"/>
+                        </connections>
+                    </collectionView>
+                    <connections>
+                        <outlet property="tabBarObservedScrollView" destination="kWw-At-u5P" id="Epx-EW-IIS"/>
+                    </connections>
+                </collectionViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="aFc-Vh-koq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="21101" y="-3110"/>
+        </scene>
+        <!--Game View Controller-->
+        <scene sceneID="yfh-kN-qWJ">
+            <objects>
+                <viewController id="jfV-hM-0zJ" customClass="GameViewController" customModule="DeltaCore" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Es9-hM-MfW">
+                        <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bCV-X1-Ykz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="21101" y="-1600"/>
         </scene>
     </scenes>
     <resources>
