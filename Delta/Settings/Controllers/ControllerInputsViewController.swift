@@ -49,7 +49,7 @@ class ControllerInputsViewController: GCEventViewController // need to inherit f
     @IBOutlet private var cancelTapGestureRecognizer: UITapGestureRecognizer!
     #elseif os(tvOS)
     
-    class DisplayInputHelper {
+    class DisplayInputHelper: Equatable {
         var input: Input?
     }
     
@@ -474,30 +474,10 @@ private extension ControllerInputsViewController
             return
         }
         
-        guard let input = self.inputDisplayMap.first(where: { $0.value.input == activeHelper.input })?.key else { return }
-        
-//
-//        self.managedObjectContext.performAndWait {
-//            for supportedInput in inputMapping.supportedControllerInputs
-//            {
-//                let mappedInput = self.mappedInput(for: supportedInput)
-//
-//                if mappedInput == input
-//                {
-//                    // Set all existing controller inputs that currently map to "input" to instead map to nil.
-//                    inputMapping.set(nil, forControllerInput: supportedInput)
-//                }
-//            }
-//
-//            if let controllerInput = controllerInput
-//            {
-//                inputMapping.set(input, forControllerInput: controllerInput)
-//            }
-//        }
-//
-//        activeCalloutView.input = controllerInput
-        
-        
+        guard let input = self.inputDisplayMap.first(where: {$0.value.input?.stringValue == activeHelper.input?.stringValue})?.key else {
+            self.controllerUserInteractionEnabled = true
+            return
+        }
         
         if let controllerInput = controllerInput
         {
