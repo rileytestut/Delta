@@ -49,12 +49,15 @@ class ControllerInputsViewController: GCEventViewController // need to inherit f
     @IBOutlet private var cancelTapGestureRecognizer: UITapGestureRecognizer!
     #elseif os(tvOS)
     
+    class DisplayInputHelper {
+        var input: Input?
+    }
     
     private var allMappedInputs = [Input]()
     
-    private var inputDisplayMap = [AnyInput: Input?]()
+    private var inputDisplayMap = [AnyInput: DisplayInputHelper]()
     
-    private var activeListeningInput: Input?
+    private var activeInputHelper: DisplayInputHelper?
     
     @IBOutlet var systemInputSelectButton: UIBarButtonItem!
     
@@ -297,41 +300,6 @@ private extension ControllerInputsViewController
             let inputMapping = self.inputMappings[self.system]
         else { return }
         
-                // po inputMapping
-        //        {
-        //            deltaCoreInputMapping = DeltaCore.GameControllerInputMapping(
-        //                name: Optional("Custom Nimbus"),
-        //                gameControllerInputType: __C.GameControllerInputType(_rawValue: mfi),
-        //                inputMappings:
-        //                    ["rightThumbstickRight": AnyInput(stringValue: "rightThumbstickRight", intValue: nil),
-        //                     "down": AnyInput(stringValue: "down", intValue: nil),
-        //                     "rightThumbstickDown": AnyInput(stringValue: "rightThumbstickDown", intValue: nil),
-        //                     "leftTrigger": AnyInput(stringValue: "l2", intValue: nil),
-        //                     "x": AnyInput(stringValue: "x", intValue: nil),
-        //                     "leftThumbstickRight": AnyInput(stringValue: "leftThumbstickRight", intValue: nil),
-        //                     "y": AnyInput(stringValue: "y", intValue: nil),
-        //                     "leftThumbstickUp": AnyInput(stringValue: "leftThumbstickUp", intValue: nil),
-        //                     "rightThumbstickUp": AnyInput(stringValue: "rightThumbstickUp", intValue: nil),
-        //                     "a": AnyInput(stringValue: "a", intValue: nil),
-        //                     "leftShoulder": AnyInput(stringValue: "l1", intValue: nil),
-        //                     "rightThumbstickLeft": AnyInput(stringValue: "rightThumbstickLeft", intValue: nil),
-        //                     "b": AnyInput(stringValue: "b", intValue: nil),
-        //                     "leftThumbstickDown": AnyInput(stringValue: "leftThumbstickDown", intValue: nil),
-        //                     "rightShoulder": AnyInput(stringValue: "r1", intValue: nil),
-        //                     "up": AnyInput(stringValue: "up", intValue: nil),
-        //                     "left": AnyInput(stringValue: "left", intValue: nil),
-        //                     "rightTrigger": AnyInput(stringValue: "r2", intValue: nil),
-        //                     "leftThumbstickLeft": AnyInput(stringValue: "leftThumbstickLeft", intValue: nil),
-        //                     "menu": AnyInput(stringValue: "menu", intValue: nil),
-        //                     "right": AnyInput(stringValue: "right", intValue: nil)
-        //                    ]
-        //            );
-        //            gameControllerInputType = mfi;
-        //            gameType = "com.rileytestut.delta.game.nes";
-        //            identifier = "C699D47F-8CF1-4A56-9B8E-F2EAECB24C98";
-        //            playerIndex = 0;
-        //        }
-        
         // Implicit assumption that all skins used for controller input mapping don't have multiple items with same input.
         let mappedInputs = items.flatMap { $0.inputs.allInputs.compactMap(controllerViewInputMapping.input(forControllerInput:)) } + (self.supportedActionInputs as [Input])
         
@@ -347,7 +315,7 @@ private extension ControllerInputsViewController
             calloutView.delegate = self
             self.calloutViews[AnyInput(input)] = calloutView
             #elseif os (tvOS)
-            self.inputDisplayMap[AnyInput(input)] = input
+            self.inputDisplayMap[AnyInput(input)] = DisplayInputHelper()
             #endif
         }
 
@@ -371,7 +339,17 @@ private extension ControllerInputsViewController
                     }
                 }
                 #elseif os(tvOS)
-                self.inputDisplayMap[AnyInput(input)] = input
+                if let displayInputHelper = self.inputDisplayMap[mappedInput]
+                {
+                    if let previousInput = displayInputHelper.input
+                    {
+                        displayInputHelper.input = (input.displayPriority > previousInput.displayPriority) ? input : previousInput
+                    }
+                    else
+                    {
+                        displayInputHelper.input = input
+                    }
+                }
                 #endif
             }
         }
@@ -491,19 +469,46 @@ private extension ControllerInputsViewController
             return
         }
 
-        guard let input = self.activeListeningInput else {
+        guard let activeHelper = self.activeInputHelper else {
             self.controllerUserInteractionEnabled = true
             return
         }
         
+        guard let input = self.inputDisplayMap.first(where: { $0.value.input == activeHelper.input })?.key else { return }
+        
+//
+//        self.managedObjectContext.performAndWait {
+//            for supportedInput in inputMapping.supportedControllerInputs
+//            {
+//                let mappedInput = self.mappedInput(for: supportedInput)
+//
+//                if mappedInput == input
+//                {
+//                    // Set all existing controller inputs that currently map to "input" to instead map to nil.
+//                    inputMapping.set(nil, forControllerInput: supportedInput)
+//                }
+//            }
+//
+//            if let controllerInput = controllerInput
+//            {
+//                inputMapping.set(input, forControllerInput: controllerInput)
+//            }
+//        }
+//
+//        activeCalloutView.input = controllerInput
+        
+        
+        
         if let controllerInput = controllerInput
         {
-            inputDisplayMap.forEach { (key: AnyInput, value: Input?) in
-                guard let calloutInput = value else { return }
-                
-                if calloutInput.stringValue == controllerInput.stringValue {
-                   // Hide callout views that previously displayed the controller input.
-                    inputDisplayMap[key] = nil
+            for (_, displayHelp) in self.inputDisplayMap
+            {
+                guard let displayInput = displayHelp.input else { continue }
+
+                if displayInput == controllerInput
+                {
+                    // Hide callout views that previously displayed the controller input.
+                    displayHelp.input = nil
                 }
             }
         }
@@ -527,9 +532,11 @@ private extension ControllerInputsViewController
             }
         }
 
-        self.activeListeningInput = nil
+        self.activeInputHelper = nil
         
-        self.inputDisplayMap[AnyInput(input)] = controllerInput
+        let displayHelper = DisplayInputHelper()
+        displayHelper.input = controllerInput
+        self.inputDisplayMap[AnyInput(input)] = displayHelper
         
         self.tableView.reloadData()
     }
@@ -699,7 +706,7 @@ extension ControllerInputsViewController: GameControllerReceiver
         guard self.isViewLoaded else { return }
 
         #if os(tvOS)
-        guard self.activeListeningInput != nil else {
+        guard self.activeInputHelper != nil else {
             self.controllerUserInteractionEnabled = true
             return
         }
@@ -757,13 +764,13 @@ extension ControllerInputsViewController: UITableViewDelegate, UITableViewDataSo
         let cell = tableView.dequeueReusableCell(withIdentifier: "InputCell", for: indexPath)
         cell.textLabel?.text = input.stringValue
         
-        if let activeListeningInput = self.activeListeningInput, activeListeningInput == input {
+        if let activeListeningInput = self.activeInputHelper, activeListeningInput.input == input {
             cell.detailTextLabel?.text = "AWAITING INPUT"
         } else {
-            if let mappedVal = self.inputDisplayMap[AnyInput(input)], let validMappedVal = mappedVal {
-                cell.detailTextLabel?.text = validMappedVal.stringValue
+            if let helper = self.inputDisplayMap[AnyInput(input)], let validInput = helper.input {
+                cell.detailTextLabel?.text = validInput.localizedName
             } else {
-                cell.detailTextLabel?.text = "none/Default"
+                cell.detailTextLabel?.text = "n/a"
             }
         }
         
@@ -772,7 +779,9 @@ extension ControllerInputsViewController: UITableViewDelegate, UITableViewDataSo
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let input = self.allMappedInputs[indexPath.row]
-        self.activeListeningInput = input
+        let displayHelper = DisplayInputHelper()
+        displayHelper.input = input
+        self.activeInputHelper = displayHelper
         self.controllerUserInteractionEnabled = false // tells tvOS to NOT let UIKit know about controller input; will reset after input is received
         self.tableView.reloadData()
     }
