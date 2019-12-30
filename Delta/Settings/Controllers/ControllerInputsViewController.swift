@@ -25,7 +25,7 @@ class ControllerInputsViewController: GCEventViewController // need to inherit f
         }
     }
     
-    var system: System = System.gba {
+    var system: System = System.allCases[0] {
         didSet {
             guard self.system != oldValue else { return }
             self.updateSystem()
@@ -534,7 +534,7 @@ private extension ControllerInputsViewController
         let alertController = UIAlertController(title: "Selectt System Input", message: nil, preferredStyle: .actionSheet)
         alertController.addAction(.cancel)
         System.allCases.forEach { (system) in
-            alertController.addAction(UIAlertAction(title: NSLocalizedString(system.localizedShortName, comment: ""), style: .destructive, handler: { (action) in
+            alertController.addAction(UIAlertAction(title: NSLocalizedString(system.localizedShortName, comment: ""), style: .default, handler: { (action) in
                 self.system = system
             }))
         }
