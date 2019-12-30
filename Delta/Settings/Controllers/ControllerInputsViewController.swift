@@ -49,7 +49,7 @@ class ControllerInputsViewController: GCEventViewController // need to inherit f
     @IBOutlet private var cancelTapGestureRecognizer: UITapGestureRecognizer!
     #elseif os(tvOS)
     
-    class DisplayInputHelper: Equatable {
+    class DisplayInputHelper {
         var input: Input?
     }
     
