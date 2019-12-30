@@ -467,40 +467,17 @@ private extension ControllerInputsViewController
     func updateWaitingCell(with controllerInput: Input?)
     {
         func abortMission() {
-            print("<><><> INSIDE ABORT MISSION")
             self.controllerUserInteractionEnabled = true
             self.currentlyListeningForControllerInput = false
             self.tableView.reloadData()
         }
         
-        guard self.controllerUserInteractionEnabled == false else {
-            print("<><><> ABOUT TO 1")
-            abortMission()
-            return
-        }
-        
-        guard let inputMapping = self.inputMappings[self.system] else {
-            print("<><><> ABOUT TO 2")
-            abortMission()
-            return
-        }
-
-        guard let activeHelper = self.activeInputHelper else {
-            print("<><><> ABOUT TO 3")
-            abortMission()
-            return
-        }
-        
-        // not including stringValue breaks the comparison, which lukely means there tthe types of these two inputs are not the same. find out whhy
-        
-//        guard let input = self.inputDisplayMap.first(where: {$0.value == activeHelper})?.key else {
-        
-        print("<><><> 1 - activeHelper.input?.stringValue::\(activeHelper.input?.stringValue)")
-        print("<><><> 2 - self.inputDisplayMap::\(self.inputDisplayMap)") // somehting changing in here appears to be te key
-        
-//        guard let input = self.inputDisplayMap.first(where: {$0.value.input?.stringValue == activeHelper.input?.stringValue})?.key else {
-        guard let input = self.activeInputHelper?.input else {
-            print("<><><> ABOUT TO 4")
+        guard
+            self.controllerUserInteractionEnabled == false,
+            let inputMapping = self.inputMappings[self.system],
+            let activeHelper = self.activeInputHelper,
+            let input = activeHelper.input
+        else {
             abortMission()
             return
         }
