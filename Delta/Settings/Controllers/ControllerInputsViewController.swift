@@ -184,6 +184,10 @@ private extension ControllerInputsViewController
             self.navigationController?.navigationBar.layoutIfNeeded()
         }
         
+        #if os(tvOS)
+        self.systemInputSelectButton.title = self.system.localizedShortName
+        #endif
+        
         // Update controller view's controller skin.
         self.gameViewController.controllerView.controllerSkin = DeltaCore.ControllerSkin.standardControllerSkin(for: self.system.gameType)
         self.gameViewController.view.setNeedsUpdateConstraints()
@@ -531,7 +535,7 @@ private extension ControllerInputsViewController
     }
     
     @IBAction func systemSelectionPressed(_ sender: UIBarButtonItem) {
-        let alertController = UIAlertController(title: "Selectt System Input", message: nil, preferredStyle: .actionSheet)
+        let alertController = UIAlertController(title: "Select System Input", message: nil, preferredStyle: .actionSheet)
         alertController.addAction(.cancel)
         System.allCases.forEach { (system) in
             alertController.addAction(UIAlertAction(title: NSLocalizedString(system.localizedShortName, comment: ""), style: .default, handler: { (action) in
