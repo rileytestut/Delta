@@ -17,7 +17,15 @@ import SMCalloutView
 
 import GameController
 
-class ControllerInputsViewController: GCEventViewController // need to inherit from this so that tvOS handles b button correctly
+#if os(tvOS)
+// need to inherit from this so that tvOS controller input on
+// game vs UIkit nav works properly since 'b' also acts as menu button
+typealias ControllerInputsViewControllerRootClass = GCEventViewController
+#else
+typealias ControllerInputsViewControllerRootClass = UIViewController
+#endif
+
+class ControllerInputsViewController: ControllerInputsViewControllerRootClass
 {
     var gameController: GameController! {
         didSet {
@@ -104,9 +112,9 @@ class ControllerInputsViewController: GCEventViewController // need to inherit f
         #if os(tvOS)
         self.tableView.delegate = self
         self.tableView.dataSource = self
-        #endif
         
         self.controllerUserInteractionEnabled = true
+        #endif
     }
     
     
