@@ -917,7 +917,7 @@ Delta uses OpenVGDB to provide automatic artwork for imported games.</string>
             </objects>
             <point key="canvasLocation" x="13922" y="-1600"/>
         </scene>
-        <!--Controller Inputs View Controller-->
+        <!--Controls-->
         <scene sceneID="eQR-F1-TyN">
             <objects>
                 <viewController id="Axu-QH-drI" customClass="ControllerInputsViewController" customModule="DeltaTV" customModuleProvider="target" sceneMemberID="viewController">
@@ -990,13 +990,34 @@ Delta uses OpenVGDB to provide automatic artwork for imported games.</string>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="YMT-pb-G0L"/>
                     </view>
-                    <navigationItem key="navigationItem" id="NqK-Mm-dCs"/>
+                    <navigationItem key="navigationItem" title="Controls" id="NqK-Mm-dCs">
+                        <barButtonItem key="leftBarButtonItem" title="Item" id="jqJ-0W-Rwa">
+                            <connections>
+                                <action selector="systemSelectionPressed:" destination="Axu-QH-drI" id="7l4-hy-hvI"/>
+                            </connections>
+                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem title="Save" id="8b4-vE-nho">
+                                <connections>
+                                    <segue destination="FLI-OC-KJt" kind="unwind" identifier="saveControllerInputs" unwindAction="unwindFromControllerInputsViewController:" id="Ixv-YW-dI6"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="Reset" id="AqP-tr-Bn0">
+                                <color key="tintColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <connections>
+                                    <action selector="resetInputMapping:" destination="Axu-QH-drI" id="wnh-Md-P36"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
+                    </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
+                        <outlet property="systemInputSelectButton" destination="jqJ-0W-Rwa" id="6t7-s9-tNp"/>
                         <outlet property="tableView" destination="m0K-df-uLX" id="lxn-hg-QNC"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xPf-ME-o5m" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="FLI-OC-KJt" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="18664" y="-1597"/>
         </scene>
@@ -1236,7 +1257,7 @@ Delta uses OpenVGDB to provide automatic artwork for imported games.</string>
         <!--Navigation Controller-->
         <scene sceneID="7sP-Dn-O5F">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="2I9-n9-4BW" customClass="RSTNavigationController" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="2I9-n9-4BW" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="x1P-5M-tF5">
                         <rect key="frame" x="0.0" y="60" width="1920" height="145"/>
@@ -1291,9 +1312,14 @@ Delta uses OpenVGDB to provide automatic artwork for imported games.</string>
         <scene sceneID="VPf-MZ-WS6">
             <objects>
                 <viewController id="KWV-oQ-3T7" customClass="GameViewController" customModule="DeltaCore" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="v8p-aa-KdH"/>
+                        <viewControllerLayoutGuide type="bottom" id="FqQ-CZ-BKK"/>
+                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="9Ld-E8-kcO">
                         <rect key="frame" x="0.0" y="0.0" width="1920" height="875"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="oBu-db-a7d"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eaj-ZH-4zg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

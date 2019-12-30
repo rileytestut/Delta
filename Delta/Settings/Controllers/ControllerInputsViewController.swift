@@ -48,11 +48,15 @@ class ControllerInputsViewController: GCEventViewController // need to inherit f
     @IBOutlet private var actionsMenuViewControllerHeightConstraint: NSLayoutConstraint!
     @IBOutlet private var cancelTapGestureRecognizer: UITapGestureRecognizer!
     #elseif os(tvOS)
+    
+    
     private var allMappedInputs = [Input]()
     
     private var inputDisplayMap = [AnyInput: Input?]()
     
     private var activeListeningInput: Input?
+    
+    @IBOutlet var systemInputSelectButton: UIBarButtonItem!
     
     @IBOutlet var tableView: UITableView!
     #endif
@@ -87,7 +91,9 @@ class ControllerInputsViewController: GCEventViewController // need to inherit f
         
         NSLayoutConstraint.activate([self.gameViewController.gameView.centerYAnchor.constraint(equalTo: self.actionsMenuViewController.view.centerYAnchor)])
         
+        #if os (iOS)
         self.preparePopoverMenuController()
+        #endif
         self.updateSystem()
         
         #if os(tvOS)
@@ -97,6 +103,8 @@ class ControllerInputsViewController: GCEventViewController // need to inherit f
         
         self.controllerUserInteractionEnabled = true
     }
+    
+    
     
     #if os (iOS)
     override func viewDidLayoutSubviews()
@@ -204,6 +212,7 @@ private extension ControllerInputsViewController
         }
         #elseif os (tvOS)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            self.allMappedInputs = []
             self.inputDisplayMap = [:]
             self.prepareCallouts()
         }
@@ -519,6 +528,17 @@ private extension ControllerInputsViewController
         self.inputDisplayMap[AnyInput(input)] = controllerInput
         
         self.tableView.reloadData()
+    }
+    
+    @IBAction func systemSelectionPressed(_ sender: UIBarButtonItem) {
+        let alertController = UIAlertController(title: "Selectt System Input", message: nil, preferredStyle: .actionSheet)
+        alertController.addAction(.cancel)
+        System.allCases.forEach { (system) in
+            alertController.addAction(UIAlertAction(title: NSLocalizedString(system.localizedShortName, comment: ""), style: .destructive, handler: { (action) in
+                self.system = system
+            }))
+        }
+        self.present(alertController, animated: true, completion: nil)
     }
     #endif
     
