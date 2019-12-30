@@ -466,19 +466,15 @@ private extension ControllerInputsViewController
     #if os(tvOS)
     func updateWaitingCell(with controllerInput: Input?)
     {
-        func abortMission() {
-            self.controllerUserInteractionEnabled = true
-            self.currentlyListeningForControllerInput = false
-            self.tableView.reloadData()
-        }
-        
         guard
             self.controllerUserInteractionEnabled == false,
             let inputMapping = self.inputMappings[self.system],
             let activeHelper = self.activeInputHelper,
             let input = activeHelper.input
         else {
-            abortMission()
+            self.controllerUserInteractionEnabled = true
+            self.currentlyListeningForControllerInput = false
+            self.tableView.reloadData()
             return
         }
         
