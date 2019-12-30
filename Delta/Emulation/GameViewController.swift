@@ -144,7 +144,15 @@ class GameViewController: DeltaCore.GameViewController
     #endif
     
     #if os(tvOS)
-    lazy var menuTapGestureRecognizer: UITapGestureRecognizer = {
+    // this is merely to swallow the menu input so that 'b' doesn't act as a menu button like tvOS wants it to be
+    // menu button action is handled by the controller reciever
+    lazy var controllerMenuTapGestureRecognizer: UITapGestureRecognizer = {
+        let menuGesture = UITapGestureRecognizer(target: self, action: nil)
+        menuGesture.allowedPressTypes = [NSNumber(value: UIPress.PressType.menu.rawValue)]
+        return menuGesture
+    }()
+    // allows menu buttons on Apple TV remotes to go back into the menu
+    lazy var remoteMenuTapGestureRecognizer: UITapGestureRecognizer = {
         let menuGesture = UITapGestureRecognizer(target: self, action: #selector(GameViewController.handleMenuGesture(_:)))
         menuGesture.allowedPressTypes = [NSNumber(value: UIPress.PressType.menu.rawValue)]
         return menuGesture
@@ -292,10 +300,6 @@ extension GameViewController
         
         self.updateControllerSkin()
         self.updateControllers()
-        
-        #if os(tvOS)
-        self.view.addGestureRecognizer(menuTapGestureRecognizer)
-        #endif
     }
     
     @objc func handleMenuGesture(_ tap: UITapGestureRecognizer)
@@ -306,7 +310,7 @@ extension GameViewController
         {
             self.hideSustainButtonView()
         }
-        
+
         if let pauseViewController = self.pauseViewController, !self.isSelectingSustainedButtons
         {
             pauseViewController.dismiss()
@@ -529,6 +533,11 @@ private extension GameViewController
         {
             Settings.localControllerPlayerIndex = 0
         }
+
+        #if os(tvOS)
+        self.view.addGestureRecognizer(remoteMenuTapGestureRecognizer)
+        self.view.removeGestureRecognizer(controllerMenuTapGestureRecognizer)
+        #endif
         
         // If Settings.localControllerPlayerIndex is non-nil, and there isn't a connected controller with same playerIndex, show controller view.
         if let index = Settings.localControllerPlayerIndex, !ExternalGameControllerManager.shared.connectedControllers.contains { $0.playerIndex == index }
@@ -542,6 +551,11 @@ private extension GameViewController
             self.controllerView.isHidden = true
             
             Settings.localControllerPlayerIndex = nil
+
+            #if os(tvOS)
+            self.view.addGestureRecognizer(controllerMenuTapGestureRecognizer)
+            self.view.removeGestureRecognizer(remoteMenuTapGestureRecognizer)
+            #endif
         }
         
         self.view.setNeedsLayout()

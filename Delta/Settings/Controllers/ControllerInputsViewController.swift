@@ -330,7 +330,7 @@ private extension ControllerInputsViewController
 
         self.managedObjectContext.performAndWait {
             // Update callout views with controller inputs that map to callout views' associated controller skin inputs.
-            for input in inputMapping.supportedControllerInputs // GameControllerInputType
+            for input in inputMapping.supportedControllerInputs
             {
                 let mappedInput = self.mappedInput(for: input)
 
@@ -767,13 +767,13 @@ extension ControllerInputsViewController: UITableViewDelegate, UITableViewDataSo
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let input = self.allMappedInputs[indexPath.row] // TODOOOO: shuold I be getting input grom here???????
-        // TODOOOO: I don't think so
+        let input = self.allMappedInputs[indexPath.row]
         let displayHelper = DisplayInputHelper()
         displayHelper.input = input
         self.activeInputHelper = displayHelper
         self.currentlyListeningForControllerInput = true
-        self.controllerUserInteractionEnabled = false // tells tvOS to NOT let UIKit know about controller input; will reset after input is received
+        // tells tvOS to NOT let UIKit know about controller input; will reset after input is received
+        self.controllerUserInteractionEnabled = false
         self.tableView.reloadData()
     }
 }
