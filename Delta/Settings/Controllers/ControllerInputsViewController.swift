@@ -47,20 +47,22 @@ class ControllerInputsViewController: GCEventViewController // need to inherit f
     
     @IBOutlet private var actionsMenuViewControllerHeightConstraint: NSLayoutConstraint!
     @IBOutlet private var cancelTapGestureRecognizer: UITapGestureRecognizer!
+    
     #elseif os(tvOS)
     
-    class DisplayInputHelper {
+    class DisplayInputHelper: Equatable {
         var input: Input?
+        static func == (lhs: ControllerInputsViewController.DisplayInputHelper, rhs: ControllerInputsViewController.DisplayInputHelper) -> Bool {
+            return lhs.input == rhs.input
+        }
     }
     
     private var allMappedInputs = [Input]()
-    
     private var inputDisplayMap = [AnyInput: DisplayInputHelper]()
-    
     private var activeInputHelper: DisplayInputHelper?
+    private var currentlyListeningForControllerInput: Bool = false
     
     @IBOutlet var systemInputSelectButton: UIBarButtonItem!
-    
     @IBOutlet var tableView: UITableView!
     #endif
     
@@ -464,18 +466,42 @@ private extension ControllerInputsViewController
     #if os(tvOS)
     func updateWaitingCell(with controllerInput: Input?)
     {
-        guard let inputMapping = self.inputMappings[self.system] else {
+        func abortMission() {
+            print("<><><> INSIDE ABORT MISSION")
             self.controllerUserInteractionEnabled = true
+            self.currentlyListeningForControllerInput = false
+            self.tableView.reloadData()
+        }
+        
+        guard self.controllerUserInteractionEnabled == false else {
+            print("<><><> ABOUT TO 1")
+            abortMission()
+            return
+        }
+        
+        guard let inputMapping = self.inputMappings[self.system] else {
+            print("<><><> ABOUT TO 2")
+            abortMission()
             return
         }
 
         guard let activeHelper = self.activeInputHelper else {
-            self.controllerUserInteractionEnabled = true
+            print("<><><> ABOUT TO 3")
+            abortMission()
             return
         }
         
-        guard let input = self.inputDisplayMap.first(where: {$0.value.input?.stringValue == activeHelper.input?.stringValue})?.key else {
-            self.controllerUserInteractionEnabled = true
+        // not including stringValue breaks the comparison, which lukely means there tthe types of these two inputs are not the same. find out whhy
+        
+//        guard let input = self.inputDisplayMap.first(where: {$0.value == activeHelper})?.key else {
+        
+        print("<><><> 1 - activeHelper.input?.stringValue::\(activeHelper.input?.stringValue)")
+        print("<><><> 2 - self.inputDisplayMap::\(self.inputDisplayMap)") // somehting changing in here appears to be te key
+        
+//        guard let input = self.inputDisplayMap.first(where: {$0.value.input?.stringValue == activeHelper.input?.stringValue})?.key else {
+        guard let input = self.activeInputHelper?.input else {
+            print("<><><> ABOUT TO 4")
+            abortMission()
             return
         }
         
@@ -511,13 +537,13 @@ private extension ControllerInputsViewController
                 inputMapping.set(input, forControllerInput: controllerInput)
             }
         }
-
-        self.activeInputHelper = nil
         
-        let displayHelper = DisplayInputHelper()
-        displayHelper.input = controllerInput
-        self.inputDisplayMap[AnyInput(input)] = displayHelper
         
+        activeHelper.input = controllerInput
+        self.activeInputHelper = activeHelper
+        self.inputDisplayMap[AnyInput(input)] = self.activeInputHelper
+        self.currentlyListeningForControllerInput = false
+        // don't set controllerUserInteractionEnabled back here just yet, because if you do then ?UI Kit will receive this click afterall :(
         self.tableView.reloadData()
     }
     
@@ -686,7 +712,8 @@ extension ControllerInputsViewController: GameControllerReceiver
         guard self.isViewLoaded else { return }
 
         #if os(tvOS)
-        guard self.activeInputHelper != nil else {
+        guard self.currentlyListeningForControllerInput == true else {
+            // if we're not currently listening for controller input, return now so UI Kit can own these clicks and not our listener
             self.controllerUserInteractionEnabled = true
             return
         }
@@ -741,10 +768,12 @@ extension ControllerInputsViewController: UITableViewDelegate, UITableViewDataSo
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let input = self.allMappedInputs[indexPath.row]
+        
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: "InputCell", for: indexPath)
         cell.textLabel?.text = input.stringValue
         
-        if let activeListeningInput = self.activeInputHelper, activeListeningInput.input == input {
+        if currentlyListeningForControllerInput == true, let activeListeningInput = self.activeInputHelper, activeListeningInput.input == input {
             cell.detailTextLabel?.text = "AWAITING INPUT"
         } else {
             if let helper = self.inputDisplayMap[AnyInput(input)], let validInput = helper.input {
@@ -758,10 +787,12 @@ extension ControllerInputsViewController: UITableViewDelegate, UITableViewDataSo
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let input = self.allMappedInputs[indexPath.row]
+        let input = self.allMappedInputs[indexPath.row] // TODOOOO: shuold I be getting input grom here???????
+        // TODOOOO: I don't think so
         let displayHelper = DisplayInputHelper()
         displayHelper.input = input
         self.activeInputHelper = displayHelper
+        self.currentlyListeningForControllerInput = true
         self.controllerUserInteractionEnabled = false // tells tvOS to NOT let UIKit know about controller input; will reset after input is received
         self.tableView.reloadData()
     }
