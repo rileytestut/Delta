@@ -15,9 +15,8 @@ import DeltaCore
 import SMCalloutView
 #endif
 
-import GameController
-
 #if os(tvOS)
+import GameController
 // need to inherit from this so that tvOS controller input on
 // game vs UIkit nav works properly since 'b' also acts as menu button
 typealias ControllerInputsViewControllerRootClass = GCEventViewController
