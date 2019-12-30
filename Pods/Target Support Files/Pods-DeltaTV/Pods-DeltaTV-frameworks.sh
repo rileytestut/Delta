@@ -164,11 +164,13 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/SDWebImage-tvOS/SDWebImage.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SQLite.swift-tvOS/SQLite.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Voucher-tvOS/Voucher.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/TvOSTextViewer/TvOSTextViewer.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/SDWebImage-tvOS/SDWebImage.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SQLite.swift-tvOS/SQLite.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Voucher-tvOS/Voucher.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/TvOSTextViewer/TvOSTextViewer.framework"
 fi
 if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then
   wait

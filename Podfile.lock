@@ -9,6 +9,7 @@ PODS:
   - SQLite.swift (0.11.6):
     - SQLite.swift/standard (= 0.11.6)
   - SQLite.swift/standard (0.11.6)
+  - TvOSTextViewer (1.3.0)
   - Voucher (0.2.0)
 
 DEPENDENCIES:
@@ -17,6 +18,7 @@ DEPENDENCIES:
   - SDWebImage (~> 3.8)
   - SMCalloutView
   - SQLite.swift (~> 0.11.0)
+  - TvOSTextViewer
   - Voucher
 
 SPEC REPOS:
@@ -27,6 +29,7 @@ SPEC REPOS:
     - SMCalloutView
     - SQLite.swift
   trunk:
+    - TvOSTextViewer
     - Voucher
 
 SPEC CHECKSUMS:
@@ -35,8 +38,9 @@ SPEC CHECKSUMS:
   SDWebImage: a72e880a8fe0f7fc31efe15aaed443c074d2a80c
   SMCalloutView: 5c0ee363dc8e7204b2fda17dfad38c93e9e23481
   SQLite.swift: 46d890be8601964454bd3392527f863d1b802d45
+  TvOSTextViewer: c1a0c64286931e663d131dc680f908bcfa36e214
   Voucher: fe9e38cf715242c8b75589e096d38f1115a3e73b
 
-PODFILE CHECKSUM: 66a1442db655771dc592d9df950a81cc7dab0dac
+PODFILE CHECKSUM: 751b9711f45ca5b0d92726b53f65304f1f56e9ab
 
 COCOAPODS: 1.8.4

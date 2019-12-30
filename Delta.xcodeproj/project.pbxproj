@@ -1294,12 +1294,14 @@
 				"${BUILT_PRODUCTS_DIR}/SDWebImage-tvOS/SDWebImage.framework",
 				"${BUILT_PRODUCTS_DIR}/SQLite.swift-tvOS/SQLite.framework",
 				"${BUILT_PRODUCTS_DIR}/Voucher-tvOS/Voucher.framework",
+				"${BUILT_PRODUCTS_DIR}/TvOSTextViewer/TvOSTextViewer.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SQLite.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Voucher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TvOSTextViewer.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

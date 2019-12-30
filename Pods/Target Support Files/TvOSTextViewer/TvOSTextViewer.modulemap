@@ -1,0 +1,6 @@
+framework module TvOSTextViewer {
+  umbrella header "TvOSTextViewer-umbrella.h"
+
+  export *
+  module * { export * }
+}

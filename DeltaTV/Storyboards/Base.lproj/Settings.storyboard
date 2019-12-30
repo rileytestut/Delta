@@ -228,10 +228,10 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="DetailCell" textLabel="cBX-mO-YP7" detailTextLabel="OWH-4E-zlh" style="IBUITableViewCellStyleValue1" id="mOV-Ny-xxM">
-                                        <rect key="frame" x="0.0" y="880" width="1708" height="66"/>
+                                        <rect key="frame" x="106" y="880" width="1708" height="66"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="mOV-Ny-xxM" id="Blh-b6-vRt">
-                                            <rect key="frame" x="0.0" y="0.0" width="1680" height="66"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="1668" height="66"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Grant Gliner" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="cBX-mO-YP7">
@@ -242,7 +242,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Icon Guy" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="OWH-4E-zlh">
-                                                    <rect key="frame" x="1516" y="10" width="144" height="46"/>
+                                                    <rect key="frame" x="1504" y="10" width="144" height="46"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="38"/>
                                                     <color key="textColor" systemColor="secondaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
@@ -252,14 +252,14 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="DetailCell" textLabel="FYa-8S-hTY" style="IBUITableViewCellStyleDefault" id="bcQ-1m-hoL">
-                                        <rect key="frame" x="0.0" y="960" width="1708" height="66"/>
+                                        <rect key="frame" x="106" y="960" width="1708" height="66"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="bcQ-1m-hoL" id="htb-mR-6CK">
-                                            <rect key="frame" x="0.0" y="0.0" width="1680" height="66"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="1668" height="66"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Licenses" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="FYa-8S-hTY">
-                                                    <rect key="frame" x="20" y="0.0" width="1640" height="66"/>
+                                                    <rect key="frame" x="20" y="0.0" width="1628" height="66"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="38"/>
                                                     <nil key="textColor"/>
@@ -268,7 +268,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="py7-YS-PIR" kind="presentation" id="wKK-V5-cB3"/>
+                                            <segue destination="py7-YS-PIR" kind="presentation" identifier="tvLicensesSegue" id="wKK-V5-cB3"/>
                                         </connections>
                                     </tableViewCell>
                                 </cells>
@@ -294,7 +294,7 @@
         <scene sceneID="s4P-Ob-hPY">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="F3G-cZ-ckE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-                <viewController id="o54-GE-9Q6" customClass="LicensesViewController" customModule="DeltaTV" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="o54-GE-9Q6" customClass="TvOSTextViewerViewController" customModule="TvOSTextViewer" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="pxr-Z5-1uB"/>
                         <viewControllerLayoutGuide type="bottom" id="gRW-jP-nfy"/>
@@ -302,114 +302,10 @@
                     <view key="view" contentMode="scaleToFill" id="JfB-5c-iwG">
                         <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YRw-wj-ySA">
-                                <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <string key="text">Delta and AltStore LLC are in no way affiliated with Nintendo Co., Ltd.
-
-Stephen Celis (SQLite.swift)
-Copyright (c) 2014-2015 Stephen Celis (&lt;stephen@stephencelis.com&gt;)
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-
-Olivier Poitrey (SDWebImage)
-Copyright (c) 2009-2018 Olivier Poitrey rs@dailymotion.com
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is furnished
-to do so, subject to the following conditions:
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-
-Thomas Zoechling (ZIPFoundation)
-Copyright (c) 2017 Thomas Zoechling
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-
-Dropbox Inc. (SwiftyDropbox)
-Copyright (c) 2015 Dropbox Inc., http://www.dropbox.com/
-Permission is hereby granted, free of charge, to any person obtaining
-a copy of this software and associated documentation files (the
-"Software"), to deal in the Software without restriction, including
-without limitation the rights to use, copy, modify, merge, publish,
-distribute, sublicense, and/or sell copies of the Software, and to
-permit persons to whom the Software is furnished to do so, subject to
-the following conditions:
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-Google (Google API Objective-C Client)
-Licensed under Apache 2 license.
-
-Nick Farina (SMCalloutView)
-Licensed under Apache 2 license.
-
-Delta uses these emulator cores licensed under the GNU Public License version 2:
-
-Nestopia
-Snes9x
-mupen64plus
-Gambatte
-visualboyadvance-m
-DeSmuME
-
-Delta uses OpenVGDB to provide automatic artwork for imported games.</string>
-                                <color key="textColor" systemColor="secondaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
-                        </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <viewLayoutGuide key="safeArea" id="wbN-Aw-mQT"/>
                     </view>
                     <navigationItem key="navigationItem" title="Licenses" id="ISm-fv-SYU"/>
-                    <connections>
-                        <outlet property="textView" destination="YRw-wj-ySA" id="PNw-fj-b6G"/>
-                    </connections>
                 </viewController>
             </objects>
             <point key="canvasLocation" x="13922" y="3184"/>

@@ -16,4 +16,5 @@ target 'DeltaTV' do
     pod 'SQLite.swift', '~> 0.11.0'
     pod 'SDWebImage', '~> 3.8'
     pod 'Voucher'
+    pod 'TvOSTextViewer'
 end

@@ -16,6 +16,10 @@ import DeltaCore
 
 import Roxas
 
+#if os(tvOS)
+import TvOSTextViewer
+#endif
+
 private extension SettingsViewController
 {
     enum Section: Int
@@ -40,6 +44,9 @@ private extension SettingsViewController
     {
         case controllers = "controllersSegue"
         case controllerSkins = "controllerSkinsSegue"
+        #if os(tvOS)
+        case tvLicenses = "tvLicensesSegue"
+        #endif
     }
 
     enum SyncingRow: Int, CaseIterable
@@ -160,6 +167,106 @@ class SettingsViewController: UITableViewController
             
             let system = System.registeredSystems[indexPath.row]
             systemControllerSkinsViewController.system = system
+        #if os(tvOS)
+        case .tvLicenses:
+            let tvLicensesViewController = (segue.destination as! UINavigationController).topViewController as! TvOSTextViewerViewController
+            tvLicensesViewController.textEdgeInsets = UIEdgeInsets(top: 100, left: 300, bottom: 100, right: 300)
+            tvLicensesViewController.textAttributes = [.foregroundColor: UIColor.gray, .font: UIFont.systemFont(ofSize: 24.0)]
+            tvLicensesViewController.text = """
+            Delta and AltStore LLC are in no way affiliated with Nintendo Co., Ltd.
+
+            Stephen Celis (SQLite.swift)
+            Copyright (c) 2014-2015 Stephen Celis (<stephen@stephencelis.com>)
+            Permission is hereby granted, free of charge, to any person obtaining a copy
+            of this software and associated documentation files (the "Software"), to deal
+            in the Software without restriction, including without limitation the rights
+            to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+            copies of the Software, and to permit persons to whom the Software is
+            furnished to do so, subject to the following conditions:
+            The above copyright notice and this permission notice shall be included in all
+            copies or substantial portions of the Software.
+            THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+            IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+            FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+            AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+            LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+            OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+            SOFTWARE.
+
+            Olivier Poitrey (SDWebImage)
+            Copyright (c) 2009-2018 Olivier Poitrey rs@dailymotion.com
+            Permission is hereby granted, free of charge, to any person obtaining a copy
+            of this software and associated documentation files (the "Software"), to deal
+            in the Software without restriction, including without limitation the rights
+            to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+            copies of the Software, and to permit persons to whom the Software is furnished
+            to do so, subject to the following conditions:
+            The above copyright notice and this permission notice shall be included in all
+            copies or substantial portions of the Software.
+            THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+            IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+            FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+            AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+            LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+            OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+            THE SOFTWARE.
+
+            Thomas Zoechling (ZIPFoundation)
+            Copyright (c) 2017 Thomas Zoechling
+            Permission is hereby granted, free of charge, to any person obtaining a copy
+            of this software and associated documentation files (the "Software"), to deal
+            in the Software without restriction, including without limitation the rights
+            to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+            copies of the Software, and to permit persons to whom the Software is
+            furnished to do so, subject to the following conditions:
+            The above copyright notice and this permission notice shall be included in all
+            copies or substantial portions of the Software.
+            THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+            IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+            FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+            AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+            LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+            OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+            SOFTWARE.
+
+            Dropbox Inc. (SwiftyDropbox)
+            Copyright (c) 2015 Dropbox Inc., http://www.dropbox.com/
+            Permission is hereby granted, free of charge, to any person obtaining
+            a copy of this software and associated documentation files (the
+            "Software"), to deal in the Software without restriction, including
+            without limitation the rights to use, copy, modify, merge, publish,
+            distribute, sublicense, and/or sell copies of the Software, and to
+            permit persons to whom the Software is furnished to do so, subject to
+            the following conditions:
+            The above copyright notice and this permission notice shall be
+            included in all copies or substantial portions of the Software.
+            THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+            EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+            MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+            NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+            LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+            OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+            WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+            Google (Google API Objective-C Client)
+            Licensed under Apache 2 license.
+
+            Nick Farina (SMCalloutView)
+            Licensed under Apache 2 license.
+
+            Delta uses these emulator cores licensed under the GNU Public License version 2:
+
+            Nestopia
+            Snes9x
+            mupen64plus
+            Gambatte
+            visualboyadvance-m
+            DeSmuME
+
+            Delta uses OpenVGDB to provide automatic artwork for imported games.
+            """
+        #endif
+            
         }
     }
 }

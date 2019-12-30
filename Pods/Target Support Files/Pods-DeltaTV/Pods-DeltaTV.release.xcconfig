@@ -1,10 +1,10 @@
 ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES
-FRAMEWORK_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/SDWebImage-tvOS" "${PODS_CONFIGURATION_BUILD_DIR}/SQLite.swift-tvOS" "${PODS_CONFIGURATION_BUILD_DIR}/Voucher-tvOS"
+FRAMEWORK_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/SDWebImage-tvOS" "${PODS_CONFIGURATION_BUILD_DIR}/SQLite.swift-tvOS" "${PODS_CONFIGURATION_BUILD_DIR}/TvOSTextViewer" "${PODS_CONFIGURATION_BUILD_DIR}/Voucher-tvOS"
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
-HEADER_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/SDWebImage-tvOS/SDWebImage.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/SQLite.swift-tvOS/SQLite.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/Voucher-tvOS/Voucher.framework/Headers"
+HEADER_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/SDWebImage-tvOS/SDWebImage.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/SQLite.swift-tvOS/SQLite.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/TvOSTextViewer/TvOSTextViewer.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/Voucher-tvOS/Voucher.framework/Headers"
 LD_RUNPATH_SEARCH_PATHS = $(inherited) '@executable_path/Frameworks' '@loader_path/Frameworks'
-OTHER_CFLAGS = $(inherited) -isystem "${PODS_CONFIGURATION_BUILD_DIR}/SDWebImage-tvOS/SDWebImage.framework/Headers" -isystem "${PODS_CONFIGURATION_BUILD_DIR}/SQLite.swift-tvOS/SQLite.framework/Headers" -isystem "${PODS_CONFIGURATION_BUILD_DIR}/Voucher-tvOS/Voucher.framework/Headers" -iframework "${PODS_CONFIGURATION_BUILD_DIR}/SDWebImage-tvOS" -iframework "${PODS_CONFIGURATION_BUILD_DIR}/SQLite.swift-tvOS" -iframework "${PODS_CONFIGURATION_BUILD_DIR}/Voucher-tvOS"
-OTHER_LDFLAGS = $(inherited) -l"sqlite3" -framework "ImageIO" -framework "SDWebImage" -framework "SQLite" -framework "Voucher"
+OTHER_CFLAGS = $(inherited) -isystem "${PODS_CONFIGURATION_BUILD_DIR}/SDWebImage-tvOS/SDWebImage.framework/Headers" -isystem "${PODS_CONFIGURATION_BUILD_DIR}/SQLite.swift-tvOS/SQLite.framework/Headers" -isystem "${PODS_CONFIGURATION_BUILD_DIR}/Voucher-tvOS/Voucher.framework/Headers" -isystem "${PODS_CONFIGURATION_BUILD_DIR}/TvOSTextViewer/TvOSTextViewer.framework/Headers" -iframework "${PODS_CONFIGURATION_BUILD_DIR}/SDWebImage-tvOS" -iframework "${PODS_CONFIGURATION_BUILD_DIR}/SQLite.swift-tvOS" -iframework "${PODS_CONFIGURATION_BUILD_DIR}/Voucher-tvOS" -iframework "${PODS_CONFIGURATION_BUILD_DIR}/TvOSTextViewer"
+OTHER_LDFLAGS = $(inherited) -l"sqlite3" -framework "ImageIO" -framework "SDWebImage" -framework "SQLite" -framework "TvOSTextViewer" -framework "Voucher"
 OTHER_SWIFT_FLAGS = $(inherited) -D COCOAPODS
 PODS_BUILD_DIR = ${BUILD_DIR}
 PODS_CONFIGURATION_BUILD_DIR = ${PODS_BUILD_DIR}/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)
