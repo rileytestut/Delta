@@ -90,7 +90,7 @@ extension GameCollectionViewController
         
         let layout = self.collectionViewLayout as! GridCollectionViewLayout
         #if os(tvOS)
-        layout.itemWidth = 225
+        layout.itemWidth = 220
         layout.minimumInteritemSpacing = 30
         #else
         layout.itemWidth = 90
@@ -262,11 +262,11 @@ private extension GameCollectionViewController
         
         cell.imageView.image = #imageLiteral(resourceName: "BoxArt")
         
-        cell.maximumImageSize = CGSize(width: 90, height: 90)
         cell.textLabel.text = game.name
         #if os(tvOS)
-        cell.maximumImageSize = CGSize(width: 180, height: 180)
+        cell.maximumImageSize = CGSize(width: 220, height: 220)
         #else
+        cell.maximumImageSize = CGSize(width: 90, height: 90)
         cell.textLabel.textColor = UIColor.gray
         #endif
     }
