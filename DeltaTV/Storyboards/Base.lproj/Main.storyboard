@@ -4,7 +4,6 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -21,7 +20,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6MS-fG-sEQ">
-                                <rect key="frame" x="90" y="274" width="1740" height="746"/>
+                                <rect key="frame" x="90" y="246" width="1740" height="774"/>
                             </containerView>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="sBL-Xf-TXw">
                                 <rect key="frame" x="785" y="157" width="350" height="70"/>
@@ -41,7 +40,7 @@
                             <constraint firstItem="EDn-GT-5E5" firstAttribute="trailing" secondItem="6MS-fG-sEQ" secondAttribute="trailing" id="CfP-T4-lAs"/>
                             <constraint firstItem="sBL-Xf-TXw" firstAttribute="top" secondItem="Ia1-K6-d13" secondAttribute="bottom" id="RPb-la-JDb"/>
                             <constraint firstItem="sBL-Xf-TXw" firstAttribute="centerX" secondItem="EDn-GT-5E5" secondAttribute="centerX" id="Y2V-VE-m7P"/>
-                            <constraint firstItem="6MS-fG-sEQ" firstAttribute="top" secondItem="sBL-Xf-TXw" secondAttribute="bottom" constant="48" id="hST-ho-LEM"/>
+                            <constraint firstItem="6MS-fG-sEQ" firstAttribute="top" secondItem="sBL-Xf-TXw" secondAttribute="bottom" constant="20" id="hST-ho-LEM"/>
                             <constraint firstItem="6MS-fG-sEQ" firstAttribute="leading" secondItem="EDn-GT-5E5" secondAttribute="leading" id="lLe-Sy-kuB"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="EDn-GT-5E5"/>
@@ -60,21 +59,21 @@
         <scene sceneID="YZb-M5-NeY">
             <objects>
                 <collectionViewController storyboardIdentifier="gameCollectionViewController" id="aFl-vD-VO0" customClass="GameCollectionViewController" customModule="DeltaTV" customModuleProvider="target" sceneMemberID="viewController">
-                    <collectionView key="view" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="Kql-yP-tgj">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" indicatorStyle="white" dataMode="prototypes" id="Kql-yP-tgj">
                         <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="ddd-Ql-v4b" customClass="GridCollectionViewLayout" customModule="DeltaTV" customModuleProvider="target">
-                            <size key="itemSize" width="50" height="50"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="64" minimumInteritemSpacing="64" id="ddd-Ql-v4b" customClass="GridCollectionViewLayout" customModule="DeltaTV" customModuleProvider="target">
+                            <size key="itemSize" width="100" height="100"/>
                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <inset key="sectionInset" minX="0.0" minY="100" maxX="0.0" maxY="100"/>
                         </collectionViewFlowLayout>
                         <cells>
-                            <collectionViewCell opaque="NO" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Cell" id="97r-40-wU5" customClass="GridCollectionViewCell" customModule="DeltaTV" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="172" height="258"/>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Cell" id="97r-40-wU5" customClass="GridCollectionViewCell" customModule="DeltaTV" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="100" width="100" height="100"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iNg-Ar-dnm">
-                                    <rect key="frame" x="0.0" y="0.0" width="172" height="258"/>
+                                <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                    <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </collectionViewCellContentView>
                             </collectionViewCell>

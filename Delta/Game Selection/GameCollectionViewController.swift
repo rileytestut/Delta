@@ -89,8 +89,13 @@ extension GameCollectionViewController
         self.collectionView?.delegate = self
         
         let layout = self.collectionViewLayout as! GridCollectionViewLayout
+        #if os(tvOS)
+        layout.itemWidth = 225
+        layout.minimumInteritemSpacing = 30
+        #else
         layout.itemWidth = 90
         layout.minimumInteritemSpacing = 12
+        #endif
         
         self.registerForPreviewing(with: self, sourceView: self.collectionView!)
         
@@ -259,7 +264,11 @@ private extension GameCollectionViewController
         
         cell.maximumImageSize = CGSize(width: 90, height: 90)
         cell.textLabel.text = game.name
+        #if os(tvOS)
+        cell.maximumImageSize = CGSize(width: 180, height: 180)
+        #else
         cell.textLabel.textColor = UIColor.gray
+        #endif
     }
     
     //MARK: - Emulation

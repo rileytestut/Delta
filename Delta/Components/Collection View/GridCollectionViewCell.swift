@@ -83,11 +83,15 @@ class GridCollectionViewCell: UICollectionViewCell
         
         self.imageView.contentMode = .scaleAspectFit
         #if os(tvOS)
-            self.imageView.adjustsImageWhenAncestorFocused = true
+            self.imageView.adjustsImageWhenAncestorFocused = true // this breaks `scaleAspectFit` unfortunately
         #endif
         self.contentView.addSubview(self.imageView)
         
+        #if os(tvOS)
+        self.textLabel.font = UIFont.boldSystemFont(ofSize: 20)
+        #else
         self.textLabel.font = UIFont.boldSystemFont(ofSize: 12)
+        #endif
         self.textLabel.textAlignment = .center
         self.textLabel.numberOfLines = 0
         self.contentView.addSubview(self.textLabel)
@@ -141,6 +145,9 @@ class GridCollectionViewCell: UICollectionViewCell
             self.textLabelVerticalSpacingConstraint.isActive = true
         #endif
         
+        #if os(tvOS)
+        self.textLabel.isHidden = true // hide text label initially to appear more 'tvOS'-ey
+        #endif
         
         self.updateMaximumImageSize()
     }
@@ -160,6 +167,9 @@ class GridCollectionViewCell: UICollectionViewCell
                 
                 self.textLabel.textColor = UIColor.white
                 
+                #if os(tvOS)
+                self.textLabel.isHidden = false
+                #endif
             }
             else
             {
@@ -169,6 +179,10 @@ class GridCollectionViewCell: UICollectionViewCell
                 self.textLabelVerticalSpacingConstraint.isActive = true
                 
                 self.textLabel.textColor = UIColor.black
+                
+                #if os(tvOS)
+                self.textLabel.isHidden = true
+                #endif
             }
             
             self.layoutIfNeeded()

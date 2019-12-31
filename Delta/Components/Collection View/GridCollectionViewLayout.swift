@@ -23,7 +23,7 @@ class GridCollectionViewLayout: UICollectionViewFlowLayout
     // If only one row, distribute the items equally horizontally
     var usesEqualHorizontalSpacingDistributionForSingleRow = false
     
-    private var contentInset: UIEdgeInsets {
+    var contentInset: UIEdgeInsets {
         guard let collectionView = self.collectionView else { return .zero }
         
         var contentInset = collectionView.contentInset
@@ -50,13 +50,11 @@ class GridCollectionViewLayout: UICollectionViewFlowLayout
         return interitemSpacing
     }
     
-    #if os(iOS) // this is always called (and therefore crashes) on tvOS, not sure why
     override var estimatedItemSize: CGSize {
         didSet {
             fatalError("GridCollectionViewLayout does not support self-sizing cells.")
         }
     }
-    #endif
     
     override func prepare()
     {
