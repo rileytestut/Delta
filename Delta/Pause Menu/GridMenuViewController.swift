@@ -66,7 +66,11 @@ extension GridMenuViewController
         self.collectionView?.dataSource = self.dataSource
                 
         let collectionViewLayout = self.collectionViewLayout as! GridCollectionViewLayout
+        #if os(tvOS)
+        collectionViewLayout.itemWidth = 120
+        #else
         collectionViewLayout.itemWidth = 90
+        #endif
         collectionViewLayout.usesEqualHorizontalSpacingDistributionForSingleRow = true
         
         // Manually update prototype cell properties
@@ -97,9 +101,11 @@ private extension GridMenuViewController
         
         cell.imageView.image = pauseItem.image
         cell.imageView.contentMode = .center
+        #if os(iOS)
         cell.imageView.layer.borderWidth = 2
         cell.imageView.layer.borderColor = self.view.tintColor.cgColor
         cell.imageView.layer.cornerRadius = 10
+        #endif
         
         cell.textLabel.text = pauseItem.text
         cell.textLabel.textColor = self.view.tintColor

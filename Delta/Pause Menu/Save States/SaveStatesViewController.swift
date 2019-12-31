@@ -95,9 +95,14 @@ extension SaveStatesViewController
         let averageHorizontalInset = (collectionViewLayout.sectionInset.left + collectionViewLayout.sectionInset.right) / 2
         let portraitScreenWidth = UIScreen.main.coordinateSpace.convert(UIScreen.main.bounds, to: UIScreen.main.fixedCoordinateSpace).width
         
+        #if os(tvOS)
+        collectionViewLayout.itemWidth = 450 // some arbitrary size
+        collectionViewLayout.minimumInteritemSpacing = 30
+        #else
         // Use dimensions that allow two cells to fill the screen horizontally with padding in portrait mode
         // We'll keep the same size for landscape orientation, which will allow more to fit
         collectionViewLayout.itemWidth = floor((portraitScreenWidth - (averageHorizontalInset * 3)) / 2)
+        #endif
         
         switch self.mode
         {
