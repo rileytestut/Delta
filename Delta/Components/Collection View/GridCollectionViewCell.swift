@@ -88,7 +88,7 @@ class GridCollectionViewCell: UICollectionViewCell
         self.contentView.addSubview(self.imageView)
         
         #if os(tvOS)
-        self.textLabel.font = UIFont.boldSystemFont(ofSize: 20)
+        self.textLabel.font = UIFont.boldSystemFont(ofSize: 24)
         #else
         self.textLabel.font = UIFont.boldSystemFont(ofSize: 12)
         #endif
