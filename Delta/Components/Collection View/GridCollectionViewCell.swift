@@ -88,12 +88,15 @@ class GridCollectionViewCell: UICollectionViewCell
         self.contentView.addSubview(self.imageView)
         
         #if os(tvOS)
+        // adjust labeling to fit more with tvOS; since labels are only visible when the cell is highlighted, a max line of 2 will suffice
         self.textLabel.font = UIFont.boldSystemFont(ofSize: 24)
+        self.textLabel.numberOfLines = 2
+        self.textLabel.adjustsFontSizeToFitWidth = true
         #else
         self.textLabel.font = UIFont.boldSystemFont(ofSize: 12)
+        self.textLabel.numberOfLines = 0
         #endif
         self.textLabel.textAlignment = .center
-        self.textLabel.numberOfLines = 0
         self.contentView.addSubview(self.textLabel)
         
         /* Auto Layout */
