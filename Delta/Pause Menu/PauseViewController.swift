@@ -82,6 +82,7 @@ class PauseViewController: UIViewController, PauseInfoProviding
         self.updateSafeAreaInsets()
         
         #if os(tvOS)
+        // add GestureRecognizer here, but remove it first to ensure that it's not added more than once
         self.view.removeGestureRecognizer(menuTapGestureRecognizer)
         self.view.addGestureRecognizer(menuTapGestureRecognizer)
         #endif
@@ -152,10 +153,12 @@ extension PauseViewController
         self.performSegue(withIdentifier: "unwindFromPauseMenu", sender: self)
     }
     
+    #if os(tvOS)
     @objc func handleMenuGesture(_ tap: UITapGestureRecognizer)
     {
-        dismiss() // may be better to go back to main? Or maybe add option to return to main in pause menu. Yeahhh
+        dismiss() // have menu button 'unpause' the game rather than go back to the main menu from here
     }
+    #endif
 }
 
 extension PauseViewController: UINavigationControllerDelegate

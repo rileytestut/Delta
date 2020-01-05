@@ -58,6 +58,8 @@ class EditCheatViewController: UITableViewController
     @IBOutlet private var codeTextView: CheatTextView!
     
     #if os(tvOS)
+    // this page is not yet fully complete; I couldn't get text input working on this screen,
+    // and the variables and methods here were attempts to get focusing and first-responder-ing working 😞
     enum FocusedField: Int
     {
         case name

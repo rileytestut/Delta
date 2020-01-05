@@ -48,6 +48,7 @@ class RecordSyncStatusViewController: UITableViewController
     #if os(iOS)
     @IBOutlet private var syncingEnabledSwitch: UISwitch!
     #elseif os(tvOS)
+    // new vars since UISwitch is not supported on tvOS
     var isSyncingEnableable: Bool = false
     var isSyncingEnabled: Bool = false
     #endif

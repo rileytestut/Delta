@@ -83,7 +83,10 @@ class GridCollectionViewCell: UICollectionViewCell
         
         self.imageView.contentMode = .scaleAspectFit
         #if os(tvOS)
-            self.imageView.adjustsImageWhenAncestorFocused = true // this breaks `scaleAspectFit` unfortunately
+        // this an unfortunate bug where `scaleAspectFit` doesn't appear to be respected,
+        // making all thumbnails fill the imageview as though `scaleAspectFill` were set.
+        // even so, this effect is rad and worth enduring the bug until a solution is found
+            self.imageView.adjustsImageWhenAncestorFocused = true
         #endif
         self.contentView.addSubview(self.imageView)
         
@@ -149,7 +152,9 @@ class GridCollectionViewCell: UICollectionViewCell
         #endif
         
         #if os(tvOS)
-        self.textLabel.isHidden = true // hide text label initially to appear more 'tvOS'-ey
+        // hide text label initially (and then hide/show when respectively
+        // bringing view in/out of focus) to be more 'tvOS'-ey
+        self.textLabel.isHidden = true
         #endif
         
         self.updateMaximumImageSize()

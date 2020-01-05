@@ -528,7 +528,7 @@ private extension GameViewController
         }
 
         #if os(tvOS)
-        self.controllerUserInteractionEnabled = true
+        self.controllerUserInteractionEnabled = true // tells controller input to synthesize UIKit events
         self.view.addGestureRecognizer(remoteMenuTapGestureRecognizer)
         #endif
         
@@ -546,6 +546,10 @@ private extension GameViewController
             Settings.localControllerPlayerIndex = nil
 
             #if os(tvOS)
+            // note: ths code might be in the wrong place;
+            // the intent is to fire this code (which ensures controller input doesn't synthesiize
+            // UIKit events) when we know for sure that a controller is connected. This however
+            // prevents the Apple TV remote menu button from working
             self.controllerUserInteractionEnabled = false
             self.view.removeGestureRecognizer(remoteMenuTapGestureRecognizer)
             #endif

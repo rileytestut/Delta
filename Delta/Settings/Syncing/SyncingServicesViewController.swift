@@ -9,12 +9,16 @@
 import UIKit
 
 import Harmony
-#if os(iOS)
+#if !os(tvOS)
+// currently unable to get Harmony_Drive to compile for tvOS (due to Google dependencies
+// compiled for iOS only), so only Dropbox is supported for now for tvOS
 import Harmony_Drive
 #endif
 
 import Roxas
 
+// Voucher wraps the Bonjour protocol and enabled us to communicate from iOS-tvOS
+// as such voucher is needed by both iOS and tvOS
 import Voucher
 
 extension SyncingServicesViewController

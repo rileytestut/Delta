@@ -20,7 +20,7 @@ extension UIDevice
         return ARConfiguration.isSupported
         #elseif os(tvOS)
         // TV HD has A8 chip, and TV 4K has A10X chip. Best to return true here for now
-        return true
+        return false
         #else
         return false
         #endif

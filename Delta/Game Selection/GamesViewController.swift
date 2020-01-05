@@ -49,6 +49,12 @@ class GamesViewController: UIViewController
     private var pageControl: UIPageControl!
     
     #if os(tvOS)
+    // In tvOS, the UIPageViewController class provides only a way to swipe
+    // between full-screen content pages. Unlike in iOS, a user cannot interact
+    // with or move focus between items on each page.
+    // https://developer.apple.com/documentation/uikit/uipageviewcontroller
+    // so here we're using a segmented control and container view instead
+    // to load differrent game system pages 🤷‍♂️
     @IBOutlet var systemsSegmentedControl: UISegmentedControl!
     @IBOutlet var gamesContainerView: UIView!
     var lastAddedGameViewController: GameCollectionViewController?
@@ -92,9 +98,9 @@ class GamesViewController: UIViewController
         let activeSystemShortName = systemsSegmentedControl.titleForSegment(at: systemsSegmentedControl.selectedSegmentIndex)
         var selectedGameCollection: GameCollection?
         
-        for gameC in getActiveGameCollections() {
-            if gameC.shortName == activeSystemShortName {
-                selectedGameCollection = gameC
+        for gameCollectiion in getActiveGameCollections() {
+            if gameCollectiion.shortName == activeSystemShortName {
+                selectedGameCollection = gameCollectiion
                 break
             }
         }
@@ -335,8 +341,8 @@ private extension GamesViewController
     {
         #if os(tvOS)
         systemsSegmentedControl.removeAllSegments()
-        for gameC in getActiveGameCollections() {
-            systemsSegmentedControl.insertSegment(withTitle: gameC.shortName, at: systemsSegmentedControl.numberOfSegments, animated: false)
+        for gameCollectiion in getActiveGameCollections() {
+            systemsSegmentedControl.insertSegment(withTitle: gameCollectiion.shortName, at: systemsSegmentedControl.numberOfSegments, animated: false)
         }
         #endif
         
@@ -715,31 +721,22 @@ extension GamesViewController {
    }
 
     fileprivate func add(asChildViewController viewController: UIViewController) {
-        // Add Child View Controller
-        addChild(viewController) // MAYYYYBBBBEEEE?????
-        
-        // Add Child View as Subview
+        addChild(viewController)
         gamesContainerView.addSubview(viewController.view)
         
-        // Configure Child View
         viewController.view.frame = gamesContainerView.bounds
         viewController.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         
-        // Notify Child View Controller
-        viewController.didMove(toParent: self) // MAYYYYYYBE????
+        viewController.didMove(toParent: self)
     }
     
     private func remove(asChildViewController viewController: UIViewController) {
-        // Notify Child View Controller
         viewController.willMove(toParent: nil)
         
-        // Remove Child View From Superview
         viewController.view.removeFromSuperview()
-        
-        // Notify Child View Controller
         viewController.removeFromParent()
         
-        viewController.didMove(toParent: nil) // this is in my app, is it needed??
+        viewController.didMove(toParent: nil)
     }
     
 }

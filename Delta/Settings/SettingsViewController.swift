@@ -169,6 +169,8 @@ class SettingsViewController: UITableViewController
             systemControllerSkinsViewController.system = system
         #if os(tvOS)
         case .tvLicenses:
+            // this is an annoying duplication of the license text, but at least places the text in
+            // a scrollable field so you can read it on tvOS
             let tvLicensesViewController = (segue.destination as! UINavigationController).topViewController as! TvOSTextViewerViewController
             tvLicensesViewController.textEdgeInsets = UIEdgeInsets(top: 100, left: 300, bottom: 100, right: 300)
             tvLicensesViewController.textAttributes = [.foregroundColor: UIColor.gray, .font: UIFont.systemFont(ofSize: 24.0)]

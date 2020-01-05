@@ -56,12 +56,8 @@ class ControllerInputsViewController: ControllerInputsViewControllerRootClass
     @IBOutlet private var cancelTapGestureRecognizer: UITapGestureRecognizer!
     
     #elseif os(tvOS)
-    
-    class DisplayInputHelper: Equatable {
+    class DisplayInputHelper {
         var input: Input?
-        static func == (lhs: ControllerInputsViewController.DisplayInputHelper, rhs: ControllerInputsViewController.DisplayInputHelper) -> Bool {
-            return lhs.input == rhs.input
-        }
     }
     
     private var allMappedInputs = [Input]()
@@ -109,6 +105,8 @@ class ControllerInputsViewController: ControllerInputsViewControllerRootClass
         self.updateSystem()
         
         #if os(tvOS)
+        // decided to use a simple tableview for controller inputs,
+        // since the SMCalloutViews don't work on tvOS
         self.tableView.delegate = self
         self.tableView.dataSource = self
         
