@@ -1,0 +1,1 @@
+../../../../../../../../Cores/NESDeltaCore/nestopia/source/core/board/NstBoardBmcGoldenCard6in1.hpp

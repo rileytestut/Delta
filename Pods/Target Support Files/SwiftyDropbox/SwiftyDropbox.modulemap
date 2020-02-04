@@ -1,0 +1,6 @@
+module SwiftyDropbox {
+  umbrella header "SwiftyDropbox-umbrella.h"
+
+  export *
+  module * { export * }
+}

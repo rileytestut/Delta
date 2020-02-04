@@ -1,0 +1,1 @@
+../../../../../../../../../Cores/N64DeltaCore/Mupen64Plus/mupen64plus-core/src/backends/api/video_capture_backend.h

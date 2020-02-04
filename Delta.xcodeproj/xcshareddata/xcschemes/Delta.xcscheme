@@ -14,120 +14,8 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "BFADAFF719AE7BB70050CF31"
-               BuildableName = "Roxas.framework"
-               BlueprintName = "Roxas"
-               ReferencedContainer = "container:External/Roxas/Roxas.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "BFA1C8D31ECD01C100DEA99D"
-               BuildableName = "Harmony.framework"
-               BlueprintName = "Harmony"
-               ReferencedContainer = "container:External/Harmony/Harmony.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "BFECF9F82016982D0012B9FC"
-               BuildableName = "Harmony_Drive.framework"
-               BlueprintName = "Harmony-Drive"
-               ReferencedContainer = "container:External/Harmony/Backends/Drive/Harmony-Drive.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "BF46895C1AACF36800A2586D"
-               BuildableName = "DeltaCore.framework"
-               BlueprintName = "DeltaCore"
-               ReferencedContainer = "container:Cores/DeltaCore/DeltaCore.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "BF3C12F220438F3F0079A4B5"
-               BuildableName = "NESDeltaCore.framework"
-               BlueprintName = "NESDeltaCore"
-               ReferencedContainer = "container:Cores/NESDeltaCore/NESDeltaCore.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "BF9F4FDB1AAD8070004C9500"
-               BuildableName = "SNESDeltaCore.framework"
-               BlueprintName = "SNESDeltaCore"
-               ReferencedContainer = "container:Cores/SNESDeltaCore/SNESDeltaCore.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "BF8F2AAD1E9C879300F89F15"
-               BuildableName = "GBCDeltaCore.framework"
-               BlueprintName = "GBCDeltaCore"
-               ReferencedContainer = "container:Cores/GBCDeltaCore/GBCDeltaCore.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "BFE8E9C91D010AF7009D623D"
-               BuildableName = "GBADeltaCore.framework"
-               BlueprintName = "GBADeltaCore"
-               ReferencedContainer = "container:Cores/GBADeltaCore/GBADeltaCore.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "1AC0A77D7D4F472C1693D90C57B90DD5"
-               BuildableName = "Pods_Delta.framework"
+               BlueprintIdentifier = "33C94426DAF58519DC6806AF4C44C9E7"
+               BuildableName = "libPods-Delta.a"
                BlueprintName = "Pods-Delta"
                ReferencedContainer = "container:Pods/Pods.xcodeproj">
             </BuildableReference>
@@ -153,8 +41,6 @@
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
-      <Testables>
-      </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
@@ -164,13 +50,14 @@
             ReferencedContainer = "container:Delta.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
-      <AdditionalOptions>
-      </AdditionalOptions>
+      <Testables>
+      </Testables>
    </TestAction>
    <LaunchAction
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      enableASanStackUseAfterReturn = "YES"
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
       ignoresPersistentStateOnLaunch = "NO"
@@ -208,8 +95,6 @@
             isEnabled = "NO">
          </EnvironmentVariable>
       </EnvironmentVariables>
-      <AdditionalOptions>
-      </AdditionalOptions>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"

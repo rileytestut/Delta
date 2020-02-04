@@ -1,0 +1,1 @@
+../../../../../../../../Cores/NESDeltaCore/nestopia/source/core/board/NstBoardTaitoX1005.hpp
