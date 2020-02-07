@@ -31,7 +31,7 @@
 		BF13A7581D5D2FD9000BB055 /* EmulatorCore+Cheats.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF13A7571D5D2FD9000BB055 /* EmulatorCore+Cheats.swift */; };
 		BF15AF841F54B43B009B6AAB /* ActionInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF15AF831F54B43B009B6AAB /* ActionInput.swift */; };
 		BF18B61F1E2985F900F70067 /* UIAlertController+Importing.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF18B61E1E2985F900F70067 /* UIAlertController+Importing.swift */; };
-		BF1DAD5D1D9F576000E752A7 /* SystemControllerSkinsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1DAD5C1D9F576000E752A7 /* SystemControllerSkinsViewController.swift */; };
+		BF1DAD5D1D9F576000E752A7 /* PreferredControllerSkinsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1DAD5C1D9F576000E752A7 /* PreferredControllerSkinsViewController.swift */; };
 		BF1F45A421AF274D00EF9895 /* SyncResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1F45A321AF274D00EF9895 /* SyncResultViewController.swift */; };
 		BF1F45AB21AF4B5800EF9895 /* SyncResultsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF1F45AA21AF4B5800EF9895 /* SyncResultsViewController.storyboard */; };
 		BF1F45AD21AF57BA00EF9895 /* HarmonyMetadataKey+Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1F45AC21AF57BA00EF9895 /* HarmonyMetadataKey+Keys.swift */; };
@@ -166,7 +166,7 @@
 		BF13A7571D5D2FD9000BB055 /* EmulatorCore+Cheats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EmulatorCore+Cheats.swift"; sourceTree = "<group>"; };
 		BF15AF831F54B43B009B6AAB /* ActionInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionInput.swift; sourceTree = "<group>"; };
 		BF18B61E1E2985F900F70067 /* UIAlertController+Importing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIAlertController+Importing.swift"; sourceTree = "<group>"; };
-		BF1DAD5C1D9F576000E752A7 /* SystemControllerSkinsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SystemControllerSkinsViewController.swift; sourceTree = "<group>"; };
+		BF1DAD5C1D9F576000E752A7 /* PreferredControllerSkinsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferredControllerSkinsViewController.swift; sourceTree = "<group>"; };
 		BF1F45A321AF274D00EF9895 /* SyncResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncResultViewController.swift; sourceTree = "<group>"; };
 		BF1F45AA21AF4B5800EF9895 /* SyncResultsViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SyncResultsViewController.storyboard; sourceTree = "<group>"; };
 		BF1F45AC21AF57BA00EF9895 /* HarmonyMetadataKey+Keys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "HarmonyMetadataKey+Keys.swift"; sourceTree = "<group>"; };
@@ -287,6 +287,7 @@
 		BFDF71DA22F94CDF0074D92E /* DSDeltaCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = DSDeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFE0229F1F5B577D0052D888 /* PopoverMenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverMenuButton.swift; sourceTree = "<group>"; };
 		BFE4269D1D9C68E600DC913F /* SaveStatesStoryboardSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SaveStatesStoryboardSegue.swift; sourceTree = "<group>"; };
+		BFE4275223EDF75300E6B417 /* Delta 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Delta 5.xcdatamodel"; sourceTree = "<group>"; };
 		BFE56E1823EB7BE00014FECD /* UIImage+SymbolFallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+SymbolFallback.swift"; sourceTree = "<group>"; };
 		BFE593C921F3F8B7003412A6 /* GameSave.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameSave.swift; sourceTree = "<group>"; };
 		BFE593CB21F3F8C2003412A6 /* _GameSave.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = _GameSave.swift; sourceTree = "<group>"; };
@@ -371,7 +372,7 @@
 		BF1DAD5B1D9F574900E752A7 /* Controller Skins */ = {
 			isa = PBXGroup;
 			children = (
-				BF1DAD5C1D9F576000E752A7 /* SystemControllerSkinsViewController.swift */,
+				BF1DAD5C1D9F576000E752A7 /* PreferredControllerSkinsViewController.swift */,
 				BF04E6FE1DB8625C000F35D3 /* ControllerSkinsViewController.swift */,
 				BF99A5961DC2F9C400468E9E /* ControllerSkinTableViewCell.swift */,
 			);
@@ -1055,7 +1056,7 @@
 				BF1F45AD21AF57BA00EF9895 /* HarmonyMetadataKey+Keys.swift in Sources */,
 				BFD1EF402336BD8800D197CF /* UIDevice+Processor.swift in Sources */,
 				BF71CF871FE90006001F1613 /* AppIconShortcutsViewController.swift in Sources */,
-				BF1DAD5D1D9F576000E752A7 /* SystemControllerSkinsViewController.swift in Sources */,
+				BF1DAD5D1D9F576000E752A7 /* PreferredControllerSkinsViewController.swift in Sources */,
 				BFE022A01F5B57FF0052D888 /* PopoverMenuButton.swift in Sources */,
 				BF6BF31C1EB821A0008E83CD /* GamesDatabaseImportOption.swift in Sources */,
 				BFFA4C091E8A24D600D87934 /* GameTableViewCell.swift in Sources */,
@@ -1374,12 +1375,13 @@
 		BF4828811F9027B600028B97 /* Delta.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				BFE4275223EDF75300E6B417 /* Delta 5.xcdatamodel */,
 				BF0758DE2202827C005110F2 /* Delta 4.xcdatamodel */,
 				BF5645092202381000A8EA26 /* Delta 3.xcdatamodel */,
 				BF4828821F9027B600028B97 /* Delta 2.xcdatamodel */,
 				BF4828831F9027B600028B97 /* Delta.xcdatamodel */,
 			);
-			currentVersion = BF0758DE2202827C005110F2 /* Delta 4.xcdatamodel */;
+			currentVersion = BFE4275223EDF75300E6B417 /* Delta 5.xcdatamodel */;
 			path = Delta.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

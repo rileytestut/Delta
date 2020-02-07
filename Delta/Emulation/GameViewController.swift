@@ -556,14 +556,14 @@ private extension GameViewController
     
     func updateControllerSkin()
     {
-        guard let game = self.game, let system = System(gameType: game.type), let window = self.view.window else { return }
+        guard let game = self.game as? Game, let window = self.view.window else { return }
         
         let traits = DeltaCore.ControllerSkin.Traits.defaults(for: window)
         
-        let controllerSkin = Settings.preferredControllerSkin(for: system, traits: traits)
+        let controllerSkin = Settings.preferredControllerSkin(for: game, traits: traits)
         self.controllerView.controllerSkin = controllerSkin
         
-        self.view.setNeedsUpdateConstraints()
+        self.view.setNeedsLayout()
     }
 }
 

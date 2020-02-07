@@ -28,5 +28,9 @@ public class _ControllerSkin: NSManagedObject
 
     // MARK: - Relationships
 
+    @NSManaged public var preferredLandscapeSkinByGames: Set<Game>
+
+    @NSManaged public var preferredPortraitSkinByGames: Set<Game>
+
 }
 

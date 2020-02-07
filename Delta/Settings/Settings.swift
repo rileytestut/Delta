@@ -217,15 +217,73 @@ extension Settings
         return nil
     }
     
-    static func setPreferredControllerSkin(_ controllerSkin: ControllerSkin, for system: System, traits: DeltaCore.ControllerSkin.Traits)
+    static func setPreferredControllerSkin(_ controllerSkin: ControllerSkin?, for system: System, traits: DeltaCore.ControllerSkin.Traits)
     {
         guard let userDefaultKey = self.preferredControllerSkinKey(for: system, traits: traits) else { return }
         
-        guard UserDefaults.standard.string(forKey: userDefaultKey) != controllerSkin.identifier else { return }
+        guard UserDefaults.standard.string(forKey: userDefaultKey) != controllerSkin?.identifier else { return }
         
-        UserDefaults.standard.set(controllerSkin.identifier, forKey: userDefaultKey)
+        UserDefaults.standard.set(controllerSkin?.identifier, forKey: userDefaultKey)
         
         NotificationCenter.default.post(name: .settingsDidChange, object: controllerSkin, userInfo: [NotificationUserInfoKey.name: Name.preferredControllerSkin, NotificationUserInfoKey.system: system, NotificationUserInfoKey.traits: traits])
+    }
+    
+    static func preferredControllerSkin(for game: Game, traits: DeltaCore.ControllerSkin.Traits) -> ControllerSkin?
+    {
+        let preferredControllerSkin: ControllerSkin?
+        
+        switch traits.orientation
+        {
+        case .portrait: preferredControllerSkin = game.preferredPortraitSkin
+        case .landscape: preferredControllerSkin = game.preferredLandscapeSkin
+        }
+        
+        if let controllerSkin = preferredControllerSkin, controllerSkin.supports(traits)
+        {
+            return controllerSkin
+        }
+        
+        if let system = System(gameType: game.type)
+        {
+            // Fall back to using preferred controller skin for the system.
+            let controllerSkin = Settings.preferredControllerSkin(for: system, traits: traits)
+            return controllerSkin
+        }
+                
+        return nil
+    }
+    
+    static func setPreferredControllerSkin(_ controllerSkin: ControllerSkin?, for game: Game, traits: DeltaCore.ControllerSkin.Traits)
+    {
+        let context = DatabaseManager.shared.newBackgroundContext()
+        context.performAndWait {
+            let game = context.object(with: game.objectID) as! Game
+            
+            let skin: ControllerSkin?
+            if let controllerSkin = controllerSkin, let contextSkin = context.object(with: controllerSkin.objectID) as? ControllerSkin
+            {
+                skin = contextSkin
+            }
+            else
+            {
+                skin = nil
+            }            
+            
+            switch traits.orientation
+            {
+            case .portrait: game.preferredPortraitSkin = skin
+            case .landscape: game.preferredLandscapeSkin = skin
+            }
+            
+            context.saveWithErrorLogging()
+        }
+        
+        game.managedObjectContext?.refresh(game, mergeChanges: false)
+        
+        if let system = System(gameType: game.type)
+        {
+            NotificationCenter.default.post(name: .settingsDidChange, object: controllerSkin, userInfo: [NotificationUserInfoKey.name: Name.preferredControllerSkin, NotificationUserInfoKey.system: system, NotificationUserInfoKey.traits: traits])
+        }
     }
 }
 

@@ -148,6 +148,12 @@ extension GameCollectionViewController
             saveStatesViewController.game = game
             saveStatesViewController.mode = .loading
             saveStatesViewController.theme = self.theme
+            
+        case "preferredControllerSkins":
+            let game = sender as! Game
+            
+            let preferredControllerSkinsViewController = (segue.destination as! UINavigationController).topViewController as! PreferredControllerSkinsViewController
+            preferredControllerSkinsViewController.game = game
 
         case "unwindFromGames":
             let destinationViewController = segue.destination as! GameViewController
@@ -191,11 +197,7 @@ extension GameCollectionViewController
         }
     }
     
-    @IBAction private func unwindFromSaveStatesViewController(with segue: UIStoryboardSegue)
-    {
-    }
-    
-    @IBAction private func unwindFromGamesDatabaseBrowser(with segue: UIStoryboardSegue)
+    @IBAction private func unwindToGameCollectionViewController(_ segue: UIStoryboardSegue)
     {
     }
 }
@@ -394,6 +396,10 @@ private extension GameCollectionViewController
             self.changeArtwork(for: game)
         }
         
+        let changeControllerSkinAction = Action(title: NSLocalizedString("Change Controller Skin", comment: ""), style: .default, image: UIImage(symbolNameIfAvailable: "gamecontroller")) { [unowned self] _ in
+            self.changePreferredControllerSkin(for: game)
+        }
+        
         let shareAction = Action(title: NSLocalizedString("Share", comment: ""), style: .default, image: UIImage(symbolNameIfAvailable: "square.and.arrow.up"), action: { [unowned self] action in
             self.share(game)
         })
@@ -413,7 +419,7 @@ private extension GameCollectionViewController
         switch game.type
         {
         case GameType.unknown: return [cancelAction, renameAction, changeArtworkAction, shareAction, deleteAction]
-        default: return [cancelAction, renameAction, changeArtworkAction, shareAction, saveStatesAction, importSaveFile, deleteAction]
+        default: return [cancelAction, renameAction, changeArtworkAction, changeControllerSkinAction, shareAction, saveStatesAction, importSaveFile, deleteAction]
         }
     }
     
@@ -653,6 +659,11 @@ private extension GameCollectionViewController
                 }
             }
         }
+    }
+    
+    func changePreferredControllerSkin(for game: Game)
+    {
+        self.performSegue(withIdentifier: "preferredControllerSkins", sender: game)
     }
     
     @objc func textFieldTextDidChange(_ textField: UITextField)

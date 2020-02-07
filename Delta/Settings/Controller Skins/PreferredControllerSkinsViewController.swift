@@ -1,5 +1,5 @@
 //
-//  SystemControllerSkinsViewController.swift
+//  PreferredControllerSkinsViewController.swift
 //  Delta
 //
 //  Created by Riley Testut on 9/30/16.
@@ -10,7 +10,7 @@ import UIKit
 
 import DeltaCore
 
-extension SystemControllerSkinsViewController
+extension PreferredControllerSkinsViewController
 {
     private enum Section: Int
     {
@@ -19,9 +19,16 @@ extension SystemControllerSkinsViewController
     }
 }
 
-class SystemControllerSkinsViewController: UITableViewController
+class PreferredControllerSkinsViewController: UITableViewController
 {
     var system: System!
+    
+    var game: Game? {
+        didSet {
+            guard let game = self.game, let system = System(gameType: game.type) else { return }
+            self.system = system
+        }
+    }
     
     @IBOutlet private var portraitImageView: UIImageView!
     @IBOutlet private var landscapeImageView: UIImageView!
@@ -31,13 +38,19 @@ class SystemControllerSkinsViewController: UITableViewController
     private var landscapeControllerSkin: ControllerSkin?
 }
 
-extension SystemControllerSkinsViewController
+extension PreferredControllerSkinsViewController
 {
     override func viewDidLoad()
     {
         super.viewDidLoad()
         
-        self.title = self.system.localizedShortName
+        self.title = self.game?.name ?? self.system.localizedShortName
+        
+        if self.navigationController?.viewControllers.first != self
+        {
+            // Hide Done button since we are not root view controller.
+            self.navigationItem.rightBarButtonItem = nil
+        }
     }
     
     override func viewDidDisappear(_ animated: Bool)
@@ -68,6 +81,7 @@ extension SystemControllerSkinsViewController
         guard let cell = sender as? UITableViewCell, let indexPath = self.tableView.indexPath(for: cell), let window = self.view.window else { return }
         
         let controllerSkinsViewController = segue.destination as! ControllerSkinsViewController
+        controllerSkinsViewController.delegate = self
         controllerSkinsViewController.system = self.system
         
         var traits = DeltaCore.ControllerSkin.Traits.defaults(for: window)
@@ -80,10 +94,31 @@ extension SystemControllerSkinsViewController
         }
         
         controllerSkinsViewController.traits = traits
+        
+        let isResetButtonVisible: Bool
+        
+        if let game = self.game
+        {
+            switch section
+            {
+            case .portrait: isResetButtonVisible = (game.preferredPortraitSkin != nil)
+            case .landscape: isResetButtonVisible = (game.preferredLandscapeSkin != nil)
+            }
+        }
+        else
+        {
+            switch section
+            {
+            case .portrait: isResetButtonVisible = !(self.portraitControllerSkin?.isStandard ?? false)
+            case .landscape: isResetButtonVisible = !(self.portraitControllerSkin?.isStandard ?? false)
+            }
+        }
+        
+        controllerSkinsViewController.isResetButtonVisible = isResetButtonVisible
     }
 }
 
-extension SystemControllerSkinsViewController
+extension PreferredControllerSkinsViewController
 {
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
     {
@@ -115,7 +150,7 @@ extension SystemControllerSkinsViewController
     }
 }
 
-private extension SystemControllerSkinsViewController
+private extension PreferredControllerSkinsViewController
 {
     func updateControllerSkins()
     {
@@ -126,7 +161,25 @@ private extension SystemControllerSkinsViewController
         let portraitTraits = self.makeTraits(orientation: .portrait, in: window)
         let landscapeTraits = self.makeTraits(orientation: .landscape, in: window)
         
-        let portraitControllerSkin = Settings.preferredControllerSkin(for: self.system, traits: portraitTraits)
+        var portraitControllerSkin: ControllerSkin?
+        var landscapeControllerSkin: ControllerSkin?
+        
+        if let game = self.game
+        {
+            portraitControllerSkin = Settings.preferredControllerSkin(for: game, traits: portraitTraits)
+            landscapeControllerSkin = Settings.preferredControllerSkin(for: game, traits: landscapeTraits)
+        }
+        
+        if portraitControllerSkin == nil
+        {
+            portraitControllerSkin = Settings.preferredControllerSkin(for: self.system, traits: portraitTraits)
+        }
+        
+        if landscapeControllerSkin == nil
+        {
+            landscapeControllerSkin = Settings.preferredControllerSkin(for: self.system, traits: landscapeTraits)
+        }
+        
         if portraitControllerSkin != self.portraitControllerSkin
         {
             self.portraitImageView.image = nil
@@ -135,7 +188,6 @@ private extension SystemControllerSkinsViewController
             self.portraitControllerSkin = portraitControllerSkin
         }
         
-        let landscapeControllerSkin = Settings.preferredControllerSkin(for: self.system, traits: landscapeTraits)
         if landscapeControllerSkin != self.landscapeControllerSkin
         {
             self.landscapeImageView.image = nil
@@ -184,5 +236,36 @@ private extension SystemControllerSkinsViewController
         var traits = DeltaCore.ControllerSkin.Traits.defaults(for: window)
         traits.orientation = orientation
         return traits
+    }
+}
+
+extension PreferredControllerSkinsViewController: ControllerSkinsViewControllerDelegate
+{
+    func controllerSkinsViewController(_ controllerSkinsViewController: ControllerSkinsViewController, didChooseControllerSkin controllerSkin: ControllerSkin)
+    {
+        if let game = self.game
+        {
+            Settings.setPreferredControllerSkin(controllerSkin, for: game, traits: controllerSkinsViewController.traits)
+        }
+        else
+        {
+            Settings.setPreferredControllerSkin(controllerSkin, for: self.system, traits: controllerSkinsViewController.traits)
+        }
+        
+        _ = self.navigationController?.popViewController(animated: true)
+    }
+    
+    func controllerSkinsViewControllerDidResetControllerSkin(_ controllerSkinsViewController: ControllerSkinsViewController)
+    {
+        if let game = self.game
+        {
+            Settings.setPreferredControllerSkin(nil, for: game, traits: controllerSkinsViewController.traits)
+        }
+        else
+        {
+            Settings.setPreferredControllerSkin(nil, for: self.system, traits: controllerSkinsViewController.traits)
+        }
+        
+        _ = self.navigationController?.popViewController(animated: true)
     }
 }
