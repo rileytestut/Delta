@@ -139,10 +139,10 @@ class SettingsViewController: UITableViewController
             controllersSettingsViewController.playerIndex = indexPath.row
             
         case Segue.controllerSkins:
-            let systemControllerSkinsViewController = segue.destination as! SystemControllerSkinsViewController
+            let preferredControllerSkinsViewController = segue.destination as! PreferredControllerSkinsViewController
             
             let system = System.registeredSystems[indexPath.row]
-            systemControllerSkinsViewController.system = system
+            preferredControllerSkinsViewController.system = system
         }
     }
 }

@@ -8,6 +8,7 @@
 
 import UIKit
 import MobileCoreServices
+import AVFoundation
 
 import DeltaCore
 
@@ -59,8 +60,9 @@ class GameCollectionViewController: UICollectionViewController
     
     private let prototypeCell = GridCollectionViewCell()
     
-    private var _performing3DTouchTransition = false
-    private weak var _destination3DTouchTransitionViewController: UIViewController?
+    private var _performingPreviewTransition = false
+    private weak var _previewTransitionViewController: PreviewGameViewController?
+    private weak var _previewTransitionDestinationViewController: UIViewController?
     
     private var _renameAction: UIAlertAction?
     private var _changingArtworkGame: Game?
@@ -92,27 +94,31 @@ extension GameCollectionViewController
         layout.itemWidth = 90
         layout.minimumInteritemSpacing = 12
         
-        self.registerForPreviewing(with: self, sourceView: self.collectionView!)
-        
-        let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(GameCollectionViewController.handleLongPressGesture(_:)))
-        self.collectionView?.addGestureRecognizer(longPressGestureRecognizer)
+        if #available(iOS 13, *) {}
+        else
+        {
+            self.registerForPreviewing(with: self, sourceView: self.collectionView!)
+            
+            let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(GameCollectionViewController.handleLongPressGesture(_:)))
+            self.collectionView?.addGestureRecognizer(longPressGestureRecognizer)
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool)
     {
         super.viewWillDisappear(animated)
         
-        if _performing3DTouchTransition
+        if _performingPreviewTransition
         {
-            _performing3DTouchTransition = false
+            _performingPreviewTransition = false
             
             // Unlike our custom transitions, 3D Touch transition doesn't manually call appearance methods for us
             // To compensate, we call them ourselves
-            _destination3DTouchTransitionViewController?.beginAppearanceTransition(true, animated: true)
+            _previewTransitionDestinationViewController?.beginAppearanceTransition(true, animated: true)
             
             self.transitionCoordinator?.animate(alongsideTransition: nil, completion: { (context) in
-                self._destination3DTouchTransitionViewController?.endAppearanceTransition()
-                self._destination3DTouchTransitionViewController = nil
+                self._previewTransitionDestinationViewController?.endAppearanceTransition()
+                self._previewTransitionDestinationViewController = nil
             })
         }
     }
@@ -142,6 +148,12 @@ extension GameCollectionViewController
             saveStatesViewController.game = game
             saveStatesViewController.mode = .loading
             saveStatesViewController.theme = self.theme
+            
+        case "preferredControllerSkins":
+            let game = sender as! Game
+            
+            let preferredControllerSkinsViewController = (segue.destination as! UINavigationController).topViewController as! PreferredControllerSkinsViewController
+            preferredControllerSkinsViewController.game = game
 
         case "unwindFromGames":
             let destinationViewController = segue.destination as! GameViewController
@@ -176,20 +188,16 @@ extension GameCollectionViewController
             
             self.activeSaveState = nil
             
-            if _performing3DTouchTransition
+            if _performingPreviewTransition
             {
-                _destination3DTouchTransitionViewController = destinationViewController
+                _previewTransitionDestinationViewController = destinationViewController
             }
             
         default: break
         }
     }
     
-    @IBAction private func unwindFromSaveStatesViewController(with segue: UIStoryboardSegue)
-    {
-    }
-    
-    @IBAction private func unwindFromGamesDatabaseBrowser(with segue: UIStoryboardSegue)
+    @IBAction private func unwindToGameCollectionViewController(_ segue: UIStoryboardSegue)
     {
     }
 }
@@ -380,34 +388,38 @@ private extension GameCollectionViewController
     {
         let cancelAction = Action(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, action: nil)
         
-        let renameAction = Action(title: NSLocalizedString("Rename", comment: ""), style: .default, action: { [unowned self] action in
+        let renameAction = Action(title: NSLocalizedString("Rename", comment: ""), style: .default, image: UIImage(symbolNameIfAvailable: "pencil.and.ellipsis.rectangle"), action: { [unowned self] action in
             self.rename(game)
         })
         
-        let changeArtworkAction = Action(title: NSLocalizedString("Change Artwork", comment: ""), style: .default) { [unowned self] action in
+        let changeArtworkAction = Action(title: NSLocalizedString("Change Artwork", comment: ""), style: .default, image: UIImage(symbolNameIfAvailable: "photo")) { [unowned self] action in
             self.changeArtwork(for: game)
         }
         
-        let shareAction = Action(title: NSLocalizedString("Share", comment: ""), style: .default, action: { [unowned self] action in
+        let changeControllerSkinAction = Action(title: NSLocalizedString("Change Controller Skin", comment: ""), style: .default, image: UIImage(symbolNameIfAvailable: "gamecontroller")) { [unowned self] _ in
+            self.changePreferredControllerSkin(for: game)
+        }
+        
+        let shareAction = Action(title: NSLocalizedString("Share", comment: ""), style: .default, image: UIImage(symbolNameIfAvailable: "square.and.arrow.up"), action: { [unowned self] action in
             self.share(game)
         })
         
-        let saveStatesAction = Action(title: NSLocalizedString("Save States", comment: ""), style: .default, action: { [unowned self] action in
+        let saveStatesAction = Action(title: NSLocalizedString("Save States", comment: ""), style: .default, image: UIImage(symbolNameIfAvailable: "doc.on.doc"), action: { [unowned self] action in
             self.viewSaveStates(for: game)
         })
         
-        let importSaveFile = Action(title: NSLocalizedString("Import Save File", comment: ""), style: .default) { [unowned self] _ in
+        let importSaveFile = Action(title: NSLocalizedString("Import Save File", comment: ""), style: .default, image: UIImage(symbolNameIfAvailable: "tray.and.arrow.down")) { [unowned self] _ in
             self.importSaveFile(for: game)
         }
         
-        let deleteAction = Action(title: NSLocalizedString("Delete", comment: ""), style: .destructive, action: { [unowned self] action in
+        let deleteAction = Action(title: NSLocalizedString("Delete", comment: ""), style: .destructive, image: UIImage(symbolNameIfAvailable: "trash"), action: { [unowned self] action in
             self.delete(game)
         })
         
         switch game.type
         {
         case GameType.unknown: return [cancelAction, renameAction, changeArtworkAction, shareAction, deleteAction]
-        default: return [cancelAction, renameAction, changeArtworkAction, shareAction, saveStatesAction, importSaveFile, deleteAction]
+        default: return [cancelAction, renameAction, changeArtworkAction, changeControllerSkinAction, shareAction, saveStatesAction, importSaveFile, deleteAction]
         }
     }
     
@@ -649,6 +661,11 @@ private extension GameCollectionViewController
         }
     }
     
+    func changePreferredControllerSkin(for game: Game)
+    {
+        self.performSegue(withIdentifier: "preferredControllerSkins", sender: game)
+    }
+    
     @objc func textFieldTextDidChange(_ textField: UITextField)
     {
         let text = textField.text ?? ""
@@ -687,6 +704,18 @@ extension GameCollectionViewController: UIViewControllerPreviewingDelegate
         
         let game = self.dataSource.item(at: indexPath)
         
+        let gameViewController = self.makePreviewGameViewController(for: game)
+        _previewTransitionViewController = gameViewController
+        return gameViewController
+    }
+    
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController)
+    {
+        self.commitPreviewTransition()
+    }
+    
+    func makePreviewGameViewController(for game: Game) -> PreviewGameViewController
+    {
         let gameViewController = PreviewGameViewController()
         gameViewController.game = game
         
@@ -702,11 +731,11 @@ extension GameCollectionViewController: UIViewControllerPreviewingDelegate
         return gameViewController
     }
     
-    func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController)
+    func commitPreviewTransition()
     {
-        let gameViewController = viewControllerToCommit as! PreviewGameViewController
-        let game = gameViewController.game as! Game
+        guard let gameViewController = _previewTransitionViewController else { return }
         
+        let game = gameViewController.game as! Game
         gameViewController.pauseEmulation()
         
         let indexPath = self.dataSource.fetchedResultsController.indexPath(forObject: game)!
@@ -716,7 +745,7 @@ extension GameCollectionViewController: UIViewControllerPreviewingDelegate
         
         gameViewController.emulatorCore?.stop()
         
-        _performing3DTouchTransition = true
+        _performingPreviewTransition = true
         
         self.launchGame(at: indexPath, clearScreen: true, ignoreAlreadyRunningError: true)
         
@@ -803,5 +832,57 @@ extension GameCollectionViewController: UICollectionViewDelegateFlowLayout
         
         let size = self.prototypeCell.contentView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
         return size
+    }
+}
+
+@available(iOS 13.0, *)
+extension GameCollectionViewController
+{
+    override func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration?
+    {
+        let game = self.dataSource.item(at: indexPath)
+        let actions = self.actions(for: game)
+        
+        return UIContextMenuConfiguration(identifier: indexPath as NSIndexPath, previewProvider: { [weak self] in
+            guard let self = self else { return nil }
+                        
+            let previewViewController = self.makePreviewGameViewController(for: game)
+            self._previewTransitionViewController = previewViewController
+            
+            return previewViewController
+        }) { suggestedActions in
+            return UIMenu(title: "", children: actions.menuActions)
+        }
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, willPerformPreviewActionForMenuWith configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionCommitAnimating)
+    {
+        self.commitPreviewTransition()
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, previewForHighlightingContextMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview?
+    {
+        guard let indexPath = configuration.identifier as? NSIndexPath else { return nil }
+        guard let cell = collectionView.cellForItem(at: indexPath as IndexPath) as? GridCollectionViewCell else { return nil }
+        
+        let parameters = UIPreviewParameters()
+        parameters.backgroundColor = .clear
+        
+        if let image = cell.imageView.image
+        {
+            let artworkFrame = AVMakeRect(aspectRatio: image.size, insideRect: cell.imageView.bounds)
+            
+            let bezierPath = UIBezierPath(rect: artworkFrame)
+            parameters.visiblePath = bezierPath
+        }
+
+        let preview = UITargetedPreview(view: cell.imageView, parameters: parameters)
+        return preview
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, previewForDismissingContextMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview?
+    {
+        _previewTransitionViewController = nil
+        return self.collectionView(collectionView, previewForHighlightingContextMenuWithConfiguration: configuration)
     }
 }

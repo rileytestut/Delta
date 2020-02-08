@@ -1,4 +1,4 @@
-framework module SMCalloutView {
+module SMCalloutView {
   umbrella header "SMCalloutView-umbrella.h"
 
   export *

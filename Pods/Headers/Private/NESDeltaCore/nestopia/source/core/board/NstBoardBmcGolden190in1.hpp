@@ -1,0 +1,1 @@
+../../../../../../../../Cores/NESDeltaCore/nestopia/source/core/board/NstBoardBmcGolden190in1.hpp

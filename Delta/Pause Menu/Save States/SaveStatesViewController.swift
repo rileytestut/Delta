@@ -66,6 +66,8 @@ class SaveStatesViewController: UICollectionViewController
     private var prototypeCellWidthConstraint: NSLayoutConstraint!
     private var prototypeHeader = SaveStatesCollectionHeaderView()
     
+    private weak var _previewTransitionViewController: PreviewGameViewController?
+    
     private let dataSource: RSTFetchedResultsCollectionViewPrefetchingDataSource<SaveState, UIImage>
     
     private var emulatorCoreSaveState: SaveStateProtocol?
@@ -115,12 +117,16 @@ extension SaveStatesViewController
         self.prototypeCellWidthConstraint = self.prototypeCell.contentView.widthAnchor.constraint(equalToConstant: collectionViewLayout.itemWidth)
         self.prototypeCellWidthConstraint.isActive = true
         
-        let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(SaveStatesViewController.handleLongPressGesture(_:)))
-        self.collectionView?.addGestureRecognizer(longPressGestureRecognizer)
-
         self.prepareEmulatorCoreSaveState()
         
-        self.registerForPreviewing(with: self, sourceView: self.collectionView!)
+        if #available(iOS 13, *) {}
+        else
+        {
+            self.registerForPreviewing(with: self, sourceView: self.collectionView!)
+            
+            let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(SaveStatesViewController.handleLongPressGesture(_:)))
+            self.collectionView?.addGestureRecognizer(longPressGestureRecognizer)
+        }
         
         self.navigationController?.navigationBar.barStyle = .blackTranslucent
         self.navigationController?.toolbar.barStyle = .blackTranslucent
@@ -393,7 +399,18 @@ private extension SaveStatesViewController
     
     func updatePreviewSaveState(_ saveState: SaveState?)
     {
-        let alertController = UIAlertController(title: NSLocalizedString("Change Preview Save State?", comment: ""), message: NSLocalizedString("The Preview Save State is loaded whenever you preview this game from the Main Menu with 3D Touch. Are you sure you want to change it?", comment: ""), preferredStyle: .alert)
+        let message: String
+        
+        if #available(iOS 13, *)
+        {
+            message = NSLocalizedString("The Preview Save State is loaded whenever you long press this game from the Main Menu. Are you sure you want to change it?", comment: "")
+        }
+        else
+        {
+            message = NSLocalizedString("The Preview Save State is loaded whenever you 3D Touch this game from the Main Menu. Are you sure you want to change it?", comment: "")
+        }
+        
+        let alertController = UIAlertController(title: NSLocalizedString("Change Preview Save State?", comment: ""), message: message, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Change", comment: ""), style: .default, handler: { (action) in
             
@@ -471,20 +488,31 @@ private extension SaveStatesViewController
     {
         guard saveState.type != .auto else { return nil }
         
+        let isPreviewAvailable: Bool
+        
+        if #available(iOS 13, *)
+        {
+            isPreviewAvailable = true
+        }
+        else
+        {
+            isPreviewAvailable = (self.traitCollection.forceTouchCapability == .available)
+        }
+        
         var actions = [Action]()
         
-        if self.traitCollection.forceTouchCapability == .available
+        if isPreviewAvailable
         {
             if saveState.game?.previewSaveState != saveState
             {
-                let previewAction = Action(title: NSLocalizedString("Set as Preview Save State", comment: ""), style: .default, action: { [unowned self] action in
+                let previewAction = Action(title: NSLocalizedString("Set as Preview Save State", comment: ""), style: .default, image: UIImage(symbolNameIfAvailable: "eye.fill"), action: { [unowned self] action in
                     self.updatePreviewSaveState(saveState)
                 })
                 actions.append(previewAction)
             }
             else
             {
-                let previewAction = Action(title: NSLocalizedString("Remove as Preview Save State", comment: ""), style: .default, action: { [unowned self] action in
+                let previewAction = Action(title: NSLocalizedString("Remove as Preview Save State", comment: ""), style: .default, image: UIImage(symbolNameIfAvailable: "eye.slash.fill"), action: { [unowned self] action in
                     self.updatePreviewSaveState(nil)
                 })
                 actions.append(previewAction)
@@ -494,7 +522,7 @@ private extension SaveStatesViewController
         let cancelAction = Action(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, action: nil)
         actions.append(cancelAction)
         
-        let renameAction = Action(title: NSLocalizedString("Rename", comment: ""), style: .default, action: { [unowned self] action in
+        let renameAction = Action(title: NSLocalizedString("Rename", comment: ""), style: .default, image: UIImage(symbolNameIfAvailable: "pencil.and.ellipsis.rectangle"), action: { [unowned self] action in
             self.renameSaveState(saveState)
         })
         actions.append(renameAction)
@@ -504,19 +532,19 @@ private extension SaveStatesViewController
         case .auto: break
         case .quick: break
         case .general:
-            let lockAction = Action(title: NSLocalizedString("Lock", comment: ""), style: .default, action: { [unowned self] action in
+            let lockAction = Action(title: NSLocalizedString("Lock", comment: ""), style: .default, image: UIImage(symbolNameIfAvailable: "lock.fill"), action: { [unowned self] action in
                 self.lockSaveState(saveState)
             })
             actions.append(lockAction)
             
         case .locked:
-            let unlockAction = Action(title: NSLocalizedString("Unlock", comment: ""), style: .default, action: { [unowned self] action in
+            let unlockAction = Action(title: NSLocalizedString("Unlock", comment: ""), style: .default, image: UIImage(symbolNameIfAvailable: "lock.open.fill"), action: { [unowned self] action in
                 self.unlockSaveState(saveState)
             })
             actions.append(unlockAction)
         }
         
-        let deleteAction = Action(title: NSLocalizedString("Delete", comment: ""), style: .destructive, action: { [unowned self] action in
+        let deleteAction = Action(title: NSLocalizedString("Delete", comment: ""), style: .destructive, image: UIImage(symbolNameIfAvailable: "trash"), action: { [unowned self] action in
             self.deleteSaveState(saveState)
         })
         actions.append(deleteAction)
@@ -608,21 +636,36 @@ extension SaveStatesViewController: UIViewControllerPreviewingDelegate
         previewingContext.sourceRect = layoutAttributes.frame
         
         let saveState = self.dataSource.item(at: indexPath)
-        let actions = self.actionsForSaveState(saveState)?.previewActions ?? []
-        let previewImage = self.dataSource.prefetchItemCache.object(forKey: saveState) ?? UIImage(contentsOfFile: saveState.imageFileURL.path)
         
-        let previewGameViewController = PreviewGameViewController()
-        previewGameViewController.game = self.game
-        previewGameViewController.overridePreviewActionItems = actions
-        previewGameViewController.previewSaveState = saveState
-        previewGameViewController.previewImage = previewImage
+        let previewGameViewController = self.makePreviewGameViewController(for: saveState)
+        _previewTransitionViewController = previewGameViewController
         
         return previewGameViewController
     }
     
     func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController)
     {
-        let gameViewController = viewControllerToCommit as! PreviewGameViewController        
+        self.commitPreviewTransition()
+    }
+    
+    func makePreviewGameViewController(for saveState: SaveState) -> PreviewGameViewController
+    {
+        let previewImage = self.dataSource.prefetchItemCache.object(forKey: saveState) ?? UIImage(contentsOfFile: saveState.imageFileURL.path)
+        
+        let gameViewController = PreviewGameViewController()
+        gameViewController.game = self.game
+        gameViewController.previewSaveState = saveState
+        gameViewController.previewImage = previewImage
+        
+        let actions = self.actionsForSaveState(saveState)?.previewActions ?? []
+        gameViewController.overridePreviewActionItems = actions
+        
+        return gameViewController
+    }
+    
+    func commitPreviewTransition()
+    {
+        guard let gameViewController = self._previewTransitionViewController else { return }
         gameViewController.pauseEmulation()
         
         let fileURL = FileManager.default.uniqueTemporaryURL()
@@ -706,5 +749,49 @@ extension SaveStatesViewController: UICollectionViewDelegateFlowLayout
         
         let size = self.prototypeHeader.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
         return size
+    }
+}
+
+@available(iOS 13.0, *)
+extension SaveStatesViewController
+{
+    override func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration?
+    {
+        let saveState = self.dataSource.item(at: indexPath)
+        guard let actions = self.actionsForSaveState(saveState) else { return nil }
+        
+        return UIContextMenuConfiguration(identifier: indexPath as NSIndexPath, previewProvider: { [weak self] in
+            guard let self = self else { return nil }
+            
+            let previewGameViewController = self.makePreviewGameViewController(for: saveState)
+            self._previewTransitionViewController = previewGameViewController
+            
+            return previewGameViewController
+        }) { suggestedActions in
+            return UIMenu(title: "", children: actions.menuActions)
+        }
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, willPerformPreviewActionForMenuWith configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionCommitAnimating)
+    {
+        self.commitPreviewTransition()
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, previewForHighlightingContextMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview?
+    {
+        guard let indexPath = configuration.identifier as? NSIndexPath else { return nil }
+        guard let cell = collectionView.cellForItem(at: indexPath as IndexPath) as? GridCollectionViewCell else { return nil }
+        
+        let parameters = UIPreviewParameters()
+        parameters.backgroundColor = .clear
+
+        let preview = UITargetedPreview(view: cell.imageView, parameters: parameters)
+        return preview
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, previewForDismissingContextMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview?
+    {
+        self._previewTransitionViewController = nil
+        return self.collectionView(collectionView, previewForHighlightingContextMenuWithConfiguration: configuration)
     }
 }

@@ -1,0 +1,1 @@
+../../../../../../../../Cores/NESDeltaCore/nestopia/source/core/board/NstBoardBmcSuperGun20in1.hpp

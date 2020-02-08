@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="SPq-Bk-fQl">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="SPq-Bk-fQl">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -83,6 +83,7 @@
                     <connections>
                         <segue destination="X2o-q6-XD5" kind="unwind" identifier="unwindFromGames" unwindAction="unwindFromGamesViewControllerWith:" id="k8C-Xn-maU"/>
                         <segue destination="MPk-bF-nkj" kind="presentation" identifier="saveStates" customClass="SaveStatesStoryboardSegue" customModule="Delta" customModuleProvider="target" id="1Xp-2J-0cq"/>
+                        <segue destination="qdE-gb-V2e" kind="presentation" identifier="preferredControllerSkins" id="i6y-cP-3WM"/>
                     </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bW1-t8-idm" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -217,13 +218,23 @@
                     <nil name="viewControllers"/>
                     <connections>
                         <segue destination="Eae-Qk-9MI" kind="relationship" relationship="rootViewController" id="1Jh-Zf-ntp"/>
-                        <segue destination="WQV-Du-4IA" kind="unwind" identifier="unwindFromSaveStates" customClass="SaveStatesStoryboardUnwindSegue" customModule="Delta" customModuleProvider="target" unwindAction="unwindFromSaveStatesViewControllerWith:" id="dwO-iv-XDr"/>
+                        <segue destination="WQV-Du-4IA" kind="unwind" identifier="unwindFromSaveStates" customClass="SaveStatesStoryboardUnwindSegue" customModule="Delta" customModuleProvider="target" unwindAction="unwindToGameCollectionViewController:" id="dwO-iv-XDr"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="htj-tq-2KP" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="WQV-Du-4IA" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="2652" y="1718"/>
+        </scene>
+        <!--preferredControllerSkins-->
+        <scene sceneID="aKY-Ld-et6">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Settings" referencedIdentifier="preferredControllerSkins" id="dbc-pQ-iun" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="xth-MV-SHp"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="za6-AO-ZFe" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3405" y="2394"/>
         </scene>
         <!--saveStatesViewController-->
         <scene sceneID="f1R-Kb-FOU">
@@ -234,6 +245,25 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eln-PZ-00u" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3409" y="1716"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="eMh-8N-ZGA">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="qdE-gb-V2e" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" id="Dg6-He-v5H"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="35T-4Q-Mmp">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="108"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="dbc-pQ-iun" kind="relationship" relationship="rootViewController" id="oRb-B6-c0J"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="XmB-QY-yA3" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2652" y="2394"/>
         </scene>
     </scenes>
     <resources>

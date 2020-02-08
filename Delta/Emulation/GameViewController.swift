@@ -31,6 +31,29 @@ private extension GameViewController
         }
     }
     
+    struct DefaultInputMapping: GameControllerInputMappingProtocol
+    {
+        let gameController: GameController
+        
+        var gameControllerInputType: GameControllerInputType {
+            return self.gameController.inputType
+        }
+        
+        func input(forControllerInput controllerInput: Input) -> Input?
+        {
+            if let mappedInput = self.gameController.defaultInputMapping?.input(forControllerInput: controllerInput)
+            {
+                return mappedInput
+            }
+            
+            // Only intercept controller skin inputs.
+            guard controllerInput.type == .controller(.controllerSkin) else { return nil }
+            
+            let actionInput = ActionInput(stringValue: controllerInput.stringValue)
+            return actionInput
+        }
+    }
+    
     struct SustainInputsMapping: GameControllerInputMappingProtocol
     {
         let gameController: GameController
@@ -190,7 +213,7 @@ class GameViewController: DeltaCore.GameViewController
                 self.inputsToSustain[AnyInput(input)] = value
             }
         }
-        else if self.emulatorCore?.state == .running
+        else if let emulatorCore = self.emulatorCore, emulatorCore.state == .running
         {
             guard let actionInput = ActionInput(input: input) else { return }
             
@@ -199,6 +222,9 @@ class GameViewController: DeltaCore.GameViewController
             case .quickSave: self.performQuickSaveAction()
             case .quickLoad: self.performQuickLoadAction()
             case .fastForward: self.performFastForwardAction(activate: true)
+            case .toggleFastForward:
+                let isFastForwarding = (emulatorCore.rate != emulatorCore.deltaCore.supportedRates.lowerBound)
+                self.performFastForwardAction(activate: !isFastForwarding)
             }
         }
     }
@@ -223,6 +249,7 @@ class GameViewController: DeltaCore.GameViewController
             case .quickSave: break
             case .quickLoad: break
             case .fastForward: self.performFastForwardAction(activate: false)
+            case .toggleFastForward: break
             }
         }
     }
@@ -518,16 +545,19 @@ private extension GameViewController
             {
                 if gameController.playerIndex != nil
                 {
-                    if let inputMapping = GameControllerInputMapping.inputMapping(for: gameController, gameType: game.type, in: DatabaseManager.shared.viewContext)
+                    let inputMapping: GameControllerInputMappingProtocol
+                    
+                    if let mapping = GameControllerInputMapping.inputMapping(for: gameController, gameType: game.type, in: DatabaseManager.shared.viewContext)
                     {
-                        gameController.addReceiver(self, inputMapping: inputMapping)
-                        gameController.addReceiver(emulatorCore, inputMapping: inputMapping)
+                        inputMapping = mapping
                     }
                     else
                     {
-                        gameController.addReceiver(self)
-                        gameController.addReceiver(emulatorCore)
+                        inputMapping = DefaultInputMapping(gameController: gameController)
                     }
+                    
+                    gameController.addReceiver(self, inputMapping: inputMapping)
+                    gameController.addReceiver(emulatorCore, inputMapping: inputMapping)
                 }
                 else
                 {
@@ -556,14 +586,14 @@ private extension GameViewController
     
     func updateControllerSkin()
     {
-        guard let game = self.game, let system = System(gameType: game.type), let window = self.view.window else { return }
+        guard let game = self.game as? Game, let window = self.view.window else { return }
         
         let traits = DeltaCore.ControllerSkin.Traits.defaults(for: window)
         
-        let controllerSkin = Settings.preferredControllerSkin(for: system, traits: traits)
+        let controllerSkin = Settings.preferredControllerSkin(for: game, traits: traits)
         self.controllerView.controllerSkin = controllerSkin
         
-        self.view.setNeedsUpdateConstraints()
+        self.view.setNeedsLayout()
     }
 }
 

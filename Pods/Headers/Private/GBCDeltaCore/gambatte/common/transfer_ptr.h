@@ -1,0 +1,1 @@
+../../../../../../Cores/GBCDeltaCore/gambatte/common/transfer_ptr.h

@@ -1,0 +1,6 @@
+module NESDeltaCore {
+  umbrella header "NESDeltaCore-umbrella.h"
+
+  export *
+  module * { export * }
+}

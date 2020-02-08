@@ -21,23 +21,17 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		4FE8465FD28810191C3E5212 /* Pods_Delta.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 695E8C07A709B16AAD83AEC8 /* Pods_Delta.framework */; };
+		1FA4ABA79AB72914FE414A61 /* libPods-Delta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DC866E433B3BA9AE18ABA1EC /* libPods-Delta.a */; };
 		BF02D5DA1DDEBB3000A5E131 /* openvgdb.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = BF02D5D91DDEBB3000A5E131 /* openvgdb.sqlite */; };
-		BF0418141D01E93400E85BCF /* GBADeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF0418131D01E93400E85BCF /* GBADeltaCore.framework */; };
-		BF0418151D01E93400E85BCF /* GBADeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BF0418131D01E93400E85BCF /* GBADeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF04E6FF1DB8625C000F35D3 /* ControllerSkinsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF04E6FE1DB8625C000F35D3 /* ControllerSkinsViewController.swift */; };
-		BF072010219A3A9D00F05DA4 /* ZIPFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF07200E219A3A9500F05DA4 /* ZIPFoundation.framework */; };
-		BF072011219A3A9D00F05DA4 /* ZIPFoundation.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BF07200E219A3A9500F05DA4 /* ZIPFoundation.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF1020E31F95B05B00313182 /* DeltaToDelta2.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = BF1020E21F95B05B00313182 /* DeltaToDelta2.xcmappingmodel */; };
 		BF107EC41BF413F000E0C32C /* GamesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF107EC31BF413F000E0C32C /* GamesViewController.swift */; };
 		BF1173501DA32CF600047DF8 /* ControllersSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF11734F1DA32CF600047DF8 /* ControllersSettingsViewController.swift */; };
 		BF13A7561D5D29B0000BB055 /* PreviewGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF13A7551D5D29B0000BB055 /* PreviewGameViewController.swift */; };
 		BF13A7581D5D2FD9000BB055 /* EmulatorCore+Cheats.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF13A7571D5D2FD9000BB055 /* EmulatorCore+Cheats.swift */; };
-		BF144C642238511400C387E1 /* Harmony_Dropbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFDE2CC6222DF345008038E0 /* Harmony_Dropbox.framework */; };
-		BF144C652238511400C387E1 /* Harmony_Dropbox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BFDE2CC6222DF345008038E0 /* Harmony_Dropbox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF15AF841F54B43B009B6AAB /* ActionInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF15AF831F54B43B009B6AAB /* ActionInput.swift */; };
 		BF18B61F1E2985F900F70067 /* UIAlertController+Importing.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF18B61E1E2985F900F70067 /* UIAlertController+Importing.swift */; };
-		BF1DAD5D1D9F576000E752A7 /* SystemControllerSkinsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1DAD5C1D9F576000E752A7 /* SystemControllerSkinsViewController.swift */; };
+		BF1DAD5D1D9F576000E752A7 /* PreferredControllerSkinsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1DAD5C1D9F576000E752A7 /* PreferredControllerSkinsViewController.swift */; };
 		BF1F45A421AF274D00EF9895 /* SyncResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1F45A321AF274D00EF9895 /* SyncResultViewController.swift */; };
 		BF1F45AB21AF4B5800EF9895 /* SyncResultsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF1F45AA21AF4B5800EF9895 /* SyncResultsViewController.storyboard */; };
 		BF1F45AD21AF57BA00EF9895 /* HarmonyMetadataKey+Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1F45AC21AF57BA00EF9895 /* HarmonyMetadataKey+Keys.swift */; };
@@ -60,10 +54,6 @@
 		BF4828861F9028F500028B97 /* System.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF4828851F9028F500028B97 /* System.swift */; };
 		BF4828881F90290F00028B97 /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF4828871F90290F00028B97 /* Action.swift */; };
 		BF48F74E219A16DA00BC2FC1 /* SyncingServicesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF48F74D219A16DA00BC2FC1 /* SyncingServicesViewController.swift */; };
-		BF48F755219A1EF000BC2FC1 /* Harmony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF48F754219A1EEB00BC2FC1 /* Harmony.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		BF48F756219A1EF000BC2FC1 /* Harmony.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BF48F754219A1EEB00BC2FC1 /* Harmony.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		BF48F75B219A1F8A00BC2FC1 /* Harmony_Drive.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF48F75A219A1F8300BC2FC1 /* Harmony_Drive.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		BF48F75C219A1F8A00BC2FC1 /* Harmony_Drive.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BF48F75A219A1F8300BC2FC1 /* Harmony_Drive.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF525EE81FF5F370004AA849 /* DeepLinkController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF525EE71FF5F370004AA849 /* DeepLinkController.swift */; };
 		BF525EEA1FF6CD12004AA849 /* DeepLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF525EE91FF6CD12004AA849 /* DeepLink.swift */; };
 		BF56450D220239B800A8EA26 /* GameControllerInputMappingMigrationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF56450C220239B800A8EA26 /* GameControllerInputMappingMigrationPolicy.swift */; };
@@ -96,6 +86,10 @@
 		BF647A6A22FB8FCE0061D76D /* Bundle+SwizzleBundleID.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF647A6922FB8FCE0061D76D /* Bundle+SwizzleBundleID.swift */; };
 		BF6866171DCAC8B900BF2D06 /* ControllerSkin+Configuring.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6866161DCAC8B900BF2D06 /* ControllerSkin+Configuring.swift */; };
 		BF696B801D9B2B02009639E0 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF696B7F1D9B2B02009639E0 /* Theme.swift */; };
+		BF69FBA223E375A20051BEEA /* libVBA-M.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BF69FBA123E375A20051BEEA /* libVBA-M.a */; };
+		BF69FBA823E396860051BEEA /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = BF69FBA723E3967B0051BEEA /* libz.tbd */; };
+		BF69FBAA23E399AA0051BEEA /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF69FBA923E399AA0051BEEA /* CoreMotion.framework */; };
+		BF69FBC923E3A8380051BEEA /* libNestopia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BF69FBC823E3A8380051BEEA /* libNestopia.a */; };
 		BF6BF3131EB7E47F008E83CD /* ImportOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6BF3121EB7E47F008E83CD /* ImportOption.swift */; };
 		BF6BF3181EB82111008E83CD /* iTunesImportOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6BF3171EB82111008E83CD /* iTunesImportOption.swift */; };
 		BF6BF31A1EB82146008E83CD /* ClipboardImportOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6BF3191EB82146008E83CD /* ClipboardImportOption.swift */; };
@@ -108,7 +102,6 @@
 		BF71CF871FE90006001F1613 /* AppIconShortcutsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF71CF861FE90006001F1613 /* AppIconShortcutsViewController.swift */; };
 		BF71CF8A1FE904B1001F1613 /* GameTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF71CF891FE904B1001F1613 /* GameTableViewCell.xib */; };
 		BF797A2D1C2D339F00F1A000 /* UILabel+FontSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF797A2C1C2D339F00F1A000 /* UILabel+FontSize.swift */; };
-		BF79966E224C076C009B094F /* N64DeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BF79966C224C075A009B094F /* N64DeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF7AE8081C2E858400B1B5BC /* GridMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7AE8041C2E858400B1B5BC /* GridMenuViewController.swift */; };
 		BF7AE80A1C2E8C7600B1B5BC /* UIColor+Delta.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7AE8091C2E8C7600B1B5BC /* UIColor+Delta.swift */; };
 		BF80E1D21F13117000847008 /* ControllerInputsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF616A121F08184A0077F8B2 /* ControllerInputsViewController.swift */; };
@@ -118,22 +111,11 @@
 		BF8DDD241F4F6C880088A21B /* InputCalloutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8DDD231F4F6C880088A21B /* InputCalloutView.swift */; };
 		BF95E2771E4977BF0030E7AD /* GameMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF95E2761E4977BF0030E7AD /* GameMetadata.swift */; };
 		BF95E2791E4982A10030E7AD /* GamesDatabaseBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF95E2781E4982A10030E7AD /* GamesDatabaseBrowserViewController.swift */; };
-		BF98C9822204D9AB006B95AC /* NESDeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF98C9812204D9A1006B95AC /* NESDeltaCore.framework */; };
-		BF98C9832204D9AB006B95AC /* NESDeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BF98C9812204D9A1006B95AC /* NESDeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF99A5971DC2F9C400468E9E /* ControllerSkinTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF99A5961DC2F9C400468E9E /* ControllerSkinTableViewCell.swift */; };
-		BF99C6941D0A9AA600BA92BC /* SNESDeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFC134E01AAD82460087AD7B /* SNESDeltaCore.framework */; };
-		BF99C6951D0A9AA600BA92BC /* SNESDeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BFC134E01AAD82460087AD7B /* SNESDeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		BF9F4FCF1AAD7B87004C9500 /* DeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF9F4FCE1AAD7B87004C9500 /* DeltaCore.framework */; };
-		BF9F4FD01AAD7B87004C9500 /* DeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BF9F4FCE1AAD7B87004C9500 /* DeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BFA0D1271D3AE1F600565894 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF63BDE91D389EEB00FCB040 /* GameViewController.swift */; };
 		BFAA1FED1B8AA4FA00495943 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFAA1FEC1B8AA4FA00495943 /* Settings.swift */; };
 		BFAB9F7D219A43380080EC7D /* SyncManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFAB9F7C219A43380080EC7D /* SyncManager.swift */; };
 		BFAB9F88219A4B670080EC7D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BFAB9F87219A4B670080EC7D /* GoogleService-Info.plist */; };
-		BFB3593A2278FD0000CFD920 /* N64DeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF79966C224C075A009B094F /* N64DeltaCore.framework */; };
-		BFB359432278FD7E00CFD920 /* N64DeltaCore_Video.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFB359412278FD6700CFD920 /* N64DeltaCore_Video.framework */; };
-		BFB359442278FD7E00CFD920 /* N64DeltaCore_Video.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BFB359412278FD6700CFD920 /* N64DeltaCore_Video.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		BFB359452278FD8100CFD920 /* N64DeltaCore_RSP.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFB359422278FD6800CFD920 /* N64DeltaCore_RSP.framework */; };
-		BFB359462278FD8100CFD920 /* N64DeltaCore_RSP.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BFB359422278FD6800CFD920 /* N64DeltaCore_RSP.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BFB3645823245A6000CD0EB1 /* LicensesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB3645723245A6000CD0EB1 /* LicensesViewController.swift */; };
 		BFBAB2E31EB685A2004E0B0E /* DeltaCoreProtocol+Delta.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFBAB2E21EB685A2004E0B0E /* DeltaCoreProtocol+Delta.swift */; };
 		BFC1F2CC22F9515F00606A45 /* CopyDeepLinkActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC1F2CB22F9515F00606A45 /* CopyDeepLinkActivity.swift */; };
@@ -145,21 +127,13 @@
 		BFD1EF402336BD8800D197CF /* UIDevice+Processor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD1EF3F2336BD8800D197CF /* UIDevice+Processor.swift */; };
 		BFDB3418219E4B1700595A62 /* SyncStatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDB3417219E4B1700595A62 /* SyncStatusViewController.swift */; };
 		BFDD04F11D5E2C27002D450E /* GameCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDD04F01D5E2C27002D450E /* GameCollectionViewController.swift */; };
-		BFDE2CD1222DF36A008038E0 /* SwiftyDropbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFDE2CC8222DF345008038E0 /* SwiftyDropbox.framework */; };
-		BFDE2CD2222DF36A008038E0 /* SwiftyDropbox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BFDE2CC8222DF345008038E0 /* SwiftyDropbox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		BFDE2CD3222DF36A008038E0 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFDE2CC7222DF345008038E0 /* Alamofire.framework */; };
-		BFDE2CD4222DF36A008038E0 /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BFDE2CC7222DF345008038E0 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		BFDF71DD22F94CF70074D92E /* DSDeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFDF71DA22F94CDF0074D92E /* DSDeltaCore.framework */; };
-		BFDF71DE22F94CF70074D92E /* DSDeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BFDF71DA22F94CDF0074D92E /* DSDeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BFE022A01F5B57FF0052D888 /* PopoverMenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE0229F1F5B577D0052D888 /* PopoverMenuButton.swift */; };
 		BFE4269E1D9C68E600DC913F /* SaveStatesStoryboardSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE4269D1D9C68E600DC913F /* SaveStatesStoryboardSegue.swift */; };
+		BFE56E1923EB7BE00014FECD /* UIImage+SymbolFallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE56E1823EB7BE00014FECD /* UIImage+SymbolFallback.swift */; };
 		BFE593CA21F3F8B7003412A6 /* GameSave.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE593C921F3F8B7003412A6 /* GameSave.swift */; };
 		BFE593CC21F3F8C2003412A6 /* _GameSave.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE593CB21F3F8C2003412A6 /* _GameSave.swift */; };
-		BFEC732D1AAECC4A00650035 /* Roxas.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFEC732C1AAECC4A00650035 /* Roxas.framework */; };
-		BFEC732E1AAECC4A00650035 /* Roxas.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BFEC732C1AAECC4A00650035 /* Roxas.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BFEE507D23E7612300416151 /* liblibDeSmuME.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BF76BDE823E649150073702C /* liblibDeSmuME.a */; };
 		BFEF24F31F7DD4FD00454C62 /* SaveStateMigrationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEF24F21F7DD4FB00454C62 /* SaveStateMigrationPolicy.swift */; };
-		BFF0742C1E9DC17500ACDF4A /* GBCDeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFF0742B1E9DC17500ACDF4A /* GBCDeltaCore.framework */; };
-		BFF0742D1E9DC17500ACDF4A /* GBCDeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BFF0742B1E9DC17500ACDF4A /* GBCDeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BFF6452E1F7CC5060056533E /* GameControllerInputMappingTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6B82A41F7CC2A300042BFB /* GameControllerInputMappingTransformer.swift */; };
 		BFFA4C091E8A24D600D87934 /* GameTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFA4C081E8A24D600D87934 /* GameTableViewCell.swift */; };
 		BFFA71DD1AAC406100EE9DD1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFA71DC1AAC406100EE9DD1 /* AppDelegate.swift */; };
@@ -171,40 +145,13 @@
 		BFFC46231D5984A000AF2CC6 /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFC46221D5984A000AF2CC6 /* LaunchViewController.swift */; };
 		BFFC46461D59861000AF2CC6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BFFC46441D59861000AF2CC6 /* LaunchScreen.storyboard */; };
 		BFFC464C1D5998D600AF2CC6 /* CheatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFC464B1D5998D600AF2CC6 /* CheatTableViewCell.swift */; };
+		BFFDF03723E3BB2600931B96 /* libSnes9x.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BFFDF03623E3BB2600931B96 /* libSnes9x.a */; };
+		BFFDF03F23E3C28A00931B96 /* libGambatte.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BFFDF03D23E3C0F000931B96 /* libGambatte.a */; };
+		BFFDF04623E3D3A600931B96 /* libMupen64Plus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BFFDF04523E3D3A600931B96 /* libMupen64Plus.a */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		BF9F4FCC1AAD7AEE004C9500 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				BF9F4FD01AAD7B87004C9500 /* DeltaCore.framework in Embed Frameworks */,
-				BFDE2CD2222DF36A008038E0 /* SwiftyDropbox.framework in Embed Frameworks */,
-				BF48F75C219A1F8A00BC2FC1 /* Harmony_Drive.framework in Embed Frameworks */,
-				BF79966E224C076C009B094F /* N64DeltaCore.framework in Embed Frameworks */,
-				BF48F756219A1EF000BC2FC1 /* Harmony.framework in Embed Frameworks */,
-				BFB359462278FD8100CFD920 /* N64DeltaCore_RSP.framework in Embed Frameworks */,
-				BFF0742D1E9DC17500ACDF4A /* GBCDeltaCore.framework in Embed Frameworks */,
-				BFEC732E1AAECC4A00650035 /* Roxas.framework in Embed Frameworks */,
-				BF0418151D01E93400E85BCF /* GBADeltaCore.framework in Embed Frameworks */,
-				BFDE2CD4222DF36A008038E0 /* Alamofire.framework in Embed Frameworks */,
-				BFB359442278FD7E00CFD920 /* N64DeltaCore_Video.framework in Embed Frameworks */,
-				BFDF71DE22F94CF70074D92E /* DSDeltaCore.framework in Embed Frameworks */,
-				BF144C652238511400C387E1 /* Harmony_Dropbox.framework in Embed Frameworks */,
-				BF98C9832204D9AB006B95AC /* NESDeltaCore.framework in Embed Frameworks */,
-				BF99C6951D0A9AA600BA92BC /* SNESDeltaCore.framework in Embed Frameworks */,
-				BF072011219A3A9D00F05DA4 /* ZIPFoundation.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		22506DA00971C4300AF90A35 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		695E8C07A709B16AAD83AEC8 /* Pods_Delta.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Delta.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A19FF50F55441BC2B2248241 /* Pods-Delta.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Delta.release.xcconfig"; path = "Pods/Target Support Files/Pods-Delta/Pods-Delta.release.xcconfig"; sourceTree = "<group>"; };
 		BF02D5D91DDEBB3000A5E131 /* openvgdb.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = openvgdb.sqlite; sourceTree = "<group>"; };
 		BF0418131D01E93400E85BCF /* GBADeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = GBADeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -219,7 +166,7 @@
 		BF13A7571D5D2FD9000BB055 /* EmulatorCore+Cheats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EmulatorCore+Cheats.swift"; sourceTree = "<group>"; };
 		BF15AF831F54B43B009B6AAB /* ActionInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionInput.swift; sourceTree = "<group>"; };
 		BF18B61E1E2985F900F70067 /* UIAlertController+Importing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIAlertController+Importing.swift"; sourceTree = "<group>"; };
-		BF1DAD5C1D9F576000E752A7 /* SystemControllerSkinsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SystemControllerSkinsViewController.swift; sourceTree = "<group>"; };
+		BF1DAD5C1D9F576000E752A7 /* PreferredControllerSkinsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferredControllerSkinsViewController.swift; sourceTree = "<group>"; };
 		BF1F45A321AF274D00EF9895 /* SyncResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncResultViewController.swift; sourceTree = "<group>"; };
 		BF1F45AA21AF4B5800EF9895 /* SyncResultsViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SyncResultsViewController.storyboard; sourceTree = "<group>"; };
 		BF1F45AC21AF57BA00EF9895 /* HarmonyMetadataKey+Keys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "HarmonyMetadataKey+Keys.swift"; sourceTree = "<group>"; };
@@ -274,6 +221,7 @@
 		BF5942901E09BD1A0051894B /* NSFetchedResultsController+Conveniences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFetchedResultsController+Conveniences.m"; sourceTree = "<group>"; };
 		BF5942911E09BD1A0051894B /* NSManagedObject+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+Conveniences.swift"; sourceTree = "<group>"; };
 		BF5942921E09BD1A0051894B /* NSManagedObjectContext+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+Conveniences.swift"; sourceTree = "<group>"; };
+		BF5ACE3823E23D6500BD0F20 /* libVBA-M.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libVBA-M.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF5E7F431B9A650B00AE44F8 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		BF5E7F451B9A652600AE44F8 /* Settings.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Settings.storyboard; path = Delta/Base.lproj/Settings.storyboard; sourceTree = SOURCE_ROOT; };
 		BF616A121F08184A0077F8B2 /* ControllerInputsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerInputsViewController.swift; sourceTree = "<group>"; };
@@ -285,6 +233,10 @@
 		BF647A6922FB8FCE0061D76D /* Bundle+SwizzleBundleID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+SwizzleBundleID.swift"; sourceTree = "<group>"; };
 		BF6866161DCAC8B900BF2D06 /* ControllerSkin+Configuring.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ControllerSkin+Configuring.swift"; sourceTree = "<group>"; };
 		BF696B7F1D9B2B02009639E0 /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		BF69FBA123E375A20051BEEA /* libVBA-M.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libVBA-M.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BF69FBA723E3967B0051BEEA /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		BF69FBA923E399AA0051BEEA /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
+		BF69FBC823E3A8380051BEEA /* libNestopia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libNestopia.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF6B82A41F7CC2A300042BFB /* GameControllerInputMappingTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameControllerInputMappingTransformer.swift; sourceTree = "<group>"; };
 		BF6BB2451BB73FE800CCF94A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BF6BF3121EB7E47F008E83CD /* ImportOption.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImportOption.swift; sourceTree = "<group>"; };
@@ -299,6 +251,7 @@
 		BF713C0722499ED3004A1A2B /* Harmony.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Harmony.xcdatamodel; sourceTree = "<group>"; };
 		BF71CF861FE90006001F1613 /* AppIconShortcutsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIconShortcutsViewController.swift; sourceTree = "<group>"; };
 		BF71CF891FE904B1001F1613 /* GameTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GameTableViewCell.xib; sourceTree = "<group>"; };
+		BF76BDE823E649150073702C /* liblibDeSmuME.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = liblibDeSmuME.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF797A2C1C2D339F00F1A000 /* UILabel+FontSize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+FontSize.swift"; sourceTree = "<group>"; };
 		BF79966C224C075A009B094F /* N64DeltaCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = N64DeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF7AE8041C2E858400B1B5BC /* GridMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GridMenuViewController.swift; sourceTree = "<group>"; };
@@ -334,6 +287,8 @@
 		BFDF71DA22F94CDF0074D92E /* DSDeltaCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = DSDeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFE0229F1F5B577D0052D888 /* PopoverMenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverMenuButton.swift; sourceTree = "<group>"; };
 		BFE4269D1D9C68E600DC913F /* SaveStatesStoryboardSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SaveStatesStoryboardSegue.swift; sourceTree = "<group>"; };
+		BFE4275223EDF75300E6B417 /* Delta 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Delta 5.xcdatamodel"; sourceTree = "<group>"; };
+		BFE56E1823EB7BE00014FECD /* UIImage+SymbolFallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+SymbolFallback.swift"; sourceTree = "<group>"; };
 		BFE593C921F3F8B7003412A6 /* GameSave.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameSave.swift; sourceTree = "<group>"; };
 		BFE593CB21F3F8C2003412A6 /* _GameSave.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = _GameSave.swift; sourceTree = "<group>"; };
 		BFEC732C1AAECC4A00650035 /* Roxas.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Roxas.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -351,7 +306,11 @@
 		BFFC46221D5984A000AF2CC6 /* LaunchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
 		BFFC46451D59861000AF2CC6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BFFC464B1D5998D600AF2CC6 /* CheatTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheatTableViewCell.swift; sourceTree = "<group>"; };
+		BFFDF03623E3BB2600931B96 /* libSnes9x.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libSnes9x.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		BFFDF03D23E3C0F000931B96 /* libGambatte.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libGambatte.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		BFFDF04523E3D3A600931B96 /* libMupen64Plus.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libMupen64Plus.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C786AF1D2DDB6223BE2063CC /* Pods-Delta.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Delta.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Delta/Pods-Delta.debug.xcconfig"; sourceTree = "<group>"; };
+		DC866E433B3BA9AE18ABA1EC /* libPods-Delta.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Delta.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -359,23 +318,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BFB3593A2278FD0000CFD920 /* N64DeltaCore.framework in Frameworks */,
-				BF9F4FCF1AAD7B87004C9500 /* DeltaCore.framework in Frameworks */,
-				BFEC732D1AAECC4A00650035 /* Roxas.framework in Frameworks */,
-				BFDE2CD3222DF36A008038E0 /* Alamofire.framework in Frameworks */,
-				BF48F75B219A1F8A00BC2FC1 /* Harmony_Drive.framework in Frameworks */,
-				BFDF71DD22F94CF70074D92E /* DSDeltaCore.framework in Frameworks */,
-				BFB359452278FD8100CFD920 /* N64DeltaCore_RSP.framework in Frameworks */,
-				BF99C6941D0A9AA600BA92BC /* SNESDeltaCore.framework in Frameworks */,
-				BF98C9822204D9AB006B95AC /* NESDeltaCore.framework in Frameworks */,
-				BFB359432278FD7E00CFD920 /* N64DeltaCore_Video.framework in Frameworks */,
-				BF0418141D01E93400E85BCF /* GBADeltaCore.framework in Frameworks */,
-				BF072010219A3A9D00F05DA4 /* ZIPFoundation.framework in Frameworks */,
-				BFDE2CD1222DF36A008038E0 /* SwiftyDropbox.framework in Frameworks */,
-				BF144C642238511400C387E1 /* Harmony_Dropbox.framework in Frameworks */,
-				BFF0742C1E9DC17500ACDF4A /* GBCDeltaCore.framework in Frameworks */,
-				BF48F755219A1EF000BC2FC1 /* Harmony.framework in Frameworks */,
-				4FE8465FD28810191C3E5212 /* Pods_Delta.framework in Frameworks */,
+				BFEE507D23E7612300416151 /* liblibDeSmuME.a in Frameworks */,
+				BF69FBA823E396860051BEEA /* libz.tbd in Frameworks */,
+				BF69FBAA23E399AA0051BEEA /* CoreMotion.framework in Frameworks */,
+				BF69FBA223E375A20051BEEA /* libVBA-M.a in Frameworks */,
+				BFFDF04623E3D3A600931B96 /* libMupen64Plus.a in Frameworks */,
+				BF69FBC923E3A8380051BEEA /* libNestopia.a in Frameworks */,
+				1FA4ABA79AB72914FE414A61 /* libPods-Delta.a in Frameworks */,
+				BFFDF03F23E3C28A00931B96 /* libGambatte.a in Frameworks */,
+				BFFDF03723E3BB2600931B96 /* libSnes9x.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -403,6 +354,7 @@
 				BFFBD3D8224A0756002EFC79 /* URL+ExtendedAttributes.swift */,
 				BF647A6922FB8FCE0061D76D /* Bundle+SwizzleBundleID.swift */,
 				BFD1EF3F2336BD8800D197CF /* UIDevice+Processor.swift */,
+				BFE56E1823EB7BE00014FECD /* UIImage+SymbolFallback.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -420,7 +372,7 @@
 		BF1DAD5B1D9F574900E752A7 /* Controller Skins */ = {
 			isa = PBXGroup;
 			children = (
-				BF1DAD5C1D9F576000E752A7 /* SystemControllerSkinsViewController.swift */,
+				BF1DAD5C1D9F576000E752A7 /* PreferredControllerSkinsViewController.swift */,
 				BF04E6FE1DB8625C000F35D3 /* ControllerSkinsViewController.swift */,
 				BF99A5961DC2F9C400468E9E /* ControllerSkinTableViewCell.swift */,
 			);
@@ -669,6 +621,15 @@
 		BF9F4FCD1AAD7B25004C9500 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BF76BDE823E649150073702C /* liblibDeSmuME.a */,
+				BFFDF04523E3D3A600931B96 /* libMupen64Plus.a */,
+				BFFDF03D23E3C0F000931B96 /* libGambatte.a */,
+				BFFDF03623E3BB2600931B96 /* libSnes9x.a */,
+				BF69FBC823E3A8380051BEEA /* libNestopia.a */,
+				BF69FBA923E399AA0051BEEA /* CoreMotion.framework */,
+				BF69FBA723E3967B0051BEEA /* libz.tbd */,
+				BF69FBA123E375A20051BEEA /* libVBA-M.a */,
+				BF5ACE3823E23D6500BD0F20 /* libVBA-M.a */,
 				BFDF71DA22F94CDF0074D92E /* DSDeltaCore.framework */,
 				BFB359412278FD6700CFD920 /* N64DeltaCore_Video.framework */,
 				BFB359422278FD6800CFD920 /* N64DeltaCore_RSP.framework */,
@@ -689,7 +650,7 @@
 				BF9F4FCE1AAD7B87004C9500 /* DeltaCore.framework */,
 				BFC134E01AAD82460087AD7B /* SNESDeltaCore.framework */,
 				22506DA00971C4300AF90A35 /* Pods.framework */,
-				695E8C07A709B16AAD83AEC8 /* Pods_Delta.framework */,
+				DC866E433B3BA9AE18ABA1EC /* libPods-Delta.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -873,9 +834,8 @@
 				BFFA71D31AAC406100EE9DD1 /* Sources */,
 				BFFA71D41AAC406100EE9DD1 /* Frameworks */,
 				BFFA71D51AAC406100EE9DD1 /* Resources */,
-				BF9F4FCC1AAD7AEE004C9500 /* Embed Frameworks */,
-				B444B2BB31CBCEE7D86E943D /* [CP] Embed Pods Frameworks */,
 				BF6BF3281EB897F6008E83CD /* Fabric */,
+				0E0279E4F38215820BB0C9A0 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -957,26 +917,42 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		B444B2BB31CBCEE7D86E943D /* [CP] Embed Pods Frameworks */ = {
+		0E0279E4F38215820BB0C9A0 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Delta/Pods-Delta-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
-				"${BUILT_PRODUCTS_DIR}/SMCalloutView/SMCalloutView.framework",
-				"${BUILT_PRODUCTS_DIR}/SQLite.swift/SQLite.framework",
+				"${PODS_ROOT}/Target Support Files/Pods-Delta/Pods-Delta-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/DSDeltaCore/DSDeltaCore.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/DeltaCore/DeltaCore.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/GBADeltaCore/GBADeltaCore.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/GBCDeltaCore/GBCDeltaCore.bundle",
+				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
+				"${PODS_ROOT}/../External/Harmony/Harmony/Model/Core Data/Harmony.xcdatamodeld",
+				"${PODS_CONFIGURATION_BUILD_DIR}/N64DeltaCore/N64DeltaCore.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/NESDeltaCore/NESDeltaCore.bundle",
+				"${PODS_ROOT}/../External/Roxas/Roxas/RSTCollectionViewCell.xib",
+				"${PODS_ROOT}/../External/Roxas/Roxas/RSTPlaceholderView.xib",
+				"${PODS_CONFIGURATION_BUILD_DIR}/SNESDeltaCore/SNESDeltaCore.bundle",
 			);
-			name = "[CP] Embed Pods Frameworks";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SMCalloutView.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SQLite.framework",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/DSDeltaCore.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/DeltaCore.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GBADeltaCore.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GBCDeltaCore.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Harmony.momd",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/N64DeltaCore.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/NESDeltaCore.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/RSTCollectionViewCell.nib",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/RSTPlaceholderView.nib",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SNESDeltaCore.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Delta/Pods-Delta-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Delta/Pods-Delta-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		BF14D8981DE7A519002CA1BE /* mogenerator */ = {
@@ -1080,7 +1056,7 @@
 				BF1F45AD21AF57BA00EF9895 /* HarmonyMetadataKey+Keys.swift in Sources */,
 				BFD1EF402336BD8800D197CF /* UIDevice+Processor.swift in Sources */,
 				BF71CF871FE90006001F1613 /* AppIconShortcutsViewController.swift in Sources */,
-				BF1DAD5D1D9F576000E752A7 /* SystemControllerSkinsViewController.swift in Sources */,
+				BF1DAD5D1D9F576000E752A7 /* PreferredControllerSkinsViewController.swift in Sources */,
 				BFE022A01F5B57FF0052D888 /* PopoverMenuButton.swift in Sources */,
 				BF6BF31C1EB821A0008E83CD /* GamesDatabaseImportOption.swift in Sources */,
 				BFFA4C091E8A24D600D87934 /* GameTableViewCell.swift in Sources */,
@@ -1104,6 +1080,7 @@
 				BF797A2D1C2D339F00F1A000 /* UILabel+FontSize.swift in Sources */,
 				BF80E1D21F13117000847008 /* ControllerInputsViewController.swift in Sources */,
 				BF5942641E09BBB10051894B /* LoadControllerSkinImageOperation.swift in Sources */,
+				BFE56E1923EB7BE00014FECD /* UIImage+SymbolFallback.swift in Sources */,
 				BF6EE5E91F7C5F860051AD6C /* _GameControllerInputMapping.swift in Sources */,
 				BF5942871E09BC8B0051894B /* _ControllerSkin.swift in Sources */,
 				BF95E2791E4982A10030E7AD /* GamesDatabaseBrowserViewController.swift in Sources */,
@@ -1317,14 +1294,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CLANG_MODULES_AUTOLINK = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 16;
+				CURRENT_PROJECT_VERSION = 17;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "Delta/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.1.1;
+				MARKETING_VERSION = 1.1.2;
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" -DDEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.rileytestut.Delta;
 				PROVISIONING_PROFILE = "";
@@ -1342,14 +1320,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CLANG_MODULES_AUTOLINK = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 16;
+				CURRENT_PROJECT_VERSION = 17;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "Delta/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.1.1;
+				MARKETING_VERSION = 1.1.2;
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" -DIMPACTOR";
 				PRODUCT_BUNDLE_IDENTIFIER = com.rileytestut.Delta;
 				PROVISIONING_PROFILE = "";
@@ -1396,12 +1375,13 @@
 		BF4828811F9027B600028B97 /* Delta.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				BFE4275223EDF75300E6B417 /* Delta 5.xcdatamodel */,
 				BF0758DE2202827C005110F2 /* Delta 4.xcdatamodel */,
 				BF5645092202381000A8EA26 /* Delta 3.xcdatamodel */,
 				BF4828821F9027B600028B97 /* Delta 2.xcdatamodel */,
 				BF4828831F9027B600028B97 /* Delta.xcdatamodel */,
 			);
-			currentVersion = BF0758DE2202827C005110F2 /* Delta 4.xcdatamodel */;
+			currentVersion = BFE4275223EDF75300E6B417 /* Delta 5.xcdatamodel */;
 			path = Delta.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

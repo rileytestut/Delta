@@ -17,8 +17,7 @@ extension Action
         case destructive
         case selected
         
-        var alertActionStyle: UIAlertAction.Style
-        {
+        var alertActionStyle: UIAlertAction.Style {
             switch self
             {
             case .default, .selected: return .default
@@ -27,8 +26,7 @@ extension Action
             }
         }
         
-        var previewActionStyle: UIPreviewAction.Style?
-        {
+        var previewActionStyle: UIPreviewAction.Style? {
             switch self
             {
             case .default: return .default
@@ -40,11 +38,40 @@ extension Action
     }
 }
 
+@available(iOS 13, *)
+extension Action.Style
+{
+    var menuAttributes: UIMenuElement.Attributes {
+        switch self
+        {
+        case .default, .cancel, .selected: return []
+        case .destructive: return  .destructive
+        }
+    }
+    
+    var menuState: UIMenuElement.State {
+        switch self
+        {
+        case .default, .cancel, .destructive: return .off
+        case .selected: return .on
+        }
+    }
+}
+
 struct Action
 {
-    let title: String
-    let style: Style
-    let action: ((Action) -> Void)?
+    var title: String
+    var style: Style
+    var image: UIImage? = nil
+    var action: ((Action) -> Void)?
+    
+    init(title: String, style: Style = .default, image: UIImage? = nil, action: ((Action) -> Void)? = nil)
+    {
+        self.title = title
+        self.style = style
+        self.image = image
+        self.action = action
+    }
 }
 
 extension UIAlertAction
@@ -82,6 +109,19 @@ extension UIAlertController
     }
 }
 
+@available(iOS 13.0, *)
+extension UIAction
+{
+    convenience init?(_ action: Action)
+    {
+        guard action.style != .cancel else { return nil }
+        
+        self.init(title: action.title, image: action.image, attributes: action.style.menuAttributes, state: action.style.menuState) { _ in
+            action.action?(action)
+        }
+    }
+}
+
 extension RangeReplaceableCollection where Iterator.Element == Action
 {
     var alertActions: [UIAlertAction] {
@@ -91,6 +131,12 @@ extension RangeReplaceableCollection where Iterator.Element == Action
     
     var previewActions: [UIPreviewAction] {
         let actions = self.compactMap { UIPreviewAction($0) }
+        return actions
+    }
+    
+    @available(iOS 13.0, *)
+    var menuActions: [UIAction] {
+        let actions = self.compactMap { UIAction($0) }
         return actions
     }
 }

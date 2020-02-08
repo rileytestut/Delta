@@ -12,8 +12,16 @@ import DeltaCore
 
 import Roxas
 
+protocol ControllerSkinsViewControllerDelegate: AnyObject
+{
+    func controllerSkinsViewController(_ controllerSkinsViewController: ControllerSkinsViewController, didChooseControllerSkin controllerSkin: ControllerSkin)
+    func controllerSkinsViewControllerDidResetControllerSkin(_ controllerSkinsViewController: ControllerSkinsViewController)
+}
+
 class ControllerSkinsViewController: UITableViewController
 {
+    weak var delegate: ControllerSkinsViewControllerDelegate?
+    
     var system: System! {
         didSet {
             self.updateDataSource()
@@ -25,6 +33,8 @@ class ControllerSkinsViewController: UITableViewController
             self.updateDataSource()
         }
     }
+    
+    var isResetButtonVisible: Bool = true
     
     private let dataSource: RSTFetchedResultsTableViewPrefetchingDataSource<ControllerSkin, UIImage>
     
@@ -46,6 +56,11 @@ extension ControllerSkinsViewController
         
         self.tableView.dataSource = self.dataSource
         self.tableView.prefetchDataSource = self.dataSource
+        
+        if !self.isResetButtonVisible
+        {
+            self.navigationItem.rightBarButtonItem = nil
+        }
     }
 
     override func didReceiveMemoryWarning()
@@ -114,6 +129,16 @@ private extension ControllerSkinsViewController
         
         self.dataSource.fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DatabaseManager.shared.viewContext, sectionNameKeyPath: #keyPath(ControllerSkin.name), cacheName: nil)
     }
+    
+    @IBAction func resetControllerSkin(_ sender: UIBarButtonItem)
+    {
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alertController.addAction(.cancel)
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Reset Controller Skin to Default", comment: ""), style: .destructive, handler: { (action) in
+            self.delegate?.controllerSkinsViewControllerDidResetControllerSkin(self)
+        }))
+        self.present(alertController, animated: true, completion: nil)
+    }
 }
 
 extension ControllerSkinsViewController
@@ -155,9 +180,7 @@ extension ControllerSkinsViewController
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
     {
         let controllerSkin = self.dataSource.item(at: indexPath)
-        Settings.setPreferredControllerSkin(controllerSkin, for: self.system, traits: self.traits)
-        
-        _ = self.navigationController?.popViewController(animated: true)
+        self.delegate?.controllerSkinsViewController(self, didChooseControllerSkin: controllerSkin)
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat

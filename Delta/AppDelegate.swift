@@ -9,7 +9,7 @@
 import UIKit
 
 import DeltaCore
-import Harmony_Dropbox
+import Harmony
 
 import Fabric
 import Crashlytics
