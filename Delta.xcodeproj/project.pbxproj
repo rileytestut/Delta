@@ -133,6 +133,7 @@
 		BFE593CA21F3F8B7003412A6 /* GameSave.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE593C921F3F8B7003412A6 /* GameSave.swift */; };
 		BFE593CC21F3F8C2003412A6 /* _GameSave.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE593CB21F3F8C2003412A6 /* _GameSave.swift */; };
 		BFEE507D23E7612300416151 /* liblibDeSmuME.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BF76BDE823E649150073702C /* liblibDeSmuME.a */; };
+		BFEE943D23F2180200CDA07D /* Delta4ToDelta5.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = BFEE943C23F2180200CDA07D /* Delta4ToDelta5.xcmappingmodel */; };
 		BFEF24F31F7DD4FD00454C62 /* SaveStateMigrationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEF24F21F7DD4FB00454C62 /* SaveStateMigrationPolicy.swift */; };
 		BFF6452E1F7CC5060056533E /* GameControllerInputMappingTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6B82A41F7CC2A300042BFB /* GameControllerInputMappingTransformer.swift */; };
 		BFFA4C091E8A24D600D87934 /* GameTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFA4C081E8A24D600D87934 /* GameTableViewCell.swift */; };
@@ -292,6 +293,7 @@
 		BFE593C921F3F8B7003412A6 /* GameSave.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameSave.swift; sourceTree = "<group>"; };
 		BFE593CB21F3F8C2003412A6 /* _GameSave.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = _GameSave.swift; sourceTree = "<group>"; };
 		BFEC732C1AAECC4A00650035 /* Roxas.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Roxas.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BFEE943C23F2180200CDA07D /* Delta4ToDelta5.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = Delta4ToDelta5.xcmappingmodel; sourceTree = "<group>"; };
 		BFEF24F21F7DD4FB00454C62 /* SaveStateMigrationPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveStateMigrationPolicy.swift; sourceTree = "<group>"; };
 		BFF0742B1E9DC17500ACDF4A /* GBCDeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = GBCDeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFFA4C081E8A24D600D87934 /* GameTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameTableViewCell.swift; sourceTree = "<group>"; };
@@ -715,6 +717,7 @@
 			isa = PBXGroup;
 			children = (
 				BF1020E21F95B05B00313182 /* DeltaToDelta2.xcmappingmodel */,
+				BFEE943C23F2180200CDA07D /* Delta4ToDelta5.xcmappingmodel */,
 				BF3D6C502202865F0083E05A /* Delta2ToDelta3.xcmappingmodel */,
 				BF3D6C52220286750083E05A /* Delta3ToDelta4.xcmappingmodel */,
 				BFEF24F11F7DD4BE00454C62 /* Policies */,
@@ -1035,6 +1038,7 @@
 				BF6424831F5B8F3F00D6AB44 /* ListMenuViewController.swift in Sources */,
 				BF1020E31F95B05B00313182 /* DeltaToDelta2.xcmappingmodel in Sources */,
 				BF6BF3131EB7E47F008E83CD /* ImportOption.swift in Sources */,
+				BFEE943D23F2180200CDA07D /* Delta4ToDelta5.xcmappingmodel in Sources */,
 				BF31878B1D489AAA00BD020D /* CheatValidator.swift in Sources */,
 				BFFC46201D59823500AF2CC6 /* InitialGamesStoryboardSegue.swift in Sources */,
 				BF15AF841F54B43B009B6AAB /* ActionInput.swift in Sources */,
