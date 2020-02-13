@@ -22,6 +22,69 @@
 
 /* Begin PBXBuildFile section */
 		1FA4ABA79AB72914FE414A61 /* libPods-Delta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DC866E433B3BA9AE18ABA1EC /* libPods-Delta.a */; };
+		8063F95123F5CFB500741107 /* AppIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8063F90223F5CFB500741107 /* AppIcon.swift */; };
+		8063F95223F5CFB500741107 /* red4ios-180.png in Resources */ = {isa = PBXBuildFile; fileRef = 8063F90523F5CFB500741107 /* red4ios-180.png */; };
+		8063F95323F5CFB500741107 /* red4ios-120.png in Resources */ = {isa = PBXBuildFile; fileRef = 8063F90623F5CFB500741107 /* red4ios-120.png */; };
+		8063F95423F5CFB500741107 /* red4ios-1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 8063F90723F5CFB500741107 /* red4ios-1024.png */; };
+		8063F95523F5CFB500741107 /* red4ios-60.png in Resources */ = {isa = PBXBuildFile; fileRef = 8063F90823F5CFB500741107 /* red4ios-60.png */; };
+		8063F95623F5CFB500741107 /* nes-180.png in Resources */ = {isa = PBXBuildFile; fileRef = 8063F90A23F5CFB500741107 /* nes-180.png */; };
+		8063F95723F5CFB500741107 /* nes-120.png in Resources */ = {isa = PBXBuildFile; fileRef = 8063F90B23F5CFB500741107 /* nes-120.png */; };
+		8063F95823F5CFB500741107 /* nes-1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 8063F90C23F5CFB500741107 /* nes-1024.png */; };
+		8063F95923F5CFB500741107 /* nes-60.png in Resources */ = {isa = PBXBuildFile; fileRef = 8063F90D23F5CFB500741107 /* nes-60.png */; };
+		8063F95A23F5CFB500741107 /* green4ios-120.png in Resources */ = {isa = PBXBuildFile; fileRef = 8063F90F23F5CFB500741107 /* green4ios-120.png */; };
+		8063F95B23F5CFB500741107 /* green4ios-180.png in Resources */ = {isa = PBXBuildFile; fileRef = 8063F91023F5CFB500741107 /* green4ios-180.png */; };
+		8063F95C23F5CFB500741107 /* green4ios-60.png in Resources */ = {isa = PBXBuildFile; fileRef = 8063F91123F5CFB500741107 /* green4ios-60.png */; };
+		8063F95D23F5CFB500741107 /* green4ios-1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 8063F91223F5CFB500741107 /* green4ios-1024.png */; };
+		8063F95E23F5CFB500741107 /* snes-60.png in Resources */ = {isa = PBXBuildFile; fileRef = 8063F91423F5CFB500741107 /* snes-60.png */; };
+		8063F95F23F5CFB500741107 /* snes-1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 8063F91523F5CFB500741107 /* snes-1024.png */; };
+		8063F96023F5CFB500741107 /* snes-120.png in Resources */ = {isa = PBXBuildFile; fileRef = 8063F91623F5CFB500741107 /* snes-120.png */; };
+		8063F96123F5CFB500741107 /* snes-180.png in Resources */ = {isa = PBXBuildFile; fileRef = 8063F91723F5CFB500741107 /* snes-180.png */; };
+		8063F96223F5CFB500741107 /* delta4ios-1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 8063F91923F5CFB500741107 /* delta4ios-1024.png */; };
+		8063F96323F5CFB500741107 /* delta4ios-60.png in Resources */ = {isa = PBXBuildFile; fileRef = 8063F91A23F5CFB500741107 /* delta4ios-60.png */; };
+		8063F96423F5CFB500741107 /* delta4ios-120.png in Resources */ = {isa = PBXBuildFile; fileRef = 8063F91B23F5CFB500741107 /* delta4ios-120.png */; };
+		8063F96523F5CFB500741107 /* delta4ios-180.png in Resources */ = {isa = PBXBuildFile; fileRef = 8063F91C23F5CFB500741107 /* delta4ios-180.png */; };
+		8063F96623F5CFB500741107 /* orange4ios-1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 8063F91E23F5CFB500741107 /* orange4ios-1024.png */; };
+		8063F96723F5CFB500741107 /* orange4ios-120.png in Resources */ = {isa = PBXBuildFile; fileRef = 8063F91F23F5CFB500741107 /* orange4ios-120.png */; };
+		8063F96823F5CFB500741107 /* orange4ios-180.png in Resources */ = {isa = PBXBuildFile; fileRef = 8063F92023F5CFB500741107 /* orange4ios-180.png */; };
+		8063F96923F5CFB500741107 /* orange4ios-60.png in Resources */ = {isa = PBXBuildFile; fileRef = 8063F92123F5CFB500741107 /* orange4ios-60.png */; };
+		8063F96A23F5CFB500741107 /* delta64_dark-60.png in Resources */ = {isa = PBXBuildFile; fileRef = 8063F92323F5CFB500741107 /* delta64_dark-60.png */; };
+		8063F96B23F5CFB500741107 /* delta64_dark-120.png in Resources */ = {isa = PBXBuildFile; fileRef = 8063F92423F5CFB500741107 /* delta64_dark-120.png */; };
+		8063F96C23F5CFB500741107 /* delta64_dark-180.png in Resources */ = {isa = PBXBuildFile; fileRef = 8063F92523F5CFB500741107 /* delta64_dark-180.png */; };
+		8063F96D23F5CFB500741107 /* delta64_dark-1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 8063F92623F5CFB500741107 /* delta64_dark-1024.png */; };
+		8063F96E23F5CFB500741107 /* n64-180.png in Resources */ = {isa = PBXBuildFile; fileRef = 8063F92823F5CFB500741107 /* n64-180.png */; };
+		8063F96F23F5CFB500741107 /* n64-60.png in Resources */ = {isa = PBXBuildFile; fileRef = 8063F92923F5CFB500741107 /* n64-60.png */; };
+		8063F97023F5CFB500741107 /* n64-120.png in Resources */ = {isa = PBXBuildFile; fileRef = 8063F92A23F5CFB500741107 /* n64-120.png */; };
+		8063F97123F5CFB500741107 /* n64-1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 8063F92B23F5CFB500741107 /* n64-1024.png */; };
+		8063F97223F5CFB500741107 /* nintendo-180.png in Resources */ = {isa = PBXBuildFile; fileRef = 8063F92D23F5CFB500741107 /* nintendo-180.png */; };
+		8063F97323F5CFB500741107 /* nintendo-1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 8063F92E23F5CFB500741107 /* nintendo-1024.png */; };
+		8063F97423F5CFB500741107 /* nintendo-120.png in Resources */ = {isa = PBXBuildFile; fileRef = 8063F92F23F5CFB500741107 /* nintendo-120.png */; };
+		8063F97523F5CFB500741107 /* nintendo-60.png in Resources */ = {isa = PBXBuildFile; fileRef = 8063F93023F5CFB500741107 /* nintendo-60.png */; };
+		8063F97623F5CFB500741107 /* blue4ios-60.png in Resources */ = {isa = PBXBuildFile; fileRef = 8063F93223F5CFB500741107 /* blue4ios-60.png */; };
+		8063F97723F5CFB500741107 /* blue4ios-1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 8063F93323F5CFB500741107 /* blue4ios-1024.png */; };
+		8063F97823F5CFB500741107 /* blue4ios-180.png in Resources */ = {isa = PBXBuildFile; fileRef = 8063F93423F5CFB500741107 /* blue4ios-180.png */; };
+		8063F97923F5CFB500741107 /* blue4ios-120.png in Resources */ = {isa = PBXBuildFile; fileRef = 8063F93523F5CFB500741107 /* blue4ios-120.png */; };
+		8063F97A23F5CFB500741107 /* delta_red-60.png in Resources */ = {isa = PBXBuildFile; fileRef = 8063F93723F5CFB500741107 /* delta_red-60.png */; };
+		8063F97B23F5CFB500741107 /* delta_red-1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 8063F93823F5CFB500741107 /* delta_red-1024.png */; };
+		8063F97C23F5CFB500741107 /* delta_red-120.png in Resources */ = {isa = PBXBuildFile; fileRef = 8063F93923F5CFB500741107 /* delta_red-120.png */; };
+		8063F97D23F5CFB500741107 /* delta_red-180.png in Resources */ = {isa = PBXBuildFile; fileRef = 8063F93A23F5CFB500741107 /* delta_red-180.png */; };
+		8063F97E23F5CFB500741107 /* delta_blue-180.png in Resources */ = {isa = PBXBuildFile; fileRef = 8063F93C23F5CFB500741107 /* delta_blue-180.png */; };
+		8063F97F23F5CFB500741107 /* delta_blue-1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 8063F93D23F5CFB500741107 /* delta_blue-1024.png */; };
+		8063F98023F5CFB500741107 /* delta_blue-120.png in Resources */ = {isa = PBXBuildFile; fileRef = 8063F93E23F5CFB500741107 /* delta_blue-120.png */; };
+		8063F98123F5CFB500741107 /* delta_blue-60.png in Resources */ = {isa = PBXBuildFile; fileRef = 8063F93F23F5CFB500741107 /* delta_blue-60.png */; };
+		8063F98223F5CFB600741107 /* delta_orange-180.png in Resources */ = {isa = PBXBuildFile; fileRef = 8063F94123F5CFB500741107 /* delta_orange-180.png */; };
+		8063F98323F5CFB600741107 /* delta_orange-120.png in Resources */ = {isa = PBXBuildFile; fileRef = 8063F94223F5CFB500741107 /* delta_orange-120.png */; };
+		8063F98423F5CFB600741107 /* delta_orange-1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 8063F94323F5CFB500741107 /* delta_orange-1024.png */; };
+		8063F98523F5CFB600741107 /* delta_orange-60.png in Resources */ = {isa = PBXBuildFile; fileRef = 8063F94423F5CFB500741107 /* delta_orange-60.png */; };
+		8063F98623F5CFB600741107 /* delta_green-1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 8063F94623F5CFB500741107 /* delta_green-1024.png */; };
+		8063F98723F5CFB600741107 /* delta_green-120.png in Resources */ = {isa = PBXBuildFile; fileRef = 8063F94723F5CFB500741107 /* delta_green-120.png */; };
+		8063F98823F5CFB600741107 /* delta_green-180.png in Resources */ = {isa = PBXBuildFile; fileRef = 8063F94823F5CFB500741107 /* delta_green-180.png */; };
+		8063F98923F5CFB600741107 /* delta_green-60.png in Resources */ = {isa = PBXBuildFile; fileRef = 8063F94923F5CFB500741107 /* delta_green-60.png */; };
+		8063F98A23F5CFB600741107 /* delta64-1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 8063F94B23F5CFB500741107 /* delta64-1024.png */; };
+		8063F98B23F5CFB600741107 /* delta64-120.png in Resources */ = {isa = PBXBuildFile; fileRef = 8063F94C23F5CFB500741107 /* delta64-120.png */; };
+		8063F98C23F5CFB600741107 /* delta64-180.png in Resources */ = {isa = PBXBuildFile; fileRef = 8063F94D23F5CFB500741107 /* delta64-180.png */; };
+		8063F98D23F5CFB600741107 /* delta64-60.png in Resources */ = {isa = PBXBuildFile; fileRef = 8063F94E23F5CFB500741107 /* delta64-60.png */; };
+		8063F98E23F5CFB600741107 /* AppIconCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8063F94F23F5CFB500741107 /* AppIconCell.swift */; };
+		8063F98F23F5CFB600741107 /* AppIconsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8063F95023F5CFB500741107 /* AppIconsViewController.swift */; };
 		BF02D5DA1DDEBB3000A5E131 /* openvgdb.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = BF02D5D91DDEBB3000A5E131 /* openvgdb.sqlite */; };
 		BF04E6FF1DB8625C000F35D3 /* ControllerSkinsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF04E6FE1DB8625C000F35D3 /* ControllerSkinsViewController.swift */; };
 		BF1020E31F95B05B00313182 /* DeltaToDelta2.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = BF1020E21F95B05B00313182 /* DeltaToDelta2.xcmappingmodel */; };
@@ -153,6 +216,69 @@
 
 /* Begin PBXFileReference section */
 		22506DA00971C4300AF90A35 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8063F90223F5CFB500741107 /* AppIcon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppIcon.swift; sourceTree = "<group>"; };
+		8063F90523F5CFB500741107 /* red4ios-180.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "red4ios-180.png"; sourceTree = "<group>"; };
+		8063F90623F5CFB500741107 /* red4ios-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "red4ios-120.png"; sourceTree = "<group>"; };
+		8063F90723F5CFB500741107 /* red4ios-1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "red4ios-1024.png"; sourceTree = "<group>"; };
+		8063F90823F5CFB500741107 /* red4ios-60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "red4ios-60.png"; sourceTree = "<group>"; };
+		8063F90A23F5CFB500741107 /* nes-180.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nes-180.png"; sourceTree = "<group>"; };
+		8063F90B23F5CFB500741107 /* nes-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nes-120.png"; sourceTree = "<group>"; };
+		8063F90C23F5CFB500741107 /* nes-1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nes-1024.png"; sourceTree = "<group>"; };
+		8063F90D23F5CFB500741107 /* nes-60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nes-60.png"; sourceTree = "<group>"; };
+		8063F90F23F5CFB500741107 /* green4ios-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "green4ios-120.png"; sourceTree = "<group>"; };
+		8063F91023F5CFB500741107 /* green4ios-180.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "green4ios-180.png"; sourceTree = "<group>"; };
+		8063F91123F5CFB500741107 /* green4ios-60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "green4ios-60.png"; sourceTree = "<group>"; };
+		8063F91223F5CFB500741107 /* green4ios-1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "green4ios-1024.png"; sourceTree = "<group>"; };
+		8063F91423F5CFB500741107 /* snes-60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "snes-60.png"; sourceTree = "<group>"; };
+		8063F91523F5CFB500741107 /* snes-1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "snes-1024.png"; sourceTree = "<group>"; };
+		8063F91623F5CFB500741107 /* snes-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "snes-120.png"; sourceTree = "<group>"; };
+		8063F91723F5CFB500741107 /* snes-180.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "snes-180.png"; sourceTree = "<group>"; };
+		8063F91923F5CFB500741107 /* delta4ios-1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delta4ios-1024.png"; sourceTree = "<group>"; };
+		8063F91A23F5CFB500741107 /* delta4ios-60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delta4ios-60.png"; sourceTree = "<group>"; };
+		8063F91B23F5CFB500741107 /* delta4ios-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delta4ios-120.png"; sourceTree = "<group>"; };
+		8063F91C23F5CFB500741107 /* delta4ios-180.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delta4ios-180.png"; sourceTree = "<group>"; };
+		8063F91E23F5CFB500741107 /* orange4ios-1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "orange4ios-1024.png"; sourceTree = "<group>"; };
+		8063F91F23F5CFB500741107 /* orange4ios-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "orange4ios-120.png"; sourceTree = "<group>"; };
+		8063F92023F5CFB500741107 /* orange4ios-180.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "orange4ios-180.png"; sourceTree = "<group>"; };
+		8063F92123F5CFB500741107 /* orange4ios-60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "orange4ios-60.png"; sourceTree = "<group>"; };
+		8063F92323F5CFB500741107 /* delta64_dark-60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delta64_dark-60.png"; sourceTree = "<group>"; };
+		8063F92423F5CFB500741107 /* delta64_dark-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delta64_dark-120.png"; sourceTree = "<group>"; };
+		8063F92523F5CFB500741107 /* delta64_dark-180.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delta64_dark-180.png"; sourceTree = "<group>"; };
+		8063F92623F5CFB500741107 /* delta64_dark-1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delta64_dark-1024.png"; sourceTree = "<group>"; };
+		8063F92823F5CFB500741107 /* n64-180.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "n64-180.png"; sourceTree = "<group>"; };
+		8063F92923F5CFB500741107 /* n64-60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "n64-60.png"; sourceTree = "<group>"; };
+		8063F92A23F5CFB500741107 /* n64-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "n64-120.png"; sourceTree = "<group>"; };
+		8063F92B23F5CFB500741107 /* n64-1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "n64-1024.png"; sourceTree = "<group>"; };
+		8063F92D23F5CFB500741107 /* nintendo-180.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nintendo-180.png"; sourceTree = "<group>"; };
+		8063F92E23F5CFB500741107 /* nintendo-1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nintendo-1024.png"; sourceTree = "<group>"; };
+		8063F92F23F5CFB500741107 /* nintendo-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nintendo-120.png"; sourceTree = "<group>"; };
+		8063F93023F5CFB500741107 /* nintendo-60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nintendo-60.png"; sourceTree = "<group>"; };
+		8063F93223F5CFB500741107 /* blue4ios-60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue4ios-60.png"; sourceTree = "<group>"; };
+		8063F93323F5CFB500741107 /* blue4ios-1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue4ios-1024.png"; sourceTree = "<group>"; };
+		8063F93423F5CFB500741107 /* blue4ios-180.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue4ios-180.png"; sourceTree = "<group>"; };
+		8063F93523F5CFB500741107 /* blue4ios-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue4ios-120.png"; sourceTree = "<group>"; };
+		8063F93723F5CFB500741107 /* delta_red-60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delta_red-60.png"; sourceTree = "<group>"; };
+		8063F93823F5CFB500741107 /* delta_red-1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delta_red-1024.png"; sourceTree = "<group>"; };
+		8063F93923F5CFB500741107 /* delta_red-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delta_red-120.png"; sourceTree = "<group>"; };
+		8063F93A23F5CFB500741107 /* delta_red-180.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delta_red-180.png"; sourceTree = "<group>"; };
+		8063F93C23F5CFB500741107 /* delta_blue-180.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delta_blue-180.png"; sourceTree = "<group>"; };
+		8063F93D23F5CFB500741107 /* delta_blue-1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delta_blue-1024.png"; sourceTree = "<group>"; };
+		8063F93E23F5CFB500741107 /* delta_blue-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delta_blue-120.png"; sourceTree = "<group>"; };
+		8063F93F23F5CFB500741107 /* delta_blue-60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delta_blue-60.png"; sourceTree = "<group>"; };
+		8063F94123F5CFB500741107 /* delta_orange-180.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delta_orange-180.png"; sourceTree = "<group>"; };
+		8063F94223F5CFB500741107 /* delta_orange-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delta_orange-120.png"; sourceTree = "<group>"; };
+		8063F94323F5CFB500741107 /* delta_orange-1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delta_orange-1024.png"; sourceTree = "<group>"; };
+		8063F94423F5CFB500741107 /* delta_orange-60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delta_orange-60.png"; sourceTree = "<group>"; };
+		8063F94623F5CFB500741107 /* delta_green-1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delta_green-1024.png"; sourceTree = "<group>"; };
+		8063F94723F5CFB500741107 /* delta_green-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delta_green-120.png"; sourceTree = "<group>"; };
+		8063F94823F5CFB500741107 /* delta_green-180.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delta_green-180.png"; sourceTree = "<group>"; };
+		8063F94923F5CFB500741107 /* delta_green-60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delta_green-60.png"; sourceTree = "<group>"; };
+		8063F94B23F5CFB500741107 /* delta64-1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delta64-1024.png"; sourceTree = "<group>"; };
+		8063F94C23F5CFB500741107 /* delta64-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delta64-120.png"; sourceTree = "<group>"; };
+		8063F94D23F5CFB500741107 /* delta64-180.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delta64-180.png"; sourceTree = "<group>"; };
+		8063F94E23F5CFB500741107 /* delta64-60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delta64-60.png"; sourceTree = "<group>"; };
+		8063F94F23F5CFB500741107 /* AppIconCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppIconCell.swift; sourceTree = "<group>"; };
+		8063F95023F5CFB500741107 /* AppIconsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppIconsViewController.swift; sourceTree = "<group>"; };
 		A19FF50F55441BC2B2248241 /* Pods-Delta.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Delta.release.xcconfig"; path = "Pods/Target Support Files/Pods-Delta/Pods-Delta.release.xcconfig"; sourceTree = "<group>"; };
 		BF02D5D91DDEBB3000A5E131 /* openvgdb.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = openvgdb.sqlite; sourceTree = "<group>"; };
 		BF0418131D01E93400E85BCF /* GBADeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = GBADeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -335,6 +461,204 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8063F90123F5CFB500741107 /* App Icons */ = {
+			isa = PBXGroup;
+			children = (
+				8063F90223F5CFB500741107 /* AppIcon.swift */,
+				8063F90323F5CFB500741107 /* Alternate Icons */,
+				8063F94F23F5CFB500741107 /* AppIconCell.swift */,
+				8063F95023F5CFB500741107 /* AppIconsViewController.swift */,
+			);
+			path = "App Icons";
+			sourceTree = "<group>";
+		};
+		8063F90323F5CFB500741107 /* Alternate Icons */ = {
+			isa = PBXGroup;
+			children = (
+				8063F90423F5CFB500741107 /* red4ios */,
+				8063F90923F5CFB500741107 /* nes */,
+				8063F90E23F5CFB500741107 /* green4ios */,
+				8063F91323F5CFB500741107 /* snes */,
+				8063F91823F5CFB500741107 /* delta4ios */,
+				8063F91D23F5CFB500741107 /* orange4ios */,
+				8063F92223F5CFB500741107 /* delta64_dark */,
+				8063F92723F5CFB500741107 /* n64 */,
+				8063F92C23F5CFB500741107 /* nintendo */,
+				8063F93123F5CFB500741107 /* blue4ios */,
+				8063F93623F5CFB500741107 /* delta_red */,
+				8063F93B23F5CFB500741107 /* delta_blue */,
+				8063F94023F5CFB500741107 /* delta_orange */,
+				8063F94523F5CFB500741107 /* delta_green */,
+				8063F94A23F5CFB500741107 /* delta64 */,
+			);
+			path = "Alternate Icons";
+			sourceTree = "<group>";
+		};
+		8063F90423F5CFB500741107 /* red4ios */ = {
+			isa = PBXGroup;
+			children = (
+				8063F90523F5CFB500741107 /* red4ios-180.png */,
+				8063F90623F5CFB500741107 /* red4ios-120.png */,
+				8063F90723F5CFB500741107 /* red4ios-1024.png */,
+				8063F90823F5CFB500741107 /* red4ios-60.png */,
+			);
+			path = red4ios;
+			sourceTree = "<group>";
+		};
+		8063F90923F5CFB500741107 /* nes */ = {
+			isa = PBXGroup;
+			children = (
+				8063F90A23F5CFB500741107 /* nes-180.png */,
+				8063F90B23F5CFB500741107 /* nes-120.png */,
+				8063F90C23F5CFB500741107 /* nes-1024.png */,
+				8063F90D23F5CFB500741107 /* nes-60.png */,
+			);
+			path = nes;
+			sourceTree = "<group>";
+		};
+		8063F90E23F5CFB500741107 /* green4ios */ = {
+			isa = PBXGroup;
+			children = (
+				8063F90F23F5CFB500741107 /* green4ios-120.png */,
+				8063F91023F5CFB500741107 /* green4ios-180.png */,
+				8063F91123F5CFB500741107 /* green4ios-60.png */,
+				8063F91223F5CFB500741107 /* green4ios-1024.png */,
+			);
+			path = green4ios;
+			sourceTree = "<group>";
+		};
+		8063F91323F5CFB500741107 /* snes */ = {
+			isa = PBXGroup;
+			children = (
+				8063F91423F5CFB500741107 /* snes-60.png */,
+				8063F91523F5CFB500741107 /* snes-1024.png */,
+				8063F91623F5CFB500741107 /* snes-120.png */,
+				8063F91723F5CFB500741107 /* snes-180.png */,
+			);
+			path = snes;
+			sourceTree = "<group>";
+		};
+		8063F91823F5CFB500741107 /* delta4ios */ = {
+			isa = PBXGroup;
+			children = (
+				8063F91923F5CFB500741107 /* delta4ios-1024.png */,
+				8063F91A23F5CFB500741107 /* delta4ios-60.png */,
+				8063F91B23F5CFB500741107 /* delta4ios-120.png */,
+				8063F91C23F5CFB500741107 /* delta4ios-180.png */,
+			);
+			path = delta4ios;
+			sourceTree = "<group>";
+		};
+		8063F91D23F5CFB500741107 /* orange4ios */ = {
+			isa = PBXGroup;
+			children = (
+				8063F91E23F5CFB500741107 /* orange4ios-1024.png */,
+				8063F91F23F5CFB500741107 /* orange4ios-120.png */,
+				8063F92023F5CFB500741107 /* orange4ios-180.png */,
+				8063F92123F5CFB500741107 /* orange4ios-60.png */,
+			);
+			path = orange4ios;
+			sourceTree = "<group>";
+		};
+		8063F92223F5CFB500741107 /* delta64_dark */ = {
+			isa = PBXGroup;
+			children = (
+				8063F92323F5CFB500741107 /* delta64_dark-60.png */,
+				8063F92423F5CFB500741107 /* delta64_dark-120.png */,
+				8063F92523F5CFB500741107 /* delta64_dark-180.png */,
+				8063F92623F5CFB500741107 /* delta64_dark-1024.png */,
+			);
+			path = delta64_dark;
+			sourceTree = "<group>";
+		};
+		8063F92723F5CFB500741107 /* n64 */ = {
+			isa = PBXGroup;
+			children = (
+				8063F92823F5CFB500741107 /* n64-180.png */,
+				8063F92923F5CFB500741107 /* n64-60.png */,
+				8063F92A23F5CFB500741107 /* n64-120.png */,
+				8063F92B23F5CFB500741107 /* n64-1024.png */,
+			);
+			path = n64;
+			sourceTree = "<group>";
+		};
+		8063F92C23F5CFB500741107 /* nintendo */ = {
+			isa = PBXGroup;
+			children = (
+				8063F92D23F5CFB500741107 /* nintendo-180.png */,
+				8063F92E23F5CFB500741107 /* nintendo-1024.png */,
+				8063F92F23F5CFB500741107 /* nintendo-120.png */,
+				8063F93023F5CFB500741107 /* nintendo-60.png */,
+			);
+			path = nintendo;
+			sourceTree = "<group>";
+		};
+		8063F93123F5CFB500741107 /* blue4ios */ = {
+			isa = PBXGroup;
+			children = (
+				8063F93223F5CFB500741107 /* blue4ios-60.png */,
+				8063F93323F5CFB500741107 /* blue4ios-1024.png */,
+				8063F93423F5CFB500741107 /* blue4ios-180.png */,
+				8063F93523F5CFB500741107 /* blue4ios-120.png */,
+			);
+			path = blue4ios;
+			sourceTree = "<group>";
+		};
+		8063F93623F5CFB500741107 /* delta_red */ = {
+			isa = PBXGroup;
+			children = (
+				8063F93723F5CFB500741107 /* delta_red-60.png */,
+				8063F93823F5CFB500741107 /* delta_red-1024.png */,
+				8063F93923F5CFB500741107 /* delta_red-120.png */,
+				8063F93A23F5CFB500741107 /* delta_red-180.png */,
+			);
+			path = delta_red;
+			sourceTree = "<group>";
+		};
+		8063F93B23F5CFB500741107 /* delta_blue */ = {
+			isa = PBXGroup;
+			children = (
+				8063F93C23F5CFB500741107 /* delta_blue-180.png */,
+				8063F93D23F5CFB500741107 /* delta_blue-1024.png */,
+				8063F93E23F5CFB500741107 /* delta_blue-120.png */,
+				8063F93F23F5CFB500741107 /* delta_blue-60.png */,
+			);
+			path = delta_blue;
+			sourceTree = "<group>";
+		};
+		8063F94023F5CFB500741107 /* delta_orange */ = {
+			isa = PBXGroup;
+			children = (
+				8063F94123F5CFB500741107 /* delta_orange-180.png */,
+				8063F94223F5CFB500741107 /* delta_orange-120.png */,
+				8063F94323F5CFB500741107 /* delta_orange-1024.png */,
+				8063F94423F5CFB500741107 /* delta_orange-60.png */,
+			);
+			path = delta_orange;
+			sourceTree = "<group>";
+		};
+		8063F94523F5CFB500741107 /* delta_green */ = {
+			isa = PBXGroup;
+			children = (
+				8063F94623F5CFB500741107 /* delta_green-1024.png */,
+				8063F94723F5CFB500741107 /* delta_green-120.png */,
+				8063F94823F5CFB500741107 /* delta_green-180.png */,
+				8063F94923F5CFB500741107 /* delta_green-60.png */,
+			);
+			path = delta_green;
+			sourceTree = "<group>";
+		};
+		8063F94A23F5CFB500741107 /* delta64 */ = {
+			isa = PBXGroup;
+			children = (
+				8063F94B23F5CFB500741107 /* delta64-1024.png */,
+				8063F94C23F5CFB500741107 /* delta64-120.png */,
+				8063F94D23F5CFB500741107 /* delta64-180.png */,
+				8063F94E23F5CFB500741107 /* delta64-60.png */,
+			);
+			path = delta64;
+			sourceTree = "<group>";
+		};
 		BF090CEE1B490C1A00DCAB45 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -664,6 +988,7 @@
 				BF5E7F451B9A652600AE44F8 /* Settings.storyboard */,
 				BF5E7F431B9A650B00AE44F8 /* SettingsViewController.swift */,
 				BFB3645723245A6000CD0EB1 /* LicensesViewController.swift */,
+				8063F90123F5CFB500741107 /* App Icons */,
 				BF71CF851FE8FFF1001F1613 /* App Icon Shortcuts */,
 				BF11734E1DA32CEC00047DF8 /* Controllers */,
 				BF1DAD5B1D9F574900E752A7 /* Controller Skins */,
@@ -867,7 +1192,7 @@
 					};
 					BFFA71D61AAC406100EE9DD1 = {
 						CreatedOnToolsVersion = 6.3;
-						DevelopmentTeam = 6XVY5G3U44;
+						DevelopmentTeam = 4GG4434UG2;
 						LastSwiftMigration = 1020;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
@@ -903,17 +1228,77 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8063F95923F5CFB500741107 /* nes-60.png in Resources */,
+				8063F98423F5CFB600741107 /* delta_orange-1024.png in Resources */,
 				BFFA71E21AAC406100EE9DD1 /* Main.storyboard in Resources */,
+				8063F98723F5CFB600741107 /* delta_green-120.png in Resources */,
+				8063F98B23F5CFB600741107 /* delta64-120.png in Resources */,
+				8063F97A23F5CFB500741107 /* delta_red-60.png in Resources */,
+				8063F95E23F5CFB500741107 /* snes-60.png in Resources */,
+				8063F97323F5CFB500741107 /* nintendo-1024.png in Resources */,
+				8063F95C23F5CFB500741107 /* green4ios-60.png in Resources */,
+				8063F96E23F5CFB500741107 /* n64-180.png in Resources */,
+				8063F96C23F5CFB500741107 /* delta64_dark-180.png in Resources */,
+				8063F98823F5CFB600741107 /* delta_green-180.png in Resources */,
 				BF6BF3211EB82362008E83CD /* GamesDatabase.storyboard in Resources */,
+				8063F98523F5CFB600741107 /* delta_orange-60.png in Resources */,
+				8063F97D23F5CFB500741107 /* delta_red-180.png in Resources */,
+				8063F95D23F5CFB500741107 /* green4ios-1024.png in Resources */,
+				8063F97123F5CFB500741107 /* n64-1024.png in Resources */,
 				BFAB9F88219A4B670080EC7D /* GoogleService-Info.plist in Resources */,
+				8063F95A23F5CFB500741107 /* green4ios-120.png in Resources */,
+				8063F95F23F5CFB500741107 /* snes-1024.png in Resources */,
 				BF3540001C5DA3C500C1184C /* PausePresentationControllerContentView.xib in Resources */,
+				8063F96323F5CFB500741107 /* delta4ios-60.png in Resources */,
+				8063F95B23F5CFB500741107 /* green4ios-180.png in Resources */,
+				8063F96F23F5CFB500741107 /* n64-60.png in Resources */,
+				8063F98D23F5CFB600741107 /* delta64-60.png in Resources */,
+				8063F98323F5CFB600741107 /* delta_orange-120.png in Resources */,
+				8063F97923F5CFB500741107 /* blue4ios-120.png in Resources */,
+				8063F96823F5CFB500741107 /* orange4ios-180.png in Resources */,
+				8063F96923F5CFB500741107 /* orange4ios-60.png in Resources */,
+				8063F96523F5CFB500741107 /* delta4ios-180.png in Resources */,
+				8063F97423F5CFB500741107 /* nintendo-120.png in Resources */,
+				8063F97023F5CFB500741107 /* n64-120.png in Resources */,
 				BF5E7F461B9A652600AE44F8 /* Settings.storyboard in Resources */,
+				8063F98023F5CFB500741107 /* delta_blue-120.png in Resources */,
+				8063F96723F5CFB500741107 /* orange4ios-120.png in Resources */,
+				8063F95823F5CFB500741107 /* nes-1024.png in Resources */,
+				8063F96D23F5CFB500741107 /* delta64_dark-1024.png in Resources */,
+				8063F98C23F5CFB600741107 /* delta64-180.png in Resources */,
+				8063F96B23F5CFB500741107 /* delta64_dark-120.png in Resources */,
+				8063F97B23F5CFB500741107 /* delta_red-1024.png in Resources */,
+				8063F95423F5CFB500741107 /* red4ios-1024.png in Resources */,
+				8063F97823F5CFB500741107 /* blue4ios-180.png in Resources */,
+				8063F98223F5CFB600741107 /* delta_orange-180.png in Resources */,
+				8063F97623F5CFB500741107 /* blue4ios-60.png in Resources */,
+				8063F96223F5CFB500741107 /* delta4ios-1024.png in Resources */,
+				8063F98923F5CFB600741107 /* delta_green-60.png in Resources */,
 				BF02D5DA1DDEBB3000A5E131 /* openvgdb.sqlite in Resources */,
+				8063F97E23F5CFB500741107 /* delta_blue-180.png in Resources */,
 				BF71CF8A1FE904B1001F1613 /* GameTableViewCell.xib in Resources */,
+				8063F96A23F5CFB500741107 /* delta64_dark-60.png in Resources */,
 				BFFC46461D59861000AF2CC6 /* LaunchScreen.storyboard in Resources */,
+				8063F98123F5CFB500741107 /* delta_blue-60.png in Resources */,
+				8063F97523F5CFB500741107 /* nintendo-60.png in Resources */,
+				8063F95523F5CFB500741107 /* red4ios-60.png in Resources */,
+				8063F97223F5CFB500741107 /* nintendo-180.png in Resources */,
+				8063F96623F5CFB500741107 /* orange4ios-1024.png in Resources */,
+				8063F95623F5CFB500741107 /* nes-180.png in Resources */,
 				BF1F45AB21AF4B5800EF9895 /* SyncResultsViewController.storyboard in Resources */,
+				8063F96023F5CFB500741107 /* snes-120.png in Resources */,
+				8063F98623F5CFB600741107 /* delta_green-1024.png in Resources */,
+				8063F96123F5CFB500741107 /* snes-180.png in Resources */,
 				BF353FF61C5D837600C1184C /* PauseMenu.storyboard in Resources */,
+				8063F98A23F5CFB600741107 /* delta64-1024.png in Resources */,
+				8063F95223F5CFB500741107 /* red4ios-180.png in Resources */,
+				8063F97C23F5CFB500741107 /* delta_red-120.png in Resources */,
 				BF27CC8E1BC9FEA200A20D89 /* Assets.xcassets in Resources */,
+				8063F97F23F5CFB500741107 /* delta_blue-1024.png in Resources */,
+				8063F97723F5CFB500741107 /* blue4ios-1024.png in Resources */,
+				8063F96423F5CFB500741107 /* delta4ios-120.png in Resources */,
+				8063F95723F5CFB500741107 /* nes-120.png in Resources */,
+				8063F95323F5CFB500741107 /* red4ios-120.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1021,6 +1406,7 @@
 				BFBAB2E31EB685A2004E0B0E /* DeltaCoreProtocol+Delta.swift in Sources */,
 				BF3540081C5DAFAD00C1184C /* PauseTransitionCoordinator.swift in Sources */,
 				BF525EEA1FF6CD12004AA849 /* DeepLink.swift in Sources */,
+				8063F98E23F5CFB600741107 /* AppIconCell.swift in Sources */,
 				BF8A334621A4926F00A42FD4 /* GameSyncStatusViewController.swift in Sources */,
 				BF59427E1E09BC830051894B /* Game.swift in Sources */,
 				BFE593CC21F3F8C2003412A6 /* _GameSave.swift in Sources */,
@@ -1049,6 +1435,7 @@
 				BFDB3418219E4B1700595A62 /* SyncStatusViewController.swift in Sources */,
 				BF18B61F1E2985F900F70067 /* UIAlertController+Importing.swift in Sources */,
 				BFDD04F11D5E2C27002D450E /* GameCollectionViewController.swift in Sources */,
+				8063F95123F5CFB500741107 /* AppIcon.swift in Sources */,
 				BFE4269E1D9C68E600DC913F /* SaveStatesStoryboardSegue.swift in Sources */,
 				BFFA71DD1AAC406100EE9DD1 /* AppDelegate.swift in Sources */,
 				BF525EE81FF5F370004AA849 /* DeepLinkController.swift in Sources */,
@@ -1097,6 +1484,7 @@
 				BF59426F1E09BC5D0051894B /* DatabaseManager.swift in Sources */,
 				BF4828861F9028F500028B97 /* System.swift in Sources */,
 				BF13A7561D5D29B0000BB055 /* PreviewGameViewController.swift in Sources */,
+				8063F98F23F5CFB600741107 /* AppIconsViewController.swift in Sources */,
 				BF6866171DCAC8B900BF2D06 /* ControllerSkin+Configuring.swift in Sources */,
 				BFFBD3D9224A0756002EFC79 /* URL+ExtendedAttributes.swift in Sources */,
 				BF713C0822499ED4004A1A2B /* PreviousHarmony.xcdatamodeld in Sources */,
@@ -1303,12 +1691,12 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 18;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 4GG4434UG2;
 				INFOPLIST_FILE = "Delta/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 1.2b;
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" -DDEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = com.rileytestut.Delta;
+				PRODUCT_BUNDLE_IDENTIFIER = net.kyleg.Delta;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = BETA;
@@ -1329,12 +1717,12 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 18;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 4GG4434UG2;
 				INFOPLIST_FILE = "Delta/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 1.2b;
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" -DIMPACTOR";
-				PRODUCT_BUNDLE_IDENTIFIER = com.rileytestut.Delta;
+				PRODUCT_BUNDLE_IDENTIFIER = net.kyleg.Delta;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Delta/Supporting Files/Delta-Bridging-Header.h";

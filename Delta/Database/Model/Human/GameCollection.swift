@@ -44,8 +44,8 @@ extension GameCollection: Syncable
         return self.name
     }
     
-    public func resolveConflict(_ record: AnyRecord) -> Harmony.SyncCoordinator.ConflictResolution
+    public func resolveConflict(_ record: AnyRecord) -> ConflictResolution
     {
-        return .local
+        return .newest
     }
 }
