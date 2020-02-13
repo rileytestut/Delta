@@ -267,14 +267,12 @@ extension GameViewController
         // Lays out self.gameView, so we can pin self.sustainButtonsContentView to it without resulting in a temporary "cannot satisfy constraints".
         self.view.layoutIfNeeded()
         
-        let gameViewContainerView = self.gameView.superview!
-        
         self.controllerView.translucentControllerSkinOpacity = Settings.translucentControllerSkinOpacity
         
         self.sustainButtonsContentView = UIView(frame: CGRect(x: 0, y: 0, width: self.gameView.bounds.width, height: self.gameView.bounds.height))
         self.sustainButtonsContentView.translatesAutoresizingMaskIntoConstraints = false
         self.sustainButtonsContentView.isHidden = true
-        self.view.insertSubview(self.sustainButtonsContentView, aboveSubview: gameViewContainerView)
+        self.view.insertSubview(self.sustainButtonsContentView, aboveSubview: self.gameView)
         
         let blurEffect = UIBlurEffect(style: .dark)
         let vibrancyEffect = UIVibrancyEffect(blurEffect: blurEffect)
@@ -300,10 +298,10 @@ extension GameViewController
         vibrancyView.contentView.addSubview(self.sustainButtonsBackgroundView)
         
         // Auto Layout
-        self.sustainButtonsContentView.leadingAnchor.constraint(equalTo: gameViewContainerView.leadingAnchor).isActive = true
-        self.sustainButtonsContentView.trailingAnchor.constraint(equalTo: gameViewContainerView.trailingAnchor).isActive = true
-        self.sustainButtonsContentView.topAnchor.constraint(equalTo: gameViewContainerView.topAnchor).isActive = true
-        self.sustainButtonsContentView.bottomAnchor.constraint(equalTo: gameViewContainerView.bottomAnchor).isActive = true
+        self.sustainButtonsContentView.leadingAnchor.constraint(equalTo: self.gameView.leadingAnchor).isActive = true
+        self.sustainButtonsContentView.trailingAnchor.constraint(equalTo: self.gameView.trailingAnchor).isActive = true
+        self.sustainButtonsContentView.topAnchor.constraint(equalTo: self.gameView.topAnchor).isActive = true
+        self.sustainButtonsContentView.bottomAnchor.constraint(equalTo: self.gameView.bottomAnchor).isActive = true
         
         self.updateControllerSkin()
         self.updateControllers()
@@ -729,7 +727,7 @@ extension GameViewController: SaveStatesViewControllerDelegate
             self.emulatorCore?.saveSaveState(to: saveState.fileURL)
         }
         
-        if let snapshot = self.gameView.snapshot(), let data = snapshot.pngData()
+        if let snapshot = self.emulatorCore?.videoManager.snapshot(), let data = snapshot.pngData()
         {
             do
             {

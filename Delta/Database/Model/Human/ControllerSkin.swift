@@ -91,6 +91,11 @@ extension ControllerSkin: ControllerSkinProtocol
         return self.controllerSkin?.gameScreenFrame(for: traits)
     }
     
+    public func screens(for traits: DeltaCore.ControllerSkin.Traits) -> [DeltaCore.ControllerSkin.Screen]?
+    {
+        return self.controllerSkin?.screens(for: traits)
+    }
+    
     public func aspectRatio(for traits: DeltaCore.ControllerSkin.Traits) -> CGSize?
     {
         return self.controllerSkin?.aspectRatio(for: traits)
