@@ -17,6 +17,7 @@ private extension SettingsViewController
 {
     enum Section: Int
     {
+        case appIcon
         case controllers
         case controllerSkins
         case controllerOpacity
@@ -29,6 +30,7 @@ private extension SettingsViewController
     
     enum Segue: String
     {
+        case appIcon = "appIconsSegue"
         case controllers = "controllersSegue"
         case controllerSkins = "controllerSkinsSegue"
     }
@@ -134,6 +136,9 @@ class SettingsViewController: UITableViewController
         
         switch segueType
         {
+        case Segue.appIcon:
+            let _ = segue.destination as! AppIconsViewController
+            
         case Segue.controllers:
             let controllersSettingsViewController = segue.destination as! ControllersSettingsViewController
             controllersSettingsViewController.playerIndex = indexPath.row
@@ -290,6 +295,7 @@ extension SettingsViewController
         let section = Section(rawValue: sectionIndex)!
         switch section
         {
+        case .appIcon: return 1
         case .controllers: return 1 // Temporarily hide other controller indexes until controller logic is finalized
         case .controllerSkins: return System.registeredSystems.count
         case .syncing: return SyncManager.shared.coordinator?.account == nil ? 1 : super.tableView(tableView, numberOfRowsInSection: sectionIndex)
@@ -341,7 +347,7 @@ extension SettingsViewController
             case .service: break
             }
             
-        case .controllerOpacity, .hapticFeedback, .threeDTouch, .patreon, .credits: break
+        case .appIcon, .controllerOpacity, .hapticFeedback, .threeDTouch, .patreon, .credits: break
         }
 
         return cell
@@ -356,7 +362,7 @@ extension SettingsViewController
         {
         case .controllers: self.performSegue(withIdentifier: Segue.controllers.rawValue, sender: cell)
         case .controllerSkins: self.performSegue(withIdentifier: Segue.controllerSkins.rawValue, sender: cell)
-        case .controllerOpacity, .hapticFeedback, .threeDTouch, .syncing: break
+        case .appIcon, .controllerOpacity, .hapticFeedback, .threeDTouch, .syncing: break
         case .patreon:
             let patreonURL = URL(string: "altstore://patreon")!
             
