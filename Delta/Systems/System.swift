@@ -83,7 +83,7 @@ extension System
         }
     }
     
-    var gameType: GameType {
+    var gameType: DeltaCore.GameType {
         switch self
         {
         case .nes: return .nes
@@ -95,7 +95,7 @@ extension System
         }
     }
     
-    init?(gameType: GameType)
+    init?(gameType: DeltaCore.GameType)
     {
         switch gameType
         {
@@ -110,7 +110,7 @@ extension System
     }
 }
 
-extension GameType
+extension DeltaCore.GameType
 {
     init?(fileExtension: String)
     {
