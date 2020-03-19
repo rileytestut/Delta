@@ -13,7 +13,7 @@ import GBADeltaCore
 import GBCDeltaCore
 import NESDeltaCore
 import N64DeltaCore
-import DSDeltaCore
+import MelonDSDeltaCore
 
 enum System: CaseIterable
 {
@@ -79,7 +79,7 @@ extension System
         case .n64: return N64.core
         case .gbc: return GBC.core
         case .gba: return GBA.core
-        case .ds: return DS.core
+        case .ds: return MelonDS.core
         }
     }
     
@@ -91,7 +91,7 @@ extension System
         case .n64: return .n64
         case .gbc: return .gbc
         case .gba: return .gba
-        case .ds: return .ds
+        case .ds: return .melonDS
         }
     }
     
@@ -104,7 +104,8 @@ extension System
         case GameType.n64: self = .n64
         case GameType.gbc: self = .gbc
         case GameType.gba: self = .gba
-        case GameType.ds: self = .ds
+//        case GameType.ds: self = .ds
+        case GameType.melonDS: self = .ds
         default: return nil
         }
     }
@@ -121,7 +122,7 @@ extension DeltaCore.GameType
         case "n64", "z64": self = .n64
         case "gbc", "gb": self = .gbc
         case "gba": self = .gba
-        case "ds", "nds": self = .ds
+        case "ds", "nds": self = .melonDS
         default: return nil
         }
     }

@@ -383,7 +383,7 @@ extension GameViewController
                 // A8 processors and earlier aren't powerful enough to run N64 games faster than 1x speed.
                 pauseViewController.fastForwardItem = nil
             
-            case .ds?:
+            case .melonDS?:
                 // Cheats and Fast Forwarding are not yet supported for DS games.
                 pauseViewController.cheatCodesItem = nil
                 pauseViewController.fastForwardItem = nil
