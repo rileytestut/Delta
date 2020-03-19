@@ -50,6 +50,12 @@
 		BF3540081C5DAFAD00C1184C /* PauseTransitionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3540071C5DAFAD00C1184C /* PauseTransitionCoordinator.swift */; };
 		BF3D6C512202865F0083E05A /* Delta2ToDelta3.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = BF3D6C502202865F0083E05A /* Delta2ToDelta3.xcmappingmodel */; };
 		BF3D6C53220286750083E05A /* Delta3ToDelta4.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = BF3D6C52220286750083E05A /* Delta3ToDelta4.xcmappingmodel */; };
+		BF45C62824231BA500F115EE /* MelonDSDeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF45C61C2423155400F115EE /* MelonDSDeltaCore.framework */; };
+		BF45C62924231BA500F115EE /* MelonDSDeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BF45C61C2423155400F115EE /* MelonDSDeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BF45C62B24231BFF00F115EE /* DeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF9F4FCE1AAD7B87004C9500 /* DeltaCore.framework */; };
+		BF45C62C24231BFF00F115EE /* DeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BF9F4FCE1AAD7B87004C9500 /* DeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BF45C62D24231C0400F115EE /* ZIPFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF07200E219A3A9500F05DA4 /* ZIPFoundation.framework */; };
+		BF45C62E24231C0400F115EE /* ZIPFoundation.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BF07200E219A3A9500F05DA4 /* ZIPFoundation.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF4828841F9027B600028B97 /* Delta.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BF4828811F9027B600028B97 /* Delta.xcdatamodeld */; };
 		BF4828861F9028F500028B97 /* System.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF4828851F9028F500028B97 /* System.swift */; };
 		BF4828881F90290F00028B97 /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF4828871F90290F00028B97 /* Action.swift */; };
@@ -151,6 +157,22 @@
 		BFFDF04623E3D3A600931B96 /* libMupen64Plus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BFFDF04523E3D3A600931B96 /* libMupen64Plus.a */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		BF45C62A24231BA500F115EE /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				BF45C62C24231BFF00F115EE /* DeltaCore.framework in Embed Frameworks */,
+				BF45C62924231BA500F115EE /* MelonDSDeltaCore.framework in Embed Frameworks */,
+				BF45C62E24231C0400F115EE /* ZIPFoundation.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		22506DA00971C4300AF90A35 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A19FF50F55441BC2B2248241 /* Pods-Delta.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Delta.release.xcconfig"; path = "Pods/Target Support Files/Pods-Delta/Pods-Delta.release.xcconfig"; sourceTree = "<group>"; };
@@ -160,7 +182,6 @@
 		BF07200E219A3A9500F05DA4 /* ZIPFoundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ZIPFoundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF0758DE2202827C005110F2 /* Delta 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Delta 4.xcdatamodel"; sourceTree = "<group>"; };
 		BF090CF11B490D8300DCAB45 /* Delta-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Delta-Bridging-Header.h"; sourceTree = "<group>"; };
-		BF0AB893236B90A50089EC41 /* MelonDSDeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MelonDSDeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF1020E21F95B05B00313182 /* DeltaToDelta2.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = DeltaToDelta2.xcmappingmodel; sourceTree = "<group>"; };
 		BF107EC31BF413F000E0C32C /* GamesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GamesViewController.swift; sourceTree = "<group>"; };
 		BF11734F1DA32CF600047DF8 /* ControllersSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControllersSettingsViewController.swift; sourceTree = "<group>"; };
@@ -190,6 +211,7 @@
 		BF3540071C5DAFAD00C1184C /* PauseTransitionCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PauseTransitionCoordinator.swift; sourceTree = "<group>"; };
 		BF3D6C502202865F0083E05A /* Delta2ToDelta3.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = Delta2ToDelta3.xcmappingmodel; sourceTree = "<group>"; };
 		BF3D6C52220286750083E05A /* Delta3ToDelta4.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = Delta3ToDelta4.xcmappingmodel; sourceTree = "<group>"; };
+		BF45C61C2423155400F115EE /* MelonDSDeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MelonDSDeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF4828821F9027B600028B97 /* Delta 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Delta 2.xcdatamodel"; sourceTree = "<group>"; };
 		BF4828831F9027B600028B97 /* Delta.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Delta.xcdatamodel; sourceTree = "<group>"; };
 		BF4828851F9028F500028B97 /* System.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = System.swift; sourceTree = "<group>"; };
@@ -326,7 +348,10 @@
 				BF69FBAA23E399AA0051BEEA /* CoreMotion.framework in Frameworks */,
 				BF69FBA223E375A20051BEEA /* libVBA-M.a in Frameworks */,
 				BFFDF04623E3D3A600931B96 /* libMupen64Plus.a in Frameworks */,
+				BF45C62D24231C0400F115EE /* ZIPFoundation.framework in Frameworks */,
+				BF45C62824231BA500F115EE /* MelonDSDeltaCore.framework in Frameworks */,
 				BF69FBC923E3A8380051BEEA /* libNestopia.a in Frameworks */,
+				BF45C62B24231BFF00F115EE /* DeltaCore.framework in Frameworks */,
 				1FA4ABA79AB72914FE414A61 /* libPods-Delta.a in Frameworks */,
 				BFFDF03F23E3C28A00931B96 /* libGambatte.a in Frameworks */,
 				BFFDF03723E3BB2600931B96 /* libSnes9x.a in Frameworks */,
@@ -624,6 +649,7 @@
 		BF9F4FCD1AAD7B25004C9500 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BF45C61C2423155400F115EE /* MelonDSDeltaCore.framework */,
 				BF76BDE823E649150073702C /* liblibDeSmuME.a */,
 				BFFDF04523E3D3A600931B96 /* libMupen64Plus.a */,
 				BFFDF03D23E3C0F000931B96 /* libGambatte.a */,
@@ -840,6 +866,7 @@
 				BFFA71D51AAC406100EE9DD1 /* Resources */,
 				BF6BF3281EB897F6008E83CD /* Fabric */,
 				0E0279E4F38215820BB0C9A0 /* [CP] Copy Pods Resources */,
+				BF45C62A24231BA500F115EE /* Embed Frameworks */,
 			);
 			buildRules = (
 			);

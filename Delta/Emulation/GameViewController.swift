@@ -386,7 +386,7 @@ extension GameViewController
             case .melonDS?:
                 // Cheats and Fast Forwarding are not yet supported for DS games.
                 pauseViewController.cheatCodesItem = nil
-                pauseViewController.fastForwardItem = nil
+//                pauseViewController.fastForwardItem = nil
                 
             default: break
             }
