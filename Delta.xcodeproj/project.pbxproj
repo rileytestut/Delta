@@ -28,6 +28,8 @@
 		BF04E6FF1DB8625C000F35D3 /* ControllerSkinsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF04E6FE1DB8625C000F35D3 /* ControllerSkinsViewController.swift */; };
 		BF072010219A3A9D00F05DA4 /* ZIPFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF07200E219A3A9500F05DA4 /* ZIPFoundation.framework */; };
 		BF072011219A3A9D00F05DA4 /* ZIPFoundation.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BF07200E219A3A9500F05DA4 /* ZIPFoundation.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BF0AB894236B90A50089EC41 /* MelonDSDeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF0AB893236B90A50089EC41 /* MelonDSDeltaCore.framework */; };
+		BF0AB895236B90A50089EC41 /* MelonDSDeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BF0AB893236B90A50089EC41 /* MelonDSDeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF1020E31F95B05B00313182 /* DeltaToDelta2.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = BF1020E21F95B05B00313182 /* DeltaToDelta2.xcmappingmodel */; };
 		BF107EC41BF413F000E0C32C /* GamesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF107EC31BF413F000E0C32C /* GamesViewController.swift */; };
 		BF1173501DA32CF600047DF8 /* ControllersSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF11734F1DA32CF600047DF8 /* ControllersSettingsViewController.swift */; };
@@ -195,6 +197,7 @@
 				BF144C652238511400C387E1 /* Harmony_Dropbox.framework in Embed Frameworks */,
 				BF98C9832204D9AB006B95AC /* NESDeltaCore.framework in Embed Frameworks */,
 				BF99C6951D0A9AA600BA92BC /* SNESDeltaCore.framework in Embed Frameworks */,
+				BF0AB895236B90A50089EC41 /* MelonDSDeltaCore.framework in Embed Frameworks */,
 				BF072011219A3A9D00F05DA4 /* ZIPFoundation.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -212,6 +215,7 @@
 		BF07200E219A3A9500F05DA4 /* ZIPFoundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ZIPFoundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF0758DE2202827C005110F2 /* Delta 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Delta 4.xcdatamodel"; sourceTree = "<group>"; };
 		BF090CF11B490D8300DCAB45 /* Delta-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Delta-Bridging-Header.h"; sourceTree = "<group>"; };
+		BF0AB893236B90A50089EC41 /* MelonDSDeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MelonDSDeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF1020E21F95B05B00313182 /* DeltaToDelta2.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = DeltaToDelta2.xcmappingmodel; sourceTree = "<group>"; };
 		BF107EC31BF413F000E0C32C /* GamesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GamesViewController.swift; sourceTree = "<group>"; };
 		BF11734F1DA32CF600047DF8 /* ControllersSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControllersSettingsViewController.swift; sourceTree = "<group>"; };
@@ -360,6 +364,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BFB3593A2278FD0000CFD920 /* N64DeltaCore.framework in Frameworks */,
+				BF0AB894236B90A50089EC41 /* MelonDSDeltaCore.framework in Frameworks */,
 				BF9F4FCF1AAD7B87004C9500 /* DeltaCore.framework in Frameworks */,
 				BFEC732D1AAECC4A00650035 /* Roxas.framework in Frameworks */,
 				BFDE2CD3222DF36A008038E0 /* Alamofire.framework in Frameworks */,
@@ -669,6 +674,7 @@
 		BF9F4FCD1AAD7B25004C9500 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BF0AB893236B90A50089EC41 /* MelonDSDeltaCore.framework */,
 				BFDF71DA22F94CDF0074D92E /* DSDeltaCore.framework */,
 				BFB359412278FD6700CFD920 /* N64DeltaCore_Video.framework */,
 				BFB359422278FD6800CFD920 /* N64DeltaCore_RSP.framework */,
