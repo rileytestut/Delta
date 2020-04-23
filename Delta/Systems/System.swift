@@ -13,7 +13,7 @@ import GBADeltaCore
 import GBCDeltaCore
 import NESDeltaCore
 import N64DeltaCore
-import DSDeltaCore
+import MelonDSDeltaCore
 
 enum System: CaseIterable
 {
@@ -79,7 +79,7 @@ extension System
         case .n64: return N64.core
         case .gbc: return GBC.core
         case .gba: return GBA.core
-        case .ds: return DS.core
+        case .ds: return MelonDS.core
         }
     }
     

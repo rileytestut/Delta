@@ -192,6 +192,8 @@ class GameViewController: DeltaCore.GameViewController
         
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.didActivateGyro(with:)), name: GBA.didActivateGyroNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.didDeactivateGyro(with:)), name: GBA.didDeactivateGyroNotification, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.emulationDidQuit(with:)), name: EmulatorCore.emulationDidQuitNotification, object: nil)
     }
     
     deinit
@@ -327,10 +329,18 @@ extension GameViewController
         {
         case "showGamesViewController":
             let gamesViewController = (segue.destination as! UINavigationController).topViewController as! GamesViewController
-            gamesViewController.theme = .translucent
-            gamesViewController.activeEmulatorCore = self.emulatorCore
             
-            self.updateAutoSaveState()
+            if let emulatorCore = self.emulatorCore
+            {
+                gamesViewController.theme = .translucent
+                gamesViewController.activeEmulatorCore = emulatorCore
+                
+                self.updateAutoSaveState()
+            }
+            else
+            {
+                gamesViewController.theme = .opaque
+            }
             
         case "pause":
             
@@ -383,9 +393,12 @@ extension GameViewController
                 // A8 processors and earlier aren't powerful enough to run N64 games faster than 1x speed.
                 pauseViewController.fastForwardItem = nil
             
-            case .ds?:
-                // Cheats and Fast Forwarding are not yet supported for DS games.
+            case .ds? where self.emulatorCore?.deltaCore == DS.core:
+                // Cheats are not supported by DeSmuME core.
                 pauseViewController.cheatCodesItem = nil
+                
+            case .ds? where !UIDevice.current.hasA9ProcessorOrBetter:
+                // A8 processors and earlier aren't powerful enough to run DS games faster than 1x speed.
                 pauseViewController.fastForwardItem = nil
                 
             default: break
@@ -647,6 +660,8 @@ extension GameViewController: SaveStatesViewControllerDelegate
     {
         // Ensures game is non-nil and also a Game subclass
         guard let game = self.game as? Game else { return }
+        
+        guard let emulatorCore = self.emulatorCore, emulatorCore.state != .stopped else { return }
         
         // If pausedSaveState exists and has already been saved, don't update auto save state
         // This prevents us from filling our auto save state slots with the same save state
@@ -1136,4 +1151,25 @@ private extension GameViewController
     {
         self.isGyroActive = false
     }
+    
+    @objc func emulationDidQuit(with notification: Notification)
+    {
+        DispatchQueue.main.async {
+            guard self.presentedViewController == nil else { return }
+            
+            // Wait for emulation to stop completely before performing segue.
+            var token: NSKeyValueObservation?
+            token = self.emulatorCore?.observe(\.state, options: [.initial]) { (emulatorCore, change) in
+                guard emulatorCore.state == .stopped else { return }
+                
+                DispatchQueue.main.async {
+                    self.game = nil
+                    self.performSegue(withIdentifier: "showGamesViewController", sender: nil)
+                }
+                
+                token?.invalidate()
+            }
+        }
+    }
+}
 }

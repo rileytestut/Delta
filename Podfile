@@ -18,6 +18,7 @@ target 'Delta' do
     pod 'GBCDeltaCore', :path => 'Cores/GBCDeltaCore'
     pod 'GBADeltaCore', :path => 'Cores/GBADeltaCore'
     pod 'DSDeltaCore', :path => 'Cores/DSDeltaCore'
+    pod 'MelonDSDeltaCore', :path => 'Cores/MelonDSDeltaCore'
     pod 'Roxas', :path => 'External/Roxas'
     pod 'Harmony', :path => 'External/Harmony'
 end

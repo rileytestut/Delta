@@ -75,6 +75,7 @@ class GamesViewController: UIViewController
         
         NotificationCenter.default.addObserver(self, selector: #selector(GamesViewController.syncingDidStart(_:)), name: SyncCoordinator.didStartSyncingNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GamesViewController.syncingDidFinish(_:)), name: SyncCoordinator.didFinishSyncingNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(GamesViewController.emulationDidQuit(_:)), name: EmulatorCore.emulationDidQuitNotification, object: nil)
     }
 }
 
@@ -469,6 +470,23 @@ private extension GamesViewController
         let navigationController = SyncResultViewController.make(result: result)
         self.present(navigationController, animated: true, completion: nil)
     }
+    
+    func quitEmulation()
+    {
+        DispatchQueue.main.async {
+            self.activeEmulatorCore = nil
+            
+            if let viewControllers = self.pageViewController.viewControllers as? [GameCollectionViewController]
+            {
+                for collectionViewController in viewControllers
+                {
+                    collectionViewController.activeEmulatorCore = nil
+                }
+            }
+            
+            self.theme = .opaque
+        }
+    }
 }
 
 //MARK: - Notifications -
@@ -483,16 +501,12 @@ private extension GamesViewController
         {
             if deletedObjects.contains(game)
             {                
-                DispatchQueue.main.async {
-                    self.theme = .opaque
-                }
+                self.quitEmulation()
             }
         }
         else
         {
-            DispatchQueue.main.async {
-                self.theme = .opaque
-            }
+            self.quitEmulation()
         }
     }
     
@@ -509,6 +523,11 @@ private extension GamesViewController
             guard let result = notification.userInfo?[SyncCoordinator.syncResultKey] as? SyncResult else { return }
             self.showSyncFinishedToastView(result: result)
         }
+    }
+    
+    @objc func emulationDidQuit(_ notification: Notification)
+    {
+        self.quitEmulation()
     }
 }
 
