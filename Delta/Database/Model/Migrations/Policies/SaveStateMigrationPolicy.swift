@@ -8,6 +8,9 @@
 
 import UIKit
 
+import DeltaCore
+import MelonDSDeltaCore
+
 @objc(SaveStateToSaveStateMigrationPolicy)
 class SaveStateToSaveStateMigrationPolicy: NSEntityMigrationPolicy
 {
@@ -20,6 +23,22 @@ class SaveStateToSaveStateMigrationPolicy: NSEntityMigrationPolicy
         case 1: return NSNumber(value: SaveStateType.general.rawValue)
         case 2: return NSNumber(value: SaveStateType.locked.rawValue)
         default: return rawValue
+        }
+    }
+}
+
+// Delta5 to Delta6
+extension SaveStateToSaveStateMigrationPolicy
+{
+    @objc(defaultCoreIdentifierForGameType:)
+    func defaultCoreIdentifier(for gameType: GameType) -> String?
+    {
+        guard let system = System(gameType: gameType) else { return nil }
+        
+        switch system
+        {
+        case .ds: return MelonDS.core.identifier // Assume any existing save state is from DeSmuME.
+        default: return system.deltaCore.identifier
         }
     }
 }

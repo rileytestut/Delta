@@ -1,0 +1,6 @@
+module MelonDSDeltaCore {
+  umbrella header "MelonDSDeltaCore-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -11,6 +11,11 @@ import Foundation
 import DeltaCore
 import Harmony
 
+public extension Game
+{
+    static let melonDSBIOSIdentifier = "com.rileytestut.MelonDSDeltaCore.BIOS"
+}
+
 @objc(Game)
 public class Game: _Game, GameProtocol
 {
@@ -150,5 +155,9 @@ extension Game: Syncable
     
     public var syncableLocalizedName: String? {
         return self.name
+    }
+    
+    public var isSyncingEnabled: Bool {
+        return self.identifier != Game.melonDSBIOSIdentifier
     }
 }

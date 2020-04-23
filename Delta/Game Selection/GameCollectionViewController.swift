@@ -11,6 +11,7 @@ import MobileCoreServices
 import AVFoundation
 
 import DeltaCore
+import MelonDSDeltaCore
 
 import Roxas
 import Harmony
@@ -23,6 +24,7 @@ extension GameCollectionViewController
     {
         case alreadyRunning
         case downloadingGameSave
+        case biosNotFound
     }
 }
 
@@ -268,6 +270,7 @@ private extension GameCollectionViewController
         cell.maximumImageSize = CGSize(width: 90, height: 90)
         cell.textLabel.text = game.name
         cell.textLabel.textColor = UIColor.gray
+        cell.tintColor = cell.textLabel.textColor
     }
     
     //MARK: - Emulation
@@ -328,6 +331,16 @@ private extension GameCollectionViewController
                 alertController.addAction(.ok)
                 self.present(alertController, animated: true, completion: nil)
             }
+            catch LaunchError.biosNotFound
+            {
+                let alertController = UIAlertController(title: NSLocalizedString("Missing Required DS Files", comment: ""), message: NSLocalizedString("Delta requires certain files to play Nintendo DS games. Please import them to launch this game.", comment: ""), preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: NSLocalizedString("Import Files", comment: ""), style: .default) { _ in
+                    self.performSegue(withIdentifier: "showDSSettings", sender: nil)
+                })
+                alertController.addAction(.cancel)
+                
+                self.present(alertController, animated: true, completion: nil)
+            }
             catch
             {
                 let alertController = UIAlertController(title: NSLocalizedString("Unable to Launch Game", comment: ""), error: error)
@@ -378,6 +391,15 @@ private extension GameCollectionViewController
                 }
             }
         }
+        
+        if game.type == .ds && Settings.preferredCore(for: .ds) == MelonDS.core
+        {
+            guard
+                FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.bios7URL.path) &&
+                FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.bios9URL.path) &&
+                FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.firmwareURL.path)
+            else { throw LaunchError.biosNotFound }
+        }
     }
 }
 
@@ -419,6 +441,7 @@ private extension GameCollectionViewController
         switch game.type
         {
         case GameType.unknown: return [cancelAction, renameAction, changeArtworkAction, shareAction, deleteAction]
+        case .ds where game.identifier == Game.melonDSBIOSIdentifier: return [cancelAction, renameAction, changeArtworkAction, changeControllerSkinAction, saveStatesAction]
         default: return [cancelAction, renameAction, changeArtworkAction, changeControllerSkinAction, shareAction, saveStatesAction, importSaveFile, deleteAction]
         }
     }

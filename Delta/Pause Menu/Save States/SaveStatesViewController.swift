@@ -202,8 +202,16 @@ private extension SaveStatesViewController
     {
         let fetchRequest: NSFetchRequest<SaveState> = SaveState.fetchRequest()
         fetchRequest.returnsObjectsAsFaults = false
-        fetchRequest.predicate = NSPredicate(format: "%K == %@", #keyPath(SaveState.game), self.game)
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(SaveState.type), ascending: true), NSSortDescriptor(key: #keyPath(SaveState.creationDate), ascending: Settings.sortSaveStatesByOldestFirst)]
+        
+        if let system = System(gameType: self.game.type)
+        {
+            fetchRequest.predicate = NSPredicate(format: "%K == %@ AND %K == %@", #keyPath(SaveState.game), self.game, #keyPath(SaveState.coreIdentifier), system.deltaCore.identifier)
+        }
+        else
+        {
+            fetchRequest.predicate = NSPredicate(format: "%K == %@", #keyPath(SaveState.game), self.game)
+        }
         
         self.dataSource.fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DatabaseManager.shared.viewContext, sectionNameKeyPath: #keyPath(SaveState.type), cacheName: nil)
     }

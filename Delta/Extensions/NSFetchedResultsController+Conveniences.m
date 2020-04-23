@@ -8,6 +8,8 @@
 
 #import "NSFetchedResultsController+Conveniences.h"
 
+@import Roxas;
+
 @implementation NSFetchedResultsController (Conveniences)
 
 // Needs to be implemented in Objective-C, because it crashes the Swift compiler :(
@@ -21,7 +23,7 @@
     NSError *error = nil;
     if (![self performFetch:&error])
     {
-        NSLog(@"%@", error);
+        ELog(error);
     }
     
     return YES;

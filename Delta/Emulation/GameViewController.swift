@@ -11,6 +11,8 @@ import UIKit
 import DeltaCore
 import GBADeltaCore
 
+import struct DSDeltaCore.DS
+
 import Roxas
 
 private var kvoContext = 0
@@ -192,6 +194,8 @@ class GameViewController: DeltaCore.GameViewController
         
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.didActivateGyro(with:)), name: GBA.didActivateGyroNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.didDeactivateGyro(with:)), name: GBA.didDeactivateGyroNotification, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.emulationDidQuit(with:)), name: EmulatorCore.emulationDidQuitNotification, object: nil)
     }
     
     deinit
@@ -307,6 +311,19 @@ extension GameViewController
         self.updateControllers()
     }
     
+    override func viewDidAppear(_ animated: Bool)
+    {
+        super.viewDidAppear(animated)
+        
+        if self.emulatorCore?.deltaCore == DS.core, UserDefaults.standard.desmumeDeprecatedAlertCount < 3
+        {
+            let toastView = RSTToastView(text: NSLocalizedString("DeSmuME Core Deprecated", comment: ""), detailText: NSLocalizedString("Switch to the melonDS core in Settings for latest improvements.", comment: ""))
+            self.show(toastView, duration: 5.0)
+            
+            UserDefaults.standard.desmumeDeprecatedAlertCount += 1
+        }
+    }
+    
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator)
     {
         super.viewWillTransition(to: size, with: coordinator)
@@ -327,10 +344,18 @@ extension GameViewController
         {
         case "showGamesViewController":
             let gamesViewController = (segue.destination as! UINavigationController).topViewController as! GamesViewController
-            gamesViewController.theme = .translucent
-            gamesViewController.activeEmulatorCore = self.emulatorCore
             
-            self.updateAutoSaveState()
+            if let emulatorCore = self.emulatorCore
+            {
+                gamesViewController.theme = .translucent
+                gamesViewController.activeEmulatorCore = emulatorCore
+                
+                self.updateAutoSaveState()
+            }
+            else
+            {
+                gamesViewController.theme = .opaque
+            }
             
         case "pause":
             
@@ -383,10 +408,13 @@ extension GameViewController
                 // A8 processors and earlier aren't powerful enough to run N64 games faster than 1x speed.
                 pauseViewController.fastForwardItem = nil
             
-            case .melonDS?:
-                // Cheats and Fast Forwarding are not yet supported for DS games.
+            case .ds? where self.emulatorCore?.deltaCore == DS.core:
+                // Cheats are not supported by DeSmuME core.
                 pauseViewController.cheatCodesItem = nil
-//                pauseViewController.fastForwardItem = nil
+                
+            case .ds? where !UIDevice.current.hasA9ProcessorOrBetter:
+                // A8 processors and earlier aren't powerful enough to run DS games faster than 1x speed.
+                pauseViewController.fastForwardItem = nil
                 
             default: break
             }
@@ -648,6 +676,8 @@ extension GameViewController: SaveStatesViewControllerDelegate
         // Ensures game is non-nil and also a Game subclass
         guard let game = self.game as? Game else { return }
         
+        guard let emulatorCore = self.emulatorCore, emulatorCore.state != .stopped else { return }
+        
         // If pausedSaveState exists and has already been saved, don't update auto save state
         // This prevents us from filling our auto save state slots with the same save state
         let savedPausedSaveState = self.pausedSaveState?.isSaved ?? false
@@ -740,6 +770,7 @@ extension GameViewController: SaveStatesViewControllerDelegate
         }
         
         saveState.modifiedDate = Date()
+        saveState.coreIdentifier = self.emulatorCore?.deltaCore.identifier
         
         if isRunning
         {
@@ -1008,6 +1039,16 @@ extension GameViewController: GameViewControllerDelegate
     }
 }
 
+private extension GameViewController
+{
+    func show(_ toastView: RSTToastView, duration: TimeInterval = 3.0)
+    {
+        toastView.textLabel.textAlignment = .center
+        toastView.presentationEdge = .top
+        toastView.show(in: self.view, duration: duration)
+    }
+}
+
 //MARK: - Notifications -
 private extension GameViewController
 {
@@ -1106,16 +1147,7 @@ private extension GameViewController
         func presentToastView()
         {
             let toastView = RSTToastView(text: NSLocalizedString("Autorotation Disabled", comment: ""), detailText: NSLocalizedString("Pause game to change orientation.", comment: ""))
-            toastView.textLabel.textAlignment = .center
-            toastView.presentationEdge = .bottom
-            
-            if let traits = self.controllerView.controllerSkinTraits, traits.orientation == .landscape, self.controllerView?.controllerSkin?.gameScreenFrame(for: traits) == nil
-            {
-                // Only change landscape vertical offset if there is no custom game screen frame for the current controller skin.
-                toastView.edgeOffset.vertical = 30
-            }
-            
-            toastView.show(in: self.gameView, duration: 3.0)
+            self.show(toastView)
         }
         
         DispatchQueue.main.async {
@@ -1136,4 +1168,29 @@ private extension GameViewController
     {
         self.isGyroActive = false
     }
+    
+    @objc func emulationDidQuit(with notification: Notification)
+    {
+        DispatchQueue.main.async {
+            guard self.presentedViewController == nil else { return }
+            
+            // Wait for emulation to stop completely before performing segue.
+            var token: NSKeyValueObservation?
+            token = self.emulatorCore?.observe(\.state, options: [.initial]) { (emulatorCore, change) in
+                guard emulatorCore.state == .stopped else { return }
+                
+                DispatchQueue.main.async {
+                    self.game = nil
+                    self.performSegue(withIdentifier: "showGamesViewController", sender: nil)
+                }
+                
+                token?.invalidate()
+            }
+        }
+    }
+}
+
+private extension UserDefaults
+{
+    @NSManaged var desmumeDeprecatedAlertCount: Int
 }

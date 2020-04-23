@@ -75,6 +75,8 @@ class GamesViewController: UIViewController
         
         NotificationCenter.default.addObserver(self, selector: #selector(GamesViewController.syncingDidStart(_:)), name: SyncCoordinator.didStartSyncingNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GamesViewController.syncingDidFinish(_:)), name: SyncCoordinator.didFinishSyncingNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(GamesViewController.settingsDidChange(_:)), name: .settingsDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(GamesViewController.emulationDidQuit(_:)), name: EmulatorCore.emulationDidQuitNotification, object: nil)
     }
 }
 
@@ -469,6 +471,23 @@ private extension GamesViewController
         let navigationController = SyncResultViewController.make(result: result)
         self.present(navigationController, animated: true, completion: nil)
     }
+    
+    func quitEmulation()
+    {
+        DispatchQueue.main.async {
+            self.activeEmulatorCore = nil
+            
+            if let viewControllers = self.pageViewController.viewControllers as? [GameCollectionViewController]
+            {
+                for collectionViewController in viewControllers
+                {
+                    collectionViewController.activeEmulatorCore = nil
+                }
+            }
+            
+            self.theme = .opaque
+        }
+    }
 }
 
 //MARK: - Notifications -
@@ -483,16 +502,12 @@ private extension GamesViewController
         {
             if deletedObjects.contains(game)
             {                
-                DispatchQueue.main.async {
-                    self.theme = .opaque
-                }
+                self.quitEmulation()
             }
         }
         else
         {
-            DispatchQueue.main.async {
-                self.theme = .opaque
-            }
+            self.quitEmulation()
         }
     }
     
@@ -508,6 +523,27 @@ private extension GamesViewController
         DispatchQueue.main.async {
             guard let result = notification.userInfo?[SyncCoordinator.syncResultKey] as? SyncResult else { return }
             self.showSyncFinishedToastView(result: result)
+        }
+    }
+    
+    @objc func emulationDidQuit(_ notification: Notification)
+    {
+        self.quitEmulation()
+    }
+    
+    @objc func settingsDidChange(_ notification: Notification)
+    {
+        guard let emulatorCore = self.activeEmulatorCore else { return }
+        guard let game = emulatorCore.game as? Game else { return }
+        
+        game.managedObjectContext?.performAndWait {
+            guard
+                let name = notification.userInfo?[Settings.NotificationUserInfoKey.name] as? String, name == Settings.preferredCoreSettingsKey(for: emulatorCore.game.type),
+                let core = notification.userInfo?[Settings.NotificationUserInfoKey.core] as? DeltaCoreProtocol, core != emulatorCore.deltaCore
+            else { return }
+            
+            emulatorCore.stop()
+            self.quitEmulation()
         }
     }
 }

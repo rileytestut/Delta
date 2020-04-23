@@ -183,9 +183,12 @@ extension EditCheatViewController
         if let superview = self.codeTextView.superview
         {
             let layoutMargins = superview.layoutMargins
-            self.codeTextView.textContainerInset = layoutMargins
-            
-            self.codeTextView.textContainer.lineFragmentPadding = 0
+            if self.codeTextView.textContainerInset.left != layoutMargins.left
+            {
+                self.codeTextView.textContainerInset.left = layoutMargins.left // Don't change right inset because CheatTextView adjusts it as well.
+                self.codeTextView.textContainer.lineFragmentPadding = 0
+                self.codeTextView.setNeedsLayout()
+            }
         }
         
         if self.isAppearing && !self.isPreviewing
@@ -252,6 +255,8 @@ private extension EditCheatViewController
             
             self.tableView.endUpdates()
         }
+        
+        self.view.setNeedsLayout()
     }
     
     func updateSaveButtonState()

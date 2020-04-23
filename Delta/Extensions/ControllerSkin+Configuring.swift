@@ -10,6 +10,18 @@ import DeltaCore
 
 extension ControllerSkin
 {
+    convenience init?(system: System, context: NSManagedObjectContext)
+    {
+        guard let deltaControllerSkin = DeltaCore.ControllerSkin.standardControllerSkin(for: system.gameType) else { return nil }
+        
+        self.init(context: context)
+        
+        self.isStandard = true
+        self.filename = deltaControllerSkin.fileURL.lastPathComponent
+        
+        self.configure(with: deltaControllerSkin)
+    }
+    
     func configure(with skin: DeltaCore.ControllerSkin)
     {
         // Manually copy values to be stored in database.

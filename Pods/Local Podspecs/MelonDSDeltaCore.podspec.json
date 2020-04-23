@@ -1,0 +1,53 @@
+{
+  "name": "MelonDSDeltaCore",
+  "version": "0.1",
+  "summary": "Nintendo DS plug-in for Delta emulator.",
+  "description": "iOS framework that wraps melonDS to allow playing Nintendo DS games with Delta emulator.",
+  "homepage": "https://github.com/rileytestut/MelonDSDeltaCore",
+  "platforms": {
+    "ios": "12.0"
+  },
+  "source": {
+    "git": "https://github.com/rileytestut/MelonDSDeltaCore.git"
+  },
+  "authors": {
+    "Riley Testut": "riley@rileytestut.com"
+  },
+  "social_media_url": "https://twitter.com/rileytestut",
+  "source_files": [
+    "MelonDSDeltaCore/**/*.{swift}",
+    "MelonDSDeltaCore/MelonDSDeltaCore.h",
+    "MelonDSDeltaCore/Bridge/MelonDSEmulatorBridge.{h,mm}",
+    "MelonDSDeltaCore/Types/MelonDSTypes.{h,m}",
+    "melonDS/src/*.{h,hpp,cpp}",
+    "melonDS/src/libui_sdl/PlatformConfig.{h,cpp}"
+  ],
+  "exclude_files": [
+    "melonDS/src/GPU3D_OpenGL.cpp",
+    "melonDS/src/OpenGLSupport.cpp"
+  ],
+  "public_header_files": [
+    "MelonDSDeltaCore/Types/MelonDSTypes.h",
+    "MelonDSDeltaCore/Bridge/MelonDSEmulatorBridge.h",
+    "MelonDSDeltaCore/MelonDSDeltaCore.h"
+  ],
+  "header_mappings_dir": "",
+  "resource_bundles": {
+    "melonDS": [
+      "MelonDSDeltaCore/**/*.deltamapping",
+      "MelonDSDeltaCore/**/*.deltaskin",
+      "melonDS/romlist.bin"
+    ]
+  },
+  "dependencies": {
+    "DeltaCore": [
+
+    ]
+  },
+  "xcconfig": {
+    "HEADER_SEARCH_PATHS": "\"${PODS_CONFIGURATION_BUILD_DIR}\" \"$(PODS_ROOT)/Headers/Private/MelonDSDeltaCore/melonDS/src\"",
+    "USER_HEADER_SEARCH_PATHS": "\"${PODS_CONFIGURATION_BUILD_DIR}/DeltaCore/Swift Compatibility Header\"",
+    "GCC_PREPROCESSOR_DEFINITIONS": "STATIC_LIBRARY=1",
+    "GCC_OPTIMIZATION_LEVEL": "fast"
+  }
+}
