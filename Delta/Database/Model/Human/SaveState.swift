@@ -123,7 +123,11 @@ extension SaveState: Syncable
     }
     
     public var isSyncingEnabled: Bool {
-        return self.type != .auto && self.type != .quick
+        // self.game may be nil if being downloaded, so don't enforce it.
+        // guard let identifier = self.game?.identifier else { return false }
+        
+        let isSyncingEnabled = (self.type != .auto && self.type != .quick) && (self.game?.identifier != Game.melonDSBIOSIdentifier)
+        return isSyncingEnabled
     }
     
     public var syncableMetadata: [HarmonyMetadataKey : String] {

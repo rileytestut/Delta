@@ -440,6 +440,7 @@ private extension GameCollectionViewController
         switch game.type
         {
         case GameType.unknown: return [cancelAction, renameAction, changeArtworkAction, shareAction, deleteAction]
+        case .ds where game.identifier == Game.melonDSBIOSIdentifier: return [cancelAction, renameAction, changeArtworkAction, changeControllerSkinAction, saveStatesAction]
         default: return [cancelAction, renameAction, changeArtworkAction, changeControllerSkinAction, shareAction, saveStatesAction, importSaveFile, deleteAction]
         }
     }

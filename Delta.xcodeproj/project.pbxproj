@@ -125,6 +125,7 @@
 		BFCEA67E1D56FF640061A534 /* UIViewControllerContextTransitioning+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFCEA67D1D56FF640061A534 /* UIViewControllerContextTransitioning+Conveniences.swift */; };
 		BFD097211D3A01B8005A44C2 /* SaveStatesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3540041C5DA70400C1184C /* SaveStatesViewController.swift */; };
 		BFD1EF402336BD8800D197CF /* UIDevice+Processor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD1EF3F2336BD8800D197CF /* UIDevice+Processor.swift */; };
+		BFDB0FEC24464758001C727C /* DS.png in Resources */ = {isa = PBXBuildFile; fileRef = BFDB0FEB24464757001C727C /* DS.png */; };
 		BFDB3418219E4B1700595A62 /* SyncStatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDB3417219E4B1700595A62 /* SyncStatusViewController.swift */; };
 		BFDCA1E6244EBAA900B8FBDB /* liblibDeSmuME.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BFDCA1E5244EBAA900B8FBDB /* liblibDeSmuME.a */; };
 		BFDD04F11D5E2C27002D450E /* GameCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDD04F01D5E2C27002D450E /* GameCollectionViewController.swift */; };
@@ -281,6 +282,7 @@
 		BFC9B7381CEFCD34008629BB /* CheatsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheatsViewController.swift; sourceTree = "<group>"; };
 		BFCEA67D1D56FF640061A534 /* UIViewControllerContextTransitioning+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewControllerContextTransitioning+Conveniences.swift"; sourceTree = "<group>"; };
 		BFD1EF3F2336BD8800D197CF /* UIDevice+Processor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+Processor.swift"; sourceTree = "<group>"; };
+		BFDB0FEB24464757001C727C /* DS.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DS.png; sourceTree = "<group>"; };
 		BFDB3417219E4B1700595A62 /* SyncStatusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncStatusViewController.swift; sourceTree = "<group>"; };
 		BFDCA1E5244EBAA900B8FBDB /* liblibDeSmuME.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = liblibDeSmuME.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFDD04F01D5E2C27002D450E /* GameCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameCollectionViewController.swift; sourceTree = "<group>"; };
@@ -721,6 +723,7 @@
 			isa = PBXGroup;
 			children = (
 				BF6BB2451BB73FE800CCF94A /* Assets.xcassets */,
+				BFDB0FEB24464757001C727C /* DS.png */,
 				BF02D5D91DDEBB3000A5E131 /* openvgdb.sqlite */,
 			);
 			path = Resources;
@@ -920,6 +923,7 @@
 				BF6BF3211EB82362008E83CD /* GamesDatabase.storyboard in Resources */,
 				BFAB9F88219A4B670080EC7D /* GoogleService-Info.plist in Resources */,
 				BF3540001C5DA3C500C1184C /* PausePresentationControllerContentView.xib in Resources */,
+				BFDB0FEC24464758001C727C /* DS.png in Resources */,
 				BF5E7F461B9A652600AE44F8 /* Settings.storyboard in Resources */,
 				BF02D5DA1DDEBB3000A5E131 /* openvgdb.sqlite in Resources */,
 				BF71CF8A1FE904B1001F1613 /* GameTableViewCell.xib in Resources */,

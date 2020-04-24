@@ -14,6 +14,7 @@ import DeltaCore
 import Harmony
 import Roxas
 import ZIPFoundation
+import MelonDSDeltaCore
 
 extension DatabaseManager
 {
@@ -74,6 +75,66 @@ extension DatabaseManager
             }
         }
     }
+    
+    func prepare(_ core: DeltaCoreProtocol, in context: NSManagedObjectContext)
+    {
+        guard let system = System(gameType: core.gameType) else { return }
+        
+        if let skin = ControllerSkin(system: system, context: context)
+        {
+            print("Updated default skin (\(skin.identifier)) for system:", system)
+        }
+        else
+        {
+            print("Failed to update default skin for system:", system)
+        }
+        
+        switch system
+        {
+        case .ds where core == MelonDS.core:
+            let predicate = NSPredicate(format: "%K == %@", #keyPath(Game.identifier), Game.melonDSBIOSIdentifier)
+            if let _ = Game.instancesWithPredicate(predicate, inManagedObjectContext: context, type: Game.self).first
+            {
+                // Game already exists, so don't do anything.
+                break
+            }
+            
+            let game = Game(context: context)
+            game.identifier = Game.melonDSBIOSIdentifier
+            game.type = .ds
+            game.filename = "melonDS-BIOS"
+            
+            game.name = NSLocalizedString("Home Screen", comment: "")
+            
+            if let sourceURL = Bundle.main.url(forResource: "DS", withExtension: "png")
+            {
+                do
+                {
+                    let destinationURL = DatabaseManager.artworkURL(for: game)
+                    try FileManager.default.copyItem(at: sourceURL, to: destinationURL, shouldReplace: true)
+                    game.artworkURL = destinationURL
+                }
+                catch
+                {
+                    print("Failed to copy default DS home screen artwork.", error)
+                }
+            }
+            
+            let gameCollection = GameCollection(context: context)
+            gameCollection.identifier = GameType.ds.rawValue
+            gameCollection.index = Int16(System.ds.year)
+            gameCollection.games.insert(game)
+            
+        case .ds:
+            let predicate = NSPredicate(format: "%K == %@", #keyPath(Game.identifier), Game.melonDSBIOSIdentifier)
+            if let game = Game.instancesWithPredicate(predicate, inManagedObjectContext: context, type: Game.self).first
+            {
+                context.delete(game)
+            }
+            
+        default: break
+        }
+    }
 }
 
 //MARK: - Update -
@@ -113,13 +174,7 @@ private extension DatabaseManager
             
             for system in System.allCases
             {
-                guard let deltaControllerSkin = DeltaCore.ControllerSkin.standardControllerSkin(for: system.gameType) else { continue }
-                
-                let controllerSkin = ControllerSkin(context: context)
-                controllerSkin.isStandard = true
-                controllerSkin.filename = deltaControllerSkin.fileURL.lastPathComponent
-                
-                controllerSkin.configure(with: deltaControllerSkin)
+                self.prepare(system.deltaCore, in: context)
             }
             
             do
