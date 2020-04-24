@@ -133,6 +133,7 @@
 		BFE56E1923EB7BE00014FECD /* UIImage+SymbolFallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE56E1823EB7BE00014FECD /* UIImage+SymbolFallback.swift */; };
 		BFE593CA21F3F8B7003412A6 /* GameSave.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE593C921F3F8B7003412A6 /* GameSave.swift */; };
 		BFE593CC21F3F8C2003412A6 /* _GameSave.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE593CB21F3F8C2003412A6 /* _GameSave.swift */; };
+		BFE9908024451E15006409A7 /* MelonDSCoreSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE9907F24451E15006409A7 /* MelonDSCoreSettingsViewController.swift */; };
 		BFEE943D23F2180200CDA07D /* Delta4ToDelta5.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = BFEE943C23F2180200CDA07D /* Delta4ToDelta5.xcmappingmodel */; };
 		BFEF24F31F7DD4FD00454C62 /* SaveStateMigrationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEF24F21F7DD4FB00454C62 /* SaveStateMigrationPolicy.swift */; };
 		BFF6452E1F7CC5060056533E /* GameControllerInputMappingTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6B82A41F7CC2A300042BFB /* GameControllerInputMappingTransformer.swift */; };
@@ -293,6 +294,7 @@
 		BFE56E1823EB7BE00014FECD /* UIImage+SymbolFallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+SymbolFallback.swift"; sourceTree = "<group>"; };
 		BFE593C921F3F8B7003412A6 /* GameSave.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameSave.swift; sourceTree = "<group>"; };
 		BFE593CB21F3F8C2003412A6 /* _GameSave.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = _GameSave.swift; sourceTree = "<group>"; };
+		BFE9907F24451E15006409A7 /* MelonDSCoreSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MelonDSCoreSettingsViewController.swift; sourceTree = "<group>"; };
 		BFEC732C1AAECC4A00650035 /* Roxas.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Roxas.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFEE943C23F2180200CDA07D /* Delta4ToDelta5.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = Delta4ToDelta5.xcmappingmodel; sourceTree = "<group>"; };
 		BFEF24F21F7DD4FB00454C62 /* SaveStateMigrationPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveStateMigrationPolicy.swift; sourceTree = "<group>"; };
@@ -348,7 +350,6 @@
 				BF5942901E09BD1A0051894B /* NSFetchedResultsController+Conveniences.m */,
 				BF5942911E09BD1A0051894B /* NSManagedObject+Conveniences.swift */,
 				BF5942921E09BD1A0051894B /* NSManagedObjectContext+Conveniences.swift */,
-				BFBAB2E21EB685A2004E0B0E /* DeltaCoreProtocol+Delta.swift */,
 				BF18B61E1E2985F900F70067 /* UIAlertController+Importing.swift */,
 				BFC6F7B71F435BC500221B96 /* Input+Display.swift */,
 				BF6424841F5CBDC900D6AB44 /* UIView+ParentViewController.swift */,
@@ -606,6 +607,7 @@
 			isa = PBXGroup;
 			children = (
 				BF4828851F9028F500028B97 /* System.swift */,
+				BFBAB2E21EB685A2004E0B0E /* DeltaCoreProtocol+Delta.swift */,
 			);
 			path = Systems;
 			sourceTree = "<group>";
@@ -666,6 +668,7 @@
 				BF5E7F451B9A652600AE44F8 /* Settings.storyboard */,
 				BF5E7F431B9A650B00AE44F8 /* SettingsViewController.swift */,
 				BFB3645723245A6000CD0EB1 /* LicensesViewController.swift */,
+				BFE9907E24451DE6006409A7 /* Cores */,
 				BF71CF851FE8FFF1001F1613 /* App Icon Shortcuts */,
 				BF11734E1DA32CEC00047DF8 /* Controllers */,
 				BF1DAD5B1D9F574900E752A7 /* Controller Skins */,
@@ -704,6 +707,14 @@
 				BF6424821F5B8F3F00D6AB44 /* ListMenuViewController.swift */,
 			);
 			path = "Popover Menu";
+			sourceTree = "<group>";
+		};
+		BFE9907E24451DE6006409A7 /* Cores */ = {
+			isa = PBXGroup;
+			children = (
+				BFE9907F24451E15006409A7 /* MelonDSCoreSettingsViewController.swift */,
+			);
+			path = Cores;
 			sourceTree = "<group>";
 		};
 		BFEC732F1AAECCBD00650035 /* Resources */ = {
@@ -1110,6 +1121,7 @@
 				BF1173501DA32CF600047DF8 /* ControllersSettingsViewController.swift in Sources */,
 				BFFC461E1D59823500AF2CC6 /* GamesPresentationController.swift in Sources */,
 				BF99A5971DC2F9C400468E9E /* ControllerSkinTableViewCell.swift in Sources */,
+				BFE9908024451E15006409A7 /* MelonDSCoreSettingsViewController.swift in Sources */,
 				BF5942861E09BC8B0051894B /* _Cheat.swift in Sources */,
 				BF5E7F441B9A650B00AE44F8 /* SettingsViewController.swift in Sources */,
 				BF8CA9361F5F651900499FDD /* PopoverMenuController.swift in Sources */,

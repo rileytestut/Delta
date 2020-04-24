@@ -11,6 +11,8 @@ import UIKit
 import DeltaCore
 import GBADeltaCore
 
+import struct DSDeltaCore.DS
+
 import Roxas
 
 private var kvoContext = 0
@@ -307,6 +309,19 @@ extension GameViewController
         
         self.updateControllerSkin()
         self.updateControllers()
+    }
+    
+    override func viewDidAppear(_ animated: Bool)
+    {
+        super.viewDidAppear(animated)
+        
+        if self.emulatorCore?.deltaCore == DS.core, UserDefaults.standard.desmumeDeprecatedAlertCount < 3
+        {
+            let toastView = RSTToastView(text: NSLocalizedString("DeSmuME Core Deprecated", comment: ""), detailText: NSLocalizedString("Switch to the melonDS core in Settings for latest improvements.", comment: ""))
+            self.show(toastView, duration: 5.0)
+            
+            UserDefaults.standard.desmumeDeprecatedAlertCount += 1
+        }
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator)
@@ -1023,6 +1038,16 @@ extension GameViewController: GameViewControllerDelegate
     }
 }
 
+private extension GameViewController
+{
+    func show(_ toastView: RSTToastView, duration: TimeInterval = 3.0)
+    {
+        toastView.textLabel.textAlignment = .center
+        toastView.presentationEdge = .top
+        toastView.show(in: self.view, duration: duration)
+    }
+}
+
 //MARK: - Notifications -
 private extension GameViewController
 {
@@ -1121,16 +1146,7 @@ private extension GameViewController
         func presentToastView()
         {
             let toastView = RSTToastView(text: NSLocalizedString("Autorotation Disabled", comment: ""), detailText: NSLocalizedString("Pause game to change orientation.", comment: ""))
-            toastView.textLabel.textAlignment = .center
-            toastView.presentationEdge = .bottom
-            
-            if let traits = self.controllerView.controllerSkinTraits, traits.orientation == .landscape, self.controllerView?.controllerSkin?.gameScreenFrame(for: traits) == nil
-            {
-                // Only change landscape vertical offset if there is no custom game screen frame for the current controller skin.
-                toastView.edgeOffset.vertical = 30
-            }
-            
-            toastView.show(in: self.gameView, duration: 3.0)
+            self.show(toastView)
         }
         
         DispatchQueue.main.async {
@@ -1172,4 +1188,8 @@ private extension GameViewController
         }
     }
 }
+
+private extension UserDefaults
+{
+    @NSManaged var desmumeDeprecatedAlertCount: Int
 }

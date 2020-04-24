@@ -11,6 +11,7 @@ import MobileCoreServices
 import AVFoundation
 
 import DeltaCore
+import MelonDSDeltaCore
 
 import Roxas
 import Harmony
@@ -23,6 +24,7 @@ extension GameCollectionViewController
     {
         case alreadyRunning
         case downloadingGameSave
+        case biosNotFound
     }
 }
 
@@ -328,6 +330,16 @@ private extension GameCollectionViewController
                 alertController.addAction(.ok)
                 self.present(alertController, animated: true, completion: nil)
             }
+            catch LaunchError.biosNotFound
+            {
+                let alertController = UIAlertController(title: NSLocalizedString("Missing Required DS Files", comment: ""), message: NSLocalizedString("Delta requires certain files to play Nintendo DS games. Please import them to launch this game.", comment: ""), preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: NSLocalizedString("Import Files", comment: ""), style: .default) { _ in
+                    self.performSegue(withIdentifier: "showDSSettings", sender: nil)
+                })
+                alertController.addAction(.cancel)
+                
+                self.present(alertController, animated: true, completion: nil)
+            }
             catch
             {
                 let alertController = UIAlertController(title: NSLocalizedString("Unable to Launch Game", comment: ""), error: error)
@@ -377,6 +389,15 @@ private extension GameCollectionViewController
                     print("Error fetching record for game save.", error)
                 }
             }
+        }
+        
+        if game.type == .ds && Settings.preferredCore(for: .ds) == MelonDS.core
+        {
+            guard
+                FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.bios7URL.path) &&
+                FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.bios9URL.path) &&
+                FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.firmwareURL.path)
+            else { throw LaunchError.biosNotFound }
         }
     }
 }

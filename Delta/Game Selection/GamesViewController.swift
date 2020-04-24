@@ -75,6 +75,7 @@ class GamesViewController: UIViewController
         
         NotificationCenter.default.addObserver(self, selector: #selector(GamesViewController.syncingDidStart(_:)), name: SyncCoordinator.didStartSyncingNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GamesViewController.syncingDidFinish(_:)), name: SyncCoordinator.didFinishSyncingNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(GamesViewController.settingsDidChange(_:)), name: .settingsDidChange, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GamesViewController.emulationDidQuit(_:)), name: EmulatorCore.emulationDidQuitNotification, object: nil)
     }
 }
@@ -528,6 +529,22 @@ private extension GamesViewController
     @objc func emulationDidQuit(_ notification: Notification)
     {
         self.quitEmulation()
+    }
+    
+    @objc func settingsDidChange(_ notification: Notification)
+    {
+        guard let emulatorCore = self.activeEmulatorCore else { return }
+        guard let game = emulatorCore.game as? Game else { return }
+        
+        game.managedObjectContext?.performAndWait {
+            guard
+                let name = notification.userInfo?[Settings.NotificationUserInfoKey.name] as? String, name == Settings.preferredCoreSettingsKey(for: emulatorCore.game.type),
+                let core = notification.userInfo?[Settings.NotificationUserInfoKey.core] as? DeltaCoreProtocol, core != emulatorCore.deltaCore
+            else { return }
+            
+            emulatorCore.stop()
+            self.quitEmulation()
+        }
     }
 }
 

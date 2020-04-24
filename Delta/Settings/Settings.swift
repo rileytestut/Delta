@@ -10,6 +10,8 @@ import Foundation
 
 import DeltaCore
 
+import struct DSDeltaCore.DS
+
 import Roxas
 
 extension Notification.Name
@@ -25,6 +27,8 @@ extension Settings
         
         case system
         case traits
+        
+        case core
     }
     
     enum Name: String
@@ -55,7 +59,8 @@ struct Settings
                         #keyPath(UserDefaults.gameShortcutsMode): GameShortcutsMode.recent.rawValue,
                         #keyPath(UserDefaults.isButtonHapticFeedbackEnabled): true,
                         #keyPath(UserDefaults.isThumbstickHapticFeedbackEnabled): true,
-                        #keyPath(UserDefaults.sortSaveStatesByOldestFirst): true] as [String : Any]
+                        #keyPath(UserDefaults.sortSaveStatesByOldestFirst): true,
+                        Settings.preferredCoreSettingsKey(for: .ds): DS.core.identifier] as [String : Any]
         UserDefaults.standard.register(defaults: defaults)
     }
 }
@@ -177,6 +182,26 @@ extension Settings
         }
     }
     
+    static func preferredCore(for gameType: GameType) -> DeltaCoreProtocol?
+    {
+        let key = self.preferredCoreSettingsKey(for: gameType)
+        
+        let identifier = UserDefaults.standard.string(forKey: key)
+        
+        let core = System.allCores.first { $0.identifier == identifier }
+        return core
+    }
+    
+    static func setPreferredCore(_ core: DeltaCoreProtocol, for gameType: GameType)
+    {
+        Delta.register(core)
+        
+        let key = self.preferredCoreSettingsKey(for: gameType)
+        
+        UserDefaults.standard.set(core.identifier, forKey: key)
+        NotificationCenter.default.post(name: .settingsDidChange, object: nil, userInfo: [NotificationUserInfoKey.name: key, NotificationUserInfoKey.core: core])
+    }
+    
     static func preferredControllerSkin(for system: System, traits: DeltaCore.ControllerSkin.Traits) -> ControllerSkin?
     {
         guard let userDefaultsKey = self.preferredControllerSkinKey(for: system, traits: traits) else { return nil }
@@ -285,6 +310,15 @@ extension Settings
         {
             NotificationCenter.default.post(name: .settingsDidChange, object: controllerSkin, userInfo: [NotificationUserInfoKey.name: Name.preferredControllerSkin, NotificationUserInfoKey.system: system, NotificationUserInfoKey.traits: traits])
         }
+    }
+}
+
+extension Settings
+{
+    static func preferredCoreSettingsKey(for gameType: GameType) -> String
+    {
+        let key = "core." + gameType.rawValue
+        return key
     }
 }
 

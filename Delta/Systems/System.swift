@@ -15,6 +15,9 @@ import NESDeltaCore
 import N64DeltaCore
 import MelonDSDeltaCore
 
+// Legacy Cores
+import struct DSDeltaCore.DS
+
 enum System: CaseIterable
 {
     case nes
@@ -27,6 +30,10 @@ enum System: CaseIterable
     static var registeredSystems: [System] {
         let systems = System.allCases.filter { Delta.registeredCores.keys.contains($0.gameType) }
         return systems
+    }
+    
+    static var allCores: [DeltaCoreProtocol] {
+        return [NES.core, SNES.core, N64.core, GBC.core, GBA.core, DS.core, MelonDS.core]
     }
 }
 
