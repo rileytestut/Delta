@@ -270,6 +270,7 @@ private extension GameCollectionViewController
         cell.maximumImageSize = CGSize(width: 90, height: 90)
         cell.textLabel.text = game.name
         cell.textLabel.textColor = UIColor.gray
+        cell.tintColor = cell.textLabel.textColor
     }
     
     //MARK: - Emulation
