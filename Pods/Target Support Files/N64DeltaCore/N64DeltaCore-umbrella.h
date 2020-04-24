@@ -12,6 +12,7 @@
 
 #import "N64DeltaCore/Types/N64Types.h"
 #import "N64DeltaCore/Bridge/N64EmulatorBridge.h"
+#import "N64DeltaCore/N64DeltaCore.h"
 
 FOUNDATION_EXPORT double N64DeltaCoreVersionNumber;
 FOUNDATION_EXPORT const unsigned char N64DeltaCoreVersionString[];

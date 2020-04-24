@@ -16,6 +16,7 @@
   "social_media_url": "https://twitter.com/rileytestut",
   "source_files": [
     "N64DeltaCore/**/*.{h,m,mm,cpp,swift}",
+    "N64DeltaCore/N64DeltaCore.h",
     "Mupen64Plus/mupen64plus-core/src/backends/api/video_capture_backend.c",
     "Mupen64Plus/mupen64plus-core/src/device/dd/dd_controller.c",
     "Mupen64Plus/mupen64plus-core/src/device/controllers/paks/biopak.c",
@@ -33,11 +34,12 @@
   "exclude_files": "Mupen64Plus/mupen64plus-core/src/api/config.h",
   "public_header_files": [
     "N64DeltaCore/Types/N64Types.h",
-    "N64DeltaCore/Bridge/N64EmulatorBridge.h"
+    "N64DeltaCore/Bridge/N64EmulatorBridge.h",
+    "N64DeltaCore/N64DeltaCore.h"
   ],
   "header_mappings_dir": "",
   "resource_bundles": {
-    "N64DeltaCore": [
+    "Mupen64Plus": [
       "N64DeltaCore/**/*.deltamapping",
       "N64DeltaCore/**/*.deltaskin",
       "Mupen64Plus/**/*.ini"
