@@ -69,6 +69,7 @@ class GameCollectionViewController: UICollectionViewController
     private var _renameAction: UIAlertAction?
     private var _changingArtworkGame: Game?
     private var _importingSaveFileGame: Game?
+    private var _exportedSaveFileURL: URL?
     
     required init?(coder aDecoder: NSCoder)
     {
@@ -434,6 +435,10 @@ private extension GameCollectionViewController
             self.importSaveFile(for: game)
         }
         
+        let exportSaveFile = Action(title: NSLocalizedString("Export Save File", comment: ""), style: .default, image: UIImage(symbolNameIfAvailable: "tray.and.arrow.up")) { [unowned self] _ in
+            self.exportSaveFile(for: game)
+        }
+        
         let deleteAction = Action(title: NSLocalizedString("Delete", comment: ""), style: .destructive, image: UIImage(symbolNameIfAvailable: "trash"), action: { [unowned self] action in
             self.delete(game)
         })
@@ -442,7 +447,7 @@ private extension GameCollectionViewController
         {
         case GameType.unknown: return [cancelAction, renameAction, changeArtworkAction, shareAction, deleteAction]
         case .ds where game.identifier == Game.melonDSBIOSIdentifier: return [cancelAction, renameAction, changeArtworkAction, changeControllerSkinAction, saveStatesAction]
-        default: return [cancelAction, renameAction, changeArtworkAction, changeControllerSkinAction, shareAction, saveStatesAction, importSaveFile, deleteAction]
+        default: return [cancelAction, renameAction, changeArtworkAction, changeControllerSkinAction, shareAction, saveStatesAction, importSaveFile, exportSaveFile, deleteAction]
         }
     }
     
@@ -684,6 +689,29 @@ private extension GameCollectionViewController
         }
     }
     
+    func exportSaveFile(for game: Game)
+    {
+        do
+        {
+            let illegalCharacterSet = CharacterSet(charactersIn: "\"\\/?<>:*|")
+            let sanitizedFilename = game.name.components(separatedBy: illegalCharacterSet).joined() + "." + game.gameSaveURL.pathExtension
+            
+            let temporaryURL = FileManager.default.temporaryDirectory.appendingPathComponent(sanitizedFilename)
+            try FileManager.default.copyItem(at: game.gameSaveURL, to: temporaryURL, shouldReplace: true)
+            
+            self._exportedSaveFileURL = temporaryURL
+            
+            let documentPicker = UIDocumentPickerViewController(urls: [temporaryURL], in: .exportToService)
+            documentPicker.delegate = self
+            self.present(documentPicker, animated: true, completion: nil)
+        }
+        catch
+        {
+            let alertController = UIAlertController(title: NSLocalizedString("Failed to Export Save File", comment: ""), error: error)
+            self.present(alertController, animated: true, completion: nil)
+        }
+    }
+    
     func changePreferredControllerSkin(for game: Game)
     {
         self.performSegue(withIdentifier: "preferredControllerSkins", sender: game)
@@ -907,5 +935,28 @@ extension GameCollectionViewController
     {
         _previewTransitionViewController = nil
         return self.collectionView(collectionView, previewForHighlightingContextMenuWithConfiguration: configuration)
+    }
+}
+
+extension GameCollectionViewController: UIDocumentPickerDelegate
+{
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL])
+    {
+        if let saveFileURL = self._exportedSaveFileURL
+        {
+            try? FileManager.default.removeItem(at: saveFileURL)
+        }
+        
+        self._exportedSaveFileURL = nil
+    }
+    
+    func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController)
+    {
+        if let saveFileURL = self._exportedSaveFileURL
+        {
+            try? FileManager.default.removeItem(at: saveFileURL)
+        }
+        
+        self._exportedSaveFileURL = nil
     }
 }
