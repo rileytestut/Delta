@@ -11,6 +11,8 @@ import Foundation
 import DeltaCore
 import Harmony
 
+import struct DSDeltaCore.DS
+
 @objc public enum SaveStateType: Int16
 {
     case auto
@@ -111,7 +113,7 @@ extension SaveState: Syncable
     }
     
     public var syncableKeys: Set<AnyKeyPath> {
-        return [\SaveState.creationDate, \SaveState.filename, \SaveState.modifiedDate, \SaveState.name, \SaveState.type]
+        return [\SaveState.creationDate, \SaveState.filename, \SaveState.modifiedDate, \SaveState.name, \SaveState.type, \SaveState.coreIdentifier]
     }
     
     public var syncableFiles: Set<File> {
@@ -137,5 +139,17 @@ extension SaveState: Syncable
     
     public var syncableLocalizedName: String? {
         return self.localizedName
+    }
+    
+    public func awakeFromSync(_ record: AnyRecord)
+    {
+        guard self.coreIdentifier == nil else { return }
+        guard let game = self.game, let system = System(gameType: game.type) else { return }
+        
+        switch system
+        {
+        case .ds: self.coreIdentifier = DS.core.identifier // Assume DS save state with nil coreIdentifier is from DeSmuME core.
+        default: self.coreIdentifier = system.deltaCore.identifier
+        }
     }
 }

@@ -128,6 +128,7 @@
 		BFDB0FEC24464758001C727C /* DS.png in Resources */ = {isa = PBXBuildFile; fileRef = BFDB0FEB24464757001C727C /* DS.png */; };
 		BFDB3418219E4B1700595A62 /* SyncStatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDB3417219E4B1700595A62 /* SyncStatusViewController.swift */; };
 		BFDCA1E6244EBAA900B8FBDB /* liblibDeSmuME.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BFDCA1E5244EBAA900B8FBDB /* liblibDeSmuME.a */; };
+		BFDCA1E9244F7E1000B8FBDB /* Delta5ToDelta6.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = BFDCA1E8244F7E1000B8FBDB /* Delta5ToDelta6.xcmappingmodel */; };
 		BFDD04F11D5E2C27002D450E /* GameCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDD04F01D5E2C27002D450E /* GameCollectionViewController.swift */; };
 		BFE022A01F5B57FF0052D888 /* PopoverMenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE0229F1F5B577D0052D888 /* PopoverMenuButton.swift */; };
 		BFE4269E1D9C68E600DC913F /* SaveStatesStoryboardSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE4269D1D9C68E600DC913F /* SaveStatesStoryboardSegue.swift */; };
@@ -285,6 +286,8 @@
 		BFDB0FEB24464757001C727C /* DS.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DS.png; sourceTree = "<group>"; };
 		BFDB3417219E4B1700595A62 /* SyncStatusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncStatusViewController.swift; sourceTree = "<group>"; };
 		BFDCA1E5244EBAA900B8FBDB /* liblibDeSmuME.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = liblibDeSmuME.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		BFDCA1E7244F7DB100B8FBDB /* Delta 6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Delta 6.xcdatamodel"; sourceTree = "<group>"; };
+		BFDCA1E8244F7E1000B8FBDB /* Delta5ToDelta6.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = Delta5ToDelta6.xcmappingmodel; sourceTree = "<group>"; };
 		BFDD04F01D5E2C27002D450E /* GameCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameCollectionViewController.swift; sourceTree = "<group>"; };
 		BFDE2CC6222DF345008038E0 /* Harmony_Dropbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Harmony_Dropbox.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFDE2CC7222DF345008038E0 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Alamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -736,6 +739,7 @@
 				BFEE943C23F2180200CDA07D /* Delta4ToDelta5.xcmappingmodel */,
 				BF3D6C502202865F0083E05A /* Delta2ToDelta3.xcmappingmodel */,
 				BF3D6C52220286750083E05A /* Delta3ToDelta4.xcmappingmodel */,
+				BFDCA1E8244F7E1000B8FBDB /* Delta5ToDelta6.xcmappingmodel */,
 				BFEF24F11F7DD4BE00454C62 /* Policies */,
 			);
 			path = Migrations;
@@ -1107,6 +1111,7 @@
 				BF6EE5E91F7C5F860051AD6C /* _GameControllerInputMapping.swift in Sources */,
 				BF5942871E09BC8B0051894B /* _ControllerSkin.swift in Sources */,
 				BF95E2791E4982A10030E7AD /* GamesDatabaseBrowserViewController.swift in Sources */,
+				BFDCA1E9244F7E1000B8FBDB /* Delta5ToDelta6.xcmappingmodel in Sources */,
 				BFD097211D3A01B8005A44C2 /* SaveStatesViewController.swift in Sources */,
 				BF6EE5EB1F7C5F8F0051AD6C /* GameControllerInputMapping.swift in Sources */,
 				BF8A333421A484A000A42FD4 /* BadgedTableViewCell.swift in Sources */,
@@ -1399,13 +1404,14 @@
 		BF4828811F9027B600028B97 /* Delta.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				BFDCA1E7244F7DB100B8FBDB /* Delta 6.xcdatamodel */,
 				BFE4275223EDF75300E6B417 /* Delta 5.xcdatamodel */,
 				BF0758DE2202827C005110F2 /* Delta 4.xcdatamodel */,
 				BF5645092202381000A8EA26 /* Delta 3.xcdatamodel */,
 				BF4828821F9027B600028B97 /* Delta 2.xcdatamodel */,
 				BF4828831F9027B600028B97 /* Delta.xcdatamodel */,
 			);
-			currentVersion = BFE4275223EDF75300E6B417 /* Delta 5.xcdatamodel */;
+			currentVersion = BFDCA1E7244F7DB100B8FBDB /* Delta 6.xcdatamodel */;
 			path = Delta.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

@@ -770,6 +770,7 @@ extension GameViewController: SaveStatesViewControllerDelegate
         }
         
         saveState.modifiedDate = Date()
+        saveState.coreIdentifier = self.emulatorCore?.deltaCore.identifier
         
         if isRunning
         {
