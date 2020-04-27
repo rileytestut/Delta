@@ -63,6 +63,12 @@ extension DatabaseManager
     {
         guard !self.isStarted else { return }
         
+        for description in self.persistentStoreDescriptions
+        {
+            // Set configuration so RSTPersistentContainer can determine how to migrate this and Harmony's database independently.
+            description.configuration = NSManagedObjectModel.Configuration.external.rawValue
+        }
+        
         self.loadPersistentStores { (description, error) in
             guard error == nil else { return completionHandler(error) }
             

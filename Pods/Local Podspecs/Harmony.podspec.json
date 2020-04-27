@@ -17,7 +17,10 @@
   "source_files": "Harmony/**/*.{h,m,swift}",
   "public_header_files": "Harmony/Harmony.h",
   "header_mappings_dir": "",
-  "resources": "Harmony/**/*.xcdatamodeld",
+  "resources": [
+    "Harmony/**/*.xcdatamodeld",
+    "Harmony/**/*.xcmappingmodel"
+  ],
   "dependencies": {
     "Roxas": [
 
