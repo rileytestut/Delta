@@ -134,7 +134,7 @@ extension SaveState: Syncable
     
     public var syncableMetadata: [HarmonyMetadataKey : String] {
         guard let game = self.game else { return [:] }
-        return [.gameID: game.identifier, .gameName: game.name]
+        return [.gameID: game.identifier, .gameName: game.name, .coreID: self.coreIdentifier].compactMapValues { $0 }
     }
     
     public var syncableLocalizedName: String? {
@@ -145,11 +145,20 @@ extension SaveState: Syncable
     {
         guard self.coreIdentifier == nil else { return }
         guard let game = self.game, let system = System(gameType: game.type) else { return }
-        
-        switch system
+           
+        if let coreIdentifier = record.remoteMetadata?[.coreID]
         {
-        case .ds: self.coreIdentifier = DS.core.identifier // Assume DS save state with nil coreIdentifier is from DeSmuME core.
-        default: self.coreIdentifier = system.deltaCore.identifier
+            // SaveState was synced to older version of Delta and lost its coreIdentifier,
+            // but it remains in the remote metadata so we can reassign it.
+            self.coreIdentifier = coreIdentifier
+        }
+        else
+        {
+            switch system
+            {
+            case .ds: self.coreIdentifier = DS.core.identifier // Assume DS save state with nil coreIdentifier is from DeSmuME core.
+            default: self.coreIdentifier = system.deltaCore.identifier
+            }
         }
     }
 }
