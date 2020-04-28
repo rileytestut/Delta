@@ -20,16 +20,6 @@ extension UIAlertController
     
     class func alertController(for importType: ImportType, with errors: Set<DatabaseManager.ImportError>) -> UIAlertController
     {
-        let title: String
-        
-        switch importType
-        {
-        case .games: title = NSLocalizedString("Error Importing Games", comment: "")
-        case .controllerSkins: title = NSLocalizedString("Error Importing Controller Skins", comment: "")
-        }
-        
-        let alertController = UIAlertController(title: title, message: nil, preferredStyle: .alert)
-        
         var urls = Set<URL>()
         
         for error in errors
@@ -44,38 +34,54 @@ extension UIAlertController
             }
         }
         
-        let filenames = urls.map{ $0.lastPathComponent }.sorted()
+        let title: String
+        let message: String
         
-        if filenames.count > 0
+        if let fileURL = urls.first, let error = errors.first, errors.count == 1
         {
-            var message: String
-            
-            switch importType
-            {
-            case .games: message = NSLocalizedString("The following game files could not be imported:", comment: "") + "\n"
-            case .controllerSkins: message = NSLocalizedString("The following controller skin files could not be imported:", comment: "") + "\n"
-            }
-            
-            for filename in filenames
-            {
-                message += "\n" + filename
-            }
-            
-            alertController.message = message
+            title = String(format: NSLocalizedString("Could not import “%@”.", comment: ""), fileURL.lastPathComponent)
+            message = error.localizedDescription
         }
         else
         {
-            // This branch can be executed when there are no input URLs when importing, but there is an error saving the database anyway.
-            
             switch importType
             {
-            case .games: alertController.message = NSLocalizedString("Delta was unable to import games. Please try again later.", comment: "")
-            case .controllerSkins: alertController.message = NSLocalizedString("Delta was unable to import controller skins. Please try again later.", comment: "")
+            case .games: title = NSLocalizedString("Error Importing Games", comment: "")
+            case .controllerSkins: title = NSLocalizedString("Error Importing Controller Skins", comment: "")
+            }
+            
+            if urls.count > 0
+            {
+                var tempMessage: String
+                
+                switch importType
+                {
+                case .games: tempMessage = NSLocalizedString("The following game files could not be imported:", comment: "") + "\n"
+                case .controllerSkins: tempMessage = NSLocalizedString("The following controller skin files could not be imported:", comment: "") + "\n"
+                }
+                
+                let filenames = urls.map { $0.lastPathComponent }.sorted()
+                for filename in filenames
+                {
+                    tempMessage += "\n" + filename
+                }
+                
+                message = tempMessage
+            }
+            else
+            {
+                // This branch can be executed when there are no input URLs when importing, but there is an error saving the database anyway.
+                
+                switch importType
+                {
+                case .games: message = NSLocalizedString("Delta was unable to import games. Please try again later.", comment: "")
+                case .controllerSkins: message = NSLocalizedString("Delta was unable to import controller skins. Please try again later.", comment: "")
+                }
             }
         }
         
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: RSTSystemLocalizedString("OK"), style: .cancel, handler: nil))
-        
         return alertController
     }
 }

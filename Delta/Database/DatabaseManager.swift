@@ -23,13 +23,24 @@ extension DatabaseManager
 
 extension DatabaseManager
 {
-    enum ImportError: Error, Hashable, Equatable
+    enum ImportError: LocalizedError, Hashable, Equatable
     {
         case doesNotExist(URL)
         case invalid(URL)
         case unsupported(URL)
         case unknown(URL, NSError)
         case saveFailed(Set<URL>, NSError)
+        
+        var errorDescription: String? {
+            switch self
+            {
+            case .doesNotExist: return NSLocalizedString("The file does not exist.", comment: "")
+            case .invalid: return NSLocalizedString("The file is invalid.", comment: "")
+            case .unsupported: return NSLocalizedString("This file is not supported.", comment: "")
+            case .unknown(_, let error): return error.localizedDescription
+            case .saveFailed(_, let error): return error.localizedDescription
+            }
+        }
     }
 }
 
@@ -42,6 +53,8 @@ final class DatabaseManager: RSTPersistentContainer
     private var gamesDatabase: GamesDatabase? = nil
     
     private var validationManagedObjectContext: NSManagedObjectContext?
+    
+    private let importController = ImportController(documentTypes: [])
     
     private init()
     {
@@ -218,7 +231,20 @@ extension DatabaseManager
 {
     func importGames(at urls: Set<URL>, completion: ((Set<Game>, Set<ImportError>) -> Void)?)
     {
-        var errors = Set<ImportError>()
+        let externalFileURLs = urls.filter { !FileManager.default.isReadableFile(atPath: $0.path) }
+        guard externalFileURLs.isEmpty else {
+            self.importExternalFiles(at: externalFileURLs) { (importedURLs, externalImportErrors) in
+                var availableFileURLs = urls.filter { !externalFileURLs.contains($0) }
+                availableFileURLs.formUnion(importedURLs)
+                
+                self.importGames(at: Set(availableFileURLs)) { (importedGames, importErrors) in
+                    let allErrors = importErrors.union(externalImportErrors)
+                    completion?(importedGames, allErrors)
+                }
+            }
+            
+            return
+        }
         
         let zipFileURLs = urls.filter { $0.pathExtension.lowercased() == "zip" }
         if zipFileURLs.count > 0
@@ -236,6 +262,7 @@ extension DatabaseManager
         
         self.performBackgroundTask { (context) in
             
+            var errors = Set<ImportError>()
             var identifiers = Set<String>()
             
             for url in urls
@@ -331,10 +358,24 @@ extension DatabaseManager
     
     func importControllerSkins(at urls: Set<URL>, completion: ((Set<ControllerSkin>, Set<ImportError>) -> Void)?)
     {
-        var errors = Set<ImportError>()
+        let externalFileURLs = urls.filter { !FileManager.default.isReadableFile(atPath: $0.path) }
+        guard externalFileURLs.isEmpty else {
+            self.importExternalFiles(at: externalFileURLs) { (importedURLs, externalImportErrors) in
+                var availableFileURLs = urls.filter { !externalFileURLs.contains($0) }
+                availableFileURLs.formUnion(importedURLs)
+                
+                self.importControllerSkins(at: Set(availableFileURLs)) { (importedSkins, importErrors) in
+                    let allErrors = importErrors.union(externalImportErrors)
+                    completion?(importedSkins, allErrors)
+                }
+            }
+            
+            return
+        }
         
         self.performBackgroundTask { (context) in
             
+            var errors = Set<ImportError>()
             var identifiers = Set<String>()
             
             for url in urls
@@ -470,6 +511,32 @@ extension DatabaseManager
                 }
             }
             
+            completion(outputURLs, errors)
+        }
+    }
+    
+    private func importExternalFiles(at urls: Set<URL>, completion: @escaping ((Set<URL>, Set<ImportError>) -> Void))
+    {
+        var outputURLs = Set<URL>()
+        var errors = Set<ImportError>()
+        
+        let dispatchGroup = DispatchGroup()
+        for url in urls
+        {
+            dispatchGroup.enter()
+            
+            self.importController.importExternalFile(at: url) { (result) in
+                switch result
+                {
+                case .failure(let error): errors.insert(.unknown(url, error as NSError))
+                case .success(let fileURL): outputURLs.insert(fileURL)
+                }
+                
+                dispatchGroup.leave()
+            }
+        }
+        
+        dispatchGroup.notify(queue: .global()) {
             completion(outputURLs, errors)
         }
     }

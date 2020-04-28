@@ -131,6 +131,39 @@ class ImportController: NSObject
     }
 }
 
+extension ImportController
+{
+    func importExternalFile(at fileURL: URL, completionHandler: @escaping (Result<URL, Error>) -> Void)
+    {
+        let intent = NSFileAccessIntent.readingIntent(with: fileURL)
+        self.fileCoordinator.coordinate(with: [intent], queue: self.importQueue) { (error) in
+            do
+            {
+                if let error = error
+                {
+                    throw error
+                }
+                else
+                {
+                    // User intent.url, not url, as the system may have updated it when requesting access.
+                    guard intent.url.startAccessingSecurityScopedResource() else { throw CocoaError.error(.fileReadNoPermission) }
+                    defer { intent.url.stopAccessingSecurityScopedResource() }
+                    
+                    // Use url, not intent.url, to ensure the file name matches what was in the document browser.
+                    let temporaryURL = FileManager.default.temporaryDirectory.appendingPathComponent(fileURL.lastPathComponent)
+                    try FileManager.default.copyItem(at: intent.url, to: temporaryURL, shouldReplace: true)
+                    
+                    completionHandler(.success(temporaryURL))
+                }
+            }
+            catch
+            {
+                completionHandler(.failure(error))
+            }
+        }
+    }
+}
+
 extension ImportController: UIDocumentBrowserViewControllerDelegate
 {
     func documentBrowser(_ controller: UIDocumentBrowserViewController, didPickDocumentURLs documentURLs: [URL])
@@ -144,31 +177,11 @@ extension ImportController: UIDocumentBrowserViewControllerDelegate
         {
             dispatchGroup.enter()
             
-            let intent = NSFileAccessIntent.readingIntent(with: url)
-            self.fileCoordinator.coordinate(with: [intent], queue: self.importQueue) { (error) in
-                
-                do
+            self.importExternalFile(at: url) { (result) in
+                switch result
                 {
-                    if let error = error
-                    {
-                        throw error
-                    }
-                    else
-                    {
-                        // User intent.url, not url, as the system may have updated it when requesting access.
-                        guard intent.url.startAccessingSecurityScopedResource() else { throw CocoaError.error(.fileReadNoPermission) }
-                        defer { intent.url.stopAccessingSecurityScopedResource() }
-                        
-                        // Use url, not intent.url, to ensure the file name matches what was in the document browser.
-                        let temporaryURL = FileManager.default.temporaryDirectory.appendingPathComponent(url.lastPathComponent)
-                        try FileManager.default.copyItem(at: intent.url, to: temporaryURL, shouldReplace: true)
-                        
-                        coordinatedURLs.insert(temporaryURL)
-                    }
-                }
-                catch
-                {
-                    errors.append(error)
+                case .failure(let error): errors.append(error)
+                case .success(let fileURL): coordinatedURLs.insert(fileURL)
                 }
                 
                 dispatchGroup.leave()
