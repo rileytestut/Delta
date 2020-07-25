@@ -16,7 +16,7 @@ import N64DeltaCore
 import MelonDSDeltaCore
 
 // Legacy Cores
-import struct DSDeltaCore.DS
+//import struct DSDeltaCore.DS
 
 @dynamicMemberLookup
 struct DeltaCoreMetadata
@@ -67,7 +67,7 @@ extension DeltaCoreProtocol
         case GBC.core: return 1...4
         case GBA.core: return 1...3
         case N64.core: return 1...3
-        case DS.core: return 1...3
+//        case DS.core: return 1...3
         case MelonDS.core: return 1...2
         default: return 1...2
         }
@@ -76,11 +76,11 @@ extension DeltaCoreProtocol
     var metadata: DeltaCoreMetadata? {
         switch self
         {
-        case DS.core:
-            return DeltaCoreMetadata([.name: .init(value: NSLocalizedString("DeSmuME (Legacy)", comment: ""), url: URL(string: "http://desmume.org")),
-                                      .developer: .init(value: NSLocalizedString("DeSmuME team", comment: ""), url: URL(string: "https://wiki.desmume.org/index.php?title=DeSmuME:About")),
-                                      .source: .init(value: NSLocalizedString("GitHub", comment: ""), url: URL(string: "https://github.com/TASVideos/desmume"))])
-            
+//        case DS.core:
+//            return DeltaCoreMetadata([.name: .init(value: NSLocalizedString("DeSmuME (Legacy)", comment: ""), url: URL(string: "http://desmume.org")),
+//                                      .developer: .init(value: NSLocalizedString("DeSmuME team", comment: ""), url: URL(string: "https://wiki.desmume.org/index.php?title=DeSmuME:About")),
+//                                      .source: .init(value: NSLocalizedString("GitHub", comment: ""), url: URL(string: "https://github.com/TASVideos/desmume"))])
+//            
         case MelonDS.core:
             return DeltaCoreMetadata([.name: .init(value: NSLocalizedString("melonDS", comment: ""), url: URL(string: "http://melonds.kuribo64.net")),
                                       .developer: .init(value: NSLocalizedString("Arisotura", comment: ""), url: URL(string: "https://twitter.com/Arisotura")),

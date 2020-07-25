@@ -10,7 +10,8 @@ import Foundation
 
 import DeltaCore
 
-import struct DSDeltaCore.DS
+import MelonDSDeltaCore
+//import struct DSDeltaCore.DS
 
 import Roxas
 
@@ -60,7 +61,7 @@ struct Settings
                         #keyPath(UserDefaults.isButtonHapticFeedbackEnabled): true,
                         #keyPath(UserDefaults.isThumbstickHapticFeedbackEnabled): true,
                         #keyPath(UserDefaults.sortSaveStatesByOldestFirst): true,
-                        Settings.preferredCoreSettingsKey(for: .ds): DS.core.identifier] as [String : Any]
+                        Settings.preferredCoreSettingsKey(for: .ds): MelonDS.core.identifier] as [String : Any]
         UserDefaults.standard.register(defaults: defaults)
     }
 }

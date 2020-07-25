@@ -13,7 +13,7 @@ import MobileCoreServices
 import DeltaCore
 import MelonDSDeltaCore
 
-import struct DSDeltaCore.DS
+//import struct DSDeltaCore.DS
 
 import Roxas
 
@@ -136,22 +136,22 @@ private extension MelonDSCoreSettingsViewController
     {
         let alertController = UIAlertController(title: NSLocalizedString("Change Emulator Core", comment: ""), message: NSLocalizedString("Save states are not compatible between different emulator cores. Make sure to use in-game saves in order to keep using your save data.\n\nYour existing save states will not be deleted and will be available whenever you switch cores again.", comment: ""), preferredStyle: .actionSheet)
         
-        var desmumeActionTitle = DS.core.metadata?.name.value ?? DS.core.name
+//        var desmumeActionTitle = DS.core.metadata?.name.value ?? DS.core.name
         var melonDSActionTitle = MelonDS.core.metadata?.name.value ?? MelonDS.core.name
         
-        if Settings.preferredCore(for: .ds) == DS.core
-        {
-            desmumeActionTitle += " ✓"
-        }
-        else
-        {
+//        if Settings.preferredCore(for: .ds) == DS.core
+//        {
+//            desmumeActionTitle += " ✓"
+//        }
+//        else
+//        {
             melonDSActionTitle += " ✓"
-        }
+//        }
         
-        alertController.addAction(UIAlertAction(title: desmumeActionTitle, style: .default, handler: { (action) in
-            Settings.setPreferredCore(DS.core, for: .ds)
-            self.tableView.reloadData()
-        }))
+//        alertController.addAction(UIAlertAction(title: desmumeActionTitle, style: .default, handler: { (action) in
+//            Settings.setPreferredCore(DS.core, for: .ds)
+//            self.tableView.reloadData()
+//        }))
         
         alertController.addAction(UIAlertAction(title: melonDSActionTitle, style: .default, handler: { (action) in
             Settings.setPreferredCore(MelonDS.core, for: .ds)

@@ -11,7 +11,7 @@ import Foundation
 import DeltaCore
 import Harmony
 
-import struct DSDeltaCore.DS
+//import struct DSDeltaCore.DS
 
 @objc public enum SaveStateType: Int16
 {
@@ -156,7 +156,7 @@ extension SaveState: Syncable
         {
             switch system
             {
-            case .ds: self.coreIdentifier = DS.core.identifier // Assume DS save state with nil coreIdentifier is from DeSmuME core.
+//            case .ds: self.coreIdentifier = DS.core.identifier // Assume DS save state with nil coreIdentifier is from DeSmuME core.
             default: self.coreIdentifier = system.deltaCore.identifier
             }
         }

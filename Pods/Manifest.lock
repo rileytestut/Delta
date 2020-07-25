@@ -4,8 +4,6 @@ PODS:
     - Fabric (~> 1.6.3)
   - DeltaCore (0.1):
     - ZIPFoundation
-  - DSDeltaCore (0.1):
-    - DeltaCore
   - Fabric (1.6.13)
   - GBADeltaCore (0.1):
     - DeltaCore
@@ -28,11 +26,11 @@ PODS:
     - GoogleToolboxForMac/Defines (= 2.2.2)
     - "GoogleToolboxForMac/NSString+URLArguments (= 2.2.2)"
   - "GoogleToolboxForMac/NSString+URLArguments (2.2.2)"
-  - GTMSessionFetcher (1.3.1):
-    - GTMSessionFetcher/Full (= 1.3.1)
-  - GTMSessionFetcher/Core (1.3.1)
-  - GTMSessionFetcher/Full (1.3.1):
-    - GTMSessionFetcher/Core (= 1.3.1)
+  - GTMSessionFetcher (1.4.0):
+    - GTMSessionFetcher/Full (= 1.4.0)
+  - GTMSessionFetcher/Core (1.4.0)
+  - GTMSessionFetcher/Full (1.4.0):
+    - GTMSessionFetcher/Core (= 1.4.0)
   - Harmony (0.1):
     - Harmony/Harmony-Drive (= 0.1)
     - Harmony/Harmony-Dropbox (= 0.1)
@@ -73,7 +71,6 @@ PODS:
 DEPENDENCIES:
   - Crashlytics (~> 3.8.0)
   - DeltaCore (from `Cores/DeltaCore`)
-  - DSDeltaCore (from `Cores/DSDeltaCore`)
   - Fabric (~> 1.6.0)
   - GBADeltaCore (from `Cores/GBADeltaCore`)
   - GBCDeltaCore (from `Cores/GBCDeltaCore`)
@@ -105,8 +102,6 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   DeltaCore:
     :path: Cores/DeltaCore
-  DSDeltaCore:
-    :path: Cores/DSDeltaCore
   GBADeltaCore:
     :path: Cores/GBADeltaCore
   GBCDeltaCore:
@@ -128,14 +123,13 @@ SPEC CHECKSUMS:
   Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
   Crashlytics: 95d05f4e4c19a771250c4bd9ce344d996de32bbf
   DeltaCore: 1b246a4e436c6b2b377ea84a1bc847a1c5f4b6cd
-  DSDeltaCore: 7dc6a18e25d8036a5022a34c1ffb4062af9eed3d
   Fabric: 2fb5676bc811af011a04513451f463dac6803206
   GBADeltaCore: 10ff8fde89ed95c99888a9b7102b3d3e45d7458d
   GBCDeltaCore: 7468dff742927139a14f6fc909e810f253b6293c
   GoogleAPIClientForREST: 0f19a8280dfe6471f76016645d26eb5dae305101
   GoogleSignIn: 7ff245e1a7b26d379099d3243a562f5747e23d39
   GoogleToolboxForMac: 800648f8b3127618c1b59c7f97684427630c5ea3
-  GTMSessionFetcher: cea130bbfe5a7edc8d06d3f0d17288c32ffe9925
+  GTMSessionFetcher: 6f5c8abbab8a9bce4bb3f057e317728ec6182b10
   Harmony: cea514db17c41c22f78f54b17d2135935b5e9b96
   MelonDSDeltaCore: d6e0953bd475a17848964b4fc48bf0e838617984
   N64DeltaCore: 7d176e01443fa138bdfc79ad908c78f271f3e0a7
@@ -148,6 +142,6 @@ SPEC CHECKSUMS:
   SwiftyDropbox: 378b4425a2e8d0cb24c7b0f2e3af72bfbaaf1e73
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: f60a226b9a1a5137750584aa70be862b6caa110d
+PODFILE CHECKSUM: 3efb19fc2f2289c664c431ba6f5d0fb387589337
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.9.3

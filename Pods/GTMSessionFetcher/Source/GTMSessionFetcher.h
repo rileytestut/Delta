@@ -560,6 +560,9 @@ typedef void (^GTMSessionFetcherRetryBlock)(BOOL suggestedWillRetry,
                                             NSError * GTM_NULLABLE_TYPE error,
                                             GTMSessionFetcherRetryResponse response);
 
+API_AVAILABLE(ios(10.0), macosx(10.12), tvos(10.0), watchos(3.0))
+typedef void (^GTMSessionFetcherMetricsCollectionBlock)(NSURLSessionTaskMetrics *metrics);
+
 typedef void (^GTMSessionFetcherTestResponse)(NSHTTPURLResponse * GTM_NULLABLE_TYPE response,
                                               NSData * GTM_NULLABLE_TYPE data,
                                               NSError * GTM_NULLABLE_TYPE error);
@@ -995,6 +998,13 @@ NSData * GTM_NULLABLE_TYPE GTMDataFromInputStream(NSInputStream *inputStream, NS
 // fetch.
 // See comments at the top of this file.
 @property(atomic, copy, GTM_NULLABLE) GTMSessionFetcherRetryBlock retryBlock;
+
+// The optional block for collecting the metrics of the present session.
+//
+// This is called on the callback queue.
+@property(atomic, copy, GTM_NULLABLE)
+    GTMSessionFetcherMetricsCollectionBlock metricsCollectionBlock API_AVAILABLE(
+        ios(10.0), macosx(10.12), tvos(10.0), watchos(3.0));
 
 // Retry intervals must be strictly less than maxRetryInterval, else
 // they will be limited to maxRetryInterval and no further retries will

@@ -11,7 +11,7 @@ import UIKit
 import DeltaCore
 import GBADeltaCore
 
-import struct DSDeltaCore.DS
+//import struct DSDeltaCore.DS
 
 import Roxas
 
@@ -315,13 +315,13 @@ extension GameViewController
     {
         super.viewDidAppear(animated)
         
-        if self.emulatorCore?.deltaCore == DS.core, UserDefaults.standard.desmumeDeprecatedAlertCount < 3
-        {
-            let toastView = RSTToastView(text: NSLocalizedString("DeSmuME Core Deprecated", comment: ""), detailText: NSLocalizedString("Switch to the melonDS core in Settings for latest improvements.", comment: ""))
-            self.show(toastView, duration: 5.0)
-            
-            UserDefaults.standard.desmumeDeprecatedAlertCount += 1
-        }
+//        if self.emulatorCore?.deltaCore == DS.core, UserDefaults.standard.desmumeDeprecatedAlertCount < 3
+//        {
+//            let toastView = RSTToastView(text: NSLocalizedString("DeSmuME Core Deprecated", comment: ""), detailText: NSLocalizedString("Switch to the melonDS core in Settings for latest improvements.", comment: ""))
+//            self.show(toastView, duration: 5.0)
+//            
+//            UserDefaults.standard.desmumeDeprecatedAlertCount += 1
+//        }
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator)
@@ -408,9 +408,9 @@ extension GameViewController
                 // A8 processors and earlier aren't powerful enough to run N64 games faster than 1x speed.
                 pauseViewController.fastForwardItem = nil
             
-            case .ds? where self.emulatorCore?.deltaCore == DS.core:
-                // Cheats are not supported by DeSmuME core.
-                pauseViewController.cheatCodesItem = nil
+//            case .ds? where self.emulatorCore?.deltaCore == DS.core:
+//                // Cheats are not supported by DeSmuME core.
+//                pauseViewController.cheatCodesItem = nil
                 
             case .ds? where !UIDevice.current.hasA9ProcessorOrBetter:
                 // A8 processors and earlier aren't powerful enough to run DS games faster than 1x speed.
