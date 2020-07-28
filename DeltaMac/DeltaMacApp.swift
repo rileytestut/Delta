@@ -9,10 +9,18 @@
 import SwiftUI
 
 @main
-struct DeltaMacApp: App {
+struct DeltaMacApp: App
+{
+    @UIApplicationDelegateAdaptor(AppDelegate.self)
+    var appDelegate
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
+                .background(Color.orange)
         }
+//        .windowStyle(HiddenTitleBarWindowStyle())
+//        .windowToolbarStyle(ExpandedWindowToolbarStyle())
     }
 }

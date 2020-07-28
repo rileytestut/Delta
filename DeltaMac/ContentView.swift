@@ -7,15 +7,47 @@
 //
 
 import SwiftUI
+import UIKit
 
-struct ContentView: View {
+struct ContentView: View
+{
+    @State var system: System? = nil
+    
     var body: some View {
-        Text("Hello, world!").padding()
+        HStack {
+//            Color.red
+//                .edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
+            
+            
+//            NavigationView {
+//                Color.orange
+//                Color.yellow
+//            }
+//            RootView(primary:
+////                        Color.orange,
+//                        Sidebar(system: $system)
+//                        .background(Color.purple)
+//                        .edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/),
+//                     secondary: ZStack {
+//                        Color.yellow
+//                            .edgesIgnoringSafeArea(.all)
+//                     })
+//                .navigationTitle("Hello")
+        }
+        
+        
+        NavigationView {
+            Sidebar(system: $system)
+            GameCollectionView(system: system)
+        }
+//
+//        .navigationViewStyle(DoubleColumnNavigationViewStyle())
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        ContentView(system: .nes)
+            .previewLayout(.fixed(width: 960, height: 640))
     }
 }
