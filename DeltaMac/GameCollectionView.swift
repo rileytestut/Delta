@@ -26,10 +26,27 @@ struct GameCell: View
     }
 }
 
+class ActivityDelegate: NSObject, NSUserActivityDelegate, ObservableObject
+{
+    func userActivityWillSave(_ userActivity: NSUserActivity) {
+        print("Will save:", userActivity)
+    }
+    
+    func userActivityWasContinued(_ userActivity: NSUserActivity) {
+        print("Did continue:", userActivity)
+    }
+    
+    func userActivity(_ userActivity: NSUserActivity, didReceive inputStream: InputStream, outputStream: OutputStream) {
+        print("whatever man")
+    }
+}
+
 struct GameCollectionView: View
 {
     let system: System?
     let games: [Game]
+    
+    @StateObject var delegate = ActivityDelegate()
     
     @State var activeGame: Game?
     
@@ -43,17 +60,43 @@ struct GameCollectionView: View
         ScrollView {
             LazyVGrid(columns: [GridItem(.adaptive(minimum: 125), spacing: 25)]) {
                 ForEach(self.games) { (game) in
-                    NavigationLink(destination: GameView(game: game)) {
+//                    NavigationLink(destination: GameView(game: game)) {
+//                        GameCell(game: game)
+//                    }
+                    Button(action: { start(game) }) {
                         GameCell(game: game)
                     }
                     .buttonStyle(PlainButtonStyle())
+                    .onDrag({
+                                let itemProvider = NSItemProvider()
+                        
+                        let startGameActivity = NSUserActivity(activityType: "com.rileytestut.Delta.NewGame")
+                        startGameActivity.title = game.name
+                        startGameActivity.userInfo = ["name": "Emerald"]
+                        
+                        itemProvider.registerObject(startGameActivity, visibility: .all)
+                        
+                        print("Item Provider:", itemProvider)
+                        
+                        return itemProvider
+                    })
                 }
-                
-                
             }
             .padding()
         }
         .navigationTitle(self.system?.localizedName ?? "")
+        .navigationBarHidden(true)
+    }
+    
+    private func start(_ game: Game)
+    {
+        let startGameActivity = NSUserActivity(activityType: "com.rileytestut.Delta.NewGame")
+        startGameActivity.title = game.name
+        startGameActivity.userInfo = ["fileURL": game.fileURL.path]
+        
+        UIApplication.shared.requestSceneSessionActivation(nil, userActivity: startGameActivity, options: nil) { (error) in
+            print("Failed to open new window:", error)
+        }
     }
 }
 

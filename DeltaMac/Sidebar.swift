@@ -14,15 +14,21 @@ struct Sidebar: View
     @Binding var system: System?
 
     var body: some View {
-        List(System.allCases.sorted()) { (system) in
-            NavigationLink(destination: GameCollectionView(system: system)) {
-                Label(system.localizedName, systemImage: "gamecontroller")
-                    .padding(.vertical, 8)
-            }
-            .buttonStyle(PlainButtonStyle())
+        List(System.allCases.sorted(), id: \.self, selection: $system) { (system) in
+            Text(system.localizedName)
+//            Label(system.localizedName, systemImage: "gamecontroller")
+//                .padding(.vertical, 8)
+//                .tag(system)
+//                .environment(\.editMode, .constant(EditMode.inactive))
+//            NavigationLink(destination: GameCollectionView(system: system)) {
+//
+//            }
+//            .buttonStyle(PlainButtonStyle())
         }
+//        .environment(\.editMode, .constant(EditMode.active))
         .listStyle(SidebarListStyle())
         .navigationTitle(system?.localizedName ?? "")
+        .navigationBarHidden(true)
     }
 }
 

@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "BFFBAFFC24CBE4730028C0E7"
+               BlueprintIdentifier = "BFB8629924D0BD140000B560"
                BuildableName = "DeltaMac.app"
                BlueprintName = "DeltaMac"
                ReferencedContainer = "container:Delta.xcodeproj">
@@ -44,7 +44,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "BFFBAFFC24CBE4730028C0E7"
+            BlueprintIdentifier = "BFB8629924D0BD140000B560"
             BuildableName = "DeltaMac.app"
             BlueprintName = "DeltaMac"
             ReferencedContainer = "container:Delta.xcodeproj">
@@ -61,7 +61,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "BFFBAFFC24CBE4730028C0E7"
+            BlueprintIdentifier = "BFB8629924D0BD140000B560"
             BuildableName = "DeltaMac.app"
             BlueprintName = "DeltaMac"
             ReferencedContainer = "container:Delta.xcodeproj">

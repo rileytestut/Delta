@@ -11,6 +11,65 @@ import UIKit
 
 import Roxas
 
+class SidebarCell: UICollectionViewListCell
+{
+    override func updateConfiguration(using state: UICellConfigurationState)
+    {
+        var state = state
+//        state.isSelected = false
+        
+        var configuration = UIBackgroundConfiguration.listSidebarCell().updated(for: state)
+        
+//        if let visualEffect = configuration.visualEffect
+//        {
+//            if state.isSelected
+//            {
+//                print("Selected traits:", state.traitCollection)
+//            }
+//            else
+//            {
+//                print("Deselected traits:", state.traitCollection)
+//            }
+//        }
+//
+//
+        if state.isSelected
+        {
+//            if let visualEffect = configuration.visualEffect
+//            {
+//                print("Selected traits:", state.traitCollection)
+//            }
+//            else
+//            {
+//                print("Deselected traits:", state.traitCollection)
+//            }
+//
+//            dump(state)
+            
+            configuration.customView = nil
+        }
+        else
+        {
+            configuration.backgroundColor = .clear
+        }
+        
+//        configuration.backgroundColorTransformer = .grayscale
+        
+//        if state.isSelected
+//        {
+//            configuration.backgroundColor = UIColor.gray.withAlphaComponent(0.5)
+//        }
+//        else
+//        {
+//            configuration.backgroundColor = .clear
+//        }
+//
+//        print("Highlighted: \(state.isHighlighted). Selected: \(state.isSelected)")
+//
+        self.backgroundConfiguration = configuration
+    }
+}
+
 @dynamicMemberLookup
 class Box<Value>
 {
@@ -55,17 +114,9 @@ extension SidebarView
             self.view.backgroundColor = .clear
             
             self.collectionView.dataSource = self.dataSource
-            self.collectionView.register(UICollectionViewListCell.self, forCellWithReuseIdentifier: RSTCellContentGenericCellIdentifier)
-        }
-        
-        override func didMove(toParent parent: UIViewController?) {
-            super.didMove(toParent: parent)
+            self.collectionView.register(SidebarCell.self, forCellWithReuseIdentifier: RSTCellContentGenericCellIdentifier)
             
-            print("Parent:", parent)
-            
-            self.navigationController?.view.backgroundColor = .purple
-            self.splitViewController?.primaryBackgroundStyle = .sidebar
-            self.splitViewController?.view.backgroundColor = .green
+            self.navigationController?.navigationBar.isHidden = true
         }
     }
 }
@@ -77,15 +128,25 @@ private extension SidebarView.ViewController
         let dataSource = RSTArrayCollectionViewDataSource(items: System.allCases.map(Box.init))
         dataSource.cellConfigurationHandler = { (cell, system, indexPath) in
             let cell = cell as! UICollectionViewListCell
+            cell.automaticallyUpdatesBackgroundConfiguration = false
+            cell.automaticallyUpdatesContentConfiguration = false
             
             var content = cell.defaultContentConfiguration()
             content.image = UIImage(systemName: "gamecontroller")
             content.text = system.localizedName
-            
             cell.contentConfiguration = content
         }
         
         return dataSource
+    }
+}
+
+extension SidebarView.ViewController
+{
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
+    {
+        let system = self.dataSource.item(at: indexPath)
+        self.system = system.value
     }
 }
 

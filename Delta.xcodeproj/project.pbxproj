@@ -29,10 +29,6 @@
 		BF1173501DA32CF600047DF8 /* ControllersSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF11734F1DA32CF600047DF8 /* ControllersSettingsViewController.swift */; };
 		BF13A7561D5D29B0000BB055 /* PreviewGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF13A7551D5D29B0000BB055 /* PreviewGameViewController.swift */; };
 		BF13A7581D5D2FD9000BB055 /* EmulatorCore+Cheats.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF13A7571D5D2FD9000BB055 /* EmulatorCore+Cheats.swift */; };
-		BF1463E524CF7A2400C7FBB7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1463E424CF7A2400C7FBB7 /* AppDelegate.swift */; };
-		BF1463E724CF7D6100C7FBB7 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1463E624CF7D6100C7FBB7 /* GameView.swift */; };
-		BF1463EB24CF823800C7FBB7 /* GBADeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF1463EA24CF823800C7FBB7 /* GBADeltaCore.framework */; };
-		BF1463EC24CF823800C7FBB7 /* GBADeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BF1463EA24CF823800C7FBB7 /* GBADeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF15AF841F54B43B009B6AAB /* ActionInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF15AF831F54B43B009B6AAB /* ActionInput.swift */; };
 		BF18B61F1E2985F900F70067 /* UIAlertController+Importing.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF18B61E1E2985F900F70067 /* UIAlertController+Importing.swift */; };
 		BF1DAD5D1D9F576000E752A7 /* PreferredControllerSkinsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1DAD5C1D9F576000E752A7 /* PreferredControllerSkinsViewController.swift */; };
@@ -54,6 +50,20 @@
 		BF3540081C5DAFAD00C1184C /* PauseTransitionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3540071C5DAFAD00C1184C /* PauseTransitionCoordinator.swift */; };
 		BF3D6C512202865F0083E05A /* Delta2ToDelta3.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = BF3D6C502202865F0083E05A /* Delta2ToDelta3.xcmappingmodel */; };
 		BF3D6C53220286750083E05A /* Delta3ToDelta4.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = BF3D6C52220286750083E05A /* Delta3ToDelta4.xcmappingmodel */; };
+		BF45E32824D0BD8D00FAE111 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF45E32724D0BD8D00FAE111 /* RootViewController.swift */; };
+		BF45E32A24D0BDDC00FAE111 /* Roxas.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF45E32924D0BDDC00FAE111 /* Roxas.framework */; };
+		BF45E32B24D0BDDC00FAE111 /* Roxas.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BF45E32924D0BDDC00FAE111 /* Roxas.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BF45E32E24D0C02A00FAE111 /* Sidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFBB00C24CBE5980028C0E7 /* Sidebar.swift */; };
+		BF45E32F24D0C03100FAE111 /* System.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFBB01024CBEC900028C0E7 /* System.swift */; };
+		BF45E33024D0C03900FAE111 /* GameCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA757C924CBEFA400DCBC32 /* GameCollectionView.swift */; };
+		BF45E33124D0C03D00FAE111 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1463E624CF7D6100C7FBB7 /* GameView.swift */; };
+		BF45E33324D0C05A00FAE111 /* DeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF45E33224D0C05A00FAE111 /* DeltaCore.framework */; };
+		BF45E33424D0C05A00FAE111 /* DeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BF45E33224D0C05A00FAE111 /* DeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BF45E33624D0C05F00FAE111 /* GBADeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF45E33524D0C05F00FAE111 /* GBADeltaCore.framework */; };
+		BF45E33724D0C05F00FAE111 /* GBADeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BF45E33524D0C05F00FAE111 /* GBADeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BF45E33824D0CE4A00FAE111 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFBB00124CBE4730028C0E7 /* ContentView.swift */; };
+		BF45E33924D0CF1200FAE111 /* SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9C383D24CCEAD2001A6783 /* SidebarView.swift */; };
+		BF45E33B24D0E15E00FAE111 /* GameSceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF45E33A24D0E15E00FAE111 /* GameSceneDelegate.swift */; };
 		BF4828841F9027B600028B97 /* Delta.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BF4828811F9027B600028B97 /* Delta.xcdatamodeld */; };
 		BF4828881F90290F00028B97 /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF4828871F90290F00028B97 /* Action.swift */; };
 		BF48F74E219A16DA00BC2FC1 /* SyncingServicesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF48F74D219A16DA00BC2FC1 /* SyncingServicesViewController.swift */; };
@@ -115,18 +125,16 @@
 		BF95E2771E4977BF0030E7AD /* GameMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF95E2761E4977BF0030E7AD /* GameMetadata.swift */; };
 		BF95E2791E4982A10030E7AD /* GamesDatabaseBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF95E2781E4982A10030E7AD /* GamesDatabaseBrowserViewController.swift */; };
 		BF99A5971DC2F9C400468E9E /* ControllerSkinTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF99A5961DC2F9C400468E9E /* ControllerSkinTableViewCell.swift */; };
-		BF9C383E24CCEAD2001A6783 /* SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9C383D24CCEAD2001A6783 /* SidebarView.swift */; };
-		BF9C384024CCEB33001A6783 /* Roxas.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF9C383F24CCEB33001A6783 /* Roxas.framework */; };
-		BF9C384124CCEB33001A6783 /* Roxas.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BF9C383F24CCEB33001A6783 /* Roxas.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		BF9C384424CCF6CD001A6783 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9C384324CCF6CD001A6783 /* RootView.swift */; };
 		BFA0D1271D3AE1F600565894 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF63BDE91D389EEB00FCB040 /* GameViewController.swift */; };
-		BFA757CA24CBEFA400DCBC32 /* GameCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA757C924CBEFA400DCBC32 /* GameCollectionView.swift */; };
-		BFA757CC24CBF2B000DCBC32 /* DeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFA757CB24CBF2B000DCBC32 /* DeltaCore.framework */; };
-		BFA757CD24CBF2B000DCBC32 /* DeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BFA757CB24CBF2B000DCBC32 /* DeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BFAA1FED1B8AA4FA00495943 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFAA1FEC1B8AA4FA00495943 /* Settings.swift */; };
 		BFAB9F7D219A43380080EC7D /* SyncManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFAB9F7C219A43380080EC7D /* SyncManager.swift */; };
 		BFAB9F88219A4B670080EC7D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BFAB9F87219A4B670080EC7D /* GoogleService-Info.plist */; };
 		BFB3645823245A6000CD0EB1 /* LicensesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB3645723245A6000CD0EB1 /* LicensesViewController.swift */; };
+		BFB8629D24D0BD140000B560 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB8629C24D0BD140000B560 /* AppDelegate.swift */; };
+		BFB8629F24D0BD140000B560 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB8629E24D0BD140000B560 /* SceneDelegate.swift */; };
+		BFB862A324D0BD140000B560 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BFB862A224D0BD140000B560 /* Assets.xcassets */; };
+		BFB862A624D0BD140000B560 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BFB862A524D0BD140000B560 /* Preview Assets.xcassets */; };
+		BFB862A924D0BD140000B560 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BFB862A724D0BD140000B560 /* LaunchScreen.storyboard */; };
 		BFBAB2E31EB685A2004E0B0E /* DeltaCoreProtocol+Delta.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFBAB2E21EB685A2004E0B0E /* DeltaCoreProtocol+Delta.swift */; };
 		BFC1F2CC22F9515F00606A45 /* CopyDeepLinkActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC1F2CB22F9515F00606A45 /* CopyDeepLinkActivity.swift */; };
 		BFC3628021ADE2BA00EF2BE6 /* UIAlertController+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC3627F21ADE2BA00EF2BE6 /* UIAlertController+Error.swift */; };
@@ -151,13 +159,7 @@
 		BFFA4C091E8A24D600D87934 /* GameTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFA4C081E8A24D600D87934 /* GameTableViewCell.swift */; };
 		BFFA71DD1AAC406100EE9DD1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFA71DC1AAC406100EE9DD1 /* AppDelegate.swift */; };
 		BFFA71E21AAC406100EE9DD1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BFFA71E01AAC406100EE9DD1 /* Main.storyboard */; };
-		BFFBB00024CBE4730028C0E7 /* DeltaMacApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFBAFFF24CBE4730028C0E7 /* DeltaMacApp.swift */; };
-		BFFBB00224CBE4730028C0E7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFBB00124CBE4730028C0E7 /* ContentView.swift */; };
-		BFFBB00424CBE4740028C0E7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BFFBB00324CBE4740028C0E7 /* Assets.xcassets */; };
-		BFFBB00724CBE4740028C0E7 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BFFBB00624CBE4740028C0E7 /* Preview Assets.xcassets */; };
-		BFFBB00D24CBE5980028C0E7 /* Sidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFBB00C24CBE5980028C0E7 /* Sidebar.swift */; };
 		BFFBB00F24CBEC080028C0E7 /* System.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF4828851F9028F500028B97 /* System.swift */; };
-		BFFBB01124CBEC900028C0E7 /* System.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFBB01024CBEC900028C0E7 /* System.swift */; };
 		BFFBD3D9224A0756002EFC79 /* URL+ExtendedAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFBD3D8224A0756002EFC79 /* URL+ExtendedAttributes.swift */; };
 		BFFC461E1D59823500AF2CC6 /* GamesPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFC461B1D59823500AF2CC6 /* GamesPresentationController.swift */; };
 		BFFC461F1D59823500AF2CC6 /* GamesStoryboardSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFC461C1D59823500AF2CC6 /* GamesStoryboardSegue.swift */; };
@@ -171,15 +173,15 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		BFA757CE24CBF2B000DCBC32 /* Embed Frameworks */ = {
+		BF45E32C24D0BDDC00FAE111 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				BF9C384124CCEB33001A6783 /* Roxas.framework in Embed Frameworks */,
-				BFA757CD24CBF2B000DCBC32 /* DeltaCore.framework in Embed Frameworks */,
-				BF1463EC24CF823800C7FBB7 /* GBADeltaCore.framework in Embed Frameworks */,
+				BF45E33424D0C05A00FAE111 /* DeltaCore.framework in Embed Frameworks */,
+				BF45E32B24D0BDDC00FAE111 /* Roxas.framework in Embed Frameworks */,
+				BF45E33724D0C05F00FAE111 /* GBADeltaCore.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -228,6 +230,12 @@
 		BF3540071C5DAFAD00C1184C /* PauseTransitionCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PauseTransitionCoordinator.swift; sourceTree = "<group>"; };
 		BF3D6C502202865F0083E05A /* Delta2ToDelta3.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = Delta2ToDelta3.xcmappingmodel; sourceTree = "<group>"; };
 		BF3D6C52220286750083E05A /* Delta3ToDelta4.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = Delta3ToDelta4.xcmappingmodel; sourceTree = "<group>"; };
+		BF45E32624D0BD7100FAE111 /* DeltaMac.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DeltaMac.entitlements; sourceTree = "<group>"; };
+		BF45E32724D0BD8D00FAE111 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
+		BF45E32924D0BDDC00FAE111 /* Roxas.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Roxas.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BF45E33224D0C05A00FAE111 /* DeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BF45E33524D0C05F00FAE111 /* GBADeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = GBADeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BF45E33A24D0E15E00FAE111 /* GameSceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSceneDelegate.swift; sourceTree = "<group>"; };
 		BF4828821F9027B600028B97 /* Delta 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Delta 2.xcdatamodel"; sourceTree = "<group>"; };
 		BF4828831F9027B600028B97 /* Delta.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Delta.xcdatamodel; sourceTree = "<group>"; };
 		BF4828851F9028F500028B97 /* System.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = System.swift; sourceTree = "<group>"; };
@@ -315,6 +323,13 @@
 		BFB359412278FD6700CFD920 /* N64DeltaCore_Video.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = N64DeltaCore_Video.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFB359422278FD6800CFD920 /* N64DeltaCore_RSP.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = N64DeltaCore_RSP.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFB3645723245A6000CD0EB1 /* LicensesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LicensesViewController.swift; sourceTree = "<group>"; };
+		BFB8629A24D0BD140000B560 /* DeltaMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DeltaMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BFB8629C24D0BD140000B560 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		BFB8629E24D0BD140000B560 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		BFB862A224D0BD140000B560 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		BFB862A524D0BD140000B560 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		BFB862A824D0BD140000B560 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		BFB862AA24D0BD140000B560 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BFBAB2E21EB685A2004E0B0E /* DeltaCoreProtocol+Delta.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DeltaCoreProtocol+Delta.swift"; sourceTree = "<group>"; };
 		BFC134E01AAD82460087AD7B /* SNESDeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SNESDeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFC1F2CB22F9515F00606A45 /* CopyDeepLinkActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyDeepLinkActivity.swift; sourceTree = "<group>"; };
@@ -348,9 +363,8 @@
 		BFFA71DB1AAC406100EE9DD1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BFFA71DC1AAC406100EE9DD1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BFFA71E11AAC406100EE9DD1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		BFFBAFFD24CBE4730028C0E7 /* DeltaMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DeltaMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFFBAFFF24CBE4730028C0E7 /* DeltaMacApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeltaMacApp.swift; sourceTree = "<group>"; };
-		BFFBB00124CBE4730028C0E7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		BFFBB00124CBE4730028C0E7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ContentView.swift; path = DeltaMacLegacy/ContentView.swift; sourceTree = SOURCE_ROOT; };
 		BFFBB00324CBE4740028C0E7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BFFBB00624CBE4740028C0E7 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		BFFBB00824CBE4740028C0E7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -372,6 +386,16 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		BFB8629724D0BD140000B560 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF45E33324D0C05A00FAE111 /* DeltaCore.framework in Frameworks */,
+				BF45E32A24D0BDDC00FAE111 /* Roxas.framework in Frameworks */,
+				BF45E33624D0C05F00FAE111 /* GBADeltaCore.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BFFA71D41AAC406100EE9DD1 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -384,16 +408,6 @@
 				1FA4ABA79AB72914FE414A61 /* libPods-Delta.a in Frameworks */,
 				BFFDF03F23E3C28A00931B96 /* libGambatte.a in Frameworks */,
 				BFFDF03723E3BB2600931B96 /* libSnes9x.a in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		BFFBAFFA24CBE4730028C0E7 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				BF9C384024CCEB33001A6783 /* Roxas.framework in Frameworks */,
-				BFA757CC24CBF2B000DCBC32 /* DeltaCore.framework in Frameworks */,
-				BF1463EB24CF823800C7FBB7 /* GBADeltaCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -688,6 +702,9 @@
 		BF9F4FCD1AAD7B25004C9500 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BF45E33524D0C05F00FAE111 /* GBADeltaCore.framework */,
+				BF45E33224D0C05A00FAE111 /* DeltaCore.framework */,
+				BF45E32924D0BDDC00FAE111 /* Roxas.framework */,
 				BF1463EA24CF823800C7FBB7 /* GBADeltaCore.framework */,
 				BF9C383F24CCEB33001A6783 /* Roxas.framework */,
 				BFA757CB24CBF2B000DCBC32 /* DeltaCore.framework */,
@@ -749,6 +766,36 @@
 				BF1F45AA21AF4B5800EF9895 /* SyncResultsViewController.storyboard */,
 			);
 			path = Syncing;
+			sourceTree = "<group>";
+		};
+		BFB8629B24D0BD140000B560 /* DeltaMac */ = {
+			isa = PBXGroup;
+			children = (
+				BF45E32624D0BD7100FAE111 /* DeltaMac.entitlements */,
+				BFB8629C24D0BD140000B560 /* AppDelegate.swift */,
+				BFB8629E24D0BD140000B560 /* SceneDelegate.swift */,
+				BF45E33A24D0E15E00FAE111 /* GameSceneDelegate.swift */,
+				BFFBB00124CBE4730028C0E7 /* ContentView.swift */,
+				BF45E32724D0BD8D00FAE111 /* RootViewController.swift */,
+				BFFBB00C24CBE5980028C0E7 /* Sidebar.swift */,
+				BF9C383D24CCEAD2001A6783 /* SidebarView.swift */,
+				BFFBB01024CBEC900028C0E7 /* System.swift */,
+				BFA757C924CBEFA400DCBC32 /* GameCollectionView.swift */,
+				BF1463E624CF7D6100C7FBB7 /* GameView.swift */,
+				BFB862A224D0BD140000B560 /* Assets.xcassets */,
+				BFB862A724D0BD140000B560 /* LaunchScreen.storyboard */,
+				BFB862AA24D0BD140000B560 /* Info.plist */,
+				BFB862A424D0BD140000B560 /* Preview Content */,
+			);
+			path = DeltaMac;
+			sourceTree = "<group>";
+		};
+		BFB862A424D0BD140000B560 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				BFB862A524D0BD140000B560 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
 			sourceTree = "<group>";
 		};
 		BFC9B7371CEFCD08008629BB /* Cheats */ = {
@@ -817,7 +864,8 @@
 			isa = PBXGroup;
 			children = (
 				BFFA71D91AAC406100EE9DD1 /* Delta */,
-				BFFBAFFE24CBE4730028C0E7 /* DeltaMac */,
+				BFB8629B24D0BD140000B560 /* DeltaMac */,
+				BFFBAFFE24CBE4730028C0E7 /* DeltaMacLegacy */,
 				BF9F4FCD1AAD7B25004C9500 /* Frameworks */,
 				BFEC732F1AAECCBD00650035 /* Resources */,
 				BFFA71D81AAC406100EE9DD1 /* Products */,
@@ -829,7 +877,7 @@
 			isa = PBXGroup;
 			children = (
 				BFFA71D71AAC406100EE9DD1 /* Delta.app */,
-				BFFBAFFD24CBE4730028C0E7 /* DeltaMac.app */,
+				BFB8629A24D0BD140000B560 /* DeltaMac.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -878,24 +926,18 @@
 			path = Emulation;
 			sourceTree = "<group>";
 		};
-		BFFBAFFE24CBE4730028C0E7 /* DeltaMac */ = {
+		BFFBAFFE24CBE4730028C0E7 /* DeltaMacLegacy */ = {
 			isa = PBXGroup;
 			children = (
 				BFFBB01224CBED540028C0E7 /* DeltaMac.entitlements */,
 				BFFBAFFF24CBE4730028C0E7 /* DeltaMacApp.swift */,
 				BF1463E424CF7A2400C7FBB7 /* AppDelegate.swift */,
-				BFFBB00124CBE4730028C0E7 /* ContentView.swift */,
 				BF9C384324CCF6CD001A6783 /* RootView.swift */,
-				BF9C383D24CCEAD2001A6783 /* SidebarView.swift */,
-				BFFBB00C24CBE5980028C0E7 /* Sidebar.swift */,
-				BF1463E624CF7D6100C7FBB7 /* GameView.swift */,
-				BFA757C924CBEFA400DCBC32 /* GameCollectionView.swift */,
-				BFFBB01024CBEC900028C0E7 /* System.swift */,
 				BFFBB00324CBE4740028C0E7 /* Assets.xcassets */,
 				BFFBB00824CBE4740028C0E7 /* Info.plist */,
 				BFFBB00524CBE4740028C0E7 /* Preview Content */,
 			);
-			path = DeltaMac;
+			path = DeltaMacLegacy;
 			sourceTree = "<group>";
 		};
 		BFFBB00524CBE4740028C0E7 /* Preview Content */ = {
@@ -938,6 +980,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		BFB8629924D0BD140000B560 /* DeltaMac */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BFB862AB24D0BD140000B560 /* Build configuration list for PBXNativeTarget "DeltaMac" */;
+			buildPhases = (
+				BFB8629624D0BD140000B560 /* Sources */,
+				BFB8629724D0BD140000B560 /* Frameworks */,
+				BFB8629824D0BD140000B560 /* Resources */,
+				BF45E32C24D0BDDC00FAE111 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DeltaMac;
+			productName = DeltaMac;
+			productReference = BFB8629A24D0BD140000B560 /* DeltaMac.app */;
+			productType = "com.apple.product-type.application";
+		};
 		BFFA71D61AAC406100EE9DD1 /* Delta */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = BFFA71F61AAC406100EE9DD1 /* Build configuration list for PBXNativeTarget "Delta" */;
@@ -958,24 +1018,6 @@
 			productReference = BFFA71D71AAC406100EE9DD1 /* Delta.app */;
 			productType = "com.apple.product-type.application";
 		};
-		BFFBAFFC24CBE4730028C0E7 /* DeltaMac */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = BFFBB00B24CBE4740028C0E7 /* Build configuration list for PBXNativeTarget "DeltaMac" */;
-			buildPhases = (
-				BFFBAFF924CBE4730028C0E7 /* Sources */,
-				BFFBAFFA24CBE4730028C0E7 /* Frameworks */,
-				BFFBAFFB24CBE4730028C0E7 /* Resources */,
-				BFA757CE24CBF2B000DCBC32 /* Embed Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = DeltaMac;
-			productName = DeltaMac;
-			productReference = BFFBAFFD24CBE4730028C0E7 /* DeltaMac.app */;
-			productType = "com.apple.product-type.application";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -992,6 +1034,11 @@
 						DevelopmentTeam = 6XVY5G3U44;
 						ProvisioningStyle = Automatic;
 					};
+					BFB8629924D0BD140000B560 = {
+						CreatedOnToolsVersion = 12.0;
+						DevelopmentTeam = 6XVY5G3U44;
+						ProvisioningStyle = Automatic;
+					};
 					BFFA71D61AAC406100EE9DD1 = {
 						CreatedOnToolsVersion = 6.3;
 						DevelopmentTeam = 6XVY5G3U44;
@@ -1002,11 +1049,6 @@
 								enabled = 0;
 							};
 						};
-					};
-					BFFBAFFC24CBE4730028C0E7 = {
-						CreatedOnToolsVersion = 12.0;
-						DevelopmentTeam = 6XVY5G3U44;
-						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -1026,12 +1068,22 @@
 			targets = (
 				BFFA71D61AAC406100EE9DD1 /* Delta */,
 				BF14D8941DE7A512002CA1BE /* mogenerator */,
-				BFFBAFFC24CBE4730028C0E7 /* DeltaMac */,
+				BFB8629924D0BD140000B560 /* DeltaMac */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		BFB8629824D0BD140000B560 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BFB862A924D0BD140000B560 /* LaunchScreen.storyboard in Resources */,
+				BFB862A624D0BD140000B560 /* Preview Assets.xcassets in Resources */,
+				BFB862A324D0BD140000B560 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BFFA71D51AAC406100EE9DD1 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1048,15 +1100,6 @@
 				BF1F45AB21AF4B5800EF9895 /* SyncResultsViewController.storyboard in Resources */,
 				BF353FF61C5D837600C1184C /* PauseMenu.storyboard in Resources */,
 				BF27CC8E1BC9FEA200A20D89 /* Assets.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		BFFBAFFB24CBE4730028C0E7 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				BFFBB00724CBE4740028C0E7 /* Preview Assets.xcassets in Resources */,
-				BFFBB00424CBE4740028C0E7 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1152,6 +1195,23 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		BFB8629624D0BD140000B560 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF45E33024D0C03900FAE111 /* GameCollectionView.swift in Sources */,
+				BF45E32F24D0C03100FAE111 /* System.swift in Sources */,
+				BF45E33824D0CE4A00FAE111 /* ContentView.swift in Sources */,
+				BFB8629D24D0BD140000B560 /* AppDelegate.swift in Sources */,
+				BFB8629F24D0BD140000B560 /* SceneDelegate.swift in Sources */,
+				BF45E33B24D0E15E00FAE111 /* GameSceneDelegate.swift in Sources */,
+				BF45E33924D0CF1200FAE111 /* SidebarView.swift in Sources */,
+				BF45E32E24D0C02A00FAE111 /* Sidebar.swift in Sources */,
+				BF45E32824D0BD8D00FAE111 /* RootViewController.swift in Sources */,
+				BF45E33124D0C03D00FAE111 /* GameView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BFFA71D31AAC406100EE9DD1 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1269,22 +1329,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		BFFBAFF924CBE4730028C0E7 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				BF1463E524CF7A2400C7FBB7 /* AppDelegate.swift in Sources */,
-				BFFBB01124CBEC900028C0E7 /* System.swift in Sources */,
-				BFFBB00224CBE4730028C0E7 /* ContentView.swift in Sources */,
-				BFFBB00D24CBE5980028C0E7 /* Sidebar.swift in Sources */,
-				BF1463E724CF7D6100C7FBB7 /* GameView.swift in Sources */,
-				BFA757CA24CBEFA400DCBC32 /* GameCollectionView.swift in Sources */,
-				BFFBB00024CBE4730028C0E7 /* DeltaMacApp.swift in Sources */,
-				BF9C383E24CCEAD2001A6783 /* SidebarView.swift in Sources */,
-				BF9C384424CCF6CD001A6783 /* RootView.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
@@ -1305,6 +1349,14 @@
 			name = GamesDatabase.storyboard;
 			path = Delta;
 			sourceTree = SOURCE_ROOT;
+		};
+		BFB862A724D0BD140000B560 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BFB862A824D0BD140000B560 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
 		};
 		BFFA71E01AAC406100EE9DD1 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
@@ -1340,6 +1392,69 @@
 			buildSettings = {
 				DEVELOPMENT_TEAM = 6XVY5G3U44;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		BFB862AC24D0BD140000B560 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = DeltaMac/DeltaMac.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_ASSET_PATHS = "\"DeltaMac/Preview Content\"";
+				DEVELOPMENT_TEAM = 6XVY5G3U44;
+				ENABLE_PREVIEWS = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = DeltaMac/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rileytestut.DeltaMac;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,6";
+			};
+			name = Debug;
+		};
+		BFB862AD24D0BD140000B560 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = DeltaMac/DeltaMac.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "\"DeltaMac/Preview Content\"";
+				DEVELOPMENT_TEAM = 6XVY5G3U44;
+				ENABLE_PREVIEWS = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = DeltaMac/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rileytestut.DeltaMac;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,6";
 			};
 			name = Release;
 		};
@@ -1510,69 +1625,6 @@
 			};
 			name = Release;
 		};
-		BFFBB00924CBE4740028C0E7 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = DeltaMac/DeltaMac.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_ASSET_PATHS = "\"DeltaMac/Preview Content\"";
-				DEVELOPMENT_TEAM = 6XVY5G3U44;
-				ENABLE_PREVIEWS = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = DeltaMac/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.rileytestut.DeltaMac;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SUPPORTS_MACCATALYST = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,6";
-			};
-			name = Debug;
-		};
-		BFFBB00A24CBE4740028C0E7 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = DeltaMac/DeltaMac.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"DeltaMac/Preview Content\"";
-				DEVELOPMENT_TEAM = 6XVY5G3U44;
-				ENABLE_PREVIEWS = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = DeltaMac/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.rileytestut.DeltaMac;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SUPPORTS_MACCATALYST = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,6";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1581,6 +1633,15 @@
 			buildConfigurations = (
 				BF14D8951DE7A512002CA1BE /* Debug */,
 				BF14D8961DE7A512002CA1BE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BFB862AB24D0BD140000B560 /* Build configuration list for PBXNativeTarget "DeltaMac" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BFB862AC24D0BD140000B560 /* Debug */,
+				BFB862AD24D0BD140000B560 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1599,15 +1660,6 @@
 			buildConfigurations = (
 				BFFA71F71AAC406100EE9DD1 /* Debug */,
 				BFFA71F81AAC406100EE9DD1 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		BFFBB00B24CBE4740028C0E7 /* Build configuration list for PBXNativeTarget "DeltaMac" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				BFFBB00924CBE4740028C0E7 /* Debug */,
-				BFFBB00A24CBE4740028C0E7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
