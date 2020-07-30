@@ -8,7 +8,7 @@
 
 #import "NSFetchedResultsController+Conveniences.h"
 
-@import Roxas;
+//@import Roxas;
 
 @implementation NSFetchedResultsController (Conveniences)
 
@@ -23,7 +23,7 @@
     NSError *error = nil;
     if (![self performFetch:&error])
     {
-        ELog(error);
+//        ELog(error);
     }
     
     return YES;

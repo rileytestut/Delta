@@ -404,9 +404,9 @@ extension GameViewController
             
             switch self.game?.type
             {
-            case .n64? where !UIDevice.current.hasA9ProcessorOrBetter:
-                // A8 processors and earlier aren't powerful enough to run N64 games faster than 1x speed.
-                pauseViewController.fastForwardItem = nil
+//            case .n64? where !UIDevice.current.hasA9ProcessorOrBetter:
+//                // A8 processors and earlier aren't powerful enough to run N64 games faster than 1x speed.
+//                pauseViewController.fastForwardItem = nil
             
 //            case .ds? where self.emulatorCore?.deltaCore == DS.core:
 //                // Cheats are not supported by DeSmuME core.
@@ -494,7 +494,7 @@ extension GameViewController
     {
         guard context == &kvoContext else { return super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context) }
         
-        guard let rawValue = change?[.oldKey] as? Int, let previousState = EmulatorCore.State(rawValue: rawValue) else { return }
+        guard let rawValue = change?[.oldKey] as? Int, let previousState = EmulatorCore.EmulatorCoreState(rawValue: rawValue) else { return }
         
         if let saveState = _deepLinkResumingSaveState, let emulatorCore = self.emulatorCore, emulatorCore.state == .running
         {

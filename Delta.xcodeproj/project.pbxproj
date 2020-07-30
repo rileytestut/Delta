@@ -22,6 +22,7 @@
 
 /* Begin PBXBuildFile section */
 		1FA4ABA79AB72914FE414A61 /* libPods-Delta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DC866E433B3BA9AE18ABA1EC /* libPods-Delta.a */; };
+		66B8AB8393A671FD85EFB5F4 /* Pods_DeltaMac.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CC18918A608862032EFF712 /* Pods_DeltaMac.framework */; };
 		BF02D5DA1DDEBB3000A5E131 /* openvgdb.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = BF02D5D91DDEBB3000A5E131 /* openvgdb.sqlite */; };
 		BF04E6FF1DB8625C000F35D3 /* ControllerSkinsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF04E6FE1DB8625C000F35D3 /* ControllerSkinsViewController.swift */; };
 		BF1020E31F95B05B00313182 /* DeltaToDelta2.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = BF1020E21F95B05B00313182 /* DeltaToDelta2.xcmappingmodel */; };
@@ -54,7 +55,6 @@
 		BF45E32A24D0BDDC00FAE111 /* Roxas.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF45E32924D0BDDC00FAE111 /* Roxas.framework */; };
 		BF45E32B24D0BDDC00FAE111 /* Roxas.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BF45E32924D0BDDC00FAE111 /* Roxas.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF45E32E24D0C02A00FAE111 /* Sidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFBB00C24CBE5980028C0E7 /* Sidebar.swift */; };
-		BF45E32F24D0C03100FAE111 /* System.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFBB01024CBEC900028C0E7 /* System.swift */; };
 		BF45E33024D0C03900FAE111 /* GameCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA757C924CBEFA400DCBC32 /* GameCollectionView.swift */; };
 		BF45E33124D0C03D00FAE111 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1463E624CF7D6100C7FBB7 /* GameView.swift */; };
 		BF45E33324D0C05A00FAE111 /* DeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF45E33224D0C05A00FAE111 /* DeltaCore.framework */; };
@@ -138,6 +138,45 @@
 		BFBAB2E31EB685A2004E0B0E /* DeltaCoreProtocol+Delta.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFBAB2E21EB685A2004E0B0E /* DeltaCoreProtocol+Delta.swift */; };
 		BFC1F2CC22F9515F00606A45 /* CopyDeepLinkActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC1F2CB22F9515F00606A45 /* CopyDeepLinkActivity.swift */; };
 		BFC3628021ADE2BA00EF2BE6 /* UIAlertController+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC3627F21ADE2BA00EF2BE6 /* UIAlertController+Error.swift */; };
+		BFC5FF7524D25092001FBC15 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF59426D1E09BC5D0051894B /* DatabaseManager.swift */; };
+		BFC5FF7624D250B8001FBC15 /* GamesDatabaseImportOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6BF31B1EB821A0008E83CD /* GamesDatabaseImportOption.swift */; };
+		BFC5FF7724D250B8001FBC15 /* ImportController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF59428D1E09BCFB0051894B /* ImportController.swift */; };
+		BFC5FF7824D250B8001FBC15 /* PhotoLibraryImportOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6BF3261EB87EB8008E83CD /* PhotoLibraryImportOption.swift */; };
+		BFC5FF7924D250B8001FBC15 /* ClipboardImportOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6BF3191EB82146008E83CD /* ClipboardImportOption.swift */; };
+		BFC5FF7A24D250B8001FBC15 /* iTunesImportOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6BF3171EB82111008E83CD /* iTunesImportOption.swift */; };
+		BFC5FF7B24D250B8001FBC15 /* ImportOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6BF3121EB7E47F008E83CD /* ImportOption.swift */; };
+		BFC5FF7D24D251A6001FBC15 /* Harmony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFC5FF7C24D251A6001FBC15 /* Harmony.framework */; };
+		BFC5FF7E24D251A6001FBC15 /* Harmony.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BFC5FF7C24D251A6001FBC15 /* Harmony.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BFC5FF7F24D2526A001FBC15 /* PreviousHarmony.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BF713C0622499ED3004A1A2B /* PreviousHarmony.xcdatamodeld */; };
+		BFC5FF8024D2526A001FBC15 /* Delta.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BF4828811F9027B600028B97 /* Delta.xcdatamodeld */; };
+		BFC5FF8124D2527A001FBC15 /* GamesDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF59426E1E09BC5D0051894B /* GamesDatabase.swift */; };
+		BFC5FF8224D2527A001FBC15 /* GameCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF59427A1E09BC830051894B /* GameCollection.swift */; };
+		BFC5FF8324D2527A001FBC15 /* GameControllerInputMappingMigrationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF56450C220239B800A8EA26 /* GameControllerInputMappingMigrationPolicy.swift */; };
+		BFC5FF8424D2527A001FBC15 /* _Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5942831E09BC8B0051894B /* _Game.swift */; };
+		BFC5FF8524D2527A001FBC15 /* GameMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF95E2761E4977BF0030E7AD /* GameMetadata.swift */; };
+		BFC5FF8624D2527A001FBC15 /* Cheat.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5942771E09BC830051894B /* Cheat.swift */; };
+		BFC5FF8724D2527A001FBC15 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5942791E09BC830051894B /* Game.swift */; };
+		BFC5FF8824D2527A001FBC15 /* GameControllerInputMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6EE5EA1F7C5F8F0051AD6C /* GameControllerInputMapping.swift */; };
+		BFC5FF8924D2527A001FBC15 /* GameSave.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE593C921F3F8B7003412A6 /* GameSave.swift */; };
+		BFC5FF8A24D2527A001FBC15 /* SaveState.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF59427B1E09BC830051894B /* SaveState.swift */; };
+		BFC5FF8B24D2527A001FBC15 /* _Cheat.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5942811E09BC8B0051894B /* _Cheat.swift */; };
+		BFC5FF8D24D2527A001FBC15 /* GameControllerInputMappingTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6B82A41F7CC2A300042BFB /* GameControllerInputMappingTransformer.swift */; };
+		BFC5FF8E24D2527A001FBC15 /* ControllerSkin.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5942781E09BC830051894B /* ControllerSkin.swift */; };
+		BFC5FF8F24D2527A001FBC15 /* _GameSave.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE593CB21F3F8C2003412A6 /* _GameSave.swift */; };
+		BFC5FF9024D2527A001FBC15 /* _GameControllerInputMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6EE5E81F7C5F860051AD6C /* _GameControllerInputMapping.swift */; };
+		BFC5FF9124D2527A001FBC15 /* _ControllerSkin.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5942821E09BC8B0051894B /* _ControllerSkin.swift */; };
+		BFC5FF9224D2527A001FBC15 /* _SaveState.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5942851E09BC8B0051894B /* _SaveState.swift */; };
+		BFC5FF9324D2527A001FBC15 /* _GameCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5942841E09BC8B0051894B /* _GameCollection.swift */; };
+		BFC5FF9624D252AE001FBC15 /* NSManagedObject+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5942911E09BD1A0051894B /* NSManagedObject+Conveniences.swift */; };
+		BFC5FF9724D252AE001FBC15 /* NSManagedObjectContext+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5942921E09BD1A0051894B /* NSManagedObjectContext+Conveniences.swift */; };
+		BFC5FF9B24D25305001FBC15 /* TestClass.m in Sources */ = {isa = PBXBuildFile; fileRef = BFC5FF9A24D25305001FBC15 /* TestClass.m */; };
+		BFC5FF9D24D253E3001FBC15 /* System.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF4828851F9028F500028B97 /* System.swift */; };
+		BFC5FF9F24D254BD001FBC15 /* HarmonyMetadataKey+Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1F45AC21AF57BA00EF9895 /* HarmonyMetadataKey+Keys.swift */; };
+		BFC5FFA024D25608001FBC15 /* ControllerSkin+Configuring.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6866161DCAC8B900BF2D06 /* ControllerSkin+Configuring.swift */; };
+		BFC5FFA124D2562E001FBC15 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFAA1FEC1B8AA4FA00495943 /* Settings.swift */; };
+		BFC5FFA324D25699001FBC15 /* DeepLinkController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF525EE71FF5F370004AA849 /* DeepLinkController.swift */; };
+		BFC5FFA424D25699001FBC15 /* CopyDeepLinkActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC1F2CB22F9515F00606A45 /* CopyDeepLinkActivity.swift */; };
+		BFC5FFA524D25699001FBC15 /* DeepLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF525EE91FF6CD12004AA849 /* DeepLink.swift */; };
 		BFC6F7B81F435BC500221B96 /* Input+Display.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC6F7B71F435BC500221B96 /* Input+Display.swift */; };
 		BFC9B7391CEFCD34008629BB /* CheatsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC9B7381CEFCD34008629BB /* CheatsViewController.swift */; };
 		BFCEA67E1D56FF640061A534 /* UIViewControllerContextTransitioning+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFCEA67D1D56FF640061A534 /* UIViewControllerContextTransitioning+Conveniences.swift */; };
@@ -182,6 +221,7 @@
 				BF45E33424D0C05A00FAE111 /* DeltaCore.framework in Embed Frameworks */,
 				BF45E32B24D0BDDC00FAE111 /* Roxas.framework in Embed Frameworks */,
 				BF45E33724D0C05F00FAE111 /* GBADeltaCore.framework in Embed Frameworks */,
+				BFC5FF7E24D251A6001FBC15 /* Harmony.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -189,7 +229,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0CC18918A608862032EFF712 /* Pods_DeltaMac.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DeltaMac.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		151B513189F806F4F5E68DDD /* Pods-DeltaMac.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DeltaMac.release.xcconfig"; path = "Pods/Target Support Files/Pods-DeltaMac/Pods-DeltaMac.release.xcconfig"; sourceTree = "<group>"; };
 		22506DA00971C4300AF90A35 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6363F4007830F4C22A365923 /* Pods-DeltaMac.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DeltaMac.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DeltaMac/Pods-DeltaMac.debug.xcconfig"; sourceTree = "<group>"; };
 		A19FF50F55441BC2B2248241 /* Pods-Delta.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Delta.release.xcconfig"; path = "Pods/Target Support Files/Pods-Delta/Pods-Delta.release.xcconfig"; sourceTree = "<group>"; };
 		BF02D5D91DDEBB3000A5E131 /* openvgdb.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = openvgdb.sqlite; sourceTree = "<group>"; };
 		BF0418131D01E93400E85BCF /* GBADeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = GBADeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -334,6 +377,11 @@
 		BFC134E01AAD82460087AD7B /* SNESDeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SNESDeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFC1F2CB22F9515F00606A45 /* CopyDeepLinkActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyDeepLinkActivity.swift; sourceTree = "<group>"; };
 		BFC3627F21ADE2BA00EF2BE6 /* UIAlertController+Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIAlertController+Error.swift"; sourceTree = "<group>"; };
+		BFC5FF7324D23CA2001FBC15 /* Delta.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Delta.entitlements; sourceTree = "<group>"; };
+		BFC5FF7C24D251A6001FBC15 /* Harmony.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Harmony.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BFC5FF9824D25305001FBC15 /* DeltaMac-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DeltaMac-Bridging-Header.h"; sourceTree = "<group>"; };
+		BFC5FF9924D25305001FBC15 /* TestClass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestClass.h; sourceTree = "<group>"; };
+		BFC5FF9A24D25305001FBC15 /* TestClass.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestClass.m; sourceTree = "<group>"; };
 		BFC6F7B71F435BC500221B96 /* Input+Display.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Input+Display.swift"; sourceTree = "<group>"; };
 		BFC9B7381CEFCD34008629BB /* CheatsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheatsViewController.swift; sourceTree = "<group>"; };
 		BFCEA67D1D56FF640061A534 /* UIViewControllerContextTransitioning+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewControllerContextTransitioning+Conveniences.swift"; sourceTree = "<group>"; };
@@ -393,6 +441,8 @@
 				BF45E33324D0C05A00FAE111 /* DeltaCore.framework in Frameworks */,
 				BF45E32A24D0BDDC00FAE111 /* Roxas.framework in Frameworks */,
 				BF45E33624D0C05F00FAE111 /* GBADeltaCore.framework in Frameworks */,
+				BFC5FF7D24D251A6001FBC15 /* Harmony.framework in Frameworks */,
+				66B8AB8393A671FD85EFB5F4 /* Pods_DeltaMac.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -421,16 +471,12 @@
 				BF7AE8091C2E8C7600B1B5BC /* UIColor+Delta.swift */,
 				BFCEA67D1D56FF640061A534 /* UIViewControllerContextTransitioning+Conveniences.swift */,
 				BF13A7571D5D2FD9000BB055 /* EmulatorCore+Cheats.swift */,
-				BF6866161DCAC8B900BF2D06 /* ControllerSkin+Configuring.swift */,
 				BF59428F1E09BD1A0051894B /* NSFetchedResultsController+Conveniences.h */,
 				BF5942901E09BD1A0051894B /* NSFetchedResultsController+Conveniences.m */,
-				BF5942911E09BD1A0051894B /* NSManagedObject+Conveniences.swift */,
-				BF5942921E09BD1A0051894B /* NSManagedObjectContext+Conveniences.swift */,
 				BF18B61E1E2985F900F70067 /* UIAlertController+Importing.swift */,
 				BFC6F7B71F435BC500221B96 /* Input+Display.swift */,
 				BF6424841F5CBDC900D6AB44 /* UIView+ParentViewController.swift */,
 				BFC3627F21ADE2BA00EF2BE6 /* UIAlertController+Error.swift */,
-				BF1F45AC21AF57BA00EF9895 /* HarmonyMetadataKey+Keys.swift */,
 				BFFBD3D8224A0756002EFC79 /* URL+ExtendedAttributes.swift */,
 				BF647A6922FB8FCE0061D76D /* Bundle+SwizzleBundleID.swift */,
 				BFD1EF3F2336BD8800D197CF /* UIDevice+Processor.swift */,
@@ -702,6 +748,7 @@
 		BF9F4FCD1AAD7B25004C9500 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BFC5FF7C24D251A6001FBC15 /* Harmony.framework */,
 				BF45E33524D0C05F00FAE111 /* GBADeltaCore.framework */,
 				BF45E33224D0C05A00FAE111 /* DeltaCore.framework */,
 				BF45E32924D0BDDC00FAE111 /* Roxas.framework */,
@@ -738,6 +785,7 @@
 				BFC134E01AAD82460087AD7B /* SNESDeltaCore.framework */,
 				22506DA00971C4300AF90A35 /* Pods.framework */,
 				DC866E433B3BA9AE18ABA1EC /* libPods-Delta.a */,
+				0CC18918A608862032EFF712 /* Pods_DeltaMac.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -745,7 +793,6 @@
 		BFAA1FEB1B8AA4E800495943 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-				BFAA1FEC1B8AA4FA00495943 /* Settings.swift */,
 				BF5E7F451B9A652600AE44F8 /* Settings.storyboard */,
 				BF5E7F431B9A650B00AE44F8 /* SettingsViewController.swift */,
 				BFB3645723245A6000CD0EB1 /* LicensesViewController.swift */,
@@ -773,6 +820,8 @@
 			children = (
 				BF45E32624D0BD7100FAE111 /* DeltaMac.entitlements */,
 				BFB8629C24D0BD140000B560 /* AppDelegate.swift */,
+				BFC5FF9924D25305001FBC15 /* TestClass.h */,
+				BFC5FF9A24D25305001FBC15 /* TestClass.m */,
 				BFB8629E24D0BD140000B560 /* SceneDelegate.swift */,
 				BF45E33A24D0E15E00FAE111 /* GameSceneDelegate.swift */,
 				BFFBB00124CBE4730028C0E7 /* ContentView.swift */,
@@ -786,6 +835,7 @@
 				BFB862A724D0BD140000B560 /* LaunchScreen.storyboard */,
 				BFB862AA24D0BD140000B560 /* Info.plist */,
 				BFB862A424D0BD140000B560 /* Preview Content */,
+				BFC5FF9824D25305001FBC15 /* DeltaMac-Bridging-Header.h */,
 			);
 			path = DeltaMac;
 			sourceTree = "<group>";
@@ -796,6 +846,38 @@
 				BFB862A524D0BD140000B560 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		BFC5FF7424D25022001FBC15 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				BF525EE61FF5F355004AA849 /* Deep Linking */,
+				BFC5FFA224D25644001FBC15 /* Settings */,
+				BF930FFB1EB6D6EC00E8DBA0 /* Systems */,
+				BFC5FF9524D25298001FBC15 /* Extensions */,
+				BF59428C1E09BCE50051894B /* Importing */,
+				BF59426C1E09BC450051894B /* Database */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		BFC5FF9524D25298001FBC15 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				BF5942911E09BD1A0051894B /* NSManagedObject+Conveniences.swift */,
+				BF5942921E09BD1A0051894B /* NSManagedObjectContext+Conveniences.swift */,
+				BF6866161DCAC8B900BF2D06 /* ControllerSkin+Configuring.swift */,
+				BF1F45AC21AF57BA00EF9895 /* HarmonyMetadataKey+Keys.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		BFC5FFA224D25644001FBC15 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				BFAA1FEC1B8AA4FA00495943 /* Settings.swift */,
+			);
+			path = Settings;
 			sourceTree = "<group>";
 		};
 		BFC9B7371CEFCD08008629BB /* Cheats */ = {
@@ -863,6 +945,7 @@
 		BFFA71CE1AAC406100EE9DD1 = {
 			isa = PBXGroup;
 			children = (
+				BFC5FF7424D25022001FBC15 /* Shared */,
 				BFFA71D91AAC406100EE9DD1 /* Delta */,
 				BFB8629B24D0BD140000B560 /* DeltaMac */,
 				BFFBAFFE24CBE4730028C0E7 /* DeltaMacLegacy */,
@@ -885,6 +968,7 @@
 		BFFA71D91AAC406100EE9DD1 /* Delta */ = {
 			isa = PBXGroup;
 			children = (
+				BFC5FF7324D23CA2001FBC15 /* Delta.entitlements */,
 				BFFA71DC1AAC406100EE9DD1 /* AppDelegate.swift */,
 				BFFA71E01AAC406100EE9DD1 /* Main.storyboard */,
 				BFFC46211D59848000AF2CC6 /* Launch */,
@@ -892,11 +976,7 @@
 				BFFB709D1AF99ACA00DE56FE /* Emulation */,
 				BF7AE7FA1C2E851F00B1B5BC /* Pause Menu */,
 				BFAA1FEB1B8AA4E800495943 /* Settings */,
-				BF59426C1E09BC450051894B /* Database */,
 				BFAB9F7B219A43270080EC7D /* Syncing */,
-				BF59428C1E09BCE50051894B /* Importing */,
-				BF930FFB1EB6D6EC00E8DBA0 /* Systems */,
-				BF525EE61FF5F355004AA849 /* Deep Linking */,
 				BF5942571E09BB5D0051894B /* Components */,
 				BF696B7E1D9B2AE6009639E0 /* Theming */,
 				BF090CEE1B490C1A00DCAB45 /* Extensions */,
@@ -973,6 +1053,8 @@
 			children = (
 				C786AF1D2DDB6223BE2063CC /* Pods-Delta.debug.xcconfig */,
 				A19FF50F55441BC2B2248241 /* Pods-Delta.release.xcconfig */,
+				6363F4007830F4C22A365923 /* Pods-DeltaMac.debug.xcconfig */,
+				151B513189F806F4F5E68DDD /* Pods-DeltaMac.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -984,10 +1066,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = BFB862AB24D0BD140000B560 /* Build configuration list for PBXNativeTarget "DeltaMac" */;
 			buildPhases = (
+				38106EA6221824F7E9436451 /* [CP] Check Pods Manifest.lock */,
 				BFB8629624D0BD140000B560 /* Sources */,
 				BFB8629724D0BD140000B560 /* Frameworks */,
 				BFB8629824D0BD140000B560 /* Resources */,
 				BF45E32C24D0BDDC00FAE111 /* Embed Frameworks */,
+				B154487EC4138C08FB690450 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1037,6 +1121,7 @@
 					BFB8629924D0BD140000B560 = {
 						CreatedOnToolsVersion = 12.0;
 						DevelopmentTeam = 6XVY5G3U44;
+						LastSwiftMigration = 1200;
 						ProvisioningStyle = Automatic;
 					};
 					BFFA71D61AAC406100EE9DD1 = {
@@ -1120,7 +1205,6 @@
 				"${PODS_ROOT}/../External/Harmony/Harmony/Model/Core Data/Harmony.xcdatamodeld",
 				"${PODS_ROOT}/../External/Harmony/Harmony/Model/Core Data/Migrations/HarmonyToHarmony2.xcmappingmodel",
 				"${PODS_CONFIGURATION_BUILD_DIR}/MelonDSDeltaCore/melonDS.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/N64DeltaCore/Mupen64Plus.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/NESDeltaCore/NESDeltaCore.bundle",
 				"${PODS_ROOT}/../External/Roxas/Roxas/RSTCollectionViewCell.xib",
 				"${PODS_ROOT}/../External/Roxas/Roxas/RSTPlaceholderView.xib",
@@ -1135,7 +1219,6 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Harmony.momd",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/HarmonyToHarmony2.cdm",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/melonDS.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Mupen64Plus.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/NESDeltaCore.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/RSTCollectionViewCell.nib",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/RSTPlaceholderView.nib",
@@ -1144,6 +1227,46 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Delta/Pods-Delta-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		38106EA6221824F7E9436451 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-DeltaMac-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B154487EC4138C08FB690450 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-DeltaMac/Pods-DeltaMac-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/SQLite.swift-framework/SQLite.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SQLite.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DeltaMac/Pods-DeltaMac-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		BF14D8981DE7A519002CA1BE /* mogenerator */ = {
@@ -1199,16 +1322,52 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BFC5FFA024D25608001FBC15 /* ControllerSkin+Configuring.swift in Sources */,
+				BFC5FF8524D2527A001FBC15 /* GameMetadata.swift in Sources */,
+				BFC5FF8624D2527A001FBC15 /* Cheat.swift in Sources */,
+				BFC5FF8924D2527A001FBC15 /* GameSave.swift in Sources */,
+				BFC5FFA124D2562E001FBC15 /* Settings.swift in Sources */,
+				BFC5FF8124D2527A001FBC15 /* GamesDatabase.swift in Sources */,
+				BFC5FF8724D2527A001FBC15 /* Game.swift in Sources */,
+				BFC5FF9324D2527A001FBC15 /* _GameCollection.swift in Sources */,
+				BFC5FF9B24D25305001FBC15 /* TestClass.m in Sources */,
 				BF45E33024D0C03900FAE111 /* GameCollectionView.swift in Sources */,
-				BF45E32F24D0C03100FAE111 /* System.swift in Sources */,
+				BFC5FF7524D25092001FBC15 /* DatabaseManager.swift in Sources */,
+				BFC5FFA324D25699001FBC15 /* DeepLinkController.swift in Sources */,
+				BFC5FF9124D2527A001FBC15 /* _ControllerSkin.swift in Sources */,
 				BF45E33824D0CE4A00FAE111 /* ContentView.swift in Sources */,
+				BFC5FF7624D250B8001FBC15 /* GamesDatabaseImportOption.swift in Sources */,
+				BFC5FF7724D250B8001FBC15 /* ImportController.swift in Sources */,
+				BFC5FF7924D250B8001FBC15 /* ClipboardImportOption.swift in Sources */,
 				BFB8629D24D0BD140000B560 /* AppDelegate.swift in Sources */,
 				BFB8629F24D0BD140000B560 /* SceneDelegate.swift in Sources */,
+				BFC5FF8324D2527A001FBC15 /* GameControllerInputMappingMigrationPolicy.swift in Sources */,
+				BFC5FF8824D2527A001FBC15 /* GameControllerInputMapping.swift in Sources */,
 				BF45E33B24D0E15E00FAE111 /* GameSceneDelegate.swift in Sources */,
+				BFC5FF8424D2527A001FBC15 /* _Game.swift in Sources */,
+				BFC5FF9024D2527A001FBC15 /* _GameControllerInputMapping.swift in Sources */,
+				BFC5FF8D24D2527A001FBC15 /* GameControllerInputMappingTransformer.swift in Sources */,
+				BFC5FF8F24D2527A001FBC15 /* _GameSave.swift in Sources */,
 				BF45E33924D0CF1200FAE111 /* SidebarView.swift in Sources */,
+				BFC5FF8A24D2527A001FBC15 /* SaveState.swift in Sources */,
+				BFC5FF8224D2527A001FBC15 /* GameCollection.swift in Sources */,
+				BFC5FF9D24D253E3001FBC15 /* System.swift in Sources */,
+				BFC5FF9724D252AE001FBC15 /* NSManagedObjectContext+Conveniences.swift in Sources */,
+				BFC5FFA424D25699001FBC15 /* CopyDeepLinkActivity.swift in Sources */,
+				BFC5FF9224D2527A001FBC15 /* _SaveState.swift in Sources */,
+				BFC5FF8B24D2527A001FBC15 /* _Cheat.swift in Sources */,
 				BF45E32E24D0C02A00FAE111 /* Sidebar.swift in Sources */,
+				BFC5FF8024D2526A001FBC15 /* Delta.xcdatamodeld in Sources */,
 				BF45E32824D0BD8D00FAE111 /* RootViewController.swift in Sources */,
+				BFC5FF7B24D250B8001FBC15 /* ImportOption.swift in Sources */,
+				BFC5FF9624D252AE001FBC15 /* NSManagedObject+Conveniences.swift in Sources */,
+				BFC5FF8E24D2527A001FBC15 /* ControllerSkin.swift in Sources */,
+				BFC5FF7824D250B8001FBC15 /* PhotoLibraryImportOption.swift in Sources */,
 				BF45E33124D0C03D00FAE111 /* GameView.swift in Sources */,
+				BFC5FF9F24D254BD001FBC15 /* HarmonyMetadataKey+Keys.swift in Sources */,
+				BFC5FF7A24D250B8001FBC15 /* iTunesImportOption.swift in Sources */,
+				BFC5FF7F24D2526A001FBC15 /* PreviousHarmony.xcdatamodeld in Sources */,
+				BFC5FFA524D25699001FBC15 /* DeepLink.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1397,12 +1556,14 @@
 		};
 		BFB862AC24D0BD140000B560 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6363F4007830F4C22A365923 /* Pods-DeltaMac.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
@@ -1423,6 +1584,8 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OBJC_BRIDGING_HEADER = "DeltaMac/DeltaMac-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,6";
 			};
@@ -1430,12 +1593,14 @@
 		};
 		BFB862AD24D0BD140000B560 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 151B513189F806F4F5E68DDD /* Pods-DeltaMac.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
@@ -1453,6 +1618,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.rileytestut.DeltaMac;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "DeltaMac/DeltaMac-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,6";
 			};
@@ -1577,6 +1743,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_MODULES_AUTOLINK = NO;
+				CODE_SIGN_ENTITLEMENTS = Delta/Delta.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
@@ -1591,10 +1758,12 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				STRIP_INSTALLED_PRODUCT = YES;
 				STRIP_STYLE = "non-global";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = BETA;
 				SWIFT_OBJC_BRIDGING_HEADER = "Delta/Supporting Files/Delta-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -1605,6 +1774,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_MODULES_AUTOLINK = NO;
+				CODE_SIGN_ENTITLEMENTS = Delta/Delta.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
@@ -1619,9 +1789,11 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				STRIP_INSTALLED_PRODUCT = YES;
 				STRIP_STYLE = "non-global";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "Delta/Supporting Files/Delta-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

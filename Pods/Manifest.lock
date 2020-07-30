@@ -44,14 +44,6 @@ PODS:
     - SwiftyDropbox (~> 5.0.0)
   - MelonDSDeltaCore (0.1):
     - DeltaCore
-  - N64DeltaCore (0.1):
-    - DeltaCore
-    - N64DeltaCore/RSP (= 0.1)
-    - N64DeltaCore/Video (= 0.1)
-  - N64DeltaCore/RSP (0.1):
-    - DeltaCore
-  - N64DeltaCore/Video (0.1):
-    - DeltaCore
   - NESDeltaCore (0.1):
     - DeltaCore
   - Roxas (0.1)
@@ -76,7 +68,6 @@ DEPENDENCIES:
   - GBCDeltaCore (from `Cores/GBCDeltaCore`)
   - Harmony (from `External/Harmony`)
   - MelonDSDeltaCore (from `Cores/MelonDSDeltaCore`)
-  - N64DeltaCore (from `Cores/N64DeltaCore`)
   - NESDeltaCore (from `Cores/NESDeltaCore`)
   - Roxas (from `External/Roxas`)
   - SDWebImage (~> 3.8)
@@ -110,8 +101,6 @@ EXTERNAL SOURCES:
     :path: External/Harmony
   MelonDSDeltaCore:
     :path: Cores/MelonDSDeltaCore
-  N64DeltaCore:
-    :path: Cores/N64DeltaCore
   NESDeltaCore:
     :path: Cores/NESDeltaCore
   Roxas:
@@ -132,7 +121,6 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: 6f5c8abbab8a9bce4bb3f057e317728ec6182b10
   Harmony: cea514db17c41c22f78f54b17d2135935b5e9b96
   MelonDSDeltaCore: d6e0953bd475a17848964b4fc48bf0e838617984
-  N64DeltaCore: 7d176e01443fa138bdfc79ad908c78f271f3e0a7
   NESDeltaCore: 41ab438dd78d51d4636aacb7d9a7336ea3d4728c
   Roxas: 1990039f843f5dc284918dc82375feb80020ef62
   SDWebImage: a72e880a8fe0f7fc31efe15aaed443c074d2a80c
@@ -142,6 +130,6 @@ SPEC CHECKSUMS:
   SwiftyDropbox: 378b4425a2e8d0cb24c7b0f2e3af72bfbaaf1e73
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: 3efb19fc2f2289c664c431ba6f5d0fb387589337
+PODFILE CHECKSUM: 27111874f6d74ac6b542b29744942954e10a9c57
 
 COCOAPODS: 1.9.3

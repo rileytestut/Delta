@@ -139,7 +139,7 @@ extension PreviewGameViewController
         
         guard
             let rawValue = change?[.oldKey] as? Int,
-            let previousState = EmulatorCore.State(rawValue: rawValue),
+            let previousState = EmulatorCore.EmulatorCoreState(rawValue: rawValue),
             let state = self.emulatorCore?.state
         else { return }
         

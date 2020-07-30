@@ -9,6 +9,8 @@
 import UIKit
 import SwiftUI
 
+import GBADeltaCore
+
 class GameSceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?

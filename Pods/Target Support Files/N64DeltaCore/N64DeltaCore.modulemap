@@ -1,6 +1,0 @@
-module N64DeltaCore {
-  umbrella header "N64DeltaCore-umbrella.h"
-
-  export *
-  module * { export * }
-}
