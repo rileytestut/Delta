@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 extension Notification.Name
 {

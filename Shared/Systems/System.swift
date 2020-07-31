@@ -8,23 +8,15 @@
 
 import DeltaCore
 
-//import SNESDeltaCore
+import SNESDeltaCore
 import GBADeltaCore
-//import GBCDeltaCore
-//import NESDeltaCore
+import GBCDeltaCore
+import NESDeltaCore
 ////import N64DeltaCore
-//import MelonDSDeltaCore
+import MelonDSDeltaCore
 
 // Legacy Cores
 //import struct DSDeltaCore.DS
-
-extension GameType
-{
-    static let nes = GameType("nes")
-    static let snes = GameType("snes")
-    static let n64 = GameType("n64")
-    static let gbc = GameType("gbc")
-}
 
 enum System: CaseIterable, Identifiable, Comparable
 {
@@ -41,11 +33,7 @@ enum System: CaseIterable, Identifiable, Comparable
     }
     
     static var allCores: [DeltaCoreProtocol] {
-        #if targetEnvironment(macCatalyst)
-        return [GBA.core]
-        #else
         return [NES.core, SNES.core, /*N64.core, */ GBC.core, GBA.core, /*DS.core,*/ MelonDS.core]
-        #endif
     }
     
     var id: System {
@@ -138,11 +126,6 @@ extension System
 
 extension System
 {
-    #if targetEnvironment(macCatalyst)
-    var deltaCore: DeltaCoreProtocol {
-        return GBA.core
-    }
-    #else
     var deltaCore: DeltaCoreProtocol {
         switch self
         {
@@ -154,7 +137,6 @@ extension System
         case .ds: return Settings.preferredCore(for: .ds) ?? MelonDS.core
         }
     }
-    #endif
     
     var gameType: DeltaCore.GameType {
         switch self

@@ -44,11 +44,11 @@ extension DatabaseManager
     }
 }
 
-final class DatabaseManager: RSTPersistentContainer
+final class DatabaseManager: RSTPersistentContainer, ObservableObject
 {
     static let shared = DatabaseManager()
     
-    private(set) var isStarted = false
+    @Published private(set) var isStarted = false
     
     private var gamesDatabase: GamesDatabase? = nil
     
@@ -86,7 +86,9 @@ extension DatabaseManager
             guard error == nil else { return completionHandler(error) }
             
             self.prepareDatabase {
-                self.isStarted = true
+                DispatchQueue.main.async {
+                    self.isStarted = true
+                }
                 
                 NotificationCenter.default.post(name: DatabaseManager.didStartNotification, object: self)
                 
@@ -217,7 +219,7 @@ private extension DatabaseManager
             }
             catch
             {
-                print(error)
+                print("Games Database error:", error)
             }
             
             completion()
@@ -314,6 +316,8 @@ extension DatabaseManager
                 {
                     let destinationURL = DatabaseManager.gamesDirectoryURL.appendingPathComponent(filename)
                     
+                    #if !targetEnvironment(macCatalyst)
+                    
                     if FileManager.default.fileExists(atPath: destinationURL.path)
                     {
                         // Game already exists, so we choose not to override it and just delete the new game instead
@@ -323,6 +327,16 @@ extension DatabaseManager
                     {
                         try FileManager.default.moveItem(at: url, to: destinationURL)
                     }
+                    
+                    #else
+                    
+                    if !FileManager.default.fileExists(atPath: destinationURL.path)
+                    {
+                        // Game already exists, so we choose not to override it and just delete the new game instead
+                        try FileManager.default.copyItem(at: url, to: destinationURL)
+                    }
+                    
+                    #endif
                     
                     identifiers.insert(game.identifier)
                 }

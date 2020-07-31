@@ -17,9 +17,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool
     {
         // Override point for customization after application launch.
-        Delta.register(GBA.core)
+        System.allCores.forEach { Delta.register($0) }
         
         ExternalGameControllerManager.shared.startMonitoring()
+        
+        DatabaseManager.shared.start { (error) in
+            print("Started database with error:", error as Any)
+        }
         
         return true
     }
@@ -28,7 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
 
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration
     {
-        if let userActivity = options.userActivities.first, userActivity.activityType == "com.rileytestut.Delta.NewGame"
+        if let userActivity = options.userActivities.first, userActivity.activityType == NSUserActivity.startGameActivityType
         {
 //            connectingSceneSession.stateRestorationActivity = userActivity
             return UISceneConfiguration(name: "Game Configuration", sessionRole: connectingSceneSession.role)

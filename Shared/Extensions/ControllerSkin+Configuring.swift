@@ -6,6 +6,8 @@
 //  Copyright © 2016 Riley Testut. All rights reserved.
 //
 
+import CoreData
+
 import DeltaCore
 
 extension ControllerSkin

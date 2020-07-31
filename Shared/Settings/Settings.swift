@@ -143,16 +143,16 @@ extension Settings
     }
     
     #if !targetEnvironment(macCatalyst)
-    static var syncingService: SyncManager.Service? {
-        get {
-            guard let syncingService = UserDefaults.standard.syncingService else { return nil }
-            return SyncManager.Service(rawValue: syncingService)
-        }
-        set {
-            UserDefaults.standard.syncingService = newValue?.rawValue
-            NotificationCenter.default.post(name: .settingsDidChange, object: nil, userInfo: [NotificationUserInfoKey.name: Name.syncingService])
-        }
-    }
+//    static var syncingService: SyncManager.Service? {
+//        get {
+//            guard let syncingService = UserDefaults.standard.syncingService else { return nil }
+//            return SyncManager.Service(rawValue: syncingService)
+//        }
+//        set {
+//            UserDefaults.standard.syncingService = newValue?.rawValue
+//            NotificationCenter.default.post(name: .settingsDidChange, object: nil, userInfo: [NotificationUserInfoKey.name: Name.syncingService])
+//        }
+//    }
     #endif
     
     static var isButtonHapticFeedbackEnabled: Bool {

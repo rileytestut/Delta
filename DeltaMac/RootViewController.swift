@@ -33,6 +33,7 @@ class RootViewController: UIViewController
 
         self.childSplitViewController = UISplitViewController(style: .doubleColumn)
         self.childSplitViewController.preferredSplitBehavior = .tile
+        self.childSplitViewController.preferredDisplayMode = .oneBesideSecondary
         self.childSplitViewController.primaryBackgroundStyle = .sidebar
         
         let primaryViewController = SidebarView.ViewController(system: systemBinding)
@@ -42,7 +43,7 @@ class RootViewController: UIViewController
 //        let primaryViewController = UITableViewController()
         self.childSplitViewController.setViewController(primaryViewController, for: .primary)
         
-        let secondaryViewController = UIHostingController(rootView: self.gameCollectionView)
+        let secondaryViewController = UIHostingController(rootView: self.gameCollectionView.environmentObject(DatabaseManager.shared))
 //            let secondaryViewController = UIViewController()
 //        navigationController2.navigationBar.isHidden = true
         self.childSplitViewController.setViewController(secondaryViewController, for: .secondary)
@@ -60,7 +61,9 @@ private extension RootViewController
         if self.gameCollectionView.system != self.system
         {
             self.gameCollectionView = GameCollectionView(system: self.system)
-            self.childSplitViewController.setViewController(UIHostingController(rootView: self.gameCollectionView), for: .secondary)
+            
+            let navigationController = UINavigationController(rootViewController: UIHostingController(rootView: self.gameCollectionView))
+            self.childSplitViewController.setViewController(navigationController, for: .secondary)
         }
     }
 }

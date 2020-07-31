@@ -22,10 +22,9 @@ class GameSceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         guard let userActivity = connectionOptions.userActivities.first ?? session.stateRestorationActivity else { return }
         
-        guard let filepath = userActivity.userInfo?["fileURL"] as? String else { return }
-        let fileURL = URL(fileURLWithPath: filepath)
-        
-        let game = Game(name: "Pokemon Emerald", type: .gba, fileURL: fileURL)
+        guard let identifier = userActivity.userInfo?["identifier"] as? String else { return }
+
+        let game = Game.instancesWithPredicate(NSPredicate(format: "%K == %@", #keyPath(Game.identifier), identifier), inManagedObjectContext: DatabaseManager.shared.viewContext, type: Game.self).first!
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
@@ -43,14 +42,16 @@ class GameSceneDelegate: UIResponder, UIWindowSceneDelegate {
         window.makeKeyAndVisible()
         self.window = window
         
+        #if targetEnvironment(macCatalyst)
         windowScene.title = game.name
         windowScene.titlebar?.titleVisibility = .visible
         windowScene.titlebar?.separatorStyle = .none
         windowScene.titlebar?.toolbarStyle = .unifiedCompact
                 
-        let identifier = NSToolbar.Identifier("com.example.apple-samplecode.toolbar")
-        windowScene.titlebar?.toolbar = NSToolbar(identifier: identifier)
+        let identifier2 = NSToolbar.Identifier("com.example.apple-samplecode.toolbar")
+        windowScene.titlebar?.toolbar = NSToolbar(identifier: identifier2)
         windowScene.titlebar?.autoHidesToolbarInFullScreen = true
+        #endif
 //        windowScene.titlebar.t
 //        windowScene.titlebar?.toolbar?.delegate = self
     }

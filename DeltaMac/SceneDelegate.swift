@@ -78,8 +78,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
     }
-
-
 }
 
 #if targetEnvironment(macCatalyst)
@@ -88,12 +86,12 @@ extension SceneDelegate: NSToolbarDelegate
 {
     func toolbarAllowedItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier]
     {
-        return [.importGame]
+        return [.flexibleSpace, .importGame]
     }
     
     func toolbarDefaultItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier]
     {
-        return [.importGame]
+        return [.flexibleSpace, .importGame]
     }
     
     func toolbar(
@@ -101,8 +99,10 @@ extension SceneDelegate: NSToolbarDelegate
         itemForItemIdentifier itemIdentifier: NSToolbarItem.Identifier,
         willBeInsertedIntoToolbar flag: Bool) -> NSToolbarItem? {
         
-        let barButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: nil, action: nil)
-        var toolbarItem: NSToolbarItem = NSToolbarItem(itemIdentifier: itemIdentifier, barButtonItem: barButtonItem)
+        guard itemIdentifier == .importGame else { return nil }
+        
+        let barButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(importGame))
+        let toolbarItem: NSToolbarItem = NSToolbarItem(itemIdentifier: itemIdentifier, barButtonItem: barButtonItem)
         
         /**Create a new NSToolbarItem, and then go through the process of setting up its
         attributes from the master toolbar item matching that identifier in the dictionary of items.
@@ -126,6 +126,29 @@ extension SceneDelegate: NSToolbarDelegate
 //        }
         
         return toolbarItem
+    }
+    
+    @objc func importGame()
+    {
+        let documentPicker = UIDocumentPickerViewController(forOpeningContentTypes: [.deltaGame], asCopy: true)
+        documentPicker.delegate = self
+        documentPicker.allowsMultipleSelection = true
+        self.window?.rootViewController?.present(documentPicker, animated: true, completion: nil)
+    }
+}
+
+extension SceneDelegate: UIDocumentPickerDelegate
+{
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL])
+    {
+        DatabaseManager.shared.importGames(at: Set(urls)) { (games, errors) in
+            print("Imported games: \(games). Errors: \(errors)")
+        }
+    }
+    
+    func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController)
+    {
+        controller.dismiss(animated: true, completion: nil)
     }
 }
 
