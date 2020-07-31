@@ -1852,7 +1852,6 @@
 					"-fstrict-aliasing",
 					"-DHAVE_STDINT_H",
 					"-DARM",
-					"-DSTATIC_LIBRARY=1",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" -DDEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.rileytestut.Delta;
@@ -1935,7 +1934,6 @@
 					"-fstrict-aliasing",
 					"-DHAVE_STDINT_H",
 					"-DARM",
-					"-DSTATIC_LIBRARY=1",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" -DIMPACTOR";
 				PRODUCT_BUNDLE_IDENTIFIER = com.rileytestut.Delta;

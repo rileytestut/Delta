@@ -1,7 +1,7 @@
 CONFIGURATION_BUILD_DIR = ${PODS_CONFIGURATION_BUILD_DIR}/SNESDeltaCore
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
 HEADER_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/Headers/Private" "${PODS_ROOT}/Headers/Private/SNESDeltaCore" "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/SNESDeltaCore" "${PODS_CONFIGURATION_BUILD_DIR}"
-OTHER_CFLAGS = $(inherited) -fmodule-map-file="${PODS_CONFIGURATION_BUILD_DIR}/DeltaCore/DeltaCore.modulemap" -fmodule-map-file="${PODS_CONFIGURATION_BUILD_DIR}/ZIPFoundation/ZIPFoundation.modulemap" -funsigned-char -ffast-math -finline -fno-builtin -fno-common -fomit-frame-pointer -funroll-loops -fstrict-aliasing -DHAVE_STDINT_H -DARM
+OTHER_CFLAGS = $(inherited) -fmodule-map-file="${PODS_CONFIGURATION_BUILD_DIR}/DeltaCore/DeltaCore.modulemap" -fmodule-map-file="${PODS_CONFIGURATION_BUILD_DIR}/ZIPFoundation/ZIPFoundation.modulemap" -funsigned-char -ffast-math -finline -fno-builtin -fno-common -fomit-frame-pointer -funroll-loops -fstrict-aliasing -DHAVE_STDINT_H -DARM -DSTATIC_LIBRARY=1
 OTHER_SWIFT_FLAGS = $(inherited) -D COCOAPODS -Xcc -fmodule-map-file="${PODS_CONFIGURATION_BUILD_DIR}/DeltaCore/DeltaCore.modulemap" -Xcc -fmodule-map-file="${PODS_CONFIGURATION_BUILD_DIR}/ZIPFoundation/ZIPFoundation.modulemap" -suppress-warnings -import-underlying-module -Xcc -fmodule-map-file="${SRCROOT}/${MODULEMAP_FILE}"
 PODS_BUILD_DIR = ${BUILD_DIR}
 PODS_CONFIGURATION_BUILD_DIR = ${PODS_BUILD_DIR}/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)
