@@ -632,6 +632,11 @@ extension DatabaseManager
         let artworkURL = gameURL.deletingPathExtension().appendingPathExtension("jpg")
         return artworkURL
     }
+    
+    class var sharedDirectory: URL?
+    {
+        return FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.rileytestut.Delta")
+    }
 }
 
 //MARK: - Notifications -

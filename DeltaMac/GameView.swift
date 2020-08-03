@@ -9,7 +9,7 @@
 import SwiftUI
 import DeltaCore
 
-struct GameView: UIViewControllerRepresentable
+private struct _GameView: UIViewControllerRepresentable
 {
     typealias UIViewControllerType = GameViewController
     
@@ -29,9 +29,24 @@ struct GameView: UIViewControllerRepresentable
     
     func updateUIViewController(_ gameViewController: GameViewController, context: Context)
     {
-        guard gameViewController.game?.fileURL != self.game?.fileURL else { return }
+        guard gameViewController.game?.fileURL != self.game?.sharedFileURL else { return }
+        guard let sharedGameURL = self.game?.sharedFileURL else { return }
         
-        gameViewController.game = self.game
+        struct MyGame: GameProtocol
+        {
+            var fileURL: URL
+            
+            var type: GameType
+        }
+        
+        if let game = self.game
+        {
+            gameViewController.game = MyGame(fileURL: sharedGameURL, type: game.type)
+        }
+        else
+        {
+            gameViewController.game = nil
+        }        
         
         if let emulatorBridge = self.emulatorBridge
         {
@@ -48,6 +63,23 @@ struct GameView: UIViewControllerRepresentable
         {
             keyboardController.addReceiver(gameViewController)
             keyboardController.addReceiver(emulatorCore)
+        }
+        
+        gameViewController.view.setNeedsLayout()
+    }
+}
+
+struct GameView: View
+{
+    var game: Game?
+    var emulatorBridge: EmulatorBridging?
+    
+    var body: some View {
+        ZStack {
+            Color.black
+                .edgesIgnoringSafeArea(.all)
+            
+            _GameView(game: game, emulatorBridge: emulatorBridge)
         }
     }
 }

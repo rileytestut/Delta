@@ -130,7 +130,7 @@ extension SceneDelegate: NSToolbarDelegate
     
     @objc func importGame()
     {
-        let documentPicker = UIDocumentPickerViewController(forOpeningContentTypes: [.deltaGame], asCopy: true)
+        let documentPicker = UIDocumentPickerViewController(forOpeningContentTypes: [.deltaGameGBA], asCopy: true)
         documentPicker.delegate = self
         documentPicker.allowsMultipleSelection = true
         self.window?.rootViewController?.present(documentPicker, animated: true, completion: nil)

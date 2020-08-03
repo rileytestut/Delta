@@ -13,8 +13,10 @@ import UniformTypeIdentifiers
 extension UTType
 {
     static let deltaGame = UTType(exportedAs: "com.rileytestut.delta.game")
-    static let deltaGameGBA = UTType(exportedAs: "com.rileytestut.delta.game.gba", conformingTo: .deltaGame)
+//    static let deltaGameGBA = UTType(exportedAs: "com.rileytestut.delta.game.gba", conformingTo: .deltaGame)
     static let deltaGameGBC = UTType(exportedAs: "com.rileytestut.delta.game.gbc", conformingTo: .deltaGame)
+    
+    static let deltaGameGBA = UTType(filenameExtension: "gba")!
 }
 
 struct GameCell: View
@@ -99,8 +101,19 @@ struct InternalView: View
 
     private func start(_ game: Game)
     {
-        UIApplication.shared.requestSceneSessionActivation(nil, userActivity: game.startGameActivity, options: nil) { (error) in
-            print("Failed to open new window:", error)
+        guard let sharedGameURL = game.sharedFileURL else { return }
+        
+        do
+        {
+            try FileManager.default.copyItem(at: game.fileURL, to: sharedGameURL, shouldReplace: true)
+            
+            UIApplication.shared.requestSceneSessionActivation(nil, userActivity: game.startGameActivity, options: nil) { (error) in
+                print("Failed to open new window:", error)
+            }
+        }
+        catch
+        {
+            print("Error copying game for emulation:", error)
         }
     }
     
@@ -131,6 +144,9 @@ struct GameCollectionView: View
     @State
     var isDeleting: Bool = false
     
+    @StateObject
+    var remoteProcess: RemoteProcess = RemoteProcess()
+    
     init(system: System?)
     {
         self.system = system
@@ -156,6 +172,10 @@ struct GameCollectionView: View
                     ZStack {
                         Text("No System Selected")
                             .font(.title)
+                        
+                        Button(action: startProcess) {
+                            Text("Start Remote Process")
+                        }
                     }
                 }
             }
@@ -175,7 +195,7 @@ struct GameCollectionView: View
     
     private func importGame()
     {
-        importFiles(multipleOfType: [.deltaGame]) { (result) in
+        importFiles(multipleOfType: [.deltaGame, .deltaGameGBA]) { (result) in
             guard let result = result else { return }
             
             do
@@ -190,6 +210,11 @@ struct GameCollectionView: View
                 print("Failed to import game:", error)
             }
         }
+    }
+    
+    private func startProcess()
+    {
+        self.remoteProcess.connect()
     }
 }
 

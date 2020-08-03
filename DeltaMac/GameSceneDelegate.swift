@@ -22,6 +22,8 @@ class GameSceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         guard let userActivity = connectionOptions.userActivities.first ?? session.stateRestorationActivity else { return }
         
+        session.stateRestorationActivity = userActivity
+        
         guard let identifier = userActivity.userInfo?["identifier"] as? String else { return }
 
         let game = Game.instancesWithPredicate(NSPredicate(format: "%K == %@", #keyPath(Game.identifier), identifier), inManagedObjectContext: DatabaseManager.shared.viewContext, type: Game.self).first!
@@ -31,11 +33,7 @@ class GameSceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 //        let rootViewController = UIHostingController(rootView: ContentView())
 //        rootViewController.view.backgroundColor = .clear
-        let rootViewController = ZStack {
-            Color.black
-                .edgesIgnoringSafeArea(.all)
-            GameView(game: game)
-        }
+        let rootViewController = GameView(game: game)
 
         let window = UIWindow(windowScene: windowScene)
         window.rootViewController = UIHostingController(rootView: rootViewController)

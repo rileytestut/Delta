@@ -122,6 +122,13 @@
 		BF7AE8081C2E858400B1B5BC /* GridMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7AE8041C2E858400B1B5BC /* GridMenuViewController.swift */; };
 		BF7AE80A1C2E8C7600B1B5BC /* UIColor+Delta.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7AE8091C2E8C7600B1B5BC /* UIColor+Delta.swift */; };
 		BF80E1D21F13117000847008 /* ControllerInputsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF616A121F08184A0077F8B2 /* ControllerInputsViewController.swift */; };
+		BF82C94A24D4C20F009B4A34 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF82C94924D4C20F009B4A34 /* Media.xcassets */; };
+		BF82C94D24D4C20F009B4A34 /* ActionRequestHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = BF82C94C24D4C20F009B4A34 /* ActionRequestHandler.m */; };
+		BF82C94F24D4C20F009B4A34 /* Action.js in Resources */ = {isa = PBXBuildFile; fileRef = BF82C94E24D4C20F009B4A34 /* Action.js */; };
+		BF82C95324D4C20F009B4A34 /* DeltaXPC.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = BF82C94724D4C20F009B4A34 /* DeltaXPC.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		BF82C95A24D4C32E009B4A34 /* RemoteProcess.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF82C95924D4C32E009B4A34 /* RemoteProcess.swift */; };
+		BF82C95E24D4CAC9009B4A34 /* XPCContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF82C95D24D4CAC9009B4A34 /* XPCContainer.swift */; };
+		BF82C95F24D4CDDC009B4A34 /* XPCContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF82C95D24D4CAC9009B4A34 /* XPCContainer.swift */; };
 		BF8A333421A484A000A42FD4 /* BadgedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8A333321A484A000A42FD4 /* BadgedTableViewCell.swift */; };
 		BF8A334621A4926F00A42FD4 /* GameSyncStatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8A334521A4926F00A42FD4 /* GameSyncStatusViewController.swift */; };
 		BF8CA9361F5F651900499FDD /* PopoverMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8CA9351F5F651900499FDD /* PopoverMenuController.swift */; };
@@ -224,6 +231,16 @@
 		BFFDF04623E3D3A600931B96 /* libMupen64Plus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BFFDF04523E3D3A600931B96 /* libMupen64Plus.a */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		BF82C95124D4C20F009B4A34 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFFA71CF1AAC406100EE9DD1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BF82C94624D4C20F009B4A34;
+			remoteInfo = DeltaXPC;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXCopyFilesBuildPhase section */
 		BF45E32C24D0BDDC00FAE111 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -242,6 +259,17 @@
 				BF99FE8C24D38A83001F2472 /* SNESDeltaCore.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BF82C95524D4C20F009B4A34 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				BF82C95324D4C20F009B4A34 /* DeltaXPC.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -366,6 +394,16 @@
 		BF79966C224C075A009B094F /* N64DeltaCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = N64DeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF7AE8041C2E858400B1B5BC /* GridMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GridMenuViewController.swift; sourceTree = "<group>"; };
 		BF7AE8091C2E8C7600B1B5BC /* UIColor+Delta.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Delta.swift"; sourceTree = "<group>"; };
+		BF82C94724D4C20F009B4A34 /* DeltaXPC.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = DeltaXPC.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		BF82C94924D4C20F009B4A34 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
+		BF82C94B24D4C20F009B4A34 /* ActionRequestHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ActionRequestHandler.h; sourceTree = "<group>"; };
+		BF82C94C24D4C20F009B4A34 /* ActionRequestHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ActionRequestHandler.m; sourceTree = "<group>"; };
+		BF82C94E24D4C20F009B4A34 /* Action.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = Action.js; sourceTree = "<group>"; };
+		BF82C95024D4C20F009B4A34 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BF82C95424D4C20F009B4A34 /* DeltaXPC.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DeltaXPC.entitlements; sourceTree = "<group>"; };
+		BF82C95924D4C32E009B4A34 /* RemoteProcess.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteProcess.swift; sourceTree = "<group>"; };
+		BF82C95C24D4CAC7009B4A34 /* DeltaXPC-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DeltaXPC-Bridging-Header.h"; sourceTree = "<group>"; };
+		BF82C95D24D4CAC9009B4A34 /* XPCContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XPCContainer.swift; sourceTree = "<group>"; };
 		BF8A333321A484A000A42FD4 /* BadgedTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgedTableViewCell.swift; sourceTree = "<group>"; };
 		BF8A334521A4926F00A42FD4 /* GameSyncStatusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSyncStatusViewController.swift; sourceTree = "<group>"; };
 		BF8CA9351F5F651900499FDD /* PopoverMenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverMenuController.swift; sourceTree = "<group>"; };
@@ -455,6 +493,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		BF82C94424D4C20F009B4A34 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BFB8629724D0BD140000B560 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -751,6 +796,21 @@
 			path = "Pause Menu";
 			sourceTree = "<group>";
 		};
+		BF82C94824D4C20F009B4A34 /* DeltaXPC */ = {
+			isa = PBXGroup;
+			children = (
+				BF82C95424D4C20F009B4A34 /* DeltaXPC.entitlements */,
+				BF82C94924D4C20F009B4A34 /* Media.xcassets */,
+				BF82C94B24D4C20F009B4A34 /* ActionRequestHandler.h */,
+				BF82C94C24D4C20F009B4A34 /* ActionRequestHandler.m */,
+				BF82C95D24D4CAC9009B4A34 /* XPCContainer.swift */,
+				BF82C94E24D4C20F009B4A34 /* Action.js */,
+				BF82C95024D4C20F009B4A34 /* Info.plist */,
+				BF82C95C24D4CAC7009B4A34 /* DeltaXPC-Bridging-Header.h */,
+			);
+			path = DeltaXPC;
+			sourceTree = "<group>";
+		};
 		BF912E481C5CB5D50041527C /* Segues */ = {
 			isa = PBXGroup;
 			children = (
@@ -869,6 +929,7 @@
 				BFA757C924CBEFA400DCBC32 /* GameCollectionView.swift */,
 				BF347F7C24D35EB30044F5DB /* Components */,
 				BF1463E624CF7D6100C7FBB7 /* GameView.swift */,
+				BF82C95924D4C32E009B4A34 /* RemoteProcess.swift */,
 				BFB862A224D0BD140000B560 /* Assets.xcassets */,
 				BFB862A724D0BD140000B560 /* LaunchScreen.storyboard */,
 				BFB862AA24D0BD140000B560 /* Info.plist */,
@@ -987,6 +1048,7 @@
 				BFFA71D91AAC406100EE9DD1 /* Delta */,
 				BFB8629B24D0BD140000B560 /* DeltaMac */,
 				BFFBAFFE24CBE4730028C0E7 /* DeltaMacLegacy */,
+				BF82C94824D4C20F009B4A34 /* DeltaXPC */,
 				BF9F4FCD1AAD7B25004C9500 /* Frameworks */,
 				BFEC732F1AAECCBD00650035 /* Resources */,
 				BFFA71D81AAC406100EE9DD1 /* Products */,
@@ -999,6 +1061,7 @@
 			children = (
 				BFFA71D71AAC406100EE9DD1 /* Delta.app */,
 				BFB8629A24D0BD140000B560 /* DeltaMac.app */,
+				BF82C94724D4C20F009B4A34 /* DeltaXPC.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1100,6 +1163,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		BF82C94624D4C20F009B4A34 /* DeltaXPC */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BF82C95824D4C20F009B4A34 /* Build configuration list for PBXNativeTarget "DeltaXPC" */;
+			buildPhases = (
+				BF82C94324D4C20F009B4A34 /* Sources */,
+				BF82C94424D4C20F009B4A34 /* Frameworks */,
+				BF82C94524D4C20F009B4A34 /* Resources */,
+				BF82C95B24D4C4F5009B4A34 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DeltaXPC;
+			productName = DeltaXPC;
+			productReference = BF82C94724D4C20F009B4A34 /* DeltaXPC.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		BFB8629924D0BD140000B560 /* DeltaMac */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = BFB862AB24D0BD140000B560 /* Build configuration list for PBXNativeTarget "DeltaMac" */;
@@ -1110,10 +1191,12 @@
 				BFB8629824D0BD140000B560 /* Resources */,
 				BF45E32C24D0BDDC00FAE111 /* Embed Frameworks */,
 				B154487EC4138C08FB690450 /* [CP] Embed Pods Frameworks */,
+				BF82C95524D4C20F009B4A34 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				BF82C95224D4C20F009B4A34 /* PBXTargetDependency */,
 			);
 			name = DeltaMac;
 			productName = DeltaMac;
@@ -1156,6 +1239,12 @@
 						DevelopmentTeam = 6XVY5G3U44;
 						ProvisioningStyle = Automatic;
 					};
+					BF82C94624D4C20F009B4A34 = {
+						CreatedOnToolsVersion = 12.0;
+						DevelopmentTeam = 6XVY5G3U44;
+						LastSwiftMigration = 1200;
+						ProvisioningStyle = Automatic;
+					};
 					BFB8629924D0BD140000B560 = {
 						CreatedOnToolsVersion = 12.0;
 						DevelopmentTeam = 6XVY5G3U44;
@@ -1192,11 +1281,21 @@
 				BFFA71D61AAC406100EE9DD1 /* Delta */,
 				BF14D8941DE7A512002CA1BE /* mogenerator */,
 				BFB8629924D0BD140000B560 /* DeltaMac */,
+				BF82C94624D4C20F009B4A34 /* DeltaXPC */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		BF82C94524D4C20F009B4A34 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF82C94F24D4C20F009B4A34 /* Action.js in Resources */,
+				BF82C94A24D4C20F009B4A34 /* Media.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BFB8629824D0BD140000B560 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1337,6 +1436,24 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Fabric/run\" d542629b4f6625cfd5564d27318550321272076d 333118df9345dcec21e4ba0bb7fa8f6c67c4eb41734374e24f6c71a8dcd5c870";
 		};
+		BF82C95B24D4C4F5009B4A34 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(TARGET_BUILD_DIR)/$(INFOPLIST_PATH)",
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\necho \"Hello World\"\ndefaults write \"${SCRIPT_INPUT_FILE_0}\" NSExtension -dict-add NSExtensionPointIdentifier com.apple.app.non-ui-extension.multiple-instances\ndefaults write \"${SCRIPT_INPUT_FILE_0}\" \"CFBundleShortVersionString\" \"4.0\"\n";
+		};
 		DBD91E7D7EC2729786B4C5B1 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1358,6 +1475,15 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		BF82C94324D4C20F009B4A34 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF82C94D24D4C20F009B4A34 /* ActionRequestHandler.m in Sources */,
+				BF82C95E24D4CAC9009B4A34 /* XPCContainer.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BFB8629624D0BD140000B560 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1403,7 +1529,9 @@
 				BFC5FF9624D252AE001FBC15 /* NSManagedObject+Conveniences.swift in Sources */,
 				BFC5FF8E24D2527A001FBC15 /* ControllerSkin.swift in Sources */,
 				BFC5FF7824D250B8001FBC15 /* PhotoLibraryImportOption.swift in Sources */,
+				BF82C95A24D4C32E009B4A34 /* RemoteProcess.swift in Sources */,
 				BF45E33124D0C03D00FAE111 /* GameView.swift in Sources */,
+				BF82C95F24D4CDDC009B4A34 /* XPCContainer.swift in Sources */,
 				BFC5FF9F24D254BD001FBC15 /* HarmonyMetadataKey+Keys.swift in Sources */,
 				BFC5FF7A24D250B8001FBC15 /* iTunesImportOption.swift in Sources */,
 				BFC5FF7F24D2526A001FBC15 /* PreviousHarmony.xcdatamodeld in Sources */,
@@ -1530,6 +1658,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		BF82C95224D4C20F009B4A34 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BF82C94624D4C20F009B4A34 /* DeltaXPC */;
+			targetProxy = BF82C95124D4C20F009B4A34 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		BF353FF41C5D837600C1184C /* PauseMenu.storyboard */ = {
 			isa = PBXVariantGroup;
@@ -1594,10 +1730,76 @@
 			};
 			name = Release;
 		};
+		BF82C95624D4C20F009B4A34 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = DeltaXPC/DeltaXPC.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 6XVY5G3U44;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = DeltaXPC/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rileytestut.DeltaMac.DeltaXPC;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "DeltaXPC/DeltaXPC-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		BF82C95724D4C20F009B4A34 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = DeltaXPC/DeltaXPC.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 6XVY5G3U44;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = DeltaXPC/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rileytestut.DeltaMac.DeltaXPC;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "DeltaXPC/DeltaXPC-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		BFB862AC24D0BD140000B560 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 6363F4007830F4C22A365923 /* Pods-DeltaMac.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -1617,6 +1819,7 @@
 				DEVELOPMENT_TEAM = 6XVY5G3U44;
 				ENABLE_BITCODE = NO;
 				ENABLE_PREVIEWS = YES;
+				EXCLUDED_ARCHS = arm64e;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = DeltaMac/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -1640,6 +1843,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 151B513189F806F4F5E68DDD /* Pods-DeltaMac.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -1658,6 +1862,7 @@
 				DEVELOPMENT_TEAM = 6XVY5G3U44;
 				ENABLE_BITCODE = NO;
 				ENABLE_PREVIEWS = YES;
+				EXCLUDED_ARCHS = arm64e;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = DeltaMac/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -1957,6 +2162,15 @@
 			buildConfigurations = (
 				BF14D8951DE7A512002CA1BE /* Debug */,
 				BF14D8961DE7A512002CA1BE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BF82C95824D4C20F009B4A34 /* Build configuration list for PBXNativeTarget "DeltaXPC" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BF82C95624D4C20F009B4A34 /* Debug */,
+				BF82C95724D4C20F009B4A34 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
