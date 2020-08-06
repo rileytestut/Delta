@@ -118,6 +118,7 @@
 		BF713C0822499ED4004A1A2B /* PreviousHarmony.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BF713C0622499ED3004A1A2B /* PreviousHarmony.xcdatamodeld */; };
 		BF71CF871FE90006001F1613 /* AppIconShortcutsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF71CF861FE90006001F1613 /* AppIconShortcutsViewController.swift */; };
 		BF71CF8A1FE904B1001F1613 /* GameTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF71CF891FE904B1001F1613 /* GameTableViewCell.xib */; };
+		BF73404424D8CE0200950EF4 /* XPCRequestHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF73404324D8CE0200950EF4 /* XPCRequestHandler.swift */; };
 		BF797A2D1C2D339F00F1A000 /* UILabel+FontSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF797A2C1C2D339F00F1A000 /* UILabel+FontSize.swift */; };
 		BF7AE8081C2E858400B1B5BC /* GridMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7AE8041C2E858400B1B5BC /* GridMenuViewController.swift */; };
 		BF7AE80A1C2E8C7600B1B5BC /* UIColor+Delta.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7AE8091C2E8C7600B1B5BC /* UIColor+Delta.swift */; };
@@ -126,7 +127,6 @@
 		BF82C94D24D4C20F009B4A34 /* ActionRequestHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = BF82C94C24D4C20F009B4A34 /* ActionRequestHandler.m */; };
 		BF82C94F24D4C20F009B4A34 /* Action.js in Resources */ = {isa = PBXBuildFile; fileRef = BF82C94E24D4C20F009B4A34 /* Action.js */; };
 		BF82C95324D4C20F009B4A34 /* DeltaXPC.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = BF82C94724D4C20F009B4A34 /* DeltaXPC.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		BF82C95A24D4C32E009B4A34 /* RemoteProcess.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF82C95924D4C32E009B4A34 /* RemoteProcess.swift */; };
 		BF82C95E24D4CAC9009B4A34 /* XPCContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF82C95D24D4CAC9009B4A34 /* XPCContainer.swift */; };
 		BF82C95F24D4CDDC009B4A34 /* XPCContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF82C95D24D4CAC9009B4A34 /* XPCContainer.swift */; };
 		BF8A333421A484A000A42FD4 /* BadgedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8A333321A484A000A42FD4 /* BadgedTableViewCell.swift */; };
@@ -142,7 +142,6 @@
 		BF99FE8C24D38A83001F2472 /* SNESDeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BF99FE8A24D38A83001F2472 /* SNESDeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF99FE8E24D38C28001F2472 /* NESDeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF99FE8D24D38C28001F2472 /* NESDeltaCore.framework */; };
 		BF99FE8F24D38C28001F2472 /* NESDeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BF99FE8D24D38C28001F2472 /* NESDeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		BF99FE9124D3936F001F2472 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF99FE9024D3936F001F2472 /* OpenGLES.framework */; };
 		BFA0D1271D3AE1F600565894 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF63BDE91D389EEB00FCB040 /* GameViewController.swift */; };
 		BFAA1FED1B8AA4FA00495943 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFAA1FEC1B8AA4FA00495943 /* Settings.swift */; };
 		BFAB9F7D219A43380080EC7D /* SyncManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFAB9F7C219A43380080EC7D /* SyncManager.swift */; };
@@ -390,6 +389,7 @@
 		BF713C0722499ED3004A1A2B /* Harmony.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Harmony.xcdatamodel; sourceTree = "<group>"; };
 		BF71CF861FE90006001F1613 /* AppIconShortcutsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIconShortcutsViewController.swift; sourceTree = "<group>"; };
 		BF71CF891FE904B1001F1613 /* GameTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GameTableViewCell.xib; sourceTree = "<group>"; };
+		BF73404324D8CE0200950EF4 /* XPCRequestHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XPCRequestHandler.swift; sourceTree = "<group>"; };
 		BF797A2C1C2D339F00F1A000 /* UILabel+FontSize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+FontSize.swift"; sourceTree = "<group>"; };
 		BF79966C224C075A009B094F /* N64DeltaCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = N64DeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF7AE8041C2E858400B1B5BC /* GridMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GridMenuViewController.swift; sourceTree = "<group>"; };
@@ -406,6 +406,7 @@
 		BF82C95D24D4CAC9009B4A34 /* XPCContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XPCContainer.swift; sourceTree = "<group>"; };
 		BF8A333321A484A000A42FD4 /* BadgedTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgedTableViewCell.swift; sourceTree = "<group>"; };
 		BF8A334521A4926F00A42FD4 /* GameSyncStatusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSyncStatusViewController.swift; sourceTree = "<group>"; };
+		BF8C294E24D9F8EE00D4A858 /* libxpc.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxpc.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.0.sdk/usr/lib/system/libxpc.tbd; sourceTree = DEVELOPER_DIR; };
 		BF8CA9351F5F651900499FDD /* PopoverMenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverMenuController.swift; sourceTree = "<group>"; };
 		BF8DDD231F4F6C880088A21B /* InputCalloutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputCalloutView.swift; sourceTree = "<group>"; };
 		BF95E2761E4977BF0030E7AD /* GameMetadata.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameMetadata.swift; sourceTree = "<group>"; };
@@ -509,7 +510,6 @@
 				BF99FE8E24D38C28001F2472 /* NESDeltaCore.framework in Frameworks */,
 				BF45E32A24D0BDDC00FAE111 /* Roxas.framework in Frameworks */,
 				BF45E33624D0C05F00FAE111 /* GBADeltaCore.framework in Frameworks */,
-				BF99FE9124D3936F001F2472 /* OpenGLES.framework in Frameworks */,
 				BFC5FF7D24D251A6001FBC15 /* Harmony.framework in Frameworks */,
 				BFCFEF7A24D39F5700B45DD9 /* ZIPFoundation.framework in Frameworks */,
 				BF99FE5F24D36670001F2472 /* MelonDSDeltaCore.framework in Frameworks */,
@@ -802,6 +802,7 @@
 				BF82C95424D4C20F009B4A34 /* DeltaXPC.entitlements */,
 				BF82C94924D4C20F009B4A34 /* Media.xcassets */,
 				BF82C94B24D4C20F009B4A34 /* ActionRequestHandler.h */,
+				BF73404324D8CE0200950EF4 /* XPCRequestHandler.swift */,
 				BF82C94C24D4C20F009B4A34 /* ActionRequestHandler.m */,
 				BF82C95D24D4CAC9009B4A34 /* XPCContainer.swift */,
 				BF82C94E24D4C20F009B4A34 /* Action.js */,
@@ -843,6 +844,7 @@
 		BF9F4FCD1AAD7B25004C9500 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BF8C294E24D9F8EE00D4A858 /* libxpc.tbd */,
 				BF99FE9024D3936F001F2472 /* OpenGLES.framework */,
 				BF99FE8D24D38C28001F2472 /* NESDeltaCore.framework */,
 				BF99FE8A24D38A83001F2472 /* SNESDeltaCore.framework */,
@@ -1452,7 +1454,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\necho \"Hello World\"\ndefaults write \"${SCRIPT_INPUT_FILE_0}\" NSExtension -dict-add NSExtensionPointIdentifier com.apple.app.non-ui-extension.multiple-instances\ndefaults write \"${SCRIPT_INPUT_FILE_0}\" \"CFBundleShortVersionString\" \"4.0\"\n";
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\necho \"Hello World\"\ndefaults write \"${SCRIPT_INPUT_FILE_0}\" NSExtension -dict-add NSExtensionPointIdentifier com.apple.app.ui-extension.multiple-instances\ndefaults write \"${SCRIPT_INPUT_FILE_0}\" \"CFBundleShortVersionString\" \"4.0\"\n";
 		};
 		DBD91E7D7EC2729786B4C5B1 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1479,6 +1481,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BF73404424D8CE0200950EF4 /* XPCRequestHandler.swift in Sources */,
 				BF82C94D24D4C20F009B4A34 /* ActionRequestHandler.m in Sources */,
 				BF82C95E24D4CAC9009B4A34 /* XPCContainer.swift in Sources */,
 			);
@@ -1529,7 +1532,6 @@
 				BFC5FF9624D252AE001FBC15 /* NSManagedObject+Conveniences.swift in Sources */,
 				BFC5FF8E24D2527A001FBC15 /* ControllerSkin.swift in Sources */,
 				BFC5FF7824D250B8001FBC15 /* PhotoLibraryImportOption.swift in Sources */,
-				BF82C95A24D4C32E009B4A34 /* RemoteProcess.swift in Sources */,
 				BF45E33124D0C03D00FAE111 /* GameView.swift in Sources */,
 				BF82C95F24D4CDDC009B4A34 /* XPCContainer.swift in Sources */,
 				BFC5FF9F24D254BD001FBC15 /* HarmonyMetadataKey+Keys.swift in Sources */,

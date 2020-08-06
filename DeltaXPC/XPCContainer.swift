@@ -10,11 +10,6 @@ import Foundation
 
 var allEndpoints = [UUID: NSXPCListenerEndpoint]()
 
-@objc protocol RemoteProcessProtocol: NSObjectProtocol
-{
-    func testMyFunction()
-}
-
 @objc(MyItemProvider) @objcMembers
 public class MyItemProvider: NSObject, NSSecureCoding
 {

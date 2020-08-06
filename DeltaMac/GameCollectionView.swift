@@ -144,9 +144,6 @@ struct GameCollectionView: View
     @State
     var isDeleting: Bool = false
     
-    @StateObject
-    var remoteProcess: RemoteProcess = RemoteProcess()
-    
     init(system: System?)
     {
         self.system = system
@@ -172,10 +169,6 @@ struct GameCollectionView: View
                     ZStack {
                         Text("No System Selected")
                             .font(.title)
-                        
-                        Button(action: startProcess) {
-                            Text("Start Remote Process")
-                        }
                     }
                 }
             }
@@ -214,7 +207,7 @@ struct GameCollectionView: View
     
     private func startProcess()
     {
-        self.remoteProcess.connect()
+//        self.remoteProcess.connect()
     }
 }
 

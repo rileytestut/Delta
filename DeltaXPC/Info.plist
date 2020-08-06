@@ -42,7 +42,7 @@
 		<key>NSExtensionPointIdentifier</key>
 		<string>com.apple.services</string>
 		<key>NSExtensionPrincipalClass</key>
-		<string>ActionRequestHandler</string>
+		<string>XPCRequestHandler</string>
 	</dict>
 </dict>
 </plist>

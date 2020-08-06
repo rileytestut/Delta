@@ -37,8 +37,10 @@
                 [itemProvider loadItemForTypeIdentifier:(NSString *)kUTTypePropertyList options:nil completionHandler:^(NSDictionary *request, NSError *error) {
                     NSLog(@"Received request: %@", request);
                     
+                    GameType gameType = request[@"gameType"];
+                    
                     ListenerEndpoint *provider = (ListenerEndpoint *)request[@"endpoint"];
-                    [self connectToEndpoint:provider.endpoint];
+                    [self connectToEndpoint:provider.endpoint gameType:gameType];
 //
 //                    [self finishRequest];
 //                    NSXPCListener *listener = [NSXPCListener anonymousListener];
@@ -77,7 +79,7 @@
 //    }
 }
 
-- (void)connectToEndpoint:(NSXPCListenerEndpoint *)endpoint
+- (void)connectToEndpoint:(NSXPCListenerEndpoint *)endpoint gameType:(GameType)gameType
 {
     NSXPCConnection *connection = [[NSXPCConnection alloc] initWithListenerEndpoint:endpoint];
     self.emulationConnection = connection;
@@ -90,6 +92,10 @@
     [exportedInterface setInterface:[NSXPCInterface interfaceWithProtocol:@protocol(DLTAVideoRendering)] forSelector:@selector(setVideoRenderer:) argumentIndex:0 ofReply:NO];
     connection.exportedInterface = exportedInterface;
     
+    id<DLTAEmulatorBridging> emulatorBridge = nil;
+    
+//    if ([gameType isEqualToString:@"])
+    
     connection.exportedObject = [GBAEmulatorBridge sharedBridge];
     
     connection.remoteObjectInterface = [NSXPCInterface interfaceWithProtocol:@protocol(RemoteProcessProtocol)];
@@ -101,7 +107,7 @@
     }];
     
     NSLog(@"Proxy: %@", proxy);
-    [proxy testMyFunction];
+//    [proxy testMyFunction];
 //    [proxy test];
 }
 

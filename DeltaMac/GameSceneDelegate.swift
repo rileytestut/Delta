@@ -22,7 +22,7 @@ class GameSceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         guard let userActivity = connectionOptions.userActivities.first ?? session.stateRestorationActivity else { return }
         
-        session.stateRestorationActivity = userActivity
+//        session.stateRestorationActivity = userActivity
         
         guard let identifier = userActivity.userInfo?["identifier"] as? String else { return }
 
