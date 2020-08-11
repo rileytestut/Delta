@@ -8,6 +8,7 @@
 
 import SwiftUI
 import DeltaCore
+import Combine
 
 private struct _GameView: UIViewControllerRepresentable
 {
@@ -15,6 +16,33 @@ private struct _GameView: UIViewControllerRepresentable
     
     var game: Game?
     var emulatorBridge: EmulatorBridging?
+    
+    @State var connectedControllers: [GameController] = ExternalGameControllerManager.shared.connectedControllers
+    
+    class Coordinator: NSObject
+    {
+        @Binding var gameControllers: [GameController]
+        
+        private var cancelBag = Set<AnyCancellable>()
+        
+        init(gameControllers: Binding<[GameController]>)
+        {
+            _gameControllers = gameControllers
+            
+            super.init()
+                        
+            NotificationCenter.default.publisher(for: .externalGameControllerDidConnect)
+                .combineLatest(NotificationCenter.default.publisher(for: .externalGameControllerDidDisconnect))
+                .map { _ in ExternalGameControllerManager.shared.connectedControllers }
+                .assign(to: \.gameControllers, on: self)
+                .store(in: &cancelBag)
+        }
+    }
+    
+    func makeCoordinator() -> Coordinator
+    {
+        return Coordinator(gameControllers: $connectedControllers)
+    }
     
     func makeUIViewController(context: Context) -> GameViewController
     {
@@ -58,11 +86,13 @@ private struct _GameView: UIViewControllerRepresentable
             }
         }
         
-        if let keyboardController = ExternalGameControllerManager.shared.connectedControllers.compactMap({ $0 as? KeyboardGameController }).first,
-           let emulatorCore = gameViewController.emulatorCore
+        if let emulatorCore = gameViewController.emulatorCore
         {
-            keyboardController.addReceiver(gameViewController)
-            keyboardController.addReceiver(emulatorCore)
+            for controller in ExternalGameControllerManager.shared.connectedControllers
+            {
+                controller.addReceiver(gameViewController)
+                controller.addReceiver(emulatorCore)
+            }
         }
         
         gameViewController.view.setNeedsLayout()
