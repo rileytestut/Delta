@@ -44,5 +44,9 @@
 		<key>NSExtensionPrincipalClass</key>
 		<string>XPCRequestHandler</string>
 	</dict>
+	<key>ALTAppGroups</key>
+	<array>
+		<string>group.com.rileytestut.Delta</string>
+	</array>
 </dict>
 </plist>

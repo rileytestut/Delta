@@ -635,7 +635,8 @@ extension DatabaseManager
     
     class var sharedDirectory: URL?
     {
-        return FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.rileytestut.Delta")
+        guard let appGroups = Bundle.main.object(forInfoDictionaryKey: "ALTAppGroups") as? [String], let appGroup = appGroups.first else { return nil }
+        return FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroup)
     }
 }
 
