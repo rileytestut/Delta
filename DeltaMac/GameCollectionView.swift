@@ -17,6 +17,8 @@ extension UTType
     static let deltaGameGBC = UTType(exportedAs: "com.rileytestut.delta.game.gbc", conformingTo: .deltaGame)
     
     static let deltaGameGBA = UTType(filenameExtension: "gba")!
+    
+    static let deltaGameSaveFile = UTType(exportedAs: "com.rileytestut.delta.game.save")
 }
 
 struct GameCell: View
@@ -60,8 +62,19 @@ extension Game
     }
 }
 
+extension NSError: Identifiable
+{
+    
+}
+
 struct InternalView: View
 {
+    enum SortingOption: CaseIterable
+    {
+        case ascending
+        case descending
+    }
+    
     let system: System
     
     var games: FetchedResults<Game> { fetchRequest.wrappedValue }
@@ -70,8 +83,20 @@ struct InternalView: View
     @EnvironmentObject
     var databaseManager: DatabaseManager
     
+    @Environment(\.importFiles)
+    var importFiles
+    
+    @Environment(\.exportFiles)
+    var exportFiles
+    
     @State
-    private var isDeleting: Bool = false
+    var sortingOption: SortingOption = .ascending
+    
+    @State
+    var deletingGame: Game? = nil
+    
+    @State
+    var error: NSError?
     
     init(system: System)
     {
@@ -81,12 +106,26 @@ struct InternalView: View
     }
     
     var body: some View {
-        Toggle("Delete Mode", isOn: $isDeleting)
-        
         LazyVGrid(columns: [GridItem(.adaptive(minimum: 125), spacing: 25)]) {
             ForEach(self.games) { (game) in
-                Button(action: { !isDeleting ? start(game) : delete(game) }) {
+                Button(action: { start(game) }) {
                     GameCell(game: game)
+                }
+                .buttonStyle(PlainButtonStyle())
+                .contextMenu {
+                    Button(action: { importSave(for: game) }) {
+                        Label("Import Save File", systemImage: "square.and.arrow.down")
+                    }
+                    
+                    Button(action: { exportSave(for: game) }) {
+                        Label("Export Save File", systemImage: "square.and.arrow.up")
+                    }
+                    
+                    Divider()
+                    
+                    Button(action: { deletingGame = game }) {
+                        Label("Delete Game", systemImage: "trash")
+                    }
                 }
                 .buttonStyle(PlainButtonStyle())
                 .onDrag {
@@ -94,9 +133,19 @@ struct InternalView: View
                     itemProvider.registerObject(game.startGameActivity, visibility: .all)
                     return itemProvider
                 }
+                .alert(item: $deletingGame) { (game) -> Alert in
+                    Alert(title: Text("Are you sure you want to delete \(game.name)?"),
+                          primaryButton: .cancel(),
+                          secondaryButton: .destructive(Text("Delete")) {
+                        delete(game)
+                    })
+                }
             }
         }
         .padding()
+        .alert(item: $error) { (error) -> Alert in
+            Alert(title: Text(error.localizedDescription), message: error.localizedFailureReason.map { Text($0) }, dismissButton: .cancel(Text("OK")))
+        }
     }
 
     private func start(_ game: Game)
@@ -123,6 +172,58 @@ struct InternalView: View
             let temporaryGame = context.object(with: game.objectID) as! Game
             context.delete(temporaryGame)
             context.saveWithErrorLogging()
+        }
+    }
+    
+    private func rename(_ game: Game)
+    {
+        databaseManager.performBackgroundTask { (context) in
+            let temporaryGame = context.object(with: game.objectID) as! Game
+            context.delete(temporaryGame)
+            context.saveWithErrorLogging()
+        }
+    }
+    
+    private func importSave(for game: Game)
+    {
+        let type = UTType(filenameExtension: "sav")!
+        
+        importFiles(singleOfType: [.deltaGameSaveFile, type]) { (result) in
+            guard let result = result else { return }
+            
+            do {
+                let fileURL = try result.get()
+                guard fileURL.startAccessingSecurityScopedResource() else { return }
+                defer { fileURL.stopAccessingSecurityScopedResource() }
+                
+                guard let sharedGameSaveURL = game.sharedGameSaveURL else { return }
+                try FileManager.default.copyItem(at: fileURL, to: sharedGameSaveURL, shouldReplace: true)
+            }
+            catch { self.error = error as NSError }
+        }
+    }
+    
+    private func exportSave(for game: Game)
+    {
+        guard let sharedGameSaveURL = game.sharedGameSaveURL else { return }
+        
+        do
+        {
+            let fileWrapper = try FileWrapper(url: sharedGameSaveURL, options: [.immediate])
+            fileWrapper.filename = game.name.sanitized(with: CharacterSet.alphanumerics.union(.init(charactersIn: " "))) + ".sav"
+            
+            exportFiles(fileWrapper, contentType: .deltaGameSaveFile) { (result) in
+                switch result
+                {
+                case nil: break
+                case .failure(let error): self.error = error as NSError
+                case .success(let fileURL): print("Exporting game save to file URL:", fileURL)
+                }
+            }
+        }
+        catch
+        {
+            self.error = error as NSError
         }
     }
 }

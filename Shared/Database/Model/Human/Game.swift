@@ -40,6 +40,16 @@ public class Game: _Game, GameProtocol
         return fileURL
     }
     
+    public var sharedGameSaveURL: URL? {
+        var gameSaveURL: URL?
+        
+        self.managedObjectContext?.performAndWait {
+            gameSaveURL = DatabaseManager.sharedDirectory?.appendingPathComponent(self.gameSaveURL.lastPathComponent)
+        }
+        
+        return gameSaveURL
+    }
+    
     public override var artworkURL: URL? {
         get {
             self.willAccessValue(forKey: #keyPath(Game.artworkURL))

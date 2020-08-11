@@ -57,24 +57,26 @@ private struct _GameView: UIViewControllerRepresentable
     
     func updateUIViewController(_ gameViewController: GameViewController, context: Context)
     {
-        guard gameViewController.game?.fileURL != self.game?.sharedFileURL else { return }
-        guard let sharedGameURL = self.game?.sharedFileURL else { return }
-        
-        struct MyGame: GameProtocol
+        if gameViewController.game?.fileURL != self.game?.sharedFileURL
         {
-            var fileURL: URL
+            guard let sharedGameURL = self.game?.sharedFileURL else { return }
             
-            var type: GameType
+            struct MyGame: GameProtocol
+            {
+                var fileURL: URL
+                
+                var type: GameType
+            }
+            
+            if let game = self.game
+            {
+                gameViewController.game = MyGame(fileURL: sharedGameURL, type: game.type)
+            }
+            else
+            {
+                gameViewController.game = nil
+            }
         }
-        
-        if let game = self.game
-        {
-            gameViewController.game = MyGame(fileURL: sharedGameURL, type: game.type)
-        }
-        else
-        {
-            gameViewController.game = nil
-        }        
         
         if let emulatorBridge = self.emulatorBridge
         {
