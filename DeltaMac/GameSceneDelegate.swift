@@ -33,7 +33,12 @@ class GameSceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 //        let rootViewController = UIHostingController(rootView: ContentView())
 //        rootViewController.view.backgroundColor = .clear
-        let rootViewController = GameView(game: game)
+        var rootViewController = GameView(game: game)
+        
+        if let rawLinkRole = userActivity.userInfo?["linkRole"] as? Int, let linkRole = LinkRole(rawValue: rawLinkRole)
+        {
+            rootViewController.linkRole = linkRole
+        }
 
         let window = UIWindow(windowScene: windowScene)
         window.rootViewController = UIHostingController(rootView: rootViewController)

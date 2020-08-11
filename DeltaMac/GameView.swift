@@ -16,6 +16,7 @@ private struct _GameView: UIViewControllerRepresentable
     
     var game: Game?
     var emulatorBridge: EmulatorBridging?
+    var linkRole: LinkRole
     
     @State var connectedControllers: [GameController] = ExternalGameControllerManager.shared.connectedControllers
     
@@ -78,6 +79,17 @@ private struct _GameView: UIViewControllerRepresentable
             }
         }
         
+        if let emulatorCore = gameViewController.emulatorCore
+        {
+            emulatorCore.linkRole = self.linkRole
+            
+            for controller in ExternalGameControllerManager.shared.connectedControllers
+            {
+                controller.addReceiver(gameViewController)
+                controller.addReceiver(emulatorCore)
+            }
+        }
+        
         if let emulatorBridge = self.emulatorBridge
         {
 //            gameViewController.emulatorCore?.emulatorBridge = emulatorBridge
@@ -85,15 +97,6 @@ private struct _GameView: UIViewControllerRepresentable
             if gameViewController.emulatorCore?.state != .running
             {
                 gameViewController.emulatorCore?.start()
-            }
-        }
-        
-        if let emulatorCore = gameViewController.emulatorCore
-        {
-            for controller in ExternalGameControllerManager.shared.connectedControllers
-            {
-                controller.addReceiver(gameViewController)
-                controller.addReceiver(emulatorCore)
             }
         }
         
@@ -105,13 +108,14 @@ struct GameView: View
 {
     var game: Game?
     var emulatorBridge: EmulatorBridging?
+    var linkRole: LinkRole = .none
     
     var body: some View {
         ZStack {
             Color.black
                 .ignoresSafeArea([.all], edges: .all)
             
-            _GameView(game: game, emulatorBridge: emulatorBridge)
+            _GameView(game: game, emulatorBridge: emulatorBridge, linkRole: linkRole)
                 .ignoresSafeArea([.all], edges: .all)
         }
     }

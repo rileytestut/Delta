@@ -64,7 +64,13 @@ extension Game
 
 extension NSError: Identifiable
 {
+}
+
+struct StartGameOption: RawRepresentable, Hashable
+{
+    let rawValue: String
     
+    static let linkRole = StartGameOption(rawValue: "linkRole")
 }
 
 struct InternalView: View
@@ -106,57 +112,86 @@ struct InternalView: View
     }
     
     var body: some View {
-        LazyVGrid(columns: [GridItem(.adaptive(minimum: 125), spacing: 25)]) {
-            ForEach(self.games) { (game) in
-                Button(action: { start(game) }) {
-                    GameCell(game: game)
-                }
-                .buttonStyle(PlainButtonStyle())
-                .contextMenu {
-                    Button(action: { importSave(for: game) }) {
-                        Label("Import Save File", systemImage: "square.and.arrow.down")
-                    }
-                    
-                    Button(action: { exportSave(for: game) }) {
-                        Label("Export Save File", systemImage: "square.and.arrow.up")
-                    }
-                    
-                    Divider()
-                    
-                    Button(action: { deletingGame = game }) {
-                        Label("Delete Game", systemImage: "trash")
-                    }
-                }
-                .buttonStyle(PlainButtonStyle())
-                .onDrag {
-                    let itemProvider = NSItemProvider()
-                    itemProvider.registerObject(game.startGameActivity, visibility: .all)
-                    return itemProvider
-                }
-                .alert(item: $deletingGame) { (game) -> Alert in
-                    Alert(title: Text("Are you sure you want to delete \(game.name)?"),
-                          primaryButton: .cancel(),
-                          secondaryButton: .destructive(Text("Delete")) {
-                        delete(game)
-                    })
-                }
+        ZStack {
+            Color.clear
+            .alert(item: $error) { (error) -> Alert in
+                Alert(title: Text(error.localizedDescription), message: error.localizedFailureReason.map { Text($0) }, dismissButton: .cancel(Text("OK")))
             }
-        }
-        .padding()
-        .alert(item: $error) { (error) -> Alert in
-            Alert(title: Text(error.localizedDescription), message: error.localizedFailureReason.map { Text($0) }, dismissButton: .cancel(Text("OK")))
+            
+            LazyVGrid(columns: [GridItem(.adaptive(minimum: 125), spacing: 25)]) {
+                ForEach(self.games) { (game) in
+                    Button(action: { start(game) }) {
+                        GameCell(game: game)
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    .contextMenu {
+                        
+                        if game.type == .gba
+                        {
+                            Button(action: { start(game, options: [.linkRole: LinkRole.server]) }) {
+                                Label("Start Link - Server", systemImage: "link.icloud")
+                            }
+                            
+                            Button(action: { start(game, options: [.linkRole: LinkRole.client]) }) {
+                                Label("Start Link - Client", systemImage: "link")
+                            }
+                            
+                            Divider()
+                        }
+                        
+                        Button(action: { importSave(for: game) }) {
+                            Label("Import Save File", systemImage: "square.and.arrow.down")
+                        }
+                        
+                        Button(action: { error = EmulatorProcess.ProcessError.crashed as NSError }) {
+                            Label("Export Save File", systemImage: "square.and.arrow.up")
+                        }
+                        
+                        Divider()
+                        
+                        Button(action: { deletingGame = game }) {
+                            Label("Delete Game", systemImage: "trash")
+                        }
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    .onDrag {
+                        let itemProvider = NSItemProvider()
+                        itemProvider.registerObject(game.startGameActivity, visibility: .all)
+                        return itemProvider
+                    }
+                    .alert(item: $deletingGame) { (game) -> Alert in
+                        Alert(title: Text("Are you sure you want to delete \(game.name)?"),
+                              primaryButton: .cancel(),
+                              secondaryButton: .destructive(Text("Delete")) {
+                            delete(game)
+                        })
+                    }
+                }
+                
+            }
+            .padding()
         }
     }
 
-    private func start(_ game: Game)
+    private func start(_ game: Game, options: [StartGameOption: Any] = [:])
     {
         guard let sharedGameURL = game.sharedFileURL else { return }
         
         do
         {
             try FileManager.default.copyItem(at: game.fileURL, to: sharedGameURL, shouldReplace: true)
+                        
+            let rawOptions = options.compactMap { (option, value) -> (String, Any)? in
+                switch (option, value)
+                {
+                case (.linkRole, let value as LinkRole): return (option.rawValue, value.rawValue)
+                default: return nil
+                }
+            }.reduce(into: [:]) { $0[$1.0] = $1.1 }
             
-            UIApplication.shared.requestSceneSessionActivation(nil, userActivity: game.startGameActivity, options: nil) { (error) in
+            let activity = game.startGameActivity
+            activity.addUserInfoEntries(from: rawOptions)
+            UIApplication.shared.requestSceneSessionActivation(nil, userActivity: activity, options: nil) { (error) in
                 print("Failed to open new window:", error)
             }
         }
