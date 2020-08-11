@@ -42,12 +42,12 @@ class GameSceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         #if targetEnvironment(macCatalyst)
         windowScene.title = game.name
-        windowScene.titlebar?.titleVisibility = .visible
+        windowScene.titlebar?.titleVisibility = .hidden
         windowScene.titlebar?.separatorStyle = .none
         windowScene.titlebar?.toolbarStyle = .unifiedCompact
                 
         let identifier2 = NSToolbar.Identifier("com.example.apple-samplecode.toolbar")
-        windowScene.titlebar?.toolbar = NSToolbar(identifier: identifier2)
+        windowScene.titlebar?.toolbar = nil
         windowScene.titlebar?.autoHidesToolbarInFullScreen = true
         #endif
 //        windowScene.titlebar.t

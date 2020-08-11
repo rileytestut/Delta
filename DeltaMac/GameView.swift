@@ -109,9 +109,10 @@ struct GameView: View
     var body: some View {
         ZStack {
             Color.black
-                .edgesIgnoringSafeArea(.all)
+                .ignoresSafeArea([.all], edges: .all)
             
             _GameView(game: game, emulatorBridge: emulatorBridge)
+                .ignoresSafeArea([.all], edges: .all)
         }
     }
 }
