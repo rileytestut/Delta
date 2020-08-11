@@ -10,6 +10,8 @@ import SwiftUI
 import DeltaCore
 import UniformTypeIdentifiers
 
+import MelonDSDeltaCore
+
 extension UTType
 {
     static let deltaGame = UTType(exportedAs: "com.rileytestut.delta.game")
@@ -64,6 +66,24 @@ extension Game
 
 extension NSError: Identifiable
 {
+}
+
+enum BIOS: Int
+{
+    case bios7
+    case bios9
+    case firmware
+    
+    var fileURL: URL? {
+        guard let sharedDirectory = DatabaseManager.sharedDirectory else { return nil }
+        
+        switch self
+        {
+        case .bios7: return sharedDirectory.appendingPathComponent(MelonDSEmulatorBridge.shared.bios7URL.lastPathComponent)
+        case .bios9: return sharedDirectory.appendingPathComponent(MelonDSEmulatorBridge.shared.bios9URL.lastPathComponent)
+        case .firmware: return sharedDirectory.appendingPathComponent(MelonDSEmulatorBridge.shared.firmwareURL.lastPathComponent)
+        }
+    }
 }
 
 struct StartGameOption: RawRepresentable, Hashable
@@ -149,6 +169,31 @@ struct InternalView: View
                         
                         Divider()
                         
+                        if game.type == .ds
+                        {
+                            let isBios7Installed = BIOS.bios7.fileURL.map { FileManager.default.fileExists(atPath: $0.path) } ?? false
+                            let isBios9Installed = BIOS.bios9.fileURL.map { FileManager.default.fileExists(atPath: $0.path) } ?? false
+                            let isFirmwareInstalled = BIOS.firmware.fileURL.map { FileManager.default.fileExists(atPath: $0.path) } ?? false
+                            
+                            Menu {
+                                Button(action: { importBIOS(.bios7) }) {
+                                    Label("bios7.bin", systemImage: isBios7Installed ? "checkmark" : "")
+                                }
+                                
+                                Button(action: { importBIOS(.bios9) }) {
+                                    Label("bios9.bin", systemImage: isBios9Installed ? "checkmark" : "")
+                                }
+                                
+                                Button(action: { importBIOS(.firmware) }) {
+                                    Label("firmware.bin", systemImage: isFirmwareInstalled ? "checkmark" : "")
+                                }
+                            } label: {
+                                Label("Import BIOS", systemImage: "pc")
+                            }
+                            
+                            Divider()
+                        }
+                                            
                         Button(action: { deletingGame = game }) {
                             Label("Delete Game", systemImage: "trash")
                         }
@@ -259,6 +304,32 @@ struct InternalView: View
         catch
         {
             self.error = error as NSError
+        }
+    }
+    
+    private func importBIOS(_ bios: BIOS)
+    {
+        let binUTI = UTType(filenameExtension: "bin")!
+        let firmwareUTI = UTType(filenameExtension: "firmware")!
+        let romUTI = UTType(filenameExtension: "rom")!
+        
+        importFiles(singleOfType: [binUTI, firmwareUTI, romUTI]) { (result) in
+            guard let result = result, let biosFileURL = bios.fileURL else { return }
+
+            do
+            {
+                let fileURL = try result.get()
+                
+                guard fileURL.startAccessingSecurityScopedResource() else { return }
+                defer { fileURL.stopAccessingSecurityScopedResource() }
+                
+                try FileManager.default.copyItem(at: fileURL, to: biosFileURL, shouldReplace: true)
+            }
+            catch
+            {
+                print("Failed to import BIOS:", error)
+                self.error = error as NSError
+            }
         }
     }
 }
