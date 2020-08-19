@@ -10,15 +10,26 @@ import SwiftUI
 import DeltaCore
 import Combine
 
+private class GameViewContext: ObservableObject
+{
+    @Published
+    var emulatorCore: EmulatorCore?
+    
+    var windowScene: UIWindowScene?
+}
+
 private struct _GameView: UIViewControllerRepresentable
 {
     typealias UIViewControllerType = GameViewController
     
     var game: Game?
-    var emulatorBridge: EmulatorBridging?
     var linkRole: LinkRole
     
-    @State var connectedControllers: [GameController] = ExternalGameControllerManager.shared.connectedControllers
+    @EnvironmentObject
+    var gameViewContext: GameViewContext
+    
+    @State
+    var connectedControllers: [GameController] = ExternalGameControllerManager.shared.connectedControllers
     
     class Coordinator: NSObject
     {
@@ -64,6 +75,7 @@ private struct _GameView: UIViewControllerRepresentable
             
             struct MyGame: GameProtocol
             {
+                var name: String
                 var fileURL: URL
                 
                 var type: GameType
@@ -71,12 +83,14 @@ private struct _GameView: UIViewControllerRepresentable
             
             if let game = self.game
             {
-                gameViewController.game = MyGame(fileURL: sharedGameURL, type: game.type)
+                gameViewController.game = MyGame(name: game.name, fileURL: sharedGameURL, type: game.type)
             }
             else
             {
                 gameViewController.game = nil
             }
+            
+            self.gameViewContext.emulatorCore = gameViewController.emulatorCore
         }
         
         if let emulatorCore = gameViewController.emulatorCore
@@ -90,34 +104,91 @@ private struct _GameView: UIViewControllerRepresentable
             }
         }
         
-        if let emulatorBridge = self.emulatorBridge
-        {
-//            gameViewController.emulatorCore?.emulatorBridge = emulatorBridge
-            
-            if gameViewController.emulatorCore?.state != .running
-            {
-                gameViewController.emulatorCore?.start()
-            }
-        }
+//        if let emulatorBridge = self.emulatorBridge
+//        {
+////            gameViewController.emulatorCore?.emulatorBridge = emulatorBridge
+//
+//            if gameViewController.emulatorCore?.state != .running
+//            {
+//                gameViewController.emulatorCore?.start()
+//            }
+//        }
         
         gameViewController.view.setNeedsLayout()
+        gameViewContext.windowScene = gameViewController.view.window?.windowScene
     }
+}
+
+class GameViewModel: ObservableObject
+{
+    @Published
+    var emulatorCore: EmulatorCore?
 }
 
 struct GameView: View
 {
     var game: Game?
-    var emulatorBridge: EmulatorBridging?
     var linkRole: LinkRole = .none
     
+    @StateObject
+    private var context = GameViewContext()
+    
+    @State
+    private var presentedError: NSError?
+
     var body: some View {
-        ZStack {
-            Color.black
-                .ignoresSafeArea([.all], edges: .all)
-            
-            _GameView(game: game, emulatorBridge: emulatorBridge, linkRole: linkRole)
-                .ignoresSafeArea([.all], edges: .all)
+        if let emulatorCore = context.emulatorCore
+        {
+            _body
+                .environmentObject(emulatorCore)
+                .onReceive(emulatorCore.$error) { (error) in
+                    self.presentedError = error as NSError?
+                }
         }
+        else
+        {
+            _body
+        }
+    }
+    
+    private var _body: some View {
+        ZStack {
+            ZStack {
+                Color.black
+                    .ignoresSafeArea([.all], edges: .all)
+                
+                _GameView(game: game, linkRole: linkRole)
+                    .ignoresSafeArea([.all], edges: [.bottom])
+            }
+            .alert(item: $presentedError) { (error) -> Alert in
+                Alert(title: Text(error.localizedDescription),
+                      message: error.localizedRecoverySuggestion.map { Text($0) },
+                      primaryButton: .destructive(Text("Quit"), action: quit),
+                      secondaryButton: .default(Text("Restart"), action: restart))
+                        
+            }
+        }
+        .environmentObject(self.context)
+    }
+        
+    func quit()
+    {
+        if let session = self.context.windowScene?.session
+        {
+            let options = UIWindowSceneDestructionRequestOptions()
+            options.windowDismissalAnimation = .standard
+            UIApplication.shared.requestSceneSessionDestruction(session, options: options) { (error) in
+                print("Error quitting game:", error)
+            }
+        }
+    }
+    
+    func restart()
+    {
+        DispatchQueue.global().async {
+            context.emulatorCore?.stop()
+            context.emulatorCore?.start()
+        }        
     }
 }
 

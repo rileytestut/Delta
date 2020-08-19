@@ -127,7 +127,7 @@ struct InternalView: View
     init(system: System)
     {
         self.system = system
-        self.fetchRequest = FetchRequest(sortDescriptors: [NSSortDescriptor(key: #keyPath(Game.name), ascending: true)],
+        self.fetchRequest = FetchRequest(sortDescriptors: [NSSortDescriptor(key: "name", ascending: true)],
                                          predicate: NSPredicate(format: "%K == %@", #keyPath(Game.type), system.gameType.rawValue))
     }
     
@@ -163,37 +163,37 @@ struct InternalView: View
                             Label("Import Save File", systemImage: "square.and.arrow.down")
                         }
                         
-                        Button(action: { error = EmulatorProcess.ProcessError.crashed as NSError }) {
+                        Button(action: { exportSave(for: game) }) {
                             Label("Export Save File", systemImage: "square.and.arrow.up")
                         }
                         
                         Divider()
-                        
+
                         if game.type == .ds
                         {
                             let isBios7Installed = BIOS.bios7.fileURL.map { FileManager.default.fileExists(atPath: $0.path) } ?? false
                             let isBios9Installed = BIOS.bios9.fileURL.map { FileManager.default.fileExists(atPath: $0.path) } ?? false
                             let isFirmwareInstalled = BIOS.firmware.fileURL.map { FileManager.default.fileExists(atPath: $0.path) } ?? false
-                            
+
                             Menu {
                                 Button(action: { importBIOS(.bios7) }) {
                                     Label("bios7.bin", systemImage: isBios7Installed ? "checkmark" : "")
                                 }
-                                
+
                                 Button(action: { importBIOS(.bios9) }) {
                                     Label("bios9.bin", systemImage: isBios9Installed ? "checkmark" : "")
                                 }
-                                
+
                                 Button(action: { importBIOS(.firmware) }) {
                                     Label("firmware.bin", systemImage: isFirmwareInstalled ? "checkmark" : "")
                                 }
                             } label: {
                                 Label("Import BIOS", systemImage: "pc")
                             }
-                            
+
                             Divider()
                         }
-                                            
+
                         Button(action: { deletingGame = game }) {
                             Label("Delete Game", systemImage: "trash")
                         }

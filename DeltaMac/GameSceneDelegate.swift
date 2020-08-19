@@ -8,14 +8,44 @@
 
 import UIKit
 import SwiftUI
+import Combine
 
 import GBADeltaCore
+
+class GameWindow: UIWindow
+{
+    var videoDimensions: CGSize? {
+        didSet {
+            NSLayoutConstraint.deactivate(self.aspectRatioConstraints)
+            self.aspectRatioConstraints = []
+            
+            if let videoDimensions = self.videoDimensions
+            {
+                self.aspectRatioConstraints = [self.safeAreaLayoutGuide.widthAnchor.constraint(equalTo: self.safeAreaLayoutGuide.heightAnchor,
+                                                                                               multiplier: videoDimensions.width / videoDimensions.height),
+                                               self.safeAreaLayoutGuide.widthAnchor.constraint(equalToConstant: videoDimensions.width * 2),
+                                               self.safeAreaLayoutGuide.heightAnchor.constraint(equalToConstant: videoDimensions.height * 2)]
+                NSLayoutConstraint.activate(self.aspectRatioConstraints)
+            }
+        }
+    }
+    
+    private var aspectRatioConstraints: [NSLayoutConstraint] = []
+}
 
 class GameSceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
-
-
+    
+    private var cancellables = Set<AnyCancellable>()
+    
+    override init()
+    {
+        super.init()
+        
+        self.prepareSubscriptions()
+    }
+    
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions)
     {
         guard let windowScene = (scene as? UIWindowScene) else { return }
@@ -40,23 +70,36 @@ class GameSceneDelegate: UIResponder, UIWindowSceneDelegate {
             rootViewController.linkRole = linkRole
         }
 
-        let window = UIWindow(windowScene: windowScene)
+        let window = GameWindow(windowScene: windowScene)
+        window.canResizeToFitContent = true
         window.rootViewController = UIHostingController(rootView: rootViewController)
         window.makeKeyAndVisible()
         self.window = window
         
+        session.userInfo = ["gameType": game.type]
+        
         #if targetEnvironment(macCatalyst)
         windowScene.title = game.name
-        windowScene.titlebar?.titleVisibility = .hidden
+        windowScene.titlebar?.titleVisibility = .visible
         windowScene.titlebar?.separatorStyle = .none
         windowScene.titlebar?.toolbarStyle = .unifiedCompact
                 
         let identifier2 = NSToolbar.Identifier("com.example.apple-samplecode.toolbar")
-        windowScene.titlebar?.toolbar = nil
+        let toolbar = NSToolbar(identifier: identifier2)
+        windowScene.titlebar?.toolbar = toolbar
         windowScene.titlebar?.autoHidesToolbarInFullScreen = true
+        
+        if let core = Delta.core(for: game.type)
+        {
+            windowScene.sizeRestrictions?.minimumSize = core.videoFormat.dimensions
+            windowScene.sizeRestrictions?.maximumSize = CGSize(width: CGFloat.infinity, height: CGFloat.infinity)
+            
+            window.videoDimensions = core.videoFormat.dimensions
+            
+            // Set preferred initial frame.
+//            window.frame = CGRect(origin: .zero, size: core.videoFormat.dimensions.applying(.init(scaleX: 2, y: 2)))
+        }
         #endif
-//        windowScene.titlebar.t
-//        windowScene.titlebar?.toolbar?.delegate = self
     }
     
     func scene(_ scene: UIScene, continue userActivity: NSUserActivity)
@@ -91,6 +134,43 @@ class GameSceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
     }
+}
 
-
+private extension GameSceneDelegate
+{
+    func prepareSubscriptions()
+    {
+        #if targetEnvironment(macCatalyst)
+        NotificationCenter.default.publisher(for: .DLTAWindowDidBecomeKey)
+            .receive(on: RunLoop.main)
+            .sink { _ in self.updateWindows() }
+            .store(in: &self.cancellables)
+        #endif
+    }
+    
+    #if targetEnvironment(macCatalyst)
+    func updateWindows()
+    {
+        guard let window = self.window as? GameWindow,
+              let windowScene = window.windowScene,
+              let gameType = windowScene.session.userInfo?["gameType"] as? GameType,
+              let core = Delta.core(for: gameType) else { return }
+        
+        guard window.canResizeToFitContent else { return }
+        window.canResizeToFitContent = false
+        window.videoDimensions = nil
+        
+        if let nsWindow = window.nsWindow
+        {
+            var frame = nsWindow.frame
+            frame.size = window.frame.size
+            
+            nsWindow.styleMask.remove(.proxyStyleMaskFullSizeContentView)
+            nsWindow.contentAspectRatio = core.videoFormat.dimensions
+            nsWindow.setFrame(frame, display: true)
+        }
+//        window.setNeedsLayout()
+//        window.nsWindow?.setContentSize(core.videoFormat.dimensions.applying(.init(scaleX: 2, y: 2)))
+    }
+    #endif
 }

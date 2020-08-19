@@ -23,12 +23,12 @@ let CFMessagePortHandler: CFMessagePortCallBack = { (port, msgid, data, info) in
 let CFMachRegistrationCallback: CFMachPortCallBack = { (port, message, index, info) in
     print("Registered", port)
     
-    var surfacePort: mach_port_t = 0
-    RSTReceivePort(message, &surfacePort)
-    print("Port!", surfacePort)
-    
-    let surface = IOSurfaceLookupFromMachPort(surfacePort)
-    print("This is it...:", surface)
+//    var surfacePort: mach_port_t = 0
+//    RSTReceivePort(message, &surfacePort)
+//    print("Port!", surfacePort)
+//    
+//    let surface = IOSurfaceLookupFromMachPort(surfacePort)
+//    print("This is it...:", surface)
 }
 
 class MyMachPort: NSMachPort
@@ -80,6 +80,8 @@ class XPCRequestHandler: NSObject, NSExtensionRequestHandling
     
     private let messageDelegate = MachMessageDelegate()
     
+    private var mainProcess: MainProcessProtocol?
+    
     func beginRequest(with context: NSExtensionContext)
     {
         Delta.register(NES.core)
@@ -123,12 +125,12 @@ private extension XPCRequestHandler
             
             let connection = NSXPCConnection(listenerEndpoint: endpoint.endpoint)
             
-            let emulatorBridgeInterface = NSXPCInterface(with: EmulatorBridgingPrivate.self)
+            let emulatorBridgeInterface = NSXPCInterface(with: EmulatorBridging.self)
             emulatorBridgeInterface.setInterface(NSXPCInterface(with: AudioRendering.self), for: #selector(setter: EmulatorBridging.audioRenderer), argumentIndex: 0, ofReply: false)
             emulatorBridgeInterface.setInterface(NSXPCInterface(with: VideoRendering.self), for: #selector(setter: EmulatorBridging.videoRenderer), argumentIndex: 0, ofReply: false)
             
-            let exportedInterface = NSXPCInterface(with: RemoteProcessProtocol.self)
-            exportedInterface.setInterface(emulatorBridgeInterface, for: #selector(RemoteProcessProtocol.getEmulatorBridge(completion:)), argumentIndex: 0, ofReply: true)
+            let exportedInterface = NSXPCInterface(with: EmulatorProcessProtocol.self)
+            exportedInterface.setInterface(emulatorBridgeInterface, for: #selector(EmulatorProcessProtocol.startProcess(completion:)), argumentIndex: 0, ofReply: true)
             connection.exportedInterface = exportedInterface
             
             if let core = Delta.core(for: gameType)
@@ -138,71 +140,15 @@ private extension XPCRequestHandler
             
             connection.exportedObject = self
             
-            connection.remoteObjectInterface = NSXPCInterface(with: RemoteProcessProtocol.self)
+            connection.remoteObjectInterface = NSXPCInterface(with: MainProcessProtocol.self)
             connection.resume()
             
-            let proxy = connection.remoteObjectProxyWithErrorHandler { (error) in
+            self.mainProcess = connection.remoteObjectProxyWithErrorHandler { (error) in
                 print("XPC Proxy error:", error)
-            } as? RemoteProcessProtocol
+            } as? MainProcessProtocol
+            self.mainProcess?.ping()
             
             self.emulationConnection = connection
-            proxy?.testMyFunction()
-
-            return;
-            
-            let portName = "group.com.rileytestut.Delta.Testut"
-        
-            let cfMachPort = CFMachPortCreate(nil, CFMachRegistrationCallback, nil, nil)!
-            let rawMachPort = CFMachPortGetPort(cfMachPort)
-            
-            
-//            let testPort = MessagePort()
-//            testPort.setMyDelegate(self)
-            
-            let nsMachPort = NSMachPort(machPort: rawMachPort)
-//            print("Delegate:", (nsMachPort as Port).value(forKey: "delegate"))
-            nsMachPort.schedule(in: .main, forMode: .default)
-            
-            
-            
-//            let port = CFMessagePortCreateLocal(kCFAllocatorDefault, portName as CFString, CFMessagePortHandler, nil, nil)!
-//            CFMessagePortSetDispatchQueue(port, .main)
-            
-            var bootstrapPort: mach_port_t = 0
-            #if !targetEnvironment(macCatalyst)
-            task_get_special_port(mach_task_self(), TASK_BOOTSTRAP_PORT, &bootstrapPort)
-            #else
-            task_get_special_port(mach_task_self_, TASK_BOOTSTRAP_PORT, &bootstrapPort)
-            #endif
-//
-            var cName = (portName as NSString).utf8String
-            let result = bootstrap_register(bootstrapPort, UnsafeMutablePointer(mutating: cName), nsMachPort.machPort)
-            
-//            var receivePort: mach_port_t = 0
-//            let result2 = bootstrap_look_up(bootstrapPort, cName, &receivePort)
-//
-//            print(receivePort)
-            
-//            let nsMachPort = NSMachPort(machPort: rawPort)
-//            (nsMachPort as Port).setDelegate(self)
-//            nsMachPort.schedule(in: .main, forMode: .default)
-            self.machPort = nsMachPort
-//            self.messagePort = mach
-//            self.messagePort = port
-            
-//            if let port = CFMessagePortCreateLocal(nil, portName as CFString, CFMessagePortHandler, nil, nil)
-//            {
-//                dump(port)
-//                CFMessagePortSetDispatchQueue(port, .main)
-////
-////                let messagePort = RSTGetPort(port)
-////                print(messagePort)
-//
-//
-//            }
-            
-            proxy?.testMyFunction()
-            
         }
         catch
         {
@@ -223,55 +169,16 @@ private extension XPCRequestHandler
     }
 }
 
-extension XPCRequestHandler: RemoteProcessProtocol
+extension XPCRequestHandler: EmulatorProcessProtocol
 {
-    func testMyFunction()
-    {
-        let portName = "group.com.rileytestut.Delta.Testut"
-        var cName = (portName as NSString).utf8String
-        
-        var bootstrapPort: mach_port_t = 0
-        #if !targetEnvironment(macCatalyst)
-        task_get_special_port(mach_task_self(), TASK_BOOTSTRAP_PORT, &bootstrapPort)
-        #else
-        task_get_special_port(mach_task_self_, TASK_BOOTSTRAP_PORT, &bootstrapPort)
-        #endif
-        
-        var receivePort: mach_port_t = 0
-        let result2 = bootstrap_look_up(bootstrapPort, cName, &receivePort)
-        
-        print("Port:", receivePort, result2)
-        
-        let surface = IOSurfaceLookupFromMachPort(receivePort)
-        print("did it work :(", surface)
-    }
-    
-    func startProcess() {
-        
-    }
-    
-    func stopProcess() {
-        exit(0)
-    }
-    
-    func getEmulatorBridge(completion: @escaping (EmulatorBridging) -> Void)
+    func startProcess(completion: @escaping (EmulatorBridging) -> Void)
     {
         guard let bridge = self.emulatorBridge else { return }
         completion(bridge)
     }
     
-    
+    func stopProcess()
+    {
+        exit(0)
+    }
 }
-
-//extension XPCRequestHandler: NSMachPortDelegate
-//{
-////    @objc func handle(_ message: NSPortMessage)
-////    {
-////        print("omg!! Handling message:", message, message.msgid, message.components)
-////    }
-//
-//    @objc func handleMachMessage(_ msg: UnsafeMutableRawPointer)
-//    {
-//        print("FML")
-//    }
-//}

@@ -4,14 +4,7 @@
 
 #import "ControllerSkinConfigurations.h"
 
-@interface NSXPCConnection ()
-
-// Initialize an NSXPCConnection that will connect to the specified service name. Note: Receiving a non-nil result from this init method does not mean the service name is valid or the service has been launched. The init method simply constructs the local object.
-- (instancetype)initWithServiceName:(NSString *)serviceName NS_AVAILABLE_IOS(11_0);
-
-- (instancetype)initWithYourMom:(BOOL)mom;
-
-@end;
+#import "AppKitBridging.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

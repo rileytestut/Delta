@@ -23,6 +23,7 @@
 /* Begin PBXBuildFile section */
 		1FA4ABA79AB72914FE414A61 /* libPods-Delta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DC866E433B3BA9AE18ABA1EC /* libPods-Delta.a */; };
 		66B8AB8393A671FD85EFB5F4 /* Pods_DeltaMac.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CC18918A608862032EFF712 /* Pods_DeltaMac.framework */; };
+		BF004F2124E47278002F7C85 /* AppKitBridging.m in Sources */ = {isa = PBXBuildFile; fileRef = BF004F2024E47278002F7C85 /* AppKitBridging.m */; };
 		BF02D5DA1DDEBB3000A5E131 /* openvgdb.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = BF02D5D91DDEBB3000A5E131 /* openvgdb.sqlite */; };
 		BF04E6FF1DB8625C000F35D3 /* ControllerSkinsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF04E6FE1DB8625C000F35D3 /* ControllerSkinsViewController.swift */; };
 		BF1020E31F95B05B00313182 /* DeltaToDelta2.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = BF1020E21F95B05B00313182 /* DeltaToDelta2.xcmappingmodel */; };
@@ -124,7 +125,6 @@
 		BF7AE80A1C2E8C7600B1B5BC /* UIColor+Delta.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7AE8091C2E8C7600B1B5BC /* UIColor+Delta.swift */; };
 		BF80E1D21F13117000847008 /* ControllerInputsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF616A121F08184A0077F8B2 /* ControllerInputsViewController.swift */; };
 		BF82C94A24D4C20F009B4A34 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF82C94924D4C20F009B4A34 /* Media.xcassets */; };
-		BF82C94D24D4C20F009B4A34 /* ActionRequestHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = BF82C94C24D4C20F009B4A34 /* ActionRequestHandler.m */; };
 		BF82C94F24D4C20F009B4A34 /* Action.js in Resources */ = {isa = PBXBuildFile; fileRef = BF82C94E24D4C20F009B4A34 /* Action.js */; };
 		BF82C95324D4C20F009B4A34 /* DeltaXPC.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = BF82C94724D4C20F009B4A34 /* DeltaXPC.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		BF82C95E24D4CAC9009B4A34 /* XPCContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF82C95D24D4CAC9009B4A34 /* XPCContainer.swift */; };
@@ -279,6 +279,8 @@
 		22506DA00971C4300AF90A35 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6363F4007830F4C22A365923 /* Pods-DeltaMac.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DeltaMac.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DeltaMac/Pods-DeltaMac.debug.xcconfig"; sourceTree = "<group>"; };
 		A19FF50F55441BC2B2248241 /* Pods-Delta.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Delta.release.xcconfig"; path = "Pods/Target Support Files/Pods-Delta/Pods-Delta.release.xcconfig"; sourceTree = "<group>"; };
+		BF004F1F24E47278002F7C85 /* AppKitBridging.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppKitBridging.h; sourceTree = "<group>"; };
+		BF004F2024E47278002F7C85 /* AppKitBridging.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppKitBridging.m; sourceTree = "<group>"; };
 		BF02D5D91DDEBB3000A5E131 /* openvgdb.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = openvgdb.sqlite; sourceTree = "<group>"; };
 		BF0418131D01E93400E85BCF /* GBADeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = GBADeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF04E6FE1DB8625C000F35D3 /* ControllerSkinsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControllerSkinsViewController.swift; sourceTree = "<group>"; };
@@ -937,6 +939,8 @@
 				BFB862AA24D0BD140000B560 /* Info.plist */,
 				BFB862A424D0BD140000B560 /* Preview Content */,
 				BFC5FF9824D25305001FBC15 /* DeltaMac-Bridging-Header.h */,
+				BF004F1F24E47278002F7C85 /* AppKitBridging.h */,
+				BF004F2024E47278002F7C85 /* AppKitBridging.m */,
 			);
 			path = DeltaMac;
 			sourceTree = "<group>";
@@ -1482,7 +1486,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				BF73404424D8CE0200950EF4 /* XPCRequestHandler.swift in Sources */,
-				BF82C94D24D4C20F009B4A34 /* ActionRequestHandler.m in Sources */,
 				BF82C95E24D4CAC9009B4A34 /* XPCContainer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1533,6 +1536,7 @@
 				BFC5FF8E24D2527A001FBC15 /* ControllerSkin.swift in Sources */,
 				BFC5FF7824D250B8001FBC15 /* PhotoLibraryImportOption.swift in Sources */,
 				BF45E33124D0C03D00FAE111 /* GameView.swift in Sources */,
+				BF004F2124E47278002F7C85 /* AppKitBridging.m in Sources */,
 				BF82C95F24D4CDDC009B4A34 /* XPCContainer.swift in Sources */,
 				BFC5FF9F24D254BD001FBC15 /* HarmonyMetadataKey+Keys.swift in Sources */,
 				BFC5FF7A24D250B8001FBC15 /* iTunesImportOption.swift in Sources */,
@@ -1816,6 +1820,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_ASSET_PATHS = "\"DeltaMac/Preview Content\"";
 				DEVELOPMENT_TEAM = 6XVY5G3U44;
@@ -1860,6 +1865,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"DeltaMac/Preview Content\"";
 				DEVELOPMENT_TEAM = 6XVY5G3U44;
 				ENABLE_BITCODE = NO;
