@@ -77,11 +77,19 @@ private extension GameSyncStatusViewController
         let configure = { [weak self] (cell: UITableViewCell, recordedObject: NSManagedObject) in
             if let record = self?.recordsByObjectURI[recordedObject.objectID.uriRepresentation()], record.isConflicted
             {
-                cell.textLabel?.textColor = .red
+                if #available(iOS 13.0, *) {
+                    cell.textLabel?.textColor = .systemRed
+                } else {
+                    cell.textLabel?.textColor = .red
+                }
             }
             else
             {
-                cell.textLabel?.textColor = .darkText
+                if #available(iOS 13.0, *) {
+                    cell.textLabel?.textColor = .label
+                } else {
+                    cell.textLabel?.textColor = .darkText
+                }
             }
         }
         
