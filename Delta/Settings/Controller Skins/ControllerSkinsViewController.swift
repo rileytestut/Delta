@@ -12,6 +12,8 @@ import DeltaCore
 
 import Roxas
 
+import SwiftUI
+
 protocol ControllerSkinsViewControllerDelegate: AnyObject
 {
     func controllerSkinsViewController(_ controllerSkinsViewController: ControllerSkinsViewController, didChooseControllerSkin controllerSkin: ControllerSkin)
@@ -45,6 +47,69 @@ class ControllerSkinsViewController: UITableViewController
         super.init(coder: aDecoder)
         
         self.prepareDataSource()
+    }
+        
+    @IBAction func tappedFindMore(_ sender: Any) {
+        if #available(iOS 14.0, *) {
+            navigationController?.present(UIHostingController(rootView: FindMoreView(navigationController: navigationController)), animated: true, completion: nil)
+        } else {
+            // Tell people to update or some shit
+        }
+    }
+}
+
+// MARK: SwiftUI
+
+@available(iOS 13.0.0, *)
+class ViewModel: ObservableObject {
+    enum State {
+        case loading
+        case success([ExampleItem])
+    }
+    
+    @Published var state: State = .loading
+}
+
+@available(iOS 13.0.0, *) // this is 13 because it could be useful if someone wanted to port to 13
+struct ExampleItem: Identifiable {
+    let id = UUID()
+}
+
+@available(iOS 14.0.0, *)
+struct FindMoreView: View {
+    @StateObject var viewModel = ViewModel()
+    
+    var navigationController: UINavigationController?
+    
+    private let items = [ExampleItem]()
+    
+    private func dismiss() {
+        navigationController?.dismiss(animated: true, completion: nil)
+    }
+    
+    var body: some View {
+        NavigationView {
+            List {
+                switch viewModel.state {
+                case .loading:
+                    EmptyView()
+                case .success(let items):
+                    ForEach(items) {
+                        Text("\($0.id)")
+                    }
+                }
+            }
+            .overlay(Group {
+                switch viewModel.state {
+                case .loading:
+                    ProgressView("Fetching Skins...")
+                default:
+                    EmptyView()
+                }
+            })
+            .navigationBarItems(trailing: Button("Done", action: dismiss))
+            .navigationBarTitle("Skins")
+        }
     }
 }
 
