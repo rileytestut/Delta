@@ -22,6 +22,69 @@
 
 /* Begin PBXBuildFile section */
 		1FA4ABA79AB72914FE414A61 /* libPods-Delta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DC866E433B3BA9AE18ABA1EC /* libPods-Delta.a */; };
+        805F2C28235E315E0001E890 /* orange4ios-60.png in Resources */ = {isa = PBXBuildFile; fileRef = 805F2C27235E315E0001E890 /* orange4ios-60.png */; };
+        805F2C65235E35F10001E890 /* snes-60.png in Resources */ = {isa = PBXBuildFile; fileRef = 805F2C2A235E35EB0001E890 /* snes-60.png */; };
+        805F2C66235E35F10001E890 /* snes-1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 805F2C2B235E35EB0001E890 /* snes-1024.png */; };
+        805F2C67235E35F10001E890 /* snes-120.png in Resources */ = {isa = PBXBuildFile; fileRef = 805F2C2C235E35EB0001E890 /* snes-120.png */; };
+        805F2C68235E35F10001E890 /* snes-180.png in Resources */ = {isa = PBXBuildFile; fileRef = 805F2C2D235E35EB0001E890 /* snes-180.png */; };
+        805F2C69235E35F10001E890 /* n64-180.png in Resources */ = {isa = PBXBuildFile; fileRef = 805F2C2F235E35EC0001E890 /* n64-180.png */; };
+        805F2C6A235E35F10001E890 /* n64-60.png in Resources */ = {isa = PBXBuildFile; fileRef = 805F2C30235E35EC0001E890 /* n64-60.png */; };
+        805F2C6B235E35F10001E890 /* n64-120.png in Resources */ = {isa = PBXBuildFile; fileRef = 805F2C31235E35EC0001E890 /* n64-120.png */; };
+        805F2C6C235E35F10001E890 /* n64-1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 805F2C32235E35EC0001E890 /* n64-1024.png */; };
+        805F2C6D235E35F10001E890 /* delta_green-1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 805F2C34235E35EC0001E890 /* delta_green-1024.png */; };
+        805F2C6E235E35F10001E890 /* delta_green-120.png in Resources */ = {isa = PBXBuildFile; fileRef = 805F2C35235E35EC0001E890 /* delta_green-120.png */; };
+        805F2C6F235E35F10001E890 /* delta_green-180.png in Resources */ = {isa = PBXBuildFile; fileRef = 805F2C36235E35EC0001E890 /* delta_green-180.png */; };
+        805F2C70235E35F10001E890 /* delta_green-60.png in Resources */ = {isa = PBXBuildFile; fileRef = 805F2C37235E35EC0001E890 /* delta_green-60.png */; };
+        805F2C71235E35F10001E890 /* delta_red-60.png in Resources */ = {isa = PBXBuildFile; fileRef = 805F2C39235E35ED0001E890 /* delta_red-60.png */; };
+        805F2C72235E35F10001E890 /* delta_red-1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 805F2C3A235E35ED0001E890 /* delta_red-1024.png */; };
+        805F2C73235E35F10001E890 /* delta_red-120.png in Resources */ = {isa = PBXBuildFile; fileRef = 805F2C3B235E35ED0001E890 /* delta_red-120.png */; };
+        805F2C74235E35F10001E890 /* delta_red-180.png in Resources */ = {isa = PBXBuildFile; fileRef = 805F2C3C235E35ED0001E890 /* delta_red-180.png */; };
+        805F2C75235E35F10001E890 /* blue4ios-60.png in Resources */ = {isa = PBXBuildFile; fileRef = 805F2C3E235E35EE0001E890 /* blue4ios-60.png */; };
+        805F2C76235E35F10001E890 /* blue4ios-1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 805F2C3F235E35EE0001E890 /* blue4ios-1024.png */; };
+        805F2C77235E35F10001E890 /* blue4ios-180.png in Resources */ = {isa = PBXBuildFile; fileRef = 805F2C40235E35EE0001E890 /* blue4ios-180.png */; };
+        805F2C78235E35F10001E890 /* blue4ios-120.png in Resources */ = {isa = PBXBuildFile; fileRef = 805F2C41235E35EE0001E890 /* blue4ios-120.png */; };
+        805F2C79235E35F10001E890 /* delta_blue-180.png in Resources */ = {isa = PBXBuildFile; fileRef = 805F2C43235E35EE0001E890 /* delta_blue-180.png */; };
+        805F2C7A235E35F10001E890 /* delta_blue-1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 805F2C44235E35EE0001E890 /* delta_blue-1024.png */; };
+        805F2C7B235E35F10001E890 /* delta_blue-120.png in Resources */ = {isa = PBXBuildFile; fileRef = 805F2C45235E35EE0001E890 /* delta_blue-120.png */; };
+        805F2C7C235E35F10001E890 /* delta_blue-60.png in Resources */ = {isa = PBXBuildFile; fileRef = 805F2C46235E35EE0001E890 /* delta_blue-60.png */; };
+        805F2C7D235E35F10001E890 /* delta_orange-180.png in Resources */ = {isa = PBXBuildFile; fileRef = 805F2C48235E35EF0001E890 /* delta_orange-180.png */; };
+        805F2C7E235E35F10001E890 /* delta_orange-120.png in Resources */ = {isa = PBXBuildFile; fileRef = 805F2C49235E35EF0001E890 /* delta_orange-120.png */; };
+        805F2C7F235E35F10001E890 /* delta_orange-1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 805F2C4A235E35EF0001E890 /* delta_orange-1024.png */; };
+        805F2C80235E35F10001E890 /* delta_orange-60.png in Resources */ = {isa = PBXBuildFile; fileRef = 805F2C4B235E35EF0001E890 /* delta_orange-60.png */; };
+        805F2C81235E35F10001E890 /* nintendo-180.png in Resources */ = {isa = PBXBuildFile; fileRef = 805F2C4D235E35EF0001E890 /* nintendo-180.png */; };
+        805F2C82235E35F10001E890 /* nintendo-1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 805F2C4E235E35EF0001E890 /* nintendo-1024.png */; };
+        805F2C83235E35F10001E890 /* nintendo-120.png in Resources */ = {isa = PBXBuildFile; fileRef = 805F2C4F235E35EF0001E890 /* nintendo-120.png */; };
+        805F2C84235E35F10001E890 /* nintendo-60.png in Resources */ = {isa = PBXBuildFile; fileRef = 805F2C50235E35EF0001E890 /* nintendo-60.png */; };
+        805F2C85235E35F10001E890 /* nes-180.png in Resources */ = {isa = PBXBuildFile; fileRef = 805F2C52235E35F00001E890 /* nes-180.png */; };
+        805F2C86235E35F10001E890 /* nes-120.png in Resources */ = {isa = PBXBuildFile; fileRef = 805F2C53235E35F00001E890 /* nes-120.png */; };
+        805F2C87235E35F10001E890 /* nes-1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 805F2C54235E35F00001E890 /* nes-1024.png */; };
+        805F2C88235E35F10001E890 /* nes-60.png in Resources */ = {isa = PBXBuildFile; fileRef = 805F2C55235E35F00001E890 /* nes-60.png */; };
+        805F2C89235E35F10001E890 /* delta4ios-1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 805F2C57235E35F00001E890 /* delta4ios-1024.png */; };
+        805F2C8A235E35F10001E890 /* delta4ios-60.png in Resources */ = {isa = PBXBuildFile; fileRef = 805F2C58235E35F00001E890 /* delta4ios-60.png */; };
+        805F2C8B235E35F10001E890 /* delta4ios-120.png in Resources */ = {isa = PBXBuildFile; fileRef = 805F2C59235E35F00001E890 /* delta4ios-120.png */; };
+        805F2C8C235E35F10001E890 /* delta4ios-180.png in Resources */ = {isa = PBXBuildFile; fileRef = 805F2C5A235E35F00001E890 /* delta4ios-180.png */; };
+        805F2C8D235E35F10001E890 /* green4ios-120.png in Resources */ = {isa = PBXBuildFile; fileRef = 805F2C5C235E35F00001E890 /* green4ios-120.png */; };
+        805F2C8E235E35F10001E890 /* green4ios-180.png in Resources */ = {isa = PBXBuildFile; fileRef = 805F2C5D235E35F00001E890 /* green4ios-180.png */; };
+        805F2C8F235E35F10001E890 /* green4ios-60.png in Resources */ = {isa = PBXBuildFile; fileRef = 805F2C5E235E35F00001E890 /* green4ios-60.png */; };
+        805F2C90235E35F10001E890 /* green4ios-1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 805F2C5F235E35F00001E890 /* green4ios-1024.png */; };
+        805F2C91235E35F10001E890 /* red4ios-180.png in Resources */ = {isa = PBXBuildFile; fileRef = 805F2C61235E35F10001E890 /* red4ios-180.png */; };
+        805F2C92235E35F10001E890 /* red4ios-120.png in Resources */ = {isa = PBXBuildFile; fileRef = 805F2C62235E35F10001E890 /* red4ios-120.png */; };
+        805F2C93235E35F10001E890 /* red4ios-1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 805F2C63235E35F10001E890 /* red4ios-1024.png */; };
+        805F2C94235E35F10001E890 /* red4ios-60.png in Resources */ = {isa = PBXBuildFile; fileRef = 805F2C64235E35F10001E890 /* red4ios-60.png */; };
+        807C58AA2356659C00994474 /* orange4ios-180.png in Resources */ = {isa = PBXBuildFile; fileRef = 807C58A72356659B00994474 /* orange4ios-180.png */; };
+        807C58AB2356659C00994474 /* orange4ios-120.png in Resources */ = {isa = PBXBuildFile; fileRef = 807C58A82356659B00994474 /* orange4ios-120.png */; };
+        807C58AC2356659C00994474 /* orange4ios-1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 807C58A92356659C00994474 /* orange4ios-1024.png */; };
+        80A17710235E5717001A1EF9 /* delta64-1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 80A1770C235E5717001A1EF9 /* delta64-1024.png */; };
+        80A17711235E5717001A1EF9 /* delta64-120.png in Resources */ = {isa = PBXBuildFile; fileRef = 80A1770D235E5717001A1EF9 /* delta64-120.png */; };
+        80A17712235E5717001A1EF9 /* delta64-180.png in Resources */ = {isa = PBXBuildFile; fileRef = 80A1770E235E5717001A1EF9 /* delta64-180.png */; };
+        80A17713235E5717001A1EF9 /* delta64-60.png in Resources */ = {isa = PBXBuildFile; fileRef = 80A1770F235E5717001A1EF9 /* delta64-60.png */; };
+        80B94E3723513EEF006A273B /* AppIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B94E3423513EEF006A273B /* AppIcon.swift */; };
+        80B94E3823513EEF006A273B /* AppIconCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B94E3523513EEF006A273B /* AppIconCell.swift */; };
+        80B94E3923513EEF006A273B /* AppIconsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B94E3623513EEF006A273B /* AppIconsViewController.swift */; };
+        80E4F7C2235E5CC7006CC419 /* delta64_dark-60.png in Resources */ = {isa = PBXBuildFile; fileRef = 80E4F7BE235E5CC7006CC419 /* delta64_dark-60.png */; };
+        80E4F7C3235E5CC7006CC419 /* delta64_dark-120.png in Resources */ = {isa = PBXBuildFile; fileRef = 80E4F7BF235E5CC7006CC419 /* delta64_dark-120.png */; };
+        80E4F7C4235E5CC7006CC419 /* delta64_dark-180.png in Resources */ = {isa = PBXBuildFile; fileRef = 80E4F7C0235E5CC7006CC419 /* delta64_dark-180.png */; };
+        80E4F7C5235E5CC7006CC419 /* delta64_dark-1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 80E4F7C1235E5CC7006CC419 /* delta64_dark-1024.png */; };
 		BF02D5DA1DDEBB3000A5E131 /* openvgdb.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = BF02D5D91DDEBB3000A5E131 /* openvgdb.sqlite */; };
 		BF04E6FF1DB8625C000F35D3 /* ControllerSkinsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF04E6FE1DB8625C000F35D3 /* ControllerSkinsViewController.swift */; };
 		BF1020E31F95B05B00313182 /* DeltaToDelta2.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = BF1020E21F95B05B00313182 /* DeltaToDelta2.xcmappingmodel */; };
@@ -156,6 +219,70 @@
 
 /* Begin PBXFileReference section */
 		22506DA00971C4300AF90A35 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+        695E8C07A709B16AAD83AEC8 /* Pods_Delta.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Delta.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+        805F2C27235E315E0001E890 /* orange4ios-60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "orange4ios-60.png"; sourceTree = "<group>"; };
+        805F2C2A235E35EB0001E890 /* snes-60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "snes-60.png"; sourceTree = "<group>"; };
+        805F2C2B235E35EB0001E890 /* snes-1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "snes-1024.png"; sourceTree = "<group>"; };
+        805F2C2C235E35EB0001E890 /* snes-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "snes-120.png"; sourceTree = "<group>"; };
+        805F2C2D235E35EB0001E890 /* snes-180.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "snes-180.png"; sourceTree = "<group>"; };
+        805F2C2F235E35EC0001E890 /* n64-180.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "n64-180.png"; sourceTree = "<group>"; };
+        805F2C30235E35EC0001E890 /* n64-60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "n64-60.png"; sourceTree = "<group>"; };
+        805F2C31235E35EC0001E890 /* n64-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "n64-120.png"; sourceTree = "<group>"; };
+        805F2C32235E35EC0001E890 /* n64-1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "n64-1024.png"; sourceTree = "<group>"; };
+        805F2C34235E35EC0001E890 /* delta_green-1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delta_green-1024.png"; sourceTree = "<group>"; };
+        805F2C35235E35EC0001E890 /* delta_green-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delta_green-120.png"; sourceTree = "<group>"; };
+        805F2C36235E35EC0001E890 /* delta_green-180.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delta_green-180.png"; sourceTree = "<group>"; };
+        805F2C37235E35EC0001E890 /* delta_green-60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delta_green-60.png"; sourceTree = "<group>"; };
+        805F2C39235E35ED0001E890 /* delta_red-60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delta_red-60.png"; sourceTree = "<group>"; };
+        805F2C3A235E35ED0001E890 /* delta_red-1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delta_red-1024.png"; sourceTree = "<group>"; };
+        805F2C3B235E35ED0001E890 /* delta_red-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delta_red-120.png"; sourceTree = "<group>"; };
+        805F2C3C235E35ED0001E890 /* delta_red-180.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delta_red-180.png"; sourceTree = "<group>"; };
+        805F2C3E235E35EE0001E890 /* blue4ios-60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue4ios-60.png"; sourceTree = "<group>"; };
+        805F2C3F235E35EE0001E890 /* blue4ios-1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue4ios-1024.png"; sourceTree = "<group>"; };
+        805F2C40235E35EE0001E890 /* blue4ios-180.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue4ios-180.png"; sourceTree = "<group>"; };
+        805F2C41235E35EE0001E890 /* blue4ios-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue4ios-120.png"; sourceTree = "<group>"; };
+        805F2C43235E35EE0001E890 /* delta_blue-180.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delta_blue-180.png"; sourceTree = "<group>"; };
+        805F2C44235E35EE0001E890 /* delta_blue-1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delta_blue-1024.png"; sourceTree = "<group>"; };
+        805F2C45235E35EE0001E890 /* delta_blue-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delta_blue-120.png"; sourceTree = "<group>"; };
+        805F2C46235E35EE0001E890 /* delta_blue-60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delta_blue-60.png"; sourceTree = "<group>"; };
+        805F2C48235E35EF0001E890 /* delta_orange-180.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delta_orange-180.png"; sourceTree = "<group>"; };
+        805F2C49235E35EF0001E890 /* delta_orange-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delta_orange-120.png"; sourceTree = "<group>"; };
+        805F2C4A235E35EF0001E890 /* delta_orange-1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delta_orange-1024.png"; sourceTree = "<group>"; };
+        805F2C4B235E35EF0001E890 /* delta_orange-60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delta_orange-60.png"; sourceTree = "<group>"; };
+        805F2C4D235E35EF0001E890 /* nintendo-180.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nintendo-180.png"; sourceTree = "<group>"; };
+        805F2C4E235E35EF0001E890 /* nintendo-1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nintendo-1024.png"; sourceTree = "<group>"; };
+        805F2C4F235E35EF0001E890 /* nintendo-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nintendo-120.png"; sourceTree = "<group>"; };
+        805F2C50235E35EF0001E890 /* nintendo-60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nintendo-60.png"; sourceTree = "<group>"; };
+        805F2C52235E35F00001E890 /* nes-180.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nes-180.png"; sourceTree = "<group>"; };
+        805F2C53235E35F00001E890 /* nes-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nes-120.png"; sourceTree = "<group>"; };
+        805F2C54235E35F00001E890 /* nes-1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nes-1024.png"; sourceTree = "<group>"; };
+        805F2C55235E35F00001E890 /* nes-60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nes-60.png"; sourceTree = "<group>"; };
+        805F2C57235E35F00001E890 /* delta4ios-1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delta4ios-1024.png"; sourceTree = "<group>"; };
+        805F2C58235E35F00001E890 /* delta4ios-60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delta4ios-60.png"; sourceTree = "<group>"; };
+        805F2C59235E35F00001E890 /* delta4ios-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delta4ios-120.png"; sourceTree = "<group>"; };
+        805F2C5A235E35F00001E890 /* delta4ios-180.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delta4ios-180.png"; sourceTree = "<group>"; };
+        805F2C5C235E35F00001E890 /* green4ios-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "green4ios-120.png"; sourceTree = "<group>"; };
+        805F2C5D235E35F00001E890 /* green4ios-180.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "green4ios-180.png"; sourceTree = "<group>"; };
+        805F2C5E235E35F00001E890 /* green4ios-60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "green4ios-60.png"; sourceTree = "<group>"; };
+        805F2C5F235E35F00001E890 /* green4ios-1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "green4ios-1024.png"; sourceTree = "<group>"; };
+        805F2C61235E35F10001E890 /* red4ios-180.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "red4ios-180.png"; sourceTree = "<group>"; };
+        805F2C62235E35F10001E890 /* red4ios-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "red4ios-120.png"; sourceTree = "<group>"; };
+        805F2C63235E35F10001E890 /* red4ios-1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "red4ios-1024.png"; sourceTree = "<group>"; };
+        805F2C64235E35F10001E890 /* red4ios-60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "red4ios-60.png"; sourceTree = "<group>"; };
+        807C58A72356659B00994474 /* orange4ios-180.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "orange4ios-180.png"; sourceTree = "<group>"; };
+        807C58A82356659B00994474 /* orange4ios-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "orange4ios-120.png"; sourceTree = "<group>"; };
+        807C58A92356659C00994474 /* orange4ios-1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "orange4ios-1024.png"; sourceTree = "<group>"; };
+        80A1770C235E5717001A1EF9 /* delta64-1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delta64-1024.png"; sourceTree = "<group>"; };
+        80A1770D235E5717001A1EF9 /* delta64-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delta64-120.png"; sourceTree = "<group>"; };
+        80A1770E235E5717001A1EF9 /* delta64-180.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delta64-180.png"; sourceTree = "<group>"; };
+        80A1770F235E5717001A1EF9 /* delta64-60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delta64-60.png"; sourceTree = "<group>"; };
+        80B94E3423513EEF006A273B /* AppIcon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppIcon.swift; sourceTree = "<group>"; };
+        80B94E3523513EEF006A273B /* AppIconCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppIconCell.swift; sourceTree = "<group>"; };
+        80B94E3623513EEF006A273B /* AppIconsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppIconsViewController.swift; sourceTree = "<group>"; };
+        80E4F7BE235E5CC7006CC419 /* delta64_dark-60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delta64_dark-60.png"; sourceTree = "<group>"; };
+        80E4F7BF235E5CC7006CC419 /* delta64_dark-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delta64_dark-120.png"; sourceTree = "<group>"; };
+        80E4F7C0235E5CC7006CC419 /* delta64_dark-180.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delta64_dark-180.png"; sourceTree = "<group>"; };
+        80E4F7C1235E5CC7006CC419 /* delta64_dark-1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delta64_dark-1024.png"; sourceTree = "<group>"; };
 		A19FF50F55441BC2B2248241 /* Pods-Delta.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Delta.release.xcconfig"; path = "Pods/Target Support Files/Pods-Delta/Pods-Delta.release.xcconfig"; sourceTree = "<group>"; };
 		BF02D5D91DDEBB3000A5E131 /* openvgdb.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = openvgdb.sqlite; sourceTree = "<group>"; };
 		BF0418131D01E93400E85BCF /* GBADeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = GBADeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -343,6 +470,204 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+        805F2C29235E35EB0001E890 /* snes */ = {
+            isa = PBXGroup;
+            children = (
+                805F2C2A235E35EB0001E890 /* snes-60.png */,
+                805F2C2B235E35EB0001E890 /* snes-1024.png */,
+                805F2C2C235E35EB0001E890 /* snes-120.png */,
+                805F2C2D235E35EB0001E890 /* snes-180.png */,
+            );
+            path = snes;
+            sourceTree = "<group>";
+        };
+        805F2C2E235E35EC0001E890 /* n64 */ = {
+            isa = PBXGroup;
+            children = (
+                805F2C2F235E35EC0001E890 /* n64-180.png */,
+                805F2C30235E35EC0001E890 /* n64-60.png */,
+                805F2C31235E35EC0001E890 /* n64-120.png */,
+                805F2C32235E35EC0001E890 /* n64-1024.png */,
+            );
+            path = n64;
+            sourceTree = "<group>";
+        };
+        805F2C33235E35EC0001E890 /* delta_green */ = {
+            isa = PBXGroup;
+            children = (
+                805F2C34235E35EC0001E890 /* delta_green-1024.png */,
+                805F2C35235E35EC0001E890 /* delta_green-120.png */,
+                805F2C36235E35EC0001E890 /* delta_green-180.png */,
+                805F2C37235E35EC0001E890 /* delta_green-60.png */,
+            );
+            path = delta_green;
+            sourceTree = "<group>";
+        };
+        805F2C38235E35ED0001E890 /* delta_red */ = {
+            isa = PBXGroup;
+            children = (
+                805F2C39235E35ED0001E890 /* delta_red-60.png */,
+                805F2C3A235E35ED0001E890 /* delta_red-1024.png */,
+                805F2C3B235E35ED0001E890 /* delta_red-120.png */,
+                805F2C3C235E35ED0001E890 /* delta_red-180.png */,
+            );
+            path = delta_red;
+            sourceTree = "<group>";
+        };
+        805F2C3D235E35EE0001E890 /* blue4ios */ = {
+            isa = PBXGroup;
+            children = (
+                805F2C3E235E35EE0001E890 /* blue4ios-60.png */,
+                805F2C3F235E35EE0001E890 /* blue4ios-1024.png */,
+                805F2C40235E35EE0001E890 /* blue4ios-180.png */,
+                805F2C41235E35EE0001E890 /* blue4ios-120.png */,
+            );
+            path = blue4ios;
+            sourceTree = "<group>";
+        };
+        805F2C42235E35EE0001E890 /* delta_blue */ = {
+            isa = PBXGroup;
+            children = (
+                805F2C43235E35EE0001E890 /* delta_blue-180.png */,
+                805F2C44235E35EE0001E890 /* delta_blue-1024.png */,
+                805F2C45235E35EE0001E890 /* delta_blue-120.png */,
+                805F2C46235E35EE0001E890 /* delta_blue-60.png */,
+            );
+            path = delta_blue;
+            sourceTree = "<group>";
+        };
+        805F2C47235E35EF0001E890 /* delta_orange */ = {
+            isa = PBXGroup;
+            children = (
+                805F2C48235E35EF0001E890 /* delta_orange-180.png */,
+                805F2C49235E35EF0001E890 /* delta_orange-120.png */,
+                805F2C4A235E35EF0001E890 /* delta_orange-1024.png */,
+                805F2C4B235E35EF0001E890 /* delta_orange-60.png */,
+            );
+            path = delta_orange;
+            sourceTree = "<group>";
+        };
+        805F2C4C235E35EF0001E890 /* nintendo */ = {
+            isa = PBXGroup;
+            children = (
+                805F2C4D235E35EF0001E890 /* nintendo-180.png */,
+                805F2C4E235E35EF0001E890 /* nintendo-1024.png */,
+                805F2C4F235E35EF0001E890 /* nintendo-120.png */,
+                805F2C50235E35EF0001E890 /* nintendo-60.png */,
+            );
+            path = nintendo;
+            sourceTree = "<group>";
+        };
+        805F2C51235E35F00001E890 /* nes */ = {
+            isa = PBXGroup;
+            children = (
+                805F2C52235E35F00001E890 /* nes-180.png */,
+                805F2C53235E35F00001E890 /* nes-120.png */,
+                805F2C54235E35F00001E890 /* nes-1024.png */,
+                805F2C55235E35F00001E890 /* nes-60.png */,
+            );
+            path = nes;
+            sourceTree = "<group>";
+        };
+        805F2C56235E35F00001E890 /* delta4ios */ = {
+            isa = PBXGroup;
+            children = (
+                805F2C57235E35F00001E890 /* delta4ios-1024.png */,
+                805F2C58235E35F00001E890 /* delta4ios-60.png */,
+                805F2C59235E35F00001E890 /* delta4ios-120.png */,
+                805F2C5A235E35F00001E890 /* delta4ios-180.png */,
+            );
+            path = delta4ios;
+            sourceTree = "<group>";
+        };
+        805F2C5B235E35F00001E890 /* green4ios */ = {
+            isa = PBXGroup;
+            children = (
+                805F2C5C235E35F00001E890 /* green4ios-120.png */,
+                805F2C5D235E35F00001E890 /* green4ios-180.png */,
+                805F2C5E235E35F00001E890 /* green4ios-60.png */,
+                805F2C5F235E35F00001E890 /* green4ios-1024.png */,
+            );
+            path = green4ios;
+            sourceTree = "<group>";
+        };
+        805F2C60235E35F10001E890 /* red4ios */ = {
+            isa = PBXGroup;
+            children = (
+                805F2C61235E35F10001E890 /* red4ios-180.png */,
+                805F2C62235E35F10001E890 /* red4ios-120.png */,
+                805F2C63235E35F10001E890 /* red4ios-1024.png */,
+                805F2C64235E35F10001E890 /* red4ios-60.png */,
+            );
+            path = red4ios;
+            sourceTree = "<group>";
+        };
+        80A1770B235E5717001A1EF9 /* delta64 */ = {
+            isa = PBXGroup;
+            children = (
+                80A1770C235E5717001A1EF9 /* delta64-1024.png */,
+                80A1770D235E5717001A1EF9 /* delta64-120.png */,
+                80A1770E235E5717001A1EF9 /* delta64-180.png */,
+                80A1770F235E5717001A1EF9 /* delta64-60.png */,
+            );
+            path = delta64;
+            sourceTree = "<group>";
+        };
+        80B94E3323513EEF006A273B /* App Icons */ = {
+            isa = PBXGroup;
+            children = (
+                80B94E3A2353EF6E006A273B /* Alternate Icons */,
+                80B94E3423513EEF006A273B /* AppIcon.swift */,
+                80B94E3523513EEF006A273B /* AppIconCell.swift */,
+                80B94E3623513EEF006A273B /* AppIconsViewController.swift */,
+            );
+            path = "App Icons";
+            sourceTree = "<group>";
+        };
+        80B94E3A2353EF6E006A273B /* Alternate Icons */ = {
+            isa = PBXGroup;
+            children = (
+                805F2C4C235E35EF0001E890 /* nintendo */,
+                805F2C51235E35F00001E890 /* nes */,
+                805F2C29235E35EB0001E890 /* snes */,
+                805F2C2E235E35EC0001E890 /* n64 */,
+                80A1770B235E5717001A1EF9 /* delta64 */,
+                80E4F7BD235E5CC7006CC419 /* delta64_dark */,
+                805F2C33235E35EC0001E890 /* delta_green */,
+                805F2C38235E35ED0001E890 /* delta_red */,
+                805F2C42235E35EE0001E890 /* delta_blue */,
+                805F2C47235E35EF0001E890 /* delta_orange */,
+                805F2C56235E35F00001E890 /* delta4ios */,
+                805F2C5B235E35F00001E890 /* green4ios */,
+                805F2C60235E35F10001E890 /* red4ios */,
+                805F2C3D235E35EE0001E890 /* blue4ios */,
+                80B94E3B2353EF7C006A273B /* orange4ios */,
+            );
+            path = "Alternate Icons";
+            sourceTree = "<group>";
+        };
+        80B94E3B2353EF7C006A273B /* orange4ios */ = {
+            isa = PBXGroup;
+            children = (
+                805F2C27235E315E0001E890 /* orange4ios-60.png */,
+                807C58A82356659B00994474 /* orange4ios-120.png */,
+                807C58A72356659B00994474 /* orange4ios-180.png */,
+                807C58A92356659C00994474 /* orange4ios-1024.png */,
+            );
+            path = orange4ios;
+            sourceTree = "<group>";
+        };
+        80E4F7BD235E5CC7006CC419 /* delta64_dark */ = {
+            isa = PBXGroup;
+            children = (
+                80E4F7BE235E5CC7006CC419 /* delta64_dark-60.png */,
+                80E4F7BF235E5CC7006CC419 /* delta64_dark-120.png */,
+                80E4F7C0235E5CC7006CC419 /* delta64_dark-180.png */,
+                80E4F7C1235E5CC7006CC419 /* delta64_dark-1024.png */,
+            );
+            path = delta64_dark;
+			sourceTree = "<group>";
+		};
 		BF090CEE1B490C1A00DCAB45 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -673,7 +998,8 @@
 				BF5E7F451B9A652600AE44F8 /* Settings.storyboard */,
 				BF5E7F431B9A650B00AE44F8 /* SettingsViewController.swift */,
 				BFB3645723245A6000CD0EB1 /* LicensesViewController.swift */,
-				BFE9907E24451DE6006409A7 /* Cores */,
+                BFE9907E24451DE6006409A7 /* Cores */,
+                80B94E3323513EEF006A273B /* App Icons */,
 				BF71CF851FE8FFF1001F1613 /* App Icon Shortcuts */,
 				BF11734E1DA32CEC00047DF8 /* Controllers */,
 				BF1DAD5B1D9F574900E752A7 /* Controller Skins */,
@@ -887,7 +1213,7 @@
 					};
 					BFFA71D61AAC406100EE9DD1 = {
 						CreatedOnToolsVersion = 6.3;
-						DevelopmentTeam = 6XVY5G3U44;
+						DevelopmentTeam = 4GG4434UG2;
 						LastSwiftMigration = 1020;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
@@ -923,18 +1249,91 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BFFA71E21AAC406100EE9DD1 /* Main.storyboard in Resources */,
-				BF6BF3211EB82362008E83CD /* GamesDatabase.storyboard in Resources */,
-				BFAB9F88219A4B670080EC7D /* GoogleService-Info.plist in Resources */,
-				BF3540001C5DA3C500C1184C /* PausePresentationControllerContentView.xib in Resources */,
-				BFDB0FEC24464758001C727C /* DS.png in Resources */,
+                805F2C94235E35F10001E890 /* red4ios-60.png in Resources */,
+                805F2C6A235E35F10001E890 /* n64-60.png in Resources */,
+                BFFA71E21AAC406100EE9DD1 /* Main.storyboard in Resources */,
+                80A17711235E5717001A1EF9 /* delta64-120.png in Resources */,
+                805F2C89235E35F10001E890 /* delta4ios-1024.png in Resources */,
+                BF6BF3211EB82362008E83CD /* GamesDatabase.storyboard in Resources */,
+                805F2C82235E35F10001E890 /* nintendo-1024.png in Resources */,
+                805F2C8A235E35F10001E890 /* delta4ios-60.png in Resources */,
+                80E4F7C4235E5CC7006CC419 /* delta64_dark-180.png in Resources */,
+                805F2C8E235E35F10001E890 /* green4ios-180.png in Resources */,
+                807C58AA2356659C00994474 /* orange4ios-180.png in Resources */,
+                805F2C8C235E35F10001E890 /* delta4ios-180.png in Resources */,
+                805F2C74235E35F10001E890 /* delta_red-180.png in Resources */,
+                BFAB9F88219A4B670080EC7D /* GoogleService-Info.plist in Resources */,
+                805F2C86235E35F10001E890 /* nes-120.png in Resources */,
+                805F2C69235E35F10001E890 /* n64-180.png in Resources */,
+                805F2C8D235E35F10001E890 /* green4ios-120.png in Resources */,
+                BF3540001C5DA3C500C1184C /* PausePresentationControllerContentView.xib in Resources */,
+                BFDB0FEC24464758001C727C /* DS.png in Resources */,
+                805F2C78235E35F10001E890 /* blue4ios-120.png in Resources */,
+                805F2C85235E35F10001E890 /* nes-180.png in Resources */,
 				BF5E7F461B9A652600AE44F8 /* Settings.storyboard in Resources */,
+				8063F98023F5CFB500741107 /* delta_blue-120.png in Resources */,
+				8063F96723F5CFB500741107 /* orange4ios-120.png in Resources */,
+				8063F95823F5CFB500741107 /* nes-1024.png in Resources */,
+				8063F96D23F5CFB500741107 /* delta64_dark-1024.png in Resources */,
+				8063F98C23F5CFB600741107 /* delta64-180.png in Resources */,
+				8063F96B23F5CFB500741107 /* delta64_dark-120.png in Resources */,
+				8063F97B23F5CFB500741107 /* delta_red-1024.png in Resources */,
+				8063F95423F5CFB500741107 /* red4ios-1024.png in Resources */,
+				8063F97823F5CFB500741107 /* blue4ios-180.png in Resources */,
+				8063F98223F5CFB600741107 /* delta_orange-180.png in Resources */,
+				8063F97623F5CFB500741107 /* blue4ios-60.png in Resources */,
+				8063F96223F5CFB500741107 /* delta4ios-1024.png in Resources */,
+				8063F98923F5CFB600741107 /* delta_green-60.png in Resources */,
 				BF02D5DA1DDEBB3000A5E131 /* openvgdb.sqlite in Resources */,
-				BF71CF8A1FE904B1001F1613 /* GameTableViewCell.xib in Resources */,
-				BFFC46461D59861000AF2CC6 /* LaunchScreen.storyboard in Resources */,
-				BF1F45AB21AF4B5800EF9895 /* SyncResultsViewController.storyboard in Resources */,
-				BF353FF61C5D837600C1184C /* PauseMenu.storyboard in Resources */,
-				BF27CC8E1BC9FEA200A20D89 /* Assets.xcassets in Resources */,
+                807C58AC2356659C00994474 /* orange4ios-1024.png in Resources */,
+                805F2C7B235E35F10001E890 /* delta_blue-120.png in Resources */,
+                80E4F7C5235E5CC7006CC419 /* delta64_dark-1024.png in Resources */,
+                805F2C7C235E35F10001E890 /* delta_blue-60.png in Resources */,
+                805F2C91235E35F10001E890 /* red4ios-180.png in Resources */,
+                BF71CF8A1FE904B1001F1613 /* GameTableViewCell.xib in Resources */,
+                805F2C7F235E35F10001E890 /* delta_orange-1024.png in Resources */,
+                805F2C68235E35F10001E890 /* snes-180.png in Resources */,
+                805F2C80235E35F10001E890 /* delta_orange-60.png in Resources */,
+                807C58AB2356659C00994474 /* orange4ios-120.png in Resources */,
+                805F2C83235E35F10001E890 /* nintendo-120.png in Resources */,
+                805F2C6E235E35F10001E890 /* delta_green-120.png in Resources */,
+                805F2C65235E35F10001E890 /* snes-60.png in Resources */,
+                805F2C8B235E35F10001E890 /* delta4ios-120.png in Resources */,
+                BFFC46461D59861000AF2CC6 /* LaunchScreen.storyboard in Resources */,
+                805F2C67235E35F10001E890 /* snes-120.png in Resources */,
+                805F2C70235E35F10001E890 /* delta_green-60.png in Resources */,
+                805F2C88235E35F10001E890 /* nes-60.png in Resources */,
+                805F2C90235E35F10001E890 /* green4ios-1024.png in Resources */,
+                BF1F45AB21AF4B5800EF9895 /* SyncResultsViewController.storyboard in Resources */,
+                805F2C87235E35F10001E890 /* nes-1024.png in Resources */,
+                805F2C77235E35F10001E890 /* blue4ios-180.png in Resources */,
+                805F2C7A235E35F10001E890 /* delta_blue-1024.png in Resources */,
+                805F2C6F235E35F10001E890 /* delta_green-180.png in Resources */,
+                80A17710235E5717001A1EF9 /* delta64-1024.png in Resources */,
+                805F2C72235E35F10001E890 /* delta_red-1024.png in Resources */,
+                805F2C66235E35F10001E890 /* snes-1024.png in Resources */,
+                805F2C6B235E35F10001E890 /* n64-120.png in Resources */,
+                805F2C93235E35F10001E890 /* red4ios-1024.png in Resources */,
+                805F2C84235E35F10001E890 /* nintendo-60.png in Resources */,
+                805F2C6C235E35F10001E890 /* n64-1024.png in Resources */,
+                80A17713235E5717001A1EF9 /* delta64-60.png in Resources */,
+                805F2C92235E35F10001E890 /* red4ios-120.png in Resources */,
+                805F2C81235E35F10001E890 /* nintendo-180.png in Resources */,
+                805F2C73235E35F10001E890 /* delta_red-120.png in Resources */,
+                BF353FF61C5D837600C1184C /* PauseMenu.storyboard in Resources */,
+                805F2C6D235E35F10001E890 /* delta_green-1024.png in Resources */,
+                805F2C75235E35F10001E890 /* blue4ios-60.png in Resources */,
+                805F2C7D235E35F10001E890 /* delta_orange-180.png in Resources */,
+                805F2C7E235E35F10001E890 /* delta_orange-120.png in Resources */,
+                805F2C28235E315E0001E890 /* orange4ios-60.png in Resources */,
+                805F2C79235E35F10001E890 /* delta_blue-180.png in Resources */,
+                805F2C71235E35F10001E890 /* delta_red-60.png in Resources */,
+                BF27CC8E1BC9FEA200A20D89 /* Assets.xcassets in Resources */,
+                80E4F7C3235E5CC7006CC419 /* delta64_dark-120.png in Resources */,
+                805F2C8F235E35F10001E890 /* green4ios-60.png in Resources */,
+                80A17712235E5717001A1EF9 /* delta64-180.png in Resources */,
+                80E4F7C2235E5CC7006CC419 /* delta64_dark-60.png in Resources */,
+                805F2C76235E35F10001E890 /* blue4ios-1024.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1038,14 +1437,17 @@
 			files = (
 				BFB3645823245A6000CD0EB1 /* LicensesViewController.swift in Sources */,
 				BFC6F7B81F435BC500221B96 /* Input+Display.swift in Sources */,
+				80B94E3923513EEF006A273B /* AppIconsViewController.swift in Sources */,
 				BF59426A1E09BBD00051894B /* GridCollectionViewCell.swift in Sources */,
 				BF6BF3181EB82111008E83CD /* iTunesImportOption.swift in Sources */,
 				BF647A6A22FB8FCE0061D76D /* Bundle+SwizzleBundleID.swift in Sources */,
 				BFF6452E1F7CC5060056533E /* GameControllerInputMappingTransformer.swift in Sources */,
+				80B94E3823513EEF006A273B /* AppIconCell.swift in Sources */,
 				BF59427C1E09BC830051894B /* Cheat.swift in Sources */,
 				BFBAB2E31EB685A2004E0B0E /* DeltaCoreProtocol+Delta.swift in Sources */,
 				BF3540081C5DAFAD00C1184C /* PauseTransitionCoordinator.swift in Sources */,
 				BF525EEA1FF6CD12004AA849 /* DeepLink.swift in Sources */,
+				8063F98E23F5CFB600741107 /* AppIconCell.swift in Sources */,
 				BF8A334621A4926F00A42FD4 /* GameSyncStatusViewController.swift in Sources */,
 				BF59427E1E09BC830051894B /* Game.swift in Sources */,
 				BFE593CC21F3F8C2003412A6 /* _GameSave.swift in Sources */,
@@ -1053,6 +1455,7 @@
 				BFAA1FED1B8AA4FA00495943 /* Settings.swift in Sources */,
 				BFA0D1271D3AE1F600565894 /* GameViewController.swift in Sources */,
 				BF59428A1E09BC8B0051894B /* _SaveState.swift in Sources */,
+				80B94E3723513EEF006A273B /* AppIcon.swift in Sources */,
 				BFC1F2CC22F9515F00606A45 /* CopyDeepLinkActivity.swift in Sources */,
 				BF5942801E09BC830051894B /* SaveState.swift in Sources */,
 				BF59428E1E09BCFB0051894B /* ImportController.swift in Sources */,
@@ -1074,6 +1477,7 @@
 				BFDB3418219E4B1700595A62 /* SyncStatusViewController.swift in Sources */,
 				BF18B61F1E2985F900F70067 /* UIAlertController+Importing.swift in Sources */,
 				BFDD04F11D5E2C27002D450E /* GameCollectionViewController.swift in Sources */,
+				8063F95123F5CFB500741107 /* AppIcon.swift in Sources */,
 				BFE4269E1D9C68E600DC913F /* SaveStatesStoryboardSegue.swift in Sources */,
 				BFFA71DD1AAC406100EE9DD1 /* AppDelegate.swift in Sources */,
 				BF525EE81FF5F370004AA849 /* DeepLinkController.swift in Sources */,
@@ -1123,6 +1527,7 @@
 				BF59426F1E09BC5D0051894B /* DatabaseManager.swift in Sources */,
 				BF4828861F9028F500028B97 /* System.swift in Sources */,
 				BF13A7561D5D29B0000BB055 /* PreviewGameViewController.swift in Sources */,
+				8063F98F23F5CFB600741107 /* AppIconsViewController.swift in Sources */,
 				BF6866171DCAC8B900BF2D06 /* ControllerSkin+Configuring.swift in Sources */,
 				BFFBD3D9224A0756002EFC79 /* URL+ExtendedAttributes.swift in Sources */,
 				BF713C0822499ED4004A1A2B /* PreviousHarmony.xcdatamodeld in Sources */,
@@ -1329,13 +1734,13 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 25;
-				DEVELOPMENT_TEAM = "";
+                CURRENT_PROJECT_VERSION = 25;
+                DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "Delta/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 1.2;
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" -DDEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = com.rileytestut.Delta;
+				PRODUCT_BUNDLE_IDENTIFIER = net.kyleg.Delta;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				STRIP_INSTALLED_PRODUCT = YES;
@@ -1357,13 +1762,13 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 25;
-				DEVELOPMENT_TEAM = "";
+                CURRENT_PROJECT_VERSION = 25;
+                DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "Delta/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 1.2;
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" -DIMPACTOR";
-				PRODUCT_BUNDLE_IDENTIFIER = com.rileytestut.Delta;
+				PRODUCT_BUNDLE_IDENTIFIER = net.kyleg.Delta;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				STRIP_INSTALLED_PRODUCT = YES;
