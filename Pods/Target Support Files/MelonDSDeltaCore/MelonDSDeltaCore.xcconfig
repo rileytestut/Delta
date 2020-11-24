@@ -1,6 +1,6 @@
 CONFIGURATION_BUILD_DIR = ${PODS_CONFIGURATION_BUILD_DIR}/MelonDSDeltaCore
 GCC_OPTIMIZATION_LEVEL = fast
-GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1 STATIC_LIBRARY=1
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1 STATIC_LIBRARY=1 JIT_ENABLED=1
 HEADER_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/Headers/Private" "${PODS_ROOT}/Headers/Private/MelonDSDeltaCore" "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/MelonDSDeltaCore" "${PODS_CONFIGURATION_BUILD_DIR}" "$(PODS_ROOT)/Headers/Private/MelonDSDeltaCore/melonDS/src"
 OTHER_CFLAGS = $(inherited) -fmodule-map-file="${PODS_CONFIGURATION_BUILD_DIR}/DeltaCore/DeltaCore.modulemap" -fmodule-map-file="${PODS_CONFIGURATION_BUILD_DIR}/ZIPFoundation/ZIPFoundation.modulemap"
 OTHER_SWIFT_FLAGS = $(inherited) -D COCOAPODS -Xcc -fmodule-map-file="${PODS_CONFIGURATION_BUILD_DIR}/DeltaCore/DeltaCore.modulemap" -Xcc -fmodule-map-file="${PODS_CONFIGURATION_BUILD_DIR}/ZIPFoundation/ZIPFoundation.modulemap" -suppress-warnings -import-underlying-module -Xcc -fmodule-map-file="${SRCROOT}/${MODULEMAP_FILE}"

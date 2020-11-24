@@ -127,7 +127,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
   Crashlytics: e156f27e43abaa331f9b7afed091bda37e1052cc
-  DeltaCore: 1b246a4e436c6b2b377ea84a1bc847a1c5f4b6cd
+  DeltaCore: be1ed931bf8dba0bd1d9f85310dcc99eeae10517
   DSDeltaCore: 7dc6a18e25d8036a5022a34c1ffb4062af9eed3d
   Fabric: be0459577cee96fe21f68de24588be2dd71482b8
   GBADeltaCore: 10ff8fde89ed95c99888a9b7102b3d3e45d7458d
@@ -137,7 +137,7 @@ SPEC CHECKSUMS:
   GoogleToolboxForMac: 800648f8b3127618c1b59c7f97684427630c5ea3
   GTMSessionFetcher: cea130bbfe5a7edc8d06d3f0d17288c32ffe9925
   Harmony: cea514db17c41c22f78f54b17d2135935b5e9b96
-  MelonDSDeltaCore: d6e0953bd475a17848964b4fc48bf0e838617984
+  MelonDSDeltaCore: 7d5cae0d00ee823a5957acd844e1de1501e7a6a5
   N64DeltaCore: 7d176e01443fa138bdfc79ad908c78f271f3e0a7
   NESDeltaCore: 41ab438dd78d51d4636aacb7d9a7336ea3d4728c
   Roxas: 1990039f843f5dc284918dc82375feb80020ef62

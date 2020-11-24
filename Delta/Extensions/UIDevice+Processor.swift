@@ -16,4 +16,12 @@ extension UIDevice
         // https://developer.apple.com/documentation/arkit/arconfiguration/2923553-issupported
         return ARConfiguration.isSupported
     }
+    
+    var supportsJIT: Bool {
+        guard #available(iOS 14.2, *) else { return false }
+        
+        // JIT is supported on devices with an A12 processor or better running iOS 14.2 or later.
+        // ARKit 3 is only supported by devices with an A12 processor or better, according to the documentation.
+        return ARBodyTrackingConfiguration.isSupported
+    }
 }

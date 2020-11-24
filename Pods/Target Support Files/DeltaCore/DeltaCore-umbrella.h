@@ -11,6 +11,7 @@
 #endif
 
 #import "DeltaTypes.h"
+#import "DLTAMuteSwitchMonitor.h"
 
 FOUNDATION_EXPORT double DeltaCoreVersionNumber;
 FOUNDATION_EXPORT const unsigned char DeltaCoreVersionString[];

@@ -167,6 +167,22 @@ extension GameCollectionViewController
             
             destinationViewController.game = game
             
+            if let emulatorBridge = destinationViewController.emulatorCore?.deltaCore.emulatorBridge as? MelonDSEmulatorBridge
+            {
+                //TODO: Update this to work with multiple processes by retrieving emulatorBridge directly from emulatorCore.
+                
+                if game.identifier == Game.melonDSDSiBIOSIdentifier
+                {
+                    emulatorBridge.systemType = .dsi
+                }
+                else
+                {
+                    emulatorBridge.systemType = .ds
+                }
+                
+                emulatorBridge.isJITEnabled = UIDevice.current.supportsJIT
+            }
+            
             if let saveState = self.activeSaveState
             {
                 // Must be synchronous or else there will be a flash of black
@@ -395,11 +411,23 @@ private extension GameCollectionViewController
         
         if game.type == .ds && Settings.preferredCore(for: .ds) == MelonDS.core
         {
-            guard
-                FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.bios7URL.path) &&
-                FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.bios9URL.path) &&
-                FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.firmwareURL.path)
-            else { throw LaunchError.biosNotFound }
+            if game.identifier == Game.melonDSDSiBIOSIdentifier
+            {
+                guard
+                    FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.dsiBIOS7URL.path) &&
+                    FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.dsiBIOS9URL.path) &&
+                    FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.dsiFirmwareURL.path) &&
+                    FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.dsiNANDURL.path)
+                else { throw LaunchError.biosNotFound }
+            }
+            else
+            {
+                guard
+                    FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.bios7URL.path) &&
+                    FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.bios9URL.path) &&
+                    FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.firmwareURL.path)
+                else { throw LaunchError.biosNotFound }
+            }
         }
     }
 }
@@ -445,9 +473,12 @@ private extension GameCollectionViewController
         
         switch game.type
         {
-        case GameType.unknown: return [cancelAction, renameAction, changeArtworkAction, shareAction, deleteAction]
-        case .ds where game.identifier == Game.melonDSBIOSIdentifier: return [cancelAction, renameAction, changeArtworkAction, changeControllerSkinAction, saveStatesAction]
-        default: return [cancelAction, renameAction, changeArtworkAction, changeControllerSkinAction, shareAction, saveStatesAction, importSaveFile, exportSaveFile, deleteAction]
+        case GameType.unknown:
+            return [cancelAction, renameAction, changeArtworkAction, shareAction, deleteAction]
+        case .ds where game.identifier == Game.melonDSBIOSIdentifier || game.identifier == Game.melonDSDSiBIOSIdentifier:
+            return [cancelAction, renameAction, changeArtworkAction, changeControllerSkinAction, saveStatesAction]
+        default:
+            return [cancelAction, renameAction, changeArtworkAction, changeControllerSkinAction, shareAction, saveStatesAction, importSaveFile, exportSaveFile, deleteAction]
         }
     }
     
