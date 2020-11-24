@@ -14,6 +14,7 @@ import Harmony
 public extension Game
 {
     static let melonDSBIOSIdentifier = "com.rileytestut.MelonDSDeltaCore.BIOS"
+    static let melonDSDSiBIOSIdentifier = "com.rileytestut.MelonDSDeltaCore.DSiBIOS"
 }
 
 @objc(Game)
@@ -158,6 +159,6 @@ extension Game: Syncable
     }
     
     public var isSyncingEnabled: Bool {
-        return self.identifier != Game.melonDSBIOSIdentifier
+        return self.identifier != Game.melonDSBIOSIdentifier && self.identifier != Game.melonDSDSiBIOSIdentifier
     }
 }

@@ -111,42 +111,58 @@ extension DatabaseManager
         switch system
         {
         case .ds where core == MelonDS.core:
-            let predicate = NSPredicate(format: "%K == %@", #keyPath(Game.identifier), Game.melonDSBIOSIdentifier)
-            if let _ = Game.instancesWithPredicate(predicate, inManagedObjectContext: context, type: Game.self).first
+            
+            // Returns nil if game already exists.
+            func makeBIOS(name: String, identifier: String) -> Game?
             {
-                // Game already exists, so don't do anything.
-                break
+                let predicate = NSPredicate(format: "%K == %@", #keyPath(Game.identifier), identifier)
+                if let _ = Game.instancesWithPredicate(predicate, inManagedObjectContext: context, type: Game.self).first
+                {
+                    // BIOS already exists, so don't do anything.
+                    return nil
+                }
+                
+                let bios = Game(context: context)
+                bios.name = name
+                bios.identifier = identifier
+                bios.type = .ds
+                bios.filename = "melonDS-BIOS"
+                
+                if let sourceURL = Bundle.main.url(forResource: "DS", withExtension: "png")
+                {
+                    do
+                    {
+                        let destinationURL = DatabaseManager.artworkURL(for: bios)
+                        try FileManager.default.copyItem(at: sourceURL, to: destinationURL, shouldReplace: true)
+                        bios.artworkURL = destinationURL
+                    }
+                    catch
+                    {
+                        print("Failed to copy default DS home screen artwork.", error)
+                    }
+                }
+                
+                return bios
             }
             
-            let game = Game(context: context)
-            game.identifier = Game.melonDSBIOSIdentifier
-            game.type = .ds
-            game.filename = "melonDS-BIOS"
+            let insertedGames = [
+                (name: NSLocalizedString("Home Screen", comment: ""), identifier: Game.melonDSBIOSIdentifier),
+                (name: NSLocalizedString("Home Screen (DSi)", comment: ""), identifier: Game.melonDSDSiBIOSIdentifier)
+            ].compactMap(makeBIOS)
             
-            game.name = NSLocalizedString("Home Screen", comment: "")
-            
-            if let sourceURL = Bundle.main.url(forResource: "DS", withExtension: "png")
-            {
-                do
-                {
-                    let destinationURL = DatabaseManager.artworkURL(for: game)
-                    try FileManager.default.copyItem(at: sourceURL, to: destinationURL, shouldReplace: true)
-                    game.artworkURL = destinationURL
-                }
-                catch
-                {
-                    print("Failed to copy default DS home screen artwork.", error)
-                }
-            }
+            // Break if we didn't create any new Games.
+            guard !insertedGames.isEmpty else { break }
             
             let gameCollection = GameCollection(context: context)
             gameCollection.identifier = GameType.ds.rawValue
             gameCollection.index = Int16(System.ds.year)
-            gameCollection.games.insert(game)
+            gameCollection.games.formUnion(insertedGames)
             
         case .ds:
-            let predicate = NSPredicate(format: "%K == %@", #keyPath(Game.identifier), Game.melonDSBIOSIdentifier)
-            if let game = Game.instancesWithPredicate(predicate, inManagedObjectContext: context, type: Game.self).first
+            let predicate = NSPredicate(format: "%K IN %@", #keyPath(Game.identifier), [Game.melonDSBIOSIdentifier, Game.melonDSDSiBIOSIdentifier])
+            
+            let games = Game.instancesWithPredicate(predicate, inManagedObjectContext: context, type: Game.self)
+            for game in games
             {
                 context.delete(game)
             }

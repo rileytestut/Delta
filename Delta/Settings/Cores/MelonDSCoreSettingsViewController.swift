@@ -22,11 +22,12 @@ private extension MelonDSCoreSettingsViewController
     enum Section: Int
     {
         case general
-        case bios
+        case dsBIOS
+        case dsiBIOS
         case changeCore
     }
     
-    enum BIOS: Int
+    enum DSBIOS: Int
     {
         case bios7
         case bios9
@@ -38,6 +39,24 @@ private extension MelonDSCoreSettingsViewController
             case .bios7: return MelonDSEmulatorBridge.shared.bios7URL
             case .bios9: return MelonDSEmulatorBridge.shared.bios9URL
             case .firmware: return MelonDSEmulatorBridge.shared.firmwareURL
+            }
+        }
+    }
+    
+    enum DSiBIOS: Int
+    {
+        case bios7
+        case bios9
+        case firmware
+        case nand
+        
+        var fileURL: URL {
+            switch self
+            {
+            case .bios7: return MelonDSEmulatorBridge.shared.dsiBIOS7URL
+            case .bios9: return MelonDSEmulatorBridge.shared.dsiBIOS9URL
+            case .firmware: return MelonDSEmulatorBridge.shared.dsiFirmwareURL
+            case .nand: return MelonDSEmulatorBridge.shared.dsiNANDURL
             }
         }
     }
@@ -102,9 +121,9 @@ private extension MelonDSCoreSettingsViewController
         self.present(safariViewController, animated: true, completion: nil)
     }
     
-    func locate(_ bios: BIOS)
+    func locateBIOS(for destinationURL: URL)
     {
-        self.importDestinationURL = bios.fileURL
+        self.importDestinationURL = destinationURL
         
         var supportedTypes = [kUTTypeItem as String, kUTTypeContent as String, "com.apple.macbinary-archive" /* System UTI for .bin */]
         
@@ -200,8 +219,26 @@ extension MelonDSCoreSettingsViewController
             
             cell.contentView.isHidden = (item == nil)
             
-        case .bios:
-            let bios = BIOS(rawValue: indexPath.row)!
+        case .dsBIOS:
+            let bios = DSBIOS(rawValue: indexPath.row)!
+            
+            if FileManager.default.fileExists(atPath: bios.fileURL.path)
+            {
+                cell.accessoryType = .checkmark
+                cell.detailTextLabel?.text = nil
+                cell.detailTextLabel?.textColor = .gray
+            }
+            else
+            {
+                cell.accessoryType = .disclosureIndicator
+                cell.detailTextLabel?.text = NSLocalizedString("Required", comment: "")
+                cell.detailTextLabel?.textColor = .red
+            }
+            
+            cell.selectionStyle = .default
+            
+        case .dsiBIOS:
+            let bios = DSiBIOS(rawValue: indexPath.row)!
             
             if FileManager.default.fileExists(atPath: bios.fileURL.path)
             {
@@ -250,9 +287,13 @@ extension MelonDSCoreSettingsViewController
             let key = DeltaCoreMetadata.Key.allCases[indexPath.row]
             self.openMetadataURL(for: key)
             
-        case .bios:
-            let bios = BIOS(rawValue: indexPath.row)!
-            self.locate(bios)
+        case .dsBIOS:
+            let bios = DSBIOS(rawValue: indexPath.row)!
+            self.locateBIOS(for: bios.fileURL)
+            
+        case .dsiBIOS:
+            let bios = DSiBIOS(rawValue: indexPath.row)!
+            self.locateBIOS(for: bios.fileURL)
             
         case .changeCore:
             self.changeCore()
@@ -263,7 +304,7 @@ extension MelonDSCoreSettingsViewController
     {
         switch Section(rawValue: section)!
         {
-        case .bios:
+        case .dsBIOS, .dsiBIOS:
             guard Settings.preferredCore(for: .ds) == MelonDS.core else { return nil }
             
         default: break
@@ -276,7 +317,7 @@ extension MelonDSCoreSettingsViewController
     {
         switch Section(rawValue: section)!
         {
-        case .bios:
+        case .dsBIOS, .dsiBIOS:
             guard Settings.preferredCore(for: .ds) == MelonDS.core else { return nil }
             
         default: break
@@ -293,7 +334,7 @@ extension MelonDSCoreSettingsViewController
             let key = DeltaCoreMetadata.Key.allCases[indexPath.row]
             guard Settings.preferredCore(for: .ds)?.metadata?[key] != nil else { return  0 }
             
-        case .bios:
+        case .dsBIOS, .dsiBIOS:
             guard Settings.preferredCore(for: .ds) == MelonDS.core else { return 0 }
             
         default: break
@@ -306,7 +347,7 @@ extension MelonDSCoreSettingsViewController
     {
         switch Section(rawValue: section)!
         {
-        case .bios:
+        case .dsBIOS, .dsiBIOS:
             guard Settings.preferredCore(for: .ds) == MelonDS.core else { return 1 }
             
         default: break
@@ -319,7 +360,7 @@ extension MelonDSCoreSettingsViewController
     {
         switch Section(rawValue: section)!
         {
-        case .bios:
+        case .dsBIOS, .dsiBIOS:
             guard Settings.preferredCore(for: .ds) == MelonDS.core else { return 1 }
             
         default: break
