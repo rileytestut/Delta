@@ -179,6 +179,8 @@ extension GameCollectionViewController
                 {
                     emulatorBridge.systemType = .ds
                 }
+                
+                emulatorBridge.isJITEnabled = UIDevice.current.supportsJIT
             }
             
             if let saveState = self.activeSaveState
