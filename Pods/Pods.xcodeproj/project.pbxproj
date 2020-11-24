@@ -43,7 +43,6 @@
 		0017F8090B9E1E809EDDE2BCE6950D86 /* ZSort.h in Headers */ = {isa = PBXBuildFile; fileRef = F80CF610BCA1225E6F34A2505B12C005 /* ZSort.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		003D66CF102522CCE1F947261EF6C225 /* clock_ctime_plus_delta.h in Headers */ = {isa = PBXBuildFile; fileRef = 886FBFDCA7FC1D72F001F3E9535B924A /* clock_ctime_plus_delta.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		00808122820CCB7D640A23AF2F851D96 /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C874D560C2ECE9A78595318F449292 /* Notifications.swift */; };
-		00CD0FD425B91AE7BB08048D06C70828 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50CB8263181606A93C7C4DB62B954BCC /* GameViewController.swift */; };
 		00D6A91F2372896AFCBADBB569CB61B2 /* GTLRUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 9209A157558D6C7A57364B029B93BF01 /* GTLRUtilities.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		00F5F28E77C7BB433873D883D32DA464 /* profile.h in Headers */ = {isa = PBXBuildFile; fileRef = 5E69C29F29CC024AF25B51D0D32627EE /* profile.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		011C0272A367FAF487C0387072D80C35 /* sound.h in Headers */ = {isa = PBXBuildFile; fileRef = CC08FCCCC5D573865D7ADF9FB0838E1D /* sound.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -71,10 +70,10 @@
 		0555BA242BE40B037BBB86A360F7D572 /* ftheader.h in Headers */ = {isa = PBXBuildFile; fileRef = FDF22CB647ADB3D529D1C542345BB178 /* ftheader.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		057F1BC44E23F2A56BC14C4742FCEA2B /* RSTDynamicDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C730E5915747302EDF3EC772425E5899 /* RSTDynamicDataSource.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		058508664EDB764D3709A2AB6EF6B252 /* N64Types.m in Sources */ = {isa = PBXBuildFile; fileRef = B9645A97F892996BB5BF51B8D0D43A0B /* N64Types.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
+		0588130566A01A1B819D89A8631D0B1F /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65E0BB76F563A560B6025A701C5B300C /* GameView.swift */; };
 		05C983AD8D917AFEE50E8F7C21A84323 /* SharingRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8888D8043BC735B8831AE2FB72C5DCE4 /* SharingRoutes.swift */; };
 		05D3406A9CDB6F3CA3BA42733AD9B486 /* Sleep.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4A2ED9639F26522F182428771C311F1A /* Sleep.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		067C84CE3338DB36FF1EC1A0D0D1A63F /* initstate.h in Headers */ = {isa = PBXBuildFile; fileRef = BBF6A7EF37190036ACC153A560EC7279 /* initstate.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		069E1D48DD81FE5B6A827810AD64B3F3 /* MFiGameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0FE60C5CC43E6BEE71A9295033B18F2 /* MFiGameController.swift */; };
 		069F3362BE89D036DC6FB94F2DFAFA05 /* UITableView+CellContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D29114CAD3548F307C7BA691260F25 /* UITableView+CellContent.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		06C79C3AE46910C8B5587D50C1E2B7AB /* af_rtc.h in Headers */ = {isa = PBXBuildFile; fileRef = B73776B063CE08E7361FDE4C26CF904F /* af_rtc.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		06E4B39B70500AB74C837D9F65505FE2 /* WavFile.h in Headers */ = {isa = PBXBuildFile; fileRef = 55871AB19F8B639CFD102F69EAED1E93 /* WavFile.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -118,7 +117,6 @@
 		0CF5A2778ED0B5C3DCBD3B8E89222E3D /* CombinerKey.h in Headers */ = {isa = PBXBuildFile; fileRef = 6658EE9B0A19441E97A1284103D6A0A2 /* CombinerKey.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		0CFF34DB03E3EA22AFCA4CE58940B8CC /* RDP.h in Headers */ = {isa = PBXBuildFile; fileRef = 7EF1745163AD82481D56DE9A59BA24BA /* RDP.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		0D26D98F13BDB7EB7C73657281EC9778 /* WifiAP.h in Headers */ = {isa = PBXBuildFile; fileRef = 50BCCB794AD064D65EAD7EE8F29878B3 /* WifiAP.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		0D4B0761D98B1D32B5B34C414181316E /* DeltaCoreProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C65F0AD8F6ACAD0EA3F1D732708E85 /* DeltaCoreProtocol.swift */; };
 		0D6B6227CBF123C4682BB5363A8C3B0E /* RSTOperationQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B9083EB242665508C97535A7311874C /* RSTOperationQueue.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		0D6BF9F58172028164D17C031B1FCFF6 /* GTMNSString+URLArguments.h in Headers */ = {isa = PBXBuildFile; fileRef = BBE10799564D3547139EFF5CE894CF5A /* GTMNSString+URLArguments.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		0D88B9C8E59F2638AEDE1567EE30F54E /* Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DBF4ED0ED286CE1C63A3C12FC9C9EE8 /* Operation.swift */; };
@@ -165,6 +163,7 @@
 		13BCB029A86A07D6CFAAED34C679E4DB /* pngconf.h in Headers */ = {isa = PBXBuildFile; fileRef = FF7E6516A5BEBD6103C2071A1BA86E73 /* pngconf.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		13D16E5DE40CEFBC652A172492A4CE27 /* NoiseTexture.h in Headers */ = {isa = PBXBuildFile; fileRef = 49C63527B0BFABA381E737722D9FCB11 /* NoiseTexture.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		13F65C4323724B6C1BF73933A188685E /* mempak.h in Headers */ = {isa = PBXBuildFile; fileRef = A81D595F5493BB4BD6C6AED2B993C0B6 /* mempak.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		13F8FF57E27E23C791494B3437AB98EC /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C8D32A0B3E22BE5B1CE33ED159FFB6 /* AudioManager.swift */; };
 		14275531D4F7CDD462D18A3DE8962F9D /* instructions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DDB31BEBA1AF6B8AA83AFE0B4A2D7EE /* instructions.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		14814E514A0815D4CF25874DBA95BC79 /* NstBoardFxRom.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 06A49EC7BA9A5FD79AC2FE0923FBCF54 /* NstBoardFxRom.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		14C40CB2C689C2CEFFEEBC5D170379B1 /* Window.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 31B5A52F1F76F3224E54451C2B25CA8D /* Window.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -201,7 +200,9 @@
 		19DB2C9533367523333978531B0E4DD8 /* TxDbg_ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9AC4EDED962C7496D2538B9A6128954 /* TxDbg_ios.mm */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		1A320DC3BB4F411FF18589AC2EF1C65D /* NstBoardKayH2288.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 789D5CFDF81A92162003BEBF18BA3C20 /* NstBoardKayH2288.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		1A511E47EF74155034C3FD58A291B1CD /* array.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C62C2A7373598D1D87C3F00E90A7722 /* array.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		1A6C3C91D39B2258382A118AA35D455F /* AnyInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90564B99F2C2EF43FEC4BA55EEF618FB /* AnyInput.swift */; };
 		1A740EB1DC7E96D415A582212D8BD190 /* GTLRBatchResult.m in Sources */ = {isa = PBXBuildFile; fileRef = F9D42A4393C5EA5D2C2E7F5B2D175FE0 /* GTLRBatchResult.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
+		1A7EEBB6C78979FA947B906796C76B9B /* VideoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67B3C9EA9F2F136C926D8A931829FA88 /* VideoManager.swift */; };
 		1A87A2F68523FA26D625BEC658965C81 /* Pods-Delta-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F8D603EBE941AC871B0A2F47AD5B6D5 /* Pods-Delta-dummy.m */; };
 		1A9E0A5933F001BD9AC823B4EEF7415A /* RTC.h in Headers */ = {isa = PBXBuildFile; fileRef = 311F5E992C4184B1925C4E380CBBEFB5 /* RTC.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		1AAB4E66BB2F67D75ED31A969FB90445 /* Alamofire-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = E17A40A5122F984FE431D21753C8CF06 /* Alamofire-dummy.m */; };
@@ -209,11 +210,9 @@
 		1AD22F54F483DC2B1C4926E75252C477 /* FetchRemoteRecordsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C9D8CA40B82EB0DF55E9C6E404421E2 /* FetchRemoteRecordsOperation.swift */; };
 		1AF7F4C36F9A40FA21DEFFBDDB324630 /* opengl_BufferedDrawer.h in Headers */ = {isa = PBXBuildFile; fileRef = C129B80E9CC6B64D0600B9A46648ED8B /* opengl_BufferedDrawer.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		1AF87E34A2309B096AE662A3F0A54538 /* SocketHandle.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AAD25B7136752E5F978B2EA8A9F1B2C7 /* SocketHandle.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
-		1B03CF4D7E9A0CF1B1A5C0DFAB8B0DD9 /* ButtonsInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F9A0594B477E44DA3CB74E54DD67ED /* ButtonsInputView.swift */; };
 		1B09EC58FBD912A974C56A3F2BFE36D0 /* Keyboard.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 229289C6AEBA126CD4AF9033E65834CC /* Keyboard.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		1B1CEFD1825B18A048B2A27123B42F97 /* ARM.h in Headers */ = {isa = PBXBuildFile; fileRef = 050BA208E2133AB0C186E89E7483C9DB /* ARM.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		1B2B4C5155210EBDD0892BE184220A44 /* instruction_attributes.h in Headers */ = {isa = PBXBuildFile; fileRef = 39BF407461BE0D689AC655371DD416DE /* instruction_attributes.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		1B2BB2FEF328AF927516BB5185869A9E /* CheatProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC29261FDE2973B2D6B6F1E62024A0A9 /* CheatProtocol.swift */; };
 		1B8E1324EF162AD35B1923FE3BC32753 /* NstBoardJalecoJf11.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E8D1644FE6C9B9EA40479CBCFD2D7CC0 /* NstBoardJalecoJf11.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		1B9C1EC85B450C90FA2A873635893FE8 /* Config.h in Headers */ = {isa = PBXBuildFile; fileRef = 46834904D33267E3CBEE319642FFC703 /* Config.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		1BA4D4603B19B50F04900B7E9882ACDD /* RSTNibView.h in Headers */ = {isa = PBXBuildFile; fileRef = 07A24856C0FCE10AA34185E05096752B /* RSTNibView.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -226,6 +225,7 @@
 		1D3D48B74FB7DC35F5A27D2E4F8EF530 /* NstInpPartyTap.hpp in Headers */ = {isa = PBXBuildFile; fileRef = C6D50BD15001580ABEF75FEE0D3BF80F /* NstInpPartyTap.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		1D46D2D75449D644B538A6227E8E17B1 /* debugger.h in Headers */ = {isa = PBXBuildFile; fileRef = 7C7894842679F86AEA25BABD02717D75 /* debugger.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		1D4ED2614A13819F07573D121137C67D /* NSPredicate+Search.m in Sources */ = {isa = PBXBuildFile; fileRef = 558BFA270FA2F23C320E11E090A7662E /* NSPredicate+Search.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
+		1D7540EEE3DE047D9418EFF30B701EF4 /* ThumbstickInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1AAAF56DFDC2516C9F0F82DEA17511B /* ThumbstickInputView.swift */; };
 		1DC7AB00CF86DEB9192BBD6BF1F049CB /* GTLRDuration.h in Headers */ = {isa = PBXBuildFile; fileRef = A73E1E700670A66A2AE2A03B799E23EF /* GTLRDuration.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		1DC9D83D5C3C27C865626FDC47FFA727 /* NstBoardHes.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F9A208B7D6A17B5E6210F640474730F8 /* NstBoardHes.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		1E0FB1C6C9A7707FB6EBF44919406652 /* RSTFetchedResultsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 3354FC02362F1AAC06FABFDAB6FC1E92 /* RSTFetchedResultsDataSource.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
@@ -245,7 +245,9 @@
 		21939F9BD51F63E11D098AD04138814E /* NstBoardSachenSa0037.hpp in Headers */ = {isa = PBXBuildFile; fileRef = A9B8FEC06D5E475FC88E23200F3F9604 /* NstBoardSachenSa0037.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		21C32DAC350DB48E6E1F1BC1EF64B13F /* m64p_config.h in Headers */ = {isa = PBXBuildFile; fileRef = 422A7E950D9644BA89560B6CC1EA1194 /* m64p_config.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		21DECE82ADC97C8D836542939B04DF0A /* pngrutil.c in Sources */ = {isa = PBXBuildFile; fileRef = B9B009A6587C3A1C6BB0A1C024A18D38 /* pngrutil.c */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
+		22B448A63006C12FA8250A82C7EFD08D /* AudioRendering.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CB3FC8544B28E9203C07151D44AC01 /* AudioRendering.swift */; };
 		230AE09B2E4FE8B7D8EF4C5B8D7D3893 /* Harmony-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = DB0FA0FEE9F8742B64189133F4ACA01C /* Harmony-umbrella.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		233F36609A5B53399DE1993C3BF29DE1 /* EmulatorCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6005C62BBBF7818A374961D7533A7E18 /* EmulatorCore.swift */; };
 		23522007F1E5D00C56884454695C1C4D /* NstBoardCaltron.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 65C8737805E86FA67C1579855D59CB64 /* NstBoardCaltron.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		2365E217AA5534FC880E18EF3CE9CA69 /* transfer_ptr.h in Headers */ = {isa = PBXBuildFile; fileRef = A855A24013B4807694DE373F6612044D /* transfer_ptr.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		2383152D6C4F84FD2EE8A437B924C1A5 /* NstBarcodeReader.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 7F445EA81E198A163B9A40E5A2E7653A /* NstBarcodeReader.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -253,6 +255,7 @@
 		245707596236331BCA745BDF2CCD3A79 /* NstBoardUnlEdu2000.hpp in Headers */ = {isa = PBXBuildFile; fileRef = A8E224696F035B298DBC6B2B425DB4D9 /* NstBoardUnlEdu2000.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		24681274F8D57A98446AD3E532DEFA17 /* NstBoardMmc1.hpp in Headers */ = {isa = PBXBuildFile; fileRef = EE1BB2C196F721EAE216A16D2C28F108 /* NstBoardMmc1.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		24A17315DA887C22096FC688E5D1B0A5 /* RSTCollectionViewGridLayout.h in Headers */ = {isa = PBXBuildFile; fileRef = 2ABD8BA817A5B6DB4C5828318ED97014 /* RSTCollectionViewGridLayout.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		24A827BBBC04F8879B04902FB097FBE6 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 213FC7540DB4DF3F90B89035F984BD7C /* Game.swift */; };
 		24BAED760BC6B605CA667DBDA91632C2 /* NstBoardUnlWorldHero.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 879E33D39DED7A856D086D3BB622C65A /* NstBoardUnlWorldHero.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		24D0E194517BC0D2C60610DAEE83AD1F /* Textures.h in Headers */ = {isa = PBXBuildFile; fileRef = 1563D8DEE08EAA92574952B8B395A8AA /* Textures.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		24E48E4797697DEC9ADAE097FFFB2B06 /* TxQuantize.h in Headers */ = {isa = PBXBuildFile; fileRef = 164BA6410D467508F284ED6B400D342C /* TxQuantize.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -260,6 +263,7 @@
 		251309C65ABDD8242D058BB96CE242D0 /* ObjectHandle.h in Headers */ = {isa = PBXBuildFile; fileRef = 9F3152F7F819F4D7C0199707F1F5A9B8 /* ObjectHandle.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		2515B71C2BB7B912246009EBC495E634 /* opengl_TextureManipulationObjectFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E1E1C9F6B0A62DA55FDEB54FB33235C /* opengl_TextureManipulationObjectFactory.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		2518BA672E36DDD6DE3A2DF758E20708 /* UIImage+Manipulation.h in Headers */ = {isa = PBXBuildFile; fileRef = 1D545FA281C697B8D7BEEC43C6652189 /* UIImage+Manipulation.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		2518E5DAEEFE38DFFE8E264C44F60D43 /* EmulatorBridging.swift in Sources */ = {isa = PBXBuildFile; fileRef = A22889DC853EDD8E7FCC52CA013A82BB /* EmulatorBridging.swift */; };
 		25254659998C756A3F648127FA733177 /* GTLRErrorObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 83D5738F79EFF74666BE041EC76ACDFA /* GTLRErrorObject.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		252C1358FFB378B360373F29EB870618 /* cexcept.h in Headers */ = {isa = PBXBuildFile; fileRef = BE9ACCFEEB68EE550B45A78C99E79C3E /* cexcept.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		2531408651F267E3005C180FC7BBCA68 /* Standard.deltamapping in Resources */ = {isa = PBXBuildFile; fileRef = 80C066584D91192C2CB5B4E7606E8F20 /* Standard.deltamapping */; };
@@ -273,9 +277,9 @@
 		25DC15B3C97C02EAC7A4363265E8FFC5 /* NstCartridgeRomset.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 36D6B831A12A9A6161E3436E49D4113A /* NstCartridgeRomset.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		26067F53DD0AAA69124AF2F234C2B412 /* SocketSelector.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 258092907C70394268136103C022FEE8 /* SocketSelector.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		264031FA160F74BD32D8EF9F30514C16 /* NstBoardSachen74x374.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 8200E4FD4C7E3CC1AF2E0385FF61B65A /* NstBoardSachen74x374.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
+		264773A350E52C21A4C41BCC58329D9C /* RingBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F238238EA600641041ADF38FE9390FEC /* RingBuffer.swift */; };
 		265418D17A79E992D7091C6116D5D81E /* pngget.c in Sources */ = {isa = PBXBuildFile; fileRef = C00543EF4F06FBFA511049B6A2E2638E /* pngget.c */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		268A8F437F31D1740C9E43D2DB38E1A3 /* MelonDSDeltaCore-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C3381B8A55051B7129CC78CA0231C2D /* MelonDSDeltaCore-dummy.m */; };
-		269A8F0EF89DD3F63151C8785ABE7A51 /* GameControllerInputMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE4DF888D759F8A1EFC289D72E1DF95 /* GameControllerInputMapping.swift */; };
 		26B8744B23358ABFC021A6F4AC671E05 /* RSTPlaceholderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F8643E93FD4508FE4A1F4CFE2588044 /* RSTPlaceholderView.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		26D84D2836C13B2D939D5A5E2B1BD47B /* Schema.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD2701346D82207B53CC9EC541F8AB0 /* Schema.swift */; };
 		2759C2F52CCBBBA9F7A243D31EC1D042 /* language.h in Headers */ = {isa = PBXBuildFile; fileRef = C2095BD846E0E2918CC6C26E739E147E /* language.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -286,6 +290,7 @@
 		28010A4E02AFF7CA653853E5B0F63621 /* encrypt.h in Headers */ = {isa = PBXBuildFile; fileRef = 68A229662DE33DC9840D7CCB41582EA9 /* encrypt.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		2819DC98C607DE278124727BA384A637 /* NstBoardMmc3.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 599BB76DE3FA8F63E0E23EA8BAFD278B /* NstBoardMmc3.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		2822DA4B1D3B2A11208116D17F88E2D4 /* gSP.h in Headers */ = {isa = PBXBuildFile; fileRef = 0C1361ED1C7AC536E50CC4A7BA396F6B /* gSP.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		283C2EE992DCA47F39D09F87DCA0D467 /* UIResponder+FirstResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F6FF7C88B7AD41EC3870C4DE94973E /* UIResponder+FirstResponder.swift */; };
 		286192A6107B4208426E492B84A18EF1 /* osal_files.h in Headers */ = {isa = PBXBuildFile; fileRef = 8346ECC5A3AFD14F0746FD2871ECDA43 /* osal_files.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		28AEB1D89C9F02C00B767D2D95D68FB4 /* NstBoardSunsoftFme7.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 69F05BD9CB2FBF76E6BDDB0F64BEDA8F /* NstBoardSunsoftFme7.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		28B10CF2C882DC18EF20B1AA8E23AFE2 /* NstXml.hpp in Headers */ = {isa = PBXBuildFile; fileRef = C6615F5A71F8DCD1E426F1118FC5F17A /* NstXml.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -306,7 +311,6 @@
 		2B3BC9E6AA5B18ABAEFCCDB39484FF5B /* TextureFilters_xbrz.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D7DDAE335C54604826A3ECBD79CFED3E /* TextureFilters_xbrz.cpp */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		2B51A8788DCF914AAED3412DFDEF3796 /* FinishUploadingRecordsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31519A5FF9CDB3ABC6F3D03BD2B06403 /* FinishUploadingRecordsOperation.swift */; };
 		2BB3BA10CAF200D6F57AC5B7788326EE /* Ext_TxFilter.h in Headers */ = {isa = PBXBuildFile; fileRef = 078E27968A4F0A9279BF48A15BCFF4B8 /* Ext_TxFilter.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		2BB5DA0DB6B389E75E5ABD816506A72B /* ControllerDebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FBFEDA648CA302663BC0A53CD4C4444 /* ControllerDebugView.swift */; };
 		2BE85E437103FCD7B4005E36CE3A1058 /* Dictionary+Sequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519375E564B6CC30F67B164458FBFF55 /* Dictionary+Sequence.swift */; };
 		2C54BA2379A2C403F7B8D0C49FAACC25 /* InputSoundFile.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 165B7915A8914F93AA1A0D7D45181074 /* InputSoundFile.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		2C793E39108FE340FC5BFCF448F6AC2F /* GTLRDateTime.h in Headers */ = {isa = PBXBuildFile; fileRef = 01082497DDFB3641F47D167E3C3EB389 /* GTLRDateTime.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -345,7 +349,6 @@
 		32F7E2ACCA4602AE9DE680A9D70EE36F /* SDWebImageManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 40D3DBD12BF6940FC1A2BE76A08E5471 /* SDWebImageManager.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		331922630D39F72EF28D8C51A385B8F6 /* ftttdrv.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B7D93006047AEA1B2086CF5FEC0FAEC /* ftttdrv.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		331F42F6EB50BB7B3BCD93462D74C7B9 /* KeyedContainers+ManagedValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E120995C0F4075BADA7CA8334C6238 /* KeyedContainers+ManagedValues.swift */; };
-		332024B9AF30A07CE496CC11D9591023 /* SaveState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027FB4C6CC71DADB243F4D75F54D49E2 /* SaveState.swift */; };
 		3323FFE5A1367960FDB731C2D8B45870 /* SNESDeltaCore-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D6CBC1B60FADA9D18C705CC48D37B27 /* SNESDeltaCore-umbrella.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		334648F3BE0F3EB894ED97C63BABFEA7 /* NstBoardUnlN625092.hpp in Headers */ = {isa = PBXBuildFile; fileRef = B67B97B22BF6E290CE3176CF648D18EC /* NstBoardUnlN625092.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		3355E6967843D3D24E781B73118E18DE /* UISpringTimingParameters+Conveniences.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EEAB40C86D49852ED6EB7A6AFF904B0 /* UISpringTimingParameters+Conveniences.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
@@ -378,8 +381,6 @@
 		3867303ED090C22C7B91F80D0D34877C /* NstBoardJaleco.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E551214789CB8350262743FF9EF95629 /* NstBoardJaleco.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		38A88C1B5FBB3EE10BD8240A4F1DB3FD /* zip.h in Headers */ = {isa = PBXBuildFile; fileRef = 55A7E5964AAB52C30CA7C4233CDB81F1 /* zip.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		38B3A2FD6F8B9AC327D048D94553FEAD /* RSTHasher.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ABC265715DD434AE88383B1CAD97215 /* RSTHasher.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		38F6582226CA2808DF945CDE63DC5158 /* DeltaCore-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 957167DFF15F649697598EB9E605462A /* DeltaCore-umbrella.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		3914A75BEE189973A204BF332FFCEFA8 /* VideoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A428ACD6852B72482C8570B4E49B15B4 /* VideoManager.swift */; };
 		3926A56C74A6C3AE66EF1745844B04BE /* NstBoardJalecoJf17.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 9AB2C2CCEC496A1EE69FB5F1EF214B1A /* NstBoardJalecoJf17.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		3947B44C7BD9B3882EB0AC7BC93A2723 /* RDRAMtoColorBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C5A8B0D1C08B6C55E4CA098FCE620178 /* RDRAMtoColorBuffer.cpp */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		394E947ED5AECB6E6C373FCB5BC01756 /* bios.h in Headers */ = {isa = PBXBuildFile; fileRef = DE1CD0A14598D55B1CD56BD77F8073C9 /* bios.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -396,6 +397,7 @@
 		3B1BDA44ECDDE86E5A508EF8FA5CB3AB /* metaspu.h in Headers */ = {isa = PBXBuildFile; fileRef = 43A3F7C375F5059943E7A8DB77319414 /* metaspu.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		3B42DD35D266E878DEA58A0F3CD151E2 /* musyx.c in Sources */ = {isa = PBXBuildFile; fileRef = 4A835642A0FF668D9565F7122EDF06B1 /* musyx.c */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		3B7DFAE0D5614D45A623F2BA17A8884D /* NstInpPaddle.hpp in Headers */ = {isa = PBXBuildFile; fileRef = CCA63F92FA1AA67CA403E2E475DF92B3 /* NstInpPaddle.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
+		3BDA121D6C7A91ADE23654FEEDD7F498 /* DeltaCore-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5393A36A3C22644206D6D5187A6B0285 /* DeltaCore-dummy.m */; };
 		3BF6F82870DB8EB51A171327367ACE87 /* FileProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12EC1D77781095125E901DEFF622F36 /* FileProperties.swift */; };
 		3C0BD562ED5EA4DBCCE3A2FB7D940FF6 /* gfx3d.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E49EBED49055AAF839B8A99FC0D76C9 /* gfx3d.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		3C0C34B66F4DE1573FAD3F67797849EC /* retro_dirent.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E75A6CD77FDC5730599F170C8A47DC0 /* retro_dirent.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -420,12 +422,13 @@
 		3EEB2162999CE5EC7F850E4B1FAAF5A6 /* Port.h in Headers */ = {isa = PBXBuildFile; fileRef = B30081991D15EDA28B670E4E8B5B46F5 /* Port.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		3F029746684D344355091865BDDE4121 /* NstBoardBmc9999999in1.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 873C9B1C70581E3ACE0CEA93EA9568DB /* NstBoardBmc9999999in1.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		3F0EBD18ACD97785A90A6D0B4E723D03 /* NstInpExcitingBoxing.hpp in Headers */ = {isa = PBXBuildFile; fileRef = B5A0DE104CFED381B5A6268A32DA5C06 /* NstInpExcitingBoxing.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
+		3F1341E33937430000B4148E308CEDF7 /* CGGeometry+Dictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDA901FE973732B0B1E37BD243D43BB /* CGGeometry+Dictionary.swift */; };
 		3F5A6187E39867D2D1D87C75ABFC4F05 /* opengl_GLInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7FA66BA44508C8E1B3BC97E5590E2EC /* opengl_GLInfo.cpp */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		3F69BBD7AA6D5BF55C92CFB3672A8BAF /* L3D.h in Headers */ = {isa = PBXBuildFile; fileRef = DDB2184F0999EE882B67DEFADE1B4A63 /* L3D.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		3F97F786A795DDA4434656EE5477EF33 /* GameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7BC2C79D27AA4D45DBAED609878B0BF /* GameController.swift */; };
 		4068354E79D6DB729C6759C6DF62833F /* ARMJIT.h in Headers */ = {isa = PBXBuildFile; fileRef = 250EAF002C7B867F2583013E56C67F1E /* ARMJIT.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		407EC03D3DFF08A04296FC36CD38AF4D /* NstIoLine.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BE0C7306F2F560B898301521B0E951DA /* NstIoLine.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		4087FAE7064A9C1047BB2867ADD8DBF8 /* Record.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FA18E56645BF9DB1B8D4905E202C06 /* Record.swift */; };
-		408C9467A440ACF40ED221AF38A11CAB /* SaveStateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B7D69EC414883941231476116906D7 /* SaveStateProtocol.swift */; };
 		40D0BB5787AC64B638416C9DC6ABA9C2 /* ObjectHandle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B879AB2ADEE0B7AD62F37F492D81FEC6 /* ObjectHandle.cpp */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		40D29AB1C0B1AE9D5A16D8A00CC5EC8A /* NstVsRbiBaseball.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 9A6407C4FE9D4F3E62ECF1C9CABE92A0 /* NstVsRbiBaseball.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		40E672D9C0C98CD61AA5C3F0FBF0F91F /* dummy_audio.h in Headers */ = {isa = PBXBuildFile; fileRef = B93E69089ACE58953005A5382B2ADAAD /* dummy_audio.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -434,7 +437,6 @@
 		415C3AD46D4C5EF9970EC2575E98EDA0 /* Database.h in Headers */ = {isa = PBXBuildFile; fileRef = BD12836DFFA0899682ECB705F36AD40F /* Database.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		4166E515D7CB756511DFA99A868339FE /* melonDLDI.h in Headers */ = {isa = PBXBuildFile; fileRef = 54F2A7E7E1A411BA3831C288421A3603 /* melonDLDI.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		41A7B51821FA9F73512BF747599C4C47 /* GTLRURITemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = 35A46DA9D7B9942345456BEF6DF7E8D1 /* GTLRURITemplate.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		41AED5AF1633147BF20119FE09B88FD0 /* DeltaTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 35F02B0ECCDFC2E4E491C095B018680E /* DeltaTypes.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		41E9F83338345136034AEA044417C116 /* ftpic.h in Headers */ = {isa = PBXBuildFile; fileRef = 1406F5851ECA113961E420930E44400E /* ftpic.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		41F2E1D97A702128A4DC4D6E835F56FD /* NDS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4ED8003EE57394EC652D9AE80E784302 /* NDS.cpp */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		42486E8EA746BEC5D598F95DA726529D /* GlResource.hpp in Headers */ = {isa = PBXBuildFile; fileRef = C4F2063F71920535B22EF7E3FF01117B /* GlResource.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -491,7 +493,9 @@
 		49ABC99FE103B5AC8DBF4EAB13B19619 /* pngtest.c in Sources */ = {isa = PBXBuildFile; fileRef = 308BAF6C3BE086BDB26EFE72FA9E48A6 /* pngtest.c */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		4A235B8A8EB5A067D71258818BE0595D /* NstBoardNamcot.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2135E69E6A4F906CD35BBC26E511A87E /* NstBoardNamcot.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		4A58DBB2D8EA4F6F91CEDF8D53DEE181 /* RSTDefines.h in Headers */ = {isa = PBXBuildFile; fileRef = 7DE36CB10C4A8DCF72BE7B88CB003698 /* RSTDefines.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		4A6F10461C95694FA229005C104B1858 /* VideoRendering.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961ACD2164700D5FD67F6014EB6E2CCF /* VideoRendering.swift */; };
 		4A83924C5F211B90E03A8A227F460210 /* NstInpPokkunMoguraa.hpp in Headers */ = {isa = PBXBuildFile; fileRef = D3FF2CD92B642B01EE1206B628894B5C /* NstInpPokkunMoguraa.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
+		4AC3B1533807C8A6B9E63A8846F3DC67 /* KeyboardResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = C45CF5051C61E98E1D10FDAE36FED44A /* KeyboardResponder.swift */; };
 		4B1CEF5466C2493264B1E168A8B5A3C4 /* ftrfork.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A1DFA16FF297CF6D496D8299BD6B3A4 /* ftrfork.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		4B4A17024DDE3F167EC3FFFADA8E3323 /* F3DAM.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 535D5DA336441168AC8B025DD167FF5A /* F3DAM.cpp */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		4B6BCD8A5B83B616B302345DE1706B1F /* sfnt.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B0B9BFF156565987763A09CCD986B38 /* sfnt.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -549,14 +553,15 @@
 		52FB346983267085916C72E280E1820F /* RSTLaunchViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 816CBA26E3940C8402B8EFE63E169294 /* RSTLaunchViewController.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		5312806A7BA82453F7A3E5C233835D29 /* GTMDebugSelectorValidation.h in Headers */ = {isa = PBXBuildFile; fileRef = 76C85069E5F2ED830B22D7D1AB4A529C /* GTMDebugSelectorValidation.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		53193612E069ABF8B641F410AA3D7DFB /* RSTCollectionViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D324452F2442968D429ED7A0718561D /* RSTCollectionViewCell.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		53380BC43E662A98A5F3DA3234858FED /* ControllerDebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FBFEDA648CA302663BC0A53CD4C4444 /* ControllerDebugView.swift */; };
 		539DA186960FDD99E9DEE3F703694141 /* m64p_vidext.h in Headers */ = {isa = PBXBuildFile; fileRef = E813BC0822BCCFFC9C89EBE5DAAD7F24 /* m64p_vidext.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		53ACC9A0EABD8ABE6F296A8E1405DFB0 /* RSTCellContentCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 7D9ACA67CBB81C221D9E4E05F8646744 /* RSTCellContentCell.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		53E7979865D43374645999E24E49E3B9 /* CustomRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EF02F520CDA87AF4813D4764ECD43F5 /* CustomRoutes.swift */; };
 		53ECC6163FB5AF3BBA2F3FAE6A8F1BEF /* DS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9925E412F176DF45C332321285001A55 /* DS.swift */; };
-		54035E7677B71E7D130E4E693B211B71 /* ImmediatePanGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD855AE6412C0DD63FC4D79544883DB2 /* ImmediatePanGestureRecognizer.swift */; };
 		5433266A44831DC01F4FEF584030D6DA /* NstBoardBmc35in1.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F931544B104EDCB547B089F7B0707ED8 /* NstBoardBmc35in1.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		545FC6F90DB64D743272B9B6581C3A1D /* Performance.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53E9D1B37411CE1669CA533059362960 /* Performance.cpp */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		547CBA7A70425F4F04C4541BA2F06296 /* F3DTEXA.h in Headers */ = {isa = PBXBuildFile; fileRef = 76C92A047E2902F98A561866E68DFBD1 /* F3DTEXA.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		548438D0963C21DA60D91D77F6D81A65 /* ControllerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5CBC5126812FD2065CDBAEA94BF976 /* ControllerView.swift */; };
 		54B0F9C41BE6A78067881BEB750C1AF6 /* ThreadImpl.hpp in Headers */ = {isa = PBXBuildFile; fileRef = CA7F161EA390DDDF6ECB71EE876B89D9 /* ThreadImpl.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		54B7FB35A2EDEB196FE50FF306656B62 /* NstBoardWaixing.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 7E97EB0C49F861BC8AC2D75CE54C4EB4 /* NstBoardWaixing.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		54DB5CB9D0EAC284EE6DEA8C04591BD7 /* F3DGOLDEN.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E090AE4D2EB3F7EBC12F7527F8C83A7 /* F3DGOLDEN.cpp */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
@@ -608,7 +613,6 @@
 		5C1E536FA29DCD2CDE81FC2F6763DDBD /* n64_cic_nus_6105.h in Headers */ = {isa = PBXBuildFile; fileRef = 112637F718E98C3499172684DAB993A0 /* n64_cic_nus_6105.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		5C2C50048DF9D8C1D128711187453A8D /* GTLRBase64.h in Headers */ = {isa = PBXBuildFile; fileRef = 2ABF32DB7C03DC858879C758E39AAD27 /* GTLRBase64.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		5C3F628CF00E3CD05F3055BC14650779 /* String.inl in Headers */ = {isa = PBXBuildFile; fileRef = E56992DF458AE190EF8B6FDBB9A4DE70 /* String.inl */; settings = {ATTRIBUTES = (Project, ); }; };
-		5C5F387309EC920C1D2F76769CE76897 /* Delta.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BBE274343E5120686BB2D52C486B98F /* Delta.swift */; };
 		5C9EFB5CB4D71D93488DB09DF4A3FCAB /* N64DeltaCore-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 8037C3684A58B1EC85B083D0624A7117 /* N64DeltaCore-umbrella.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		5CBAABCEFDC66179124839AB147498F9 /* convert.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 35C4D4998448EFC8D73C7526A9E0766B /* convert.cpp */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		5D11ABFFC6008AB58F5E115BC314596B /* NstBoardGouder.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 452F3BC887D4177C15C6B566333C123E /* NstBoardGouder.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -622,8 +626,9 @@
 		5DFA7B4B653B42D7A547C3A60EFD77CA /* Joystick.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 14C71D27630335B15939DD0664CE76D0 /* Joystick.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		5E34D71A8EADC6BA23C17B97A689613A /* RSTFetchedResultsDataSource.h in Headers */ = {isa = PBXBuildFile; fileRef = 2090E7B6074A480B545986DD5394BCEC /* RSTFetchedResultsDataSource.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		5E39903C4C3C854D8A8F52D82FF51ED2 /* bitmap_font.h in Headers */ = {isa = PBXBuildFile; fileRef = A2D4C88AAB9529011A0BC78A5F8FB349 /* bitmap_font.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		5E586AB066148BB99E9CF2B9778D7D90 /* DLTAMuteSwitchMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BF2C35C501FAA8C4055DB8414E5401D /* DLTAMuteSwitchMonitor.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
+		5E7F0608EF9AE295E6402AE5804827A6 /* UIDevice+Vibration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6DC5BD2D6B77CA14C62D6FF5EA327DB /* UIDevice+Vibration.swift */; };
 		5E867F07B815D3996727D00C99F2D198 /* Files.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039A7DC666394A7FCDA8D0587DD80EAD /* Files.swift */; };
-		5E8C4F8137E41A59A3EE4DE28307BB64 /* DeltaCore.h in Headers */ = {isa = PBXBuildFile; fileRef = FA3CDDB5072744264D4A7519AE6D6A63 /* DeltaCore.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		5F02580CBFFA958EB1F31C8ED36CE362 /* FIFO.h in Headers */ = {isa = PBXBuildFile; fileRef = EEC2D75065F215552793086675BF9BE0 /* FIFO.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		5F45A12D5CFF64756E09AD77EF5081E1 /* Transform.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 7C7EB4C3A9DB67B4B73C20A18B53EA47 /* Transform.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		5F866F4FE66A6B1298B1571FCE26E0E2 /* TeamRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A222C0427237AEDD558FEFA410B5E021 /* TeamRoutes.swift */; };
@@ -635,6 +640,7 @@
 		601B04A377C214C532FD3284085C6C4A /* Vector3.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 16C765B40106664E143CBFFBDA5A104A /* Vector3.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		60253526607A110A8D0EE8069B3D101D /* NstBoardBmcSuper40in1.hpp in Headers */ = {isa = PBXBuildFile; fileRef = B5AE816827C6AA5796CDFC4C7E83D492 /* NstBoardBmcSuper40in1.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		604E7D5387AE983CD3840B0C3DED6A8C /* ftdriver.h in Headers */ = {isa = PBXBuildFile; fileRef = EA8D045A4BAB5806465552F9EAD05287 /* ftdriver.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		60872B389F030C46D5EEAB32526529C5 /* Cheat.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7BDD61DD53EB66909667FDEF0E033B1 /* Cheat.swift */; };
 		6089ADD3A18C37299891649FF653A7C4 /* ftwinfnt.h in Headers */ = {isa = PBXBuildFile; fileRef = 11D8E3490D52F64122D1E83DF8178D41 /* ftwinfnt.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		609EC7DAD72D32A456A4585A411B0A7D /* ftstream.h in Headers */ = {isa = PBXBuildFile; fileRef = 4ADEEFFAB7CD01EA4E844F0F78DBC0E1 /* ftstream.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		60B71BA015520F55EED2FE8D14767796 /* DSi_NDMA.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F0EAF3DFB12916136DB6F7B150C5F66D /* DSi_NDMA.cpp */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
@@ -642,7 +648,6 @@
 		612626E2EEFEF0B280A30622DFCB55C7 /* NstApiUser.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 9AE76E7D656F9FC63729D2FE6CF2EE4B /* NstApiUser.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		61637EE91267F265A7F4EB3CECCFFA1F /* NstBoardBtl2708.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E264A0D34041EEDB230760A4DF155023 /* NstBoardBtl2708.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		61AC25CFCBBE20BB139C2C218CFC317C /* NSString+Localization.m in Sources */ = {isa = PBXBuildFile; fileRef = FB5E73C8C7F0D5AB282E9A29954B036F /* NSString+Localization.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		61B583689DD2CFBD46FA3712A184E2E5 /* CheatFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795C12A193997827B4ADD870D87BDF8C /* CheatFormat.swift */; };
 		61EBB111287EDF6AE4ABF04DA5A396CF /* NstBoardIremG101.hpp in Headers */ = {isa = PBXBuildFile; fileRef = D81B0A638756575C41CA82842260A641 /* NstBoardIremG101.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		61FA017D4AF7688298FF0FB9F4251FFF /* F5Indi_Naboo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7D35DC1DC3A814BF1FDEBF8BA115A3C0 /* F5Indi_Naboo.cpp */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		6208DB664D1FD51054FB91C6142A1ED7 /* ARMInterpreter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0591656A76CE24AA3A17659B3AA7E1AC /* ARMInterpreter.cpp */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
@@ -659,8 +664,8 @@
 		63427690A77B2B5436666DAF5706611B /* Err.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FB5B6F86BFE8AFABADAFCCC745D013FE /* Err.cpp */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		634773B1E340AACEAF3FE0D1F31F51D5 /* gbafilter.h in Headers */ = {isa = PBXBuildFile; fileRef = 6D0B8740C1A5A02C3EBF2D3FF634FACF /* gbafilter.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		636BA008A6D26E9CDAC0E0358AF55866 /* SoundDriver.h in Headers */ = {isa = PBXBuildFile; fileRef = EAA06CA70E6579DA7013F9BF0C6148C7 /* SoundDriver.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		6373AC1BC02916DA7A4727231D4E72E6 /* ControllerInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3104A99F1E2E5DCD9FCE463C1BCD842 /* ControllerInputView.swift */; };
 		6386966113107ED98A186F6FD7CE849D /* RSTError.h in Headers */ = {isa = PBXBuildFile; fileRef = DB18069D26E35C1BEFE5C4A0262422E8 /* RSTError.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		642BBEBA26FE271702DE872891897811 /* ControllerSkinProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F4FE55BE08EA38FF320E4286A4C43C7 /* ControllerSkinProtocol.swift */; };
 		642FFA142ED6C17EF6E07F09CCB95DE2 /* ThreadLocalPtr.inl in Headers */ = {isa = PBXBuildFile; fileRef = 6A98E587E6533A6DF4F4624F83C3BD14 /* ThreadLocalPtr.inl */; settings = {ATTRIBUTES = (Project, ); }; };
 		6446ABE3984EC295A073DDF259A3968B /* tile.h in Headers */ = {isa = PBXBuildFile; fileRef = 23B74C9DADB72CF0883D582488B13ED6 /* tile.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		64BC16BB087581808D84B9DF1449009B /* TeamCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 244DCF4A8FC46E79A6101C49202C0DBD /* TeamCommon.swift */; };
@@ -675,6 +680,7 @@
 		65A8A0E7D477668CE87C3793E034EE10 /* Turbo3D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7A4769F49E16CB7DA2C80A4AE0AB75CA /* Turbo3D.cpp */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		65F6CF9B8D1C8A1793457F1FCAFDB8C0 /* txWidestringWrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 89F66807040C88F86F074A7DE8D84643 /* txWidestringWrapper.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		6604303E9728F99EAFA8B202C3B06AAF /* apu.h in Headers */ = {isa = PBXBuildFile; fileRef = ADFD98373A9BA6422C60F09ADCB69852 /* apu.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		6632C88CE3E1BADFCA72FC3693108132 /* ControllerSkin.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6888D502C932A8931592CA8315E0F44 /* ControllerSkin.swift */; };
 		663955D8E80713D3598FBD622BD6D364 /* L3DEX2.h in Headers */ = {isa = PBXBuildFile; fileRef = 00B7E4CE889EFFA5F1F5DAF6C3BD013A /* L3DEX2.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		666B4C38305E6C7B3EE71BBAD107E59A /* dummy_input.h in Headers */ = {isa = PBXBuildFile; fileRef = FB50DB0D94A17BD483732F8CF157CACE /* dummy_input.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		66D90649D3F20F5DA87EC0A5FD2168D3 /* NstBoardBmcHero.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 430D8BC642B862DC5871DCA6D4D4B26A /* NstBoardBmcHero.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -693,6 +699,7 @@
 		68F955348FE9A8B6BCE3113CE94A7DE3 /* remote.h in Headers */ = {isa = PBXBuildFile; fileRef = 8FF9B56C14F9DA7D4C860A76893C21C5 /* remote.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		693CE9D53961CFDE9E0763B45047AA96 /* wifi.h in Headers */ = {isa = PBXBuildFile; fileRef = 14FE86A7AE75D5AB202DCEB5C676F51B /* wifi.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		69419F372EDFF4421968AEB1C4792145 /* CP15.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB3F2960B10E033518BC23BE0BBFECAA /* CP15.cpp */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
+		6979BEE4A92611698C20DE4CF88C7A12 /* BitmapProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEAF98C477CBEBB578D5ED75460FE1F /* BitmapProcessor.swift */; };
 		697CC0F8D19D045FDF352FC73316E75F /* Standard.deltamapping in Resources */ = {isa = PBXBuildFile; fileRef = 9CC748D2AFF9AC9A78EA9982425EBACD /* Standard.deltamapping */; };
 		699EABA247256C61B68FFFF60452188F /* zlib.h in Headers */ = {isa = PBXBuildFile; fileRef = E284FFF9015A2937CE2CA1509C92B65C /* zlib.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		69F42D441E70A657FF8BF5E94B3D92AD /* ConfigDialog.h in Headers */ = {isa = PBXBuildFile; fileRef = A590F12D65E6986C2D6F38990BFE02DD /* ConfigDialog.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -705,9 +712,8 @@
 		6A71F6621B7270DC4E9CC3469057DF8D /* video_capture_backend.c in Sources */ = {isa = PBXBuildFile; fileRef = F074B8ED12CB119F2AD98DE96C9D1E1B /* video_capture_backend.c */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		6A90DB9252F5F4A3ECBB6AD4F22A1352 /* GTLRRuntimeCommon.h in Headers */ = {isa = PBXBuildFile; fileRef = F97E0802AC94B24B1FB03E55CD9A2FAC /* GTLRRuntimeCommon.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		6ACAD89B30AD04EE41D0ABDD3FB3A546 /* slot1.h in Headers */ = {isa = PBXBuildFile; fileRef = 287CF3209EFBA423F838FBAE494AB0C0 /* slot1.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		6AEA31E75E80D4BEFE7374341248E310 /* DLTAMuteSwitchMonitor.h in Headers */ = {isa = PBXBuildFile; fileRef = 912E70357CA914D6D7222F6BA977B34C /* DLTAMuteSwitchMonitor.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		6BABA54BBEBA347D766C48087A4F87D0 /* Patch.h in Headers */ = {isa = PBXBuildFile; fileRef = 7AFD09F14D0DA01868F50B237A0B76B1 /* Patch.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		6BBCF5E1AC45FC48B7C6E6AA2A19E03D /* DeltaTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = ABF2E1030F06335CAB068D719C129216 /* DeltaTypes.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		6C01BBF8A1A21C9696500E148349BC14 /* AnyInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90564B99F2C2EF43FEC4BA55EEF618FB /* AnyInput.swift */; };
 		6C138F122959D82C0E672FA0ACE8F007 /* ppu.h in Headers */ = {isa = PBXBuildFile; fileRef = 18BB33D23E1407CA689F462EB7799485 /* ppu.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		6C3EDF35E292C976B60BC1E147F8DE93 /* ftoption.h in Headers */ = {isa = PBXBuildFile; fileRef = 94D43A3C12E2607439AFFC8A1D1CDE41 /* ftoption.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		6C98F3F29A1ACE6C91C20CE35EDA0261 /* NstBoardNamcot163.hpp in Headers */ = {isa = PBXBuildFile; fileRef = FDBE09509A57E9C26585D21FA1FB381C /* NstBoardNamcot163.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -715,10 +721,12 @@
 		6CC46121EC9565CF4428346AAE080BA2 /* ai_controller.h in Headers */ = {isa = PBXBuildFile; fileRef = 4D58E3495B9E3434BF573543720CB50E /* ai_controller.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		6CCA5E08C0EE887CD4CF0DB92C7787C5 /* cp0.h in Headers */ = {isa = PBXBuildFile; fileRef = 82C8F13E35C588F34CD7F1A313360A79 /* cp0.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		6CCACC2383F5ADD7F92D95FF4C6CDD56 /* GBA.h in Headers */ = {isa = PBXBuildFile; fileRef = A8939FA4EA41B857876F33812D829B63 /* GBA.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		6CE7F4046BA417D2DF53E0C69D47B473 /* DeltaCore-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5393A36A3C22644206D6D5187A6B0285 /* DeltaCore-dummy.m */; };
+		6CD3282D14833C756D634D5290962D18 /* ControllerSkinTraits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CFE24E78C00465C933205823C6591C2 /* ControllerSkinTraits.swift */; };
 		6D4FDCA328DD8D76500CEE55AA8663B6 /* adaptivesleep.h in Headers */ = {isa = PBXBuildFile; fileRef = C82F87697475573C237F91B5498957A0 /* adaptivesleep.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		6D72C6C57A885CD6E28DEA598592E6AB /* Standard.deltamapping in Resources */ = {isa = PBXBuildFile; fileRef = C94926745D8A006AA0A950A854249A42 /* Standard.deltamapping */; };
+		6D95809E988EAE7D038CC786CB7251DC /* GameControllerInputMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE4DF888D759F8A1EFC289D72E1DF95 /* GameControllerInputMapping.swift */; };
 		6DAE486B1976E8FC94C3256134BA7B05 /* RSTOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 8DE3498D124753251241C3DCDB5CB194 /* RSTOperation.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		6E16B66FBD6605CD823427CF3CD922E1 /* GameControllerStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43650F984E0D62C7EB21DB9C43B8CAD /* GameControllerStateManager.swift */; };
 		6E50F30E4BECE7A6C3531020D1E5C59F /* msu1.h in Headers */ = {isa = PBXBuildFile; fileRef = FC26AD726BEA827DE29E8369FB6303C6 /* msu1.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		6E641CBA9D3432EE8F9C70B2E0ADD86D /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3774F3AE37BF4A348A3265BF0F216FF6 /* Errors.swift */; };
 		6E64571D846DA6B46DEF71405A2C71F7 /* GTLRService.h in Headers */ = {isa = PBXBuildFile; fileRef = 5C1B35A10293013EB1FF554F7BEB76DC /* GTLRService.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -727,13 +735,15 @@
 		6EA0A6FE9CCD2699B6BEF34376E9649F /* SDWebImage-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = AC1B770F09F0C669234396A39BFF6BB9 /* SDWebImage-dummy.m */; };
 		6EAC3C9446063F09611B9BE55D8D34C1 /* SQLiteObjc.m in Sources */ = {isa = PBXBuildFile; fileRef = 89132F0647F462DF7B2532346D3447EE /* SQLiteObjc.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		6EB1210C8C6387994CFEDC61EF67F9CB /* osal_dynamiclib.h in Headers */ = {isa = PBXBuildFile; fileRef = FE17ACA9391DAFCA51DA8FE4929D2B86 /* osal_dynamiclib.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		6EC906D378EF8ADEC5D7C2B04BE6C36B /* AudioRendering.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CB3FC8544B28E9203C07151D44AC01 /* AudioRendering.swift */; };
+		6EE568B8F82A495E0D0DBCEA8020A0F9 /* DeltaCore-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 957167DFF15F649697598EB9E605462A /* DeltaCore-umbrella.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		6EE9ACB0AB0E0CB81A490F499EBEFF29 /* UIImage+MultiFormat.m in Sources */ = {isa = PBXBuildFile; fileRef = 040EDE19207F90BFBF015280544EC415 /* UIImage+MultiFormat.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		6F2BC09D000622A367F66D88714B1C38 /* NstBoardUnlA9746.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 0D13CE77F2679DAE2B0BD39A25C2A0DE /* NstBoardUnlA9746.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		6F3A8E136885A37BD63220D7E467C186 /* DSi_I2C.h in Headers */ = {isa = PBXBuildFile; fileRef = 8D8D883736E9FDDF587355878BD6FA76 /* DSi_I2C.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		6F40472239FBE69B12BF5DA71C6F64BF /* sdl_key_converter.h in Headers */ = {isa = PBXBuildFile; fileRef = D4F21465E42C4A8071CA88DDA2952DAA /* sdl_key_converter.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		6F6937290D90CE905D719448A2AB750B /* readpng.h in Headers */ = {isa = PBXBuildFile; fileRef = BD84F06A10C7F36232CEC327446C64C9 /* readpng.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		6F7B7F6E4DF7B31AC33A3A62461A2127 /* NstBoardHxRom.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 183E1BFA0F57AF969EEA014FEB426220 /* NstBoardHxRom.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
+		6FBEFC6C1520548C76F059F6B3335583 /* DeltaTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = ABF2E1030F06335CAB068D719C129216 /* DeltaTypes.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		6FF7326AD53D3ABFC4686E1CA03CB38A /* DeltaCore.h in Headers */ = {isa = PBXBuildFile; fileRef = FA3CDDB5072744264D4A7519AE6D6A63 /* DeltaCore.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		700240FA8626FBCB8DD1E6A528883AEC /* GBAEmulatorBridge.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5F716F68D783146B202EC8FC938BC98B /* GBAEmulatorBridge.mm */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		70035AF1D8DA93A9B0572D1D91051A47 /* gdbstub.h in Headers */ = {isa = PBXBuildFile; fileRef = 1D2B3BDB29EB37DAEDCBC3179FAA6100 /* gdbstub.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		70AFFCAC4CE322C09CE2DC0E3E7EA378 /* NstInpAdapter.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 213E27CCA1F2F1BE726697432009E2C9 /* NstInpAdapter.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -790,12 +800,11 @@
 		76AA012877710AB1F164AE7B49DD098D /* NstInpPowerPad.hpp in Headers */ = {isa = PBXBuildFile; fileRef = C24FF4FB306EA08CFD23D4A8DD8B6C7F /* NstInpPowerPad.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		76B6F62D2ED822CC7A8F81EA66412F02 /* F3DEX2ACCLAIM.h in Headers */ = {isa = PBXBuildFile; fileRef = C5A57A0F7B6EFB30D8800FFBC3A0FD7A /* F3DEX2ACCLAIM.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		76BDD11BDDC55759963D72F2B270D010 /* CRC32.h in Headers */ = {isa = PBXBuildFile; fileRef = 202E74381C964AD1C842B6A8E1CA538D /* CRC32.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		76D132D024B6A52E4DFDD31827EBE0FC /* VideoRendering.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961ACD2164700D5FD67F6014EB6E2CCF /* VideoRendering.swift */; };
 		76EB423942E8C95D66359495DF5E0E68 /* Savestate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 49FBAF3AFB9AB7C7508ECECED7947131 /* Savestate.cpp */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
+		7712852E75499528F808779A3B4005E7 /* Input.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F0ED4F854563D55D1126B811F3E869 /* Input.swift */; };
 		77338E935B4CB0FA16154F8F845B9F74 /* NstPpu.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2769336E22CE289D3CE9EC20CBF91610 /* NstPpu.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		7736A8964115F20A8A6F09230ED8814D /* Time.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4293F313CBA439948FBF2F6EC87D6390 /* Time.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		7791F35B4A38E6CE348A2D1DE92352E5 /* RSTHelperFile.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EE40C178D686A2BE9C93C6CF7FAE736 /* RSTHelperFile.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		7793407AABB80F7FF59D7C5516D14FD9 /* ExtensibleEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13D3D42973146D80916E32B3BBE3D0A1 /* ExtensibleEnums.swift */; };
 		779506F02BC9F1B6D03763D7F639DC9E /* gb_cart.h in Headers */ = {isa = PBXBuildFile; fileRef = 88F8AB3F41F84C94BBEED8C22E4E61BC /* gb_cart.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		7818851D20DA2D669A8C12B16316D10E /* NstBoardBmcVt5201.hpp in Headers */ = {isa = PBXBuildFile; fileRef = C74DB15319EBC3307C2EB1ECF5912CD9 /* NstBoardBmcVt5201.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		782D25D106A1BBD0EAF71785CD156EEC /* RSTCellContentChange.h in Headers */ = {isa = PBXBuildFile; fileRef = A490B0EA1911CAE566D521752DB9B643 /* RSTCellContentChange.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -830,7 +839,6 @@
 		7AD81CF4EA345F14D64ABB308812984D /* TextureFilters_hq2x.h in Headers */ = {isa = PBXBuildFile; fileRef = AEAC4A2D514CEA5F884C8B989B177FE5 /* TextureFilters_hq2x.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		7AE848DB1454413283E1A33005E61EA0 /* Version.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E1A6F9BADA368445D9DBE731C26499 /* Version.swift */; };
 		7AE8BDCC81C1807E72CF531C41DAA28D /* RSTOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F84B5FC88D5A5A682A7E079337CD3D1C /* RSTOperation.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		7AEC6E1A5BB3B489183A23AD3AB8D7AE /* FilterChain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A2EA6E13FD790527F86EB2CDB1E402 /* FilterChain.swift */; };
 		7AFA40D6E7662FCB31023984FC8A5540 /* NstBoardUnlKingOfFighters96.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F1CFEE2E88E05706A2CB9A382C9447D7 /* NstBoardUnlKingOfFighters96.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		7B10C1F52E4229B812776F865E8DD955 /* ARM_InstrInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 4D836528F472BFF61852606A7BDA823D /* ARM_InstrInfo.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		7B3CF4D5A06371FDEC86F2F0F1C4CE56 /* lirc.h in Headers */ = {isa = PBXBuildFile; fileRef = 7C95081CDA9074D9730BD45D716C934D /* lirc.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -848,7 +856,6 @@
 		7D42DA555697670FC84BBAB5492696FA /* pcap.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D27F1218FFC3EC9D27CAC71BCFD4925 /* pcap.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		7D6640DB587F29263DFD54F344B9AE8B /* NstCartridgeInes.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 00DC15146753301043922CC27C6DB1EC /* NstCartridgeInes.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		7D97A8AC6EBC128DB5B1FB60AF8F28CE /* TextureFilterHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0FC5602035B9E19D656976E460F7F90A /* TextureFilterHandler.cpp */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		7DB35723D0CC13AE137CAE668924723F /* BitmapProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3949595D020E5A3DAB73E06EEB13CF19 /* BitmapProcessor.swift */; };
 		7DE7708815D0EA629D5716B9F1A6809E /* Thread.inl in Headers */ = {isa = PBXBuildFile; fileRef = 6F88E235E4438225B920C3FD4F4FA99E /* Thread.inl */; settings = {ATTRIBUTES = (Project, ); }; };
 		7E20AB44073FB30023AA9153EFD685AB /* ftbitmap.h in Headers */ = {isa = PBXBuildFile; fileRef = E94F624FEBCECA3D447A42E223613A20 /* ftbitmap.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		7E2636950C8A8517A78941A3FC7A214B /* ringbuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = EC9A5439881B47C2E816AF6F014B4832 /* ringbuffer.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -873,6 +880,7 @@
 		8043A7E0B334D03CF18AF57B63B8B407 /* CoreFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848F3AD32B7A8F7F08945CA3643BE446 /* CoreFunctions.swift */; };
 		80531DF27FAEB5E6120BDDD6681434C2 /* NstBoardTengen.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 53B591BF7B60187B760A42DB71431BB9 /* NstBoardTengen.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		8058D7B84C65C8F832FB61B0A1D05F76 /* png.c in Sources */ = {isa = PBXBuildFile; fileRef = 81586D54535F45B193EF58A3F9A1B704 /* png.c */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
+		8061685ED129C7ABD041F4864C03B1BC /* ControllerInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3104A99F1E2E5DCD9FCE463C1BCD842 /* ControllerInputView.swift */; };
 		807E0082550BA264BABB572647074157 /* ftcalc.h in Headers */ = {isa = PBXBuildFile; fileRef = F87EFA6D54FDC38E1D796063498DB67B /* ftcalc.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		809CC541557F42747F35E56C4A8BA2E2 /* NstBoardNxRom.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E42E5A99DAE876C1FA977F57560BA47B /* NstBoardNxRom.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		80A76846396E3B23414851765E6CD0C7 /* UIViewController+TransitionState.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A0BDC53FD9A10612B34F36860479885 /* UIViewController+TransitionState.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -898,10 +906,10 @@
 		8386BA8A923E2E72C8229BF7CF7C20FA /* cheats.h in Headers */ = {isa = PBXBuildFile; fileRef = 9C0F1623BBDB08363E8394AFBD38B87E /* cheats.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		83A09D122123E6C2815459DADEF9729F /* GTMNSString+URLArguments.m in Sources */ = {isa = PBXBuildFile; fileRef = 883B872956FB7C28FDBB574888357A62 /* GTMNSString+URLArguments.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc -w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		83C24DB91B7EF2F085CA8C84E6BECBC0 /* UsersRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D5A8C2D0C4FF79FF4A82A7C02704490 /* UsersRoutes.swift */; };
+		83C5975A558DE2BA069FC2E267A3FE2D /* DeltaCoreProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C65F0AD8F6ACAD0EA3F1D732708E85 /* DeltaCoreProtocol.swift */; };
 		83DE38F02EEC6BEBD7473F5DF8D5FC3D /* UITableViewCell+CellContent.h in Headers */ = {isa = PBXBuildFile; fileRef = 4455D697CDC2A6441EDD561195EFE9DB /* UITableViewCell+CellContent.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		840DC676DBE4407A3E68353CEF3B3BCB /* NstBoardWaixingZs.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 13A6DB004300A60DA3D2A6DFE73CCDAC /* NstBoardWaixingZs.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		845473EEBCE88EFF348390D4C70EDA4E /* NstBoardBandaiKaraokeStudio.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 97F73835395FF3DB0096CD155B20FB9F /* NstBoardBandaiKaraokeStudio.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
-		8486CE333AF98530F574C3B55DC565D8 /* TouchInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5205D694ADD50234921E3DEB5D957D /* TouchInputView.swift */; };
 		84B63AF1BC14C6406DF954CA68468FA9 /* L3DEX.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9531D676E6CBCD44E92FD1148601D0F9 /* L3DEX.cpp */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		84B95393C2EFEB1D75B9A12B3989B9B0 /* Textures.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5C888A9E68F5D9C40535BB25A042E10F /* Textures.cpp */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		84BA5D33CA8962FD25DB1702243D13E8 /* ftmac.h in Headers */ = {isa = PBXBuildFile; fileRef = 84758A5917B6274B633D5B6A3A3E91F9 /* ftmac.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -933,8 +941,8 @@
 		8820B3307828FF31991E570E29E170B4 /* idec.h in Headers */ = {isa = PBXBuildFile; fileRef = BEDA7F12E500CF17988D000DA2BF93E7 /* idec.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		8822BE90BB2456E06F40F8E1A71F45C1 /* NstBoardCne.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2BAAE966AB05A1DCC9AA7B693D69F0D0 /* NstBoardCne.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		884544D72900CB7FC4188A2B3390E7B6 /* Export.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 8EB12D179F66D53718BBF3591DC3E8BA /* Export.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
+		884E198083F883E60C8CBC0EEE9E72EA /* ButtonsInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F9A0594B477E44DA3CB74E54DD67ED /* ButtonsInputView.swift */; };
 		8860F24F82252EB380AA091FEB00D88C /* NSError+LocalizedFailureDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 290BCCDEE8D33B086E36DBC4AAE5C4AB /* NSError+LocalizedFailureDescription.swift */; };
-		886D71BD1595A610E2D69A83AE6A70AE /* Input.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F0ED4F854563D55D1126B811F3E869 /* Input.swift */; };
 		8878CBC3764D97E0901DE9EE6E120490 /* glsl_ShaderPart.h in Headers */ = {isa = PBXBuildFile; fileRef = 96095127DE4F08650D82A0815DD6DB1D /* glsl_ShaderPart.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		887E940A7535BE33895D4B8CE44AE215 /* Combiner.h in Headers */ = {isa = PBXBuildFile; fileRef = 608FE25E87FF01D7345789C49881295A /* Combiner.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		88BABCA3D1E4F2390E0378A2B5228631 /* NstBoardDiscrete.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F3748CCE76F2C007B8EF3A629BF5C282 /* NstBoardDiscrete.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -981,6 +989,7 @@
 		8DC67CE598921DF48FD70C4C6E4868AE /* opengl_TextureManipulationObjectFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3A52EF817DA55C490E46C80C1AF0F283 /* opengl_TextureManipulationObjectFactory.cpp */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		8E328CC6091D61DBA1B8AE8DFFB04532 /* hle_external.h in Headers */ = {isa = PBXBuildFile; fileRef = 5277A427B540B8A971E15DE8732388E9 /* hle_external.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		8E39317C883C5861D6B1F18C0172AEA9 /* RSTConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 609716320CE93EE5720BD73EE4666B18 /* RSTConstants.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		8E67E0F2E360A626DA73C815DF1E3553 /* Thread+RealTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD21182E096CF262039B0C3A26E9769 /* Thread+RealTime.swift */; };
 		8E7681E291ACFA6DD351EE632D186BD7 /* F3DEX2.h in Headers */ = {isa = PBXBuildFile; fileRef = EEAE0F78E10C6AB8250B4FCF2FBB074F /* F3DEX2.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		8E8094562D01EDB93C41846A50926BD5 /* OutputSoundFile.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BC8528536BD3799BBE6CA5C956B29930 /* OutputSoundFile.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		8EA421026DD522744405C37C9DFD1AC2 /* NstApiNsf.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 8FE7624D239D6E6FDDCBDC31458E790E /* NstApiNsf.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -993,6 +1002,7 @@
 		903A61727B196C0BF6AD7D55E406829E /* View.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 7DA17A4830B0A7833A2BFF7E43EFE310 /* View.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		904640205CCAD51F70FC8181CDBE9A51 /* fttrace.h in Headers */ = {isa = PBXBuildFile; fileRef = 88EF2BA95EB1E18CBC11B6130EC55E16 /* fttrace.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		90761841E15818195AE0E6F9C6B1F2A3 /* GTLRDriveQuery.h in Headers */ = {isa = PBXBuildFile; fileRef = 5117CC789D8C47E9B0F2888AB14F3E74 /* GTLRDriveQuery.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		908A532396AD35B8E26E8AE44533E34D /* SaveState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027FB4C6CC71DADB243F4D75F54D49E2 /* SaveState.swift */; };
 		90A332D78357408A4893241BAA3FCEF7 /* NstApiTapeRecorder.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 8DEF68BFA723483A3C9540DE5D2B9CD6 /* NstApiTapeRecorder.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		90AB2A9F1C9D72D1B8956B0FA71B38E2 /* F5Rogue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 092C6EE9873F269B8DF55D311028DF6F /* F5Rogue.cpp */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		90B77BF4E1D9E493E39DDB4EE13CC608 /* DeleteRecordOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0EC6BDB76040B5A332BFBE292E094E1 /* DeleteRecordOperation.swift */; };
@@ -1019,7 +1029,6 @@
 		92F8229DBD6462B1D86671903966D443 /* libretro.h in Headers */ = {isa = PBXBuildFile; fileRef = 42884C54AC2951F6A1140B6F12823A61 /* libretro.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		9306DF595EB74F925D40BC8F70C11F7E /* statesaver.h in Headers */ = {isa = PBXBuildFile; fileRef = DDAB24C8DF7DA2BB3D67FC4A2C669BEF /* statesaver.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		932FE517D424EB24ECA60FCF308A7F5E /* expr.cpp.h in Headers */ = {isa = PBXBuildFile; fileRef = 166B7D7F68333A9915F7970F9FB547C0 /* expr.cpp.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		93353F0A21F136C22AD7F0B6183B5952 /* Bundle+Resources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 500E8615D96CF177F4C3273482988B11 /* Bundle+Resources.swift */; };
 		93A9497637F202D29E0EC51208B725A8 /* RectangleShape.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 00B52487B5EE514818470AEDEFA85967 /* RectangleShape.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		93AB3DCEF6FAB25507A0D57EB46F15D6 /* Utf.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BF1BBDF3D7D54D8C1E001FC042148D06 /* Utf.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		93ECEC40EB5571AC01CDB1C56EE6AFBA /* pixform.h in Headers */ = {isa = PBXBuildFile; fileRef = 9A4EF2A1B3DE6523F4B1132FD5CF4A75 /* pixform.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -1034,13 +1043,13 @@
 		94CDC16CABC912819C497850CE4F1489 /* NstBoardKonamiVrc7.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 16A6E4F9D5B593AB01D5A49340300BCF /* NstBoardKonamiVrc7.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		94D28595353D013C0530A91A7AA81FCF /* Query.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C998AB9300BCC4AD6368CB1FA675F29 /* Query.swift */; };
 		94D28819338E33AFF9EDDFB94DE0E526 /* NstVideoRenderer.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4753C1496FC2EDB1151EF16865D566B5 /* NstVideoRenderer.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
+		94F42E62015FE6B2BE0149161E565D74 /* OpenGLESProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9142D9D6A646AB8A23AAFE748BEAF30 /* OpenGLESProcessor.swift */; };
 		953B0BA08374FEB6F8BA47C9EE30878C /* SMClassicCalloutView.h in Headers */ = {isa = PBXBuildFile; fileRef = C9B5A75174DE7C7B4A535B3A42D6239C /* SMClassicCalloutView.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		954F32847B89642611D9B0B4FBEEEC61 /* AREngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5666FE2EC1089FF9AC5579E5A7644A13 /* AREngine.cpp */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		955D38FE2D13ADD2D9E823A476AAF166 /* aes.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 84372ECD67DC929B556FB731E3AC5531 /* aes.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		956EC83BE591C3854CC926F5C44C61DB /* MelonDSEmulatorBridge.h in Headers */ = {isa = PBXBuildFile; fileRef = 9F014A83DEF4F355ED7E7CBACE0FBE07 /* MelonDSEmulatorBridge.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		95BD2BAD38E37D6E2B67EDF5344BA723 /* NstInpHoriTrack.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 633BFEBA4D6E889B3BD3E8EC2A8D9AAF /* NstInpHoriTrack.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		95EF975803B95C02EE458E32DB43C1D2 /* port.h in Headers */ = {isa = PBXBuildFile; fileRef = 9213596C3CA0E060FC0617A361F98FCE /* port.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		96009988E1AD37AD3F245D803DC0ACE7 /* CharacterSet+Hexadecimals.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A99432B3A77A17C67102784C21DAAF /* CharacterSet+Hexadecimals.swift */; };
 		9603A4274C8A74E47EDE5C96E6F3A289 /* NstBoardMxRom.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4C59CCAD19BF6E186912BBD6E16E4AF4 /* NstBoardMxRom.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		9614CDE379DB3C8A330397F9BE0AEE69 /* Sprite.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 3712F3330F9F788DA08004D45DC308FB /* Sprite.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		9631EB3716707DF75A79D5497DF4392C /* dsp.h in Headers */ = {isa = PBXBuildFile; fileRef = F69FBA7A038D20EABCA39B35AB3B040D /* dsp.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -1052,7 +1061,6 @@
 		96EDAB5DAB64B77966807FAA4FBEA19E /* NstBoardAgci.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 190388E1589C7BC638B1410EA970D133 /* NstBoardAgci.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		9700860B8834FFBBBB772936CA396419 /* gDP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F52A10407276576D7E69215069A05CD5 /* gDP.cpp */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		972A37B03DCA40E3914A116E31179F3F /* GTLRBatchQuery.h in Headers */ = {isa = PBXBuildFile; fileRef = C88860D669B74A0154AA887269E28475 /* GTLRBatchQuery.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		979368E44B8B7C8615822815141CD054 /* GameControllerStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43650F984E0D62C7EB21DB9C43B8CAD /* GameControllerStateManager.swift */; };
 		97B902766C5A26837CF94B716009A201 /* RSTNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = D5E9FD5A3371067E608C6FF32C3E1179 /* RSTNavigationController.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		97BC1C5E6F8786531212D326F22B5A0F /* cstdint.h in Headers */ = {isa = PBXBuildFile; fileRef = D21047E7540C7E4A5E2197B158C84D3B /* cstdint.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		97C65359994F792189FCBC1C79079A96 /* gambatte.h in Headers */ = {isa = PBXBuildFile; fileRef = 4DCDABB34A5BDA633CA1B6972D7D76E1 /* gambatte.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -1105,7 +1113,6 @@
 		9F286E1D2DC70F134E8A8E4DABD86735 /* RDP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 73594F3371FE49C0D1356C423974A617 /* RDP.cpp */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		9F4F09ED3E838DCBD8615A7333F019C8 /* L3DEX.h in Headers */ = {isa = PBXBuildFile; fileRef = 5C35BC9F77F23B687515FC8958549CA1 /* L3DEX.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		9FDAB43530974253873F6B850109D610 /* alist.c in Sources */ = {isa = PBXBuildFile; fileRef = ED722AEBC29811FBDB707822E79E137C /* alist.c */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		9FE64AB67B279FBE1047117752075A4E /* UIResponder+FirstResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F6FF7C88B7AD41EC3870C4DE94973E /* UIResponder+FirstResponder.swift */; };
 		A0120835F1172F64AFA98DDB669167CE /* scmrev.h in Headers */ = {isa = PBXBuildFile; fileRef = 42FC26095E2CF8823B3A9B88453B3901 /* scmrev.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		A0258F6EF879071A012E7C12BEE48C45 /* svotval.h in Headers */ = {isa = PBXBuildFile; fileRef = 898591A3CC8C587571FA098CCC20AADF /* svotval.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		A086B96EE66A0AF59654CB9D50DAABD7 /* NstBoardKonamiVrc6.hpp in Headers */ = {isa = PBXBuildFile; fileRef = A6A4DBE5C518B74416FB8A4EB9D967ED /* NstBoardKonamiVrc6.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -1127,11 +1134,9 @@
 		A24DAF3A4A4B530B47A5C2BBF63FB6D6 /* pngdebug.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B0E56A4DBE284273ED40732FDB073C9 /* pngdebug.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		A25FEBD1B5ABCB74C1674EEF9F784EB0 /* MemoryStatus.h in Headers */ = {isa = PBXBuildFile; fileRef = 0663F28B78D5B488BBD1158305953BF2 /* MemoryStatus.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		A26E82669EC4D325656E6B8EA01E2D01 /* Drawable.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 8A731410071DE76AAF5149412AEC57ED /* Drawable.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
-		A275BEEC646144350744D504FBFEA961 /* ControllerSkinTraits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CFE24E78C00465C933205823C6591C2 /* ControllerSkinTraits.swift */; };
 		A2A854D06578D5120F0B8474EA0073C4 /* NstInpFamilyTrainer.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4A30748039EF71CC3D3BC9D7293442A7 /* NstInpFamilyTrainer.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		A2ADFBA34707939EDDDA8DDFCBAF4500 /* GTMNSDictionary+URLArguments.m in Sources */ = {isa = PBXBuildFile; fileRef = B178CE5FC4BC30D17B77BB64F1C9D912 /* GTMNSDictionary+URLArguments.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		A2B90FAA02E0F6CCA147D4922BEA83AC /* F3DEX.h in Headers */ = {isa = PBXBuildFile; fileRef = 2EC10C4E5FDC7C7C25A7DAC7A2FB11BB /* F3DEX.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		A2E5ECADA6FD38BB0829678577875EC3 /* OpenGLESProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7BA8D8D1E9E2CDAB97C30A5A502156 /* OpenGLESProcessor.swift */; };
 		A3057CCA3036D83546A8CD03B63F433D /* NstInpCrazyClimber.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 8A65C030A8CB605B689A888D7DED867A /* NstInpCrazyClimber.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		A3175B24ADB6E391E46B1408B1767FA8 /* glsl_CombinerProgramUniformFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = B41ADAC311E8AD6F6A31A14C3ACCF208 /* glsl_CombinerProgramUniformFactory.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		A3268347427E3944AC1F5FED80F60D39 /* SoftwareRender.h in Headers */ = {isa = PBXBuildFile; fileRef = F687CDE1CC73F1023FA06367B7621C39 /* SoftwareRender.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -1186,8 +1191,10 @@
 		A9AEDDC1D58C38A7CC8DC9F486965D56 /* Sram.h in Headers */ = {isa = PBXBuildFile; fileRef = 06E98AF28DEE4396FAC50A659A97D1F7 /* Sram.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		A9EE7067ED78CB80B06B59D81D7B5F06 /* NSFileManager+URLs.h in Headers */ = {isa = PBXBuildFile; fileRef = 35E3B9E17CE51387A5C31A3D4D020CB3 /* NSFileManager+URLs.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		AA2C1691985E318E5018AB34B700DD87 /* RemoteFile+Dropbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30DFD8293FC858D3A24E23C9C67CBD30 /* RemoteFile+Dropbox.swift */; };
+		AA7FBC99413DA1A10671611FB89F1F5C /* UIApplication+AppExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98985DB2B0E10E3D6C992708741C684A /* UIApplication+AppExtension.swift */; };
 		AA83341BC9AD775CDBF99CDCF727BBE8 /* svpostnm.h in Headers */ = {isa = PBXBuildFile; fileRef = EB05D37130F5C1E54F68ECD8CDDC22EC /* svpostnm.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		AB0B945E8A9379453CBA9928E743A987 /* glsl_Utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A01EE3AE9A9EC3F97E1D65778521BE4 /* glsl_Utils.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		AB11CD3BCCDE91A3B0612AADECA522BC /* ExtensibleEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13D3D42973146D80916E32B3BBE3D0A1 /* ExtensibleEnums.swift */; };
 		AB1E3DEF678EB7000A95D5337728318D /* SNESTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6F693BD8934FF6A88E20FF29157CFF /* SNESTypes.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		AB2A558032E8D4877049D09D755ECA35 /* pngmem.c in Sources */ = {isa = PBXBuildFile; fileRef = 0056ECA9D4904EC555DDDB7A44A29B9D /* pngmem.c */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		AB2F696C2623C6301FA3D611B476B678 /* alist.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A827256CC16710474531DFA7ECE526F /* alist.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -1218,6 +1225,7 @@
 		AD7D53389EE6FBD882ED47A69EA528BC /* retro_common_api.h in Headers */ = {isa = PBXBuildFile; fileRef = B636371B292E5B16402AE89C9B512E16 /* retro_common_api.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		ADA219A2F6BFE7A593939A9E9ED16491 /* CombinerKey.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE736221B155C2514D9D36EB4FBAEEEF /* CombinerKey.cpp */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		ADBA2EA8F4CF15587337BCDC2F645BB0 /* retro_assert.h in Headers */ = {isa = PBXBuildFile; fileRef = FDF80C228030940A34A433995ABD6250 /* retro_assert.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		AE07FF0984BA8CE5C846216D6CBE4396 /* Bundle+Resources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 500E8615D96CF177F4C3273482988B11 /* Bundle+Resources.swift */; };
 		AE0D7033540F0EDE845B0823AEA70E9B /* ttnameid.h in Headers */ = {isa = PBXBuildFile; fileRef = F8E2DF4FE7FA12D11F9519C050CBAE82 /* ttnameid.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		AE2B65C3F228FA7D15103DAB814EC3BE /* exprNode.h in Headers */ = {isa = PBXBuildFile; fileRef = F88144124FBA971D0634C19257E4725C /* exprNode.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		AE46C27C2357729B0BD66E4CF440A004 /* interrupt.h in Headers */ = {isa = PBXBuildFile; fileRef = 1FD4F5AA816AA91F1CA362FFF3B5C93C /* interrupt.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -1243,7 +1251,6 @@
 		B15418A2DCB1E1CDD4D5EC08C1A03A30 /* GLFunctions.h in Headers */ = {isa = PBXBuildFile; fileRef = B54D71F0A9EE62F2B238B985FFE6C460 /* GLFunctions.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		B158F6C6F5B890AF5A00D8492705CB38 /* matrix.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C50053E5D39FB4F4F1BA560C86E2311 /* matrix.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		B176188727DE2DD341E44FF00F4BAAC6 /* glsl_CombinerProgramBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = AA792B0E18A3BA4548FB2C386287DD46 /* glsl_CombinerProgramBuilder.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		B1766B3E76519CAB435EBB97EEF315DD /* GameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7BC2C79D27AA4D45DBAED609878B0BF /* GameController.swift */; };
 		B17C1766C96792D8E4702F83155E438A /* NstSoundPlayer.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 31E520FC3E469009B4F65BACFD5C14C3 /* NstSoundPlayer.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		B1B404D70676CCCFE3325E089DDCAD9D /* loadres.h in Headers */ = {isa = PBXBuildFile; fileRef = B29A8EB5AC9C464A3E9D1DE0A0715E97 /* loadres.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		B1D54C35EB4095E41EFAFBAAB49C6FD0 /* svgxval.h in Headers */ = {isa = PBXBuildFile; fileRef = 19B404312BCFE831CA10C0C54C6D0B58 /* svgxval.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -1276,6 +1283,7 @@
 		B624009110AE452CBA01D50AD9CF2E24 /* snapshot.h in Headers */ = {isa = PBXBuildFile; fileRef = BDD0219A0927AFD5212597224C8C9A18 /* snapshot.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		B642F97A1B4740DADB75F4DF9357776B /* NstBoardSachen.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 294CF6CD997D9E587A99F6DFE61FEC0F /* NstBoardSachen.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		B6758D43CD69D4728C2DEE14394F151C /* GTLRDefines.h in Headers */ = {isa = PBXBuildFile; fileRef = 85B98EACC45CEADA2FC73EB069E37FC7 /* GTLRDefines.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		B6D8EADFC0E0E2CF8DC941894298B839 /* FilterChain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A2EA6E13FD790527F86EB2CDB1E402 /* FilterChain.swift */; };
 		B72829BC0D61AF2E97C134A12BB5387C /* GTLRQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E64591CCE82CAC6775DAB365A75A8BC /* GTLRQuery.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		B72BF3C1B6C4DBB6A925CB1280F766EC /* Syncable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C0CFDE9A393129B54C5103C27E8227B /* Syncable.swift */; };
 		B7559318336220FE66128B7C155EBE5D /* RSTTintedImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 327910F0090992C6E3CBE5627E621EB3 /* RSTTintedImageView.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
@@ -1294,12 +1302,12 @@
 		B973B21DA14F4A034B18611A4C30754B /* TextureFilterHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F722266C08C5C1739772E3E72CEE17F /* TextureFilterHandler.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		B97F1A94FF1030E195B110D8EEBCAA83 /* NstBoardSuperGame.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 1FBDF4ACD90B4DED1F33312B991DB618 /* NstBoardSuperGame.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		B9805A1656378AAA93AADAA09D5122C1 /* NstBoardAxRom.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 7BEE27F7FF7F6E7CA6DBDA14F15340BC /* NstBoardAxRom.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
+		B98BB45AA368B3FF52CEC6C45393A838 /* GameProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E336CAB35F1041C04DA2A4B22DF0D4FD /* GameProtocol.swift */; };
 		B9E14DD387C8FE6CD9A8A29DF12A8ADD /* getset.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B98706F4E48F8908BCD401802253AB6 /* getset.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		BA26D53E540298C0F8C6B7FC9C1EE188 /* alist_nead.c in Sources */ = {isa = PBXBuildFile; fileRef = BBF2CF6F66F587AFDA21E30888FC7210 /* alist_nead.c */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		BA2D57760A3C386F7C1C547729E1A472 /* NstBoardFutureMedia.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 459B516EA16454D8B783A5E6A1106CDD /* NstBoardFutureMedia.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		BA6F2DEA63EEA27BFAEDA2A35BB85F6A /* GBADeltaCore.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B38944C4991CE901210237BE9D90369 /* GBADeltaCore.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		BAA4E74335AA7B36F2454711A5B55698 /* Audio.hpp in Headers */ = {isa = PBXBuildFile; fileRef = C789F35DF9D922934F14887196EADCFA /* Audio.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
-		BAA7B0396C8963E3E7324FE70900B64E /* Cheat.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7BDD61DD53EB66909667FDEF0E033B1 /* Cheat.swift */; };
 		BAE25DB1A5B8BA8A01AF634BCB7CA69F /* pngwutil.c in Sources */ = {isa = PBXBuildFile; fileRef = 87CC302B1B1C6F71828303A524C51690 /* pngwutil.c */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		BB0764640BE54ACD1A1FDA344D1EA73D /* MelonDSEmulatorBridge.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9D3F865CEA5A8DDF0E5A48DF76EFC326 /* MelonDSEmulatorBridge.mm */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		BB0BB79A9140C13066DC7B7C8B203B78 /* Network.hpp in Headers */ = {isa = PBXBuildFile; fileRef = D2AC56C3AE1F0BBCE09D6CE758D402CE /* Network.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -1307,6 +1315,7 @@
 		BB43B32DD16801C9214E36739BD6D080 /* GPU.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E028AD93ED1F6C5A46A56195C2CF756 /* GPU.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		BB770E63418E48C37B26F634A3E79524 /* GPU_OpenGL_shaders.h in Headers */ = {isa = PBXBuildFile; fileRef = 81CD767AF6F405C00FC098278974AC8B /* GPU_OpenGL_shaders.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		BB961476561437CC41E703E25E767FD7 /* GBCInputGetter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8310F880B7CC9B1650278B22FEEA7A2B /* GBCInputGetter.cpp */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
+		BBAAB7FEB1A272C30D68D7D7D86A3626 /* KeyboardGameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C31AFF7B6567C46BCD1D5FF5A40AFEFD /* KeyboardGameController.swift */; };
 		BBF6C4CF1FF711166B74A992339230EE /* NstBoardBmc64in1.hpp in Headers */ = {isa = PBXBuildFile; fileRef = B1E6115DADF781FBC5286DC05270CFDF /* NstBoardBmc64in1.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		BC2E1B2F335D8037CEBE9FA5E4D985C0 /* ftlist.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FF5B91527E584477B10719112BEA1B6 /* ftlist.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		BC4EB746D2E13352424A93FDC7A52F78 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEC812792FD886E7BB2776C793B6BEEB /* Errors.swift */; };
@@ -1314,8 +1323,8 @@
 		BCB7812B218820D36A30C36C4BB0BA65 /* SyncRecordsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E0A6168C0907A7479C4BD04AB5B8928 /* SyncRecordsOperation.swift */; };
 		BCC3B83B11F726387F8C0A3568E470D1 /* UIImageView+HighlightedWebCache.h in Headers */ = {isa = PBXBuildFile; fileRef = DE7BED3E5E48EB3660BE48EE00FA7AFB /* UIImageView+HighlightedWebCache.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		BCCF0B9F15A1651547EADC31A6CEB5C2 /* SDWebImageCompat.h in Headers */ = {isa = PBXBuildFile; fileRef = C87526B5C0AF75FA4CE41AA42D172B0B /* SDWebImageCompat.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		BCD147B2D7A726635EE719CD8AEEDE72 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50CB8263181606A93C7C4DB62B954BCC /* GameViewController.swift */; };
 		BCFC498B83EBB0460E26731FF657898D /* F3DPD.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F07E76FD0A048E88C13AD72461D1A8A5 /* F3DPD.cpp */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		BD016C62B0056C15B63A5A9396AB93F4 /* KeyboardResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = C45CF5051C61E98E1D10FDAE36FED44A /* KeyboardResponder.swift */; };
 		BD0CC9162B585EAC4F9D324068AC0A14 /* firmware.h in Headers */ = {isa = PBXBuildFile; fileRef = F20B25B2356078687C26B25825E487A2 /* firmware.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		BD0D6665CD9A3B3C0AEDC4347A0BEBA6 /* NstInpBarcodeWorld.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 8566DFE3C9D864188FAC41FB8316C1B0 /* NstInpBarcodeWorld.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		BD13E45C0102AB99B304A2E15B6FA344 /* ftbdf.h in Headers */ = {isa = PBXBuildFile; fileRef = 601F63C6825CC3B6550C9C4169033152 /* ftbdf.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -1330,7 +1339,6 @@
 		BE75DD1EED6E0D0B3AADC2A777C7D9CA /* NstBoardSuperGameLionKing.hpp in Headers */ = {isa = PBXBuildFile; fileRef = DD7037B9236081F8835FD977759FC372 /* NstBoardSuperGameLionKing.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		BE8930A97F9D476C9A93D870A62B3D11 /* NstBoardRexSoftDb5z.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 5F83D55C13FB6E1F63B5492848583340 /* NstBoardRexSoftDb5z.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		BE8C54555C2620B25A50309D284227BF /* AboutDialog.h in Headers */ = {isa = PBXBuildFile; fileRef = 44FAD07D80BFEE0D325168C079FABD94 /* AboutDialog.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		BEA3DB63075DE883B2C9506C483877DF /* UIDevice+Vibration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6DC5BD2D6B77CA14C62D6FF5EA327DB /* UIDevice+Vibration.swift */; };
 		BED6D68A786DBE5B331C32D88E209282 /* NstBoardPxRom.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 6792E65AE4C83CBE644B193BBA1E52DC /* NstBoardPxRom.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		BEE55582625F950FD131B8E9EF98E540 /* S2DEX2.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BF4AC25F29497FA32921E869185CFB9 /* S2DEX2.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		BF2705ACCDBE29A8E3C665CBB877B64E /* NstBoardWaixingSgzlz.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2507A2AAACF2F3D12826D941CB970BEE /* NstBoardWaixingSgzlz.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -1343,17 +1351,13 @@
 		C05DDFDC87119249A89982825737D242 /* osd.h in Headers */ = {isa = PBXBuildFile; fileRef = 2AD3368B2D5D7E97A29573C83ED07A59 /* osd.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		C061FBB44693CE168153BBE6BA63A150 /* Result+Success.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A78FCF77292DF45A5D9BC7C6476C356 /* Result+Success.swift */; };
 		C08441EF9082D1908CDA86801CFF7967 /* ftgasp.h in Headers */ = {isa = PBXBuildFile; fileRef = 886A3E189B577FD6E4F71CFF3F0C163C /* ftgasp.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		C0D9BA8FBC5E1F537EBE6CC92AB31AEA /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 213FC7540DB4DF3F90B89035F984BD7C /* Game.swift */; };
 		C0E0B72CFF04ABCCDBC10213DE784979 /* Cheats.h in Headers */ = {isa = PBXBuildFile; fileRef = C64D454F5583AA5EC3D926CB2248F4F8 /* Cheats.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		C101B03ACD6D46D16A8FAEFB5BB281CF /* NstBoardBandai.hpp in Headers */ = {isa = PBXBuildFile; fileRef = C35789A01031A859DE9488BAE0FC99C9 /* NstBoardBandai.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
-		C1BC2E5368700E239EF29C36CE3B9839 /* GameProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E336CAB35F1041C04DA2A4B22DF0D4FD /* GameProtocol.swift */; };
 		C1BF92EE9B78C154547D891F8156FD79 /* uncopyable.h in Headers */ = {isa = PBXBuildFile; fileRef = 034ECDF2709AB785B480F4DEBECA1C8A /* uncopyable.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		C1CA0A9670CDC24476DD0BC30CBAF2F9 /* DisplayLoadProgress.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEC0821C3D8852D66B08A0002AB2F015 /* DisplayLoadProgress.cpp */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		C21855C2E5D6487AC2B921AD79922E14 /* ExternalGameControllerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73E9E04EC1D9DC2F189BC9DC0A68ADB /* ExternalGameControllerManager.swift */; };
 		C2191F69393CDE272CCBABD5CF5E5452 /* RSTPersistentContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 051DD45485937EBA4AEB4D55FB230DCB /* RSTPersistentContainer.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		C2A7BEF4712B927F676D5521BA4CDE03 /* Vector2.inl in Headers */ = {isa = PBXBuildFile; fileRef = 26980C04667AAE6697AC84486BB012FF /* Vector2.inl */; settings = {ATTRIBUTES = (Project, ); }; };
 		C2C42639F8B8C99AE470FFC772F27320 /* NstBoardNanjing.hpp in Headers */ = {isa = PBXBuildFile; fileRef = FD63E3F134804425401C1B74686EDF48 /* NstBoardNanjing.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
-		C2CDA8FD21D4EABCF46E596D822C87D5 /* GameControllerInputMappingProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2985A6A24D313B24B3A42ED617C00464 /* GameControllerInputMappingProtocol.swift */; };
 		C2D45C2E6F31EA9735644BA45EDC472C /* GTLRObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A171E0701260ECA35983A32816DB522 /* GTLRObject.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		C2E923BBC9EAFEBE5B1ABF941EB1F473 /* Base.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4871776B4C704E222EB93D062575DC5A /* Base.swift */; };
 		C2EB4CB575EA9821E30A317574865D17 /* MultipartFormData.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC73A05080E7163BE6F8E9426032C82 /* MultipartFormData.swift */; };
@@ -1362,7 +1366,6 @@
 		C36CC682F07B3FEA5A1B00C139CCB3EC /* NESDeltaCore.h in Headers */ = {isa = PBXBuildFile; fileRef = 7647C29F1EB2BC67142E821D427D0865 /* NESDeltaCore.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		C3B11E4AA028617D0B3134BF96B451DF /* usec.h in Headers */ = {isa = PBXBuildFile; fileRef = 797293ABB0B561C6FE9D15E812E45081 /* usec.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		C3C03BE1232B76AB81D1A6D283CBC58D /* ManagedAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7069F5F77B1F8E0612B5D6D93216ADC1 /* ManagedAccount.swift */; };
-		C3CB14A07161497CA6FAA6858EFF4F4F /* Thread+RealTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD21182E096CF262039B0C3A26E9769 /* Thread+RealTime.swift */; };
 		C3E9BFE46A1072D5D11FD6DF0C118804 /* pngrtran.c in Sources */ = {isa = PBXBuildFile; fileRef = 3626FD0512609CFE865D492929315B1E /* pngrtran.c */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		C40257B054B827F15814443893FE2D5C /* GTMDebugThreadValidation.h in Headers */ = {isa = PBXBuildFile; fileRef = 026273C8CD9BD9384803DD59CB45DF96 /* GTMDebugThreadValidation.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		C42DFD819758EC081341055314ACC55E /* ftadvanc.h in Headers */ = {isa = PBXBuildFile; fileRef = 97A529B5224544C993C7547C6A313CCC /* ftadvanc.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -1375,12 +1378,12 @@
 		C57FA8AFDD52EE6417A2E0C1274059E3 /* NstBoardHenggedianzi.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 63F723BED507FF2FF061CFBDA2D2DC5D /* NstBoardHenggedianzi.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		C593D8CC9F1A9B223285B2E986CD444C /* NstBoardWaixingFfv.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 93A4D0810FAC23701F57EE4E6CA1A7C6 /* NstBoardWaixingFfv.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		C5A4AECAAF05E89502C860A98B33AAEF /* S2DEX.h in Headers */ = {isa = PBXBuildFile; fileRef = 7C4333506EF373E1D2841A18039C8379 /* S2DEX.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		C5AB49D57E3EF7CD32C4E07A1A2DC017 /* ThumbstickInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1AAAF56DFDC2516C9F0F82DEA17511B /* ThumbstickInputView.swift */; };
 		C5ADB3E8439A575CB85F2DC37DD3ADE2 /* NstVideoFilterxBR.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 867F308297D845E4AB0774374BB3EFB4 /* NstVideoFilterxBR.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		C5C7D15D0CE88D7F9A9F66878DBB4248 /* m64p_plugin.h in Headers */ = {isa = PBXBuildFile; fileRef = 0DB69BA777DA2D7FE96274A0B4EB4BB5 /* m64p_plugin.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		C5F1C4A446D8769AF9535D1036A3E0E3 /* memalign.h in Headers */ = {isa = PBXBuildFile; fileRef = FE67AEDDB46071185B8EF236FD149EA7 /* memalign.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		C64BD3A6EB67DB072D73D1C4878D2A36 /* recomp.h in Headers */ = {isa = PBXBuildFile; fileRef = F8E695BDE117DE11C2A9816B243CE8D2 /* recomp.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		C67F326A6AF0E3C1047D6DC2008B71AE /* Event.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F013766E35198FF97F65503319E09993 /* Event.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
+		C69890F7D34D867DD0684B059FE63CB6 /* Delta.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BBE274343E5120686BB2D52C486B98F /* Delta.swift */; };
 		C70555D93FB3D865E74813F1EEEE7BB7 /* DisplayWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D14C427796C3B67D5F822717322045B9 /* DisplayWindow.cpp */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		C72087EDCF1BAE223A1BB8C94BA87329 /* Statement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96BB44A4386C6A18D5BEA9F5AF2E1EF0 /* Statement.swift */; };
 		C7640111480187552170C57BF9619C14 /* TxUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = FEAE71533C82C752E7F1D21A99698CD1 /* TxUtil.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -1440,14 +1443,13 @@
 		CEDAB2C55F9DD7D4E2D8CF98BFE8CC81 /* UITableViewCell+CellContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 70DABB5ACFBF2E1DA35CD42F620E46F1 /* UITableViewCell+CellContent.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		CF0AD48E0F3BE7E612B1A6D234C3BA4C /* TxFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CC339C9C59B65A4D6483598A6451971E /* TxFilter.cpp */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		CF14CB07724E28C9AA37889A92FFD645 /* GTLRURITemplate.h in Headers */ = {isa = PBXBuildFile; fileRef = D27C9AEA920B8065DC8FB0F6F92A6E26 /* GTLRURITemplate.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		CF2ECEE2F02F2D00D54E28DA79787867 /* UIScreen+ControllerSkin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32999EF608D52E8EBF47AEF2D05024FB /* UIScreen+ControllerSkin.swift */; };
 		CF31DD15B783DC030C99042424B72681 /* NstBoardBtlAx5705.hpp in Headers */ = {isa = PBXBuildFile; fileRef = DF5405AEB7C1FBC155A415D86594377C /* NstBoardBtlAx5705.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		CF480B6742A9AB2E86C1DE5CA2FBECFC /* SyncCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81541D03368976297C41B931C452EBE6 /* SyncCoordinator.swift */; };
-		CF652780A826660EF98D71D7CBD05BC2 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65E0BB76F563A560B6025A701C5B300C /* GameView.swift */; };
 		CF96B67066487C2BC53BDD35D81C0601 /* opengl_Parameters.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0A35B20685D6B2F22C568D23E73C3E50 /* opengl_Parameters.cpp */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		CFAFD40E7046DCF2D88C105C118301B6 /* pngstest-errors.h in Headers */ = {isa = PBXBuildFile; fileRef = 16F999D1DA5FF8502A180736C3C54BFB /* pngstest-errors.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		CFB692A4993E0C91F447057DF39648E0 /* NstImageDatabase.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 83C151DB4B297DC753E27E2E0F3C3BC4 /* NstImageDatabase.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		D014F5EEEC93795C92F386BC05F90FD2 /* RSTTintedImageView.h in Headers */ = {isa = PBXBuildFile; fileRef = B31BC317B925949D8F6F764866AECFAE /* RSTTintedImageView.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		D027F8D4E880D7092DB8AA5A02D7AAC9 /* CGGeometry+Dictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDA901FE973732B0B1E37BD243D43BB /* CGGeometry+Dictionary.swift */; };
 		D07A1B71422D57F744E2F9C684688785 /* xxhash.c in Sources */ = {isa = PBXBuildFile; fileRef = 6AA43E914AB86898557D6FEDC791C933 /* xxhash.c */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		D0A350DA4B14A8CDC1D8FEB787CE8DDC /* list.h in Headers */ = {isa = PBXBuildFile; fileRef = 582F8C63B9BF01FB8537FCBB2196C589 /* list.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		D0AA00DE55F80D9CF2C751E035128520 /* audio.c in Sources */ = {isa = PBXBuildFile; fileRef = D96CE517678765B006B018E340F3198C /* audio.c */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
@@ -1469,13 +1471,13 @@
 		D298FA6F6D28DD13D771BC71411D5851 /* NstBoardJalecoJf19.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 6FEE36BBE5119D88DE64B64D975EC87B /* NstBoardJalecoJf19.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		D299CCB9A5A6574C3B9776B6B7065208 /* NstBoardAcclaim.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F4C6BE6BA9CC949F3EDA941ED2CBEB38 /* NstBoardAcclaim.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		D2BC97FE93CA9D56996B4F25DFA2AA8D /* opengl_UnbufferedDrawer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B5206BC0DB3FB590107A53EBAE4647D /* opengl_UnbufferedDrawer.cpp */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
+		D2CD1CE6938CE569432AC9C44601D18E /* ImmediatePanGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD855AE6412C0DD63FC4D79544883DB2 /* ImmediatePanGestureRecognizer.swift */; };
 		D2E7A94DA4EB51A3145F965B880B6F2F /* ContextSettings.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 725B23CE4361DD6771F70C91256E286B /* ContextSettings.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		D2FB63331B59F465C90738151C31C480 /* F3DTEXA.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F491BE89CC65EDBFCEB3B214D06C7200 /* F3DTEXA.cpp */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		D30D6BB221DE29EEC564FB38B8917C38 /* SDL.h in Headers */ = {isa = PBXBuildFile; fileRef = 5E5267A220D47D998845DB51485386A8 /* SDL.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		D31166EF8280FFC6FC62D59886AD0AA8 /* Standard.deltamapping in Resources */ = {isa = PBXBuildFile; fileRef = 9BFAF4190A8A96D0E684CFF91FCC77E8 /* Standard.deltamapping */; };
 		D324B3C6609ABF310B5E1436F17C2BF3 /* GTMDefines.h in Headers */ = {isa = PBXBuildFile; fileRef = FC141D48A65D77B26B9922807BD281CC /* GTMDefines.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		D3795DEA313C53D514C33769B4BE4998 /* RSTHelperFile.m in Sources */ = {isa = PBXBuildFile; fileRef = A3AB79AE80A36131240B0204640F0474 /* RSTHelperFile.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		D386CE84965DC46DB052B5BE658BEB2A /* ControllerSkinProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F4FE55BE08EA38FF320E4286A4C43C7 /* ControllerSkinProtocol.swift */; };
 		D3971497C1928729EBBD4FFF3B566896 /* PostProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = A664ED590168019449C1E8A60B996A1D /* PostProcessor.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		D3ABAE47C410AFEFE62EFF0A4B01988B /* NstBoardUnlSuperFighter3.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 0971A5E1176766915B5C63ECBAF0E9A1 /* NstBoardUnlSuperFighter3.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		D3DEAD4C77A168D67D3EC458661D424E /* GTMSessionFetcherLogging.m in Sources */ = {isa = PBXBuildFile; fileRef = F10F7750064142DE73F6F7454CC2983E /* GTMSessionFetcherLogging.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
@@ -1487,7 +1489,6 @@
 		D4BBFE50425065DFEBA634F40C1E480E /* types.h in Headers */ = {isa = PBXBuildFile; fileRef = 7C8CA8E12823E49115A148B8AF4C1682 /* types.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		D4F4CED77BC0C96F563776174E66E619 /* cpu.h in Headers */ = {isa = PBXBuildFile; fileRef = D29AAFD2CFE6FB0F7D7946F037550722 /* cpu.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		D5AAE75D370FC24FD284ADBB1EEC5445 /* sar.h in Headers */ = {isa = PBXBuildFile; fileRef = 9165270C982D16BF84A0C0FC722EF7F0 /* sar.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		D6501B43E8C5A97BD005573C1BF291EE /* UIApplication+AppExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98985DB2B0E10E3D6C992708741C684A /* UIApplication+AppExtension.swift */; };
 		D673A845F326373E59748DF3B93C5172 /* common.h in Headers */ = {isa = PBXBuildFile; fileRef = AC7A3157CBEE276869625E60733756D9 /* common.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		D6A44C024915094BD0A87D4DFC412F6A /* cpuops.h in Headers */ = {isa = PBXBuildFile; fileRef = 53E9A117D241958D71059796ACCE24C6 /* cpuops.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		D6AB41F528E0CBE33F26C2ECABEB070B /* NstInpPad.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 23D60DF4C8C979E59877EE0BC1BA7C94 /* NstInpPad.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -1498,6 +1499,7 @@
 		D707B75B04BAE61898A4BC8026561F4A /* tttags.h in Headers */ = {isa = PBXBuildFile; fileRef = FBB09720E5E561800A0A26EC646F3678 /* tttags.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		D7374BAD47CD61AA924220F7A5043F63 /* cpuaddr.h in Headers */ = {isa = PBXBuildFile; fileRef = AB71B3A5AD08C7FD7FFA348B2DCEA559 /* cpuaddr.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		D73B4E6353020EB9B6844EB6937E0DD3 /* util.h in Headers */ = {isa = PBXBuildFile; fileRef = C5B9715EFF4CB742F4153FF865BFAE0B /* util.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D75811D290CA96CD78D8FF9890636EF0 /* TouchInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5205D694ADD50234921E3DEB5D957D /* TouchInputView.swift */; };
 		D808ED025C15643A9FD4FD11530825C7 /* missing.h in Headers */ = {isa = PBXBuildFile; fileRef = 74B57B3A4300861FCBCF153277342957 /* missing.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		D81057F2081420DC4B25CDA39DBC3B96 /* GTLRRuntimeCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DEDD6511A23A74FFB52233C54AB8E03 /* GTLRRuntimeCommon.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		D840CD895C00C5B1FF24F78ED7A72681 /* DSDeltaCore-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C7136242783A97DD4FA174D6AD000A7 /* DSDeltaCore-umbrella.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -1527,7 +1529,6 @@
 		DB663E8C81B503B69E519340CFD0C66B /* NES.swift in Sources */ = {isa = PBXBuildFile; fileRef = 188673BC9859FF22057D8B552AA23087 /* NES.swift */; };
 		DBB21494E4A3EA8A6FF8B3085A328E46 /* render3D.h in Headers */ = {isa = PBXBuildFile; fileRef = FF7D9B45C83FAE5CBAA7610FA983D9EF /* render3D.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		DBF0A6C0BE990638F43CB71209C4E731 /* SDWebImageDecoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 83433F387FADB6F93585B15C45F26C41 /* SDWebImageDecoder.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		DC2B5FAE55CCDB0BAF6EC9CC3F2F95EC /* RingBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26169D7A10310A0CE0A585A679CB5736 /* RingBuffer.swift */; };
 		DC4062D2014323F03C964765A375E1BC /* vi_controller.h in Headers */ = {isa = PBXBuildFile; fileRef = 2E5C87C85D80CEFECDBD846C5507C244 /* vi_controller.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		DC505F2A9CFD8EF46656BC89A39D84C0 /* RSTOperationQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = D3D57B0A12B1AA1AEA896FD02062F18D /* RSTOperationQueue.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		DC6205827B0C7D620DC22E1DE3BCF91F /* assemble.h in Headers */ = {isa = PBXBuildFile; fileRef = FC30BD70C930E58720D8025E77346710 /* assemble.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -1536,6 +1537,7 @@
 		DC888FB95A2418412331F1F18D9AFEFB /* FrameBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 75D39CF0AC7F91D702958292DA91F30D /* FrameBuffer.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		DD024B1209D41FC910F56320BC735DEA /* 3DMath.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 232881DB5B781BEF87FE7B6665883476 /* 3DMath.cpp */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		DD4937FAD87A66D3E6AF7320226ADDB6 /* NstBoardSachenSa72007.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 026C9449D2CD7E3C08836E3B3C86F709 /* NstBoardSachenSa72007.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
+		DD49B4BFE35C70EF589F0790EEF51275 /* ExternalGameControllerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73E9E04EC1D9DC2F189BC9DC0A68ADB /* ExternalGameControllerManager.swift */; };
 		DD4B47D13EA0B2EE0DD75CD1234D1C71 /* ColorBufferReader.h in Headers */ = {isa = PBXBuildFile; fileRef = E726879448FBC69F09C3868AEAA3AE81 /* ColorBufferReader.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		DD4D78B32B16026CDA793F04F559C4F1 /* assemble_struct.h in Headers */ = {isa = PBXBuildFile; fileRef = D91D509E04E52EB1EF2C6CE6325D63E0 /* assemble_struct.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		DD620D1ACC965F9F33B8EE775A1C2929 /* NstInpRob.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E53076134FC473CEAF27FC2CFCDC3C7F /* NstInpRob.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -1548,7 +1550,9 @@
 		DEA2456E9F8C9B4F29D544BFCF3E332F /* NstBoardTengenRambo1.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 59DA3AD3BCE17B64234F6C8CDB4FAA0A /* NstBoardTengenRambo1.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		DEBA6649DC44B3C556EA8B8046792F34 /* svpsinfo.h in Headers */ = {isa = PBXBuildFile; fileRef = FF62ADB0969A5BAF88DAF079C924AD01 /* svpsinfo.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		DEC9018C324CE6256C9EFA5A4A934B58 /* xxhash.h in Headers */ = {isa = PBXBuildFile; fileRef = F3A334ACFE0D3AC3FE96307D138436AB /* xxhash.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		DF56D1361DF5ED406767A7B2D04AF382 /* MFiGameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0FE60C5CC43E6BEE71A9295033B18F2 /* MFiGameController.swift */; };
 		DF632D227E40256F30369C397760D46C /* F3DDKR.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FDC971E53465BFFF543E22C621BB9660 /* F3DDKR.cpp */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
+		DF6ECB80E8402A5FD789E40C1AD80AC5 /* GameControllerInputMappingProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2985A6A24D313B24B3A42ED617C00464 /* GameControllerInputMappingProtocol.swift */; };
 		DF7E34A9447E1503AAD895111E3BCBF3 /* bsx.h in Headers */ = {isa = PBXBuildFile; fileRef = 985EAE9972B33CF9F927C6F483A4B357 /* bsx.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		DF9D7C07C79C1195842DEDF619FE6245 /* UserDefaults+Harmony.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310FBB612ACE362141E6D805B3FC303A /* UserDefaults+Harmony.swift */; };
 		DFDD4A619790FBB12996A1A6A144E116 /* netplay.h in Headers */ = {isa = PBXBuildFile; fileRef = 7C1BA9EB80CFC347F52BD3EC8F1856C4 /* netplay.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -1564,6 +1568,7 @@
 		E0CD89ED735B076967D48760C0A1BFE1 /* sdd1.h in Headers */ = {isa = PBXBuildFile; fileRef = 3C927AD9499B9097EC14BFB7DAAB353A /* sdd1.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		E10B2C2CC334BEF5895DC4C950250177 /* Texture.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 21FF5A1389969C1EED92B8D6155554D5 /* Texture.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		E10E1AA9B0876FD02B3E3061C7E0B57A /* cic.h in Headers */ = {isa = PBXBuildFile; fileRef = 34B01107A2C96AA02DBB861B4B38041C /* cic.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		E117C08210F4742B54B93248D071945F /* CheatFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795C12A193997827B4ADD870D87BDF8C /* CheatFormat.swift */; };
 		E12B8F200ECEFDDF5544EFCFD880324B /* retro_environment.h in Headers */ = {isa = PBXBuildFile; fileRef = 2A147B56E0C3491FF27162D46C95BDD2 /* retro_environment.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		E19D509BB0A9781C60D13ACBA0DAEF9D /* CRC32.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 081E22745D483B519789D3040C1CE75D /* CRC32.cpp */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		E1A2DFE668E3513F0D9B7761FEACB3A3 /* NstIoAccessor.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 6BFD0F656B9079094013712B8261B5E1 /* NstIoAccessor.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -1576,7 +1581,6 @@
 		E2AFD1997E521E9F3411C241816607F7 /* opengl_ColorBufferReaderWithReadPixels.h in Headers */ = {isa = PBXBuildFile; fileRef = A463F67D31F18A3E8817C9388BDDEADD /* opengl_ColorBufferReaderWithReadPixels.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		E2FBEA7B76F101CA55BB009C8E60BE68 /* pngrio.c in Sources */ = {isa = PBXBuildFile; fileRef = 5986D113E80DE6E1FCE1BF2079E6B442 /* pngrio.c */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		E30AE4CE714FCC551A4A3B0516BBC707 /* GTMMethodCheck.h in Headers */ = {isa = PBXBuildFile; fileRef = F7C47011115A00E9556AC311099987E7 /* GTMMethodCheck.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		E31D2295622D14AFDD069E14F5195C13 /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF6DFC3B7AD060F43D4AFFBCD3F06AA6 /* AudioManager.swift */; };
 		E358647190A54EDF5C189E0BCA22531A /* TxReSample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE3A4F7E48FD2C3751CCD26689C1353D /* TxReSample.cpp */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		E35B0A7D23FC7611AAEEED1AF19073BE /* NstInpPachinko.hpp in Headers */ = {isa = PBXBuildFile; fileRef = C05E3B2663EB9FC3F88BC0AF00C603AC /* NstInpPachinko.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		E38F0C2D61E0E6669D86F483939E1174 /* GPU2D.h in Headers */ = {isa = PBXBuildFile; fileRef = F310A6D80A7A7F78862CEB6368229B86 /* GPU2D.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -1591,12 +1595,13 @@
 		E5689255A851EDFA47C15C92E4345B87 /* GLideNUI.h in Headers */ = {isa = PBXBuildFile; fileRef = 9E3627E2B352D880C38B219494E20A52 /* GLideNUI.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		E58DFAAF1B5040476D55ECAF0681AE68 /* Debugger.h in Headers */ = {isa = PBXBuildFile; fileRef = 51C536521365129A5FF9AE40DDF753F8 /* Debugger.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		E5C4509F78A9B4CB99020BCBB544168F /* DropboxTeamClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8364432B8E72D0344D921A2164F73693 /* DropboxTeamClient.swift */; };
-		E5CE54C441C27992BB36CBA9A435245E /* KeyboardGameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C31AFF7B6567C46BCD1D5FF5A40AFEFD /* KeyboardGameController.swift */; };
 		E5FE23BFAE5594C754E691A930CDBA3F /* pnglibconf.h in Headers */ = {isa = PBXBuildFile; fileRef = 12046753C25C05BEB8D3B91D9C84AFE9 /* pnglibconf.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		E6148113FE8DA95CAA89BC0344F2CCCA /* ft2build.h in Headers */ = {isa = PBXBuildFile; fileRef = 2E088DA0C031536321CA95D00470F534 /* ft2build.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		E64D998EAED81F2EA7850A2CDF71929A /* Thread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 96DDCB6416566CEEB9D8CE0B491F6242 /* Thread.cpp */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		E652DC0B868871BEFB7C2B9ABE95A303 /* F3DPD.h in Headers */ = {isa = PBXBuildFile; fileRef = F0D3C6982EBE0EAC53FAA7E37AFA9496 /* F3DPD.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		E66700479EBBBA79432AE1635603F5BB /* Socket.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 3720B67C88F2DE8BCAE0EDD0D02B5F98 /* Socket.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
+		E66DB9BF98532622823B4A9414AD12D8 /* StandardGameControllerInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B0B083A9E33A408380E6933367C443E /* StandardGameControllerInput.swift */; };
+		E678CC4019DB1AE1CB78B7995AF11DB1 /* CheatProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC29261FDE2973B2D6B6F1E62024A0A9 /* CheatProtocol.swift */; };
 		E699C3C45914E11FE8A12647B4835CD7 /* saves.h in Headers */ = {isa = PBXBuildFile; fileRef = 9EF34391A06AF7754A090E44B9245C06 /* saves.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		E73A1CF4FDEAF251CF9E242867E9E0FB /* state_osd_elements.h in Headers */ = {isa = PBXBuildFile; fileRef = A56369DCFB6DD06F4761C0C4900B2401 /* state_osd_elements.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		E73B665DFEE5B1EF941B915C2DB4D1EA /* savestate.h in Headers */ = {isa = PBXBuildFile; fileRef = 07352595BD173B37D1FBCAC265DC1C57 /* savestate.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -1624,9 +1629,9 @@
 		E9CCE8E9707ED47A7E769075CBC872E1 /* DepthBufferRender.h in Headers */ = {isa = PBXBuildFile; fileRef = 0EFF7521BE73EED39D6F3DAC41584A38 /* DepthBufferRender.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		E9D90305973DEDEC0F4BFB33B4281876 /* UIImageView+WebCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 285001A3E16D55354667EDFD2BF69729 /* UIImageView+WebCache.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		E9EA189769FFAB731CB3205F5CB47BBC /* savestates.h in Headers */ = {isa = PBXBuildFile; fileRef = F27E0BB08CA9AA99087CB49B95D5A051 /* savestates.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		EA0A3C01F62270A262AC5B502107E760 /* CharacterSet+Hexadecimals.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A99432B3A77A17C67102784C21DAAF /* CharacterSet+Hexadecimals.swift */; };
 		EA26407D05E05A54188C8B4C9FD2A7BD /* svgldict.h in Headers */ = {isa = PBXBuildFile; fileRef = B290CCC059154476A70C27D7890B7036 /* svgldict.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		EA4B8C2B008C444AA0A6467EE33FDEE8 /* NstVideoFilterHqX.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 92FE3ED203451DF6D2875541FE82FE35 /* NstVideoFilterHqX.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
-		EA4BF15425C5527848AAD727B8E2A587 /* EmulatorCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494D29438728759A64CEF3DAFF79CE8A /* EmulatorCore.swift */; };
 		EA616C5D9ED13BF496C9E0C669401F23 /* svbdf.h in Headers */ = {isa = PBXBuildFile; fileRef = 1D7AF9FE08D2F6576462E7ECCC9C6E89 /* svbdf.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		EAEC2ADB101FBCBB27463DC34E59726F /* biopak.c in Sources */ = {isa = PBXBuildFile; fileRef = 5C84A3CF371C057839A68C574D020120 /* biopak.c */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		EAFAB542A9C64CFCE6CE22241E05F94A /* UIImage+GIF.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E793979C109E7302877C7903D7ED408 /* UIImage+GIF.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
@@ -1639,14 +1644,13 @@
 		EBC516586457D8BA8B838FF0A74F6192 /* SMClassicCalloutView.m in Sources */ = {isa = PBXBuildFile; fileRef = A6490A0F3B24176875D7C923ED9E0958 /* SMClassicCalloutView.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		EBE9D4C81C76E7547598DAB991A21C34 /* Standard.deltaskin in Resources */ = {isa = PBXBuildFile; fileRef = 7C0B98385921997315465A09CF1CB184 /* Standard.deltaskin */; };
 		EBEA8D5288889DB1232B1F395846283C /* version.h in Headers */ = {isa = PBXBuildFile; fileRef = E2736204110643A558D3FFB355216B2E /* version.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		EBEBA0DA070991E8C4CA134F9FBFE535 /* UIImage+PDF.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E7C0C33B47A7D708AB3CF66AF1137D /* UIImage+PDF.swift */; };
 		EBF38391124E22A0D7ACD21F42B16DC0 /* ftdebug.h in Headers */ = {isa = PBXBuildFile; fileRef = 3C045A31E9EBE0F4CFBE198690BA4782 /* ftdebug.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		EC0E44AC75CBA610CFBDB23601E6772B /* NstBoardSachenStreetHeroes.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 8E52E44669D74069EC4BCEB20D5BBB02 /* NstBoardSachenStreetHeroes.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		EC22AD88F08651F1E9F9D07F1C6CDEE0 /* display.h in Headers */ = {isa = PBXBuildFile; fileRef = BF9EB574A8B1D8BC0B0BEDF16D62D5E3 /* display.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		EC4892F521D296F8A687A076AA68F1AB /* VideoFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4947A8614B4C6559E330C41CE046A147 /* VideoFormat.swift */; };
 		EC75774A28055BA6E5BE9E1DC2B7765B /* MergePolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1D380C96DB2A663DA8A6D54F345588D /* MergePolicy.swift */; };
 		EC7A8BB508620BA20B97407B7A4E3DA5 /* ftmoderr.h in Headers */ = {isa = PBXBuildFile; fileRef = B1A991CECAB9DD46D6515EF84919F6D0 /* ftmoderr.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		ECAB49B60B49C63B1566F162F02177CA /* NstApiInput.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 6C13FD7FA77A5769F400B5BF15BC2F34 /* NstApiInput.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
+		ECBE46082E9DC66710E58A5E81041D50 /* UIImage+PDF.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E7C0C33B47A7D708AB3CF66AF1137D /* UIImage+PDF.swift */; };
 		ECCC47B233216A74153F147DE44615C7 /* NstBoardRexSoftSl1632.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA9FA4481CDEC88D482598485C447447 /* NstBoardRexSoftSl1632.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		ECD62CC37167C9C1675F6D68D64E05C6 /* debug.h in Headers */ = {isa = PBXBuildFile; fileRef = ED9FC408E7E37A99A42E690455015732 /* debug.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		ED000A6A2C0F27F589D2F9F3F0454387 /* rtc.h in Headers */ = {isa = PBXBuildFile; fileRef = B97CBE1F36B669152AE6F475CCEB508D /* rtc.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -1657,12 +1661,12 @@
 		ED60DEB3E6681250967195F1EE82081D /* NstBoardFb.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 24BD46060B81FB987DC76C420D9D0434 /* NstBoardFb.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		ED62B5E63342691AD8CA0BE9B1BF09B0 /* RenderWindow.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AE0F7B08A9D4CA4E032A55F5910B7FC4 /* RenderWindow.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		ED64EA01B94466DB3C85EB1F9717AD13 /* F3DEX2ACCLAIM.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 81D97BEB994C55C6EFABAC633B5D0966 /* F3DEX2ACCLAIM.cpp */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
+		EDE0C445422F39950675D9268E999D83 /* DeltaTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 35F02B0ECCDFC2E4E491C095B018680E /* DeltaTypes.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		EE2019BF5CB64FFF4F1A0E423383637C /* GTMSessionUploadFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = C538C31B2DE4BC6BA5C964106E5E3F6B /* GTMSessionUploadFetcher.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		EE3023766DCA56C999E1855124ED9B49 /* GBAcpu.h in Headers */ = {isa = PBXBuildFile; fileRef = 1575109B49D2770633104AF8986A3F36 /* GBAcpu.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		EE32AA48F2C176B308494306D3F147C8 /* GPU3D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7D2880EB083D4E03D7CE3240C7F0DE5C /* GPU3D.cpp */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		EE4994A811223017B6C5EE3AC8A4FDAF /* GTMSessionFetcherService.m in Sources */ = {isa = PBXBuildFile; fileRef = 39319E8C5681BB472007926F7AAC4580 /* GTMSessionFetcherService.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		EE6944AB9BC075F13C9B3948E6280260 /* String.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E9620B66C79B5072CD182C1D80819C8 /* String.cpp */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		EEB84D1AB735724A00357534155CBAD1 /* EmulatorBridging.swift in Sources */ = {isa = PBXBuildFile; fileRef = A22889DC853EDD8E7FCC52CA013A82BB /* EmulatorBridging.swift */; };
 		EEBFD3F505227D78487CA20BB4B173BE /* dcheck.h in Headers */ = {isa = PBXBuildFile; fileRef = CBE09CFE7E4A642AC1B56EC89FADDFFE /* dcheck.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		EEEAE72A65DE128B59CA501731003600 /* crosshairs.h in Headers */ = {isa = PBXBuildFile; fileRef = 567D8A08CDBDC5DA06BFD1DC70DF4E1C /* crosshairs.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		EEFA3983E84E97779F33BC24886F0A13 /* DropboxClientsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CE4627B8A26D8EBCF531C808BA677F /* DropboxClientsManager.swift */; };
@@ -1684,12 +1688,10 @@
 		F0D0016C6303E1AA72FFC72B8AA430B1 /* main.h in Headers */ = {isa = PBXBuildFile; fileRef = 62CF24548323CEDA7F6C62DDD4E4970E /* main.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		F0E5B9CCB6926463DE3B74D3085F7A39 /* Standard.deltamapping in Resources */ = {isa = PBXBuildFile; fileRef = 4A182802B17188F847B92490A82541B0 /* Standard.deltamapping */; };
 		F1089B4808327FEC6230C3D66D26E64A /* NstBoardEvent.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 29AEB4740EA971386FE4B6750AA2EB59 /* NstBoardEvent.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
-		F12B7D9CA9CB9FB6C292DAB35BC315E7 /* StandardGameControllerInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B0B083A9E33A408380E6933367C443E /* StandardGameControllerInput.swift */; };
 		F12C21D84E31915404415E94619EC735 /* BreakpointStructures.h in Headers */ = {isa = PBXBuildFile; fileRef = 512C4AAABBC20D346C24998DFEE5AFA1 /* BreakpointStructures.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		F139182EE62EE3E68E4F5AAE0FA7F93E /* RSTLaunchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45858FC63D79F8CB87FFC7F4E24B4A91 /* RSTLaunchViewController.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		F14AF01CB61F64826FD3FD918991836A /* arithmetics.h in Headers */ = {isa = PBXBuildFile; fileRef = FA748DD06BB0F87B2D3FCBBCB21BB582 /* arithmetics.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		F167CCE2838CD4DF3161F75877A2858C /* Value.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6FC26E46646A054862FD9FA6A118709 /* Value.swift */; };
-		F1A9E20B5E2A3EDA6E681DE782F1334D /* ControllerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5CBC5126812FD2065CDBAEA94BF976 /* ControllerView.swift */; };
 		F1DCBDDEE6EC2B1512E4A288D7ADF679 /* GTMSessionFetcherService.h in Headers */ = {isa = PBXBuildFile; fileRef = 1AC5310CC574B1695D106EA4A1306618 /* GTMSessionFetcherService.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		F2343F2869AC758CCBFC62600C3A2E94 /* ftgzip.h in Headers */ = {isa = PBXBuildFile; fileRef = 22528395152B5ECC856B25BADDACB3F9 /* ftgzip.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		F257B3855C80FC939C018B2D48CD4E75 /* GraphicBufferWrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 535C2901C00E7283DD28013BBBC6CA4F /* GraphicBufferWrapper.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -1731,7 +1733,7 @@
 		F7DFC08D8BF3B75E5D6DDE750D641962 /* resampler.h in Headers */ = {isa = PBXBuildFile; fileRef = AA6969D1558B782C4F58F0AB947B3E22 /* resampler.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		F7E4CDC320BFB392C99BB93F4638AC44 /* RecordOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72C17BA9F1E13F3AB49E67F7E335B1F6 /* RecordOperation.swift */; };
 		F7F6A01D7934B9EB482F435F0DC55B16 /* plugin.h in Headers */ = {isa = PBXBuildFile; fileRef = 6AB7E24DF9D482B653684A4CB3373DAE /* plugin.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		F8A64A92EC039B20A16655B109BBF437 /* ControllerSkin.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6888D502C932A8931592CA8315E0F44 /* ControllerSkin.swift */; };
+		F870783DAD54A1DFAD6C26E700C1EC36 /* SaveStateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B7D69EC414883941231476116906D7 /* SaveStateProtocol.swift */; };
 		F8B9B69D4EE4EB38FF98385CD92BD358 /* Music.hpp in Headers */ = {isa = PBXBuildFile; fileRef = C8B01F60E394BFF06046341D779E4CB4 /* Music.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		F90D2D532045BC492EC7DAD939281E55 /* SDL_opengl.h in Headers */ = {isa = PBXBuildFile; fileRef = E8274D72B068FDD5B8433E16806FBEB8 /* SDL_opengl.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		F93AFA5631800C81D28898AD46D0B83A /* opengl_GLInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 86EF6CED706D9CF50812AACFBA3D3205 /* opengl_GLInfo.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -1752,6 +1754,7 @@
 		FB4E28E4594BBA6CBDFD04FA27339139 /* ftsnames.h in Headers */ = {isa = PBXBuildFile; fileRef = 423425F5988743735EC12578B4A52F5F /* ftsnames.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		FB53448735C698828655BAC4D9CD8EEB /* NstHook.hpp in Headers */ = {isa = PBXBuildFile; fileRef = CC3FC4F8CAD332D94FED0C7DA4BE5251 /* NstHook.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		FB7693DF35B3F75D556BADB4277A204D /* NESDeltaCore-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 07202C173B00EB72E2B76512AB36D1FF /* NESDeltaCore-umbrella.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		FBA9CA6540D69CDD15571B16E4949374 /* VideoFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394754C896200FA8242EE75DA3F6FA57 /* VideoFormat.swift */; };
 		FBB36E54634D5A90215F267F62AC558C /* TexrectDrawer.h in Headers */ = {isa = PBXBuildFile; fileRef = 32C0B90253B6F200AB5E78C107875E7B /* TexrectDrawer.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		FBB46230897F3CE417083A50F260DC62 /* NstBoardBandaiDatach.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 04884C74271D3DFEF181C2C3A302F1EA /* NstBoardBandaiDatach.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		FBE89F87882A3EF8E629A5FF5CA465AD /* Vector3.inl in Headers */ = {isa = PBXBuildFile; fileRef = 1ECD6095FEBED6549E4EE623A0FC3431 /* Vector3.inl */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -1781,7 +1784,6 @@
 		FF09ED7CB9926D0011334E7D08830272 /* DepthBufferRender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E29595D0B8DD5D154897A066190504AB /* DepthBufferRender.cpp */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		FF31B5BBE13193F204040DE66FF15F02 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48A69F12EAD2BE3BAAF57DC1FBC2F40 /* Request.swift */; };
 		FF47124336E697A518CE2C93B8E88C2C /* GTMGatherInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = E0987B780D382225AE82D80ECA8C0641 /* GTMGatherInputStream.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		FF52A333ED5E1B6EBA938D3B010BCB0B /* UIScreen+ControllerSkin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32999EF608D52E8EBF47AEF2D05024FB /* UIScreen+ControllerSkin.swift */; };
 		FF60E30A8C317F1FB539F1A815BBF38F /* NstBoardBmcGamestarB.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47FFA445106E8AEF055315EC32F6416C /* NstBoardBmcGamestarB.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		FF7EF92A4AB21183D04B1959C2969012 /* N64.h in Headers */ = {isa = PBXBuildFile; fileRef = AB7ED6F2E514469E5640A93ED3622401 /* N64.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		FF971B9F9F993B9F74611546EF606135 /* NstBoardBxRom.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E6E22BF5B1C689D0C6A59216C3AF5E74 /* NstBoardBxRom.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -2208,7 +2210,6 @@
 		0A552ADFE847FA0B9435F038FD25C6AB /* OAuthMobile.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = OAuthMobile.swift; path = Source/SwiftyDropbox/Platform/SwiftyDropbox_iOS/OAuthMobile.swift; sourceTree = "<group>"; };
 		0A59426906D18823BC9AD4B26A1EC66C /* F3DFLX2.cpp */ = {isa = PBXFileReference; includeInIndex = 1; path = F3DFLX2.cpp; sourceTree = "<group>"; };
 		0A780AF639D642BAFDB60533800E36E5 /* Vertex.hpp */ = {isa = PBXFileReference; includeInIndex = 1; path = Vertex.hpp; sourceTree = "<group>"; };
-		0A7BA8D8D1E9E2CDAB97C30A5A502156 /* OpenGLESProcessor.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OpenGLESProcessor.swift; sourceTree = "<group>"; };
 		0A823D93C54BF9183AB990B267E0FBF5 /* GBCDeltaCore-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "GBCDeltaCore-umbrella.h"; sourceTree = "<group>"; };
 		0ABB33F6C316C0D9CF3E24882D926C51 /* GTLRFramework.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GTLRFramework.h; path = Source/Utilities/GTLRFramework.h; sourceTree = "<group>"; };
 		0B0AD671A8AD882845CE216B6821E50B /* opengl_ColorBufferReaderWithEGLImage.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = opengl_ColorBufferReaderWithEGLImage.h; sourceTree = "<group>"; };
@@ -2416,7 +2417,6 @@
 		259F2453A2569EB3489497BFC04DC6EC /* pngset.c */ = {isa = PBXFileReference; includeInIndex = 1; path = pngset.c; sourceTree = "<group>"; };
 		25DEDA1290E18DBA7242DCF9680B37DA /* arm_cpu_features.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = arm_cpu_features.h; sourceTree = "<group>"; };
 		26031A010DCC281450512C72B41CD425 /* Packet.hpp */ = {isa = PBXFileReference; includeInIndex = 1; path = Packet.hpp; sourceTree = "<group>"; };
-		26169D7A10310A0CE0A585A679CB5736 /* RingBuffer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RingBuffer.swift; sourceTree = "<group>"; };
 		26539A58480363BAF74C49F66717AAE3 /* NstState.hpp */ = {isa = PBXFileReference; includeInIndex = 1; path = NstState.hpp; sourceTree = "<group>"; };
 		26980C04667AAE6697AC84486BB012FF /* Vector2.inl */ = {isa = PBXFileReference; includeInIndex = 1; path = Vector2.inl; sourceTree = "<group>"; };
 		26E70D021ACF47CEAF06F4E652E5E81A /* opengl_Attributes.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = opengl_Attributes.h; sourceTree = "<group>"; };
@@ -2551,7 +2551,7 @@
 		387F3E450269A9E3EF2EA6A10AD8C879 /* Standard.deltaskin */ = {isa = PBXFileReference; includeInIndex = 1; path = Standard.deltaskin; sourceTree = "<group>"; };
 		39319E8C5681BB472007926F7AAC4580 /* GTMSessionFetcherService.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GTMSessionFetcherService.m; path = Source/GTMSessionFetcherService.m; sourceTree = "<group>"; };
 		39366E2F73CC4159EE18FFD5AF80A0F3 /* pngwio.c */ = {isa = PBXFileReference; includeInIndex = 1; path = pngwio.c; sourceTree = "<group>"; };
-		3949595D020E5A3DAB73E06EEB13CF19 /* BitmapProcessor.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BitmapProcessor.swift; sourceTree = "<group>"; };
+		394754C896200FA8242EE75DA3F6FA57 /* VideoFormat.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = VideoFormat.swift; sourceTree = "<group>"; };
 		3985853293A865E5A5336745DE4139F2 /* NstCore.hpp */ = {isa = PBXFileReference; includeInIndex = 1; path = NstCore.hpp; sourceTree = "<group>"; };
 		398B0C10962B06603D1218A0BFEFDE41 /* F3DBETA.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = F3DBETA.h; sourceTree = "<group>"; };
 		399303C061E83D38C607412717024931 /* FTS4.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FTS4.swift; path = Sources/SQLite/Extensions/FTS4.swift; sourceTree = "<group>"; };
@@ -2570,6 +2570,7 @@
 		3B8875D91FA20F49517CC1C5CB0BEA40 /* version.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = version.h; sourceTree = "<group>"; };
 		3BA56585EDD13E71C58B7B7C64DDB53C /* GTLRDateTime.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GTLRDateTime.m; path = Source/Objects/GTLRDateTime.m; sourceTree = "<group>"; };
 		3BECDD49D8123BEDD18D8163C335A153 /* RSTRelationshipPreservingMergePolicy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RSTRelationshipPreservingMergePolicy.m; path = Roxas/RSTRelationshipPreservingMergePolicy.m; sourceTree = "<group>"; };
+		3BF2C35C501FAA8C4055DB8414E5401D /* DLTAMuteSwitchMonitor.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = DLTAMuteSwitchMonitor.m; sourceTree = "<group>"; };
 		3C045A31E9EBE0F4CFBE198690BA4782 /* ftdebug.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = ftdebug.h; sourceTree = "<group>"; };
 		3C11311A957A87232355B6B0AFFEB8F2 /* path.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = path.h; sourceTree = "<group>"; };
 		3C136320E214AE8F3ECD371DECBC4849 /* glsl_Utils.cpp */ = {isa = PBXFileReference; includeInIndex = 1; path = glsl_Utils.cpp; sourceTree = "<group>"; };
@@ -2653,6 +2654,7 @@
 		46639CDFB2B4FF61588F77A4A2FFD6FE /* NstIoPort.hpp */ = {isa = PBXFileReference; includeInIndex = 1; path = NstIoPort.hpp; sourceTree = "<group>"; };
 		46834904D33267E3CBEE319642FFC703 /* Config.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = Config.h; sourceTree = "<group>"; };
 		468999824D8EE841754A3B910A80F137 /* rdram.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = rdram.h; sourceTree = "<group>"; };
+		46C8D32A0B3E22BE5B1CE33ED159FFB6 /* AudioManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
 		46CC56588A9249D29F68E981CE6C8B54 /* SNESEmulatorBridge.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = SNESEmulatorBridge.h; sourceTree = "<group>"; };
 		46E7ACB3EEB07EF50F5C2B657C683EC7 /* glxext.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = glxext.h; sourceTree = "<group>"; };
 		4702731F2DEC76D99FCE88986919F6AC /* fxp.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = fxp.h; sourceTree = "<group>"; };
@@ -2684,8 +2686,6 @@
 		48EEB005F713F595AFABDEDD7B122D6F /* DeltaCore.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = DeltaCore.xcconfig; sourceTree = "<group>"; };
 		491A54EEB06C94D08F280F0DE9437646 /* NstBoardBmc76in1.hpp */ = {isa = PBXFileReference; includeInIndex = 1; path = NstBoardBmc76in1.hpp; sourceTree = "<group>"; };
 		49479F202B609744C82D4138F8FCD9CE /* NstBoardDxRom.hpp */ = {isa = PBXFileReference; includeInIndex = 1; path = NstBoardDxRom.hpp; sourceTree = "<group>"; };
-		4947A8614B4C6559E330C41CE046A147 /* VideoFormat.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = VideoFormat.swift; sourceTree = "<group>"; };
-		494D29438728759A64CEF3DAFF79CE8A /* EmulatorCore.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = EmulatorCore.swift; sourceTree = "<group>"; };
 		495697E3F178E65EB3DA72E358CB964A /* NstBoardBmc8157.hpp */ = {isa = PBXFileReference; includeInIndex = 1; path = NstBoardBmc8157.hpp; sourceTree = "<group>"; };
 		4963CF582BB4AB9E1079BB9ACCA4C395 /* libco.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = libco.h; sourceTree = "<group>"; };
 		4964760304F643497DF38EA719CD28CA /* NstBoardExRom.hpp */ = {isa = PBXFileReference; includeInIndex = 1; path = NstBoardExRom.hpp; sourceTree = "<group>"; };
@@ -2836,6 +2836,7 @@
 		5B5206BC0DB3FB590107A53EBAE4647D /* opengl_UnbufferedDrawer.cpp */ = {isa = PBXFileReference; includeInIndex = 1; path = opengl_UnbufferedDrawer.cpp; sourceTree = "<group>"; };
 		5B7D93006047AEA1B2086CF5FEC0FAEC /* ftttdrv.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = ftttdrv.h; sourceTree = "<group>"; };
 		5BADB99077105EDA2AC1C52C4AB7EFAE /* GBCDeltaCore.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = GBCDeltaCore.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		5BEAF98C477CBEBB578D5ED75460FE1F /* BitmapProcessor.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BitmapProcessor.swift; sourceTree = "<group>"; };
 		5C1B35A10293013EB1FF554F7BEB76DC /* GTLRService.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GTLRService.h; path = Source/Objects/GTLRService.h; sourceTree = "<group>"; };
 		5C31FD97E461D0628F310200A8D3B403 /* pnginfo.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = pnginfo.h; sourceTree = "<group>"; };
 		5C35BC9F77F23B687515FC8958549CA1 /* L3DEX.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = L3DEX.h; sourceTree = "<group>"; };
@@ -2867,6 +2868,7 @@
 		5FBF06615B56E55808CEBADD68B920BE /* RSTPersistentContainer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = RSTPersistentContainer.h; path = Roxas/RSTPersistentContainer.h; sourceTree = "<group>"; };
 		5FE228B9F6593F99674B619FAD43A040 /* ftglyph.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = ftglyph.h; sourceTree = "<group>"; };
 		6004CD9FBFF76F6C36F2C167315443BA /* NstBoardSachenSa0036.hpp */ = {isa = PBXFileReference; includeInIndex = 1; path = NstBoardSachenSa0036.hpp; sourceTree = "<group>"; };
+		6005C62BBBF7818A374961D7533A7E18 /* EmulatorCore.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = EmulatorCore.swift; sourceTree = "<group>"; };
 		601F63C6825CC3B6550C9C4169033152 /* ftbdf.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = ftbdf.h; sourceTree = "<group>"; };
 		607EE7A62CEA324021137035A39115DC /* ftautoh.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = ftautoh.h; sourceTree = "<group>"; };
 		608FE25E87FF01D7345789C49881295A /* Combiner.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = Combiner.h; sourceTree = "<group>"; };
@@ -2903,6 +2905,7 @@
 		6750964B0895F740D52DD97CAE8B5099 /* eeprom.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = eeprom.h; sourceTree = "<group>"; };
 		676903B714C5F565B51ED126D715A4B4 /* Standard.deltaskin */ = {isa = PBXFileReference; includeInIndex = 1; path = Standard.deltaskin; sourceTree = "<group>"; };
 		6792E65AE4C83CBE644B193BBA1E52DC /* NstBoardPxRom.hpp */ = {isa = PBXFileReference; includeInIndex = 1; path = NstBoardPxRom.hpp; sourceTree = "<group>"; };
+		67B3C9EA9F2F136C926D8A931829FA88 /* VideoManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = VideoManager.swift; sourceTree = "<group>"; };
 		6822483789D6B6BB133ABB5446BCFF2D /* Setter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Setter.swift; path = Sources/SQLite/Typed/Setter.swift; sourceTree = "<group>"; };
 		68263C62DDF9F51529551BECBBD26620 /* GTLRErrorObject.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GTLRErrorObject.m; path = Source/Objects/GTLRErrorObject.m; sourceTree = "<group>"; };
 		68472F20D32A525A0FA8C6D283E05655 /* NstAssert.hpp */ = {isa = PBXFileReference; includeInIndex = 1; path = NstAssert.hpp; sourceTree = "<group>"; };
@@ -3211,6 +3214,7 @@
 		9074FE09C0965632C7DF8ED6F76D3AEB /* DSi_SD.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = DSi_SD.h; sourceTree = "<group>"; };
 		90D8C75C7E50C9C45FC95F1ECCCDF6CD /* ARMInterpreter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = ARMInterpreter.h; sourceTree = "<group>"; };
 		91142883C9B61CDABD669F132E23BA6B /* glsl_SpecialShadersFactory.cpp */ = {isa = PBXFileReference; includeInIndex = 1; path = glsl_SpecialShadersFactory.cpp; sourceTree = "<group>"; };
+		912E70357CA914D6D7222F6BA977B34C /* DLTAMuteSwitchMonitor.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = DLTAMuteSwitchMonitor.h; sourceTree = "<group>"; };
 		9147D9287688D6DBCB391FCFFB5E8CD9 /* F3DSETA.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = F3DSETA.h; sourceTree = "<group>"; };
 		915FAE52C5A766087CB6E4CB6D7ABE8D /* S2DEX2.cpp */ = {isa = PBXFileReference; includeInIndex = 1; path = S2DEX2.cpp; sourceTree = "<group>"; };
 		9165270C982D16BF84A0C0FC722EF7F0 /* sar.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = sar.h; sourceTree = "<group>"; };
@@ -3355,7 +3359,6 @@
 		A3B3DA7E38DD3305FA49B067BBEE2BBC /* GBCTypes.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = GBCTypes.m; sourceTree = "<group>"; };
 		A3CE24F478FF46EBF0A19AD377B420DF /* GBAinline.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = GBAinline.h; sourceTree = "<group>"; };
 		A3F1946AC819207D56F57FB40F4E7379 /* Harmony.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = Harmony.modulemap; sourceTree = "<group>"; };
-		A428ACD6852B72482C8570B4E49B15B4 /* VideoManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = VideoManager.swift; sourceTree = "<group>"; };
 		A463F67D31F18A3E8817C9388BDDEADD /* opengl_ColorBufferReaderWithReadPixels.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = opengl_ColorBufferReaderWithReadPixels.h; sourceTree = "<group>"; };
 		A490B0EA1911CAE566D521752DB9B643 /* RSTCellContentChange.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = RSTCellContentChange.h; path = Roxas/RSTCellContentChange.h; sourceTree = "<group>"; };
 		A493D236FBEDB31AE7799E82580CE1E6 /* armdis.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = armdis.h; sourceTree = "<group>"; };
@@ -3715,6 +3718,7 @@
 		D81B0A638756575C41CA82842260A641 /* NstBoardIremG101.hpp */ = {isa = PBXFileReference; includeInIndex = 1; path = NstBoardIremG101.hpp; sourceTree = "<group>"; };
 		D86A59B7F6D5BB8BCCA5F180F29A6656 /* MemoryInputStream.hpp */ = {isa = PBXFileReference; includeInIndex = 1; path = MemoryInputStream.hpp; sourceTree = "<group>"; };
 		D8BBF62848901866C477497FB2344E67 /* Account.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
+		D9142D9D6A646AB8A23AAFE748BEAF30 /* OpenGLESProcessor.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OpenGLESProcessor.swift; sourceTree = "<group>"; };
 		D91D509E04E52EB1EF2C6CE6325D63E0 /* assemble_struct.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = assemble_struct.h; sourceTree = "<group>"; };
 		D9223E826A52C67763ED0B1CB113EDBC /* mc.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = mc.h; sourceTree = "<group>"; };
 		D96CE517678765B006B018E340F3198C /* audio.c */ = {isa = PBXFileReference; includeInIndex = 1; path = audio.c; sourceTree = "<group>"; };
@@ -3868,7 +3872,6 @@
 		EF07B487D9EDA2636F89AB3A3A526A84 /* PrepareUploadingRecordsOperation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PrepareUploadingRecordsOperation.swift; sourceTree = "<group>"; };
 		EF0B5A83CEA7719FDAE73CD9B61BF813 /* ucodes.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = ucodes.h; sourceTree = "<group>"; };
 		EF146F5F4C23AB7CC20D0F4F40286379 /* check.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = check.h; sourceTree = "<group>"; };
-		EF6DFC3B7AD060F43D4AFFBCD3F06AA6 /* AudioManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
 		EF7A8D3A9BE30CD2125BDFF488D22A25 /* NstBoardBmcSuperBig7in1.hpp */ = {isa = PBXFileReference; includeInIndex = 1; path = NstBoardBmcSuperBig7in1.hpp; sourceTree = "<group>"; };
 		EFB09061F5EC38F78019E5DE2971B3BB /* NstInpFamilyKeyboard.hpp */ = {isa = PBXFileReference; includeInIndex = 1; path = NstInpFamilyKeyboard.hpp; sourceTree = "<group>"; };
 		EFDB6C6F57F2A3D44F48F431F3C13B71 /* NstBoardJalecoSs88006.hpp */ = {isa = PBXFileReference; includeInIndex = 1; path = NstBoardJalecoSs88006.hpp; sourceTree = "<group>"; };
@@ -3899,6 +3902,7 @@
 		F20B25B2356078687C26B25825E487A2 /* firmware.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = firmware.h; sourceTree = "<group>"; };
 		F20F4C74BB8804B518393DCFC21CB9FB /* pngusr.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = pngusr.h; sourceTree = "<group>"; };
 		F231C512D2B9D8E1FA081E1059B3D3E0 /* zconf.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = zconf.h; sourceTree = "<group>"; };
+		F238238EA600641041ADF38FE9390FEC /* RingBuffer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RingBuffer.swift; sourceTree = "<group>"; };
 		F27E0BB08CA9AA99087CB49B95D5A051 /* savestates.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = savestates.h; sourceTree = "<group>"; };
 		F2AC6B33D1F207C23351293A0A281146 /* DBChunkInputStream.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DBChunkInputStream.m; path = Source/SwiftyDropbox/Shared/Handwritten/DBChunkInputStream.m; sourceTree = "<group>"; };
 		F2DBA51377C999ACDF5A5CBF5909101F /* aes.c */ = {isa = PBXFileReference; includeInIndex = 1; path = aes.c; sourceTree = "<group>"; };
@@ -4725,18 +4729,6 @@
 			);
 			name = preader;
 			path = preader;
-			sourceTree = "<group>";
-		};
-		22243998D279477C46CB3187FEFB5BE2 /* Video */ = {
-			isa = PBXGroup;
-			children = (
-				3949595D020E5A3DAB73E06EEB13CF19 /* BitmapProcessor.swift */,
-				0A7BA8D8D1E9E2CDAB97C30A5A502156 /* OpenGLESProcessor.swift */,
-				4947A8614B4C6559E330C41CE046A147 /* VideoFormat.swift */,
-				A428ACD6852B72482C8570B4E49B15B4 /* VideoManager.swift */,
-			);
-			name = Video;
-			path = Video;
 			sourceTree = "<group>";
 		};
 		2276219BB9DA3393AF52B539EB26642E /* Operations */ = {
@@ -7092,17 +7084,6 @@
 			path = plugin;
 			sourceTree = "<group>";
 		};
-		A3EB517BD0CF9FC2F12C37737984F1A9 /* Emulator Core */ = {
-			isa = PBXGroup;
-			children = (
-				494D29438728759A64CEF3DAFF79CE8A /* EmulatorCore.swift */,
-				B7710059AA92E539C980E122F099585A /* Audio */,
-				22243998D279477C46CB3187FEFB5BE2 /* Video */,
-			);
-			name = "Emulator Core";
-			path = "DeltaCore/Emulator Core";
-			sourceTree = "<group>";
-		};
 		A47C858A468F63C07F24FD81A9A449A9 /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
@@ -7462,16 +7443,6 @@
 			path = Inputs;
 			sourceTree = "<group>";
 		};
-		B7710059AA92E539C980E122F099585A /* Audio */ = {
-			isa = PBXGroup;
-			children = (
-				EF6DFC3B7AD060F43D4AFFBCD3F06AA6 /* AudioManager.swift */,
-				26169D7A10310A0CE0A585A679CB5736 /* RingBuffer.swift */,
-			);
-			name = Audio;
-			path = Audio;
-			sourceTree = "<group>";
-		};
 		B7BD75CB6D50E2F1B2A595347E8D3990 /* ai */ = {
 			isa = PBXGroup;
 			children = (
@@ -7491,6 +7462,18 @@
 			);
 			name = SNESDeltaCore;
 			path = SNESDeltaCore;
+			sourceTree = "<group>";
+		};
+		BB18C7B853235BA624F8955BB6B9E167 /* Video */ = {
+			isa = PBXGroup;
+			children = (
+				5BEAF98C477CBEBB578D5ED75460FE1F /* BitmapProcessor.swift */,
+				D9142D9D6A646AB8A23AAFE748BEAF30 /* OpenGLESProcessor.swift */,
+				394754C896200FA8242EE75DA3F6FA57 /* VideoFormat.swift */,
+				67B3C9EA9F2F136C926D8A931829FA88 /* VideoManager.swift */,
+			);
+			name = Video;
+			path = Video;
 			sourceTree = "<group>";
 		};
 		BB527A7752C939F05A0A33967DAF5CE9 /* Window */ = {
@@ -7928,6 +7911,17 @@
 			path = api;
 			sourceTree = "<group>";
 		};
+		D7D1CDB87D2CCE98B0001B988E4F1D77 /* Emulator Core */ = {
+			isa = PBXGroup;
+			children = (
+				6005C62BBBF7818A374961D7533A7E18 /* EmulatorCore.swift */,
+				E0C819FC134985D44D0350CE17CBF0EF /* Audio */,
+				BB18C7B853235BA624F8955BB6B9E167 /* Video */,
+			);
+			name = "Emulator Core";
+			path = "DeltaCore/Emulator Core";
+			sourceTree = "<group>";
+		};
 		D8849A54C10E36B94B9287E6691829B9 /* sdl */ = {
 			isa = PBXGroup;
 			children = (
@@ -8081,6 +8075,18 @@
 			);
 			name = Controller;
 			path = Controller;
+			sourceTree = "<group>";
+		};
+		E0C819FC134985D44D0350CE17CBF0EF /* Audio */ = {
+			isa = PBXGroup;
+			children = (
+				46C8D32A0B3E22BE5B1CE33ED159FFB6 /* AudioManager.swift */,
+				912E70357CA914D6D7222F6BA977B34C /* DLTAMuteSwitchMonitor.h */,
+				3BF2C35C501FAA8C4055DB8414E5401D /* DLTAMuteSwitchMonitor.m */,
+				F238238EA600641041ADF38FE9390FEC /* RingBuffer.swift */,
+			);
+			name = Audio;
+			path = Audio;
 			sourceTree = "<group>";
 		};
 		E129D4A58B555A31163124A19F018F71 /* subprojects */ = {
@@ -8368,7 +8374,7 @@
 				ABF2E1030F06335CAB068D719C129216 /* DeltaTypes.h */,
 				35F02B0ECCDFC2E4E491C095B018680E /* DeltaTypes.m */,
 				1B00D1A6F79AF84381503C8C22D20EA3 /* Cores */,
-				A3EB517BD0CF9FC2F12C37737984F1A9 /* Emulator Core */,
+				D7D1CDB87D2CCE98B0001B988E4F1D77 /* Emulator Core */,
 				86652B53F0250D8EC4D8F5C948869419 /* Extensions */,
 				70CDD20DF7778DA641A8712E3B9525FF /* Filters */,
 				AA0E7F6134B7DC73DA4EECDD21A5700B /* Game Controllers */,
@@ -8853,6 +8859,17 @@
 				BCC3B83B11F726387F8C0A3568E470D1 /* UIImageView+HighlightedWebCache.h in Headers */,
 				E9D90305973DEDEC0F4BFB33B4281876 /* UIImageView+WebCache.h in Headers */,
 				8AD3B7AB59719794E86F41BA43AA9BB7 /* UIView+WebCacheOperation.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		271AC68A9C73A4F4A446039045DDC73F /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6EE568B8F82A495E0D0DBCEA8020A0F9 /* DeltaCore-umbrella.h in Headers */,
+				6FF7326AD53D3ABFC4686E1CA03CB38A /* DeltaCore.h in Headers */,
+				6FBEFC6C1520548C76F059F6B3335583 /* DeltaTypes.h in Headers */,
+				6AEA31E75E80D4BEFE7374341248E310 /* DLTAMuteSwitchMonitor.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9785,16 +9802,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		71BF9639FD4C3C6D27F8A45E925359E3 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				38F6582226CA2808DF945CDE63DC5158 /* DeltaCore-umbrella.h in Headers */,
-				5E8C4F8137E41A59A3EE4DE28307BB64 /* DeltaCore.h in Headers */,
-				6BBCF5E1AC45FC48B7C6E6AA2A19E03D /* DeltaTypes.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		72AAD4A115E9E4D0F1A20685B4A2C0A2 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -10306,8 +10313,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1A0C0C4736B816F9CB799A7DF3AAF54B /* Build configuration list for PBXNativeTarget "DeltaCore" */;
 			buildPhases = (
-				71BF9639FD4C3C6D27F8A45E925359E3 /* Headers */,
-				BF2745C9C2804F1F3D9373E7BF5FD2F5 /* Sources */,
+				271AC68A9C73A4F4A446039045DDC73F /* Headers */,
+				C4091D171839D1EB8EC5547C644319F3 /* Sources */,
 				5FB72F5600AF73B0454B5151D88A68DB /* Frameworks */,
 				F7BE234CBA2A214465171737981B36F2 /* Copy generated compatibility header */,
 				0B6FC99CE0E5E72E43A0A4F7AD944ACA /* [CP-User] Copy Swift Header */,
@@ -11652,65 +11659,66 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		BF2745C9C2804F1F3D9373E7BF5FD2F5 /* Sources */ = {
+		C4091D171839D1EB8EC5547C644319F3 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6C01BBF8A1A21C9696500E148349BC14 /* AnyInput.swift in Sources */,
-				E31D2295622D14AFDD069E14F5195C13 /* AudioManager.swift in Sources */,
-				6EC906D378EF8ADEC5D7C2B04BE6C36B /* AudioRendering.swift in Sources */,
-				7DB35723D0CC13AE137CAE668924723F /* BitmapProcessor.swift in Sources */,
-				93353F0A21F136C22AD7F0B6183B5952 /* Bundle+Resources.swift in Sources */,
-				1B03CF4D7E9A0CF1B1A5C0DFAB8B0DD9 /* ButtonsInputView.swift in Sources */,
-				D027F8D4E880D7092DB8AA5A02D7AAC9 /* CGGeometry+Dictionary.swift in Sources */,
-				96009988E1AD37AD3F245D803DC0ACE7 /* CharacterSet+Hexadecimals.swift in Sources */,
-				BAA7B0396C8963E3E7324FE70900B64E /* Cheat.swift in Sources */,
-				61B583689DD2CFBD46FA3712A184E2E5 /* CheatFormat.swift in Sources */,
-				1B2BB2FEF328AF927516BB5185869A9E /* CheatProtocol.swift in Sources */,
-				2BB5DA0DB6B389E75E5ABD816506A72B /* ControllerDebugView.swift in Sources */,
-				6373AC1BC02916DA7A4727231D4E72E6 /* ControllerInputView.swift in Sources */,
-				F8A64A92EC039B20A16655B109BBF437 /* ControllerSkin.swift in Sources */,
-				D386CE84965DC46DB052B5BE658BEB2A /* ControllerSkinProtocol.swift in Sources */,
-				A275BEEC646144350744D504FBFEA961 /* ControllerSkinTraits.swift in Sources */,
-				F1A9E20B5E2A3EDA6E681DE782F1334D /* ControllerView.swift in Sources */,
-				5C5F387309EC920C1D2F76769CE76897 /* Delta.swift in Sources */,
-				6CE7F4046BA417D2DF53E0C69D47B473 /* DeltaCore-dummy.m in Sources */,
-				0D4B0761D98B1D32B5B34C414181316E /* DeltaCoreProtocol.swift in Sources */,
-				41AED5AF1633147BF20119FE09B88FD0 /* DeltaTypes.m in Sources */,
-				EEB84D1AB735724A00357534155CBAD1 /* EmulatorBridging.swift in Sources */,
-				EA4BF15425C5527848AAD727B8E2A587 /* EmulatorCore.swift in Sources */,
-				7793407AABB80F7FF59D7C5516D14FD9 /* ExtensibleEnums.swift in Sources */,
-				C21855C2E5D6487AC2B921AD79922E14 /* ExternalGameControllerManager.swift in Sources */,
-				7AEC6E1A5BB3B489183A23AD3AB8D7AE /* FilterChain.swift in Sources */,
-				C0D9BA8FBC5E1F537EBE6CC92AB31AEA /* Game.swift in Sources */,
-				B1766B3E76519CAB435EBB97EEF315DD /* GameController.swift in Sources */,
-				269A8F0EF89DD3F63151C8785ABE7A51 /* GameControllerInputMapping.swift in Sources */,
-				C2CDA8FD21D4EABCF46E596D822C87D5 /* GameControllerInputMappingProtocol.swift in Sources */,
-				979368E44B8B7C8615822815141CD054 /* GameControllerStateManager.swift in Sources */,
-				C1BC2E5368700E239EF29C36CE3B9839 /* GameProtocol.swift in Sources */,
-				CF652780A826660EF98D71D7CBD05BC2 /* GameView.swift in Sources */,
-				00CD0FD425B91AE7BB08048D06C70828 /* GameViewController.swift in Sources */,
-				54035E7677B71E7D130E4E693B211B71 /* ImmediatePanGestureRecognizer.swift in Sources */,
-				886D71BD1595A610E2D69A83AE6A70AE /* Input.swift in Sources */,
-				E5CE54C441C27992BB36CBA9A435245E /* KeyboardGameController.swift in Sources */,
-				BD016C62B0056C15B63A5A9396AB93F4 /* KeyboardResponder.swift in Sources */,
-				069E1D48DD81FE5B6A827810AD64B3F3 /* MFiGameController.swift in Sources */,
-				A2E5ECADA6FD38BB0829678577875EC3 /* OpenGLESProcessor.swift in Sources */,
-				DC2B5FAE55CCDB0BAF6EC9CC3F2F95EC /* RingBuffer.swift in Sources */,
-				332024B9AF30A07CE496CC11D9591023 /* SaveState.swift in Sources */,
-				408C9467A440ACF40ED221AF38A11CAB /* SaveStateProtocol.swift in Sources */,
-				F12B7D9CA9CB9FB6C292DAB35BC315E7 /* StandardGameControllerInput.swift in Sources */,
-				C3CB14A07161497CA6FAA6858EFF4F4F /* Thread+RealTime.swift in Sources */,
-				C5AB49D57E3EF7CD32C4E07A1A2DC017 /* ThumbstickInputView.swift in Sources */,
-				8486CE333AF98530F574C3B55DC565D8 /* TouchInputView.swift in Sources */,
-				D6501B43E8C5A97BD005573C1BF291EE /* UIApplication+AppExtension.swift in Sources */,
-				BEA3DB63075DE883B2C9506C483877DF /* UIDevice+Vibration.swift in Sources */,
-				EBEBA0DA070991E8C4CA134F9FBFE535 /* UIImage+PDF.swift in Sources */,
-				9FE64AB67B279FBE1047117752075A4E /* UIResponder+FirstResponder.swift in Sources */,
-				FF52A333ED5E1B6EBA938D3B010BCB0B /* UIScreen+ControllerSkin.swift in Sources */,
-				EC4892F521D296F8A687A076AA68F1AB /* VideoFormat.swift in Sources */,
-				3914A75BEE189973A204BF332FFCEFA8 /* VideoManager.swift in Sources */,
-				76D132D024B6A52E4DFDD31827EBE0FC /* VideoRendering.swift in Sources */,
+				1A6C3C91D39B2258382A118AA35D455F /* AnyInput.swift in Sources */,
+				13F8FF57E27E23C791494B3437AB98EC /* AudioManager.swift in Sources */,
+				22B448A63006C12FA8250A82C7EFD08D /* AudioRendering.swift in Sources */,
+				6979BEE4A92611698C20DE4CF88C7A12 /* BitmapProcessor.swift in Sources */,
+				AE07FF0984BA8CE5C846216D6CBE4396 /* Bundle+Resources.swift in Sources */,
+				884E198083F883E60C8CBC0EEE9E72EA /* ButtonsInputView.swift in Sources */,
+				3F1341E33937430000B4148E308CEDF7 /* CGGeometry+Dictionary.swift in Sources */,
+				EA0A3C01F62270A262AC5B502107E760 /* CharacterSet+Hexadecimals.swift in Sources */,
+				60872B389F030C46D5EEAB32526529C5 /* Cheat.swift in Sources */,
+				E117C08210F4742B54B93248D071945F /* CheatFormat.swift in Sources */,
+				E678CC4019DB1AE1CB78B7995AF11DB1 /* CheatProtocol.swift in Sources */,
+				53380BC43E662A98A5F3DA3234858FED /* ControllerDebugView.swift in Sources */,
+				8061685ED129C7ABD041F4864C03B1BC /* ControllerInputView.swift in Sources */,
+				6632C88CE3E1BADFCA72FC3693108132 /* ControllerSkin.swift in Sources */,
+				642BBEBA26FE271702DE872891897811 /* ControllerSkinProtocol.swift in Sources */,
+				6CD3282D14833C756D634D5290962D18 /* ControllerSkinTraits.swift in Sources */,
+				548438D0963C21DA60D91D77F6D81A65 /* ControllerView.swift in Sources */,
+				C69890F7D34D867DD0684B059FE63CB6 /* Delta.swift in Sources */,
+				3BDA121D6C7A91ADE23654FEEDD7F498 /* DeltaCore-dummy.m in Sources */,
+				83C5975A558DE2BA069FC2E267A3FE2D /* DeltaCoreProtocol.swift in Sources */,
+				EDE0C445422F39950675D9268E999D83 /* DeltaTypes.m in Sources */,
+				5E586AB066148BB99E9CF2B9778D7D90 /* DLTAMuteSwitchMonitor.m in Sources */,
+				2518E5DAEEFE38DFFE8E264C44F60D43 /* EmulatorBridging.swift in Sources */,
+				233F36609A5B53399DE1993C3BF29DE1 /* EmulatorCore.swift in Sources */,
+				AB11CD3BCCDE91A3B0612AADECA522BC /* ExtensibleEnums.swift in Sources */,
+				DD49B4BFE35C70EF589F0790EEF51275 /* ExternalGameControllerManager.swift in Sources */,
+				B6D8EADFC0E0E2CF8DC941894298B839 /* FilterChain.swift in Sources */,
+				24A827BBBC04F8879B04902FB097FBE6 /* Game.swift in Sources */,
+				3F97F786A795DDA4434656EE5477EF33 /* GameController.swift in Sources */,
+				6D95809E988EAE7D038CC786CB7251DC /* GameControllerInputMapping.swift in Sources */,
+				DF6ECB80E8402A5FD789E40C1AD80AC5 /* GameControllerInputMappingProtocol.swift in Sources */,
+				6E16B66FBD6605CD823427CF3CD922E1 /* GameControllerStateManager.swift in Sources */,
+				B98BB45AA368B3FF52CEC6C45393A838 /* GameProtocol.swift in Sources */,
+				0588130566A01A1B819D89A8631D0B1F /* GameView.swift in Sources */,
+				BCD147B2D7A726635EE719CD8AEEDE72 /* GameViewController.swift in Sources */,
+				D2CD1CE6938CE569432AC9C44601D18E /* ImmediatePanGestureRecognizer.swift in Sources */,
+				7712852E75499528F808779A3B4005E7 /* Input.swift in Sources */,
+				BBAAB7FEB1A272C30D68D7D7D86A3626 /* KeyboardGameController.swift in Sources */,
+				4AC3B1533807C8A6B9E63A8846F3DC67 /* KeyboardResponder.swift in Sources */,
+				DF56D1361DF5ED406767A7B2D04AF382 /* MFiGameController.swift in Sources */,
+				94F42E62015FE6B2BE0149161E565D74 /* OpenGLESProcessor.swift in Sources */,
+				264773A350E52C21A4C41BCC58329D9C /* RingBuffer.swift in Sources */,
+				908A532396AD35B8E26E8AE44533E34D /* SaveState.swift in Sources */,
+				F870783DAD54A1DFAD6C26E700C1EC36 /* SaveStateProtocol.swift in Sources */,
+				E66DB9BF98532622823B4A9414AD12D8 /* StandardGameControllerInput.swift in Sources */,
+				8E67E0F2E360A626DA73C815DF1E3553 /* Thread+RealTime.swift in Sources */,
+				1D7540EEE3DE047D9418EFF30B701EF4 /* ThumbstickInputView.swift in Sources */,
+				D75811D290CA96CD78D8FF9890636EF0 /* TouchInputView.swift in Sources */,
+				AA7FBC99413DA1A10671611FB89F1F5C /* UIApplication+AppExtension.swift in Sources */,
+				5E7F0608EF9AE295E6402AE5804827A6 /* UIDevice+Vibration.swift in Sources */,
+				ECBE46082E9DC66710E58A5E81041D50 /* UIImage+PDF.swift in Sources */,
+				283C2EE992DCA47F39D09F87DCA0D467 /* UIResponder+FirstResponder.swift in Sources */,
+				CF2ECEE2F02F2D00D54E28DA79787867 /* UIScreen+ControllerSkin.swift in Sources */,
+				FBA9CA6540D69CDD15571B16E4949374 /* VideoFormat.swift in Sources */,
+				1A7EEBB6C78979FA947B906796C76B9B /* VideoManager.swift in Sources */,
+				4A6F10461C95694FA229005C104B1858 /* VideoRendering.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

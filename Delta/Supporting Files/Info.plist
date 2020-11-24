@@ -185,6 +185,8 @@
 	<true/>
 	<key>LSSupportsOpeningDocumentsInPlace</key>
 	<false/>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Delta uses your microphone to emulate the Nintendo DS microphone.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Press "OK" to allow Delta to use images from your Photo Library as game artwork.</string>
 	<key>UIBackgroundModes</key>

@@ -15,7 +15,10 @@
   },
   "social_media_url": "https://twitter.com/rileytestut",
   "source_files": "DeltaCore/**/*.{h,m,swift}",
-  "public_header_files": "DeltaCore/DeltaTypes.h",
+  "public_header_files": [
+    "DeltaCore/DeltaTypes.h",
+    "DeltaCore/Emulator Core/Audio/DLTAMuteSwitchMonitor.h"
+  ],
   "resource_bundles": {
     "DeltaCore": [
       "DeltaCore/**/*.deltamapping"
@@ -27,7 +30,8 @@
     ]
   },
   "xcconfig": {
-    "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "STATIC_LIBRARY"
+    "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "STATIC_LIBRARY",
+    "OTHER_CFLAGS": "-DSTATIC_LIBRARY"
   },
   "script_phases": {
     "name": "Copy Swift Header",
