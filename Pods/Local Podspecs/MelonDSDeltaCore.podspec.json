@@ -20,7 +20,7 @@
     "MelonDSDeltaCore/Bridge/MelonDSEmulatorBridge.{h,mm}",
     "MelonDSDeltaCore/Types/MelonDSTypes.{h,m}",
     "melonDS/src/*.{h,hpp,cpp}",
-    "melonDS/src/fontend/qt_sdl/PlatformConfig.{h,cpp}",
+    "melonDS/src/frontend/qt_sdl/PlatformConfig.{h,cpp}",
     "melonDS/src/tiny-AES-c/*.{h,hpp,c}",
     "melonDS/src/ARMJIT_A64/*.{h,cpp,s}",
     "melonDS/src/dolphin/Arm64Emitter.{h,cpp}",
