@@ -17,6 +17,15 @@ import Roxas
 
 private var kvoContext = 0
 
+private extension DeltaCore.ControllerSkin
+{
+    func hasTouchScreen(for traits: DeltaCore.ControllerSkin.Traits) -> Bool
+    {
+        let hasTouchScreen = self.items(for: traits)?.contains(where: { $0.kind == .touchScreen }) ?? false
+        return hasTouchScreen
+    }
+}
+
 private extension GameViewController
 {
     struct PausedSaveState: SaveStateProtocol
@@ -99,7 +108,6 @@ class GameViewController: DeltaCore.GameViewController
                 self.shouldResetSustainedInputs = true
             }
             
-            self.updateControllerSkin()
             self.updateControllers()
             
             self.presentedGyroAlert = false
@@ -307,7 +315,6 @@ extension GameViewController
         self.sustainButtonsContentView.topAnchor.constraint(equalTo: self.gameView.topAnchor).isActive = true
         self.sustainButtonsContentView.bottomAnchor.constraint(equalTo: self.gameView.bottomAnchor).isActive = true
         
-        self.updateControllerSkin()
         self.updateControllers()
     }
     
@@ -544,16 +551,27 @@ private extension GameViewController
         }
         
         // If Settings.localControllerPlayerIndex is non-nil, and there isn't a connected controller with same playerIndex, show controller view.
-        if let index = Settings.localControllerPlayerIndex, !ExternalGameControllerManager.shared.connectedControllers.contains { $0.playerIndex == index }
+        if let index = Settings.localControllerPlayerIndex, !ExternalGameControllerManager.shared.connectedControllers.contains(where: { $0.playerIndex == index })
         {
             self.controllerView.playerIndex = index
             self.controllerView.isHidden = false
         }
         else
         {
-            self.controllerView.playerIndex = nil
-            self.controllerView.isHidden = true
-            
+            if let game = self.game,
+               let traits = self.controllerView.controllerSkinTraits,
+               let controllerSkin = DeltaCore.ControllerSkin.standardControllerSkin(for: game.type),
+               controllerSkin.hasTouchScreen(for: traits)
+            {
+                self.controllerView.isHidden = false
+                self.controllerView.playerIndex = 0
+            }
+            else
+            {
+                self.controllerView.isHidden = true
+                self.controllerView.playerIndex = nil
+            }
+
             Settings.localControllerPlayerIndex = nil
         }
         
@@ -608,6 +626,8 @@ private extension GameViewController
         
         self.controllerView.isButtonHapticFeedbackEnabled = Settings.isButtonHapticFeedbackEnabled
         self.controllerView.isThumbstickHapticFeedbackEnabled = Settings.isThumbstickHapticFeedbackEnabled
+        
+        self.updateControllerSkin()
     }
     
     func updateControllerSkin()
@@ -616,8 +636,24 @@ private extension GameViewController
         
         let traits = DeltaCore.ControllerSkin.Traits.defaults(for: window)
         
-        let controllerSkin = Settings.preferredControllerSkin(for: game, traits: traits)
-        self.controllerView.controllerSkin = controllerSkin
+        if Settings.localControllerPlayerIndex != nil
+        {
+            let controllerSkin = Settings.preferredControllerSkin(for: game, traits: traits)
+            self.controllerView.controllerSkin = controllerSkin
+        }
+        else if let controllerSkin = DeltaCore.ControllerSkin.standardControllerSkin(for: game.type), controllerSkin.hasTouchScreen(for: traits)
+        {
+            var touchControllerSkin = TouchControllerSkin(controllerSkin: controllerSkin)
+            touchControllerSkin.layoutGuide = self.view.safeAreaLayoutGuide
+            
+            switch traits.orientation
+            {
+            case .portrait: touchControllerSkin.screenLayoutAxis = .vertical
+            case .landscape: touchControllerSkin.screenLayoutAxis = .horizontal
+            }
+            
+            self.controllerView.controllerSkin = touchControllerSkin
+        }
         
         self.view.setNeedsLayout()
     }
