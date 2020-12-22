@@ -2,7 +2,7 @@
 //  Archive.swift
 //  ZIPFoundation
 //
-//  Copyright © 2017-2019 Thomas Zoechling, https://www.peakstep.com and the ZIP Foundation project authors.
+//  Copyright © 2017-2020 Thomas Zoechling, https://www.peakstep.com and the ZIP Foundation project authors.
 //  Released under the MIT License.
 //
 //  See https://github.com/weichsel/ZIPFoundation/blob/master/LICENSE for license information.
@@ -106,74 +106,78 @@ public final class Archive: Sequence {
         static let size = 22
     }
 
+    private var preferredEncoding: String.Encoding?
     /// URL of an Archive's backing file.
     public let url: URL
     /// Access mode for an archive file.
     public let accessMode: AccessMode
     var archiveFile: UnsafeMutablePointer<FILE>
     var endOfCentralDirectoryRecord: EndOfCentralDirectoryRecord
-    var preferredEncoding: String.Encoding?
 
     /// Initializes a new ZIP `Archive`.
     ///
     /// You can use this initalizer to create new archive files or to read and update existing ones.
-    ///
-    /// To read existing ZIP files, pass in an existing file URL and `AccessMode.read`.
-    ///
-    /// To create a new ZIP file, pass in a non-existing file URL and `AccessMode.create`.
-    ///
-    /// To update an existing ZIP file, pass in an existing file URL and `AccessMode.update`.
-    ///
+    /// The `mode` parameter indicates the intended usage of the archive: `.read`, `.create` or `.update`.
     /// - Parameters:
     ///   - url: File URL to the receivers backing file.
     ///   - mode: Access mode of the receiver.
     ///   - preferredEncoding: Encoding for entry paths. Overrides the encoding specified in the archive.
-    ///
+    ///                        This encoding is only used when _decoding_ paths from the receiver.
+    ///                        Paths of entries added with `addEntry` are always UTF-8 encoded.
     /// - Returns: An archive initialized with a backing file at the passed in file URL and the given access mode
     ///   or `nil` if the following criteria are not met:
-    ///   - The file URL _must_ point to an existing file for `AccessMode.read`
-    ///   - The file URL _must_ point to a non-existing file for `AccessMode.write`
-    ///   - The file URL _must_ point to an existing file for `AccessMode.update`
+    /// - Note:
+    ///   - The file URL _must_ point to an existing file for `AccessMode.read`.
+    ///   - The file URL _must_ point to a non-existing file for `AccessMode.create`.
+    ///   - The file URL _must_ point to an existing file for `AccessMode.update`.
     public init?(url: URL, accessMode mode: AccessMode, preferredEncoding: String.Encoding? = nil) {
         self.url = url
         self.accessMode = mode
         self.preferredEncoding = preferredEncoding
-        let fileManager = FileManager()
-        switch mode {
-        case .read:
-            let fileSystemRepresentation = fileManager.fileSystemRepresentation(withPath: url.path)
-            guard let archiveFile = fopen(fileSystemRepresentation, "rb"),
-                let endOfCentralDirectoryRecord = Archive.scanForEndOfCentralDirectoryRecord(in: archiveFile) else {
-                return nil
-            }
-            self.archiveFile = archiveFile
-            self.endOfCentralDirectoryRecord = endOfCentralDirectoryRecord
-        case .create:
-            let endOfCentralDirectoryRecord = EndOfCentralDirectoryRecord(numberOfDisk: 0, numberOfDiskStart: 0,
-                                                                          totalNumberOfEntriesOnDisk: 0,
-                                                                          totalNumberOfEntriesInCentralDirectory: 0,
-                                                                          sizeOfCentralDirectory: 0,
-                                                                          offsetToStartOfCentralDirectory: 0,
-                                                                          zipFileCommentLength: 0,
-                                                                          zipFileCommentData: Data())
-            do {
-                try endOfCentralDirectoryRecord.data.write(to: url, options: .withoutOverwriting)
-            } catch {
-                return nil
-            }
-            fallthrough
-        case .update:
-            let fileSystemRepresentation = fileManager.fileSystemRepresentation(withPath: url.path)
-            guard let archiveFile = fopen(fileSystemRepresentation, "rb+"),
-                let endOfCentralDirectoryRecord = Archive.scanForEndOfCentralDirectoryRecord(in: archiveFile) else {
-                return nil
-            }
-            self.archiveFile = archiveFile
-            self.endOfCentralDirectoryRecord = endOfCentralDirectoryRecord
-            fseek(self.archiveFile, 0, SEEK_SET)
+        guard let (archiveFile, endOfCentralDirectoryRecord) = Archive.configureFileBacking(for: url, mode: mode) else {
+            return nil
         }
+        self.archiveFile = archiveFile
+        self.endOfCentralDirectoryRecord = endOfCentralDirectoryRecord
         setvbuf(self.archiveFile, nil, _IOFBF, Int(defaultPOSIXBufferSize))
     }
+
+    #if swift(>=5.0)
+    var memoryFile: MemoryFile?
+
+    /// Initializes a new in-memory ZIP `Archive`.
+    ///
+    /// You can use this initalizer to create new in-memory archive files or to read and update existing ones.
+    ///
+    /// - Parameters:
+    ///   - data: `Data` object used as backing for in-memory archives.
+    ///   - mode: Access mode of the receiver.
+    ///   - preferredEncoding: Encoding for entry paths. Overrides the encoding specified in the archive.
+    ///                        This encoding is only used when _decoding_ paths from the receiver.
+    ///                        Paths of entries added with `addEntry` are always UTF-8 encoded.
+    /// - Returns: An in-memory archive initialized with passed in backing data.
+    /// - Note:
+    ///   - The backing `data` _must_ contain a valid ZIP archive for `AccessMode.read` and `AccessMode.update`.
+    ///   - The backing `data` _must_ be empty (or omitted) for `AccessMode.create`.
+    public init?(data: Data = Data(), accessMode mode: AccessMode, preferredEncoding: String.Encoding? = nil) {
+        guard let url = URL(string: "memory:"),
+            let (archiveFile, memoryFile) = Archive.configureMemoryBacking(for: data, mode: mode) else {
+            return nil
+        }
+
+        self.url = url
+        self.accessMode = mode
+        self.preferredEncoding = preferredEncoding
+        self.archiveFile = archiveFile
+        self.memoryFile = memoryFile
+        guard let endOfCentralDirectoryRecord = Archive.scanForEndOfCentralDirectoryRecord(in: archiveFile)
+            else {
+                fclose(self.archiveFile)
+                return nil
+        }
+        self.endOfCentralDirectoryRecord = endOfCentralDirectoryRecord
+    }
+    #endif
 
     deinit {
         fclose(self.archiveFile)
@@ -229,13 +233,46 @@ public final class Archive: Sequence {
 
     // MARK: - Helpers
 
+    private static func configureFileBacking(for url: URL, mode: AccessMode)
+        -> (UnsafeMutablePointer<FILE>, EndOfCentralDirectoryRecord)? {
+        let fileManager = FileManager()
+        switch mode {
+        case .read:
+            let fileSystemRepresentation = fileManager.fileSystemRepresentation(withPath: url.path)
+            guard let archiveFile = fopen(fileSystemRepresentation, "rb"),
+                let endOfCentralDirectoryRecord = Archive.scanForEndOfCentralDirectoryRecord(in: archiveFile) else {
+                    return nil
+            }
+            return (archiveFile, endOfCentralDirectoryRecord)
+        case .create:
+            let endOfCentralDirectoryRecord = EndOfCentralDirectoryRecord(numberOfDisk: 0, numberOfDiskStart: 0,
+                                                                          totalNumberOfEntriesOnDisk: 0,
+                                                                          totalNumberOfEntriesInCentralDirectory: 0,
+                                                                          sizeOfCentralDirectory: 0,
+                                                                          offsetToStartOfCentralDirectory: 0,
+                                                                          zipFileCommentLength: 0,
+                                                                          zipFileCommentData: Data())
+            do {
+                try endOfCentralDirectoryRecord.data.write(to: url, options: .withoutOverwriting)
+            } catch { return nil }
+            fallthrough
+        case .update:
+            let fileSystemRepresentation = fileManager.fileSystemRepresentation(withPath: url.path)
+            guard let archiveFile = fopen(fileSystemRepresentation, "rb+"),
+                let endOfCentralDirectoryRecord = Archive.scanForEndOfCentralDirectoryRecord(in: archiveFile) else {
+                    return nil
+            }
+            fseek(archiveFile, 0, SEEK_SET)
+            return (archiveFile, endOfCentralDirectoryRecord)
+        }
+    }
+
     private static func scanForEndOfCentralDirectoryRecord(in file: UnsafeMutablePointer<FILE>)
         -> EndOfCentralDirectoryRecord? {
         var directoryEnd = 0
         var index = minDirectoryEndOffset
-        var fileStat = stat()
-        fstat(fileno(file), &fileStat)
-        let archiveLength = Int(fileStat.st_size)
+        fseek(file, 0, SEEK_END)
+        let archiveLength = ftell(file)
         while directoryEnd == 0 && index < maxDirectoryEndOffset && index <= archiveLength {
             fseek(file, archiveLength - index, SEEK_SET)
             var potentialDirectoryEndTag: UInt32 = UInt32()
@@ -297,9 +334,7 @@ extension Archive {
             case .directory:
                 count = defaultDirectoryUnitCount
             }
-        } catch {
-            count = -1
-        }
+        } catch { count = -1 }
         return count
     }
 
@@ -310,22 +345,23 @@ extension Archive {
 
 extension Archive.EndOfCentralDirectoryRecord {
     var data: Data {
-        var endOfCentralDirectorySignature = self.endOfCentralDirectorySignature
+        var endOfCDSignature = self.endOfCentralDirectorySignature
         var numberOfDisk = self.numberOfDisk
         var numberOfDiskStart = self.numberOfDiskStart
         var totalNumberOfEntriesOnDisk = self.totalNumberOfEntriesOnDisk
-        var totalNumberOfEntriesInCentralDirectory = self.totalNumberOfEntriesInCentralDirectory
+        var totalNumberOfEntriesInCD = self.totalNumberOfEntriesInCentralDirectory
         var sizeOfCentralDirectory = self.sizeOfCentralDirectory
-        var offsetToStartOfCentralDirectory = self.offsetToStartOfCentralDirectory
+        var offsetToStartOfCD = self.offsetToStartOfCentralDirectory
         var zipFileCommentLength = self.zipFileCommentLength
-        var data = Data(buffer: UnsafeBufferPointer(start: &endOfCentralDirectorySignature, count: 1))
-        data.append(UnsafeBufferPointer(start: &numberOfDisk, count: 1))
-        data.append(UnsafeBufferPointer(start: &numberOfDiskStart, count: 1))
-        data.append(UnsafeBufferPointer(start: &totalNumberOfEntriesOnDisk, count: 1))
-        data.append(UnsafeBufferPointer(start: &totalNumberOfEntriesInCentralDirectory, count: 1))
-        data.append(UnsafeBufferPointer(start: &sizeOfCentralDirectory, count: 1))
-        data.append(UnsafeBufferPointer(start: &offsetToStartOfCentralDirectory, count: 1))
-        data.append(UnsafeBufferPointer(start: &zipFileCommentLength, count: 1))
+        var data = Data()
+        withUnsafePointer(to: &endOfCDSignature, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
+        withUnsafePointer(to: &numberOfDisk, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
+        withUnsafePointer(to: &numberOfDiskStart, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
+        withUnsafePointer(to: &totalNumberOfEntriesOnDisk, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
+        withUnsafePointer(to: &totalNumberOfEntriesInCD, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
+        withUnsafePointer(to: &sizeOfCentralDirectory, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
+        withUnsafePointer(to: &offsetToStartOfCD, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
+        withUnsafePointer(to: &zipFileCommentLength, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
         data.append(self.zipFileCommentData)
         return data
     }

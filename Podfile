@@ -9,7 +9,7 @@ target 'Delta' do
     pod 'SDWebImage', '~> 3.8'
     pod 'Fabric', '~> 1.6.0'
     pod 'Crashlytics', '~> 3.8.0'
-    pod 'SMCalloutView'
+    pod 'SMCalloutView', '~> 2.1.0'
 
     pod 'DeltaCore', :path => 'Cores/DeltaCore'
     pod 'NESDeltaCore', :path => 'Cores/NESDeltaCore'

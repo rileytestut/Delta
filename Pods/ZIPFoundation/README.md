@@ -21,7 +21,8 @@ To learn more about the performance characteristics of the framework, you can re
     - [Creating Archives](#creating-archives)
     - [Adding and Removing Entries](#adding-and-removing-entries)
     - [Closure based Reading and Writing](#closure-based-reading-and-writing)
-	- [Progress Tracking and Cancellation](#progress-tracking-and-cancellation)
+    - [In-Memory Archives](#in-memory-archives)    
+    - [Progress Tracking and Cancellation](#progress-tracking-and-cancellation)
 - [Credits](#credits)
 - [License](#license)
 
@@ -45,7 +46,7 @@ To learn more about the performance characteristics of the framework, you can re
 ## Installation
 
 ### Swift Package Manager
-Swift Package Manager is a dependency manager currently under active development. To learn how to use the Swift Package Manager for your project, please read the [official documentation](https://github.com/apple/swift-package-manager/blob/master/Documentation/Usage.md).  
+The Swift Package Manager is a dependency manager integrated with the Swift build system. To learn how to use the Swift Package Manager for your project, please read the [official documentation](https://github.com/apple/swift-package-manager/blob/master/Documentation/Usage.md).  
 To add ZIP Foundation as a dependency, you have to add it to the `dependencies` of your `Package.swift` file and refer to that dependency in your `target`.
 
 ```swift
@@ -131,6 +132,7 @@ do {
 }
 ```
 
+By default, archives are created without any compression. To create compressed ZIP archives, the optional `compressionMethod` parameter has to be set to `.deflate`.  
 The same method also accepts URLs that represent directory items. In that case, `zipItem` adds the directory content of `sourceURL` to the archive.  
 By default, a root directory entry named after the `lastPathComponent` of the `sourceURL` is added to the destination archive.  If you don't want to preserve the parent directory of the source in your archive, you can pass `shouldKeepParent: false`.
 
@@ -248,13 +250,30 @@ You can also add entries from an in-memory data source. To do this you have to p
 
 ```swift
 guard let data = "abcdefghijkl".data(using: .utf8) else { return }
-try? archive.addEntry(with: "fromMemory.txt", type: .file, uncompressedSize: 12, bufferSize:  4, provider: { (position, size) -> Data in
+try? archive.addEntry(with: "fromMemory.txt", type: .file, uncompressedSize: 12, bufferSize: 4, provider: { (position, size) -> Data in
     // This will be called until `data` is exhausted (3x in this case).
     return data.subdata(in: position..<position+size)
 })
 ```
 The closure is called until enough data has been provided to create an entry of `uncompressedSize`. The closure receives `position` and `size` arguments 
 so that you can manage the state of your data source.
+
+### In-Memory Archives
+Besides closure based reading and writing of file based archives, ZIP Foundation also provides capabilities to process in-memory archives. 
+This allows creation or extraction of archives that only reside in RAM. One use case for this functionality is dynamic creation of ZIP archives that are later sent to a client - without performing any disk IO.  
+
+To work with in-memory archives the `init(data: Data, accessMode: AccessMode)` initializer must be used.  
+To _read_ or _update_ an in-memory archive, the passed-in `data` must contain a representation of a valid ZIP archive.  
+To _create_ an in-memory archive, the `data` parameter can be omitted:
+
+```swift
+guard let archive = Archive(accessMode: .create),
+        let data = "Some string!".data(using: .utf8) else { return }
+    try? archive.addEntry(with: "inMemory.txt", type: .file, uncompressedSize: 12, bufferSize: 4, provider: { (position, size) -> Data in
+        return data.subdata(in: position..<position+size)
+    })
+let archiveData = archive.data
+```
 
 ### Progress Tracking and Cancellation
 All `Archive` operations take an optional `progress` parameter. By passing in an instance of [Progress](https://developer.apple.com/documentation/foundation/progress), you indicate that

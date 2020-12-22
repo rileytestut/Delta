@@ -2,7 +2,7 @@
 //  Archive+Writing.swift
 //  ZIPFoundation
 //
-//  Copyright © 2017-2019 Thomas Zoechling, https://www.peakstep.com and the ZIP Foundation project authors.
+//  Copyright © 2017-2020 Thomas Zoechling, https://www.peakstep.com and the ZIP Foundation project authors.
 //  Released under the MIT License.
 //
 //  See https://github.com/weichsel/ZIPFoundation/blob/master/LICENSE for license information.
@@ -23,6 +23,7 @@ extension Archive {
     ///   - baseURL: The base URL of the `Entry` to add.
     ///              The `baseURL` combined with `path` must form a fully qualified file URL.
     ///   - compressionMethod: Indicates the `CompressionMethod` that should be applied to `Entry`.
+    ///                        By default, no compression will be applied.
     ///   - bufferSize: The maximum size of the write buffer and the compression buffer (if needed).
     ///   - progress: A progress object that can be used to track or cancel the add operation.
     /// - Throws: An error if the source file cannot be read or the receiver is not writable.
@@ -87,6 +88,7 @@ extension Archive {
     ///   - permissions: POSIX file permissions for the `Entry`.
     ///                  Default is `0`o`644` for files and symlinks and `0`o`755` for directories.
     ///   - compressionMethod: Indicates the `CompressionMethod` that should be applied to `Entry`.
+    ///                        By default, no compression will be applied.
     ///   - bufferSize: The maximum size of the write buffer and the compression buffer (if needed).
     ///   - progress: A progress object that can be used to track or cancel the add operation.
     ///   - provider: A closure that accepts a position and a chunk size. Returns a `Data` chunk.
@@ -229,17 +231,15 @@ extension Archive {
                                       size: (uncompressed: UInt32, compressed: UInt32),
                                       checksum: CRC32,
                                       modificationDateTime: (UInt16, UInt16)) throws -> LocalFileHeader {
-        let fileManager = FileManager()
-        let fileSystemRepresentation = fileManager.fileSystemRepresentation(withPath: path)
-        let fileNameLength = Int(strlen(fileSystemRepresentation))
-        let fileNameBuffer = UnsafeBufferPointer(start: fileSystemRepresentation, count: fileNameLength)
-        let fileNameData = Data(buffer: fileNameBuffer)
+        // We always set Bit 11 in generalPurposeBitFlag, which indicates an UTF-8 encoded path.
+        guard let fileNameData = path.data(using: .utf8) else { throw ArchiveError.invalidEntryPath }
+
         let localFileHeader = LocalFileHeader(versionNeededToExtract: UInt16(20), generalPurposeBitFlag: UInt16(2048),
                                               compressionMethod: compressionMethod.rawValue,
                                               lastModFileTime: modificationDateTime.1,
                                               lastModFileDate: modificationDateTime.0, crc32: checksum,
                                               compressedSize: size.compressed, uncompressedSize: size.uncompressed,
-                                              fileNameLength: UInt16(fileNameLength), extraFieldLength: UInt16(0),
+                                              fileNameLength: UInt16(fileNameData.count), extraFieldLength: UInt16(0),
                                               fileNameData: fileNameData, extraFieldData: Data())
         _ = try Data.write(chunk: localFileHeader.data, to: self.archiveFile)
         return localFileHeader

@@ -560,6 +560,9 @@ typedef void (^GTMSessionFetcherRetryBlock)(BOOL suggestedWillRetry,
                                             NSError * GTM_NULLABLE_TYPE error,
                                             GTMSessionFetcherRetryResponse response);
 
+API_AVAILABLE(ios(10.0), macosx(10.12), tvos(10.0), watchos(3.0))
+typedef void (^GTMSessionFetcherMetricsCollectionBlock)(NSURLSessionTaskMetrics *metrics);
+
 typedef void (^GTMSessionFetcherTestResponse)(NSHTTPURLResponse * GTM_NULLABLE_TYPE response,
                                               NSData * GTM_NULLABLE_TYPE data,
                                               NSError * GTM_NULLABLE_TYPE error);
@@ -788,6 +791,12 @@ NSData * GTM_NULLABLE_TYPE GTMDataFromInputStream(NSInputStream *inputStream, NS
 // Indicates a fetcher created to finish a background session task.
 @property(atomic, readonly) BOOL wasCreatedFromBackgroundSession;
 
+// Indicates the client has committed to reconnecting this background session when
+// the app restarts. If this value is YES, the session fetcher will not automatically
+// call beginFetchWithCompletionHandler: on the restored fetcher on app start, and
+// the session will not handle system events until the client explicitly does.
+@property(atomic, assign) BOOL clientWillReconnectBackgroundSession;
+
 // Additional user-supplied data to encode into the session identifier. Since session identifier
 // length limits are unspecified, this should be kept small. Key names beginning with an underscore
 // are reserved for use by the fetcher.
@@ -995,6 +1004,13 @@ NSData * GTM_NULLABLE_TYPE GTMDataFromInputStream(NSInputStream *inputStream, NS
 // fetch.
 // See comments at the top of this file.
 @property(atomic, copy, GTM_NULLABLE) GTMSessionFetcherRetryBlock retryBlock;
+
+// The optional block for collecting the metrics of the present session.
+//
+// This is called on the callback queue.
+@property(atomic, copy, GTM_NULLABLE)
+    GTMSessionFetcherMetricsCollectionBlock metricsCollectionBlock API_AVAILABLE(
+        ios(10.0), macosx(10.12), tvos(10.0), watchos(3.0));
 
 // Retry intervals must be strictly less than maxRetryInterval, else
 // they will be limited to maxRetryInterval and no further retries will
@@ -1307,7 +1323,7 @@ NSData * GTM_NULLABLE_TYPE GTMDataFromInputStream(NSInputStream *inputStream, NS
                                allowRecursive:(BOOL)allowRecursive
                                  functionName:(const char *)functionName;
 // Return the names of the functions that hold sync on the object, or nil if none.
-+ (NSArray *)functionsHoldingSynchronizationOnObject:(id)object;
++ (NSArray * GTM_NULLABLE_TYPE)functionsHoldingSynchronizationOnObject:(id)object;
 @end
 
 #else

@@ -2,7 +2,7 @@
 //  Entry.swift
 //  ZIPFoundation
 //
-//  Copyright © 2017-2019 Thomas Zoechling, https://www.peakstep.com and the ZIP Foundation project authors.
+//  Copyright © 2017-2020 Thomas Zoechling, https://www.peakstep.com and the ZIP Foundation project authors.
 //  Released under the MIT License.
 //
 //  See https://github.com/weichsel/ZIPFoundation/blob/master/LICENSE for license information.
@@ -11,7 +11,7 @@
 import Foundation
 import CoreFoundation
 
-/// A value that represents a file, a direcotry or a symbolic link within a ZIP `Archive`.
+/// A value that represents a file, a directory or a symbolic link within a ZIP `Archive`.
 ///
 /// You can retrieve instances of `Entry` from an `Archive` via subscripting or iteration.
 /// Entries are identified by their `path`.
@@ -93,8 +93,9 @@ public struct Entry: Equatable {
         let extraFieldData: Data
         let fileCommentData: Data
         var usesDataDescriptor: Bool { return (self.generalPurposeBitFlag & (1 << 3 )) != 0 }
-        var isZIP64: Bool { return self.versionNeededToExtract >= 45 }
+        var usesUTF8PathEncoding: Bool { return (self.generalPurposeBitFlag & (1 << 11 )) != 0 }
         var isEncrypted: Bool { return (self.generalPurposeBitFlag & (1 << 0)) != 0 }
+        var isZIP64: Bool { return self.versionNeededToExtract >= 45 }
     }
     /// Returns the `path` of the receiver within a ZIP `Archive` using a given encoding.
     ///
@@ -109,8 +110,7 @@ public struct Entry: Equatable {
         let dosLatinUSEncoding = CFStringEncoding(dosLatinUS)
         let dosLatinUSStringEncoding = CFStringConvertEncodingToNSStringEncoding(dosLatinUSEncoding)
         let codepage437 = String.Encoding(rawValue: dosLatinUSStringEncoding)
-        let isUTF8 = ((self.centralDirectoryStructure.generalPurposeBitFlag >> 11) & 1) != 0
-        let encoding = isUTF8 ? String.Encoding.utf8 : codepage437
+        let encoding = self.centralDirectoryStructure.usesUTF8PathEncoding ? .utf8 : codepage437
         return self.path(using: encoding)
     }
     /// The file attributes of the receiver as key/value pairs.
@@ -151,8 +151,7 @@ public struct Entry: Equatable {
             }
         case .msdos:
             isDirectory = isDirectory || ((centralDirectoryStructure.externalFileAttributes >> 4) == 0x01)
-            fallthrough
-        // For all other OSes we can only guess based on the directory suffix char
+            fallthrough // For all other OSes we can only guess based on the directory suffix char
         default: return isDirectory ? .directory : .file
         }
     }
@@ -218,17 +217,18 @@ extension Entry.LocalFileHeader {
         var uncompressedSize = self.uncompressedSize
         var fileNameLength = self.fileNameLength
         var extraFieldLength = self.extraFieldLength
-        var data = Data(buffer: UnsafeBufferPointer(start: &localFileHeaderSignature, count: 1))
-        data.append(UnsafeBufferPointer(start: &versionNeededToExtract, count: 1))
-        data.append(UnsafeBufferPointer(start: &generalPurposeBitFlag, count: 1))
-        data.append(UnsafeBufferPointer(start: &compressionMethod, count: 1))
-        data.append(UnsafeBufferPointer(start: &lastModFileTime, count: 1))
-        data.append(UnsafeBufferPointer(start: &lastModFileDate, count: 1))
-        data.append(UnsafeBufferPointer(start: &crc32, count: 1))
-        data.append(UnsafeBufferPointer(start: &compressedSize, count: 1))
-        data.append(UnsafeBufferPointer(start: &uncompressedSize, count: 1))
-        data.append(UnsafeBufferPointer(start: &fileNameLength, count: 1))
-        data.append(UnsafeBufferPointer(start: &extraFieldLength, count: 1))
+        var data = Data()
+        withUnsafePointer(to: &localFileHeaderSignature, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
+        withUnsafePointer(to: &versionNeededToExtract, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
+        withUnsafePointer(to: &generalPurposeBitFlag, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
+        withUnsafePointer(to: &compressionMethod, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
+        withUnsafePointer(to: &lastModFileTime, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
+        withUnsafePointer(to: &lastModFileDate, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
+        withUnsafePointer(to: &crc32, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
+        withUnsafePointer(to: &compressedSize, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
+        withUnsafePointer(to: &uncompressedSize, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
+        withUnsafePointer(to: &fileNameLength, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
+        withUnsafePointer(to: &extraFieldLength, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
         data.append(self.fileNameData)
         data.append(self.extraFieldData)
         return data
@@ -278,23 +278,24 @@ extension Entry.CentralDirectoryStructure {
         var internalFileAttributes = self.internalFileAttributes
         var externalFileAttributes = self.externalFileAttributes
         var relativeOffsetOfLocalHeader = self.relativeOffsetOfLocalHeader
-        var data = Data(buffer: UnsafeBufferPointer(start: &centralDirectorySignature, count: 1))
-        data.append(UnsafeBufferPointer(start: &versionMadeBy, count: 1))
-        data.append(UnsafeBufferPointer(start: &versionNeededToExtract, count: 1))
-        data.append(UnsafeBufferPointer(start: &generalPurposeBitFlag, count: 1))
-        data.append(UnsafeBufferPointer(start: &compressionMethod, count: 1))
-        data.append(UnsafeBufferPointer(start: &lastModFileTime, count: 1))
-        data.append(UnsafeBufferPointer(start: &lastModFileDate, count: 1))
-        data.append(UnsafeBufferPointer(start: &crc32, count: 1))
-        data.append(UnsafeBufferPointer(start: &compressedSize, count: 1))
-        data.append(UnsafeBufferPointer(start: &uncompressedSize, count: 1))
-        data.append(UnsafeBufferPointer(start: &fileNameLength, count: 1))
-        data.append(UnsafeBufferPointer(start: &extraFieldLength, count: 1))
-        data.append(UnsafeBufferPointer(start: &fileCommentLength, count: 1))
-        data.append(UnsafeBufferPointer(start: &diskNumberStart, count: 1))
-        data.append(UnsafeBufferPointer(start: &internalFileAttributes, count: 1))
-        data.append(UnsafeBufferPointer(start: &externalFileAttributes, count: 1))
-        data.append(UnsafeBufferPointer(start: &relativeOffsetOfLocalHeader, count: 1))
+        var data = Data()
+        withUnsafePointer(to: &centralDirectorySignature, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
+        withUnsafePointer(to: &versionMadeBy, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
+        withUnsafePointer(to: &versionNeededToExtract, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
+        withUnsafePointer(to: &generalPurposeBitFlag, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
+        withUnsafePointer(to: &compressionMethod, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
+        withUnsafePointer(to: &lastModFileTime, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
+        withUnsafePointer(to: &lastModFileDate, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
+        withUnsafePointer(to: &crc32, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
+        withUnsafePointer(to: &compressedSize, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
+        withUnsafePointer(to: &uncompressedSize, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
+        withUnsafePointer(to: &fileNameLength, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
+        withUnsafePointer(to: &extraFieldLength, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
+        withUnsafePointer(to: &fileCommentLength, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
+        withUnsafePointer(to: &diskNumberStart, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
+        withUnsafePointer(to: &internalFileAttributes, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
+        withUnsafePointer(to: &externalFileAttributes, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
+        withUnsafePointer(to: &relativeOffsetOfLocalHeader, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
         data.append(self.fileNameData)
         data.append(self.extraFieldData)
         data.append(self.fileCommentData)
@@ -384,8 +385,7 @@ extension Entry.DataDescriptor {
     init?(data: Data, additionalDataProvider provider: (Int) throws -> Data) {
         guard data.count == Entry.DataDescriptor.size else { return nil }
         let signature: UInt32 = data.scanValue(start: 0)
-        // The DataDescriptor signature is not mandatory so we have to re-arrange
-        // the input data if it is missing
+        // The DataDescriptor signature is not mandatory so we have to re-arrange the input data if it is missing.
         var readOffset = 0
         if signature == self.dataDescriptorSignature { readOffset = 4 }
         self.crc32 = data.scanValue(start: readOffset + 0)

@@ -20,19 +20,19 @@ PODS:
     - "GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)"
     - "GoogleToolboxForMac/NSString+URLArguments (~> 2.1)"
     - GTMSessionFetcher/Core (~> 1.1)
-  - GoogleToolboxForMac/DebugUtils (2.2.2):
-    - GoogleToolboxForMac/Defines (= 2.2.2)
-  - GoogleToolboxForMac/Defines (2.2.2)
-  - "GoogleToolboxForMac/NSDictionary+URLArguments (2.2.2)":
-    - GoogleToolboxForMac/DebugUtils (= 2.2.2)
-    - GoogleToolboxForMac/Defines (= 2.2.2)
-    - "GoogleToolboxForMac/NSString+URLArguments (= 2.2.2)"
-  - "GoogleToolboxForMac/NSString+URLArguments (2.2.2)"
-  - GTMSessionFetcher (1.3.1):
-    - GTMSessionFetcher/Full (= 1.3.1)
-  - GTMSessionFetcher/Core (1.3.1)
-  - GTMSessionFetcher/Full (1.3.1):
-    - GTMSessionFetcher/Core (= 1.3.1)
+  - GoogleToolboxForMac/DebugUtils (2.3.0):
+    - GoogleToolboxForMac/Defines (= 2.3.0)
+  - GoogleToolboxForMac/Defines (2.3.0)
+  - "GoogleToolboxForMac/NSDictionary+URLArguments (2.3.0)":
+    - GoogleToolboxForMac/DebugUtils (= 2.3.0)
+    - GoogleToolboxForMac/Defines (= 2.3.0)
+    - "GoogleToolboxForMac/NSString+URLArguments (= 2.3.0)"
+  - "GoogleToolboxForMac/NSString+URLArguments (2.3.0)"
+  - GTMSessionFetcher (1.5.0):
+    - GTMSessionFetcher/Full (= 1.5.0)
+  - GTMSessionFetcher/Core (1.5.0)
+  - GTMSessionFetcher/Full (1.5.0):
+    - GTMSessionFetcher/Core (= 1.5.0)
   - Harmony (0.1):
     - Harmony/Harmony-Drive (= 0.1)
     - Harmony/Harmony-Dropbox (= 0.1)
@@ -68,7 +68,7 @@ PODS:
   - SQLite.swift/standard (0.12.2)
   - SwiftyDropbox (5.0.0):
     - Alamofire (~> 4.7.3)
-  - ZIPFoundation (0.9.10)
+  - ZIPFoundation (0.9.11)
 
 DEPENDENCIES:
   - Crashlytics (~> 3.8.0)
@@ -83,7 +83,7 @@ DEPENDENCIES:
   - NESDeltaCore (from `Cores/NESDeltaCore`)
   - Roxas (from `External/Roxas`)
   - SDWebImage (~> 3.8)
-  - SMCalloutView
+  - SMCalloutView (~> 2.1.0)
   - SNESDeltaCore (from `Cores/SNESDeltaCore`)
   - SQLite.swift (~> 0.12.0)
 
@@ -134,8 +134,8 @@ SPEC CHECKSUMS:
   GBCDeltaCore: 7468dff742927139a14f6fc909e810f253b6293c
   GoogleAPIClientForREST: 0f19a8280dfe6471f76016645d26eb5dae305101
   GoogleSignIn: 7ff245e1a7b26d379099d3243a562f5747e23d39
-  GoogleToolboxForMac: 800648f8b3127618c1b59c7f97684427630c5ea3
-  GTMSessionFetcher: cea130bbfe5a7edc8d06d3f0d17288c32ffe9925
+  GoogleToolboxForMac: 1350d40e86a76f7863928d63bcb0b89c84c521c5
+  GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
   Harmony: cea514db17c41c22f78f54b17d2135935b5e9b96
   MelonDSDeltaCore: 3de2a2e2ebcd630a6dd756818b5a26dde7afa726
   N64DeltaCore: 7d176e01443fa138bdfc79ad908c78f271f3e0a7
@@ -146,8 +146,8 @@ SPEC CHECKSUMS:
   SNESDeltaCore: eb7053f45204f9a6ceb426d53649e6ee35b97684
   SQLite.swift: d2b4642190917051ce6bd1d49aab565fe794eea3
   SwiftyDropbox: 378b4425a2e8d0cb24c7b0f2e3af72bfbaaf1e73
-  ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
+  ZIPFoundation: b1f0de4eed33e74a676f76e12559ab6b75990197
 
-PODFILE CHECKSUM: f60a226b9a1a5137750584aa70be862b6caa110d
+PODFILE CHECKSUM: 287d91605195bb5ea894269c53b979ee2b07c9f8
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.10.0

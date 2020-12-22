@@ -2,7 +2,7 @@
 //  Archive+Reading.swift
 //  ZIPFoundation
 //
-//  Copyright © 2017-2019 Thomas Zoechling, https://www.peakstep.com and the ZIP Foundation project authors.
+//  Copyright © 2017-2020 Thomas Zoechling, https://www.peakstep.com and the ZIP Foundation project authors.
 //  Released under the MIT License.
 //
 //  See https://github.com/weichsel/ZIPFoundation/blob/master/LICENSE for license information.
@@ -17,7 +17,7 @@ extension Archive {
     ///   - entry: The ZIP `Entry` to read.
     ///   - url: The destination file URL.
     ///   - bufferSize: The maximum size of the read buffer and the decompression buffer (if needed).
-    ///   - skipCRC32: Optional flag to skip calculation of the CRC32 checksum to speed up performance.
+    ///   - skipCRC32: Optional flag to skip calculation of the CRC32 checksum to improve performance.
     ///   - progress: A progress object that can be used to track or cancel the extract operation.
     /// - Returns: The checksum of the processed content or 0 if the `skipCRC32` flag was set to `true`.
     /// - Throws: An error if the destination file cannot be written or the entry contains malformed content.
@@ -67,7 +67,7 @@ extension Archive {
     /// - Parameters:
     ///   - entry: The ZIP `Entry` to read.
     ///   - bufferSize: The maximum size of the read buffer and the decompression buffer (if needed).
-    ///   - skipCRC32: Optional flag to skip calculation of the CRC32 checksum to speed up performance.
+    ///   - skipCRC32: Optional flag to skip calculation of the CRC32 checksum to improve performance.
     ///   - progress: A progress object that can be used to track or cancel the extract operation.
     ///   - consumer: A closure that consumes contents of `Entry` as `Data` chunks.
     /// - Returns: The checksum of the processed content or 0 if the `skipCRC32` flag was set to `true`..

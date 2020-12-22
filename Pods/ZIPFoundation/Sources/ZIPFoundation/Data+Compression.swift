@@ -2,7 +2,7 @@
 //  Data+Compression.swift
 //  ZIPFoundation
 //
-//  Copyright © 2017-2019 Thomas Zoechling, https://www.peakstep.com and the ZIP Foundation project authors.
+//  Copyright © 2017-2020 Thomas Zoechling, https://www.peakstep.com and the ZIP Foundation project authors.
 //  Released under the MIT License.
 //
 //  See https://github.com/weichsel/ZIPFoundation/blob/master/LICENSE for license information.
@@ -86,7 +86,7 @@ extension Data {
         case corruptedData
     }
 
-    /// Calculates the `CRC32` checksum of the receiver.
+    /// Calculate the `CRC32` checksum of the receiver.
     ///
     /// - Parameter checksum: The starting seed.
     /// - Returns: The checksum calcualted from the bytes of the receiver and the starting seed.
@@ -125,7 +125,14 @@ extension Data {
         return result ^ mask
     }
 
-    static func compress(size: Int, bufferSize: Int, provider: Provider, consumer: Consumer) throws -> CRC32 {
+    /// Compress the output of `provider` and pass it to `consumer`.
+    /// - Parameters:
+    ///   - size: The uncompressed size of the data to be compressed.
+    ///   - bufferSize: The maximum size of the compression buffer.
+    ///   - provider: A closure that accepts a position and a chunk size. Returns a `Data` chunk.
+    ///   - consumer: A closure that processes the result of the compress operation.
+    /// - Returns: The checksum of the processed content.
+    public static func compress(size: Int, bufferSize: Int, provider: Provider, consumer: Consumer) throws -> CRC32 {
         #if os(macOS) || os(iOS) || os(watchOS) || os(tvOS)
         return try self.process(operation: COMPRESSION_STREAM_ENCODE, size: size, bufferSize: bufferSize,
                                 provider: provider, consumer: consumer)
@@ -134,8 +141,16 @@ extension Data {
         #endif
     }
 
-    static func decompress(size: Int, bufferSize: Int, skipCRC32: Bool,
-                           provider: Provider, consumer: Consumer) throws -> CRC32 {
+    /// Decompress the output of `provider` and pass it to `consumer`.
+    /// - Parameters:
+    ///   - size: The compressed size of the data to be decompressed.
+    ///   - bufferSize: The maximum size of the decompression buffer.
+    ///   - skipCRC32: Optional flag to skip calculation of the CRC32 checksum to improve performance.
+    ///   - provider: A closure that accepts a position and a chunk size. Returns a `Data` chunk.
+    ///   - consumer: A closure that processes the result of the decompress operation.
+    /// - Returns: The checksum of the processed content.
+    public static func decompress(size: Int, bufferSize: Int, skipCRC32: Bool,
+                                  provider: Provider, consumer: Consumer) throws -> CRC32 {
         #if os(macOS) || os(iOS) || os(watchOS) || os(tvOS)
         return try self.process(operation: COMPRESSION_STREAM_DECODE, size: size, bufferSize: bufferSize,
                                 skipCRC32: skipCRC32, provider: provider, consumer: consumer)
@@ -221,31 +236,36 @@ extension Data {
         repeat {
             let readSize = Swift.min((size - position), bufferSize)
             var inputChunk = try provider(position, readSize)
+            zipCRC32 = inputChunk.crc32(checksum: zipCRC32)
             stream.avail_in = UInt32(inputChunk.count)
-            inputChunk.withUnsafeMutableBytes { (rawBufferPointer) in
-                if let baseAddress = rawBufferPointer.baseAddress, rawBufferPointer.count > 0 {
+            try inputChunk.withUnsafeMutableBytes { (rawBufferPointer) in
+                if let baseAddress = rawBufferPointer.baseAddress {
                     let pointer = baseAddress.assumingMemoryBound(to: UInt8.self)
                     stream.next_in = pointer
+                    flush = position + bufferSize >= size ? Z_FINISH : Z_NO_FLUSH
+                } else if rawBufferPointer.count > 0 {
+                    throw CompressionError.corruptedData
+                } else {
+                    stream.next_in = nil
+                    flush = Z_FINISH
                 }
-            }
-            zipCRC32 = inputChunk.crc32(checksum: zipCRC32)
-            flush = position + bufferSize >= size ? Z_FINISH : Z_NO_FLUSH
-            var outputChunk = Data(count: bufferSize)
-            repeat {
-                stream.avail_out = UInt32(bufferSize)
-                outputChunk.withUnsafeMutableBytes { (rawBufferPointer) in
-                    if let baseAddress = rawBufferPointer.baseAddress, rawBufferPointer.count > 0 {
+                var outputChunk = Data(count: bufferSize)
+                repeat {
+                    stream.avail_out = UInt32(bufferSize)
+                    try outputChunk.withUnsafeMutableBytes { (rawBufferPointer) in
+                        guard let baseAddress = rawBufferPointer.baseAddress, rawBufferPointer.count > 0 else {
+                            throw CompressionError.corruptedData
+                        }
                         let pointer = baseAddress.assumingMemoryBound(to: UInt8.self)
                         stream.next_out = pointer
+                        result = deflate(&stream, flush)
                     }
-                }
-                result = deflate(&stream, flush)
-                guard result >= Z_OK  else {
-                    throw CompressionError.corruptedData
-                }
-                outputChunk.count = bufferSize - Int(stream.avail_out)
-                try consumer(outputChunk)
-            } while stream.avail_out == 0
+                    guard result >= Z_OK else { throw CompressionError.corruptedData }
+
+                    outputChunk.count = bufferSize - Int(stream.avail_out)
+                    try consumer(outputChunk)
+                } while stream.avail_out == 0
+            }
             position += readSize
         } while flush != Z_FINISH
         return zipCRC32
@@ -260,37 +280,37 @@ extension Data {
         var unzipCRC32 = CRC32(0)
         var position = 0
         repeat {
-            let inputBytes = malloc(bufferSize)
-            defer { free(inputBytes) }
             stream.avail_in = UInt32(bufferSize)
             var chunk = try provider(position, bufferSize)
             position += chunk.count
-            chunk.withUnsafeMutableBytes { (rawBufferPointer) in
+            try chunk.withUnsafeMutableBytes { (rawBufferPointer) in
                 if let baseAddress = rawBufferPointer.baseAddress, rawBufferPointer.count > 0 {
                     let pointer = baseAddress.assumingMemoryBound(to: UInt8.self)
                     stream.next_in = pointer
+                    repeat {
+                        var outputData = Data(count: bufferSize)
+                        stream.avail_out = UInt32(bufferSize)
+                        try outputData.withUnsafeMutableBytes { (rawBufferPointer) in
+                            if let baseAddress = rawBufferPointer.baseAddress, rawBufferPointer.count > 0 {
+                                let pointer = baseAddress.assumingMemoryBound(to: UInt8.self)
+                                stream.next_out = pointer
+                            } else {
+                                throw CompressionError.corruptedData
+                            }
+                            result = inflate(&stream, Z_NO_FLUSH)
+                            guard result != Z_NEED_DICT &&
+                                result != Z_DATA_ERROR &&
+                                result != Z_MEM_ERROR else {
+                                    throw CompressionError.corruptedData
+                            }
+                        }
+                        let remainingLength = UInt32(bufferSize) - stream.avail_out
+                        outputData.count = Int(remainingLength)
+                        try consumer(outputData)
+                        if !skipCRC32 { unzipCRC32 = outputData.crc32(checksum: unzipCRC32) }
+                    } while stream.avail_out == 0
                 }
             }
-            repeat {
-                var outputData = Data(count: bufferSize)
-                stream.avail_out = UInt32(bufferSize)
-                outputData.withUnsafeMutableBytes { (rawBufferPointer) in
-                    if let baseAddress = rawBufferPointer.baseAddress, rawBufferPointer.count > 0 {
-                        let pointer = baseAddress.assumingMemoryBound(to: UInt8.self)
-                        stream.next_out = pointer
-                    }
-                }
-                result = inflate(&stream, Z_NO_FLUSH)
-                guard result != Z_NEED_DICT &&
-                    result != Z_DATA_ERROR &&
-                    result != Z_MEM_ERROR else {
-                        throw CompressionError.corruptedData
-                }
-                let remainingLength = UInt32(bufferSize) - stream.avail_out
-                outputData.count = Int(remainingLength)
-                try consumer(outputData)
-                if !skipCRC32 { unzipCRC32 = outputData.crc32(checksum: unzipCRC32) }
-            } while stream.avail_out == 0
         } while result != Z_STREAM_END
         return unzipCRC32
     }
