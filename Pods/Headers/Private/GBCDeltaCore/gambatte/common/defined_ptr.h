@@ -1,1 +1,0 @@
-../../../../../../Cores/GBCDeltaCore/gambatte/common/defined_ptr.h

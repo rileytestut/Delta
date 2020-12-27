@@ -1,0 +1,6 @@
+${PODS_ROOT}/Target Support Files/Pods-Delta/Pods-Delta-resources.sh
+${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle
+${PODS_ROOT}/../External/Harmony/Harmony/Model/Core Data/Harmony.xcdatamodeld
+${PODS_ROOT}/../External/Harmony/Harmony/Model/Core Data/Migrations/HarmonyToHarmony2.xcmappingmodel
+${PODS_ROOT}/../External/Roxas/Roxas/RSTCollectionViewCell.xib
+${PODS_ROOT}/../External/Roxas/Roxas/RSTPlaceholderView.xib

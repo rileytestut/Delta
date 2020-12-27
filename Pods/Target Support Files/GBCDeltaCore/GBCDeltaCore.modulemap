@@ -1,6 +1,0 @@
-module GBCDeltaCore {
-  umbrella header "GBCDeltaCore-umbrella.h"
-
-  export *
-  module * { export * }
-}

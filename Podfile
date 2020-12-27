@@ -11,14 +11,6 @@ target 'Delta' do
     pod 'Crashlytics', '~> 3.8.0'
     pod 'SMCalloutView', '~> 2.1.0'
 
-    pod 'DeltaCore', :path => 'Cores/DeltaCore'
-    pod 'NESDeltaCore', :path => 'Cores/NESDeltaCore'
-    pod 'SNESDeltaCore', :path => 'Cores/SNESDeltaCore'
-    pod 'N64DeltaCore', :path => 'Cores/N64DeltaCore'
-    pod 'GBCDeltaCore', :path => 'Cores/GBCDeltaCore'
-    pod 'GBADeltaCore', :path => 'Cores/GBADeltaCore'
-    pod 'DSDeltaCore', :path => 'Cores/DSDeltaCore'
-    pod 'MelonDSDeltaCore', :path => 'Cores/MelonDSDeltaCore'
     pod 'Roxas', :path => 'External/Roxas'
     pod 'Harmony', :path => 'External/Harmony'
 end

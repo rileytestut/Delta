@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Scheme
+   LastUpgradeVersion = "1010"
+   version = "1.3">
+   <BuildAction
+      parallelizeBuildables = "YES"
+      buildImplicitDependencies = "YES">
+      <BuildActionEntries>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "8A7F4FF3423E9FFEFC0ADF95"
+               BuildableName = "Delta.app"
+               BlueprintName = "Delta"
+               ReferencedContainer = "container:Delta.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "2E02F008D5816FA708BE6B3F"
+               BuildableName = "DeltaCore.framework"
+               BlueprintName = "DeltaCore"
+               ReferencedContainer = "container:Cores/DeltaCore/DeltaCore.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "1D78CEDFC5BFBC61D3A12EBF"
+               BuildableName = "MelonDSDeltaCore.framework"
+               BlueprintName = "MelonDSDeltaCore"
+               ReferencedContainer = "container:Cores/MelonDSDeltaCore/MelonDSDeltaCore.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "951B11AD8854FA2C81FCBAC5"
+               BuildableName = "liblibMelonDS.a"
+               BlueprintName = "libMelonDS"
+               ReferencedContainer = "container:Cores/MelonDSDeltaCore/MelonDSDeltaCore.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "719CC6CACC8B0F3C9AFCBE01"
+               BuildableName = "Mupen64PlusDeltaCore.framework"
+               BlueprintName = "Mupen64PlusDeltaCore"
+               ReferencedContainer = "container:Cores/Mupen64PlusDeltaCore/Mupen64PlusDeltaCore.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "4FCDF1525A9E4EA34E498825"
+               BuildableName = "liblibMupen64Plus.a"
+               BlueprintName = "libMupen64Plus"
+               ReferencedContainer = "container:Cores/Mupen64PlusDeltaCore/Mupen64PlusDeltaCore.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "71B6069812E218EFB88AFF39"
+               BuildableName = "mupen64plus_rsp_hle.framework"
+               BlueprintName = "mupen64plus-rsp-hle"
+               ReferencedContainer = "container:Cores/Mupen64PlusDeltaCore/Mupen64PlusDeltaCore.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "EE8519D622FF6043C176B375"
+               BuildableName = "mupen64plus_video_GLideN64.framework"
+               BlueprintName = "mupen64plus-video-GLideN64"
+               ReferencedContainer = "container:Cores/Mupen64PlusDeltaCore/Mupen64PlusDeltaCore.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "E0CA53C6377A86C40EF14DC4"
+               BuildableName = "DeSmuMEDeltaCore.framework"
+               BlueprintName = "DeSmuMEDeltaCore"
+               ReferencedContainer = "container:Cores/DeSmuMEDeltaCore/DeSmuMEDeltaCore.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "B2673C54CF3A55CA86EA7B76"
+               BuildableName = "liblibDeSMuME.a"
+               BlueprintName = "libDeSMuME"
+               ReferencedContainer = "container:Cores/DeSmuMEDeltaCore/DeSmuMEDeltaCore.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+      </BuildActionEntries>
+   </BuildAction>
+   <TestAction
+      buildConfiguration = "Debug"
+      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
+      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      disableMainThreadChecker = "YES">
+      <Testables>
+      </Testables>
+   </TestAction>
+   <LaunchAction
+      buildConfiguration = "Debug"
+      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
+      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      launchStyle = "0"
+      useCustomWorkingDirectory = "NO"
+      ignoresPersistentStateOnLaunch = "NO"
+      debugDocumentVersioning = "YES"
+      debugServiceExtension = "internal"
+      allowLocationSimulation = "YES">
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "8A7F4FF3423E9FFEFC0ADF95"
+            BuildableName = "Delta.app"
+            BlueprintName = "Delta"
+            ReferencedContainer = "container:Delta.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
+   </LaunchAction>
+   <ProfileAction
+      buildConfiguration = "Release"
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      savedToolIdentifier = ""
+      useCustomWorkingDirectory = "NO"
+      debugDocumentVersioning = "YES">
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "8A7F4FF3423E9FFEFC0ADF95"
+            BuildableName = "Delta.app"
+            BlueprintName = "Delta"
+            ReferencedContainer = "container:Delta.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
+   </ProfileAction>
+   <AnalyzeAction
+      buildConfiguration = "Debug">
+   </AnalyzeAction>
+   <ArchiveAction
+      buildConfiguration = "Release"
+      revealArchiveInOrganizer = "YES">
+   </ArchiveAction>
+</Scheme>

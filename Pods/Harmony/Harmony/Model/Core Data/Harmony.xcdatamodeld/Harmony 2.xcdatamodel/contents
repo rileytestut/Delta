@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="16119" systemVersion="19E287" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="LocalRecord" representedClassName="LocalRecord" syncable="YES">
+        <attribute name="additionalProperties" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData"/>
+        <attribute name="modificationDate" attributeType="Date"/>
+        <attribute name="recordedObjectIdentifier" attributeType="String"/>
+        <attribute name="recordedObjectType" attributeType="String"/>
+        <attribute name="recordedObjectURI" attributeType="URI"/>
+        <attribute name="sha1Hash" attributeType="String"/>
+        <attribute name="status" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="versionDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="versionIdentifier" optional="YES" attributeType="String"/>
+        <relationship name="managedRecord" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedRecord" inverseName="localRecord" inverseEntity="ManagedRecord"/>
+        <relationship name="remoteFiles" toMany="YES" deletionRule="Cascade" destinationEntity="RemoteFile" inverseName="localRecord" inverseEntity="RemoteFile"/>
+        <fetchIndex name="byRecordedObjectIdentifier">
+            <fetchIndexElement property="recordedObjectIdentifier" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <fetchIndex name="byRecordedObjectURI">
+            <fetchIndexElement property="recordedObjectURI" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="recordedObjectType"/>
+                <constraint value="recordedObjectIdentifier"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="ManagedAccount" representedClassName="ManagedAccount" syncable="YES">
+        <attribute name="changeToken" optional="YES" attributeType="Binary"/>
+        <attribute name="emailAddress" optional="YES" attributeType="String"/>
+        <attribute name="name" attributeType="String"/>
+        <attribute name="serviceIdentifier" attributeType="String"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="serviceIdentifier"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="ManagedRecord" representedClassName="ManagedRecord" syncable="YES">
+        <attribute name="isConflicted" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="isSyncingEnabled" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
+        <attribute name="recordedObjectIdentifier" attributeType="String"/>
+        <attribute name="recordedObjectType" attributeType="String"/>
+        <relationship name="localRecord" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="LocalRecord" inverseName="managedRecord" inverseEntity="LocalRecord"/>
+        <relationship name="remoteRecord" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="RemoteRecord" inverseName="managedRecord" inverseEntity="RemoteRecord"/>
+        <fetchIndex name="byRecordedObjectIdentifier">
+            <fetchIndexElement property="recordedObjectIdentifier" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="recordedObjectType"/>
+                <constraint value="recordedObjectIdentifier"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="RemoteFile" representedClassName="RemoteFile" syncable="YES">
+        <attribute name="identifier" attributeType="String"/>
+        <attribute name="remoteIdentifier" attributeType="String"/>
+        <attribute name="sha1Hash" attributeType="String"/>
+        <attribute name="size" attributeType="Integer 32" defaultValueString="0"/>
+        <attribute name="versionIdentifier" attributeType="String"/>
+        <relationship name="localRecord" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="LocalRecord" inverseName="remoteFiles" inverseEntity="LocalRecord"/>
+    </entity>
+    <entity name="RemoteRecord" representedClassName="RemoteRecord" syncable="YES">
+        <attribute name="author" optional="YES" attributeType="String"/>
+        <attribute name="identifier" attributeType="String"/>
+        <attribute name="isLocked" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="localizedName" optional="YES" attributeType="String"/>
+        <attribute name="metadata" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData"/>
+        <attribute name="previousVersionDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="previousVersionIdentifier" optional="YES" attributeType="String"/>
+        <attribute name="recordedObjectIdentifier" attributeType="String"/>
+        <attribute name="recordedObjectType" attributeType="String"/>
+        <attribute name="sha1Hash" attributeType="String"/>
+        <attribute name="status" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="versionDate" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="versionIdentifier" attributeType="String"/>
+        <relationship name="managedRecord" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedRecord" inverseName="remoteRecord" inverseEntity="ManagedRecord"/>
+        <fetchIndex name="byIdentifier">
+            <fetchIndexElement property="identifier" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="recordedObjectType"/>
+                <constraint value="recordedObjectIdentifier"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <configuration name="External"/>
+    <configuration name="Harmony">
+        <memberEntity name="ManagedRecord"/>
+        <memberEntity name="LocalRecord"/>
+        <memberEntity name="RemoteRecord"/>
+        <memberEntity name="RemoteFile"/>
+        <memberEntity name="ManagedAccount"/>
+    </configuration>
+    <elements>
+        <element name="LocalRecord" positionX="93.01953125" positionY="273.0234375" width="128" height="208"/>
+        <element name="ManagedAccount" positionX="288" positionY="360" width="128" height="105"/>
+        <element name="ManagedRecord" positionX="298.4375" positionY="225.49609375" width="128" height="133"/>
+        <element name="RemoteFile" positionX="288" positionY="378" width="128" height="135"/>
+        <element name="RemoteRecord" positionX="488.2578125" positionY="272.56640625" width="128" height="255"/>
+    </elements>
+</model>

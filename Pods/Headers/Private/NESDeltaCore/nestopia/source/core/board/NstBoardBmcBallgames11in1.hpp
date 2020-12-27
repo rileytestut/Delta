@@ -1,1 +1,0 @@
-../../../../../../../../Cores/NESDeltaCore/nestopia/source/core/board/NstBoardBmcBallgames11in1.hpp

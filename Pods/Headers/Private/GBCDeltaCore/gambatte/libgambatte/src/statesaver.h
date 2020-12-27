@@ -1,1 +1,0 @@
-../../../../../../../Cores/GBCDeltaCore/gambatte/libgambatte/src/statesaver.h

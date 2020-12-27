@@ -4,36 +4,22 @@
    <FileRef
       location = "group:Delta.xcodeproj">
    </FileRef>
-   <FileRef
-      location = "group:Cores/DeltaCore/DeltaCore.xcodeproj">
-   </FileRef>
-   <FileRef
-      location = "group:Cores/NESDeltaCore/NESDeltaCore.xcodeproj">
-   </FileRef>
-   <FileRef
-      location = "group:Cores/SNESDeltaCore/SNESDeltaCore.xcodeproj">
-   </FileRef>
-   <FileRef
-      location = "group:Cores/GBCDeltaCore/GBCDeltaCore.xcodeproj">
-   </FileRef>
-   <FileRef
-      location = "group:Cores/GBADeltaCore/GBADeltaCore.xcodeproj">
-   </FileRef>
-   <FileRef
-      location = "group:Cores/N64DeltaCore/N64DeltaCore.xcodeproj">
-   </FileRef>
-   <FileRef
-      location = "group:Cores/MelonDSDeltaCore/MelonDSDeltaCore.xcodeproj">
-   </FileRef>
-   <FileRef
-      location = "group:Cores/DSDeltaCore/DSDeltaCore.xcodeproj">
-   </FileRef>
-   <FileRef
-      location = "group:External/Harmony/Harmony.xcodeproj">
-   </FileRef>
-   <FileRef
-      location = "group:External/Roxas/Roxas.xcodeproj">
-   </FileRef>
+   <Group
+      location = "group:Cores"
+      name = "Cores">
+      <FileRef
+         location = "group:DeSmuMEDeltaCore/DeSmuMEDeltaCore.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:DeltaCore/DeltaCore.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:MelonDSDeltaCore/MelonDSDeltaCore.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:Mupen64PlusDeltaCore/Mupen64PlusDeltaCore.xcodeproj">
+      </FileRef>
+   </Group>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">
    </FileRef>

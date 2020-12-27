@@ -1,1 +1,0 @@
-../../../../../../Cores/N64DeltaCore/N64DeltaCore/Bridge/N64EmulatorBridge.h

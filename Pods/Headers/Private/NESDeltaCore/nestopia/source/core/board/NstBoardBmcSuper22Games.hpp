@@ -1,1 +1,0 @@
-../../../../../../../../Cores/NESDeltaCore/nestopia/source/core/board/NstBoardBmcSuper22Games.hpp

@@ -1,1 +1,0 @@
-../../../../../../../../Cores/GBADeltaCore/SFML/include/SFML/Graphics/Vertex.hpp

@@ -1,1 +1,0 @@
-../../../../../../Cores/SNESDeltaCore/SNESDeltaCore/Types/SNESTypes.h
