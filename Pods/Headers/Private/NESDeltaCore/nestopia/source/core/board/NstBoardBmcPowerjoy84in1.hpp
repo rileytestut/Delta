@@ -1,1 +1,0 @@
-../../../../../../../../Cores/NESDeltaCore/nestopia/source/core/board/NstBoardBmcPowerjoy84in1.hpp

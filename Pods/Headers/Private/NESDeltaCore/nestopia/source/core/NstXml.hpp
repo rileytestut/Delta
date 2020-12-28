@@ -1,1 +1,0 @@
-../../../../../../../Cores/NESDeltaCore/nestopia/source/core/NstXml.hpp

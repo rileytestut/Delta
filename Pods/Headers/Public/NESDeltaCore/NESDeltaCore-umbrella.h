@@ -1,1 +1,0 @@
-../../../Target Support Files/NESDeltaCore/NESDeltaCore-umbrella.h

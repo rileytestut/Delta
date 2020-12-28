@@ -1,6 +1,0 @@
-module SNESDeltaCore {
-  umbrella header "SNESDeltaCore-umbrella.h"
-
-  export *
-  module * { export * }
-}

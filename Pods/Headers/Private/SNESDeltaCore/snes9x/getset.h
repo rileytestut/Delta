@@ -1,1 +1,0 @@
-../../../../../Cores/SNESDeltaCore/snes9x/getset.h

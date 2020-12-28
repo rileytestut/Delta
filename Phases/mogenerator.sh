@@ -1,0 +1,1 @@
+/usr/local/bin/mogenerator -m "Sources/Database/Model/Delta.xcdatamodeld" --human-dir "Sources/Database/Model/Human" --machine-dir "Sources/Database/Model/Machine" --swift --template-var scalarsWhenNonOptional=true --template-path "Sources/Database/Model/mogenerator/templates"

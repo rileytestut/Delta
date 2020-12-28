@@ -1,1 +1,0 @@
-../../../../../../Cores/GBCDeltaCore/gambatte/common/scoped_ptr.h

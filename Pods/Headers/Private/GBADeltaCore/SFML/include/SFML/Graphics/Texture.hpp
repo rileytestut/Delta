@@ -1,1 +1,0 @@
-../../../../../../../../Cores/GBADeltaCore/SFML/include/SFML/Graphics/Texture.hpp

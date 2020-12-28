@@ -1,1 +1,0 @@
-../../../../../../../Cores/GBCDeltaCore/gambatte/libgambatte/include/pakinfo.h

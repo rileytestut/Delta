@@ -1,1 +1,0 @@
-../../../../../../Cores/GBADeltaCore/GBADeltaCore/Bridge/GBAEmulatorBridge.h

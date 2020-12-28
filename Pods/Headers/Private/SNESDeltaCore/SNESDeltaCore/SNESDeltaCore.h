@@ -1,1 +1,0 @@
-../../../../../Cores/SNESDeltaCore/SNESDeltaCore/SNESDeltaCore.h

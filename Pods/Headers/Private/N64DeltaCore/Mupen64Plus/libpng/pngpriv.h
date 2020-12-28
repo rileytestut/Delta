@@ -1,1 +1,0 @@
-../../../../../../Cores/N64DeltaCore/Mupen64Plus/libpng/pngpriv.h

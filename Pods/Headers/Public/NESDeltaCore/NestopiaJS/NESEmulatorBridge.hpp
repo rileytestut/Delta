@@ -1,1 +1,0 @@
-../../../../../Cores/NESDeltaCore/NestopiaJS/NESEmulatorBridge.hpp

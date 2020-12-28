@@ -1,1 +1,0 @@
-../../../../../../Cores/N64DeltaCore/libMupen64Plus/SDL/SDL.h

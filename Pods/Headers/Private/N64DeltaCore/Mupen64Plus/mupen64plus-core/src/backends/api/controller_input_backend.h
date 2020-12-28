@@ -1,1 +1,0 @@
-../../../../../../../../../Cores/N64DeltaCore/Mupen64Plus/mupen64plus-core/src/backends/api/controller_input_backend.h
