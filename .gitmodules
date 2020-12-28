@@ -19,12 +19,6 @@
 [submodule "Cores/Mupen64PlusDeltaCore/Mupen64Plus/GLideN64"]
 	path = Cores/Mupen64PlusDeltaCore/Mupen64Plus/GLideN64
 	url = git@github.com:rileytestut/GLideN64.git
-[submodule "External/Harmony"]
-	path = External/Harmony
-	url = git@github.com:rileytestut/Harmony.git
-[submodule "External/Roxas"]
-	path = External/Roxas
-	url = git@github.com:rileytestut/Roxas.git
 [submodule "Cores/Mupen64PlusDeltaCore/Mupen64Plus/libpng"]
 	path = Cores/Mupen64PlusDeltaCore/Mupen64Plus/libpng
 	url = git://git.code.sf.net/p/libpng/code
@@ -34,3 +28,9 @@
 [submodule "Cores/DeSmuMEDeltaCore/desmume"]
 	path = Cores/DeSmuMEDeltaCore/desmume
 	url = git@github.com:TASVideos/desmume.git
+[submodule "External/Harmony"]
+	path = External/Harmony
+	url = git@github.com:rileytestut/Harmony.git
+[submodule "External/Roxas"]
+	path = External/Roxas
+	url = git@github.com:rileytestut/Roxas.git
