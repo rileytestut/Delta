@@ -115,8 +115,8 @@ private extension AppIconShortcutsViewController
         self.dataSource.rowAnimation = .fade
         
         let placeholderView = RSTPlaceholderView()
-        placeholderView.textLabel.text = NSLocalizedString("No App Icon Shortcuts", comment: "")
-        placeholderView.detailTextLabel.text = NSLocalizedString("You can customize the shortcuts that appear when 3D Touching the app icon once you've added some games.", comment: "")
+        placeholderView.textLabel.text = NSLocalizedString("No Home Screen Shortcuts", comment: "")
+        placeholderView.detailTextLabel.text = NSLocalizedString("You can customize the shortcuts that appear when long-pressing the app icon once you've added some games.", comment: "")
         self.dataSource.placeholderView = placeholderView
     }
     
@@ -265,8 +265,8 @@ extension AppIconShortcutsViewController
         
         switch (section, Settings.gameShortcutsMode)
         {
-        case (0, .recent): return NSLocalizedString("Your most recently played games will appear as shortcuts when 3D touching the app icon.", comment: "")
-        case (0, .manual): return NSLocalizedString("The games you've selected below will appear as shortcuts when 3D touching the app icon.", comment: "")
+        case (0, .recent): return NSLocalizedString("Your most recently played games will appear as shortcuts when long-pressing the app icon.", comment: "")
+        case (0, .manual): return NSLocalizedString("The games you've selected below will appear as shortcuts when long-pressing the app icon.", comment: "")
         case (1, .recent) where self.shortcutsDataSource.itemCount == 0: return NSLocalizedString("You have no recently played games.", comment: "")
         case (1, .recent): return " " // Return non-empty string since empty string changes vertical offset of section for some reason.
         case (1, .manual): return NSLocalizedString("You may have up to 4 shortcuts.", comment: "")
