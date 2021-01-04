@@ -186,7 +186,17 @@ private extension SettingsViewController
     {
         switch section
         {
-        case .hapticTouch: return self.view.traitCollection.forceTouchCapability != .available
+        case .hapticTouch:
+            if #available(iOS 13, *)
+            {
+                // All devices on iOS 13 support either 3D touch or Haptic Touch.
+                return false
+            }
+            else
+            {
+                return self.view.traitCollection.forceTouchCapability != .available
+            }
+            
         default: return false
         }
     }
