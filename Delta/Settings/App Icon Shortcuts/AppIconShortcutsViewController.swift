@@ -197,11 +197,9 @@ private extension AppIconShortcutsViewController
     func addShortcut(for game: Game)
     {
         guard self.shortcutsDataSource.items.count < 4 else { return }
-        
         guard !self.shortcutsDataSource.items.contains(game) else { return }
         
-        // No need to adjust destinationIndexPath, since it forwards change directly to table view.
-        let destinationIndexPath = IndexPath(row: self.shortcutsDataSource.items.count, section: 1)
+        let destinationIndexPath = IndexPath(row: self.shortcutsDataSource.items.count, section: 0)
         
         let insertion = RSTCellContentChange(type: .insert, currentIndexPath: nil, destinationIndexPath: destinationIndexPath)
         insertion.rowAnimation = .fade
@@ -295,11 +293,13 @@ extension AppIconShortcutsViewController
         {
         case .none: break
         case .delete:
-            let deletion = RSTCellContentChange(type: .delete, currentIndexPath: indexPath, destinationIndexPath: nil)
+            let adjustedIndexPath = IndexPath(row: indexPath.row, section: 0)
+            
+            let deletion = RSTCellContentChange(type: .delete, currentIndexPath: adjustedIndexPath, destinationIndexPath: nil)
             deletion.rowAnimation = .fade
             
             var shortcuts = self.shortcutsDataSource.items
-            shortcuts.remove(at: indexPath.row) // No need to adjust indexPath, since it forwards change directly to table view.
+            shortcuts.remove(at: adjustedIndexPath.row)
             self.shortcutsDataSource.setItems(shortcuts, with: [deletion])
             
         case .insert:
