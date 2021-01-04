@@ -57,6 +57,7 @@ class SettingsViewController: UITableViewController
     
     @IBOutlet private var buttonHapticFeedbackEnabledSwitch: UISwitch!
     @IBOutlet private var thumbstickHapticFeedbackEnabledSwitch: UISwitch!
+    @IBOutlet private var previewsEnabledSwitch: UISwitch!
     
     @IBOutlet private var versionLabel: UILabel!
     
@@ -172,6 +173,7 @@ private extension SettingsViewController
         
         self.buttonHapticFeedbackEnabledSwitch.isOn = Settings.isButtonHapticFeedbackEnabled
         self.thumbstickHapticFeedbackEnabledSwitch.isOn = Settings.isThumbstickHapticFeedbackEnabled
+        self.previewsEnabledSwitch.isOn = Settings.isPreviewsEnabled
         
         self.tableView.reloadData()
     }
@@ -238,6 +240,11 @@ private extension SettingsViewController
     @IBAction func toggleThumbstickHapticFeedbackEnabled(_ sender: UISwitch)
     {
         Settings.isThumbstickHapticFeedbackEnabled = sender.isOn
+    }
+    
+    @IBAction func togglePreviewsEnabled(_ sender: UISwitch)
+    {
+        Settings.isPreviewsEnabled = sender.isOn
     }
     
     func openTwitter(username: String)

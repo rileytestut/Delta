@@ -926,14 +926,14 @@ extension GameCollectionViewController
         let actions = self.actions(for: game)
         
         return UIContextMenuConfiguration(identifier: indexPath as NSIndexPath, previewProvider: { [weak self] in
-            guard let self = self else { return nil }
+            guard let self = self, Settings.isPreviewsEnabled else { return nil }
                         
             let previewViewController = self.makePreviewGameViewController(for: game)
             self._previewTransitionViewController = previewViewController
             
             return previewViewController
         }) { suggestedActions in
-            return UIMenu(title: "", children: actions.menuActions)
+            return UIMenu(title: game.name, children: actions.menuActions)
         }
     }
     

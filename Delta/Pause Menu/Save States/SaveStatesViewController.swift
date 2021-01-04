@@ -769,14 +769,14 @@ extension SaveStatesViewController
         guard let actions = self.actionsForSaveState(saveState) else { return nil }
         
         return UIContextMenuConfiguration(identifier: indexPath as NSIndexPath, previewProvider: { [weak self] in
-            guard let self = self else { return nil }
+            guard let self = self, Settings.isPreviewsEnabled else { return nil }
             
             let previewGameViewController = self.makePreviewGameViewController(for: saveState)
             self._previewTransitionViewController = previewGameViewController
             
             return previewGameViewController
         }) { suggestedActions in
-            return UIMenu(title: "", children: actions.menuActions)
+            return UIMenu(title: saveState.localizedName, children: actions.menuActions)
         }
     }
     

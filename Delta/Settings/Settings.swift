@@ -60,6 +60,7 @@ struct Settings
                         #keyPath(UserDefaults.isButtonHapticFeedbackEnabled): true,
                         #keyPath(UserDefaults.isThumbstickHapticFeedbackEnabled): true,
                         #keyPath(UserDefaults.sortSaveStatesByOldestFirst): true,
+                        #keyPath(UserDefaults.isPreviewsEnabled): true,
                         Settings.preferredCoreSettingsKey(for: .ds): DS.core.identifier] as [String : Any]
         UserDefaults.standard.register(defaults: defaults)
     }
@@ -179,6 +180,14 @@ extension Settings
         get {
             let sortByOldestFirst = UserDefaults.standard.sortSaveStatesByOldestFirst
             return sortByOldestFirst
+        }
+    }
+    
+    static var isPreviewsEnabled: Bool {
+        set { UserDefaults.standard.isPreviewsEnabled = newValue }
+        get {
+            let isPreviewsEnabled = UserDefaults.standard.isPreviewsEnabled
+            return isPreviewsEnabled
         }
     }
     
@@ -374,4 +383,6 @@ private extension UserDefaults
     @NSManaged var isThumbstickHapticFeedbackEnabled: Bool
     
     @NSManaged var sortSaveStatesByOldestFirst: Bool
+    
+    @NSManaged var isPreviewsEnabled: Bool
 }
