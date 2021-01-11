@@ -821,9 +821,16 @@ extension GameCollectionViewController: UIViewControllerPreviewingDelegate
         gameViewController.pauseEmulation()
         
         let indexPath = self.dataSource.fetchedResultsController.indexPath(forObject: game)!
-
         let fileURL = FileManager.default.uniqueTemporaryURL()
-        self.activeSaveState = gameViewController.emulatorCore?.saveSaveState(to: fileURL)
+        
+        if gameViewController.isLivePreview
+        {
+            self.activeSaveState = gameViewController.emulatorCore?.saveSaveState(to: fileURL)
+        }
+        else
+        {
+            self.activeSaveState = gameViewController.previewSaveState
+        }
         
         gameViewController.emulatorCore?.stop()
         
@@ -831,13 +838,16 @@ extension GameCollectionViewController: UIViewControllerPreviewingDelegate
         
         self.launchGame(at: indexPath, clearScreen: true, ignoreAlreadyRunningError: true)
         
-        do
+        if gameViewController.isLivePreview
         {
-            try FileManager.default.removeItem(at: fileURL)
-        }
-        catch
-        {
-            print(error)
+            do
+            {
+                try FileManager.default.removeItem(at: fileURL)
+            }
+            catch
+            {
+                print(error)
+            }
         }
     }
 }
@@ -926,9 +936,12 @@ extension GameCollectionViewController
         let actions = self.actions(for: game)
         
         return UIContextMenuConfiguration(identifier: indexPath as NSIndexPath, previewProvider: { [weak self] in
-            guard let self = self, Settings.isPreviewsEnabled else { return nil }
+            guard let self = self else { return nil }
                         
             let previewViewController = self.makePreviewGameViewController(for: game)
+            previewViewController.isLivePreview = Settings.isPreviewsEnabled
+            
+            guard previewViewController.isLivePreview || previewViewController.previewSaveState != nil else { return nil }
             self._previewTransitionViewController = previewViewController
             
             return previewViewController

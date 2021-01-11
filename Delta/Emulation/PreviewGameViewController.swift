@@ -27,6 +27,8 @@ class PreviewGameViewController: DeltaCore.GameViewController
         }
     }
     
+    var isLivePreview: Bool = true
+    
     private var emulatorCoreQueue = DispatchQueue(label: "com.rileytestut.Delta.PreviewGameViewController.emulatorCoreQueue", qos: .userInitiated)
     private var copiedSaveFiles = [(originalURL: URL, copyURL: URL)]()
     
@@ -58,6 +60,20 @@ class PreviewGameViewController: DeltaCore.GameViewController
         return previewActionItems
     }
     
+    public required init()
+    {
+        super.init()
+        
+        self.delegate = self
+    }
+    
+    public required init?(coder aDecoder: NSCoder)
+    {
+        super.init(coder: aDecoder)
+        
+        self.delegate = self
+    }
+    
     deinit
     {
         // Explicitly stop emulatorCore _before_ we remove ourselves as observer
@@ -77,6 +93,7 @@ extension PreviewGameViewController
         super.viewDidLoad()
         
         self.controllerView.isHidden = true
+        self.controllerView.controllerSkin = nil // Skip loading controller skin from disk, which may be slow.
         
         // Temporarily prevent emulatorCore from updating gameView to prevent flicker of black, or other visual glitches
         self.emulatorCore?.remove(self.gameView)
@@ -94,7 +111,7 @@ extension PreviewGameViewController
         super.viewDidAppear(animated)
         
         self.emulatorCoreQueue.async {
-            self.emulatorCore?.start()
+            self.startEmulation()
         }
     }
     
@@ -262,5 +279,13 @@ private extension PreviewGameViewController
                 print("Failed to remove preview temporary directory.", error)
             }
         }
+    }
+}
+
+extension PreviewGameViewController: GameViewControllerDelegate
+{
+    func gameViewControllerShouldResumeEmulation(_ gameViewController: DeltaCore.GameViewController) -> Bool
+    {
+        return self.isLivePreview
     }
 }
