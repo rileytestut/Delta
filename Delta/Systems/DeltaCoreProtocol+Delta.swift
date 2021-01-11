@@ -60,16 +60,18 @@ struct DeltaCoreMetadata
 extension DeltaCoreProtocol
 {
     var supportedRates: ClosedRange<Double> {
+        return 1...self.maximumFastForwardSpeed
+    }
+    
+    private var maximumFastForwardSpeed: Double {
         switch self
         {
-        case NES.core: return 1...4
-        case SNES.core: return 1...4
-        case GBC.core: return 1...4
-        case GBA.core: return 1...3
-        case N64.core: return 1...3
-        case DS.core: return 1...3
-        case MelonDS.core: return 1...2
-        default: return 1...2
+        case NES.core, SNES.core, GBC.core: return 4
+        case GBA.core: return 3
+        case N64.core where UIDevice.current.hasA9ProcessorOrBetter: return 3
+        case DS.core where UIDevice.current.supportsJIT: return 3
+        case DS.core where UIDevice.current.hasA11ProcessorOrBetter: return 2
+        default: return 1
         }
     }
     

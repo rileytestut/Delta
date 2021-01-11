@@ -409,20 +409,17 @@ extension GameViewController
                 self.pausingGameController = gameController
             }
             
+            if self.emulatorCore?.deltaCore.supportedRates.upperBound == 1
+            {
+                pauseViewController.fastForwardItem = nil
+            }
+            
             switch self.game?.type
             {
-            case .n64? where !UIDevice.current.hasA9ProcessorOrBetter:
-                // A8 processors and earlier aren't powerful enough to run N64 games faster than 1x speed.
-                pauseViewController.fastForwardItem = nil
-            
             case .ds? where self.emulatorCore?.deltaCore == DS.core:
                 // Cheats are not supported by DeSmuME core.
                 pauseViewController.cheatCodesItem = nil
-                
-            case .ds? where !UIDevice.current.hasA9ProcessorOrBetter:
-                // A8 processors and earlier aren't powerful enough to run DS games faster than 1x speed.
-                pauseViewController.fastForwardItem = nil
-                
+
             default: break
             }
             

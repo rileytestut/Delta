@@ -8,13 +8,21 @@
 
 import UIKit
 import ARKit
+import Metal
 
 extension UIDevice
 {
+    private static var mtlDevice: MTLDevice? = MTLCreateSystemDefaultDevice()
+    
     var hasA9ProcessorOrBetter: Bool {
         // ARKit is only supported by devices with an A9 processor or better, according to the documentation.
         // https://developer.apple.com/documentation/arkit/arconfiguration/2923553-issupported
         return ARConfiguration.isSupported
+    }
+    
+    var hasA11ProcessorOrBetter: Bool {
+        guard let mtlDevice = UIDevice.mtlDevice else { return false }
+        return mtlDevice.supportsFeatureSet(.iOS_GPUFamily4_v1) // iOS GPU Family 4 = A11 GPU
     }
     
     var supportsJIT: Bool {
