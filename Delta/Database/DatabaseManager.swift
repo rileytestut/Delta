@@ -122,6 +122,26 @@ extension DatabaseManager
                     return nil
                 }
                 
+                switch identifier
+                {
+                case Game.melonDSBIOSIdentifier:
+                    guard
+                        FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.bios7URL.path) &&
+                        FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.bios9URL.path) &&
+                        FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.firmwareURL.path)
+                    else { return nil }
+                    
+                case Game.melonDSDSiBIOSIdentifier:
+                    guard
+                        FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.dsiBIOS7URL.path) &&
+                        FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.dsiBIOS9URL.path) &&
+                        FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.dsiFirmwareURL.path) &&
+                        FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.dsiNANDURL.path)
+                    else { return nil }
+                    
+                default: break
+                }
+                
                 let bios = Game(context: context)
                 bios.name = name
                 bios.identifier = identifier
