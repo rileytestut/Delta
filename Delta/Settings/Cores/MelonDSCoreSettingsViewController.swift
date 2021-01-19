@@ -9,6 +9,7 @@
 import UIKit
 import SafariServices
 import MobileCoreServices
+import CryptoKit
 
 import DeltaCore
 import MelonDSDeltaCore
@@ -27,44 +28,77 @@ private extension MelonDSCoreSettingsViewController
         case changeCore
     }
     
-    enum DSBIOS: Int
+    enum BIOSError: LocalizedError
     {
-        case bios7
-        case bios9
-        case firmware
+        case unknownSize(URL)
+        case incorrectHash(URL, hash: String, expectedHash: String)
         
-        var fileURL: URL {
+        @available(iOS 13, *)
+        case incorrectSize(URL, size: Int, validSizes: Set<ClosedRange<Measurement<UnitInformationStorage>>>)
+                
+        private static let byteFormatter: ByteCountFormatter = {
+            let formatter = ByteCountFormatter()
+            formatter.includesActualByteCount = true
+            formatter.countStyle = .binary
+            return formatter
+        }()
+        
+        var errorDescription: String? {
             switch self
             {
-            case .bios7: return MelonDSEmulatorBridge.shared.bios7URL
-            case .bios9: return MelonDSEmulatorBridge.shared.bios9URL
-            case .firmware: return MelonDSEmulatorBridge.shared.firmwareURL
+            case .unknownSize(let fileURL):
+                return String(format: NSLocalizedString("%@’s size could not be determined.", comment: ""), fileURL.lastPathComponent)
+                
+            case .incorrectHash(let fileURL, let md5Hash, let expectedHash):
+                return String(format: NSLocalizedString("%@‘s hash does not match the expected hash.\n\nHash:\n%@\n\nExpected:\n%@.", comment: ""), fileURL.lastPathComponent, md5Hash, expectedHash)
+                
+            case .incorrectSize(let fileURL, let size, let validSizes):
+                let actualSize = BIOSError.byteFormatter.string(fromByteCount: Int64(size))
+                
+                if let range = validSizes.first, validSizes.count == 1
+                {
+                    if range.lowerBound == range.upperBound
+                    {
+                        // Single value
+                        let expectedSize = BIOSError.byteFormatter.string(fromByteCount: Int64(range.lowerBound.converted(to: .bytes).value))
+                        return String(format: NSLocalizedString("%@ is %@, but expected size is %@.", comment: ""), fileURL.lastPathComponent, actualSize, expectedSize)
+                    }
+                    else
+                    {
+                        // Range
+                        BIOSError.byteFormatter.includesActualByteCount = false
+                        defer { BIOSError.byteFormatter.includesActualByteCount = true }
+                        
+                        let lowerBound = BIOSError.byteFormatter.string(fromByteCount: Int64(range.lowerBound.converted(to: .bytes).value))
+                        let upperBound = BIOSError.byteFormatter.string(fromByteCount: Int64(range.upperBound.converted(to: .bytes).value))
+                        return String(format: NSLocalizedString("%@ is %@, but expected size is between %@ and %@.", comment: ""), fileURL.lastPathComponent, actualSize, lowerBound, upperBound)
+                    }
+                }
+                else
+                {
+                    var description = String(format: NSLocalizedString("%@ is %@, but expected sizes are:", comment: ""), fileURL.lastPathComponent, actualSize) + "\n"
+                    
+                    let sortedRanges = validSizes.sorted(by: { $0.lowerBound < $1.lowerBound })
+                    for range in sortedRanges
+                    {
+                        // Assume BIOS with multiple valid file sizes don't use (>1 count) ranges.
+                        description += "\n" + BIOSError.byteFormatter.string(fromByteCount: Int64(range.lowerBound.converted(to: .bytes).value))
+                    }
+                    
+                    return description
+                }
             }
         }
-    }
-    
-    enum DSiBIOS: Int
-    {
-        case bios7
-        case bios9
-        case firmware
-        case nand
         
-        var fileURL: URL {
-            switch self
-            {
-            case .bios7: return MelonDSEmulatorBridge.shared.dsiBIOS7URL
-            case .bios9: return MelonDSEmulatorBridge.shared.dsiBIOS9URL
-            case .firmware: return MelonDSEmulatorBridge.shared.dsiFirmwareURL
-            case .nand: return MelonDSEmulatorBridge.shared.dsiNANDURL
-            }
+        var recoverySuggestion: String? {
+            return NSLocalizedString("Please choose a different BIOS file.", comment: "")
         }
     }
 }
 
 class MelonDSCoreSettingsViewController: UITableViewController
 {
-    private var importDestinationURL: URL?
+    private var importingBIOS: SystemBIOS?
     
     override func viewDidLoad()
     {
@@ -121,9 +155,9 @@ private extension MelonDSCoreSettingsViewController
         self.present(safariViewController, animated: true, completion: nil)
     }
     
-    func locateBIOS(for destinationURL: URL)
+    func locate<BIOS: SystemBIOS>(_ bios: BIOS)
     {
-        self.importDestinationURL = destinationURL
+        self.importingBIOS = bios
         
         var supportedTypes = [kUTTypeItem as String, kUTTypeContent as String, "com.apple.macbinary-archive" /* System UTI for .bin */]
         
@@ -220,7 +254,7 @@ extension MelonDSCoreSettingsViewController
             cell.contentView.isHidden = (item == nil)
             
         case .dsBIOS:
-            let bios = DSBIOS(rawValue: indexPath.row)!
+            let bios = DSBIOS.allCases[indexPath.row]
             
             if FileManager.default.fileExists(atPath: bios.fileURL.path)
             {
@@ -238,7 +272,7 @@ extension MelonDSCoreSettingsViewController
             cell.selectionStyle = .default
             
         case .dsiBIOS:
-            let bios = DSiBIOS(rawValue: indexPath.row)!
+            let bios = DSiBIOS.allCases[indexPath.row]
             
             if FileManager.default.fileExists(atPath: bios.fileURL.path)
             {
@@ -288,12 +322,12 @@ extension MelonDSCoreSettingsViewController
             self.openMetadataURL(for: key)
             
         case .dsBIOS:
-            let bios = DSBIOS(rawValue: indexPath.row)!
-            self.locateBIOS(for: bios.fileURL)
+            let bios = DSBIOS.allCases[indexPath.row]
+            self.locate(bios)
             
         case .dsiBIOS:
-            let bios = DSiBIOS(rawValue: indexPath.row)!
-            self.locateBIOS(for: bios.fileURL)
+            let bios = DSiBIOS.allCases[indexPath.row]
+            self.locate(bios)
             
         case .changeCore:
             self.changeCore()
@@ -374,28 +408,58 @@ extension MelonDSCoreSettingsViewController: UIDocumentPickerDelegate
 {
     func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController)
     {
-        self.importDestinationURL = nil
+        self.importingBIOS = nil
         self.tableView.reloadData() // Reloading index path causes cell to disappear...
     }
     
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL])
     {
         defer {
-            self.importDestinationURL = nil
+            self.importingBIOS = nil
             self.tableView.reloadData() // Reloading index path causes cell to disappear...
         }
         
-        guard let fileURL = urls.first, let destinationURL = self.importDestinationURL else { return }
+        guard let fileURL = urls.first, let bios = self.importingBIOS else { return }
+        
+        defer { try? FileManager.default.removeItem(at: fileURL) }
         
         do
         {
-            try FileManager.default.copyItem(at: fileURL, to: destinationURL, shouldReplace: true)
+            if #available(iOS 13.0, *)
+            {
+                // Validate file size first (since that's easiest for users to understand).
+                
+                let attributes = try FileManager.default.attributesOfItem(atPath: fileURL.path)
+                guard let fileSize = attributes[.size] as? Int else { throw BIOSError.unknownSize(fileURL) }
+                
+                let measurement = Measurement<UnitInformationStorage>(value: Double(fileSize), unit: .bytes)
+                guard bios.validFileSizes.contains(where: { $0.contains(measurement) }) else { throw BIOSError.incorrectSize(fileURL, size: fileSize, validSizes: bios.validFileSizes) }
+                
+                if let expectedMD5Hash = bios.expectedMD5Hash
+                {
+                    // If there's an expected hash, make sure it matches.
+                    
+                    let data = try Data(contentsOf: fileURL)
+                    
+                    let md5Hash = Insecure.MD5.hash(data: data)
+                    let hashString = md5Hash.compactMap { String(format: "%02x", $0) }.joined()
+                    guard hashString == expectedMD5Hash else { throw BIOSError.incorrectHash(fileURL, hash: hashString, expectedHash: expectedMD5Hash) }
+                }
+            }
+            
+            try FileManager.default.copyItem(at: fileURL, to: bios.fileURL, shouldReplace: true)
         }
-        catch
+        catch let error as NSError
         {
-            let title = String(format: NSLocalizedString("Could not import %@.", comment: ""), fileURL.lastPathComponent)
+            let title = String(format: NSLocalizedString("Could not import %@.", comment: ""), bios.filename)
 
-            let alertController = UIAlertController(title: title, message: error.localizedDescription, preferredStyle: .alert)
+            var message = error.localizedDescription
+            if let recoverySuggestion = error.localizedRecoverySuggestion
+            {
+                message += "\n\n" + recoverySuggestion
+            }
+            
+            let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
             alertController.addAction(.ok)
             self.present(alertController, animated: true, completion: nil)
         }
