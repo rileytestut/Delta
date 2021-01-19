@@ -937,6 +937,16 @@ extension GameCollectionViewController
         
         return UIContextMenuConfiguration(identifier: indexPath as NSIndexPath, previewProvider: { [weak self] in
             guard let self = self else { return nil }
+            
+            do
+            {
+                try self.validateLaunchingGame(game, ignoringErrors: [LaunchError.alreadyRunning])
+            }
+            catch
+            {
+                print("Error trying to preview game:", error)
+                return nil
+            }
                         
             let previewViewController = self.makePreviewGameViewController(for: game)
             previewViewController.isLivePreview = Settings.isPreviewsEnabled
