@@ -70,8 +70,8 @@ extension DeltaCoreProtocol
         case GBA.core: return 3
         case N64.core where UIDevice.current.hasA11ProcessorOrBetter: return 3
         case N64.core where UIDevice.current.hasA9ProcessorOrBetter: return 1.5
-        case DS.core where UIDevice.current.supportsJIT: return 3
-        case DS.core where UIDevice.current.hasA11ProcessorOrBetter: return 2
+        case MelonDS.core where UIDevice.current.supportsJIT: return 3
+        case MelonDS.core where UIDevice.current.hasA11ProcessorOrBetter: return 2
         default: return 1
         }
     }
