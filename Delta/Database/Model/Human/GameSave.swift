@@ -8,6 +8,8 @@
 
 import Foundation
 
+import GBCDeltaCore
+
 import Harmony
 
 @objc(GameSave)
