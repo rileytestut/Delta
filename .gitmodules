@@ -28,3 +28,6 @@
 [submodule "Cores/MelonDSDeltaCore"]
 	path = Cores/MelonDSDeltaCore
 	url = https://github.com/rileytestut/MelonDSDeltaCore.git
+[submodule "Cores/GPGXDeltaCore"]
+	path = Cores/GPGXDeltaCore
+	url = https://github.com/rileytestut/GPGXDeltaCore.git

@@ -29,6 +29,9 @@
       location = "group:Cores/DSDeltaCore/DSDeltaCore.xcodeproj">
    </FileRef>
    <FileRef
+      location = "group:Cores/GPGXDeltaCore">
+   </FileRef>
+   <FileRef
       location = "group:External/Harmony/Harmony.xcodeproj">
    </FileRef>
    <FileRef
