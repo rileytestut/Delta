@@ -356,13 +356,17 @@ extension GamesViewController: ImportControllerDelegate
     {        
         var documentTypes = Set(System.registeredSystems.map { $0.gameType.rawValue })
         documentTypes.insert(kUTTypeZipArchive as String)
+        documentTypes.insert("com.rileytestut.delta.skin")
+        
+        #if BETA
+        // .bin files (Genesis ROMs)
+        documentTypes.insert("com.apple.macbinary-archive")
+        #endif
         
         // Add GBA4iOS's exported UTIs in case user has GBA4iOS installed (which may override Delta's UTI declarations)
         documentTypes.insert("com.rileytestut.gba")
         documentTypes.insert("com.rileytestut.gbc")
         documentTypes.insert("com.rileytestut.gb")
-        
-        documentTypes.insert("com.rileytestut.delta.skin")
         
         let itunesImportOption = iTunesImportOption(presentingViewController: self)
         
