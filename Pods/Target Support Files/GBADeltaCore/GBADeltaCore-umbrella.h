@@ -12,6 +12,7 @@
 
 #import "GBADeltaCore/Types/GBATypes.h"
 #import "GBADeltaCore/Bridge/GBAEmulatorBridge.h"
+#import "GBADeltaCore/GBADeltaCore.h"
 
 FOUNDATION_EXPORT double GBADeltaCoreVersionNumber;
 FOUNDATION_EXPORT const unsigned char GBADeltaCoreVersionString[];

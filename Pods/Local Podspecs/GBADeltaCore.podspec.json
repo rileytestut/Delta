@@ -26,13 +26,15 @@
   ],
   "public_header_files": [
     "GBADeltaCore/Types/GBATypes.h",
-    "GBADeltaCore/Bridge/GBAEmulatorBridge.h"
+    "GBADeltaCore/Bridge/GBAEmulatorBridge.h",
+    "GBADeltaCore/GBADeltaCore.h"
   ],
   "header_mappings_dir": "",
   "resource_bundles": {
     "GBADeltaCore": [
       "GBADeltaCore/**/*.deltamapping",
-      "GBADeltaCore/**/*.deltaskin"
+      "GBADeltaCore/**/*.deltaskin",
+      "visualboyadvance-m/src/vba-over.ini"
     ]
   },
   "dependencies": {
@@ -42,6 +44,7 @@
   },
   "xcconfig": {
     "HEADER_SEARCH_PATHS": "\"${PODS_CONFIGURATION_BUILD_DIR}\" \"$(PODS_ROOT)/Headers/Private/GBADeltaCore/SFML/include\" \"$(PODS_ROOT)/Headers/Private/GBADeltaCore/SFML/src\"",
-    "USER_HEADER_SEARCH_PATHS": "\"$(PODS_ROOT)/Headers/Private/GBADeltaCore/visualboyadvance-m/fex\" \"$(PODS_ROOT)/Headers/Private/GBADeltaCore/visualboyadvance-m/src\""
+    "USER_HEADER_SEARCH_PATHS": "\"$(PODS_ROOT)/Headers/Private/GBADeltaCore/visualboyadvance-m/fex\" \"$(PODS_ROOT)/Headers/Private/GBADeltaCore/visualboyadvance-m/src\"",
+    "GCC_PREPROCESSOR_DEFINITIONS": "STATIC_LIBRARY=1"
   }
 }

@@ -43,6 +43,6 @@
   "xcconfig": {
     "HEADER_SEARCH_PATHS": "\"${PODS_CONFIGURATION_BUILD_DIR}\" \"$(PODS_ROOT)/Headers/Private/DSDeltaCore/desmume/desmume/src/libretro-common/include\"",
     "USER_HEADER_SEARCH_PATHS": "\"${PODS_CONFIGURATION_BUILD_DIR}/DeltaCore/Swift Compatibility Header\"",
-    "OTHER_CFLAGS": "-DHOST_DARWIN -DDESMUME_COCOA -DHAVE_OPENGL -DHAVE_LIBZ -DANDROID -fexceptions -ftree-vectorize -DCOMPRESS_MT -DIOS -DOBJ_C -marm -fvisibility=hidden"
+    "OTHER_CFLAGS": "-DHOST_DARWIN -DDESMUME_COCOA -DHAVE_OPENGL -DHAVE_LIBZ -DANDROID -fexceptions -ftree-vectorize -DCOMPRESS_MT -DIOS -DOBJ_C -marm -fvisibility=hidden -DSTATIC_LIBRARY=1"
   }
 }
