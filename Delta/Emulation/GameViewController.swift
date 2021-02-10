@@ -10,6 +10,7 @@ import UIKit
 
 import DeltaCore
 import GBADeltaCore
+import Systems
 
 import struct DSDeltaCore.DS
 
@@ -418,6 +419,10 @@ extension GameViewController
             {
             case .ds? where self.emulatorCore?.deltaCore == DS.core:
                 // Cheats are not supported by DeSmuME core.
+                pauseViewController.cheatCodesItem = nil
+                
+            case .genesis?:
+                // GPGX core does not support cheats yet.
                 pauseViewController.cheatCodesItem = nil
 
             default: break
