@@ -67,6 +67,8 @@ extension GamesDatabase
 class GamesDatabase
 {
     static let version = -1
+    static let artworkScheme = "https"
+    static let artworkHost = "gamefaqs1.cbsistatic.com"
     
     private let connection: Connection
     
@@ -103,7 +105,10 @@ class GamesDatabase
                 let artworkURL: URL?
                 if let address = row[artworkAddress]
                 {
-                    artworkURL = URL(string: address)
+                    var urlComponents = URLComponents(string: address)
+                    urlComponents?.scheme = GamesDatabase.artworkScheme
+                    urlComponents?.host = GamesDatabase.artworkHost
+                    artworkURL = urlComponents?.url
                 }
                 else
                 {
