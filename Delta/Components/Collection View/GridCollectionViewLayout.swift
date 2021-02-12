@@ -50,6 +50,8 @@ class GridCollectionViewLayout: UICollectionViewFlowLayout
         return interitemSpacing
     }
     
+    private var cachedLayoutAttributes = [IndexPath: UICollectionViewLayoutAttributes]()
+    
     override var estimatedItemSize: CGSize {
         didSet {
             fatalError("GridCollectionViewLayout does not support self-sizing cells.")
@@ -137,9 +139,24 @@ class GridCollectionViewLayout: UICollectionViewFlowLayout
             }
         }
         
+        for attributes in layoutAttributes
+        {
+            // Update cached attributes for layoutAttributesForItem(at:)
+            self.cachedLayoutAttributes[attributes.indexPath] = attributes
+        }
+        
         return layoutAttributes
     }
     
+    override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes?
+    {
+        if let cachedAttributes = self.cachedLayoutAttributes[indexPath]
+        {
+            return cachedAttributes
+        }
+        
+        return super.layoutAttributesForItem(at: indexPath)
+    }
 }
 
 private extension GridCollectionViewLayout
