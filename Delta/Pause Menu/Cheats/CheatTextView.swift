@@ -91,6 +91,9 @@ private extension CheatTextView
         }
         
         self.attributedFormat = attributedFormat
+        if #available(iOS 13.0, *) {
+            self.textColor = .label
+        }
         
         rst_dispatch_sync_on_main_thread {
             self.setNeedsLayout()

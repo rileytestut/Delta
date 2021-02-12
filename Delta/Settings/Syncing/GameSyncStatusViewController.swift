@@ -81,7 +81,11 @@ private extension GameSyncStatusViewController
             }
             else
             {
-                cell.textLabel?.textColor = .darkText
+                if #available(iOS 13.0, *) {
+                    cell.textLabel?.textColor = .label
+                } else {
+                    cell.textLabel?.textColor = .darkText
+                }
             }
         }
         
