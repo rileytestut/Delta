@@ -807,6 +807,22 @@ extension GameCollectionViewController: UIViewControllerPreviewingDelegate
             gameViewController.previewImage = UIImage(contentsOfFile: previewSaveState.imageFileURL.path)
         }
         
+        if let emulatorBridge = gameViewController.emulatorCore?.deltaCore.emulatorBridge as? MelonDSEmulatorBridge
+        {
+            //TODO: Update this to work with multiple processes by retrieving emulatorBridge directly from emulatorCore.
+
+            if game.identifier == Game.melonDSDSiBIOSIdentifier
+            {
+                emulatorBridge.systemType = .dsi
+            }
+            else
+            {
+                emulatorBridge.systemType = .ds
+            }
+
+            emulatorBridge.isJITEnabled = UIDevice.current.supportsJIT
+        }
+        
         let actions = self.actions(for: game).previewActions
         gameViewController.overridePreviewActionItems = actions
         
