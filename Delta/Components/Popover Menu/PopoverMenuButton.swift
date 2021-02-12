@@ -63,6 +63,8 @@ class PopoverMenuButton: UIControl
     private let arrowLabel: UILabel
     private let stackView: UIStackView
     
+    private var _didLayoutSubviews = false
+    
     private var parentNavigationBar: UINavigationBar? {
         guard let navigationController = self.parentViewController as? UINavigationController ?? self.parentViewController?.navigationController else { return nil }
         guard self.isDescendant(of: navigationController.navigationBar) else { return nil }
@@ -103,6 +105,21 @@ class PopoverMenuButton: UIControl
     override func didMoveToSuperview()
     {
         self.updateTextAttributes()
+    }
+    
+    override func layoutSubviews()
+    {
+        super.layoutSubviews()
+        
+        if !_didLayoutSubviews
+        {
+            _didLayoutSubviews = true
+            
+            // didMoveToSuperview() can be too early to accurately
+            // update text attributes, so ensure we also update
+            // during first layoutSubviews() call.
+            self.updateTextAttributes()
+        }
     }
 }
 

@@ -237,6 +237,8 @@ private extension ControllerInputsViewController
         
         self.actionsMenuViewController.items = items
         self.actionsMenuViewController.isVibrancyEnabled = false
+        
+        self.actionsMenuViewController.collectionView.backgroundColor = nil
     }
     
     func prepareCallouts()
@@ -257,6 +259,8 @@ private extension ControllerInputsViewController
         {
             let calloutView = InputCalloutView()
             calloutView.delegate = self
+            calloutView.permittedArrowDirection = .any
+            calloutView.constrainedInsets = self.view.safeAreaInsets
             self.calloutViews[AnyInput(input)] = calloutView
         }
         

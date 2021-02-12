@@ -20,7 +20,7 @@
                         <color key="backgroundColor" systemColor="systemGroupedBackgroundColor"/>
                         <color key="separatorColor" systemColor="separatorColor"/>
                         <label key="tableFooterView" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Delta 0.6.0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Str-BY-agW">
-                            <rect key="frame" x="0.0" y="1508.5" width="375" height="44"/>
+                            <rect key="frame" x="0.0" y="1675.5" width="375" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -624,17 +624,17 @@
                         <viewControllerLayoutGuide type="bottom" id="Z6c-bc-h6l"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="cPg-qa-ERT">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6Wl-el-X30" userLabel="GameViewController">
-                                <rect key="frame" x="0.0" y="56" width="375" height="591"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <connections>
                                     <segue destination="LIv-AL-s86" kind="embed" identifier="embedGameViewController" id="2Qg-Jw-0mM"/>
                                 </connections>
                             </containerView>
                             <containerView opaque="NO" contentMode="scaleToFill" placeholderIntrinsicWidth="375" placeholderIntrinsicHeight="200" translatesAutoresizingMaskIntoConstraints="NO" id="KkE-ji-6Y8" userLabel="GridMenuViewController">
-                                <rect key="frame" x="0.0" y="223.5" width="375" height="200"/>
+                                <rect key="frame" x="0.0" y="233.5" width="375" height="200"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="200" id="MWA-T4-ROi"/>
                                 </constraints>
@@ -649,7 +649,7 @@
                             <constraint firstItem="KkE-ji-6Y8" firstAttribute="centerY" secondItem="cPg-qa-ERT" secondAttribute="centerY" placeholder="YES" id="4wi-cL-aCQ"/>
                             <constraint firstAttribute="bottom" secondItem="6Wl-el-X30" secondAttribute="bottom" id="Bmp-yB-Yf1"/>
                             <constraint firstAttribute="trailing" secondItem="KkE-ji-6Y8" secondAttribute="trailing" id="Jeb-8K-VYw"/>
-                            <constraint firstItem="6Wl-el-X30" firstAttribute="top" secondItem="cH1-gu-g2u" secondAttribute="bottom" id="TD2-bx-DJC"/>
+                            <constraint firstItem="6Wl-el-X30" firstAttribute="top" secondItem="cPg-qa-ERT" secondAttribute="top" id="TD2-bx-DJC"/>
                             <constraint firstAttribute="trailing" secondItem="6Wl-el-X30" secondAttribute="trailing" id="Xph-DL-tBk"/>
                             <constraint firstItem="6Wl-el-X30" firstAttribute="leading" secondItem="cPg-qa-ERT" secondAttribute="leading" id="gcd-77-5wR"/>
                             <constraint firstItem="KkE-ji-6Y8" firstAttribute="leading" secondItem="cPg-qa-ERT" secondAttribute="leading" id="z7N-Cn-hGs"/>
@@ -753,7 +753,7 @@
                     <navigationItem key="navigationItem" title="Controllers" id="QK7-oi-2jJ"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
-                        <segue destination="0QR-U9-gtx" kind="presentation" identifier="controllerInputsSegue" id="E3Y-yV-zT5"/>
+                        <segue destination="0QR-U9-gtx" kind="presentation" identifier="controllerInputsSegue" modalPresentationStyle="fullScreen" id="E3Y-yV-zT5"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="owG-Kh-rfn" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1001,7 +1001,7 @@
                         <viewControllerLayoutGuide type="bottom" id="XGZ-ro-kQv"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="57g-cn-rbZ">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="591"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -1017,7 +1017,7 @@
                     <toolbarItems/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" barStyle="black" id="Y5H-O6-CQ5">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
