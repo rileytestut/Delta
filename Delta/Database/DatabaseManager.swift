@@ -122,6 +122,8 @@ extension DatabaseManager
                     return nil
                 }
                 
+                let filename: String
+                
                 switch identifier
                 {
                 case Game.melonDSBIOSIdentifier:
@@ -131,6 +133,8 @@ extension DatabaseManager
                         FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.firmwareURL.path)
                     else { return nil }
                     
+                    filename = "nds.bios"
+                    
                 case Game.melonDSDSiBIOSIdentifier:
                     guard
                         FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.dsiBIOS7URL.path) &&
@@ -139,14 +143,16 @@ extension DatabaseManager
                         FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.dsiNANDURL.path)
                     else { return nil }
                     
-                default: break
+                    filename = "dsi.bios"
+                    
+                default: filename = "system.bios"
                 }
                 
                 let bios = Game(context: context)
                 bios.name = name
                 bios.identifier = identifier
                 bios.type = .ds
-                bios.filename = "melonDS-BIOS"
+                bios.filename = filename
                 
                 if let sourceURL = Bundle.main.url(forResource: "DS", withExtension: "png")
                 {
