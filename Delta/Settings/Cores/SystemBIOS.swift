@@ -16,6 +16,7 @@ protocol SystemBIOS
     var filename: String { get }
     
     var expectedMD5Hash: String? { get }
+    var unsupportedMD5Hashes: Set<String> { get }
     
     // RangeSet would be preferable, but it's not in Swift stdlib yet.
     @available(iOS 13, *)
@@ -26,6 +27,14 @@ extension SystemBIOS
 {
     var filename: String {
         return self.fileURL.lastPathComponent
+    }
+    
+    var expectedMD5Hash: String? {
+        return nil
+    }
+    
+    var unsupportedMD5Hashes: Set<String> {
+        return []
     }
 }
 
@@ -88,13 +97,25 @@ enum DSiBIOS: SystemBIOS, CaseIterable
         }
     }
     
-    var expectedMD5Hash: String? {
+    var unsupportedMD5Hashes: Set<String> {
         switch self
         {
-        case .bios7: return "559dae4ea78eb9d67702c56c1d791e81"
-        case .bios9: return "87b665fce118f76251271c3732532777"
-        case .firmware: return nil
-        case .nand: return nil
+        case .bios7:
+            return [
+                "c8b9fe70f1ef5cab8e55540cd1c13dc8", // BIOSDSI7.ROM
+                "3fbb3f39bd9a96e5d743f138bd4b9907", // BIOSDSI9.ROM
+                "87b665fce118f76251271c3732532777", // bios9i.bin
+            ]
+        
+        case .bios9:
+            return [
+                "c8b9fe70f1ef5cab8e55540cd1c13dc8", // BIOSDSI7.ROM
+                "3fbb3f39bd9a96e5d743f138bd4b9907", // BIOSDSI9.ROM
+                "559dae4ea78eb9d67702c56c1d791e81", // bios7i.bin
+            ]
+            
+        case .firmware: return []
+        case .nand: return []
         }
     }
     

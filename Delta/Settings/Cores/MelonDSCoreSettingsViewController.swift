@@ -32,6 +32,7 @@ private extension MelonDSCoreSettingsViewController
     {
         case unknownSize(URL)
         case incorrectHash(URL, hash: String, expectedHash: String)
+        case unsupportedHash(URL, hash: String)
         
         @available(iOS 13, *)
         case incorrectSize(URL, size: Int, validSizes: Set<ClosedRange<Measurement<UnitInformationStorage>>>)
@@ -50,7 +51,10 @@ private extension MelonDSCoreSettingsViewController
                 return String(format: NSLocalizedString("%@’s size could not be determined.", comment: ""), fileURL.lastPathComponent)
                 
             case .incorrectHash(let fileURL, let md5Hash, let expectedHash):
-                return String(format: NSLocalizedString("%@‘s hash does not match the expected hash.\n\nHash:\n%@\n\nExpected:\n%@.", comment: ""), fileURL.lastPathComponent, md5Hash, expectedHash)
+                return String(format: NSLocalizedString("%@‘s checksum does not match the expected checksum.\n\nChecksum:\n%@\n\nExpected:\n%@", comment: ""), fileURL.lastPathComponent, md5Hash, expectedHash)
+                
+            case .unsupportedHash(let fileURL, let md5Hash):
+                return String(format: NSLocalizedString("%@ is not compatible with this version of Delta.\n\nChecksum:\n%@", comment: ""), fileURL.lastPathComponent, md5Hash)
                 
             case .incorrectSize(let fileURL, let size, let validSizes):
                 let actualSize = BIOSError.byteFormatter.string(fromByteCount: Int64(size))
@@ -435,15 +439,21 @@ extension MelonDSCoreSettingsViewController: UIDocumentPickerDelegate
                 let measurement = Measurement<UnitInformationStorage>(value: Double(fileSize), unit: .bytes)
                 guard bios.validFileSizes.contains(where: { $0.contains(measurement) }) else { throw BIOSError.incorrectSize(fileURL, size: fileSize, validSizes: bios.validFileSizes) }
                 
-                if let expectedMD5Hash = bios.expectedMD5Hash
+                if bios.expectedMD5Hash != nil || !bios.unsupportedMD5Hashes.isEmpty
                 {
-                    // If there's an expected hash, make sure it matches.
+                    // Only calculate hash if we need to.
                     
                     let data = try Data(contentsOf: fileURL)
                     
                     let md5Hash = Insecure.MD5.hash(data: data)
                     let hashString = md5Hash.compactMap { String(format: "%02x", $0) }.joined()
-                    guard hashString == expectedMD5Hash else { throw BIOSError.incorrectHash(fileURL, hash: hashString, expectedHash: expectedMD5Hash) }
+                    
+                    if let expectedMD5Hash = bios.expectedMD5Hash
+                    {
+                        guard hashString == expectedMD5Hash else { throw BIOSError.incorrectHash(fileURL, hash: hashString, expectedHash: expectedMD5Hash) }
+                    }
+                    
+                    guard !bios.unsupportedMD5Hashes.contains(hashString) else { throw BIOSError.unsupportedHash(fileURL, hash: hashString) }
                 }
             }
             
