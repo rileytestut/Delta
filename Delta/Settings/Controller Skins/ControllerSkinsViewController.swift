@@ -38,6 +38,8 @@ class ControllerSkinsViewController: UITableViewController
     
     private let dataSource: RSTFetchedResultsTableViewPrefetchingDataSource<ControllerSkin, UIImage>
     
+    @IBOutlet private var importControllerSkinButton: UIBarButtonItem!
+    
     required init?(coder aDecoder: NSCoder)
     {
         self.dataSource = RSTFetchedResultsTableViewPrefetchingDataSource<ControllerSkin, UIImage>(fetchedResultsController: NSFetchedResultsController())
@@ -57,9 +59,11 @@ extension ControllerSkinsViewController
         self.tableView.dataSource = self.dataSource
         self.tableView.prefetchDataSource = self.dataSource
         
+        self.importControllerSkinButton.accessibilityLabel = NSLocalizedString("Import Controller Skin", comment: "")
+        
         if !self.isResetButtonVisible
         {
-            self.navigationItem.rightBarButtonItem = nil
+            self.navigationItem.rightBarButtonItems = [self.importControllerSkinButton]
         }
     }
 
@@ -139,6 +143,13 @@ private extension ControllerSkinsViewController
         }))
         self.present(alertController, animated: true, completion: nil)
     }
+    
+    @IBAction private func importControllerSkin()
+    {
+        let importController = ImportController(documentTypes: ["com.rileytestut.delta.skin"])
+        importController.delegate = self
+        self.present(importController, animated: true, completion: nil)
+    }
 }
 
 extension ControllerSkinsViewController
@@ -194,5 +205,43 @@ extension ControllerSkinsViewController
         let height = min(size.height * scale, self.view.bounds.height - self.view.safeAreaInsets.top - self.view.safeAreaInsets.bottom - 30)
         
         return height
+    }
+}
+
+extension ControllerSkinsViewController: ImportControllerDelegate
+{
+    func importController(_ importController: ImportController, didImportItemsAt urls: Set<URL>, errors: [Error])
+    {
+        for error in errors
+        {
+            print(error)
+        }
+        
+        if let error = errors.first
+        {
+            DispatchQueue.main.async {
+                self.transitionCoordinator?.animate(alongsideTransition: nil) { _ in
+                    // Wait until ImportController is dismissed before presenting alert.
+                    let alertController = UIAlertController(title: NSLocalizedString("Failed to Import Controller Skin", comment: ""), error: error)
+                    self.present(alertController, animated: true, completion: nil)
+                }
+            }
+            
+            return
+        }        
+        
+        let controllerSkinURLs = urls.filter { $0.pathExtension.lowercased() == "deltaskin" }
+        DatabaseManager.shared.importControllerSkins(at: Set(controllerSkinURLs)) { (controllerSkins, errors) in
+            if errors.count > 0
+            {
+                let alertController = UIAlertController.alertController(for: .controllerSkins, with: errors)
+                self.present(alertController, animated: true, completion: nil)
+            }
+            
+            if controllerSkins.count > 0
+            {
+                print("Imported Controller Skins:", controllerSkins.map { $0.name })
+            }
+        }
     }
 }
