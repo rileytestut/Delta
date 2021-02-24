@@ -46,6 +46,7 @@ private extension SettingsViewController
         case riley
         case caroline
         case grant
+        case litRitt
         case softwareLicenses
     }
 }
@@ -405,6 +406,7 @@ extension SettingsViewController
             case .riley: self.openTwitter(username: "rileytestut")
             case .caroline: self.openTwitter(username: "1carolinemoore")
             case .grant: self.openTwitter(username: "grantgliner")
+            case .litRitt: self.openTwitter(username: "litritt_z")
             case .softwareLicenses: break
             }
         }
