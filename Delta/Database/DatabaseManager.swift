@@ -154,12 +154,12 @@ extension DatabaseManager
                 bios.type = .ds
                 bios.filename = filename
                 
-                if let sourceURL = Bundle.main.url(forResource: "DS", withExtension: "png")
+                if let artwork = UIImage(named: "DS Home Screen"), let artworkData = artwork.pngData()
                 {
                     do
                     {
                         let destinationURL = DatabaseManager.artworkURL(for: bios)
-                        try FileManager.default.copyItem(at: sourceURL, to: destinationURL, shouldReplace: true)
+                        try artworkData.write(to: destinationURL, options: .atomic)
                         bios.artworkURL = destinationURL
                     }
                     catch
