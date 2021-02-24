@@ -277,7 +277,9 @@
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.filename-extension</key>
-				<string>gba</string>
+				<array>
+					<string>gba</string>
+				</array>
 			</dict>
 		</dict>
 		<dict>
@@ -288,12 +290,16 @@
 			</array>
 			<key>UTTypeDescription</key>
 			<string>Delta Controller Skin</string>
+			<key>UTTypeIconFiles</key>
+			<array/>
 			<key>UTTypeIdentifier</key>
 			<string>com.rileytestut.delta.skin</string>
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.filename-extension</key>
-				<string>deltaskin</string>
+				<array>
+					<string>deltaskin</string>
+				</array>
 			</dict>
 		</dict>
 		<dict>
