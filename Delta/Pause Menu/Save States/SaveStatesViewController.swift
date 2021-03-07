@@ -54,7 +54,7 @@ class SaveStatesViewController: UICollectionViewController
         didSet {
             if self.isViewLoaded
             {
-                self.update()
+                self.updateTheme()
             }
         }
     }
@@ -69,8 +69,6 @@ class SaveStatesViewController: UICollectionViewController
     private let dataSource: RSTFetchedResultsCollectionViewPrefetchingDataSource<SaveState, UIImage>
     
     private var emulatorCoreSaveState: SaveStateProtocol?
-    
-    @IBOutlet private var sortButton: UIButton!
     
     required init?(coder aDecoder: NSCoder)
     {
@@ -108,7 +106,7 @@ extension SaveStatesViewController
         case .loading:
             self.title = NSLocalizedString("Load State", comment: "")
             self.placeholderView.detailTextLabel.text = NSLocalizedString("You can create a new save state by pressing the Save State option in the pause menu.", comment: "")
-            self.navigationItem.rightBarButtonItems?.removeFirst()
+            self.navigationItem.rightBarButtonItem = nil
         }
         
         // Manually update prototype cell properties
@@ -125,7 +123,7 @@ extension SaveStatesViewController
         self.navigationController?.navigationBar.barStyle = .blackTranslucent
         self.navigationController?.toolbar.barStyle = .blackTranslucent
         
-        self.update()
+        self.updateTheme()
     }    
     
     override func viewWillDisappear(_ animated: Bool)
@@ -197,12 +195,12 @@ private extension SaveStatesViewController
         let fetchRequest: NSFetchRequest<SaveState> = SaveState.fetchRequest()
         fetchRequest.returnsObjectsAsFaults = false
         fetchRequest.predicate = NSPredicate(format: "%K == %@", #keyPath(SaveState.game), self.game)
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(SaveState.type), ascending: true), NSSortDescriptor(key: #keyPath(SaveState.creationDate), ascending: Settings.sortSaveStatesByOldestFirst)]
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(SaveState.type), ascending: true), NSSortDescriptor(key: #keyPath(SaveState.creationDate), ascending: true)]
         
         self.dataSource.fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DatabaseManager.shared.viewContext, sectionNameKeyPath: #keyPath(SaveState.type), cacheName: nil)
     }
     
-    func update()
+    func updateTheme()
     {
         switch self.theme
         {
@@ -222,8 +220,6 @@ private extension SaveStatesViewController
             self.placeholderView.textLabel.textColor = UIColor.white
             self.placeholderView.detailTextLabel.textColor = UIColor.white
         }
-        
-        self.sortButton.transform = CGAffineTransform.identity.rotated(by: Settings.sortSaveStatesByOldestFirst ? 0 : .pi)
     }
     
     //MARK: - Configure Views -
@@ -271,16 +267,12 @@ private extension SaveStatesViewController
         }
         
         headerView.textLabel.text = title
+        headerView.textLabel.textColor = UIColor.white
         
         switch self.theme
         {
-        case .opaque:
-            headerView.textLabel.textColor = UIColor.lightGray
-            headerView.isTextLabelVibrancyEnabled = false
-            
-        case .translucent:
-            headerView.textLabel.textColor = UIColor.white
-            headerView.isTextLabelVibrancyEnabled = true
+        case .opaque: headerView.isTextLabelVibrancyEnabled = false
+        case .translucent: headerView.isTextLabelVibrancyEnabled = true
         }
     }
     
@@ -435,25 +427,6 @@ private extension SaveStatesViewController
             temporarySaveState.type = .general
             backgroundContext.saveWithErrorLogging()
         }
-    }
-    
-    @IBAction func changeSortOrder(_ sender: UIButton)
-    {
-        Settings.sortSaveStatesByOldestFirst.toggle()
-            
-        UIView.transition(with: self.collectionView, duration: 0.4, options: .transitionCrossDissolve, animations: {
-            self.updateDataSource()
-        }, completion: nil)
-        
-        UIView.animate(withDuration: 0.4) {
-            self.update()
-        }
-        
-        let toastView = RSTToastView()
-        toastView.textLabel.text = Settings.sortSaveStatesByOldestFirst ? NSLocalizedString("Oldest First", comment: "") : NSLocalizedString("Newest First", comment: "")
-        toastView.presentationEdge = .top
-        toastView.tintColor = UIColor.deltaPurple
-        toastView.show(in: self.view, duration: 2.0)
     }
     
     //MARK: - Convenience Methods -
