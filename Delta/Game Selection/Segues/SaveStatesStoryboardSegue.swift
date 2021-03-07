@@ -24,7 +24,7 @@ class SaveStatesStoryboardSegue: UIStoryboardSegue
         saveStatesViewController.loadViewIfNeeded()
         
         let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(SaveStatesStoryboardSegue.handleDoneButton))
-        saveStatesViewController.navigationItem.leftBarButtonItem = doneButton
+        saveStatesViewController.navigationItem.rightBarButtonItem = doneButton
         
         guard saveStatesViewController.theme == .translucent else { return }
         

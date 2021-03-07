@@ -55,7 +55,7 @@ class SaveStatesCollectionHeaderView: UICollectionReusableView
         
         self.textLabel.font = UIFont(descriptor: fontDescriptor, size: 0.0)
         self.textLabel.textAlignment = .center
-        self.addSubview(self.textLabel)
+        self.vibrancyView.contentView.addSubview(self.textLabel)
         
         // Auto Layout
         self.textLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20).isActive = true
