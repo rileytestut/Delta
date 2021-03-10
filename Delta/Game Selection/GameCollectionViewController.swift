@@ -608,6 +608,14 @@ private extension GameCollectionViewController
         
         if let imageURL = imageURL
         {
+            self.dataSource.prefetchItemCache.removeObject(forKey: game)
+            
+            if let cacheManager = SDWebImageManager.shared()
+            {
+                let cacheKey = cacheManager.cacheKey(for: imageURL)
+                cacheManager.imageCache.removeImage(forKey: cacheKey)
+            }
+            
             DatabaseManager.shared.performBackgroundTask { (context) in
                 let temporaryGame = context.object(with: game.objectID) as! Game
                 temporaryGame.artworkURL = imageURL
@@ -617,6 +625,13 @@ private extension GameCollectionViewController
                 SyncManager.shared.recordController?.updateRecord(for: temporaryGame)
                 
                 DispatchQueue.main.async {
+                    if let indexPath = self.dataSource.fetchedResultsController.indexPath(forObject: game)
+                    {
+                        // Manually reload item because collection view may not be in window hierarchy,
+                        // which means it won't automatically update when we save the context.
+                        self.collectionView.reloadItems(at: [indexPath])
+                    }
+                    
                     self.presentedViewController?.dismiss(animated: true, completion: nil)
                 }
             }
