@@ -74,8 +74,9 @@ enum DSBIOS: SystemBIOS, CaseIterable
             // 4KB
             return Set([4].map { Measurement(value: $0, unit: .kibibytes) }.map { $0...$0 })
         case .firmware:
-            // 128KB, 256KB, or 512KB
-            return Set([128, 256, 512].map { Measurement(value: $0, unit: .kibibytes) }.map { $0...$0 })
+            // 256KB or 512KB
+            // DSi/3DS 128KB firmwares technically work but aren't bootable, so we treat them as unsupported.
+            return Set([256, 512].map { Measurement(value: $0, unit: .kibibytes) }.map { $0...$0 })
         }
     }
 }
