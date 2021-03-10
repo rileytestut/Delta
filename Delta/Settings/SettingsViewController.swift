@@ -412,6 +412,17 @@ extension SettingsViewController
         }
     }
     
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
+    {
+        switch Section(rawValue: indexPath.section)!
+        {
+        #if !BETA
+        case .credits where indexPath.row == CreditsRow.litRitt.rawValue: return 0.0
+        #endif
+        default: return super.tableView(tableView, heightForRowAt: indexPath)
+        }
+    }
+    
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String?
     {
         let section = Section(rawValue: section)!
