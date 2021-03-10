@@ -559,6 +559,13 @@ private extension GameCollectionViewController
     
     func changeArtwork(for game: Game, toImageAt url: URL?, errors: [Error])
     {
+        defer {
+            if let temporaryImageURL = url
+            {
+                try? FileManager.default.removeItem(at: temporaryImageURL)
+            }
+        }
+        
         var errors = errors
         
         var imageURL: URL?
