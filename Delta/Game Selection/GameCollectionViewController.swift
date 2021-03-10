@@ -574,7 +574,8 @@ private extension GameCollectionViewController
                     if
                         let image = UIImage(data: imageData),
                         let resizedImage = image.resizing(toFit: CGSize(width: 300, height: 300)),
-                        let resizedData = resizedImage.jpegData(compressionQuality: 0.85)
+                        let rotatedImage = resizedImage.rotatedToIntrinsicOrientation(), // in case image was imported directly from Files
+                        let resizedData = rotatedImage.pngData()
                     {
                         let destinationURL = DatabaseManager.artworkURL(for: game)
                         try resizedData.write(to: destinationURL, options: .atomic)

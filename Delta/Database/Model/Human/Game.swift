@@ -144,7 +144,17 @@ extension Game: Syncable
     }
     
     public var syncableFiles: Set<File> {
-        let artworkURL = DatabaseManager.artworkURL(for: self)
+        let artworkURL: URL
+        
+        if let fileURL = self.artworkURL, fileURL.isFileURL
+        {
+            artworkURL = fileURL
+        }
+        else
+        {
+            artworkURL = DatabaseManager.artworkURL(for: self)
+        }
+        
         let artworkFile = File(identifier: "artwork", fileURL: artworkURL)
                 
         switch self.identifier

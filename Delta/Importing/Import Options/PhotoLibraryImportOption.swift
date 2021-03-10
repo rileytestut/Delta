@@ -42,7 +42,7 @@ extension PhotoLibraryImportOption: UIImagePickerControllerDelegate, UINavigatio
 {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any])
     {
-        guard let image = info[.originalImage] as? UIImage, let data = image.jpegData(compressionQuality: 0.85) else {
+        guard let image = info[.originalImage] as? UIImage, let rotatedImage = image.rotatedToIntrinsicOrientation(), let data = rotatedImage.pngData() else {
             self.completionHandler?([])
             return
         }

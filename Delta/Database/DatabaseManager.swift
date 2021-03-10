@@ -657,7 +657,7 @@ extension DatabaseManager
     {
         let gameURL = game.fileURL
         
-        let artworkURL = gameURL.deletingPathExtension().appendingPathExtension("jpg")
+        let artworkURL = gameURL.deletingPathExtension().appendingPathExtension("png")
         return artworkURL
     }
 }
