@@ -140,6 +140,36 @@ class MelonDSCoreSettingsViewController: UITableViewController
 
 private extension MelonDSCoreSettingsViewController
 {
+    func isSectionHidden(_ section: Section) -> Bool
+    {
+        #if BETA
+        let isBeta = true
+        #else
+        let isBeta = false
+        #endif
+        
+        switch section
+        {
+        case .dsBIOS where Settings.preferredCore(for: .ds) == DS.core:
+            // Using DeSmuME core, which doesn't require BIOS.
+            return true
+        
+        case .dsiBIOS where Settings.preferredCore(for: .ds) == DS.core || !isBeta:
+            // Using DeSmuME core, which doesn't require BIOS,
+            // or using public Delta version, which doesn't support DSi (yet).
+            return true
+            
+        case .changeCore where !isBeta:
+            // Using public Delta version, which only supports melonDS core.
+            return true
+            
+        default: return false
+        }
+    }
+}
+
+private extension MelonDSCoreSettingsViewController
+{
     func openMetadataURL(for key: DeltaCoreMetadata.Key)
     {
         guard let metadata = Settings.preferredCore(for: .ds)?.metadata else { return }
@@ -231,6 +261,20 @@ private extension MelonDSCoreSettingsViewController
 
 extension MelonDSCoreSettingsViewController
 {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection sectionIndex: Int) -> Int
+    {
+        let section = Section(rawValue: sectionIndex)!
+        
+        if isSectionHidden(section)
+        {
+            return 0
+        }
+        else
+        {
+            return super.tableView(tableView, numberOfRowsInSection: sectionIndex)
+        }
+    }
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
@@ -340,28 +384,30 @@ extension MelonDSCoreSettingsViewController
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String?
     {
-        switch Section(rawValue: section)!
-        {
-        case .dsBIOS, .dsiBIOS:
-            guard Settings.preferredCore(for: .ds) == MelonDS.core else { return nil }
-            
-        default: break
-        }
+        let section = Section(rawValue: section)!
         
-        return super.tableView(tableView, titleForHeaderInSection: section)
+        if isSectionHidden(section)
+        {
+            return nil
+        }
+        else
+        {
+            return super.tableView(tableView, titleForHeaderInSection: section.rawValue)
+        }
     }
     
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String?
     {
-        switch Section(rawValue: section)!
-        {
-        case .dsBIOS, .dsiBIOS:
-            guard Settings.preferredCore(for: .ds) == MelonDS.core else { return nil }
-            
-        default: break
-        }
+        let section = Section(rawValue: section)!
         
-        return super.tableView(tableView, titleForFooterInSection: section)
+        if isSectionHidden(section)
+        {
+            return nil
+        }
+        else
+        {
+            return super.tableView(tableView, titleForFooterInSection: section.rawValue)
+        }
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
@@ -372,9 +418,6 @@ extension MelonDSCoreSettingsViewController
             let key = DeltaCoreMetadata.Key.allCases[indexPath.row]
             guard Settings.preferredCore(for: .ds)?.metadata?[key] != nil else { return  0 }
             
-        case .dsBIOS, .dsiBIOS:
-            guard Settings.preferredCore(for: .ds) == MelonDS.core else { return 0 }
-            
         default: break
         }
         
@@ -383,28 +426,30 @@ extension MelonDSCoreSettingsViewController
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat
     {
-        switch Section(rawValue: section)!
-        {
-        case .dsBIOS, .dsiBIOS:
-            guard Settings.preferredCore(for: .ds) == MelonDS.core else { return 1 }
-            
-        default: break
-        }
+        let section = Section(rawValue: section)!
         
-        return super.tableView(tableView, heightForHeaderInSection: section)
+        if isSectionHidden(section)
+        {
+            return 1
+        }
+        else
+        {
+            return super.tableView(tableView, heightForHeaderInSection: section.rawValue)
+        }
     }
     
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat
     {
-        switch Section(rawValue: section)!
-        {
-        case .dsBIOS, .dsiBIOS:
-            guard Settings.preferredCore(for: .ds) == MelonDS.core else { return 1 }
-            
-        default: break
-        }
+        let section = Section(rawValue: section)!
         
-        return super.tableView(tableView, heightForFooterInSection: section)
+        if isSectionHidden(section)
+        {
+            return 1
+        }
+        else
+        {
+            return super.tableView(tableView, heightForFooterInSection: section.rawValue)
+        }
     }
 }
 
