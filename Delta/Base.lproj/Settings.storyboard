@@ -1718,14 +1718,19 @@ Licensed under Apache 2 license.
 Nick Farina (SMCalloutView)
 Licensed under Apache 2 license.
 
-Delta uses these emulator cores licensed under the GNU Public License version 2:
+Delta uses these emulator cores licensed under the GNU Public License version 3:
 
 Nestopia
-Snes9x
 mupen64plus
 Gambatte
 visualboyadvance-m
 DeSmuME
+melonDS
+
+Delta uses these emulator cores licensed under their respective licenses:
+
+Snes9x
+Genesis Plus GX
 
 Delta uses OpenVGDB to provide automatic artwork for imported games.</string>
                                 <color key="textColor" systemColor="secondaryLabelColor"/>
