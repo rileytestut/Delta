@@ -13,11 +13,16 @@ import GBADeltaCore
 import GBCDeltaCore
 import NESDeltaCore
 import N64DeltaCore
-import DSDeltaCore
+import MelonDSDeltaCore
+import Systems
+
+// Legacy Cores
+import struct DSDeltaCore.DS
 
 enum System: CaseIterable
 {
     case nes
+    case genesis
     case snes
     case n64
     case gbc
@@ -27,6 +32,10 @@ enum System: CaseIterable
     static var registeredSystems: [System] {
         let systems = System.allCases.filter { Delta.registeredCores.keys.contains($0.gameType) }
         return systems
+    }
+    
+    static var allCores: [DeltaCoreProtocol] {
+        return [NES.core, SNES.core, N64.core, GBC.core, GBA.core, DS.core, MelonDS.core, GPGX.core]
     }
 }
 
@@ -41,6 +50,7 @@ extension System
         case .gbc: return NSLocalizedString("Game Boy Color", comment: "")
         case .gba: return NSLocalizedString("Game Boy Advance", comment: "")
         case .ds: return NSLocalizedString("Nintendo DS", comment: "")
+        case .genesis: return NSLocalizedString("Sega Genesis", comment: "")
         }
     }
     
@@ -52,7 +62,8 @@ extension System
         case .n64: return NSLocalizedString("N64", comment: "")
         case .gbc: return NSLocalizedString("GBC", comment: "")
         case .gba: return NSLocalizedString("GBA", comment: "")
-        case .ds: return NSLocalizedString("DS (Beta)", comment: "")
+        case .ds: return NSLocalizedString("DS", comment: "")
+        case .genesis: return NSLocalizedString("Genesis (Beta)", comment: "")
         }
     }
     
@@ -60,6 +71,7 @@ extension System
         switch self
         {
         case .nes: return 1985
+        case .genesis: return 1989
         case .snes: return 1990
         case .n64: return 1996
         case .gbc: return 1998
@@ -79,11 +91,12 @@ extension System
         case .n64: return N64.core
         case .gbc: return GBC.core
         case .gba: return GBA.core
-        case .ds: return DS.core
+        case .ds: return Settings.preferredCore(for: .ds) ?? MelonDS.core
+        case .genesis: return GPGX.core
         }
     }
     
-    var gameType: GameType {
+    var gameType: DeltaCore.GameType {
         switch self
         {
         case .nes: return .nes
@@ -92,10 +105,11 @@ extension System
         case .gbc: return .gbc
         case .gba: return .gba
         case .ds: return .ds
+        case .genesis: return .genesis
         }
     }
     
-    init?(gameType: GameType)
+    init?(gameType: DeltaCore.GameType)
     {
         switch gameType
         {
@@ -105,12 +119,13 @@ extension System
         case GameType.gbc: self = .gbc
         case GameType.gba: self = .gba
         case GameType.ds: self = .ds
+        case GameType.genesis: self = .genesis
         default: return nil
         }
     }
 }
 
-extension GameType
+extension DeltaCore.GameType
 {
     init?(fileExtension: String)
     {
@@ -122,6 +137,7 @@ extension GameType
         case "gbc", "gb": self = .gbc
         case "gba": self = .gba
         case "ds", "nds": self = .ds
+        case "gen", "bin", "md", "smd": self = .genesis
         default: return nil
         }
     }

@@ -9,7 +9,15 @@
 import Foundation
 
 import DeltaCore
+import MelonDSDeltaCore
+
 import Harmony
+
+public extension Game
+{
+    static let melonDSBIOSIdentifier = "com.rileytestut.MelonDSDeltaCore.BIOS"
+    static let melonDSDSiBIOSIdentifier = "com.rileytestut.MelonDSDeltaCore.DSiBIOS"
+}
 
 @objc(Game)
 public class Game: _Game, GameProtocol
@@ -30,10 +38,24 @@ public class Game: _Game, GameProtocol
             var artworkURL = self.primitiveValue(forKey: #keyPath(Game.artworkURL)) as? URL
             self.didAccessValue(forKey: #keyPath(Game.artworkURL))
             
-            if let unwrappedArtworkURL = artworkURL, unwrappedArtworkURL.isFileURL
+            if let unwrappedArtworkURL = artworkURL
             {
-                // Recreate the stored URL relative to current sandbox location.
-                artworkURL = URL(fileURLWithPath: unwrappedArtworkURL.relativePath, relativeTo: DatabaseManager.gamesDirectoryURL)
+                if unwrappedArtworkURL.isFileURL
+                {
+                    // Recreate the stored URL relative to current sandbox location.
+                    artworkURL = URL(fileURLWithPath: unwrappedArtworkURL.relativePath, relativeTo: DatabaseManager.gamesDirectoryURL)
+                }
+                else if unwrappedArtworkURL.host?.lowercased() == "img.gamefaqs.net", var components = URLComponents(url: unwrappedArtworkURL, resolvingAgainstBaseURL: false)
+                {
+                    // Quick fix for broken album artwork URLs due to host change.
+                    components.host = "gamefaqs1.cbsistatic.com"
+                    components.scheme = "https"
+                    
+                    if let url = components.url
+                    {
+                        artworkURL = url
+                    }
+                }
             }
             
             return artworkURL
@@ -122,12 +144,42 @@ extension Game: Syncable
     }
     
     public var syncableFiles: Set<File> {
-        let gameFile = File(identifier: "game", fileURL: self.fileURL)
+        let artworkURL: URL
         
-        let artworkURL = DatabaseManager.artworkURL(for: self)
+        if let fileURL = self.artworkURL, fileURL.isFileURL
+        {
+            artworkURL = fileURL
+        }
+        else
+        {
+            artworkURL = DatabaseManager.artworkURL(for: self)
+        }
+        
         let artworkFile = File(identifier: "artwork", fileURL: artworkURL)
-        
-        return [gameFile, artworkFile]
+                
+        switch self.identifier
+        {
+        case Game.melonDSBIOSIdentifier:
+            let bios7File = File(identifier: "bios7", fileURL: MelonDSEmulatorBridge.shared.bios7URL)
+            let bios9File = File(identifier: "bios9", fileURL: MelonDSEmulatorBridge.shared.bios9URL)
+            let firmwareFile = File(identifier: "firmware", fileURL: MelonDSEmulatorBridge.shared.firmwareURL)
+            
+            return [artworkFile, bios7File, bios9File, firmwareFile]
+            
+        case Game.melonDSDSiBIOSIdentifier:
+            let bios7File = File(identifier: "bios7", fileURL: MelonDSEmulatorBridge.shared.dsiBIOS7URL)
+            let bios9File = File(identifier: "bios9", fileURL: MelonDSEmulatorBridge.shared.dsiBIOS9URL)
+            let firmwareFile = File(identifier: "firmware", fileURL: MelonDSEmulatorBridge.shared.dsiFirmwareURL)
+            
+            // DSi NAND is ~240MB, so don't sync for now until Harmony can selectively download files.
+            // let nandFile = File(identifier: "nand", fileURL: MelonDSEmulatorBridge.shared.dsiNANDURL)
+            
+            return [artworkFile, bios7File, bios9File, firmwareFile]
+            
+        default:
+            let gameFile = File(identifier: "game", fileURL: self.fileURL)
+            return [artworkFile, gameFile]
+        }
     }
     
     public var syncableRelationships: Set<AnyKeyPath> {

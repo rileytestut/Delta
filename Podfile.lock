@@ -1,37 +1,153 @@
 PODS:
+  - Alamofire (4.7.3)
   - Crashlytics (3.8.6):
     - Fabric (~> 1.6.3)
+  - DeltaCore (0.1):
+    - ZIPFoundation
+  - DSDeltaCore (0.1):
+    - DeltaCore
   - Fabric (1.6.13)
+  - GBADeltaCore (0.1):
+    - DeltaCore
+  - GBCDeltaCore (0.1):
+    - DeltaCore
+  - GoogleAPIClientForREST/Core (1.3.11):
+    - GTMSessionFetcher (>= 1.1.7)
+  - GoogleAPIClientForREST/Drive (1.3.11):
+    - GoogleAPIClientForREST/Core
+    - GTMSessionFetcher (>= 1.1.7)
+  - GoogleSignIn (4.4.0):
+    - "GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)"
+    - "GoogleToolboxForMac/NSString+URLArguments (~> 2.1)"
+    - GTMSessionFetcher/Core (~> 1.1)
+  - GoogleToolboxForMac/DebugUtils (2.3.0):
+    - GoogleToolboxForMac/Defines (= 2.3.0)
+  - GoogleToolboxForMac/Defines (2.3.0)
+  - "GoogleToolboxForMac/NSDictionary+URLArguments (2.3.0)":
+    - GoogleToolboxForMac/DebugUtils (= 2.3.0)
+    - GoogleToolboxForMac/Defines (= 2.3.0)
+    - "GoogleToolboxForMac/NSString+URLArguments (= 2.3.0)"
+  - "GoogleToolboxForMac/NSString+URLArguments (2.3.0)"
+  - GTMSessionFetcher (1.5.0):
+    - GTMSessionFetcher/Full (= 1.5.0)
+  - GTMSessionFetcher/Core (1.5.0)
+  - GTMSessionFetcher/Full (1.5.0):
+    - GTMSessionFetcher/Core (= 1.5.0)
+  - Harmony (0.1):
+    - Harmony/Harmony-Drive (= 0.1)
+    - Harmony/Harmony-Dropbox (= 0.1)
+    - Roxas
+  - Harmony/Harmony-Drive (0.1):
+    - GoogleAPIClientForREST/Drive (~> 1.3.0)
+    - GoogleSignIn (~> 4.4.0)
+    - Roxas
+  - Harmony/Harmony-Dropbox (0.1):
+    - Roxas
+    - SwiftyDropbox (~> 5.0.0)
+  - MelonDSDeltaCore (0.1):
+    - DeltaCore
+  - N64DeltaCore (0.1):
+    - DeltaCore
+    - N64DeltaCore/RSP (= 0.1)
+    - N64DeltaCore/Video (= 0.1)
+  - N64DeltaCore/RSP (0.1):
+    - DeltaCore
+  - N64DeltaCore/Video (0.1):
+    - DeltaCore
+  - NESDeltaCore (0.1):
+    - DeltaCore
+  - Roxas (0.1)
   - SDWebImage (3.8.3):
     - SDWebImage/Core (= 3.8.3)
   - SDWebImage/Core (3.8.3)
   - SMCalloutView (2.1.5)
-  - SQLite.swift (0.11.6):
-    - SQLite.swift/standard (= 0.11.6)
-  - SQLite.swift/standard (0.11.6)
+  - SNESDeltaCore (0.1):
+    - DeltaCore
+  - SQLite.swift (0.12.2):
+    - SQLite.swift/standard (= 0.12.2)
+  - SQLite.swift/standard (0.12.2)
+  - SwiftyDropbox (5.0.0):
+    - Alamofire (~> 4.7.3)
+  - ZIPFoundation (0.9.11)
 
 DEPENDENCIES:
   - Crashlytics (~> 3.8.0)
+  - DeltaCore (from `Cores/DeltaCore`)
+  - DSDeltaCore (from `Cores/DSDeltaCore`)
   - Fabric (~> 1.6.0)
+  - GBADeltaCore (from `Cores/GBADeltaCore`)
+  - GBCDeltaCore (from `Cores/GBCDeltaCore`)
+  - Harmony (from `External/Harmony`)
+  - MelonDSDeltaCore (from `Cores/MelonDSDeltaCore`)
+  - N64DeltaCore (from `Cores/N64DeltaCore`)
+  - NESDeltaCore (from `Cores/NESDeltaCore`)
+  - Roxas (from `External/Roxas`)
   - SDWebImage (~> 3.8)
-  - SMCalloutView
-  - SQLite.swift (~> 0.11.0)
+  - SMCalloutView (~> 2.1.0)
+  - SNESDeltaCore (from `Cores/SNESDeltaCore`)
+  - SQLite.swift (~> 0.12.0)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  trunk:
+    - Alamofire
     - Crashlytics
     - Fabric
+    - GoogleAPIClientForREST
+    - GoogleSignIn
+    - GoogleToolboxForMac
+    - GTMSessionFetcher
     - SDWebImage
     - SMCalloutView
     - SQLite.swift
+    - SwiftyDropbox
+    - ZIPFoundation
+
+EXTERNAL SOURCES:
+  DeltaCore:
+    :path: Cores/DeltaCore
+  DSDeltaCore:
+    :path: Cores/DSDeltaCore
+  GBADeltaCore:
+    :path: Cores/GBADeltaCore
+  GBCDeltaCore:
+    :path: Cores/GBCDeltaCore
+  Harmony:
+    :path: External/Harmony
+  MelonDSDeltaCore:
+    :path: Cores/MelonDSDeltaCore
+  N64DeltaCore:
+    :path: Cores/N64DeltaCore
+  NESDeltaCore:
+    :path: Cores/NESDeltaCore
+  Roxas:
+    :path: External/Roxas
+  SNESDeltaCore:
+    :path: Cores/SNESDeltaCore
 
 SPEC CHECKSUMS:
-  Crashlytics: 95d05f4e4c19a771250c4bd9ce344d996de32bbf
-  Fabric: 2fb5676bc811af011a04513451f463dac6803206
+  Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
+  Crashlytics: e156f27e43abaa331f9b7afed091bda37e1052cc
+  DeltaCore: 86a78ac8fb0d40190231b5fb64d109f7516de187
+  DSDeltaCore: c113b64288d253fafe350ee23df143c76a11e173
+  Fabric: be0459577cee96fe21f68de24588be2dd71482b8
+  GBADeltaCore: 55e32d21508ce7383a1b1587e425ccc60620ad66
+  GBCDeltaCore: 7468dff742927139a14f6fc909e810f253b6293c
+  GoogleAPIClientForREST: 0f19a8280dfe6471f76016645d26eb5dae305101
+  GoogleSignIn: 7ff245e1a7b26d379099d3243a562f5747e23d39
+  GoogleToolboxForMac: 1350d40e86a76f7863928d63bcb0b89c84c521c5
+  GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
+  Harmony: cea514db17c41c22f78f54b17d2135935b5e9b96
+  MelonDSDeltaCore: 3de2a2e2ebcd630a6dd756818b5a26dde7afa726
+  N64DeltaCore: 6b0f07f2078193a15d736f153ce701661853fa36
+  NESDeltaCore: 41ab438dd78d51d4636aacb7d9a7336ea3d4728c
+  Roxas: 1990039f843f5dc284918dc82375feb80020ef62
   SDWebImage: a72e880a8fe0f7fc31efe15aaed443c074d2a80c
   SMCalloutView: 5c0ee363dc8e7204b2fda17dfad38c93e9e23481
-  SQLite.swift: 46d890be8601964454bd3392527f863d1b802d45
+  SNESDeltaCore: 1e9cc751501082480f8181d4449322ee4ec26dac
+  SQLite.swift: d2b4642190917051ce6bd1d49aab565fe794eea3
+  SwiftyDropbox: 378b4425a2e8d0cb24c7b0f2e3af72bfbaaf1e73
+  ZIPFoundation: b1f0de4eed33e74a676f76e12559ab6b75990197
 
-PODFILE CHECKSUM: 1d7f9ff69da571c7991621312e07aa4b16a0a074
+PODFILE CHECKSUM: 2f9219b1db18479e650fc2159f58160b4cc13aad
 
-COCOAPODS: 1.6.1
+COCOAPODS: 1.10.1

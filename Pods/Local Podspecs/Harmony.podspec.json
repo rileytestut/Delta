@@ -1,0 +1,52 @@
+{
+  "name": "Harmony",
+  "version": "0.1",
+  "summary": "iOS Syncing Framework",
+  "description": "iOS framework that automatically syncs Core Data databases across different backends.",
+  "homepage": "https://github.com/rileytestut/Harmony",
+  "platforms": {
+    "ios": "12.0"
+  },
+  "source": {
+    "git": "https://github.com/rileytestut/Harmony.git"
+  },
+  "authors": {
+    "Riley Testut": "riley@rileytestut.com"
+  },
+  "social_media_url": "https://twitter.com/rileytestut",
+  "source_files": "Harmony/**/*.{h,m,swift}",
+  "public_header_files": "Harmony/Harmony.h",
+  "header_mappings_dir": "",
+  "resources": [
+    "Harmony/**/*.xcdatamodeld",
+    "Harmony/**/*.xcmappingmodel"
+  ],
+  "dependencies": {
+    "Roxas": [
+
+    ]
+  },
+  "subspecs": [
+    {
+      "name": "Harmony-Dropbox",
+      "source_files": "Backends/Dropbox/Harmony-Dropbox/**/*.swift",
+      "dependencies": {
+        "SwiftyDropbox": [
+          "~> 5.0.0"
+        ]
+      }
+    },
+    {
+      "name": "Harmony-Drive",
+      "source_files": "Backends/Drive/Harmony-Drive/**/*.swift",
+      "dependencies": {
+        "GoogleAPIClientForREST/Drive": [
+          "~> 1.3.0"
+        ],
+        "GoogleSignIn": [
+          "~> 4.4.0"
+        ]
+      }
+    }
+  ]
+}

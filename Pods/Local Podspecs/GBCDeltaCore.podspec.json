@@ -1,0 +1,44 @@
+{
+  "name": "GBCDeltaCore",
+  "version": "0.1",
+  "summary": "Game Boy Color plug-in for Delta emulator.",
+  "description": "iOS framework that wraps Gambatte to allow playing GBC games with Delta emulator.",
+  "homepage": "https://github.com/rileytestut/GBCDeltaCore",
+  "platforms": {
+    "ios": "12.0"
+  },
+  "source": {
+    "git": "https://github.com/rileytestut/GBCDeltaCore.git"
+  },
+  "authors": {
+    "Riley Testut": "riley@rileytestut.com"
+  },
+  "social_media_url": "https://twitter.com/rileytestut",
+  "source_files": [
+    "GBCDeltaCore/**/*.{h,m,mm,cpp,swift}",
+    "gambatte/libgambatte/include/*.h",
+    "gambatte/common/*.h",
+    "gambatte/libgambatte/src/*.h"
+  ],
+  "public_header_files": [
+    "GBCDeltaCore/Types/GBCTypes.h",
+    "GBCDeltaCore/Bridge/GBCEmulatorBridge.h"
+  ],
+  "header_mappings_dir": "",
+  "resource_bundles": {
+    "GBCDeltaCore": [
+      "GBCDeltaCore/**/*.deltamapping",
+      "GBCDeltaCore/**/*.deltaskin"
+    ]
+  },
+  "dependencies": {
+    "DeltaCore": [
+
+    ]
+  },
+  "xcconfig": {
+    "HEADER_SEARCH_PATHS": "\"${PODS_CONFIGURATION_BUILD_DIR}\"",
+    "USER_HEADER_SEARCH_PATHS": "\"${PODS_CONFIGURATION_BUILD_DIR}/DeltaCore/Swift Compatibility Header\"",
+    "OTHER_CFLAGS": "-DHAVE_CSTDINT"
+  }
+}

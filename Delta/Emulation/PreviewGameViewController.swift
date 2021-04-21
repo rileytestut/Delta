@@ -27,7 +27,16 @@ class PreviewGameViewController: DeltaCore.GameViewController
         }
     }
     
+    var isLivePreview: Bool = true
+    
     private var emulatorCoreQueue = DispatchQueue(label: "com.rileytestut.Delta.PreviewGameViewController.emulatorCoreQueue", qos: .userInitiated)
+    private var copiedSaveFiles = [(originalURL: URL, copyURL: URL)]()
+    
+    private lazy var temporaryDirectoryURL: URL = {
+        let directoryURL = FileManager.default.temporaryDirectory.appendingPathComponent("preview-" + UUID().uuidString)
+        try? FileManager.default.createDirectory(at: directoryURL, withIntermediateDirectories: true, attributes: nil)
+        return directoryURL
+    }()
     
     override var game: GameProtocol? {
         willSet {
@@ -41,7 +50,8 @@ class PreviewGameViewController: DeltaCore.GameViewController
             
             emulatorCore.addObserver(self, forKeyPath: #keyPath(EmulatorCore.state), options: [.old], context: &kvoContext)
             
-            self.preferredContentSize = emulatorCore.preferredRenderingSize
+            let size = CGSize(width: emulatorCore.preferredRenderingSize.width * 2.0, height: emulatorCore.preferredRenderingSize.height * 2.0)
+            self.preferredContentSize = size
         }
     }
     
@@ -50,8 +60,26 @@ class PreviewGameViewController: DeltaCore.GameViewController
         return previewActionItems
     }
     
+    public required init()
+    {
+        super.init()
+        
+        self.delegate = self
+    }
+    
+    public required init?(coder aDecoder: NSCoder)
+    {
+        super.init(coder: aDecoder)
+        
+        self.delegate = self
+    }
+    
     deinit
     {
+        // Explicitly stop emulatorCore _before_ we remove ourselves as observer
+        // so we can wait until stopped before restoring save files (again).
+        self.emulatorCore?.stop()
+        
         self.emulatorCore?.removeObserver(self, forKeyPath: #keyPath(EmulatorCore.state), context: &kvoContext)
     }
 }
@@ -65,9 +93,17 @@ extension PreviewGameViewController
         super.viewDidLoad()
         
         self.controllerView.isHidden = true
+        self.controllerView.controllerSkin = nil // Skip loading controller skin from disk, which may be slow.
         
         // Temporarily prevent emulatorCore from updating gameView to prevent flicker of black, or other visual glitches
         self.emulatorCore?.remove(self.gameView)
+    }
+    
+    override func viewWillAppear(_ animated: Bool)
+    {
+        super.viewWillAppear(animated)
+        
+        self.copySaveFiles()
     }
 
     override func viewDidAppear(_ animated: Bool)
@@ -75,7 +111,7 @@ extension PreviewGameViewController
         super.viewDidAppear(animated)
         
         self.emulatorCoreQueue.async {
-            self.emulatorCore?.resume()
+            self.startEmulation()
         }
     }
     
@@ -85,6 +121,19 @@ extension PreviewGameViewController
         
         // Pause in viewWillDisappear and not viewDidDisappear like DeltaCore.GameViewController so the audio cuts off earlier if being dismissed
         self.emulatorCore?.pause()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool)
+    {
+        super.viewDidDisappear(animated)
+        
+        // Already stopped = we've already restored save files and removed directory.
+        if self.emulatorCore?.state != .stopped
+        {
+            // Pre-emptively restore save files in case something goes wrong while stopping emulation.
+            // This also ensures if the core is never stopped (for some reason), saves are still restored.
+            self.restoreSaveFiles(removeCopyDirectory: false)
+        }
     }
     
     override func viewDidLayoutSubviews()
@@ -111,17 +160,21 @@ extension PreviewGameViewController
             let state = self.emulatorCore?.state
         else { return }
         
-        if previousState == .stopped, state == .running
+        switch state
         {
-            self.emulatorCoreQueue.sync {
-                if self.isAppearing
-                {
-                    // Pause to prevent it from starting before visible (in case user peeked slowly)
-                    self.emulatorCore?.pause()
-                }
-                
+        case .running where previousState == .stopped:
+            self.emulatorCoreQueue.async {
+                // Pause to prevent it from starting before visible (in case user peeked slowly)
+                self.emulatorCore?.pause()
                 self.preparePreview()
             }
+            
+        case .stopped:
+            // Emulation has stopped, so we can safely restore save files,
+            // and also remove the directory they were copied to.
+            self.restoreSaveFiles(removeCopyDirectory: true)
+            
+        default: break
         }
     }
 }
@@ -172,5 +225,67 @@ private extension PreviewGameViewController
         
         // Re-enable emulatorCore to update gameView again
         self.emulatorCore?.add(self.gameView)
+        
+        self.emulatorCore?.resume()
+    }
+    
+    func copySaveFiles()
+    {
+        guard let game = self.game as? Game, let gameSave = game.gameSave else { return }
+        
+        self.copiedSaveFiles.removeAll()
+        
+        let fileURLs = gameSave.syncableFiles.lazy.map { $0.fileURL }
+        for fileURL in fileURLs
+        {
+            do
+            {
+                let destinationURL = self.temporaryDirectoryURL.appendingPathComponent(fileURL.lastPathComponent)
+                try FileManager.default.copyItem(at: fileURL, to: destinationURL, shouldReplace: true)
+                
+                self.copiedSaveFiles.append((fileURL, destinationURL))
+                print("Copied save file:", fileURL.lastPathComponent)
+            }
+            catch
+            {
+                print("Failed to back up save file \(fileURL.lastPathComponent).", error)
+            }
+        }
+    }
+    
+    func restoreSaveFiles(removeCopyDirectory: Bool)
+    {
+        for (originalURL, copyURL) in self.copiedSaveFiles
+        {
+            do
+            {
+                try FileManager.default.copyItem(at: copyURL, to: originalURL, shouldReplace: true)
+                print("Restored save file:", originalURL.lastPathComponent)
+            }
+            catch
+            {
+                print("Failed to restore copied save file \(copyURL.lastPathComponent).", error)
+            }
+        }
+        
+        if removeCopyDirectory
+        {
+            do
+            {
+                try FileManager.default.removeItem(at: self.temporaryDirectoryURL)
+            }
+            catch
+            {
+                print("Failed to remove preview temporary directory.", error)
+            }
+        }
+    }
+}
+
+extension PreviewGameViewController: GameViewControllerDelegate
+{
+    func gameViewControllerShouldResumeEmulation(_ gameViewController: DeltaCore.GameViewController) -> Bool
+    {
+        return self.isLivePreview
     }
 }

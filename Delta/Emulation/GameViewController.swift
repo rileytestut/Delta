@@ -10,10 +10,22 @@ import UIKit
 
 import DeltaCore
 import GBADeltaCore
+import Systems
+
+import struct DSDeltaCore.DS
 
 import Roxas
 
 private var kvoContext = 0
+
+private extension DeltaCore.ControllerSkin
+{
+    func hasTouchScreen(for traits: DeltaCore.ControllerSkin.Traits) -> Bool
+    {
+        let hasTouchScreen = self.items(for: traits)?.contains(where: { $0.kind == .touchScreen }) ?? false
+        return hasTouchScreen
+    }
+}
 
 private extension GameViewController
 {
@@ -28,6 +40,29 @@ private extension GameViewController
         {
             self.fileURL = fileURL
             self.gameType = gameType
+        }
+    }
+    
+    struct DefaultInputMapping: GameControllerInputMappingProtocol
+    {
+        let gameController: GameController
+        
+        var gameControllerInputType: GameControllerInputType {
+            return self.gameController.inputType
+        }
+        
+        func input(forControllerInput controllerInput: Input) -> Input?
+        {
+            if let mappedInput = self.gameController.defaultInputMapping?.input(forControllerInput: controllerInput)
+            {
+                return mappedInput
+            }
+            
+            // Only intercept controller skin inputs.
+            guard controllerInput.type == .controller(.controllerSkin) else { return nil }
+            
+            let actionInput = ActionInput(stringValue: controllerInput.stringValue)
+            return actionInput
         }
     }
     
@@ -74,7 +109,6 @@ class GameViewController: DeltaCore.GameViewController
                 self.shouldResetSustainedInputs = true
             }
             
-            self.updateControllerSkin()
             self.updateControllers()
             
             self.presentedGyroAlert = false
@@ -169,6 +203,8 @@ class GameViewController: DeltaCore.GameViewController
         
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.didActivateGyro(with:)), name: GBA.didActivateGyroNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.didDeactivateGyro(with:)), name: GBA.didDeactivateGyroNotification, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.emulationDidQuit(with:)), name: EmulatorCore.emulationDidQuitNotification, object: nil)
     }
     
     deinit
@@ -190,7 +226,7 @@ class GameViewController: DeltaCore.GameViewController
                 self.inputsToSustain[AnyInput(input)] = value
             }
         }
-        else if self.emulatorCore?.state == .running
+        else if let emulatorCore = self.emulatorCore, emulatorCore.state == .running
         {
             guard let actionInput = ActionInput(input: input) else { return }
             
@@ -199,6 +235,9 @@ class GameViewController: DeltaCore.GameViewController
             case .quickSave: self.performQuickSaveAction()
             case .quickLoad: self.performQuickLoadAction()
             case .fastForward: self.performFastForwardAction(activate: true)
+            case .toggleFastForward:
+                let isFastForwarding = (emulatorCore.rate != emulatorCore.deltaCore.supportedRates.lowerBound)
+                self.performFastForwardAction(activate: !isFastForwarding)
             }
         }
     }
@@ -223,6 +262,7 @@ class GameViewController: DeltaCore.GameViewController
             case .quickSave: break
             case .quickLoad: break
             case .fastForward: self.performFastForwardAction(activate: false)
+            case .toggleFastForward: break
             }
         }
     }
@@ -240,14 +280,12 @@ extension GameViewController
         // Lays out self.gameView, so we can pin self.sustainButtonsContentView to it without resulting in a temporary "cannot satisfy constraints".
         self.view.layoutIfNeeded()
         
-        let gameViewContainerView = self.gameView.superview!
-        
         self.controllerView.translucentControllerSkinOpacity = Settings.translucentControllerSkinOpacity
         
         self.sustainButtonsContentView = UIView(frame: CGRect(x: 0, y: 0, width: self.gameView.bounds.width, height: self.gameView.bounds.height))
         self.sustainButtonsContentView.translatesAutoresizingMaskIntoConstraints = false
         self.sustainButtonsContentView.isHidden = true
-        self.view.insertSubview(self.sustainButtonsContentView, aboveSubview: gameViewContainerView)
+        self.view.insertSubview(self.sustainButtonsContentView, aboveSubview: self.gameView)
         
         let blurEffect = UIBlurEffect(style: .dark)
         let vibrancyEffect = UIVibrancyEffect(blurEffect: blurEffect)
@@ -273,13 +311,25 @@ extension GameViewController
         vibrancyView.contentView.addSubview(self.sustainButtonsBackgroundView)
         
         // Auto Layout
-        self.sustainButtonsContentView.leadingAnchor.constraint(equalTo: gameViewContainerView.leadingAnchor).isActive = true
-        self.sustainButtonsContentView.trailingAnchor.constraint(equalTo: gameViewContainerView.trailingAnchor).isActive = true
-        self.sustainButtonsContentView.topAnchor.constraint(equalTo: gameViewContainerView.topAnchor).isActive = true
-        self.sustainButtonsContentView.bottomAnchor.constraint(equalTo: gameViewContainerView.bottomAnchor).isActive = true
+        self.sustainButtonsContentView.leadingAnchor.constraint(equalTo: self.gameView.leadingAnchor).isActive = true
+        self.sustainButtonsContentView.trailingAnchor.constraint(equalTo: self.gameView.trailingAnchor).isActive = true
+        self.sustainButtonsContentView.topAnchor.constraint(equalTo: self.gameView.topAnchor).isActive = true
+        self.sustainButtonsContentView.bottomAnchor.constraint(equalTo: self.gameView.bottomAnchor).isActive = true
         
-        self.updateControllerSkin()
         self.updateControllers()
+    }
+    
+    override func viewDidAppear(_ animated: Bool)
+    {
+        super.viewDidAppear(animated)
+        
+        if self.emulatorCore?.deltaCore == DS.core, UserDefaults.standard.desmumeDeprecatedAlertCount < 3
+        {
+            let toastView = RSTToastView(text: NSLocalizedString("DeSmuME Core Deprecated", comment: ""), detailText: NSLocalizedString("Switch to the melonDS core in Settings for latest improvements.", comment: ""))
+            self.show(toastView, duration: 5.0)
+            
+            UserDefaults.standard.desmumeDeprecatedAlertCount += 1
+        }
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator)
@@ -302,10 +352,18 @@ extension GameViewController
         {
         case "showGamesViewController":
             let gamesViewController = (segue.destination as! UINavigationController).topViewController as! GamesViewController
-            gamesViewController.theme = .translucent
-            gamesViewController.activeEmulatorCore = self.emulatorCore
             
-            self.updateAutoSaveState()
+            if let emulatorCore = self.emulatorCore
+            {
+                gamesViewController.theme = .translucent
+                gamesViewController.activeEmulatorCore = emulatorCore
+                
+                self.updateAutoSaveState()
+            }
+            else
+            {
+                gamesViewController.theme = .opaque
+            }
             
         case "pause":
             
@@ -352,17 +410,21 @@ extension GameViewController
                 self.pausingGameController = gameController
             }
             
+            if self.emulatorCore?.deltaCore.supportedRates.upperBound == 1
+            {
+                pauseViewController.fastForwardItem = nil
+            }
+            
             switch self.game?.type
             {
-            case .n64? where !UIDevice.current.hasA9ProcessorOrBetter:
-                // A8 processors and earlier aren't powerful enough to run N64 games faster than 1x speed.
-                pauseViewController.fastForwardItem = nil
-            
-            case .ds?:
-                // Cheats and Fast Forwarding are not yet supported for DS games.
+            case .ds? where self.emulatorCore?.deltaCore == DS.core:
+                // Cheats are not supported by DeSmuME core.
                 pauseViewController.cheatCodesItem = nil
-                pauseViewController.fastForwardItem = nil
                 
+            case .genesis?:
+                // GPGX core does not support cheats yet.
+                pauseViewController.cheatCodesItem = nil
+
             default: break
             }
             
@@ -491,16 +553,27 @@ private extension GameViewController
         }
         
         // If Settings.localControllerPlayerIndex is non-nil, and there isn't a connected controller with same playerIndex, show controller view.
-        if let index = Settings.localControllerPlayerIndex, !ExternalGameControllerManager.shared.connectedControllers.contains { $0.playerIndex == index }
+        if let index = Settings.localControllerPlayerIndex, !ExternalGameControllerManager.shared.connectedControllers.contains(where: { $0.playerIndex == index })
         {
             self.controllerView.playerIndex = index
             self.controllerView.isHidden = false
         }
         else
         {
-            self.controllerView.playerIndex = nil
-            self.controllerView.isHidden = true
-            
+            if let game = self.game,
+               let traits = self.controllerView.controllerSkinTraits,
+               let controllerSkin = DeltaCore.ControllerSkin.standardControllerSkin(for: game.type),
+               controllerSkin.hasTouchScreen(for: traits)
+            {
+                self.controllerView.isHidden = false
+                self.controllerView.playerIndex = 0
+            }
+            else
+            {
+                self.controllerView.isHidden = true
+                self.controllerView.playerIndex = nil
+            }
+
             Settings.localControllerPlayerIndex = nil
         }
         
@@ -518,16 +591,19 @@ private extension GameViewController
             {
                 if gameController.playerIndex != nil
                 {
-                    if let inputMapping = GameControllerInputMapping.inputMapping(for: gameController, gameType: game.type, in: DatabaseManager.shared.viewContext)
+                    let inputMapping: GameControllerInputMappingProtocol
+                    
+                    if let mapping = GameControllerInputMapping.inputMapping(for: gameController, gameType: game.type, in: DatabaseManager.shared.viewContext)
                     {
-                        gameController.addReceiver(self, inputMapping: inputMapping)
-                        gameController.addReceiver(emulatorCore, inputMapping: inputMapping)
+                        inputMapping = mapping
                     }
                     else
                     {
-                        gameController.addReceiver(self)
-                        gameController.addReceiver(emulatorCore)
+                        inputMapping = DefaultInputMapping(gameController: gameController)
                     }
+                    
+                    gameController.addReceiver(self, inputMapping: inputMapping)
+                    gameController.addReceiver(emulatorCore, inputMapping: inputMapping)
                 }
                 else
                 {
@@ -552,18 +628,36 @@ private extension GameViewController
         
         self.controllerView.isButtonHapticFeedbackEnabled = Settings.isButtonHapticFeedbackEnabled
         self.controllerView.isThumbstickHapticFeedbackEnabled = Settings.isThumbstickHapticFeedbackEnabled
+        
+        self.updateControllerSkin()
     }
     
     func updateControllerSkin()
     {
-        guard let game = self.game, let system = System(gameType: game.type), let window = self.view.window else { return }
+        guard let game = self.game as? Game, let window = self.view.window else { return }
         
         let traits = DeltaCore.ControllerSkin.Traits.defaults(for: window)
         
-        let controllerSkin = Settings.preferredControllerSkin(for: system, traits: traits)
-        self.controllerView.controllerSkin = controllerSkin
+        if Settings.localControllerPlayerIndex != nil
+        {
+            let controllerSkin = Settings.preferredControllerSkin(for: game, traits: traits)
+            self.controllerView.controllerSkin = controllerSkin
+        }
+        else if let controllerSkin = DeltaCore.ControllerSkin.standardControllerSkin(for: game.type), controllerSkin.hasTouchScreen(for: traits)
+        {
+            var touchControllerSkin = TouchControllerSkin(controllerSkin: controllerSkin)
+            touchControllerSkin.layoutGuide = self.view.safeAreaLayoutGuide
+            
+            switch traits.orientation
+            {
+            case .portrait: touchControllerSkin.screenLayoutAxis = .vertical
+            case .landscape: touchControllerSkin.screenLayoutAxis = .horizontal
+            }
+            
+            self.controllerView.controllerSkin = touchControllerSkin
+        }
         
-        self.view.setNeedsUpdateConstraints()
+        self.view.setNeedsLayout()
     }
 }
 
@@ -619,6 +713,8 @@ extension GameViewController: SaveStatesViewControllerDelegate
     {
         // Ensures game is non-nil and also a Game subclass
         guard let game = self.game as? Game else { return }
+        
+        guard let emulatorCore = self.emulatorCore, emulatorCore.state != .stopped else { return }
         
         // If pausedSaveState exists and has already been saved, don't update auto save state
         // This prevents us from filling our auto save state slots with the same save state
@@ -699,7 +795,7 @@ extension GameViewController: SaveStatesViewControllerDelegate
             self.emulatorCore?.saveSaveState(to: saveState.fileURL)
         }
         
-        if let snapshot = self.gameView.snapshot(), let data = snapshot.pngData()
+        if let snapshot = self.emulatorCore?.videoManager.snapshot(), let data = snapshot.pngData()
         {
             do
             {
@@ -712,6 +808,7 @@ extension GameViewController: SaveStatesViewControllerDelegate
         }
         
         saveState.modifiedDate = Date()
+        saveState.coreIdentifier = self.emulatorCore?.deltaCore.identifier
         
         if isRunning
         {
@@ -980,6 +1077,16 @@ extension GameViewController: GameViewControllerDelegate
     }
 }
 
+private extension GameViewController
+{
+    func show(_ toastView: RSTToastView, duration: TimeInterval = 3.0)
+    {
+        toastView.textLabel.textAlignment = .center
+        toastView.presentationEdge = .top
+        toastView.show(in: self.view, duration: duration)
+    }
+}
+
 //MARK: - Notifications -
 private extension GameViewController
 {
@@ -1078,16 +1185,7 @@ private extension GameViewController
         func presentToastView()
         {
             let toastView = RSTToastView(text: NSLocalizedString("Autorotation Disabled", comment: ""), detailText: NSLocalizedString("Pause game to change orientation.", comment: ""))
-            toastView.textLabel.textAlignment = .center
-            toastView.presentationEdge = .bottom
-            
-            if let traits = self.controllerView.controllerSkinTraits, traits.orientation == .landscape, self.controllerView?.controllerSkin?.gameScreenFrame(for: traits) == nil
-            {
-                // Only change landscape vertical offset if there is no custom game screen frame for the current controller skin.
-                toastView.edgeOffset.vertical = 30
-            }
-            
-            toastView.show(in: self.gameView, duration: 3.0)
+            self.show(toastView)
         }
         
         DispatchQueue.main.async {
@@ -1108,4 +1206,29 @@ private extension GameViewController
     {
         self.isGyroActive = false
     }
+    
+    @objc func emulationDidQuit(with notification: Notification)
+    {
+        DispatchQueue.main.async {
+            guard self.presentedViewController == nil else { return }
+            
+            // Wait for emulation to stop completely before performing segue.
+            var token: NSKeyValueObservation?
+            token = self.emulatorCore?.observe(\.state, options: [.initial]) { (emulatorCore, change) in
+                guard emulatorCore.state == .stopped else { return }
+                
+                DispatchQueue.main.async {
+                    self.game = nil
+                    self.performSegue(withIdentifier: "showGamesViewController", sender: nil)
+                }
+                
+                token?.invalidate()
+            }
+        }
+    }
+}
+
+private extension UserDefaults
+{
+    @NSManaged var desmumeDeprecatedAlertCount: Int
 }

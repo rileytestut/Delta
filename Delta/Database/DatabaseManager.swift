@@ -14,6 +14,7 @@ import DeltaCore
 import Harmony
 import Roxas
 import ZIPFoundation
+import MelonDSDeltaCore
 
 extension DatabaseManager
 {
@@ -22,13 +23,24 @@ extension DatabaseManager
 
 extension DatabaseManager
 {
-    enum ImportError: Error, Hashable, Equatable
+    enum ImportError: LocalizedError, Hashable, Equatable
     {
         case doesNotExist(URL)
         case invalid(URL)
         case unsupported(URL)
         case unknown(URL, NSError)
         case saveFailed(Set<URL>, NSError)
+        
+        var errorDescription: String? {
+            switch self
+            {
+            case .doesNotExist: return NSLocalizedString("The file does not exist.", comment: "")
+            case .invalid: return NSLocalizedString("The file is invalid.", comment: "")
+            case .unsupported: return NSLocalizedString("This file is not supported.", comment: "")
+            case .unknown(_, let error): return error.localizedDescription
+            case .saveFailed(_, let error): return error.localizedDescription
+            }
+        }
     }
 }
 
@@ -41,6 +53,8 @@ final class DatabaseManager: RSTPersistentContainer
     private var gamesDatabase: GamesDatabase? = nil
     
     private var validationManagedObjectContext: NSManagedObjectContext?
+    
+    private let importController = ImportController(documentTypes: [])
     
     private init()
     {
@@ -62,6 +76,12 @@ extension DatabaseManager
     {
         guard !self.isStarted else { return }
         
+        for description in self.persistentStoreDescriptions
+        {
+            // Set configuration so RSTPersistentContainer can determine how to migrate this and Harmony's database independently.
+            description.configuration = NSManagedObjectModel.Configuration.external.rawValue
+        }
+        
         self.loadPersistentStores { (description, error) in
             guard error == nil else { return completionHandler(error) }
             
@@ -72,6 +92,114 @@ extension DatabaseManager
                 
                 completionHandler(nil)
             }
+        }
+    }
+    
+    func prepare(_ core: DeltaCoreProtocol, in context: NSManagedObjectContext)
+    {
+        guard let system = System(gameType: core.gameType) else { return }
+        
+        if let skin = ControllerSkin(system: system, context: context)
+        {
+            print("Updated default skin (\(skin.identifier)) for system:", system)
+        }
+        else
+        {
+            print("Failed to update default skin for system:", system)
+        }
+        
+        switch system
+        {
+        case .ds where core == MelonDS.core:
+            
+            // Returns nil if game already exists.
+            func makeBIOS(name: String, identifier: String) -> Game?
+            {
+                let predicate = NSPredicate(format: "%K == %@", #keyPath(Game.identifier), identifier)
+                if let _ = Game.instancesWithPredicate(predicate, inManagedObjectContext: context, type: Game.self).first
+                {
+                    // BIOS already exists, so don't do anything.
+                    return nil
+                }
+                
+                let filename: String
+                
+                switch identifier
+                {
+                case Game.melonDSBIOSIdentifier:
+                    guard
+                        FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.bios7URL.path) &&
+                        FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.bios9URL.path) &&
+                        FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.firmwareURL.path)
+                    else { return nil }
+                    
+                    filename = "nds.bios"
+                    
+                case Game.melonDSDSiBIOSIdentifier:
+                    #if BETA
+                    
+                    guard
+                        FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.dsiBIOS7URL.path) &&
+                        FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.dsiBIOS9URL.path) &&
+                        FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.dsiFirmwareURL.path) &&
+                        FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.dsiNANDURL.path)
+                    else { return nil }
+                    
+                    filename = "dsi.bios"
+                    
+                    #else
+                    return nil
+                    #endif
+                
+                default: filename = "system.bios"
+                }
+                
+                let bios = Game(context: context)
+                bios.name = name
+                bios.identifier = identifier
+                bios.type = .ds
+                bios.filename = filename
+                
+                if let artwork = UIImage(named: "DS Home Screen"), let artworkData = artwork.pngData()
+                {
+                    do
+                    {
+                        let destinationURL = DatabaseManager.artworkURL(for: bios)
+                        try artworkData.write(to: destinationURL, options: .atomic)
+                        bios.artworkURL = destinationURL
+                    }
+                    catch
+                    {
+                        print("Failed to copy default DS home screen artwork.", error)
+                    }
+                }
+                
+                return bios
+            }
+            
+            let insertedGames = [
+                (name: NSLocalizedString("Home Screen", comment: ""), identifier: Game.melonDSBIOSIdentifier),
+                (name: NSLocalizedString("Home Screen (DSi)", comment: ""), identifier: Game.melonDSDSiBIOSIdentifier)
+            ].compactMap(makeBIOS)
+            
+            // Break if we didn't create any new Games.
+            guard !insertedGames.isEmpty else { break }
+            
+            let gameCollection = GameCollection(context: context)
+            gameCollection.identifier = GameType.ds.rawValue
+            gameCollection.index = Int16(System.ds.year)
+            gameCollection.games.formUnion(insertedGames)
+            
+        case .ds:
+            let predicate = NSPredicate(format: "%K IN %@", #keyPath(Game.identifier), [Game.melonDSBIOSIdentifier, Game.melonDSDSiBIOSIdentifier])
+            
+            let games = Game.instancesWithPredicate(predicate, inManagedObjectContext: context, type: Game.self)
+            for game in games
+            {
+                context.delete(game)
+            }
+            
+        default: break
         }
     }
 }
@@ -113,13 +241,7 @@ private extension DatabaseManager
             
             for system in System.allCases
             {
-                guard let deltaControllerSkin = DeltaCore.ControllerSkin.standardControllerSkin(for: system.gameType) else { continue }
-                
-                let controllerSkin = ControllerSkin(context: context)
-                controllerSkin.isStandard = true
-                controllerSkin.filename = deltaControllerSkin.fileURL.lastPathComponent
-                
-                controllerSkin.configure(with: deltaControllerSkin)
+                self.prepare(system.deltaCore, in: context)
             }
             
             do
@@ -157,7 +279,20 @@ extension DatabaseManager
 {
     func importGames(at urls: Set<URL>, completion: ((Set<Game>, Set<ImportError>) -> Void)?)
     {
-        var errors = Set<ImportError>()
+        let externalFileURLs = urls.filter { !FileManager.default.isReadableFile(atPath: $0.path) }
+        guard externalFileURLs.isEmpty else {
+            self.importExternalFiles(at: externalFileURLs) { (importedURLs, externalImportErrors) in
+                var availableFileURLs = urls.filter { !externalFileURLs.contains($0) }
+                availableFileURLs.formUnion(importedURLs)
+                
+                self.importGames(at: Set(availableFileURLs)) { (importedGames, importErrors) in
+                    let allErrors = importErrors.union(externalImportErrors)
+                    completion?(importedGames, allErrors)
+                }
+            }
+            
+            return
+        }
         
         let zipFileURLs = urls.filter { $0.pathExtension.lowercased() == "zip" }
         if zipFileURLs.count > 0
@@ -175,6 +310,7 @@ extension DatabaseManager
         
         self.performBackgroundTask { (context) in
             
+            var errors = Set<ImportError>()
             var identifiers = Set<String>()
             
             for url in urls
@@ -270,10 +406,24 @@ extension DatabaseManager
     
     func importControllerSkins(at urls: Set<URL>, completion: ((Set<ControllerSkin>, Set<ImportError>) -> Void)?)
     {
-        var errors = Set<ImportError>()
+        let externalFileURLs = urls.filter { !FileManager.default.isReadableFile(atPath: $0.path) }
+        guard externalFileURLs.isEmpty else {
+            self.importExternalFiles(at: externalFileURLs) { (importedURLs, externalImportErrors) in
+                var availableFileURLs = urls.filter { !externalFileURLs.contains($0) }
+                availableFileURLs.formUnion(importedURLs)
+                
+                self.importControllerSkins(at: Set(availableFileURLs)) { (importedSkins, importErrors) in
+                    let allErrors = importErrors.union(externalImportErrors)
+                    completion?(importedSkins, allErrors)
+                }
+            }
+            
+            return
+        }
         
         self.performBackgroundTask { (context) in
             
+            var errors = Set<ImportError>()
             var identifiers = Set<String>()
             
             for url in urls
@@ -412,6 +562,32 @@ extension DatabaseManager
             completion(outputURLs, errors)
         }
     }
+    
+    private func importExternalFiles(at urls: Set<URL>, completion: @escaping ((Set<URL>, Set<ImportError>) -> Void))
+    {
+        var outputURLs = Set<URL>()
+        var errors = Set<ImportError>()
+        
+        let dispatchGroup = DispatchGroup()
+        for url in urls
+        {
+            dispatchGroup.enter()
+            
+            self.importController.importExternalFile(at: url) { (result) in
+                switch result
+                {
+                case .failure(let error): errors.insert(.unknown(url, error as NSError))
+                case .success(let fileURL): outputURLs.insert(fileURL)
+                }
+                
+                dispatchGroup.leave()
+            }
+        }
+        
+        dispatchGroup.notify(queue: .global()) {
+            completion(outputURLs, errors)
+        }
+    }
 }
 
 //MARK: - File URLs -
@@ -487,7 +663,7 @@ extension DatabaseManager
     {
         let gameURL = game.fileURL
         
-        let artworkURL = gameURL.deletingPathExtension().appendingPathExtension("jpg")
+        let artworkURL = gameURL.deletingPathExtension().appendingPathExtension("png")
         return artworkURL
     }
 }

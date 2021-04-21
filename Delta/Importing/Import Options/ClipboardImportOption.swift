@@ -19,8 +19,11 @@ struct ClipboardImportOption: ImportOption
     func `import`(withCompletionHandler completionHandler: @escaping (Set<URL>?) -> Void)
     {
         guard UIPasteboard.general.hasImages else { return completionHandler([]) }
-        
-        guard let data = UIPasteboard.general.data(forPasteboardType: kUTTypeImage as String) else { return completionHandler([]) }
+                
+        guard let image = UIPasteboard.general.image,
+              let rotatedImage = image.rotatedToIntrinsicOrientation(),
+              let data = rotatedImage.pngData()
+        else { return completionHandler([]) }
         
         do
         {

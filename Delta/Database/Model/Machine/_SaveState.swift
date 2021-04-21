@@ -14,6 +14,8 @@ public class _SaveState: NSManagedObject
 
     // MARK: - Properties
 
+    @NSManaged public var coreIdentifier: String?
+
     @NSManaged public var creationDate: Date
 
     @NSManaged public var filename: String

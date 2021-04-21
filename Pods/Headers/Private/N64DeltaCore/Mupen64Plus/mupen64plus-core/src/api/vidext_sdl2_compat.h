@@ -1,0 +1,1 @@
+../../../../../../../../Cores/N64DeltaCore/Mupen64Plus/mupen64plus-core/src/api/vidext_sdl2_compat.h

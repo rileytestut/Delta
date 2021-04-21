@@ -11,6 +11,8 @@ import Foundation
 import DeltaCore
 import Harmony
 
+import struct DSDeltaCore.DS
+
 @objc public enum SaveStateType: Int16
 {
     case auto
@@ -111,7 +113,7 @@ extension SaveState: Syncable
     }
     
     public var syncableKeys: Set<AnyKeyPath> {
-        return [\SaveState.creationDate, \SaveState.filename, \SaveState.modifiedDate, \SaveState.name, \SaveState.type]
+        return [\SaveState.creationDate, \SaveState.filename, \SaveState.modifiedDate, \SaveState.name, \SaveState.type, \SaveState.coreIdentifier]
     }
     
     public var syncableFiles: Set<File> {
@@ -123,15 +125,40 @@ extension SaveState: Syncable
     }
     
     public var isSyncingEnabled: Bool {
-        return self.type != .auto && self.type != .quick
+        // self.game may be nil if being downloaded, so don't enforce it.
+        // guard let identifier = self.game?.identifier else { return false }
+        
+        let isSyncingEnabled = (self.type != .auto && self.type != .quick) && (self.game?.identifier != Game.melonDSBIOSIdentifier && self.game?.identifier != Game.melonDSDSiBIOSIdentifier)
+        return isSyncingEnabled
     }
     
     public var syncableMetadata: [HarmonyMetadataKey : String] {
         guard let game = self.game else { return [:] }
-        return [.gameID: game.identifier, .gameName: game.name]
+        return [.gameID: game.identifier, .gameName: game.name, .coreID: self.coreIdentifier].compactMapValues { $0 }
     }
     
     public var syncableLocalizedName: String? {
         return self.localizedName
+    }
+    
+    public func awakeFromSync(_ record: AnyRecord)
+    {
+        guard self.coreIdentifier == nil else { return }
+        guard let game = self.game, let system = System(gameType: game.type) else { return }
+           
+        if let coreIdentifier = record.remoteMetadata?[.coreID]
+        {
+            // SaveState was synced to older version of Delta and lost its coreIdentifier,
+            // but it remains in the remote metadata so we can reassign it.
+            self.coreIdentifier = coreIdentifier
+        }
+        else
+        {
+            switch system
+            {
+            case .ds: self.coreIdentifier = DS.core.identifier // Assume DS save state with nil coreIdentifier is from DeSmuME core.
+            default: self.coreIdentifier = system.deltaCore.identifier
+            }
+        }
     }
 }

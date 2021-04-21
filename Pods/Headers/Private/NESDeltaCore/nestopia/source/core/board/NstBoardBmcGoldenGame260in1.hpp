@@ -1,0 +1,1 @@
+../../../../../../../../Cores/NESDeltaCore/nestopia/source/core/board/NstBoardBmcGoldenGame260in1.hpp

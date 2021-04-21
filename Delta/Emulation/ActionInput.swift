@@ -18,6 +18,7 @@ enum ActionInput: String
     case quickSave
     case quickLoad
     case fastForward
+    case toggleFastForward
 }
 
 extension ActionInput: Input

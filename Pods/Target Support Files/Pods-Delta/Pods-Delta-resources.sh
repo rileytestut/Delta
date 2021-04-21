@@ -3,10 +3,15 @@ set -e
 set -u
 set -o pipefail
 
+function on_error {
+  echo "$(realpath -mq "${0}"):$1: error: Unexpected failure"
+}
+trap 'on_error $LINENO' ERR
+
 if [ -z ${UNLOCALIZED_RESOURCES_FOLDER_PATH+x} ]; then
-    # If UNLOCALIZED_RESOURCES_FOLDER_PATH is not set, then there's nowhere for us to copy
-    # resources to, so exit 0 (signalling the script phase was successful).
-    exit 0
+  # If UNLOCALIZED_RESOURCES_FOLDER_PATH is not set, then there's nowhere for us to copy
+  # resources to, so exit 0 (signalling the script phase was successful).
+  exit 0
 fi
 
 mkdir -p "${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"
@@ -91,6 +96,36 @@ EOM
       ;;
   esac
 }
+if [[ "$CONFIGURATION" == "Debug" ]]; then
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/DSDeltaCore/DSDeltaCore.bundle"
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/DeltaCore/DeltaCore.bundle"
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/GBADeltaCore/GBADeltaCore.bundle"
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/GBCDeltaCore/GBCDeltaCore.bundle"
+  install_resource "${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle"
+  install_resource "${PODS_ROOT}/../External/Harmony/Harmony/Model/Core Data/Harmony.xcdatamodeld"
+  install_resource "${PODS_ROOT}/../External/Harmony/Harmony/Model/Core Data/Migrations/HarmonyToHarmony2.xcmappingmodel"
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/MelonDSDeltaCore/melonDS.bundle"
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/N64DeltaCore/Mupen64Plus.bundle"
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/NESDeltaCore/NESDeltaCore.bundle"
+  install_resource "${PODS_ROOT}/../External/Roxas/Roxas/RSTCollectionViewCell.xib"
+  install_resource "${PODS_ROOT}/../External/Roxas/Roxas/RSTPlaceholderView.xib"
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/SNESDeltaCore/SNESDeltaCore.bundle"
+fi
+if [[ "$CONFIGURATION" == "Release" ]]; then
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/DSDeltaCore/DSDeltaCore.bundle"
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/DeltaCore/DeltaCore.bundle"
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/GBADeltaCore/GBADeltaCore.bundle"
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/GBCDeltaCore/GBCDeltaCore.bundle"
+  install_resource "${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle"
+  install_resource "${PODS_ROOT}/../External/Harmony/Harmony/Model/Core Data/Harmony.xcdatamodeld"
+  install_resource "${PODS_ROOT}/../External/Harmony/Harmony/Model/Core Data/Migrations/HarmonyToHarmony2.xcmappingmodel"
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/MelonDSDeltaCore/melonDS.bundle"
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/N64DeltaCore/Mupen64Plus.bundle"
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/NESDeltaCore/NESDeltaCore.bundle"
+  install_resource "${PODS_ROOT}/../External/Roxas/Roxas/RSTCollectionViewCell.xib"
+  install_resource "${PODS_ROOT}/../External/Roxas/Roxas/RSTPlaceholderView.xib"
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/SNESDeltaCore/SNESDeltaCore.bundle"
+fi
 
 mkdir -p "${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"
 rsync -avr --copy-links --no-relative --exclude '*/.svn/*' --files-from="$RESOURCES_TO_COPY" / "${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"
@@ -103,7 +138,7 @@ rm -f "$RESOURCES_TO_COPY"
 if [[ -n "${WRAPPER_EXTENSION}" ]] && [ "`xcrun --find actool`" ] && [ -n "${XCASSET_FILES:-}" ]
 then
   # Find all other xcassets (this unfortunately includes those of path pods and other targets).
-  OTHER_XCASSETS=$(find "$PWD" -iname "*.xcassets" -type d)
+  OTHER_XCASSETS=$(find -L "$PWD" -iname "*.xcassets" -type d)
   while read line; do
     if [[ $line != "${PODS_ROOT}*" ]]; then
       XCASSET_FILES+=("$line")

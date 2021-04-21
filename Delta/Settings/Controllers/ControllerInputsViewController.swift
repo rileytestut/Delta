@@ -223,6 +223,8 @@ private extension ControllerInputsViewController
             case .fastForward:
                 image = #imageLiteral(resourceName: "FastForward")
                 text = NSLocalizedString("Fast Forward", comment: "")
+                
+            case .toggleFastForward: continue
             }
             
             let item = MenuItem(text: text, image: image) { [unowned self] (item) in
@@ -235,6 +237,8 @@ private extension ControllerInputsViewController
         
         self.actionsMenuViewController.items = items
         self.actionsMenuViewController.isVibrancyEnabled = false
+        
+        self.actionsMenuViewController.collectionView.backgroundColor = nil
     }
     
     func prepareCallouts()
@@ -255,6 +259,8 @@ private extension ControllerInputsViewController
         {
             let calloutView = InputCalloutView()
             calloutView.delegate = self
+            calloutView.permittedArrowDirection = .any
+            calloutView.constrainedInsets = self.view.safeAreaInsets
             self.calloutViews[AnyInput(input)] = calloutView
         }
         

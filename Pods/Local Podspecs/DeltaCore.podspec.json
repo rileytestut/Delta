@@ -1,0 +1,41 @@
+{
+  "name": "DeltaCore",
+  "version": "0.1",
+  "summary": "iOS Emulator Plug-in Framework",
+  "description": "iOS framework that powers Delta emulator.",
+  "homepage": "https://github.com/rileytestut/DeltaCore",
+  "platforms": {
+    "ios": "12.0"
+  },
+  "source": {
+    "git": "https://github.com/rileytestut/DeltaCore.git"
+  },
+  "authors": {
+    "Riley Testut": "riley@rileytestut.com"
+  },
+  "social_media_url": "https://twitter.com/rileytestut",
+  "source_files": "DeltaCore/**/*.{h,m,swift}",
+  "exclude_files": [
+    "DeltaCore/DeltaTypes.h",
+    "DeltaCore/Emulator Core/Audio/DLTAMuteSwitchMonitor.h"
+  ],
+  "public_header_files": "DeltaCore/include/*.h",
+  "resource_bundles": {
+    "DeltaCore": [
+      "DeltaCore/**/*.deltamapping"
+    ]
+  },
+  "dependencies": {
+    "ZIPFoundation": [
+
+    ]
+  },
+  "xcconfig": {
+    "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "STATIC_LIBRARY",
+    "OTHER_CFLAGS": "-DSTATIC_LIBRARY"
+  },
+  "script_phases": {
+    "name": "Copy Swift Header",
+    "script": "target_dir=${BUILT_PRODUCTS_DIR}\n\nmkdir -p ${target_dir}\n\n# Copy any file that looks like a Swift generated header to the include path\ncp ${DERIVED_SOURCES_DIR}/*-Swift.h ${target_dir}\n"
+  }
+}

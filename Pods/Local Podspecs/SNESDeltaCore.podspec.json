@@ -1,0 +1,43 @@
+{
+  "name": "SNESDeltaCore",
+  "version": "0.1",
+  "summary": "Super Nintendo Entertainment System plug-in for Delta emulator.",
+  "description": "iOS framework that wraps Snes9x to allow playing SNES games with Delta emulator.",
+  "homepage": "https://github.com/rileytestut/SNESDeltaCore",
+  "platforms": {
+    "ios": "12.0"
+  },
+  "source": {
+    "git": "https://github.com/rileytestut/SNESDeltaCore.git"
+  },
+  "authors": {
+    "Riley Testut": "riley@rileytestut.com"
+  },
+  "social_media_url": "https://twitter.com/rileytestut",
+  "source_files": [
+    "SNESDeltaCore/**/*.{h,m,mm,swift}",
+    "snes9x/*.{h,hpp}",
+    "snes9x/apu/*.{h,hpp}"
+  ],
+  "public_header_files": [
+    "SNESDeltaCore/Types/SNESTypes.h",
+    "SNESDeltaCore/Bridge/SNESEmulatorBridge.h"
+  ],
+  "header_mappings_dir": "",
+  "resource_bundles": {
+    "SNESDeltaCore": [
+      "SNESDeltaCore/**/*.deltamapping",
+      "SNESDeltaCore/**/*.deltaskin"
+    ]
+  },
+  "dependencies": {
+    "DeltaCore": [
+
+    ]
+  },
+  "xcconfig": {
+    "HEADER_SEARCH_PATHS": "\"${PODS_CONFIGURATION_BUILD_DIR}\"",
+    "USER_HEADER_SEARCH_PATHS": "\"${PODS_CONFIGURATION_BUILD_DIR}/DeltaCore/Swift Compatibility Header\" \"$(PODS_ROOT)/Headers/Private/SNESDeltaCore/snes9x\"",
+    "OTHER_CFLAGS": "-funsigned-char -ffast-math -finline -fno-builtin -fno-common -fomit-frame-pointer -funroll-loops -fstrict-aliasing -DHAVE_STDINT_H -DARM -DSTATIC_LIBRARY=1"
+  }
+}

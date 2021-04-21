@@ -1,0 +1,1 @@
+../../../../../../../../../Cores/DSDeltaCore/desmume/desmume/src/libretro-common/include/retro_inline.h

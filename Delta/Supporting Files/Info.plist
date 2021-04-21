@@ -116,6 +116,20 @@
 				<string>com.rileytestut.delta.game.ds</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeIconFiles</key>
+			<array/>
+			<key>CFBundleTypeName</key>
+			<string>Genesis Game</string>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+			<key>LSHandlerRank</key>
+			<string>Owner</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>com.rileytestut.delta.game.genesis</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
@@ -185,21 +199,8 @@
 	<true/>
 	<key>LSSupportsOpeningDocumentsInPlace</key>
 	<false/>
-	<key>NSAppTransportSecurity</key>
-	<dict>
-		<key>NSExceptionDomains</key>
-		<dict>
-			<key>gamefaqs.net</key>
-			<dict>
-				<key>NSIncludesSubdomains</key>
-				<true/>
-				<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
-				<true/>
-				<key>NSTemporaryExceptionMinimumTLSVersion</key>
-				<string>TLSv1.1</string>
-			</dict>
-		</dict>
-	</dict>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Delta uses your microphone to emulate the Nintendo DS microphone.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Press "OK" to allow Delta to use images from your Photo Library as game artwork.</string>
 	<key>UIBackgroundModes</key>
@@ -222,8 +223,8 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>UIUserInterfaceStyle</key>
-	<string>Light</string>
+	<key>UISupportsDocumentBrowser</key>
+	<true/>
 	<key>UTExportedTypeDeclarations</key>
 	<array>
 		<dict>
@@ -276,7 +277,9 @@
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.filename-extension</key>
-				<string>gba</string>
+				<array>
+					<string>gba</string>
+				</array>
 			</dict>
 		</dict>
 		<dict>
@@ -287,12 +290,16 @@
 			</array>
 			<key>UTTypeDescription</key>
 			<string>Delta Controller Skin</string>
+			<key>UTTypeIconFiles</key>
+			<array/>
 			<key>UTTypeIdentifier</key>
 			<string>com.rileytestut.delta.skin</string>
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.filename-extension</key>
-				<string>deltaskin</string>
+				<array>
+					<string>deltaskin</string>
+				</array>
 			</dict>
 		</dict>
 		<dict>
@@ -367,6 +374,28 @@
 				<array>
 					<string>nds</string>
 					<string>ds</string>
+				</array>
+			</dict>
+		</dict>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>com.rileytestut.delta.game</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>Genesis Game</string>
+			<key>UTTypeIconFiles</key>
+			<array/>
+			<key>UTTypeIdentifier</key>
+			<string>com.rileytestut.delta.game.genesis</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>gen</string>
+					<string>bin</string>
+					<string>md</string>
+					<string>smd</string>
 				</array>
 			</dict>
 		</dict>

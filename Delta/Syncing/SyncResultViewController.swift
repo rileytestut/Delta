@@ -163,6 +163,16 @@ private extension SyncResultViewController
                             errorMessage = messages.joined(separator: "\n")
                         }
                         
+                    case .other(_, ValidationError.nilRelationshipObjects(let relationships)) where relationships.contains("game"):
+                        if let gameName = error.record.localMetadata?[.gameName] ?? error.record.remoteMetadata?[.gameName]
+                        {
+                            errorMessage = String(format: NSLocalizedString("“%@“ is missing. Please re-import this game to resume syncing its data.", comment: ""), gameName)
+                        }
+                        else
+                        {
+                            errorMessage = NSLocalizedString("The game for this item is missing. Please re-import the game to resume syncing its data.", comment: "")
+                        }
+                        
                     case .other(_, let error as NSError): errorMessage = error.localizedFailureReason ?? error.localizedDescription
                     default: errorMessage = error.failureReason
                     }
@@ -265,12 +275,38 @@ private extension SyncResultViewController
         
         for (group, errors) in errorsByGroup
         {
-            let sortedErrors = errors.sorted { (a, b) -> Bool in
+            let filteredErrors = errors.filter { error in
+                switch group
+                {
+                case .saveState(let gameID), .cheat(let gameID):
+                    switch error
+                    {
+                    case RecordError.other(_, ValidationError.nilRelationshipObjects(let relationships)) where relationships.contains("game"):
+                        if errorsByGroup.keys.contains(Group.game(gameID))
+                        {
+                            // There is already an error for this game, so don't need to duplicate it due to it missing.
+                            return false
+                        }
+                        else
+                        {
+                            return true
+                        }
+                        
+                    default: break
+                    }
+                    
+                default: break
+                }
+                
+                return true
+            }
+
+            let sortedErrors = filteredErrors.sorted { (a, b) -> Bool in
                 guard let a = a as? RecordError, let b = b as? RecordError else { return false }
                 return a.record.localizedTitle < b.record.localizedTitle
             }
             
-            errorsByGroup[group] = sortedErrors
+            errorsByGroup[group] = sortedErrors.isEmpty ? nil : sortedErrors
         }
         
         let sortedErrors = errorsByGroup.sorted { (a, b) in

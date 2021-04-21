@@ -86,9 +86,9 @@ extension ControllerSkin: ControllerSkinProtocol
         return self.controllerSkin?.isTranslucent(for: traits)
     }
     
-    public func gameScreenFrame(for traits: DeltaCore.ControllerSkin.Traits) -> CGRect?
+    public func screens(for traits: DeltaCore.ControllerSkin.Traits) -> [DeltaCore.ControllerSkin.Screen]?
     {
-        return self.controllerSkin?.gameScreenFrame(for: traits)
+        return self.controllerSkin?.screens(for: traits)
     }
     
     public func aspectRatio(for traits: DeltaCore.ControllerSkin.Traits) -> CGSize?

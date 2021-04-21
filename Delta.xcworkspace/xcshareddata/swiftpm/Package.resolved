@@ -1,0 +1,25 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "DeltaCore",
+        "repositoryURL": "https://github.com/rileytestut/DeltaCore.git",
+        "state": {
+          "branch": "main",
+          "revision": "eeefb30bd78fb130f1113e823afbce6f4f767cfb",
+          "version": null
+        }
+      },
+      {
+        "package": "ZIPFoundation",
+        "repositoryURL": "https://github.com/weichsel/ZIPFoundation.git",
+        "state": {
+          "branch": null,
+          "revision": "ec32d62d412578542c0ffb7a6ce34d3e64b43b94",
+          "version": "0.9.11"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

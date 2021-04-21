@@ -22,7 +22,8 @@ private extension SettingsViewController
         case controllerOpacity
         case hapticFeedback
         case syncing
-        case threeDTouch
+        case hapticTouch
+        case cores
         case patreon
         case credits
     }
@@ -31,6 +32,7 @@ private extension SettingsViewController
     {
         case controllers = "controllersSegue"
         case controllerSkins = "controllerSkinsSegue"
+        case dsSettings = "dsSettingsSegue"
     }
 
     enum SyncingRow: Int, CaseIterable
@@ -44,6 +46,7 @@ private extension SettingsViewController
         case riley
         case caroline
         case grant
+        case litRitt
         case softwareLicenses
     }
 }
@@ -55,6 +58,7 @@ class SettingsViewController: UITableViewController
     
     @IBOutlet private var buttonHapticFeedbackEnabledSwitch: UISwitch!
     @IBOutlet private var thumbstickHapticFeedbackEnabledSwitch: UISwitch!
+    @IBOutlet private var previewsEnabledSwitch: UISwitch!
     
     @IBOutlet private var versionLabel: UILabel!
     
@@ -139,10 +143,12 @@ class SettingsViewController: UITableViewController
             controllersSettingsViewController.playerIndex = indexPath.row
             
         case Segue.controllerSkins:
-            let systemControllerSkinsViewController = segue.destination as! SystemControllerSkinsViewController
+            let preferredControllerSkinsViewController = segue.destination as! PreferredControllerSkinsViewController
             
             let system = System.registeredSystems[indexPath.row]
-            systemControllerSkinsViewController.system = system
+            preferredControllerSkinsViewController.system = system
+            
+        case Segue.dsSettings: break
         }
     }
 }
@@ -168,6 +174,7 @@ private extension SettingsViewController
         
         self.buttonHapticFeedbackEnabledSwitch.isOn = Settings.isButtonHapticFeedbackEnabled
         self.thumbstickHapticFeedbackEnabledSwitch.isOn = Settings.isThumbstickHapticFeedbackEnabled
+        self.previewsEnabledSwitch.isOn = Settings.isPreviewsEnabled
         
         self.tableView.reloadData()
     }
@@ -182,7 +189,17 @@ private extension SettingsViewController
     {
         switch section
         {
-        case .threeDTouch: return self.view.traitCollection.forceTouchCapability != .available
+        case .hapticTouch:
+            if #available(iOS 13, *)
+            {
+                // All devices on iOS 13 support either 3D touch or Haptic Touch.
+                return false
+            }
+            else
+            {
+                return self.view.traitCollection.forceTouchCapability != .available
+            }
+            
         default: return false
         }
     }
@@ -224,6 +241,11 @@ private extension SettingsViewController
     @IBAction func toggleThumbstickHapticFeedbackEnabled(_ sender: UISwitch)
     {
         Settings.isThumbstickHapticFeedbackEnabled = sender.isOn
+    }
+    
+    @IBAction func togglePreviewsEnabled(_ sender: UISwitch)
+    {
+        Settings.isPreviewsEnabled = sender.isOn
     }
     
     func openTwitter(username: String)
@@ -341,7 +363,11 @@ extension SettingsViewController
             case .service: break
             }
             
-        case .controllerOpacity, .hapticFeedback, .threeDTouch, .patreon, .credits: break
+        case .cores:
+            let preferredCore = Settings.preferredCore(for: .ds)
+            cell.detailTextLabel?.text = preferredCore?.metadata?.name.value ?? preferredCore?.name ?? NSLocalizedString("Unknown", comment: "")
+            
+        case .controllerOpacity, .hapticFeedback, .hapticTouch, .patreon, .credits: break
         }
 
         return cell
@@ -356,7 +382,8 @@ extension SettingsViewController
         {
         case .controllers: self.performSegue(withIdentifier: Segue.controllers.rawValue, sender: cell)
         case .controllerSkins: self.performSegue(withIdentifier: Segue.controllerSkins.rawValue, sender: cell)
-        case .controllerOpacity, .hapticFeedback, .threeDTouch, .syncing: break
+        case .cores: self.performSegue(withIdentifier: Segue.dsSettings.rawValue, sender: cell)
+        case .controllerOpacity, .hapticFeedback, .hapticTouch, .syncing: break
         case .patreon:
             let patreonURL = URL(string: "altstore://patreon")!
             
@@ -379,25 +406,34 @@ extension SettingsViewController
             case .riley: self.openTwitter(username: "rileytestut")
             case .caroline: self.openTwitter(username: "1carolinemoore")
             case .grant: self.openTwitter(username: "grantgliner")
+            case .litRitt: self.openTwitter(username: "litritt_z")
             case .softwareLicenses: break
             }
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
+    {
+        switch Section(rawValue: indexPath.section)!
+        {
+        #if !BETA
+        case .credits where indexPath.row == CreditsRow.litRitt.rawValue: return 0.0
+        #endif
+        default: return super.tableView(tableView, heightForRowAt: indexPath)
         }
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String?
     {
         let section = Section(rawValue: section)!
+        guard !isSectionHidden(section) else { return nil }
         
-        if isSectionHidden(section)
+        switch section
         {
-            return nil
-        }
-        else
-        {
-            return super.tableView(tableView, titleForHeaderInSection: section.rawValue)
+        case .hapticTouch where self.view.traitCollection.forceTouchCapability == .available: return NSLocalizedString("3D Touch", comment: "")
+        default: return super.tableView(tableView, titleForHeaderInSection: section.rawValue)
         }
     }
-    
     
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String?
     {

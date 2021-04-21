@@ -9,6 +9,7 @@
 import Foundation
 
 import DeltaCore
+import MelonDSDeltaCore
 
 import Roxas
 
@@ -25,6 +26,8 @@ extension Settings
         
         case system
         case traits
+        
+        case core
     }
     
     enum Name: String
@@ -55,7 +58,9 @@ struct Settings
                         #keyPath(UserDefaults.gameShortcutsMode): GameShortcutsMode.recent.rawValue,
                         #keyPath(UserDefaults.isButtonHapticFeedbackEnabled): true,
                         #keyPath(UserDefaults.isThumbstickHapticFeedbackEnabled): true,
-                        #keyPath(UserDefaults.sortSaveStatesByOldestFirst): true] as [String : Any]
+                        #keyPath(UserDefaults.sortSaveStatesByOldestFirst): true,
+                        #keyPath(UserDefaults.isPreviewsEnabled): true,
+                        Settings.preferredCoreSettingsKey(for: .ds): MelonDS.core.identifier] as [String : Any]
         UserDefaults.standard.register(defaults: defaults)
     }
 }
@@ -177,6 +182,34 @@ extension Settings
         }
     }
     
+    static var isPreviewsEnabled: Bool {
+        set { UserDefaults.standard.isPreviewsEnabled = newValue }
+        get {
+            let isPreviewsEnabled = UserDefaults.standard.isPreviewsEnabled
+            return isPreviewsEnabled
+        }
+    }
+    
+    static func preferredCore(for gameType: GameType) -> DeltaCoreProtocol?
+    {
+        let key = self.preferredCoreSettingsKey(for: gameType)
+        
+        let identifier = UserDefaults.standard.string(forKey: key)
+        
+        let core = System.allCores.first { $0.identifier == identifier }
+        return core
+    }
+    
+    static func setPreferredCore(_ core: DeltaCoreProtocol, for gameType: GameType)
+    {
+        Delta.register(core)
+        
+        let key = self.preferredCoreSettingsKey(for: gameType)
+        
+        UserDefaults.standard.set(core.identifier, forKey: key)
+        NotificationCenter.default.post(name: .settingsDidChange, object: nil, userInfo: [NotificationUserInfoKey.name: key, NotificationUserInfoKey.core: core])
+    }
+    
     static func preferredControllerSkin(for system: System, traits: DeltaCore.ControllerSkin.Traits) -> ControllerSkin?
     {
         guard let userDefaultsKey = self.preferredControllerSkinKey(for: system, traits: traits) else { return nil }
@@ -217,15 +250,83 @@ extension Settings
         return nil
     }
     
-    static func setPreferredControllerSkin(_ controllerSkin: ControllerSkin, for system: System, traits: DeltaCore.ControllerSkin.Traits)
+    static func setPreferredControllerSkin(_ controllerSkin: ControllerSkin?, for system: System, traits: DeltaCore.ControllerSkin.Traits)
     {
         guard let userDefaultKey = self.preferredControllerSkinKey(for: system, traits: traits) else { return }
         
-        guard UserDefaults.standard.string(forKey: userDefaultKey) != controllerSkin.identifier else { return }
+        guard UserDefaults.standard.string(forKey: userDefaultKey) != controllerSkin?.identifier else { return }
         
-        UserDefaults.standard.set(controllerSkin.identifier, forKey: userDefaultKey)
+        UserDefaults.standard.set(controllerSkin?.identifier, forKey: userDefaultKey)
         
         NotificationCenter.default.post(name: .settingsDidChange, object: controllerSkin, userInfo: [NotificationUserInfoKey.name: Name.preferredControllerSkin, NotificationUserInfoKey.system: system, NotificationUserInfoKey.traits: traits])
+    }
+    
+    static func preferredControllerSkin(for game: Game, traits: DeltaCore.ControllerSkin.Traits) -> ControllerSkin?
+    {
+        let preferredControllerSkin: ControllerSkin?
+        
+        switch traits.orientation
+        {
+        case .portrait: preferredControllerSkin = game.preferredPortraitSkin
+        case .landscape: preferredControllerSkin = game.preferredLandscapeSkin
+        }
+        
+        if let controllerSkin = preferredControllerSkin, let _ = controllerSkin.supportedTraits(for: traits)
+        {
+            // Check if there are supported traits, which includes fallback traits for X <-> non-X devices.
+            return controllerSkin
+        }
+        
+        if let system = System(gameType: game.type)
+        {
+            // Fall back to using preferred controller skin for the system.
+            let controllerSkin = Settings.preferredControllerSkin(for: system, traits: traits)
+            return controllerSkin
+        }
+                
+        return nil
+    }
+    
+    static func setPreferredControllerSkin(_ controllerSkin: ControllerSkin?, for game: Game, traits: DeltaCore.ControllerSkin.Traits)
+    {
+        let context = DatabaseManager.shared.newBackgroundContext()
+        context.performAndWait {
+            let game = context.object(with: game.objectID) as! Game
+            
+            let skin: ControllerSkin?
+            if let controllerSkin = controllerSkin, let contextSkin = context.object(with: controllerSkin.objectID) as? ControllerSkin
+            {
+                skin = contextSkin
+            }
+            else
+            {
+                skin = nil
+            }            
+            
+            switch traits.orientation
+            {
+            case .portrait: game.preferredPortraitSkin = skin
+            case .landscape: game.preferredLandscapeSkin = skin
+            }
+            
+            context.saveWithErrorLogging()
+        }
+        
+        game.managedObjectContext?.refresh(game, mergeChanges: false)
+        
+        if let system = System(gameType: game.type)
+        {
+            NotificationCenter.default.post(name: .settingsDidChange, object: controllerSkin, userInfo: [NotificationUserInfoKey.name: Name.preferredControllerSkin, NotificationUserInfoKey.system: system, NotificationUserInfoKey.traits: traits])
+        }
+    }
+}
+
+extension Settings
+{
+    static func preferredCoreSettingsKey(for gameType: GameType) -> String
+    {
+        let key = "core." + gameType.rawValue
+        return key
     }
 }
 
@@ -243,6 +344,7 @@ private extension Settings
         case .gba: systemName = "gba"
         case .n64: systemName = "n64"
         case .ds: systemName = "ds"
+        case .genesis: systemName = "genesis"
         }
         
         let orientation: String
@@ -281,4 +383,6 @@ private extension UserDefaults
     @NSManaged var isThumbstickHapticFeedbackEnabled: Bool
     
     @NSManaged var sortSaveStatesByOldestFirst: Bool
+    
+    @NSManaged var isPreviewsEnabled: Bool
 }

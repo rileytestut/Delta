@@ -1,4 +1,4 @@
-framework module SDWebImage {
+module SDWebImage {
   umbrella header "SDWebImage-umbrella.h"
 
   export *

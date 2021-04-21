@@ -1,0 +1,1 @@
+../../../../../../../Cores/DSDeltaCore/desmume/desmume/src/slot1.h

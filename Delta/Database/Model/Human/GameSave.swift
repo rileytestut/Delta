@@ -8,6 +8,8 @@
 
 import Foundation
 
+import GBCDeltaCore
+
 import Harmony
 
 @objc(GameSave)
@@ -56,5 +58,12 @@ extension GameSave: Syncable
     
     public var syncableLocalizedName: String? {
         return self.game?.name
+    }
+    
+    public var isSyncingEnabled: Bool {
+        // self.game may be nil if being downloaded, so don't enforce it.
+        // guard let identifier = self.game?.identifier else { return false }
+        
+        return self.game?.identifier != Game.melonDSBIOSIdentifier && self.game?.identifier != Game.melonDSDSiBIOSIdentifier
     }
 }

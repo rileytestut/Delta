@@ -1,0 +1,50 @@
+{
+  "name": "GBADeltaCore",
+  "version": "0.1",
+  "summary": "Game Boy Advance plug-in for Delta emulator.",
+  "description": "iOS framework that wraps VBA-M to allow playing Game Boy Advance games with Delta emulator.",
+  "homepage": "https://github.com/rileytestut/GBADeltaCore",
+  "platforms": {
+    "ios": "12.0"
+  },
+  "source": {
+    "git": "https://github.com/rileytestut/GBADeltaCore.git"
+  },
+  "authors": {
+    "Riley Testut": "riley@rileytestut.com"
+  },
+  "social_media_url": "https://twitter.com/rileytestut",
+  "source_files": [
+    "GBADeltaCore/**/*.{h,m,mm,swift}",
+    "visualboyadvance-m/src/*.h",
+    "visualboyadvance-m/src/common/*.h",
+    "visualboyadvance-m/src/sdl/*.h",
+    "visualboyadvance-m/src/gba/*.h",
+    "SFML/include/**/*.{h,hpp,inl}",
+    "SFML/src/SFML/System/{Err,Time,Thread,String}.cpp",
+    "SFML/src/SFML/System/Unix/ThreadImpl.{hpp,cpp}"
+  ],
+  "public_header_files": [
+    "GBADeltaCore/Types/GBATypes.h",
+    "GBADeltaCore/Bridge/GBAEmulatorBridge.h",
+    "GBADeltaCore/GBADeltaCore.h"
+  ],
+  "header_mappings_dir": "",
+  "resource_bundles": {
+    "GBADeltaCore": [
+      "GBADeltaCore/**/*.deltamapping",
+      "GBADeltaCore/**/*.deltaskin",
+      "visualboyadvance-m/src/vba-over.ini"
+    ]
+  },
+  "dependencies": {
+    "DeltaCore": [
+
+    ]
+  },
+  "xcconfig": {
+    "HEADER_SEARCH_PATHS": "\"${PODS_CONFIGURATION_BUILD_DIR}\" \"$(PODS_ROOT)/Headers/Private/GBADeltaCore/SFML/include\" \"$(PODS_ROOT)/Headers/Private/GBADeltaCore/SFML/src\"",
+    "USER_HEADER_SEARCH_PATHS": "\"$(PODS_ROOT)/Headers/Private/GBADeltaCore/visualboyadvance-m/fex\" \"$(PODS_ROOT)/Headers/Private/GBADeltaCore/visualboyadvance-m/src\"",
+    "GCC_PREPROCESSOR_DEFINITIONS": "STATIC_LIBRARY=1"
+  }
+}

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 import DeltaCore
 
@@ -114,8 +115,8 @@ private extension AppIconShortcutsViewController
         self.dataSource.rowAnimation = .fade
         
         let placeholderView = RSTPlaceholderView()
-        placeholderView.textLabel.text = NSLocalizedString("No App Icon Shortcuts", comment: "")
-        placeholderView.detailTextLabel.text = NSLocalizedString("You can customize the shortcuts that appear when 3D Touching the app icon once you've added some games.", comment: "")
+        placeholderView.textLabel.text = NSLocalizedString("No Home Screen Shortcuts", comment: "")
+        placeholderView.detailTextLabel.text = NSLocalizedString("You can customize the shortcuts that appear when long-pressing the app icon once you've added some games.", comment: "")
         self.dataSource.placeholderView = placeholderView
     }
     
@@ -129,10 +130,13 @@ private extension AppIconShortcutsViewController
     }
     
     func configureGameCell(_ cell: GameTableViewCell, with game: Game, for indexPath: IndexPath)
-    {
-        cell.nameLabel.textColor = .darkText
-        cell.backgroundColor = .white
-        
+    {        
+        if #available(iOS 13.0, *) {
+            cell.nameLabel?.textColor = .label
+        } else {
+            cell.nameLabel?.textColor = .darkText
+        }
+                
         cell.nameLabel.text = game.name
         cell.artworkImageView.image = #imageLiteral(resourceName: "BoxArt")
         
@@ -193,11 +197,9 @@ private extension AppIconShortcutsViewController
     func addShortcut(for game: Game)
     {
         guard self.shortcutsDataSource.items.count < 4 else { return }
-        
         guard !self.shortcutsDataSource.items.contains(game) else { return }
         
-        // No need to adjust destinationIndexPath, since it forwards change directly to table view.
-        let destinationIndexPath = IndexPath(row: self.shortcutsDataSource.items.count, section: 1)
+        let destinationIndexPath = IndexPath(row: self.shortcutsDataSource.items.count, section: 0)
         
         let insertion = RSTCellContentChange(type: .insert, currentIndexPath: nil, destinationIndexPath: destinationIndexPath)
         insertion.rowAnimation = .fade
@@ -263,8 +265,8 @@ extension AppIconShortcutsViewController
         
         switch (section, Settings.gameShortcutsMode)
         {
-        case (0, .recent): return NSLocalizedString("Your most recently played games will appear as shortcuts when 3D touching the app icon.", comment: "")
-        case (0, .manual): return NSLocalizedString("The games you've selected below will appear as shortcuts when 3D touching the app icon.", comment: "")
+        case (0, .recent): return NSLocalizedString("Your most recently played games will appear as shortcuts when long-pressing the app icon.", comment: "")
+        case (0, .manual): return NSLocalizedString("The games you've selected below will appear as shortcuts when long-pressing the app icon.", comment: "")
         case (1, .recent) where self.shortcutsDataSource.itemCount == 0: return NSLocalizedString("You have no recently played games.", comment: "")
         case (1, .recent): return " " // Return non-empty string since empty string changes vertical offset of section for some reason.
         case (1, .manual): return NSLocalizedString("You may have up to 4 shortcuts.", comment: "")
@@ -291,11 +293,13 @@ extension AppIconShortcutsViewController
         {
         case .none: break
         case .delete:
-            let deletion = RSTCellContentChange(type: .delete, currentIndexPath: indexPath, destinationIndexPath: nil)
+            let adjustedIndexPath = IndexPath(row: indexPath.row, section: 0)
+            
+            let deletion = RSTCellContentChange(type: .delete, currentIndexPath: adjustedIndexPath, destinationIndexPath: nil)
             deletion.rowAnimation = .fade
             
             var shortcuts = self.shortcutsDataSource.items
-            shortcuts.remove(at: indexPath.row) // No need to adjust indexPath, since it forwards change directly to table view.
+            shortcuts.remove(at: adjustedIndexPath.row)
             self.shortcutsDataSource.setItems(shortcuts, with: [deletion])
             
         case .insert:
