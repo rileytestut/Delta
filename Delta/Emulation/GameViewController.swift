@@ -317,6 +317,8 @@ extension GameViewController
         self.sustainButtonsContentView.bottomAnchor.constraint(equalTo: self.gameView.bottomAnchor).isActive = true
         
         self.updateControllers()
+        
+        self.enableMirroringIfApplicable()
     }
     
     override func viewDidAppear(_ animated: Bool)
