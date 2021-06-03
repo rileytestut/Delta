@@ -393,7 +393,6 @@ extension GameViewController
             }
             pauseViewController.restartItem?.action = { [unowned self] item in
                 self.performRestartAction()
-                // TODO We should ask for confirmation first
             }
             
             pauseViewController.sustainButtonsItem?.isSelected = gameController.sustainedInputs.count > 0
@@ -1045,8 +1044,16 @@ extension GameViewController
     {
         guard let emulatorCore = self.emulatorCore else { return }
         
-        emulatorCore.stop()
-        emulatorCore.start()
+        self.pauseViewController?.restartItem?.isSelected = false;
+        
+        let alertController = UIAlertController(title: NSLocalizedString("Restart", comment: ""), message: NSLocalizedString("Would you like to restart the game? Any unsaved state will be lost.", comment: ""), preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Restart", comment: ""), style: .destructive, handler: { (action) in
+            self.pauseViewController?.dismiss()
+            emulatorCore.stop()
+            emulatorCore.start()
+        }))
+        self.pauseViewController?.present(alertController, animated: true)
     }
 }
 
