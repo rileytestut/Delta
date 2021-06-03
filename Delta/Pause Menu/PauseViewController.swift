@@ -181,8 +181,7 @@ private extension PauseViewController
         
         self.fastForwardItem = MenuItem(text: NSLocalizedString("Fast Forward", comment: ""), image: #imageLiteral(resourceName: "FastForward"), action: { _ in })
         self.sustainButtonsItem = MenuItem(text: NSLocalizedString("Hold Buttons", comment: ""), image: #imageLiteral(resourceName: "SustainButtons"), action: { _ in })
-        self.restartItem = MenuItem(text: NSLocalizedString("Restart", comment: ""), image: #imageLiteral(resourceName: "Restart"),
-            action: { _ in })
+        self.restartItem = MenuItem(text: NSLocalizedString("Restart", comment: ""), image: #imageLiteral(resourceName: "Restart"), action: { _ in })
     }
     
     func updateSafeAreaInsets()

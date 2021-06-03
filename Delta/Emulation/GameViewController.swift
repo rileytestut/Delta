@@ -393,6 +393,7 @@ extension GameViewController
             }
             pauseViewController.restartItem?.action = { [unowned self] item in
                 self.performRestartAction()
+                // TODO We should ask for confirmation first
             }
             
             pauseViewController.sustainButtonsItem?.isSelected = gameController.sustainedInputs.count > 0
