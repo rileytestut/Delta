@@ -19,7 +19,7 @@ class PauseViewController: UIViewController, PauseInfoProviding
     }
     
     var pauseItems: [MenuItem] {
-        return [self.saveStateItem, self.loadStateItem, self.cheatCodesItem, self.fastForwardItem, self.sustainButtonsItem].compactMap { $0 }
+        return [self.saveStateItem, self.loadStateItem, self.cheatCodesItem, self.fastForwardItem, self.sustainButtonsItem, self.restartItem].compactMap { $0 }
     }
     
     /// Pause Items
@@ -28,6 +28,7 @@ class PauseViewController: UIViewController, PauseInfoProviding
     var cheatCodesItem: MenuItem?
     var fastForwardItem: MenuItem?
     var sustainButtonsItem: MenuItem?
+    var restartItem: MenuItem?
     
     /// PauseInfoProviding
     var pauseText: String?
@@ -160,6 +161,7 @@ private extension PauseViewController
         self.cheatCodesItem = nil
         self.sustainButtonsItem = nil
         self.fastForwardItem = nil
+        self.restartItem = nil
         
         guard self.emulatorCore != nil else { return }
         
@@ -179,6 +181,8 @@ private extension PauseViewController
         
         self.fastForwardItem = MenuItem(text: NSLocalizedString("Fast Forward", comment: ""), image: #imageLiteral(resourceName: "FastForward"), action: { _ in })
         self.sustainButtonsItem = MenuItem(text: NSLocalizedString("Hold Buttons", comment: ""), image: #imageLiteral(resourceName: "SustainButtons"), action: { _ in })
+        self.restartItem = MenuItem(text: NSLocalizedString("Restart", comment: ""), image: #imageLiteral(resourceName: "Restart"),
+            action: { _ in })
     }
     
     func updateSafeAreaInsets()

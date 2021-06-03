@@ -391,6 +391,9 @@ extension GameViewController
             pauseViewController.fastForwardItem?.action = { [unowned self] item in
                 self.performFastForwardAction(activate: item.isSelected)
             }
+            pauseViewController.restartItem?.action = { [unowned self] item in
+                self.performRestartAction()
+            }
             
             pauseViewController.sustainButtonsItem?.isSelected = gameController.sustainedInputs.count > 0
             pauseViewController.sustainButtonsItem?.action = { [unowned self, unowned pauseViewController] item in
@@ -1035,6 +1038,14 @@ extension GameViewController
         {
             emulatorCore.rate = emulatorCore.deltaCore.supportedRates.lowerBound
         }
+    }
+    
+    func performRestartAction()
+    {
+        guard let emulatorCore = self.emulatorCore else { return }
+        
+        emulatorCore.stop()
+        emulatorCore.start()
     }
 }
 
