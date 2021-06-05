@@ -193,6 +193,10 @@
 
 /* Begin PBXFileReference section */
 		22506DA00971C4300AF90A35 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		61EA8D3E266B44EC001BCE65 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
+		61EA8D3F266B44ED001BCE65 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
+		61EA8D40266B44ED001BCE65 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/PauseMenu.strings"; sourceTree = "<group>"; };
+		61EA8D41266B44EE001BCE65 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/GamesDatabase.strings"; sourceTree = "<group>"; };
 		A19FF50F55441BC2B2248241 /* Pods-Delta.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Delta.release.xcconfig"; path = "Pods/Target Support Files/Pods-Delta/Pods-Delta.release.xcconfig"; sourceTree = "<group>"; };
 		BF00BEA525B758AA00C8607D /* SystemBIOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemBIOS.swift; sourceTree = "<group>"; };
 		BF02D5D91DDEBB3000A5E131 /* openvgdb.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = openvgdb.sqlite; sourceTree = "<group>"; };
@@ -955,6 +959,7 @@
 				English,
 				en,
 				Base,
+				"zh-Hans",
 			);
 			mainGroup = BFFA71CE1AAC406100EE9DD1;
 			productRefGroup = BFFA71D81AAC406100EE9DD1 /* Products */;
@@ -1231,6 +1236,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				BF353FF51C5D837600C1184C /* Base */,
+				61EA8D40266B44ED001BCE65 /* zh-Hans */,
 			);
 			name = PauseMenu.storyboard;
 			path = Delta;
@@ -1240,6 +1246,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				BF6BF3201EB82362008E83CD /* Base */,
+				61EA8D41266B44EE001BCE65 /* zh-Hans */,
 			);
 			name = GamesDatabase.storyboard;
 			path = Delta;
@@ -1249,6 +1256,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				BFFA71E11AAC406100EE9DD1 /* Base */,
+				61EA8D3E266B44EC001BCE65 /* zh-Hans */,
 			);
 			name = Main.storyboard;
 			path = Delta;
@@ -1258,6 +1266,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				BFFC46451D59861000AF2CC6 /* Base */,
+				61EA8D3F266B44ED001BCE65 /* zh-Hans */,
 			);
 			name = LaunchScreen.storyboard;
 			path = Delta;

@@ -1,0 +1,25 @@
+/*key="leftBarButtonItem" title="Main Menu" style="done" id="2yt-vB-uMF"*/
+"2yt-vB-uMF.title" = "返回主界面";
+/*title="Resume" style="done" id="Wfq-I3-437"*/
+
+"Wfq-I3-437.title" = "返回游戏";
+/*title="Paused" id="rY7-Wx-NaD"*/
+"rY7-Wx-NaD.title" = "暂停菜单";
+/*title="Cheats" id="Gsv-JZ-Yc0"*/
+"Gsv-JZ-Yc0.title" = "金手指列表";
+/*title="Cheat" id="zdc-ES-dan"*/
+"zdc-ES-dan.title" = "金手指代码";
+/*headerTitle="Name" id="QT6-DZ-g70"*/
+
+
+"QT6-DZ-g70.headerTitle" = "名称";
+/*placeholder="Cheat Name" id="DD1-X0-hg7"*/
+"DD1-X0-hg7.placeholder" = "金手指作用";
+/*headerTitle="Type" footerTitle="Description" id="rvn-VK-2uH"*/
+"rvn-VK-2uH.headerTitle" = "金手指类型";
+/*headerTitle="Code" footerTitle="Description" id="rHC-nA-ga0">*/
+"rHC-nA-ga0.headerTitle" = "金手指代码";
+"rHC-nA-ga0.footerTitle" = "当你输入时将自动插入空格";
+
+/*title="Save State" id="BoG-k2-aR2">*/
+"BoG-k2-aR2.title" = "即时存档管理";
