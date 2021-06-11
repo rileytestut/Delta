@@ -294,7 +294,7 @@ extension SettingsViewController
         let section = Section(rawValue: sectionIndex)!
         switch section
         {
-        case .controllers: return 1 // Temporarily hide other controller indexes until controller logic is finalized
+        case .controllers: return 4
         case .controllerSkins: return System.registeredSystems.count
         case .syncing: return SyncManager.shared.coordinator?.account == nil ? 1 : super.tableView(tableView, numberOfRowsInSection: sectionIndex)
         default:
