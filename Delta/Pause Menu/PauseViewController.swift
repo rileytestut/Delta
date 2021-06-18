@@ -19,7 +19,7 @@ class PauseViewController: UIViewController, PauseInfoProviding
     }
     
     var pauseItems: [MenuItem] {
-        return [self.saveStateItem, self.loadStateItem, self.cheatCodesItem, self.fastForwardItem, self.sustainButtonsItem].compactMap { $0 }
+        return [self.saveStateItem, self.loadStateItem, self.cheatCodesItem, self.fastForwardItem, self.sustainButtonsItem, self.rewindItem].compactMap { $0 }
     }
     
     /// Pause Items
@@ -28,6 +28,7 @@ class PauseViewController: UIViewController, PauseInfoProviding
     var cheatCodesItem: MenuItem?
     var fastForwardItem: MenuItem?
     var sustainButtonsItem: MenuItem?
+    var rewindItem: MenuItem?
     
     /// PauseInfoProviding
     var pauseText: String?
@@ -114,9 +115,9 @@ extension PauseViewController
         case "saveStates":
             let saveStatesViewController = segue.destination as! SaveStatesViewController
             saveStatesViewController.delegate = self.saveStatesViewControllerDelegate
+            saveStatesViewController.mode = self.saveStatesViewControllerMode
             saveStatesViewController.game = self.emulatorCore?.game as? Game
             saveStatesViewController.emulatorCore = self.emulatorCore
-            saveStatesViewController.mode = self.saveStatesViewControllerMode
             
         case "cheats":
             let cheatsViewController = segue.destination as! CheatsViewController
@@ -160,6 +161,7 @@ private extension PauseViewController
         self.cheatCodesItem = nil
         self.sustainButtonsItem = nil
         self.fastForwardItem = nil
+        self.rewindItem = nil
         
         guard self.emulatorCore != nil else { return }
         
@@ -170,6 +172,11 @@ private extension PauseViewController
         
         self.loadStateItem = MenuItem(text: NSLocalizedString("Load State", comment: ""), image: #imageLiteral(resourceName: "LoadSaveState"), action: { [unowned self] _ in
             self.saveStatesViewControllerMode = .loading
+            self.performSegue(withIdentifier: "saveStates", sender: self)
+        })
+        
+        self.rewindItem = MenuItem(text: NSLocalizedString("Rewind", comment: ""), image: #imageLiteral(resourceName: "Link"), action: { [unowned self] _ in
+            self.saveStatesViewControllerMode = .rewind
             self.performSegue(withIdentifier: "saveStates", sender: self)
         })
         

@@ -112,6 +112,8 @@ class GameViewController: DeltaCore.GameViewController
             self.updateControllers()
             
             self.presentedGyroAlert = false
+            
+            self.clearRewindSaveStates()
         }
     }
     
@@ -164,6 +166,8 @@ class GameViewController: DeltaCore.GameViewController
     private var sustainButtonsBackgroundView: RSTPlaceholderView!
     private var inputsToSustain = [AnyInput: Double]()
     
+    private var rewindTimer: Timer?
+    
     private var isGyroActive = false
     private var presentedGyroAlert = false
     
@@ -210,6 +214,8 @@ class GameViewController: DeltaCore.GameViewController
     deinit
     {
         self.emulatorCore?.removeObserver(self, forKeyPath: #keyPath(EmulatorCore.state), context: &kvoContext)
+        
+        self.invalidateTimer()
     }
     
     // MARK: - GameControllerReceiver -
@@ -317,6 +323,8 @@ extension GameViewController
         self.sustainButtonsContentView.bottomAnchor.constraint(equalTo: self.gameView.bottomAnchor).isActive = true
         
         self.updateControllers()
+        
+        self.activateTimer()
     }
     
     override func viewDidAppear(_ animated: Bool)
@@ -338,7 +346,7 @@ extension GameViewController
         
         coordinator.animate(alongsideTransition: { (context) in
             self.updateControllerSkin()
-        }, completion: nil)        
+        }, completion: nil)
     }
     
     // MARK: - Segues
@@ -764,11 +772,45 @@ extension GameViewController: SaveStatesViewControllerDelegate
         }
     }
     
-    private func update(_ saveState: SaveState, with replacementSaveState: SaveStateProtocol? = nil)
+    private func clearRewindSaveStates(afterDate: Date? = nil)
+    {
+        guard let game = self.game as? Game else { return }
+        
+        let fetchRequest = SaveState.fetchRequest(for: game, type: .rewind)
+        fetchRequest.includesPropertyValues = false
+        
+        // if afterDate is included, we have rewound and should clear any rewind states that exist after our new time location
+        if let afterDate = afterDate
+        {
+            fetchRequest.predicate = NSPredicate(format: "%K == %@ AND %K >= %@", #keyPath(SaveState.type), NSNumber(value: SaveStateType.rewind.rawValue), #keyPath(SaveState.creationDate), afterDate as NSDate)
+        }
+        else
+        {
+            fetchRequest.predicate = NSPredicate(format: "%K == %@", #keyPath(SaveState.type), NSNumber(value: SaveStateType.rewind.rawValue))
+        }
+        
+        DatabaseManager.shared.performBackgroundTask { (context) in
+            do
+            {
+                let saveStates = try context.fetch(fetchRequest)
+                for saveState in saveStates {
+                    let temporarySaveState = context.object(with: saveState.objectID)
+                    context.delete(temporarySaveState)
+                }
+                context.saveWithErrorLogging()
+            }
+            catch
+            {
+                print(error)
+            }
+        }
+    }
+    
+    private func update(_ saveState: SaveState, with replacementSaveState: SaveStateProtocol? = nil, shouldSuspendEmulation: Bool = true)
     {
         let isRunning = (self.emulatorCore?.state == .running)
         
-        if isRunning
+        if isRunning && shouldSuspendEmulation
         {
             self.pauseEmulation()
         }
@@ -810,7 +852,7 @@ extension GameViewController: SaveStatesViewControllerDelegate
         saveState.modifiedDate = Date()
         saveState.coreIdentifier = self.emulatorCore?.deltaCore.identifier
         
-        if isRunning
+        if isRunning && shouldSuspendEmulation
         {
             self.resumeEmulation()
         }
@@ -845,6 +887,15 @@ extension GameViewController: SaveStatesViewControllerDelegate
         }
         
         self.updateAutoSaveState()
+        
+        if let rewindSaveState = saveState as? SaveState, rewindSaveState.type == .rewind
+        {
+            self.clearRewindSaveStates(afterDate: rewindSaveState.creationDate)
+        }
+        else
+        {
+            self.clearRewindSaveStates()
+        }
         
         do
         {
@@ -1231,4 +1282,76 @@ private extension GameViewController
 private extension UserDefaults
 {
     @NSManaged var desmumeDeprecatedAlertCount: Int
+}
+
+//MARK: - Timer -
+private extension GameViewController
+{
+    func activateTimer()
+    {
+        self.invalidateTimer()
+        self.rewindTimer = Timer.scheduledTimer(timeInterval: 4, target: self, selector: #selector(rewindPollFunction), userInfo: nil, repeats: true)
+    }
+    
+    func invalidateTimer()
+    {
+        self.rewindTimer?.invalidate()
+    }
+    
+    @objc func rewindPollFunction() {
+        
+        guard self.emulatorCore?.state == .running else { return }
+        
+        guard let game = self.game as? Game else { return }
+        
+        // first; cap number of rewind states to 30. do this by deleting oldest state if >= 30 exist
+        let fetchRequest: NSFetchRequest<SaveState> = SaveState.fetchRequest()
+        fetchRequest.returnsObjectsAsFaults = false
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(SaveState.creationDate), ascending: true)] // may be desc?
+        
+        if let system = System(gameType: game.type)
+        {
+            fetchRequest.predicate = NSPredicate(format: "%K == %@ AND %K == %@ AND %K == %@", #keyPath(SaveState.game), game, #keyPath(SaveState.coreIdentifier), system.deltaCore.identifier, #keyPath(SaveState.type), NSNumber(value: SaveStateType.rewind.rawValue))
+        }
+        else
+        {
+            fetchRequest.predicate = NSPredicate(format: "%K == %@ AND %K == %@", #keyPath(SaveState.game), game, #keyPath(SaveState.type), NSNumber(value: SaveStateType.rewind.rawValue))
+        }
+        
+        do
+        {
+            let rewindStateCount = try DatabaseManager.shared.viewContext.count(for: fetchRequest)
+            if rewindStateCount >= 30
+            {
+                fetchRequest.fetchLimit = 1
+                if let oldestRewindSaveState = try DatabaseManager.shared.viewContext.fetch(fetchRequest).first
+                {
+                    DatabaseManager.shared.performBackgroundTask { (context) in
+                        let temporarySaveState = context.object(with: oldestRewindSaveState.objectID)
+                        context.delete(temporarySaveState)
+                        context.saveWithErrorLogging()
+                    }
+                }
+            }
+        }
+        catch
+        {
+            print(error)
+        }
+        
+        // second; save new state
+        let backgroundContext = DatabaseManager.shared.newBackgroundContext()
+        backgroundContext.perform { // do not wait
+            
+            let game = backgroundContext.object(with: game.objectID) as! Game
+            
+            let saveState = SaveState(context: backgroundContext)
+            saveState.type = .rewind
+            saveState.game = game
+            
+            self.update(saveState, shouldSuspendEmulation: false) // save while allowing game to continue uninterrupted
+            
+            backgroundContext.saveWithErrorLogging()
+        }
+    }
 }

@@ -108,10 +108,11 @@ private extension GameSyncStatusViewController
         }
         
         let saveStatesFetchRequest = SaveState.fetchRequest() as NSFetchRequest<SaveState>
-        saveStatesFetchRequest.predicate = NSPredicate(format: "%K == %@ AND %K != %@ AND %K != %@",
+        saveStatesFetchRequest.predicate = NSPredicate(format: "%K == %@ AND %K != %@ AND %K != %@ AND %K != %@",
                                                        #keyPath(SaveState.game), self.game,
                                                        #keyPath(SaveState.type), NSNumber(value: SaveStateType.auto.rawValue),
-                                                       #keyPath(SaveState.type), NSNumber(value: SaveStateType.quick.rawValue))
+                                                       #keyPath(SaveState.type), NSNumber(value: SaveStateType.quick.rawValue),
+                                                       #keyPath(SaveState.type), NSNumber(value: SaveStateType.rewind.rawValue))
         saveStatesFetchRequest.sortDescriptors = [NSSortDescriptor(keyPath: \SaveState.creationDate, ascending: true)]
         
         let saveStatesDataSource = RSTFetchedResultsTableViewDataSource(fetchRequest: saveStatesFetchRequest, managedObjectContext: DatabaseManager.shared.viewContext)
