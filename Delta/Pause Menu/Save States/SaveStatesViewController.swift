@@ -115,8 +115,8 @@ extension SaveStatesViewController
             self.navigationItem.rightBarButtonItems?.removeFirst()
             
         case .rewind:
-            self.title = NSLocalizedString("It's Rewind Time", comment: "")
-            self.placeholderView.detailTextLabel.text = NSLocalizedString("States will appear here over time as you play the game.", comment: "")
+            self.title = NSLocalizedString("Rewind State", comment: "")
+            self.placeholderView.detailTextLabel.text = NSLocalizedString("Rewind States will appear here as gameplay advances.", comment: "")
             self.navigationItem.rightBarButtonItems?.removeFirst()
         }
         
@@ -276,7 +276,14 @@ private extension SaveStatesViewController
         cell.maximumImageSize = CGSize(width: self.prototypeCellWidthConstraint.constant, height: (self.prototypeCellWidthConstraint.constant / dimensions.width) * dimensions.height)
         
         cell.textLabel.font = UIFont.preferredFont(forTextStyle: .subheadline)
-        cell.textLabel.text = saveState.localizedName
+        if self.mode == .rewind
+        {
+            let differenceInSeconds = Int(Date().timeIntervalSince(saveState.modifiedDate))
+            cell.textLabel.text = "\(differenceInSeconds)s Ago"
+        } else
+        {
+            cell.textLabel.text = saveState.localizedName
+        }
     }
     
     func configure(_ headerView: SaveStatesCollectionHeaderView, forSection section: Int)
