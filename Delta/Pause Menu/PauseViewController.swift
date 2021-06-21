@@ -175,10 +175,12 @@ private extension PauseViewController
             self.performSegue(withIdentifier: "saveStates", sender: self)
         })
         
-        self.rewindItem = MenuItem(text: NSLocalizedString("Rewind", comment: ""), image: #imageLiteral(resourceName: "Link"), action: { [unowned self] _ in
-            self.saveStatesViewControllerMode = .rewind
-            self.performSegue(withIdentifier: "saveStates", sender: self)
-        })
+        if Settings.isRewindEnabled {
+            self.rewindItem = MenuItem(text: NSLocalizedString("Rewind", comment: ""), image: #imageLiteral(resourceName: "Link"), action: { [unowned self] _ in
+                self.saveStatesViewControllerMode = .rewind
+                self.performSegue(withIdentifier: "saveStates", sender: self)
+            })
+        }
         
         self.cheatCodesItem = MenuItem(text: NSLocalizedString("Cheat Codes", comment: ""), image: #imageLiteral(resourceName: "CheatCodes"), action: { [unowned self] _ in
             self.performSegue(withIdentifier: "cheats", sender: self)

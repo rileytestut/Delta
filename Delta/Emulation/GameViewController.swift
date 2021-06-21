@@ -215,7 +215,7 @@ class GameViewController: DeltaCore.GameViewController
     {
         self.emulatorCore?.removeObserver(self, forKeyPath: #keyPath(EmulatorCore.state), context: &kvoContext)
         
-        self.invalidateTimer()
+        self.invalidateRewindTimer()
     }
     
     // MARK: - GameControllerReceiver -
@@ -323,8 +323,6 @@ extension GameViewController
         self.sustainButtonsContentView.bottomAnchor.constraint(equalTo: self.gameView.bottomAnchor).isActive = true
         
         self.updateControllers()
-        
-        self.activateTimer()
     }
     
     override func viewDidAppear(_ animated: Bool)
@@ -338,6 +336,8 @@ extension GameViewController
             
             UserDefaults.standard.desmumeDeprecatedAlertCount += 1
         }
+        
+        self.activateRewindTimer()
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator)
@@ -425,9 +425,9 @@ extension GameViewController
             
             switch self.game?.type
             {
-            case .ds? where self.emulatorCore?.deltaCore == DS.core:
-                // Cheats are not supported by DeSmuME core.
-                pauseViewController.cheatCodesItem = nil
+//            case .ds? where self.emulatorCore?.deltaCore == DS.core:
+//                // Cheats are not supported by DeSmuME core.
+//                pauseViewController.cheatCodesItem = nil
                 
             case .genesis?:
                 // GPGX core does not support cheats yet.
@@ -806,11 +806,11 @@ extension GameViewController: SaveStatesViewControllerDelegate
         }
     }
     
-    private func update(_ saveState: SaveState, with replacementSaveState: SaveStateProtocol? = nil, shouldSuspendEmulation: Bool = true)
+    private func update(_ saveState: SaveState, with replacementSaveState: SaveStateProtocol? = nil)
     {
         let isRunning = (self.emulatorCore?.state == .running)
         
-        if isRunning && shouldSuspendEmulation
+        if isRunning
         {
             self.pauseEmulation()
         }
@@ -852,7 +852,7 @@ extension GameViewController: SaveStatesViewControllerDelegate
         saveState.modifiedDate = Date()
         saveState.coreIdentifier = self.emulatorCore?.deltaCore.identifier
         
-        if isRunning && shouldSuspendEmulation
+        if isRunning
         {
             self.resumeEmulation()
         }
@@ -1287,22 +1287,24 @@ private extension UserDefaults
 //MARK: - Timer -
 private extension GameViewController
 {
-    func activateTimer()
+    func activateRewindTimer()
     {
-        self.invalidateTimer()
-        self.rewindTimer = Timer.scheduledTimer(timeInterval: 4, target: self, selector: #selector(rewindPollFunction), userInfo: nil, repeats: true)
+        self.invalidateRewindTimer()
+        guard Settings.isRewindEnabled == true else { return }
+        let interval = TimeInterval(Settings.rewindTimerInterval)
+        self.rewindTimer = Timer.scheduledTimer(timeInterval: interval, target: self, selector: #selector(rewindPollFunction), userInfo: nil, repeats: true)
     }
     
-    func invalidateTimer()
+    func invalidateRewindTimer()
     {
         self.rewindTimer?.invalidate()
     }
     
     @objc func rewindPollFunction() {
         
-        guard self.emulatorCore?.state == .running else { return }
-        
-        guard let game = self.game as? Game else { return }
+        guard Settings.isRewindEnabled == true,
+              self.emulatorCore?.state == .running,
+              let game = self.game as? Game else { return }
         
         // first; cap number of rewind states to 30. do this by deleting oldest state if >= 30 exist
         let fetchRequest: NSFetchRequest<SaveState> = SaveState.fetchRequest()
@@ -1341,7 +1343,7 @@ private extension GameViewController
         
         // second; save new state
         let backgroundContext = DatabaseManager.shared.newBackgroundContext()
-        backgroundContext.perform { // do not wait
+        backgroundContext.performAndWait {
             
             let game = backgroundContext.object(with: game.objectID) as! Game
             
@@ -1349,7 +1351,7 @@ private extension GameViewController
             saveState.type = .rewind
             saveState.game = game
             
-            self.update(saveState, shouldSuspendEmulation: false) // save while allowing game to continue uninterrupted
+            self.update(saveState)
             
             backgroundContext.saveWithErrorLogging()
         }

@@ -60,7 +60,9 @@ struct Settings
                         #keyPath(UserDefaults.isThumbstickHapticFeedbackEnabled): true,
                         #keyPath(UserDefaults.sortSaveStatesByOldestFirst): true,
                         #keyPath(UserDefaults.isPreviewsEnabled): true,
-                        Settings.preferredCoreSettingsKey(for: .ds): MelonDS.core.identifier] as [String : Any]
+                        Settings.preferredCoreSettingsKey(for: .ds): MelonDS.core.identifier,
+                        #keyPath(UserDefaults.isRewindEnabled): false,
+                        #keyPath(UserDefaults.rewindTimerInterval): 5] as [String : Any]
         UserDefaults.standard.register(defaults: defaults)
     }
 }
@@ -190,6 +192,22 @@ extension Settings
         }
     }
     
+    static var isRewindEnabled: Bool {
+        set { UserDefaults.standard.isRewindEnabled = newValue }
+        get {
+            let isRewindEnabled = UserDefaults.standard.isRewindEnabled
+            return isRewindEnabled
+        }
+    }
+    
+    static var rewindTimerInterval: Int {
+        set { UserDefaults.standard.rewindTimerInterval = newValue }
+        get {
+            let rewindTimerInterval = UserDefaults.standard.rewindTimerInterval
+            return rewindTimerInterval
+        }
+    }
+    
     static func preferredCore(for gameType: GameType) -> DeltaCoreProtocol?
     {
         let key = self.preferredCoreSettingsKey(for: gameType)
@@ -301,7 +319,7 @@ extension Settings
             else
             {
                 skin = nil
-            }            
+            }
             
             switch traits.orientation
             {
@@ -385,4 +403,7 @@ private extension UserDefaults
     @NSManaged var sortSaveStatesByOldestFirst: Bool
     
     @NSManaged var isPreviewsEnabled: Bool
+    
+    @NSManaged var isRewindEnabled: Bool
+    @NSManaged var rewindTimerInterval: Int
 }
