@@ -888,15 +888,6 @@ extension GameViewController: SaveStatesViewControllerDelegate
         
         self.updateAutoSaveState()
         
-        if let rewindSaveState = saveState as? SaveState, rewindSaveState.type == .rewind
-        {
-            self.clearRewindSaveStates(afterDate: rewindSaveState.creationDate)
-        }
-        else
-        {
-            self.clearRewindSaveStates()
-        }
-        
         do
         {
             if let temporarySaveState = temporarySaveState
@@ -916,6 +907,18 @@ extension GameViewController: SaveStatesViewControllerDelegate
         catch let error as NSError
         {
             print(error)
+        }
+        
+        // delay by 0.5 so as not to interfere with other operations
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            if let rewindSaveState = saveState as? SaveState, rewindSaveState.type == .rewind
+            {
+                self.clearRewindSaveStates(afterDate: rewindSaveState.creationDate)
+            }
+            else
+            {
+                self.clearRewindSaveStates()
+            }
         }
         
         if isRunning
