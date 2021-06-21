@@ -425,9 +425,9 @@ extension GameViewController
             
             switch self.game?.type
             {
-//            case .ds? where self.emulatorCore?.deltaCore == DS.core:
-//                // Cheats are not supported by DeSmuME core.
-//                pauseViewController.cheatCodesItem = nil
+            case .ds? where self.emulatorCore?.deltaCore == DS.core:
+                // Cheats are not supported by DeSmuME core.
+                pauseViewController.cheatCodesItem = nil
                 
             case .genesis?:
                 // GPGX core does not support cheats yet.
