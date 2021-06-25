@@ -806,11 +806,11 @@ extension GameViewController: SaveStatesViewControllerDelegate
         }
     }
     
-    private func update(_ saveState: SaveState, with replacementSaveState: SaveStateProtocol? = nil)
+    private func update(_ saveState: SaveState, with replacementSaveState: SaveStateProtocol? = nil, shouldSuspendEmulation: Bool = true)
     {
         let isRunning = (self.emulatorCore?.state == .running)
         
-        if isRunning
+        if isRunning && shouldSuspendEmulation
         {
             self.pauseEmulation()
         }
@@ -852,7 +852,7 @@ extension GameViewController: SaveStatesViewControllerDelegate
         saveState.modifiedDate = Date()
         saveState.coreIdentifier = self.emulatorCore?.deltaCore.identifier
         
-        if isRunning
+        if isRunning && shouldSuspendEmulation
         {
             self.resumeEmulation()
         }
@@ -1312,7 +1312,7 @@ private extension GameViewController
         // first; cap number of rewind states to 30. do this by deleting oldest state if >= 30 exist
         let fetchRequest: NSFetchRequest<SaveState> = SaveState.fetchRequest()
         fetchRequest.returnsObjectsAsFaults = false
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(SaveState.creationDate), ascending: true)] // may be desc?
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(SaveState.creationDate), ascending: true)]
         
         if let system = System(gameType: game.type)
         {
@@ -1346,7 +1346,7 @@ private extension GameViewController
         
         // second; save new state
         let backgroundContext = DatabaseManager.shared.newBackgroundContext()
-        backgroundContext.performAndWait {
+        backgroundContext.perform {
             
             let game = backgroundContext.object(with: game.objectID) as! Game
             
@@ -1354,7 +1354,7 @@ private extension GameViewController
             saveState.type = .rewind
             saveState.game = game
             
-            self.update(saveState)
+            self.update(saveState, shouldSuspendEmulation: false)
             
             backgroundContext.saveWithErrorLogging()
         }
