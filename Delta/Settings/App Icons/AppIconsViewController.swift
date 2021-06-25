@@ -44,7 +44,7 @@ enum AppIconData: Int, CaseIterable
     }
 }
 
-class Icons/AppIconsViewController.swiftAppIconsViewController: UITableViewController
+class AppIconsViewController: UITableViewController
 {
     override func viewDidLoad()
     {
