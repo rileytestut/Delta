@@ -280,7 +280,8 @@ private extension SaveStatesViewController
         {
             let differenceInSeconds = Int(Date().timeIntervalSince(saveState.modifiedDate))
             cell.textLabel.text = "\(differenceInSeconds)s Ago"
-        } else
+        }
+        else
         {
             cell.textLabel.text = saveState.localizedName
         }
