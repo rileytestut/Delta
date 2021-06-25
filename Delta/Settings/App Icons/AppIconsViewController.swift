@@ -44,7 +44,7 @@ enum AppIconData: Int, CaseIterable
     }
 }
 
-class AppIconsViewController: UITableViewController
+class Icons/AppIconsViewController.swiftAppIconsViewController: UITableViewController
 {
     override func viewDidLoad()
     {
@@ -75,7 +75,6 @@ extension AppIconsViewController
         guard let icon = AppIconData(rawValue: indexPath.row) else { return }
         DispatchQueue.main.async
         {
-            print("icon.key():\(icon.key())")
             UIApplication.shared.setAlternateIconName(icon.key(), completionHandler: { (error) in
                 if let error = error
                 {
