@@ -133,6 +133,75 @@
 	</array>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
+    <key>CFBundleIcons</key>
+    <dict>
+        <key>CFBundleAlternateIcons</key>
+        <dict>
+            <key>Delta-Icon</key>
+            <dict>
+                <key>CFBundleIconFiles</key>
+                <array>
+                    <string>Delta-Icon</string>
+                </array>
+                <key>UIPrerenderedIcon</key>
+                <string>NO</string>
+            </dict>
+            <key>Delta-Icon-Blue</key>
+            <dict>
+                <key>CFBundleIconFiles</key>
+                <array>
+                    <string>Delta-Icon-Blue</string>
+                </array>
+                <key>UIPrerenderedIcon</key>
+                <string>NO</string>
+            </dict>
+            <key>Delta-Icon-Green</key>
+            <dict>
+                <key>CFBundleIconFiles</key>
+                <array>
+                    <string>Delta-Icon-Green</string>
+                </array>
+                <key>UIPrerenderedIcon</key>
+                <string>NO</string>
+            </dict>
+            <key>Delta-Icon-Orange</key>
+            <dict>
+                <key>CFBundleIconFiles</key>
+                <array>
+                    <string>Delta-Icon-Orange</string>
+                </array>
+                <key>UIPrerenderedIcon</key>
+                <string>NO</string>
+            </dict>
+            <key>Delta-Icon-Pink</key>
+            <dict>
+                <key>CFBundleIconFiles</key>
+                <array>
+                    <string>Delta-Icon-Pink</string>
+                </array>
+                <key>UIPrerenderedIcon</key>
+                <string>NO</string>
+            </dict>
+            <key>Delta-Icon-Pride</key>
+            <dict>
+                <key>CFBundleIconFiles</key>
+                <array>
+                    <string>Delta-Icon-Pride</string>
+                </array>
+                <key>UIPrerenderedIcon</key>
+                <string>NO</string>
+            </dict>
+        </dict>
+        <key>CFBundlePrimaryIcon</key>
+        <dict>
+            <key>CFBundleIconFiles</key>
+            <array>
+                <string></string>
+            </array>
+            <key>UIPrerenderedIcon</key>
+            <false/>
+        </dict>
+    </dict>
 	<key>CFBundleIdentifier</key>
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>

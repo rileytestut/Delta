@@ -60,7 +60,8 @@ struct Settings
                         #keyPath(UserDefaults.isThumbstickHapticFeedbackEnabled): true,
                         #keyPath(UserDefaults.sortSaveStatesByOldestFirst): true,
                         #keyPath(UserDefaults.isPreviewsEnabled): true,
-                        Settings.preferredCoreSettingsKey(for: .ds): MelonDS.core.identifier] as [String : Any]
+                        Settings.preferredCoreSettingsKey(for: .ds): MelonDS.core.identifier,
+                        #keyPath(UserDefaults.lastAppIconKey): "Delta-Icon"] as [String : Any]
         UserDefaults.standard.register(defaults: defaults)
     }
 }
@@ -187,6 +188,14 @@ extension Settings
         get {
             let isPreviewsEnabled = UserDefaults.standard.isPreviewsEnabled
             return isPreviewsEnabled
+        }
+    }
+    
+    static var lastAppIconKey: String {
+        set { UserDefaults.standard.lastAppIconKey = newValue }
+        get {
+            let lastAppIconKey = UserDefaults.standard.lastAppIconKey
+            return lastAppIconKey
         }
     }
     
@@ -385,4 +394,6 @@ private extension UserDefaults
     @NSManaged var sortSaveStatesByOldestFirst: Bool
     
     @NSManaged var isPreviewsEnabled: Bool
+    
+    @NSManaged var lastAppIconKey: String
 }

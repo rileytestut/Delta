@@ -24,6 +24,7 @@ private extension SettingsViewController
         case syncing
         case hapticTouch
         case cores
+        case appIcons
         case patreon
         case credits
     }
@@ -367,7 +368,7 @@ extension SettingsViewController
             let preferredCore = Settings.preferredCore(for: .ds)
             cell.detailTextLabel?.text = preferredCore?.metadata?.name.value ?? preferredCore?.name ?? NSLocalizedString("Unknown", comment: "")
             
-        case .controllerOpacity, .hapticFeedback, .hapticTouch, .patreon, .credits: break
+        case .controllerOpacity, .hapticFeedback, .hapticTouch, .patreon, .credits, .appIcons: break
         }
 
         return cell
@@ -409,6 +410,9 @@ extension SettingsViewController
             case .litRitt: self.openTwitter(username: "litritt_z")
             case .softwareLicenses: break
             }
+        case .appIcons:
+            let vc = AppIconsViewController()
+            self.navigationController?.pushViewController(vc, animated: true)
         }
     }
     

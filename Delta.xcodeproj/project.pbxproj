@@ -33,6 +33,19 @@
 
 /* Begin PBXBuildFile section */
 		1FA4ABA79AB72914FE414A61 /* libPods-Delta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DC866E433B3BA9AE18ABA1EC /* libPods-Delta.a */; };
+		37C93B5A2685B17300A166BD /* AppIconsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C93B592685B17300A166BD /* AppIconsViewController.swift */; };
+		37C93B672685B18700A166BD /* Delta-Icon-Blue@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 37C93B5B2685B18500A166BD /* Delta-Icon-Blue@3x.png */; };
+		37C93B682685B18700A166BD /* Delta-Icon-Orange@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 37C93B5C2685B18500A166BD /* Delta-Icon-Orange@3x.png */; };
+		37C93B692685B18700A166BD /* Delta-Icon-Pink@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 37C93B5D2685B18500A166BD /* Delta-Icon-Pink@3x.png */; };
+		37C93B6A2685B18700A166BD /* Delta-Icon-Orange@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 37C93B5E2685B18500A166BD /* Delta-Icon-Orange@2x.png */; };
+		37C93B6B2685B18700A166BD /* Delta-Icon-Green@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 37C93B5F2685B18600A166BD /* Delta-Icon-Green@2x.png */; };
+		37C93B6C2685B18700A166BD /* Delta-Icon-Pride@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 37C93B602685B18600A166BD /* Delta-Icon-Pride@3x.png */; };
+		37C93B6D2685B18700A166BD /* Delta-Icon-Pride@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 37C93B612685B18600A166BD /* Delta-Icon-Pride@2x.png */; };
+		37C93B6E2685B18700A166BD /* Delta-Icon-Green@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 37C93B622685B18600A166BD /* Delta-Icon-Green@3x.png */; };
+		37C93B6F2685B18700A166BD /* Delta-Icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 37C93B632685B18600A166BD /* Delta-Icon@3x.png */; };
+		37C93B702685B18700A166BD /* Delta-Icon-Blue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 37C93B642685B18600A166BD /* Delta-Icon-Blue@2x.png */; };
+		37C93B712685B18700A166BD /* Delta-Icon-Pink@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 37C93B652685B18600A166BD /* Delta-Icon-Pink@2x.png */; };
+		37C93B722685B18700A166BD /* Delta-Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 37C93B662685B18700A166BD /* Delta-Icon@2x.png */; };
 		BF00BEA625B758AA00C8607D /* SystemBIOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF00BEA525B758AA00C8607D /* SystemBIOS.swift */; };
 		BF02D5DA1DDEBB3000A5E131 /* openvgdb.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = BF02D5D91DDEBB3000A5E131 /* openvgdb.sqlite */; };
 		BF04E6FF1DB8625C000F35D3 /* ControllerSkinsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF04E6FE1DB8625C000F35D3 /* ControllerSkinsViewController.swift */; };
@@ -193,6 +206,19 @@
 
 /* Begin PBXFileReference section */
 		22506DA00971C4300AF90A35 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		37C93B592685B17300A166BD /* AppIconsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIconsViewController.swift; sourceTree = "<group>"; };
+		37C93B5B2685B18500A166BD /* Delta-Icon-Blue@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Delta-Icon-Blue@3x.png"; sourceTree = "<group>"; };
+		37C93B5C2685B18500A166BD /* Delta-Icon-Orange@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Delta-Icon-Orange@3x.png"; sourceTree = "<group>"; };
+		37C93B5D2685B18500A166BD /* Delta-Icon-Pink@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Delta-Icon-Pink@3x.png"; sourceTree = "<group>"; };
+		37C93B5E2685B18500A166BD /* Delta-Icon-Orange@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Delta-Icon-Orange@2x.png"; sourceTree = "<group>"; };
+		37C93B5F2685B18600A166BD /* Delta-Icon-Green@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Delta-Icon-Green@2x.png"; sourceTree = "<group>"; };
+		37C93B602685B18600A166BD /* Delta-Icon-Pride@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Delta-Icon-Pride@3x.png"; sourceTree = "<group>"; };
+		37C93B612685B18600A166BD /* Delta-Icon-Pride@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Delta-Icon-Pride@2x.png"; sourceTree = "<group>"; };
+		37C93B622685B18600A166BD /* Delta-Icon-Green@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Delta-Icon-Green@3x.png"; sourceTree = "<group>"; };
+		37C93B632685B18600A166BD /* Delta-Icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Delta-Icon@3x.png"; sourceTree = "<group>"; };
+		37C93B642685B18600A166BD /* Delta-Icon-Blue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Delta-Icon-Blue@2x.png"; sourceTree = "<group>"; };
+		37C93B652685B18600A166BD /* Delta-Icon-Pink@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Delta-Icon-Pink@2x.png"; sourceTree = "<group>"; };
+		37C93B662685B18700A166BD /* Delta-Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Delta-Icon@2x.png"; sourceTree = "<group>"; };
 		A19FF50F55441BC2B2248241 /* Pods-Delta.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Delta.release.xcconfig"; path = "Pods/Target Support Files/Pods-Delta/Pods-Delta.release.xcconfig"; sourceTree = "<group>"; };
 		BF00BEA525B758AA00C8607D /* SystemBIOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemBIOS.swift; sourceTree = "<group>"; };
 		BF02D5D91DDEBB3000A5E131 /* openvgdb.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = openvgdb.sqlite; sourceTree = "<group>"; };
@@ -382,6 +408,26 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		37C93B582685B15E00A166BD /* App Icons */ = {
+			isa = PBXGroup;
+			children = (
+				37C93B642685B18600A166BD /* Delta-Icon-Blue@2x.png */,
+				37C93B5B2685B18500A166BD /* Delta-Icon-Blue@3x.png */,
+				37C93B5F2685B18600A166BD /* Delta-Icon-Green@2x.png */,
+				37C93B622685B18600A166BD /* Delta-Icon-Green@3x.png */,
+				37C93B5E2685B18500A166BD /* Delta-Icon-Orange@2x.png */,
+				37C93B5C2685B18500A166BD /* Delta-Icon-Orange@3x.png */,
+				37C93B652685B18600A166BD /* Delta-Icon-Pink@2x.png */,
+				37C93B5D2685B18500A166BD /* Delta-Icon-Pink@3x.png */,
+				37C93B612685B18600A166BD /* Delta-Icon-Pride@2x.png */,
+				37C93B602685B18600A166BD /* Delta-Icon-Pride@3x.png */,
+				37C93B662685B18700A166BD /* Delta-Icon@2x.png */,
+				37C93B632685B18600A166BD /* Delta-Icon@3x.png */,
+				37C93B592685B17300A166BD /* AppIconsViewController.swift */,
+			);
+			path = "App Icons";
+			sourceTree = "<group>";
+		};
 		BF090CEE1B490C1A00DCAB45 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -714,6 +760,7 @@
 				BF5E7F431B9A650B00AE44F8 /* SettingsViewController.swift */,
 				BFB3645723245A6000CD0EB1 /* LicensesViewController.swift */,
 				BFE9907E24451DE6006409A7 /* Cores */,
+				37C93B582685B15E00A166BD /* App Icons */,
 				BF71CF851FE8FFF1001F1613 /* App Icon Shortcuts */,
 				BF11734E1DA32CEC00047DF8 /* Controllers */,
 				BF1DAD5B1D9F574900E752A7 /* Controller Skins */,
@@ -973,14 +1020,26 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				37C93B712685B18700A166BD /* Delta-Icon-Pink@2x.png in Resources */,
 				BFFA71E21AAC406100EE9DD1 /* Main.storyboard in Resources */,
 				BF6BF3211EB82362008E83CD /* GamesDatabase.storyboard in Resources */,
+				37C93B6B2685B18700A166BD /* Delta-Icon-Green@2x.png in Resources */,
+				37C93B6C2685B18700A166BD /* Delta-Icon-Pride@3x.png in Resources */,
 				BFAB9F88219A4B670080EC7D /* GoogleService-Info.plist in Resources */,
+				37C93B692685B18700A166BD /* Delta-Icon-Pink@3x.png in Resources */,
 				BF3540001C5DA3C500C1184C /* PausePresentationControllerContentView.xib in Resources */,
+				37C93B702685B18700A166BD /* Delta-Icon-Blue@2x.png in Resources */,
+				37C93B6D2685B18700A166BD /* Delta-Icon-Pride@2x.png in Resources */,
 				BF5E7F461B9A652600AE44F8 /* Settings.storyboard in Resources */,
+				37C93B672685B18700A166BD /* Delta-Icon-Blue@3x.png in Resources */,
 				BF02D5DA1DDEBB3000A5E131 /* openvgdb.sqlite in Resources */,
+				37C93B722685B18700A166BD /* Delta-Icon@2x.png in Resources */,
 				BF71CF8A1FE904B1001F1613 /* GameTableViewCell.xib in Resources */,
+				37C93B682685B18700A166BD /* Delta-Icon-Orange@3x.png in Resources */,
 				BFFC46461D59861000AF2CC6 /* LaunchScreen.storyboard in Resources */,
+				37C93B6E2685B18700A166BD /* Delta-Icon-Green@3x.png in Resources */,
+				37C93B6F2685B18700A166BD /* Delta-Icon@3x.png in Resources */,
+				37C93B6A2685B18700A166BD /* Delta-Icon-Orange@2x.png in Resources */,
 				BF1F45AB21AF4B5800EF9895 /* SyncResultsViewController.storyboard in Resources */,
 				BF353FF61C5D837600C1184C /* PauseMenu.storyboard in Resources */,
 				BF27CC8E1BC9FEA200A20D89 /* Assets.xcassets in Resources */,
@@ -1169,6 +1228,7 @@
 				BFC9B7391CEFCD34008629BB /* CheatsViewController.swift in Sources */,
 				BF353FFF1C5DA3C500C1184C /* PausePresentationController.swift in Sources */,
 				BFFC464C1D5998D600AF2CC6 /* CheatTableViewCell.swift in Sources */,
+				37C93B5A2685B17300A166BD /* AppIconsViewController.swift in Sources */,
 				BF5942941E09BD1A0051894B /* NSManagedObject+Conveniences.swift in Sources */,
 				BF1F45BF21AF676F00EF9895 /* Box.swift in Sources */,
 				BF7AE80A1C2E8C7600B1B5BC /* UIColor+Delta.swift in Sources */,
