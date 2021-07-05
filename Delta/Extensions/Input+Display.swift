@@ -128,6 +128,11 @@ extension Input
             case .rightShoulder: return NSLocalizedString("R1", comment: "")
             case .rightTrigger: return NSLocalizedString("R2", comment: "")
             case .rightThumbstickButton: return NSLocalizedString("R3", comment: "")
+            case .psTouchpadButton: return NSLocalizedString("TouchpDelta/Extensions/Input+Display.swiftad", comment: "")
+            case .xboxPaddleButton1: return NSLocalizedString("Paddle1", comment: "")
+            case .xboxPaddleButton2: return NSLocalizedString("Paddle2", comment: "")
+            case .xboxPaddleButton3: return NSLocalizedString("Paddle3", comment: "")
+            case .xboxPaddleButton4: return NSLocalizedString("Paddle4", comment: "")
             }
             
         case .controller(.keyboard):
