@@ -177,7 +177,7 @@ private extension PauseViewController
         
         if Settings.isRewindEnabled
         {
-            self.rewindItem = MenuItem(text: NSLocalizedString("Rewind", comment: ""), image: #imageLiteral(resourceName: "Link"), action: { [unowned self] _ in
+            self.rewindItem = MenuItem(text: NSLocalizedString("Rewind", comment: ""), image: #imageLiteral(resourceName: "Rewind"), action: { [unowned self] _ in
                 self.saveStatesViewControllerMode = .rewind
                 self.performSegue(withIdentifier: "saveStates", sender: self)
             })
