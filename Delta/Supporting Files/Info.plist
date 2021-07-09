@@ -137,56 +137,146 @@
     <dict>
         <key>CFBundleAlternateIcons</key>
         <dict>
-            <key>Delta-Icon</key>
+            <key>bg_purple</key>
             <dict>
                 <key>CFBundleIconFiles</key>
                 <array>
-                    <string>Delta-Icon</string>
+                    <string>bg_purple</string>
                 </array>
                 <key>UIPrerenderedIcon</key>
                 <string>NO</string>
             </dict>
-            <key>Delta-Icon-Blue</key>
+            <key>bg_blue</key>
             <dict>
                 <key>CFBundleIconFiles</key>
                 <array>
-                    <string>Delta-Icon-Blue</string>
+                    <string>bg_blue</string>
                 </array>
                 <key>UIPrerenderedIcon</key>
                 <string>NO</string>
             </dict>
-            <key>Delta-Icon-Green</key>
+            <key>bg_green</key>
             <dict>
                 <key>CFBundleIconFiles</key>
                 <array>
-                    <string>Delta-Icon-Green</string>
+                    <string>bg_green</string>
                 </array>
                 <key>UIPrerenderedIcon</key>
                 <string>NO</string>
             </dict>
-            <key>Delta-Icon-Orange</key>
+            <key>bg_orange</key>
             <dict>
                 <key>CFBundleIconFiles</key>
                 <array>
-                    <string>Delta-Icon-Orange</string>
+                    <string>bg_orange</string>
                 </array>
                 <key>UIPrerenderedIcon</key>
                 <string>NO</string>
             </dict>
-            <key>Delta-Icon-Pink</key>
+            <key>bg_red</key>
             <dict>
                 <key>CFBundleIconFiles</key>
                 <array>
-                    <string>Delta-Icon-Pink</string>
+                    <string>bg_red</string>
                 </array>
                 <key>UIPrerenderedIcon</key>
                 <string>NO</string>
             </dict>
-            <key>Delta-Icon-Pride</key>
+            <key>bg_pride_1</key>
             <dict>
                 <key>CFBundleIconFiles</key>
                 <array>
-                    <string>Delta-Icon-Pride</string>
+                    <string>bg_pride_1</string>
+                </array>
+                <key>UIPrerenderedIcon</key>
+                <string>NO</string>
+            </dict>
+            <key>bg_pride_2</key>
+            <dict>
+                <key>CFBundleIconFiles</key>
+                <array>
+                    <string>bg_pride_2</string>
+                </array>
+                <key>UIPrerenderedIcon</key>
+                <string>NO</string>
+            </dict>
+            <key>fg_pride_1</key>
+            <dict>
+                <key>CFBundleIconFiles</key>
+                <array>
+                    <string>fg_pride_1</string>
+                </array>
+                <key>UIPrerenderedIcon</key>
+                <string>NO</string>
+            </dict>
+            <key>fg_pride_2</key>
+            <dict>
+                <key>CFBundleIconFiles</key>
+                <array>
+                    <string>fg_pride_2</string>
+                </array>
+                <key>UIPrerenderedIcon</key>
+                <string>NO</string>
+            </dict>
+            <key>fg_purple</key>
+            <dict>
+                <key>CFBundleIconFiles</key>
+                <array>
+                    <string>fg_purple</string>
+                </array>
+                <key>UIPrerenderedIcon</key>
+                <string>NO</string>
+            </dict>
+            <key>fg_blue</key>
+            <dict>
+                <key>CFBundleIconFiles</key>
+                <array>
+                    <string>fg_blue</string>
+                </array>
+                <key>UIPrerenderedIcon</key>
+                <string>NO</string>
+            </dict>
+            <key>fg_green</key>
+            <dict>
+                <key>CFBundleIconFiles</key>
+                <array>
+                    <string>fg_green</string>
+                </array>
+                <key>UIPrerenderedIcon</key>
+                <string>NO</string>
+            </dict>
+            <key>fg_orange</key>
+            <dict>
+                <key>CFBundleIconFiles</key>
+                <array>
+                    <string>fg_orange</string>
+                </array>
+                <key>UIPrerenderedIcon</key>
+                <string>NO</string>
+            </dict>
+            <key>fg_red</key>
+            <dict>
+                <key>CFBundleIconFiles</key>
+                <array>
+                    <string>fg_red</string>
+                </array>
+                <key>UIPrerenderedIcon</key>
+                <string>NO</string>
+            </dict>
+            <key>delta64_light</key>
+            <dict>
+                <key>CFBundleIconFiles</key>
+                <array>
+                    <string>delta64_light</string>
+                </array>
+                <key>UIPrerenderedIcon</key>
+                <string>NO</string>
+            </dict>
+            <key>delta64_dark</key>
+            <dict>
+                <key>CFBundleIconFiles</key>
+                <array>
+                    <string>delta64_dark</string>
                 </array>
                 <key>UIPrerenderedIcon</key>
                 <string>NO</string>
