@@ -48,7 +48,6 @@ extension AppIconsViewController
         case delta64Light
         case delta64Dark
         
-        
         func displayTitle() -> String
         {
             switch self
@@ -101,8 +100,6 @@ extension AppIconsViewController
     }
 }
 
-
-
 class AppIconsViewController: UITableViewController
 {
     override func viewDidLoad()
@@ -139,7 +136,6 @@ extension AppIconsViewController
         
         DispatchQueue.main.async
         {
-            print("icon.key():\(icon.key())")
             UIApplication.shared.setAlternateIconName(icon.key(), completionHandler: { (error) in
                 if let error = error
                 {
@@ -208,12 +204,4 @@ extension AppIconsViewController {
         }
     }
     
-}
-
-public extension Collection
-{
-    subscript (safe index: Index) -> Element?
-    {
-        return indices.contains(index) ? self[index] : nil
-    }
 }
