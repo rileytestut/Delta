@@ -20,8 +20,8 @@ extension AppIconsViewController
         {
             switch self
             {
-            case .bgColors: return [.bgPurple, .bgBlue, .bgGreen, .bgOrange, .bgRed, .bgPride1, .bgPride2]
-            case .fgColors: return [.fgPurple, .fgBlue, .fgGreen, .fgOrange, .fgRed, .fgPride1, .fgPride2]
+            case .bgColors: return [.bgPurple, .bgBlue, .bgGreen, .bgOrange, .bgRed, .bgPride, .bgPrideGradient]
+            case .fgColors: return [.fgPurple, .fgBlue, .fgGreen, .fgOrange, .fgRed, .fgPride, .fgPrideGradient]
             case .original: return [.delta64Light, .delta64Dark]
             }
         }
@@ -34,19 +34,20 @@ extension AppIconsViewController
         case bgGreen
         case bgOrange
         case bgRed
-        case bgPride1
-        case bgPride2
+        case bgPride
+        case bgPrideGradient
         
         case fgPurple
         case fgBlue
         case fgGreen
         case fgOrange
         case fgRed
-        case fgPride1
-        case fgPride2
+        case fgPride
+        case fgPrideGradient
         
         case delta64Light
         case delta64Dark
+        
         
         func displayTitle() -> String
         {
@@ -57,16 +58,16 @@ extension AppIconsViewController
             case .bgGreen: return "Green"
             case .bgOrange: return "Orange"
             case .bgRed: return "Red"
-            case .bgPride1: return "Pride 1"
-            case .bgPride2: return "Pride 2"
+            case .bgPride: return "Pride"
+            case .bgPrideGradient: return "Pride (Gradient)"
                 
             case .fgPurple: return "GBA4iOS"
             case .fgBlue: return "Blue"
             case .fgGreen: return "Green"
             case .fgOrange: return "Orange"
             case .fgRed: return "Red"
-            case .fgPride1: return "Pride 1"
-            case .fgPride2: return "Pride 2"
+            case .fgPride: return "Pride"
+            case .fgPrideGradient: return "Pride (Gradient)"
                 
             case .delta64Light: return "Delta64 Light"
             case .delta64Dark: return "Delta64 Dark"
@@ -82,16 +83,16 @@ extension AppIconsViewController
             case .bgGreen: return "bg_green"
             case .bgOrange: return "bg_orange"
             case .bgRed: return "bg_red"
-            case .bgPride1: return "bg_pride_1"
-            case .bgPride2: return "bg_pride_2"
+            case .bgPride: return "bg_pride_1"
+            case .bgPrideGradient: return "bg_pride_2"
                 
             case .fgPurple: return "fg_purple"
             case .fgBlue: return "fg_blue"
             case .fgGreen: return "fg_green"
             case .fgOrange: return "fg_orange"
             case .fgRed: return "fg_red"
-            case .fgPride1: return "fg_pride_1"
-            case .fgPride2: return "fg_pride_2"
+            case .fgPride: return "fg_pride_1"
+            case .fgPrideGradient: return "fg_pride_2"
                 
             case .delta64Light: return "delta64_light"
             case .delta64Dark: return "delta64_dark"
@@ -181,7 +182,15 @@ extension AppIconsViewController {
         {
             cell = UITableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: "SelectAppIconRow")
         }
+        
         cell?.textLabel?.text = icon.displayTitle()
+        cell?.imageView?.layer.masksToBounds = true
+        cell?.imageView?.layer.cornerRadius = 13
+        if #available(iOS 13.0, *)
+        {
+            cell?.imageView?.layer.cornerCurve = CALayerCornerCurve.continuous
+        }
+        
         cell?.imageView?.image = UIImage(named: icon.key())
         cell?.accessoryType = icon.key() == Settings.lastAppIconKey ? .checkmark : .none
         return cell!
