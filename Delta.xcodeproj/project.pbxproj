@@ -33,6 +33,8 @@
 
 /* Begin PBXBuildFile section */
 		1FA4ABA79AB72914FE414A61 /* libPods-Delta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DC866E433B3BA9AE18ABA1EC /* libPods-Delta.a */; };
+		3725D955269D5F6F005A235D /* Collection+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3725D954269D5F6F005A235D /* Collection+Ext.swift */; };
+		37928DC226A23BAC00A5FB11 /* AppearanceTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37928DC126A23BAC00A5FB11 /* AppearanceTableViewController.swift */; };
 		37C93B5A2685B17300A166BD /* AppIconsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C93B592685B17300A166BD /* AppIconsViewController.swift */; };
 		37E6BD50269819920037F15D /* bg_green@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 37E6BD302698198F0037F15D /* bg_green@2x.png */; };
 		37E6BD51269819920037F15D /* fg_blue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 37E6BD312698198F0037F15D /* fg_blue@2x.png */; };
@@ -226,6 +228,8 @@
 
 /* Begin PBXFileReference section */
 		22506DA00971C4300AF90A35 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3725D954269D5F6F005A235D /* Collection+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+Ext.swift"; sourceTree = "<group>"; };
+		37928DC126A23BAC00A5FB11 /* AppearanceTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceTableViewController.swift; sourceTree = "<group>"; };
 		37C93B592685B17300A166BD /* AppIconsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIconsViewController.swift; sourceTree = "<group>"; };
 		37E6BD302698198F0037F15D /* bg_green@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg_green@2x.png"; sourceTree = "<group>"; };
 		37E6BD312698198F0037F15D /* fg_blue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "fg_blue@2x.png"; sourceTree = "<group>"; };
@@ -448,6 +452,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		37928DC026A23B8900A5FB11 /* Appearance */ = {
+			isa = PBXGroup;
+			children = (
+				37928DC126A23BAC00A5FB11 /* AppearanceTableViewController.swift */,
+				37C93B592685B17300A166BD /* AppIconsViewController.swift */,
+				37C93B582685B15E00A166BD /* App Icons */,
+			);
+			path = Appearance;
+			sourceTree = "<group>";
+		};
 		37C93B582685B15E00A166BD /* App Icons */ = {
 			isa = PBXGroup;
 			children = (
@@ -483,7 +497,6 @@
 				37E6BD3E269819910037F15D /* fg_purple@3x.png */,
 				37E6BD41269819910037F15D /* fg_red@2x.png */,
 				37E6BD3D269819900037F15D /* fg_red@3x.png */,
-				37C93B592685B17300A166BD /* AppIconsViewController.swift */,
 			);
 			path = "App Icons";
 			sourceTree = "<group>";
@@ -509,6 +522,7 @@
 				BF647A6922FB8FCE0061D76D /* Bundle+SwizzleBundleID.swift */,
 				BFD1EF3F2336BD8800D197CF /* UIDevice+Processor.swift */,
 				BFE56E1823EB7BE00014FECD /* UIImage+SymbolFallback.swift */,
+				3725D954269D5F6F005A235D /* Collection+Ext.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -819,8 +833,8 @@
 				BF5E7F451B9A652600AE44F8 /* Settings.storyboard */,
 				BF5E7F431B9A650B00AE44F8 /* SettingsViewController.swift */,
 				BFB3645723245A6000CD0EB1 /* LicensesViewController.swift */,
+				37928DC026A23B8900A5FB11 /* Appearance */,
 				BFE9907E24451DE6006409A7 /* Cores */,
-				37C93B582685B15E00A166BD /* App Icons */,
 				BF71CF851FE8FFF1001F1613 /* App Icon Shortcuts */,
 				BF11734E1DA32CEC00047DF8 /* Controllers */,
 				BF1DAD5B1D9F574900E752A7 /* Controller Skins */,
@@ -1296,6 +1310,7 @@
 				BFFA4C091E8A24D600D87934 /* GameTableViewCell.swift in Sources */,
 				BFFC46231D5984A000AF2CC6 /* LaunchViewController.swift in Sources */,
 				BF8DDD241F4F6C880088A21B /* InputCalloutView.swift in Sources */,
+				3725D955269D5F6F005A235D /* Collection+Ext.swift in Sources */,
 				BF5942701E09BC5D0051894B /* GamesDatabase.swift in Sources */,
 				BF34FA071CF0F510006624C7 /* EditCheatViewController.swift in Sources */,
 				BF1F45A421AF274D00EF9895 /* SyncResultViewController.swift in Sources */,
@@ -1351,6 +1366,7 @@
 				BF00BEA625B758AA00C8607D /* SystemBIOS.swift in Sources */,
 				BF696B801D9B2B02009639E0 /* Theme.swift in Sources */,
 				BF7AE8081C2E858400B1B5BC /* GridMenuViewController.swift in Sources */,
+				37928DC226A23BAC00A5FB11 /* AppearanceTableViewController.swift in Sources */,
 				BF6BF31A1EB82146008E83CD /* ClipboardImportOption.swift in Sources */,
 				BF59427F1E09BC830051894B /* GameCollection.swift in Sources */,
 			);
