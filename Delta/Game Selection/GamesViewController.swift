@@ -77,6 +77,8 @@ class GamesViewController: UIViewController
         NotificationCenter.default.addObserver(self, selector: #selector(GamesViewController.syncingDidFinish(_:)), name: SyncCoordinator.didFinishSyncingNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GamesViewController.settingsDidChange(_:)), name: .settingsDidChange, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GamesViewController.emulationDidQuit(_:)), name: EmulatorCore.emulationDidQuitNotification, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(GamesViewController.pageIndicatorDidChange(_:)), name: .pageControlIndicatorDidChange, object: nil)
     }
 }
 
@@ -98,12 +100,14 @@ extension GamesViewController
         self.pageControl.translatesAutoresizingMaskIntoConstraints = false
         self.pageControl.hidesForSinglePage = false
         self.pageControl.numberOfPages = 3
-        self.pageControl.currentPageIndicatorTintColor = UIColor.deltaPurple
+        self.pageControl.currentPageIndicatorTintColor = Settings.themeColor
         self.pageControl.pageIndicatorTintColor = UIColor.lightGray
         self.navigationController?.toolbar.addSubview(self.pageControl)
         
         self.pageControl.centerXAnchor.constraint(equalTo: (self.navigationController?.toolbar.centerXAnchor)!, constant: 0).isActive = true
         self.pageControl.centerYAnchor.constraint(equalTo: (self.navigationController?.toolbar.centerYAnchor)!, constant: 0).isActive = true
+        self.pageControl.leadingAnchor.constraint(equalTo: (self.navigationController?.toolbar.leadingAnchor)!, constant: 35).isActive = true
+        self.pageControl.trailingAnchor.constraint(equalTo: (self.navigationController?.toolbar.trailingAnchor)!, constant: -35).isActive = true
         
         if let navigationController = self.navigationController
         {
@@ -117,13 +121,13 @@ extension GamesViewController
                 
                 let toolbarAppearance = navigationController.toolbar.standardAppearance.copy()
                 toolbarAppearance.backgroundEffect = UIBlurEffect(style: .dark)
-                navigationController.toolbar.standardAppearance = toolbarAppearance                
+                navigationController.toolbar.standardAppearance = toolbarAppearance
             }
             else
             {
                 navigationController.navigationBar.barStyle = .blackTranslucent
                 navigationController.toolbar.barStyle = .blackTranslucent
-            }            
+            }
         }
         
         self.prepareSearchController()
@@ -283,6 +287,8 @@ private extension GamesViewController
         let sections = self.fetchedResultsController.sections?.first?.numberOfObjects ?? 0
         self.pageControl.numberOfPages = sections
         
+        self.configurePageIndicator()
+        
         var resetPageViewController = false
         
         if let viewController = self.pageViewController.viewControllers?.first as? GameCollectionViewController, let gameCollection = viewController.gameCollection
@@ -353,7 +359,7 @@ private extension GamesViewController
 extension GamesViewController: ImportControllerDelegate
 {
     @IBAction private func importFiles()
-    {        
+    {
         var documentTypes = Set(System.registeredSystems.map { $0.gameType.rawValue })
         documentTypes.insert(kUTTypeZipArchive as String)
         documentTypes.insert("com.rileytestut.delta.skin")
@@ -505,7 +511,7 @@ private extension GamesViewController
         if let game = self.activeEmulatorCore?.game as? Game
         {
             if deletedObjects.contains(game)
-            {                
+            {
                 self.quitEmulation()
             }
         }
@@ -523,7 +529,7 @@ private extension GamesViewController
     }
     
     @objc func syncingDidFinish(_ notification: Notification)
-    {        
+    {
         DispatchQueue.main.async {
             guard let result = notification.userInfo?[SyncCoordinator.syncResultKey] as? SyncResult else { return }
             self.showSyncFinishedToastView(result: result)
@@ -593,7 +599,7 @@ extension GamesViewController: UISearchResultsUpdating
     func updateSearchResults(for searchController: UISearchController)
     {
         if searchController.searchBar.text?.isEmpty == false
-        {            
+        {
             self.pageViewController.view.isHidden = true
         }
         else
@@ -618,5 +624,37 @@ extension GamesViewController: UIAdaptivePresentationControllerDelegate
     func presentationControllerWillDismiss(_ presentationController: UIPresentationController)
     {
         self.sync()
+    }
+}
+
+extension GamesViewController
+{
+    @objc func pageIndicatorDidChange(_ notification: Notification)
+    {
+        self.configurePageIndicator()
+    }
+    
+    func configurePageIndicator()
+    {
+        if #available(iOS 14.0, *)
+        {
+            self.pageControl.currentPageIndicatorTintColor = Settings.themeColor
+            
+            let pageControlIndicatorType = Settings.gamesPageControlIndicatorType
+            
+            let sections = self.fetchedResultsController.sections?.first?.numberOfObjects ?? 0
+            
+            for row in 0..<sections
+            {
+                let indexPath = IndexPath(row: row, section: 0)
+                if
+                    let pageControlIndicatorType = pageControlIndicatorType,
+                    let gameCollection = self.fetchedResultsController.object(at: indexPath) as? GameCollection,
+                    let system = gameCollection.system
+                {
+                    pageControl.setIndicatorImage(pageControlIndicatorType.image(for: system), forPage: row)
+                }
+            }
+        }
     }
 }

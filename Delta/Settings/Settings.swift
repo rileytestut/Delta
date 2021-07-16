@@ -61,7 +61,10 @@ struct Settings
                         #keyPath(UserDefaults.sortSaveStatesByOldestFirst): true,
                         #keyPath(UserDefaults.isPreviewsEnabled): true,
                         Settings.preferredCoreSettingsKey(for: .ds): MelonDS.core.identifier,
-                        #keyPath(UserDefaults.lastAppIconKey): "Delta-Icon"] as [String : Any]
+                        #keyPath(UserDefaults.lastAppIconKey): "bg_purple",
+                        #keyPath(UserDefaults.themeColorHexString): String.deltaPurpleHex,
+                        #keyPath(UserDefaults.gamesPageControlIndicatorType): PageControlIndicatorType.standard.rawValue
+        ] as [String : Any]
         UserDefaults.standard.register(defaults: defaults)
     }
 }
@@ -199,6 +202,29 @@ extension Settings
         }
     }
     
+    static var themeColor: UIColor {
+        set {
+            UserDefaults.standard.themeColorHexString = newValue.hexDescription()
+            guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+            appDelegate.configureAppearance()
+        }
+        get {
+            let themeColorHex = UserDefaults.standard.themeColorHexString
+            return UIColor(hex: themeColorHex)
+        }
+    }
+    
+    static var gamesPageControlIndicatorType: PageControlIndicatorType? {
+        get {
+            guard let syncingService = UserDefaults.standard.gamesPageControlIndicatorType else { return nil }
+            return PageControlIndicatorType(rawValue: syncingService)
+        }
+        set {
+            UserDefaults.standard.gamesPageControlIndicatorType = newValue?.rawValue
+            NotificationCenter.default.post(name: .settingsDidChange, object: nil, userInfo: [NotificationUserInfoKey.name: Name.syncingService])
+        }
+    }
+    
     static func preferredCore(for gameType: GameType) -> DeltaCoreProtocol?
     {
         let key = self.preferredCoreSettingsKey(for: gameType)
@@ -310,7 +336,7 @@ extension Settings
             else
             {
                 skin = nil
-            }            
+            }
             
             switch traits.orientation
             {
@@ -396,4 +422,6 @@ private extension UserDefaults
     @NSManaged var isPreviewsEnabled: Bool
     
     @NSManaged var lastAppIconKey: String
+    @NSManaged var themeColorHexString: String
+    @NSManaged var gamesPageControlIndicatorType: String?
 }

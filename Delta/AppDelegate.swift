@@ -134,9 +134,13 @@ private extension AppDelegate
         #endif
     }
     
-    func configureAppearance()
+}
+
+extension AppDelegate
+{
+    public func configureAppearance()
     {
-        self.window?.tintColor = UIColor.deltaPurple
+        self.window?.tintColor = Settings.themeColor
     }
 }
 

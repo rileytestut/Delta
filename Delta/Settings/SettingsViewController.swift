@@ -24,7 +24,7 @@ private extension SettingsViewController
         case syncing
         case hapticTouch
         case cores
-        case appIcons
+        case appearance
         case patreon
         case credits
     }
@@ -173,6 +173,11 @@ private extension SettingsViewController
             print(error)
         }
         
+        let themeColor = Settings.themeColor
+        self.buttonHapticFeedbackEnabledSwitch.onTintColor = themeColor
+        self.thumbstickHapticFeedbackEnabledSwitch.onTintColor = themeColor
+        self.previewsEnabledSwitch.onTintColor = themeColor
+        
         self.buttonHapticFeedbackEnabledSwitch.isOn = Settings.isButtonHapticFeedbackEnabled
         self.thumbstickHapticFeedbackEnabledSwitch.isOn = Settings.isThumbstickHapticFeedbackEnabled
         self.previewsEnabledSwitch.isOn = Settings.isPreviewsEnabled
@@ -265,7 +270,7 @@ private extension SettingsViewController
                 let safariURL = URL(string: "https://twitter.com/" + username)!
                 
                 let safariViewController = SFSafariViewController(url: safariURL)
-                safariViewController.preferredControlTintColor = .deltaPurple
+                safariViewController.preferredControlTintColor = Settings.themeColor
                 self.present(safariViewController, animated: true, completion: nil)
             }
         }
@@ -368,7 +373,7 @@ extension SettingsViewController
             let preferredCore = Settings.preferredCore(for: .ds)
             cell.detailTextLabel?.text = preferredCore?.metadata?.name.value ?? preferredCore?.name ?? NSLocalizedString("Unknown", comment: "")
             
-        case .controllerOpacity, .hapticFeedback, .hapticTouch, .patreon, .credits, .appIcons: break
+        case .controllerOpacity, .hapticFeedback, .hapticTouch, .patreon, .credits, .appearance: break
         }
 
         return cell
@@ -394,7 +399,7 @@ extension SettingsViewController
                 let patreonURL = URL(string: "https://www.patreon.com/rileytestut")!
                 
                 let safariViewController = SFSafariViewController(url: patreonURL)
-                safariViewController.preferredControlTintColor = .deltaPurple
+                safariViewController.preferredControlTintColor = Settings.themeColor
                 self.present(safariViewController, animated: true, completion: nil)
             }
             
@@ -410,8 +415,8 @@ extension SettingsViewController
             case .litRitt: self.openTwitter(username: "litritt_z")
             case .softwareLicenses: break
             }
-        case .appIcons:
-            let vc = AppIconsViewController()
+        case .appearance:
+            let vc = AppearanceTableViewController(style: .grouped)
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }

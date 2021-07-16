@@ -107,9 +107,6 @@ class AppIconsViewController: UITableViewController
         super.viewDidLoad()
         self.title = "Select App Icon"
         
-        tableView.delegate = self
-        tableView.dataSource = self
-        
         tableView.tableFooterView = UIView()
     }
     
@@ -186,9 +183,9 @@ extension AppIconsViewController {
         {
             cell?.imageView?.layer.cornerCurve = CALayerCornerCurve.continuous
         }
-        
         cell?.imageView?.image = UIImage(named: icon.key())
         cell?.accessoryType = icon.key() == Settings.lastAppIconKey ? .checkmark : .none
+        
         return cell!
     }
     

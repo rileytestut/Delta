@@ -39,7 +39,7 @@ class SyncingServicesViewController: UITableViewController
     {
         super.viewDidLoad()
         
-        self.syncingEnabledSwitch.onTintColor = .deltaPurple
+        self.syncingEnabledSwitch.onTintColor = Settings.themeColor
         self.syncingEnabledSwitch.isOn = (self.selectedSyncingService != nil)
     }
 }
@@ -150,7 +150,7 @@ extension SyncingServicesViewController
             }
             else
             {
-                cell.textLabel?.textColor = .deltaPurple
+                cell.textLabel?.textColor = Settings.themeColor
                 cell.textLabel?.text = NSLocalizedString("Sign In", comment: "")
             }
         }
