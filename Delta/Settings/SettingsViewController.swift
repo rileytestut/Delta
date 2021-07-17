@@ -99,6 +99,12 @@ class SettingsViewController: UITableViewController
             self.versionLabel.text = NSLocalizedString("Delta", comment: "")
             #endif
         }
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(SettingsViewController.handleTapGesture(_:)))
+        tapGesture.numberOfTapsRequired = 13
+        tapGesture.numberOfTouchesRequired = 1
+        self.versionLabel.addGestureRecognizer(tapGesture)
+        self.versionLabel.isUserInteractionEnabled = true
     }
     
     override func viewWillAppear(_ animated: Bool)
@@ -150,6 +156,15 @@ class SettingsViewController: UITableViewController
             
         case Segue.dsSettings: break
         }
+    }
+    
+    @objc func handleTapGesture(_ gestureRecognizer: UILongPressGestureRecognizer) {
+        let skinDebugEnabled = !Settings.isControllerSkinDebugModeEnabled
+        Settings.isControllerSkinDebugModeEnabled = skinDebugEnabled
+        
+        let alertController = UIAlertController(title: NSLocalizedString("Controller Skin Debug Mode Updated", comment: ""), message: NSLocalizedString("Controller Skin Debug Mode has been changed to \(skinDebugEnabled ? "ON" : "OFF")", comment: ""), preferredStyle: .alert)
+        alertController.addAction(.ok)
+        self.present(alertController, animated: true, completion: nil)
     }
 }
 
@@ -290,7 +305,7 @@ private extension SettingsViewController
                 self.tableView.selectRow(at: selectedIndexPath, animated: true, scrollPosition: .none)
             }
             
-        case .localControllerPlayerIndex, .preferredControllerSkin, .translucentControllerSkinOpacity, .isButtonHapticFeedbackEnabled, .isThumbstickHapticFeedbackEnabled: break
+        case .localControllerPlayerIndex, .preferredControllerSkin, .translucentControllerSkinOpacity, .isButtonHapticFeedbackEnabled, .isThumbstickHapticFeedbackEnabled, .isControllerSkinDebugModeEnabled: break
         }
     }
 
