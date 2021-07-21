@@ -38,7 +38,7 @@ extension Settings
         case syncingService
         case isButtonHapticFeedbackEnabled
         case isThumbstickHapticFeedbackEnabled
-        case isControllerSkinDebugModeEnabled
+        case isDebugModeEnabled
     }
 }
 
@@ -61,7 +61,7 @@ struct Settings
                         #keyPath(UserDefaults.isThumbstickHapticFeedbackEnabled): true,
                         #keyPath(UserDefaults.sortSaveStatesByOldestFirst): true,
                         #keyPath(UserDefaults.isPreviewsEnabled): true,
-                        #keyPath(UserDefaults.isControllerSkinDebugModeEnabled): false,
+                        #keyPath(UserDefaults.isDebugModeEnabled): false,
                         Settings.preferredCoreSettingsKey(for: .ds): MelonDS.core.identifier] as [String : Any]
         UserDefaults.standard.register(defaults: defaults)
     }
@@ -192,14 +192,14 @@ extension Settings
         }
     }
     
-    static var isControllerSkinDebugModeEnabled: Bool {
+    static var isDebugModeEnabled: Bool {
         get {
-            let isEnabled = UserDefaults.standard.isControllerSkinDebugModeEnabled
+            let isEnabled = UserDefaults.standard.isDebugModeEnabled
             return isEnabled
         }
         set {
-            UserDefaults.standard.isControllerSkinDebugModeEnabled = newValue
-            NotificationCenter.default.post(name: .settingsDidChange, object: nil, userInfo: [NotificationUserInfoKey.name: Name.isControllerSkinDebugModeEnabled])
+            UserDefaults.standard.isDebugModeEnabled = newValue
+            NotificationCenter.default.post(name: .settingsDidChange, object: nil, userInfo: [NotificationUserInfoKey.name: Name.isDebugModeEnabled])
         }
     }
     
@@ -399,5 +399,5 @@ private extension UserDefaults
     
     @NSManaged var isPreviewsEnabled: Bool
     
-    @NSManaged var isControllerSkinDebugModeEnabled: Bool
+    @NSManaged var isDebugModeEnabled: Bool
 }

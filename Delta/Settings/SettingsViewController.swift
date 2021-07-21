@@ -159,8 +159,8 @@ class SettingsViewController: UITableViewController
     }
     
     @objc func handleTapGesture(_ gestureRecognizer: UILongPressGestureRecognizer) {
-        let skinDebugEnabled = !Settings.isControllerSkinDebugModeEnabled
-        Settings.isControllerSkinDebugModeEnabled = skinDebugEnabled
+        let skinDebugEnabled = !Settings.isDebugModeEnabled
+        Settings.isDebugModeEnabled = skinDebugEnabled
         
         let alertController = UIAlertController(title: NSLocalizedString("Controller Skin Debug Mode Updated", comment: ""), message: NSLocalizedString("Controller Skin Debug Mode has been changed to \(skinDebugEnabled ? "ON" : "OFF")", comment: ""), preferredStyle: .alert)
         alertController.addAction(.ok)
@@ -305,7 +305,7 @@ private extension SettingsViewController
                 self.tableView.selectRow(at: selectedIndexPath, animated: true, scrollPosition: .none)
             }
             
-        case .localControllerPlayerIndex, .preferredControllerSkin, .translucentControllerSkinOpacity, .isButtonHapticFeedbackEnabled, .isThumbstickHapticFeedbackEnabled, .isControllerSkinDebugModeEnabled: break
+        case .localControllerPlayerIndex, .preferredControllerSkin, .translucentControllerSkinOpacity, .isButtonHapticFeedbackEnabled, .isThumbstickHapticFeedbackEnabled, .isDebugModeEnabled: break
         }
     }
 

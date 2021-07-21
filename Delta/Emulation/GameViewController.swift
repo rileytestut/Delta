@@ -281,7 +281,7 @@ extension GameViewController
         self.view.layoutIfNeeded()
         
         self.controllerView.translucentControllerSkinOpacity = Settings.translucentControllerSkinOpacity
-        self.controllerView.isControllerSkinDebugModeEnabled = Settings.isControllerSkinDebugModeEnabled
+        self.controllerView.isDebugModeEnabled = Settings.isDebugModeEnabled
         
         self.sustainButtonsContentView = UIView(frame: CGRect(x: 0, y: 0, width: self.gameView.bounds.width, height: self.gameView.bounds.height))
         self.sustainButtonsContentView.translatesAutoresizingMaskIntoConstraints = false
@@ -1132,7 +1132,7 @@ private extension GameViewController
             
         case .syncingService: break
             
-        case .isControllerSkinDebugModeEnabled: self.controllerView.isControllerSkinDebugModeEnabled = Settings.isControllerSkinDebugModeEnabled
+        case .isDebugModeEnabled: self.controllerView.isDebugModeEnabled = Settings.isDebugModeEnabled
         }
     }
     
