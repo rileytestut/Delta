@@ -100,8 +100,8 @@ class SettingsViewController: UITableViewController
             #endif
         }
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(SettingsViewController.handleTapGesture(_:)))
-        tapGesture.numberOfTapsRequired = 13
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(SettingsViewController.handleVersionLabelTapGesture(_:)))
+        tapGesture.numberOfTapsRequired = 3
         tapGesture.numberOfTouchesRequired = 1
         self.versionLabel.addGestureRecognizer(tapGesture)
         self.versionLabel.isUserInteractionEnabled = true
@@ -158,11 +158,11 @@ class SettingsViewController: UITableViewController
         }
     }
     
-    @objc func handleTapGesture(_ gestureRecognizer: UILongPressGestureRecognizer) {
+    @objc func handleVersionLabelTapGesture(_ gestureRecognizer: UILongPressGestureRecognizer) {
         let skinDebugEnabled = !Settings.isDebugModeEnabled
         Settings.isDebugModeEnabled = skinDebugEnabled
         
-        let alertController = UIAlertController(title: NSLocalizedString("Controller Skin Debug Mode Updated", comment: ""), message: NSLocalizedString("Controller Skin Debug Mode has been changed to \(skinDebugEnabled ? "ON" : "OFF")", comment: ""), preferredStyle: .alert)
+        let alertController = UIAlertController(title: NSLocalizedString("Debug Mode Updated", comment: ""), message: NSLocalizedString("Debug Mode is now \(skinDebugEnabled ? "ON" : "OFF")", comment: ""), preferredStyle: .alert)
         alertController.addAction(.ok)
         self.present(alertController, animated: true, completion: nil)
     }
