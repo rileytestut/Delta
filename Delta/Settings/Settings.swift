@@ -36,6 +36,7 @@ extension Settings
         case translucentControllerSkinOpacity
         case preferredControllerSkin
         case syncingService
+        case isAirplayEnabled
         case isButtonHapticFeedbackEnabled
         case isThumbstickHapticFeedbackEnabled
     }
@@ -56,6 +57,7 @@ struct Settings
     {
         let defaults = [#keyPath(UserDefaults.translucentControllerSkinOpacity): 0.7,
                         #keyPath(UserDefaults.gameShortcutsMode): GameShortcutsMode.recent.rawValue,
+                        #keyPath(UserDefaults.isAirplayEnabled): false,
                         #keyPath(UserDefaults.isButtonHapticFeedbackEnabled): true,
                         #keyPath(UserDefaults.isThumbstickHapticFeedbackEnabled): true,
                         #keyPath(UserDefaults.sortSaveStatesByOldestFirst): true,
@@ -149,6 +151,17 @@ extension Settings
         set {
             UserDefaults.standard.syncingService = newValue?.rawValue
             NotificationCenter.default.post(name: .settingsDidChange, object: nil, userInfo: [NotificationUserInfoKey.name: Name.syncingService])
+        }
+    }
+    
+    static var isAirplayEnabled: Bool {
+        get {
+            let isEnabled = UserDefaults.standard.isAirplayEnabled
+            return isEnabled
+        }
+        set {
+            UserDefaults.standard.isAirplayEnabled = newValue
+            NotificationCenter.default.post(name: .settingsDidChange, object: nil, userInfo: [NotificationUserInfoKey.name: Name.isAirplayEnabled])
         }
     }
     
@@ -378,6 +391,8 @@ private extension UserDefaults
     @NSManaged var gameShortcutIdentifiers: [String]
     
     @NSManaged var syncingService: String?
+    
+    @NSManaged var isAirplayEnabled: Bool
     
     @NSManaged var isButtonHapticFeedbackEnabled: Bool
     @NSManaged var isThumbstickHapticFeedbackEnabled: Bool

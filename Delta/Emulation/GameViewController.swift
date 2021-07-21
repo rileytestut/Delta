@@ -282,6 +282,8 @@ extension GameViewController
         
         self.controllerView.translucentControllerSkinOpacity = Settings.translucentControllerSkinOpacity
         
+        self.isAirplayEnabled = Settings.isAirplayEnabled
+        
         self.sustainButtonsContentView = UIView(frame: CGRect(x: 0, y: 0, width: self.gameView.bounds.width, height: self.gameView.bounds.height))
         self.sustainButtonsContentView.translatesAutoresizingMaskIntoConstraints = false
         self.sustainButtonsContentView.isHidden = true
@@ -318,7 +320,6 @@ extension GameViewController
         
         self.updateControllers()
         
-        self.enableMirroringIfApplicable()
     }
     
     override func viewDidAppear(_ animated: Bool)
@@ -340,7 +341,7 @@ extension GameViewController
         
         coordinator.animate(alongsideTransition: { (context) in
             self.updateControllerSkin()
-        }, completion: nil)        
+        }, completion: nil)
     }
     
     // MARK: - Segues
@@ -1117,6 +1118,10 @@ private extension GameViewController
         {
         case .localControllerPlayerIndex, .isButtonHapticFeedbackEnabled, .isThumbstickHapticFeedbackEnabled:
             self.updateControllers()
+            
+        case .isAirplayEnabled:
+            self.isAirplayEnabled = Settings.isAirplayEnabled
+            self.handleAirplayScreen()
 
         case .preferredControllerSkin:
             guard

@@ -21,6 +21,7 @@ private extension SettingsViewController
         case controllerSkins
         case controllerOpacity
         case hapticFeedback
+        case airplay
         case syncing
         case hapticTouch
         case cores
@@ -59,6 +60,7 @@ class SettingsViewController: UITableViewController
     @IBOutlet private var buttonHapticFeedbackEnabledSwitch: UISwitch!
     @IBOutlet private var thumbstickHapticFeedbackEnabledSwitch: UISwitch!
     @IBOutlet private var previewsEnabledSwitch: UISwitch!
+    @IBOutlet private var airplayEnabledSwitch: UISwitch!
     
     @IBOutlet private var versionLabel: UILabel!
     
@@ -175,6 +177,7 @@ private extension SettingsViewController
         self.buttonHapticFeedbackEnabledSwitch.isOn = Settings.isButtonHapticFeedbackEnabled
         self.thumbstickHapticFeedbackEnabledSwitch.isOn = Settings.isThumbstickHapticFeedbackEnabled
         self.previewsEnabledSwitch.isOn = Settings.isPreviewsEnabled
+        self.airplayEnabledSwitch.isOn = Settings.isAirplayEnabled
         
         self.tableView.reloadData()
     }
@@ -243,6 +246,11 @@ private extension SettingsViewController
         Settings.isThumbstickHapticFeedbackEnabled = sender.isOn
     }
     
+    @IBAction func toggleAirplayEnabled(_ sender: UISwitch)
+    {
+        Settings.isAirplayEnabled = sender.isOn
+    }
+    
     @IBAction func togglePreviewsEnabled(_ sender: UISwitch)
     {
         Settings.isPreviewsEnabled = sender.isOn
@@ -290,7 +298,7 @@ private extension SettingsViewController
                 self.tableView.selectRow(at: selectedIndexPath, animated: true, scrollPosition: .none)
             }
             
-        case .localControllerPlayerIndex, .preferredControllerSkin, .translucentControllerSkinOpacity, .isButtonHapticFeedbackEnabled, .isThumbstickHapticFeedbackEnabled: break
+        case .localControllerPlayerIndex, .preferredControllerSkin, .translucentControllerSkinOpacity, .isAirplayEnabled, .isButtonHapticFeedbackEnabled, .isThumbstickHapticFeedbackEnabled: break
         }
     }
 
@@ -367,7 +375,7 @@ extension SettingsViewController
             let preferredCore = Settings.preferredCore(for: .ds)
             cell.detailTextLabel?.text = preferredCore?.metadata?.name.value ?? preferredCore?.name ?? NSLocalizedString("Unknown", comment: "")
             
-        case .controllerOpacity, .hapticFeedback, .hapticTouch, .patreon, .credits: break
+        case .controllerOpacity, .airplay, .hapticFeedback, .hapticTouch, .patreon, .credits: break
         }
 
         return cell
@@ -383,7 +391,7 @@ extension SettingsViewController
         case .controllers: self.performSegue(withIdentifier: Segue.controllers.rawValue, sender: cell)
         case .controllerSkins: self.performSegue(withIdentifier: Segue.controllerSkins.rawValue, sender: cell)
         case .cores: self.performSegue(withIdentifier: Segue.dsSettings.rawValue, sender: cell)
-        case .controllerOpacity, .hapticFeedback, .hapticTouch, .syncing: break
+        case .controllerOpacity, .airplay, .hapticFeedback, .hapticTouch, .syncing: break
         case .patreon:
             let patreonURL = URL(string: "altstore://patreon")!
             
