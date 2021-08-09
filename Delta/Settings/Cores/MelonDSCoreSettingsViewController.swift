@@ -28,13 +28,12 @@ private extension MelonDSCoreSettingsViewController
         case changeCore
     }
     
+    @available(iOS 13, *)
     enum BIOSError: LocalizedError
     {
         case unknownSize(URL)
         case incorrectHash(URL, hash: String, expectedHash: String)
         case unsupportedHash(URL, hash: String)
-        
-        @available(iOS 13, *)
         case incorrectSize(URL, size: Int, validSizes: Set<ClosedRange<Measurement<UnitInformationStorage>>>)
                 
         private static let byteFormatter: ByteCountFormatter = {
