@@ -106,22 +106,16 @@ extension GamesViewController
         
         self.pageControl.centerXAnchor.constraint(equalTo: (self.navigationController?.toolbar.centerXAnchor)!, constant: 0).isActive = true
         self.pageControl.centerYAnchor.constraint(equalTo: (self.navigationController?.toolbar.centerYAnchor)!, constant: 0).isActive = true
-        self.pageControl.leadingAnchor.constraint(equalTo: (self.navigationController?.toolbar.leadingAnchor)!, constant: 35).isActive = true
-        self.pageControl.trailingAnchor.constraint(equalTo: (self.navigationController?.toolbar.trailingAnchor)!, constant: -35).isActive = true
+        self.pageControl.leadingAnchor.constraint(equalTo: (self.navigationController?.toolbar.leadingAnchor)!, constant: 15).isActive = true
+        self.pageControl.trailingAnchor.constraint(equalTo: (self.navigationController?.toolbar.trailingAnchor)!, constant: -15).isActive = true
         
         if let navigationController = self.navigationController
         {
             if #available(iOS 13.0, *)
             {
                 navigationController.overrideUserInterfaceStyle = .dark
-                
-                let navigationBarAppearance = navigationController.navigationBar.standardAppearance.copy()
-                navigationBarAppearance.backgroundEffect = UIBlurEffect(style: .dark)
-                navigationController.navigationBar.standardAppearance = navigationBarAppearance
-                
-                let toolbarAppearance = navigationController.toolbar.standardAppearance.copy()
-                toolbarAppearance.backgroundEffect = UIBlurEffect(style: .dark)
-                navigationController.toolbar.standardAppearance = toolbarAppearance
+                navigationController.navigationBar.standardAppearance.backgroundEffect = UIBlurEffect(style: .dark)
+                navigationController.toolbar.standardAppearance.backgroundEffect = UIBlurEffect(style: .dark)
             }
             else
             {
