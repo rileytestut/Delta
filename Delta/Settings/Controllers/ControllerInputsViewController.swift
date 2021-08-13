@@ -31,7 +31,7 @@ class ControllerInputsViewController: UIViewController
     private lazy var managedObjectContext: NSManagedObjectContext = DatabaseManager.shared.newBackgroundContext()
     private var inputMappings = [System: GameControllerInputMapping]()
     
-    private let supportedActionInputs: [ActionInput] = [.quickSave, .quickLoad, .fastForward]
+    private let supportedActionInputs: [ActionInput] = [.quickSave, .quickLoad, .fastForward, .toggleFastForward]
     
     private var gameViewController: DeltaCore.GameViewController!
     private var actionsMenuViewController: GridMenuViewController!
@@ -224,7 +224,9 @@ private extension ControllerInputsViewController
                 image = #imageLiteral(resourceName: "FastForward")
                 text = NSLocalizedString("Fast Forward", comment: "")
                 
-            case .toggleFastForward: continue
+            case .toggleFastForward:
+                image = #imageLiteral(resourceName: "FastForward")
+                text = NSLocalizedString("Toggle FF", comment: "")
             }
             
             let item = MenuItem(text: text, image: image) { [unowned self] (item) in
