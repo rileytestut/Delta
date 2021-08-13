@@ -47,8 +47,27 @@ extension AppearanceTableViewController
             case resetDefault
         }
         case pageControlIndicator
+        
+        var header: String
+        {
+            switch self
+            {
+            case .appIcon: return "App Icon"
+            case .appColor: return "App Color"
+            case .pageControlIndicator: return "Page Indicator Symbol"
+            }
+        }
+        
+        var footer: String
+        {
+            switch self
+            {
+            case .appIcon: return "Choose your favorite App Icon to display on the home screen."
+            case .appColor: return "Change the primary accent color used throughout Delta."
+            case .pageControlIndicator: return "Configure the symbol used for the Page Control element on the Game selection screen."
+            }
+        }
     }
-    
 }
 
 extension Notification.Name
@@ -210,12 +229,7 @@ extension AppearanceTableViewController
             isSectionHidden(section) == false
         else { return nil }
         
-        switch section
-        {
-        case .appIcon: return "App Icon"
-        case .appColor: return "App Color"
-        case .pageControlIndicator: return "Page Indicator Symbol"
-        }
+        return section.header
     }
     
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String?
@@ -225,12 +239,7 @@ extension AppearanceTableViewController
             isSectionHidden(section) == false
         else { return nil }
         
-        switch section
-        {
-        case .appIcon: return "Choose your favorite App Icon to display on the home screen."
-        case .appColor: return "Change the primary accent color used throughout Delta."
-        case .pageControlIndicator: return "Configure the symbol used for the Page Control element on the Game selection screen."
-        }
+        return section.footer
     }
     
     func isSectionHidden(_ section: Section) -> Bool
