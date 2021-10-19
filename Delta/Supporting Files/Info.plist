@@ -199,6 +199,8 @@
 	<true/>
 	<key>LSSupportsOpeningDocumentsInPlace</key>
 	<false/>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>Uses bluetooth for controllers. </string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Delta uses your microphone to emulate the Nintendo DS microphone.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
