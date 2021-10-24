@@ -2,8 +2,8 @@ CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = NO
 CONFIGURATION_BUILD_DIR = ${PODS_CONFIGURATION_BUILD_DIR}/GBCDeltaCore
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
 HEADER_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/Headers/Private" "${PODS_ROOT}/Headers/Private/GBCDeltaCore" "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/GBCDeltaCore" "${PODS_CONFIGURATION_BUILD_DIR}"
-OTHER_CFLAGS = $(inherited) -fmodule-map-file="${PODS_CONFIGURATION_BUILD_DIR}/DeltaCore/DeltaCore.modulemap" -fmodule-map-file="${PODS_CONFIGURATION_BUILD_DIR}/ZIPFoundation/ZIPFoundation.modulemap" -DHAVE_CSTDINT
-OTHER_SWIFT_FLAGS = $(inherited) -D COCOAPODS -Xcc -fmodule-map-file="${PODS_CONFIGURATION_BUILD_DIR}/DeltaCore/DeltaCore.modulemap" -Xcc -fmodule-map-file="${PODS_CONFIGURATION_BUILD_DIR}/ZIPFoundation/ZIPFoundation.modulemap" -suppress-warnings -import-underlying-module -Xcc -fmodule-map-file="${SRCROOT}/${MODULEMAP_FILE}"
+OTHER_CFLAGS = $(inherited) -fmodule-map-file="${PODS_CONFIGURATION_BUILD_DIR}/DeltaCore/DeltaCore.modulemap" -fmodule-map-file="${PODS_CONFIGURATION_BUILD_DIR}/ZIPFoundation/ZIPFoundation.modulemap" -fmodule-map-file="${PODS_ROOT}/Headers/Public/SteamController/SteamController.modulemap" -DHAVE_CSTDINT
+OTHER_SWIFT_FLAGS = $(inherited) -D COCOAPODS -Xcc -fmodule-map-file="${PODS_CONFIGURATION_BUILD_DIR}/DeltaCore/DeltaCore.modulemap" -Xcc -fmodule-map-file="${PODS_CONFIGURATION_BUILD_DIR}/ZIPFoundation/ZIPFoundation.modulemap" -Xcc -fmodule-map-file="${PODS_ROOT}/Headers/Public/SteamController/SteamController.modulemap" -suppress-warnings -import-underlying-module -Xcc -fmodule-map-file="${SRCROOT}/${MODULEMAP_FILE}"
 PODS_BUILD_DIR = ${BUILD_DIR}
 PODS_CONFIGURATION_BUILD_DIR = ${PODS_BUILD_DIR}/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)
 PODS_ROOT = ${SRCROOT}

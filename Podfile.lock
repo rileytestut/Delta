@@ -3,6 +3,7 @@ PODS:
   - Crashlytics (3.8.6):
     - Fabric (~> 1.6.3)
   - DeltaCore (0.1):
+    - SteamController
     - ZIPFoundation
   - DSDeltaCore (0.1):
     - DeltaCore
@@ -89,7 +90,6 @@ DEPENDENCIES:
   - SMCalloutView (~> 2.1.0)
   - SNESDeltaCore (from `Cores/SNESDeltaCore`)
   - SQLite.swift (~> 0.12.0)
-  - SteamController
 
 SPEC REPOS:
   trunk:
@@ -132,7 +132,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
   Crashlytics: e156f27e43abaa331f9b7afed091bda37e1052cc
-  DeltaCore: 86a78ac8fb0d40190231b5fb64d109f7516de187
+  DeltaCore: 9519a6af84fcd13cf064fda78f5da19cf42cf333
   DSDeltaCore: c113b64288d253fafe350ee23df143c76a11e173
   Fabric: be0459577cee96fe21f68de24588be2dd71482b8
   GBADeltaCore: 55e32d21508ce7383a1b1587e425ccc60620ad66
@@ -154,6 +154,6 @@ SPEC CHECKSUMS:
   SwiftyDropbox: 378b4425a2e8d0cb24c7b0f2e3af72bfbaaf1e73
   ZIPFoundation: b1f0de4eed33e74a676f76e12559ab6b75990197
 
-PODFILE CHECKSUM: 61019292fa56c09d0a334b257b5ca134c8e31354
+PODFILE CHECKSUM: 8b26e270d52714412ffcea0ccfe32a2d456c8354
 
 COCOAPODS: 1.11.2

@@ -5,8 +5,8 @@
         "package": "DeltaCore",
         "repositoryURL": "https://github.com/lbibass/DeltaCore",
         "state": {
-          "branch": "main",
-          "revision": "9c6462589f85e3cce3876e6ad64d1448aed62bfc",
+          "branch": "feature/SteamController",
+          "revision": "4735ed22467ae67877806286f86744647dbebf0e",
           "version": null
         }
       },
