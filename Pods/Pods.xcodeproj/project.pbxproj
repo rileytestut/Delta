@@ -322,6 +322,8 @@
 		2B5131BF26EEA8A47AD569F751C72805 /* pure_interp.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E048CA236FFF78A2B866CA79D9255B1 /* pure_interp.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		2B6C670FF4A9E1AAD2EEAF7F68FCBF69 /* GBCDeltaCore-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = F0441DA5BFC2C801D45C44B0469CD20A /* GBCDeltaCore-dummy.m */; };
 		2BF0055ED89664D8B181734F560009EE /* SPU.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 713D0E7BCA5C03C90F079A4843B7A0BF /* SPU.cpp */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
+		2BF284972725FB4F000913E5 /* SteamController in Frameworks */ = {isa = PBXBuildFile; productRef = 2BF284962725FB4F000913E5 /* SteamController */; };
+		2BF2849E2725FD07000913E5 /* DeltaCore in Frameworks */ = {isa = PBXBuildFile; productRef = 2BF2849D2725FD07000913E5 /* DeltaCore */; };
 		2BF961640A7974F37E8A173B048998BE /* ttunpat.h in Headers */ = {isa = PBXBuildFile; fileRef = 1B0E2F1A46796E056C1EB81517BADB9E /* ttunpat.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		2C4A09453BFCF5C02CCCE186AAC9C980 /* ftlcdfil.h in Headers */ = {isa = PBXBuildFile; fileRef = E66B7B043452B92B922E437CDE08AB94 /* ftlcdfil.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		2C6B45DF36D3BBAE112E67756B68F299 /* clock_backend.h in Headers */ = {isa = PBXBuildFile; fileRef = A901EB72C85D33069EB23CA37C3FD795 /* clock_backend.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -1899,13 +1901,6 @@
 			remoteGlobalIDString = DCBC8D45C727B1472F26E79661AF11B0;
 			remoteInfo = DSDeltaCore;
 		};
-		2BC6CD8C27232BA900E0AFD2 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = D5399A3FF808059CB57A80CFB2943227;
-			remoteInfo = SteamController;
-		};
 		2D1CBBA4FA611320F293614B71B03E76 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
@@ -2010,13 +2005,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = B5D1BA64AC676FF46408FCDE19A05767;
 			remoteInfo = Roxas;
-		};
-		792A0579764E60D9CA9D00400841BCC2 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 1B47E46598F87113B00B3B25BBF51B32;
-			remoteInfo = "DeltaCore-DeltaCore";
 		};
 		7DFBC8516D5E2E51FE3560D2BB44C33F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -4172,6 +4160,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2BF284972725FB4F000913E5 /* SteamController in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4347,6 +4336,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2BF2849E2725FD07000913E5 /* DeltaCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10204,6 +10194,9 @@
 				AE0CAAFB7A5B9D2EEC86938C7F41527E /* PBXTargetDependency */,
 			);
 			name = "Pods-Delta";
+			packageProductDependencies = (
+				2BF284962725FB4F000913E5 /* SteamController */,
+			);
 			productName = "Pods-Delta";
 			productReference = 9CA80A61ABF26FA89F4E22A30284B0DD /* Pods-Delta */;
 			productType = "com.apple.product-type.library.static";
@@ -10276,11 +10269,12 @@
 			buildRules = (
 			);
 			dependencies = (
-				2BC6CD8D27232BA900E0AFD2 /* PBXTargetDependency */,
-				1C3664FC9F1D18C1698BBA1A83D936E0 /* PBXTargetDependency */,
 				500845C225E6B2353B3DCD39D7F46E56 /* PBXTargetDependency */,
 			);
 			name = DeltaCore;
+			packageProductDependencies = (
+				2BF2849D2725FD07000913E5 /* DeltaCore */,
+			);
 			productName = DeltaCore;
 			productReference = F93477FBF1E4488E506F9BB79AF57D38 /* DeltaCore */;
 			productType = "com.apple.product-type.library.static";
@@ -10645,6 +10639,10 @@
 				en,
 			);
 			mainGroup = CF1408CF629C7361332E53B88F7BD30C;
+			packageReferences = (
+				2BF284952725FB4F000913E5 /* XCRemoteSwiftPackageReference "SteamController" */,
+				2BF2849C2725FD07000913E5 /* XCRemoteSwiftPackageReference "DeltaCore" */,
+			);
 			productRefGroup = C6D4684FAF16D56B2D93A0379EF592B2 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -11868,17 +11866,6 @@
 			name = SMCalloutView;
 			target = D20492B6476142DCA0C455340876BB98 /* SMCalloutView */;
 			targetProxy = 264A55DFD823BDDE7F6F1040ABE7CA39 /* PBXContainerItemProxy */;
-		};
-		1C3664FC9F1D18C1698BBA1A83D936E0 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "DeltaCore-DeltaCore";
-			target = 1B47E46598F87113B00B3B25BBF51B32 /* DeltaCore-DeltaCore */;
-			targetProxy = 792A0579764E60D9CA9D00400841BCC2 /* PBXContainerItemProxy */;
-		};
-		2BC6CD8D27232BA900E0AFD2 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = D5399A3FF808059CB57A80CFB2943227 /* SteamController */;
-			targetProxy = 2BC6CD8C27232BA900E0AFD2 /* PBXContainerItemProxy */;
 		};
 		3103E1EF1696D470DA7D4A15BD5DC641 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -13966,6 +13953,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		2BF284952725FB4F000913E5 /* XCRemoteSwiftPackageReference "SteamController" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/zydeco/SteamController";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+		2BF2849C2725FD07000913E5 /* XCRemoteSwiftPackageReference "DeltaCore" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/lbibass/DeltaCore";
+			requirement = {
+				branch = Feature/SteamController;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		2BF284962725FB4F000913E5 /* SteamController */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2BF284952725FB4F000913E5 /* XCRemoteSwiftPackageReference "SteamController" */;
+			productName = SteamController;
+		};
+		2BF2849D2725FD07000913E5 /* DeltaCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2BF2849C2725FD07000913E5 /* XCRemoteSwiftPackageReference "DeltaCore" */;
+			productName = DeltaCore;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		6A6B91DAE5822DF46D8FD987178C88A6 /* Harmony.xcdatamodeld */ = {

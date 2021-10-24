@@ -965,6 +965,7 @@
 			mainGroup = BFFA71CE1AAC406100EE9DD1;
 			packageReferences = (
 				2B7754C9272317520002B92B /* XCRemoteSwiftPackageReference "SteamController" */,
+				2BC14532272603A600FB899B /* XCRemoteSwiftPackageReference "DeltaCore" */,
 			);
 			productRefGroup = BFFA71D81AAC406100EE9DD1 /* Products */;
 			projectDirPath = "";
@@ -1654,6 +1655,14 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 1.0.0;
+			};
+		};
+		2BC14532272603A600FB899B /* XCRemoteSwiftPackageReference "DeltaCore" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/lbibass/DeltaCore";
+			requirement = {
+				branch = feature/SteamController;
+				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

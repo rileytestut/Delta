@@ -3,7 +3,7 @@
     "pins": [
       {
         "package": "DeltaCore",
-        "repositoryURL": "https://github.com/rileytestut/DeltaCore.git",
+        "repositoryURL": "https://github.com/lbibass/DeltaCore",
         "state": {
           "branch": "main",
           "revision": "9c6462589f85e3cce3876e6ad64d1448aed62bfc",
