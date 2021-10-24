@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2BFD8C6D2723234800E7EDB5 /* SteamController in Frameworks */ = {isa = PBXBuildFile; productRef = 2BFD8C6C2723234800E7EDB5 /* SteamController */; };
 		BF08DC0625CDF690007A9CF4 /* Systems.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF08DC0525CDF690007A9CF4 /* Systems.swift */; };
 		BF08DC4B25CE10A7007A9CF4 /* GPGXDeltaCore in Frameworks */ = {isa = PBXBuildFile; productRef = BF08DC4A25CE10A7007A9CF4 /* GPGXDeltaCore */; };
 		BF2EF87625D308F1005EA349 /* GPGXDeltaCore_GPGXDeltaCore.bundle in Resources */ = {isa = PBXBuildFile; fileRef = BF2EF87525D308DD005EA349 /* GPGXDeltaCore_GPGXDeltaCore.bundle */; };
@@ -42,6 +43,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2BFD8C6D2723234800E7EDB5 /* SteamController in Frameworks */,
 				BF6E70B125D210B400E41CD1 /* DeltaCore in Frameworks */,
 				BF08DC4B25CE10A7007A9CF4 /* GPGXDeltaCore in Frameworks */,
 			);
@@ -126,6 +128,7 @@
 			packageProductDependencies = (
 				BF08DC4A25CE10A7007A9CF4 /* GPGXDeltaCore */,
 				BF6E70B025D210B400E41CD1 /* DeltaCore */,
+				2BFD8C6C2723234800E7EDB5 /* SteamController */,
 			);
 			productName = Systems;
 			productReference = BF639C3825CDD88000B53517 /* Systems.framework */;
@@ -154,6 +157,9 @@
 				Base,
 			);
 			mainGroup = BF639C2E25CDD88000B53517;
+			packageReferences = (
+				2BFD8C6B2723234800E7EDB5 /* XCRemoteSwiftPackageReference "SteamController" */,
+			);
 			productRefGroup = BF639C3925CDD88000B53517 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -388,7 +394,23 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		2BFD8C6B2723234800E7EDB5 /* XCRemoteSwiftPackageReference "SteamController" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/zydeco/SteamController";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
+		2BFD8C6C2723234800E7EDB5 /* SteamController */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2BFD8C6B2723234800E7EDB5 /* XCRemoteSwiftPackageReference "SteamController" */;
+			productName = SteamController;
+		};
 		BF08DC4A25CE10A7007A9CF4 /* GPGXDeltaCore */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = GPGXDeltaCore;
