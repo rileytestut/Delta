@@ -103,6 +103,9 @@ extension Input
             let input = MFiGameController.Input(input: self)!
             switch input
             {
+            case.steamBackButton: return NSLocalizedString("Steam Back Button", comment: "")
+            case.steamForwardButton: return NSLocalizedString("Steam Forward Button", comment: "")
+            case.steamSteamButton:return NSLocalizedString("Steam Logo Button", comment: "")
             case .menu: return NSLocalizedString("Menu", comment: "")
             case .options: return NSLocalizedString("Options", comment: "")
             case .home: return NSLocalizedString("Home", comment: "")
