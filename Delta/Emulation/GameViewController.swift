@@ -164,6 +164,8 @@ class GameViewController: DeltaCore.GameViewController
     private var sustainButtonsBackgroundView: RSTPlaceholderView!
     private var inputsToSustain = [AnyInput: Double]()
     
+    private var airplayPlaceholderView: RSTPlaceholderView?
+    
     private var isGyroActive = false
     private var presentedGyroAlert = false
     
@@ -318,6 +320,25 @@ extension GameViewController
         self.sustainButtonsContentView.topAnchor.constraint(equalTo: self.gameView.topAnchor).isActive = true
         self.sustainButtonsContentView.bottomAnchor.constraint(equalTo: self.gameView.bottomAnchor).isActive = true
         
+        // AirPlay Placeholder
+        self.airplayPlaceholderView = RSTPlaceholderView(frame: CGRect(x: 0, y: 0, width: self.gameView.bounds.width, height: self.gameView.bounds.height))
+        self.airplayPlaceholderView?.textLabel.text = NSLocalizedString("AirPlay", comment: "")
+        self.airplayPlaceholderView?.textLabel.numberOfLines = 1
+        self.airplayPlaceholderView?.textLabel.minimumScaleFactor = 0.5
+        self.airplayPlaceholderView?.textLabel.adjustsFontSizeToFitWidth = true
+        self.airplayPlaceholderView?.detailTextLabel.text = NSLocalizedString("This game is playing on a second screen.", comment: "")
+        if let airplayImage = UIImage(symbolNameIfAvailable: "tv") {
+            self.airplayPlaceholderView?.imageView.image = airplayImage
+            self.airplayPlaceholderView?.imageView.isHidden = false
+            self.airplayPlaceholderView?.imageView.tintColor = self.airplayPlaceholderView?.textLabel.textColor
+            self.airplayPlaceholderView?.imageView.translatesAutoresizingMaskIntoConstraints = false
+            self.airplayPlaceholderView?.imageView.heightAnchor.constraint(equalToConstant: airplayImage.size.height * 6).isActive = true
+            self.airplayPlaceholderView?.imageView.widthAnchor.constraint(equalToConstant: airplayImage.size.width * 6).isActive = true
+        }
+        self.airplayPlaceholderView?.isHidden = true
+        self.airplayPlaceholderView?.isUserInteractionEnabled = false
+        self.view.insertSubview(self.airplayPlaceholderView!, aboveSubview: self.gameView)
+        
         self.updateControllers()
         
     }
@@ -342,6 +363,13 @@ extension GameViewController
         coordinator.animate(alongsideTransition: { (context) in
             self.updateControllerSkin()
         }, completion: nil)
+    }
+    
+    override func viewDidLayoutSubviews()
+    {
+        super.viewDidLayoutSubviews()
+        
+        self.airplayPlaceholderView?.frame = self.calculateGameFrame(returnFrame: true) ?? .zero
     }
     
     // MARK: - Segues
@@ -1077,6 +1105,16 @@ extension GameViewController: GameViewControllerDelegate
         }
         
         return result
+    }
+    
+    func gameViewControllerDidEnterAirplay(_ gameViewController: DeltaCore.GameViewController)
+    {
+        self.airplayPlaceholderView?.isHidden = false
+    }
+    
+    func gameViewControllerDidExitAirplay(_ gameViewController: DeltaCore.GameViewController)
+    {
+        self.airplayPlaceholderView?.isHidden = true
     }
 }
 
