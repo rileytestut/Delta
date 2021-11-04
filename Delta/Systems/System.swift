@@ -98,7 +98,7 @@ extension System
 //        case .n64: return N64.core
 //        case .gbc: return GBC.core
 //        case .gba: return GBA.core
-        case .ds: return Settings.preferredCore(for: .ds)!// ?? MelonDS.core
+        case .ds: return GPGX.core // return Settings.preferredCore(for: .ds) ?? MelonDS.core
         case .genesis: return GPGX.core
         }
     }

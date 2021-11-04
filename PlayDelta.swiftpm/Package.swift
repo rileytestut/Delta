@@ -51,7 +51,10 @@ let package = Package(
                 .product(name: "GPGXDeltaCore", package: "gpgxdeltacore"),
                 .product(name: "SQLite", package: "sqlite.swift")
             ],
-            path: "."
+            path: ".",
+            resources: [
+                .process("Resources")
+            ]
         )
     ]
 )

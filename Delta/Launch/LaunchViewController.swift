@@ -55,6 +55,13 @@ class LaunchViewController: RSTLaunchViewController
         
         self.gameViewController = segue.destination as? GameViewController
     }
+    
+    override func viewDidAppear(_ animated: Bool)
+    {
+        super.viewDidAppear(animated)
+        
+        self.view.window?.tintColor = UIColor.deltaPurple
+    }
 }
 
 extension LaunchViewController

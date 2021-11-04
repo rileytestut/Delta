@@ -17,27 +17,20 @@ import Harmony
 
 #if !XCODE_PROJECT
 
-extension NSFetchedResultsController
+extension NSObject
 {
     @objc
     func performFetchIfNeeded() -> Bool
     {
         do
         {
-            if self.sections != nil
+            guard let weakSelf = self as? NSFetchedResultsController<NSManagedObject> else { return false }
+            if weakSelf.sections != nil
             {
                 return false
             }
             
-            var error: NSError?
-            let success = self.perform(#selector(NSFetchedResultsController.performFetch), with: &error)
-            
-            if let error = error
-            {
-                throw error
-            }
-            
-//            try self.performFetch()
+            try weakSelf.performFetch()
         }
         catch
         {

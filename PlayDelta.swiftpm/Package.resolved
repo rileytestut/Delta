@@ -24,7 +24,7 @@
         "repositoryURL": "https://github.com/rileytestut/Harmony.git",
         "state": {
           "branch": "swiftpm",
-          "revision": "2cc65f10f6ad24110b036ccc0787ddc594c73aae",
+          "revision": "9b682db70e2d092a03fabe03e57898f995e97347",
           "version": null
         }
       },
@@ -33,7 +33,7 @@
         "repositoryURL": "https://github.com/rileytestut/Roxas.git",
         "state": {
           "branch": "swiftpm",
-          "revision": "41f4c1d0109a9b4cae59bf90b57dcbb816e6358b",
+          "revision": "6f95c3242b4fa0325dc73b5c5305862ba3535866",
           "version": null
         }
       },
