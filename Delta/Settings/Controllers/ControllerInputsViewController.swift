@@ -11,7 +11,7 @@ import Roxas
 
 import DeltaCore
 
-import SMCalloutView
+//import SMCalloutView
 
 class ControllerInputsViewController: UIViewController
 {
@@ -168,7 +168,7 @@ private extension ControllerInputsViewController
         // Update callouts, if view is already on screen.
         if self.view.window != nil
         {
-            self.calloutViews.forEach { $1.dismissCallout(animated: true) }
+//            self.calloutViews.forEach { $1.dismissCallout(animated: true) }
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                 self.calloutViews = [:]
@@ -258,9 +258,9 @@ private extension ControllerInputsViewController
         for input in mappedInputs
         {
             let calloutView = InputCalloutView()
-            calloutView.delegate = self
-            calloutView.permittedArrowDirection = .any
-            calloutView.constrainedInsets = self.view.safeAreaInsets
+//            calloutView.delegate = self
+//            calloutView.permittedArrowDirection = .any
+//            calloutView.constrainedInsets = self.view.safeAreaInsets
             self.calloutViews[AnyInput(input)] = calloutView
         }
         
@@ -290,7 +290,7 @@ private extension ControllerInputsViewController
         {
             if let presentationRect = self.presentationRect(for: calloutView), calloutView.input != nil
             {
-                calloutView.presentCallout(from: presentationRect, in: self.view, constrainedTo: self.view, animated: true)
+//                calloutView.presentCallout(from: presentationRect, in: self.view, constrainedTo: self.view, animated: true)
             }
         }
     }
@@ -316,7 +316,7 @@ private extension ControllerInputsViewController
                 {
                     // Hide callout views that previously displayed the controller input.
                     calloutView.input = nil
-                    calloutView.dismissCallout(animated: true)
+//                    calloutView.dismissCallout(animated: true)
                 }
             }
         }
@@ -375,13 +375,13 @@ private extension ControllerInputsViewController
             self.activeCalloutView = nil
         }
         
-        calloutView.dismissCallout(animated: true)
+//        calloutView.dismissCallout(animated: true)
         
         if let presentationRect = self.presentationRect(for: calloutView)
         {
             if calloutView.state == .listening || calloutView.input != nil
             {
-                calloutView.presentCallout(from: presentationRect, in: self.view, constrainedTo: self.view, animated: true)
+//                calloutView.presentCallout(from: presentationRect, in: self.view, constrainedTo: self.view, animated: true)
             }
         }
     }
@@ -553,12 +553,12 @@ extension ControllerInputsViewController: GameControllerReceiver
     }
 }
 
-extension ControllerInputsViewController: SMCalloutViewDelegate
-{
-    func calloutViewClicked(_ calloutView: SMCalloutView)
-    {
-        guard let calloutView = calloutView as? InputCalloutView else { return }
-
-        self.toggle(calloutView)
-    }
-}
+//extension ControllerInputsViewController: SMCalloutViewDelegate
+//{
+//    func calloutViewClicked(_ calloutView: SMCalloutView)
+//    {
+//        guard let calloutView = calloutView as? InputCalloutView else { return }
+//
+//        self.toggle(calloutView)
+//    }
+//}

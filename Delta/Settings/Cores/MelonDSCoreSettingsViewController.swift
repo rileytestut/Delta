@@ -12,9 +12,9 @@ import MobileCoreServices
 import CryptoKit
 
 import DeltaCore
-import MelonDSDeltaCore
-
-import struct DSDeltaCore.DS
+//import MelonDSDeltaCore
+//
+//import struct DSDeltaCore.DS
 
 import Roxas
 
@@ -149,14 +149,14 @@ private extension MelonDSCoreSettingsViewController
         
         switch section
         {
-        case .dsBIOS where Settings.preferredCore(for: .ds) == DS.core:
-            // Using DeSmuME core, which doesn't require BIOS.
-            return true
-        
-        case .dsiBIOS where Settings.preferredCore(for: .ds) == DS.core || !isBeta:
-            // Using DeSmuME core, which doesn't require BIOS,
-            // or using public Delta version, which doesn't support DSi (yet).
-            return true
+//        case .dsBIOS where Settings.preferredCore(for: .ds) == DS.core:
+//            // Using DeSmuME core, which doesn't require BIOS.
+//            return true
+//
+//        case .dsiBIOS where Settings.preferredCore(for: .ds) == DS.core || !isBeta:
+//            // Using DeSmuME core, which doesn't require BIOS,
+//            // or using public Delta version, which doesn't support DSi (yet).
+//            return true
             
         case .changeCore where !isBeta:
             // Using public Delta version, which only supports melonDS core.
@@ -172,17 +172,17 @@ private extension MelonDSCoreSettingsViewController
     func openMetadataURL(for key: DeltaCoreMetadata.Key)
     {
         guard let metadata = Settings.preferredCore(for: .ds)?.metadata else { return }
-        
+
         let item = metadata[key]
         guard let url = item?.url else {
             if let indexPath = self.tableView.indexPathForSelectedRow
             {
                 self.tableView.deselectRow(at: indexPath, animated: true)
             }
-            
+
             return
         }
-        
+
         let safariViewController = SFSafariViewController(url: url)
         safariViewController.preferredControlTintColor = .deltaPurple
         self.present(safariViewController, animated: true, completion: nil)
@@ -220,36 +220,36 @@ private extension MelonDSCoreSettingsViewController
     
     func changeCore()
     {
-        let alertController = UIAlertController(title: NSLocalizedString("Change Emulator Core", comment: ""), message: NSLocalizedString("Save states are not compatible between different emulator cores. Make sure to use in-game saves in order to keep using your save data.\n\nYour existing save states will not be deleted and will be available whenever you switch cores again.", comment: ""), preferredStyle: .actionSheet)
-        
-        var desmumeActionTitle = DS.core.metadata?.name.value ?? DS.core.name
-        var melonDSActionTitle = MelonDS.core.metadata?.name.value ?? MelonDS.core.name
-        
-        if Settings.preferredCore(for: .ds) == DS.core
-        {
-            desmumeActionTitle += " ✓"
-        }
-        else
-        {
-            melonDSActionTitle += " ✓"
-        }
-        
-        alertController.addAction(UIAlertAction(title: desmumeActionTitle, style: .default, handler: { (action) in
-            Settings.setPreferredCore(DS.core, for: .ds)
-            self.tableView.reloadData()
-        }))
-        
-        alertController.addAction(UIAlertAction(title: melonDSActionTitle, style: .default, handler: { (action) in
-            Settings.setPreferredCore(MelonDS.core, for: .ds)
-            self.tableView.reloadData()
-        }))
-        alertController.addAction(.cancel)
-        self.present(alertController, animated: true, completion: nil)
-        
-        if let indexPath = self.tableView.indexPathForSelectedRow
-        {
-            self.tableView.deselectRow(at: indexPath, animated: true)
-        }
+//        let alertController = UIAlertController(title: NSLocalizedString("Change Emulator Core", comment: ""), message: NSLocalizedString("Save states are not compatible between different emulator cores. Make sure to use in-game saves in order to keep using your save data.\n\nYour existing save states will not be deleted and will be available whenever you switch cores again.", comment: ""), preferredStyle: .actionSheet)
+//
+//        var desmumeActionTitle = DS.core.metadata?.name.value ?? DS.core.name
+//        var melonDSActionTitle = MelonDS.core.metadata?.name.value ?? MelonDS.core.name
+//
+//        if Settings.preferredCore(for: .ds) == DS.core
+//        {
+//            desmumeActionTitle += " ✓"
+//        }
+//        else
+//        {
+//            melonDSActionTitle += " ✓"
+//        }
+//
+//        alertController.addAction(UIAlertAction(title: desmumeActionTitle, style: .default, handler: { (action) in
+//            Settings.setPreferredCore(DS.core, for: .ds)
+//            self.tableView.reloadData()
+//        }))
+//
+//        alertController.addAction(UIAlertAction(title: melonDSActionTitle, style: .default, handler: { (action) in
+//            Settings.setPreferredCore(MelonDS.core, for: .ds)
+//            self.tableView.reloadData()
+//        }))
+//        alertController.addAction(.cancel)
+//        self.present(alertController, animated: true, completion: nil)
+//
+//        if let indexPath = self.tableView.indexPathForSelectedRow
+//        {
+//            self.tableView.deselectRow(at: indexPath, animated: true)
+//        }
     }
     
     @objc func willEnterForeground(_ notification: Notification)

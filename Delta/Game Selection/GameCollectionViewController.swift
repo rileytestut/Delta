@@ -11,12 +11,12 @@ import MobileCoreServices
 import AVFoundation
 
 import DeltaCore
-import MelonDSDeltaCore
+//import MelonDSDeltaCore
 
 import Roxas
 import Harmony
 
-import SDWebImage
+//import SDWebImage
 
 extension GameCollectionViewController
 {
@@ -167,21 +167,21 @@ extension GameCollectionViewController
             
             destinationViewController.game = game
             
-            if let emulatorBridge = destinationViewController.emulatorCore?.deltaCore.emulatorBridge as? MelonDSEmulatorBridge
-            {
-                //TODO: Update this to work with multiple processes by retrieving emulatorBridge directly from emulatorCore.
-                
-                if game.identifier == Game.melonDSDSiBIOSIdentifier
-                {
-                    emulatorBridge.systemType = .dsi
-                }
-                else
-                {
-                    emulatorBridge.systemType = .ds
-                }
-                
-                emulatorBridge.isJITEnabled = UIDevice.current.supportsJIT
-            }
+//            if let emulatorBridge = destinationViewController.emulatorCore?.deltaCore.emulatorBridge as? MelonDSEmulatorBridge
+//            {
+//                //TODO: Update this to work with multiple processes by retrieving emulatorBridge directly from emulatorCore.
+//
+//                if game.identifier == Game.melonDSDSiBIOSIdentifier
+//                {
+//                    emulatorBridge.systemType = .dsi
+//                }
+//                else
+//                {
+//                    emulatorBridge.systemType = .ds
+//                }
+//
+//                emulatorBridge.isJITEnabled = UIDevice.current.supportsJIT
+//            }
             
             if let saveState = self.activeSaveState
             {
@@ -409,26 +409,26 @@ private extension GameCollectionViewController
             }
         }
         
-        if game.type == .ds && Settings.preferredCore(for: .ds) == MelonDS.core
-        {
-            if game.identifier == Game.melonDSDSiBIOSIdentifier
-            {
-                guard
-                    FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.dsiBIOS7URL.path) &&
-                    FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.dsiBIOS9URL.path) &&
-                    FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.dsiFirmwareURL.path) &&
-                    FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.dsiNANDURL.path)
-                else { throw LaunchError.biosNotFound }
-            }
-            else
-            {
-                guard
-                    FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.bios7URL.path) &&
-                    FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.bios9URL.path) &&
-                    FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.firmwareURL.path)
-                else { throw LaunchError.biosNotFound }
-            }
-        }
+//        if game.type == .ds && Settings.preferredCore(for: .ds) == MelonDS.core
+//        {
+//            if game.identifier == Game.melonDSDSiBIOSIdentifier
+//            {
+//                guard
+//                    FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.dsiBIOS7URL.path) &&
+//                    FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.dsiBIOS9URL.path) &&
+//                    FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.dsiFirmwareURL.path) &&
+//                    FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.dsiNANDURL.path)
+//                else { throw LaunchError.biosNotFound }
+//            }
+//            else
+//            {
+//                guard
+//                    FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.bios7URL.path) &&
+//                    FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.bios9URL.path) &&
+//                    FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.firmwareURL.path)
+//                else { throw LaunchError.biosNotFound }
+//            }
+//        }
     }
 }
 
@@ -610,11 +610,11 @@ private extension GameCollectionViewController
         {
             self.dataSource.prefetchItemCache.removeObject(forKey: game)
             
-            if let cacheManager = SDWebImageManager.shared()
-            {
-                let cacheKey = cacheManager.cacheKey(for: imageURL)
-                cacheManager.imageCache.removeImage(forKey: cacheKey)
-            }
+//            if let cacheManager = SDWebImageManager.shared()
+//            {
+//                let cacheKey = cacheManager.cacheKey(for: imageURL)
+//                cacheManager.imageCache.removeImage(forKey: cacheKey)
+//            }
             
             DatabaseManager.shared.performBackgroundTask { (context) in
                 let temporaryGame = context.object(with: game.objectID) as! Game
@@ -830,21 +830,21 @@ extension GameCollectionViewController: UIViewControllerPreviewingDelegate
             gameViewController.previewImage = UIImage(contentsOfFile: previewSaveState.imageFileURL.path)
         }
         
-        if let emulatorBridge = gameViewController.emulatorCore?.deltaCore.emulatorBridge as? MelonDSEmulatorBridge
-        {
-            //TODO: Update this to work with multiple processes by retrieving emulatorBridge directly from emulatorCore.
-
-            if game.identifier == Game.melonDSDSiBIOSIdentifier
-            {
-                emulatorBridge.systemType = .dsi
-            }
-            else
-            {
-                emulatorBridge.systemType = .ds
-            }
-
-            emulatorBridge.isJITEnabled = UIDevice.current.supportsJIT
-        }
+//        if let emulatorBridge = gameViewController.emulatorCore?.deltaCore.emulatorBridge as? MelonDSEmulatorBridge
+//        {
+//            //TODO: Update this to work with multiple processes by retrieving emulatorBridge directly from emulatorCore.
+//
+//            if game.identifier == Game.melonDSDSiBIOSIdentifier
+//            {
+//                emulatorBridge.systemType = .dsi
+//            }
+//            else
+//            {
+//                emulatorBridge.systemType = .ds
+//            }
+//
+//            emulatorBridge.isJITEnabled = UIDevice.current.supportsJIT
+//        }
         
         let actions = self.actions(for: game).previewActions
         gameViewController.overridePreviewActionItems = actions

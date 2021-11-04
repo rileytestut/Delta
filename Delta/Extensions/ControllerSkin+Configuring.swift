@@ -7,8 +7,42 @@
 //
 
 import UIKit
+import CoreData
 
 import DeltaCore
+
+//typedef NS_OPTIONS(int16_t, ControllerSkinConfigurations)
+//{
+//    ControllerSkinConfigurationStandardPortrait   = 1 << 0,
+//    ControllerSkinConfigurationStandardLandscape  = 1 << 1,
+//
+//    ControllerSkinConfigurationSplitViewPortrait    = 1 << 2,
+//    ControllerSkinConfigurationSplitViewLandscape   = 1 << 3,
+//
+//    ControllerSkinConfigurationEdgeToEdgePortrait    = 1 << 4,
+//    ControllerSkinConfigurationEdgeToEdgeLandscape   = 1 << 5,
+//};
+
+#if !XCODE_PROJECT
+public struct ControllerSkinConfigurations: OptionSet
+{
+    public var rawValue: Int16
+    
+    public init(rawValue: Int16)
+    {
+        self.rawValue = rawValue
+    }
+    
+    public static let standardPortrait = ControllerSkinConfigurations(rawValue: 1 << 0)
+    public static let standardLandscape = ControllerSkinConfigurations(rawValue: 1 << 1)
+    
+    public static let splitViewPortrait = ControllerSkinConfigurations(rawValue: 1 << 2)
+    public static let splitViewLandscape = ControllerSkinConfigurations(rawValue: 1 << 3)
+    
+    public static let edgeToEdgePortrait = ControllerSkinConfigurations(rawValue: 1 << 4)
+    public static let edgeToEdgeLandscape = ControllerSkinConfigurations(rawValue: 1 << 5)
+}
+#endif
 
 extension ControllerSkin
 {

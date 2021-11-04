@@ -119,14 +119,14 @@ private extension ControllerSkinsViewController
             // Allow selecting skins that only support standard display types as well.
             fetchRequest.predicate = NSPredicate(format: "%K == %@ AND ((%K & %d) != 0 OR (%K & %d) != 0)",
                                                  #keyPath(ControllerSkin.gameType), system.gameType.rawValue,
-                                                 #keyPath(ControllerSkin.supportedConfigurations), configuration.rawValue,
-                                                 #keyPath(ControllerSkin.supportedConfigurations), fallbackConfiguration.rawValue)
+                                                 #keyPath(ControllerSkin._supportedConfigurations), configuration.rawValue,
+                                                 #keyPath(ControllerSkin._supportedConfigurations), fallbackConfiguration.rawValue)
         }
         else
         {
             fetchRequest.predicate = NSPredicate(format: "%K == %@ AND (%K & %d) != 0",
                                                  #keyPath(ControllerSkin.gameType), system.gameType.rawValue,
-                                                 #keyPath(ControllerSkin.supportedConfigurations), configuration.rawValue)
+                                                 #keyPath(ControllerSkin._supportedConfigurations), configuration.rawValue)
         }
         
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(ControllerSkin.isStandard), ascending: false), NSSortDescriptor(key: #keyPath(ControllerSkin.name), ascending: true)]

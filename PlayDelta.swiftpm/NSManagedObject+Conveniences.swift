@@ -1,0 +1,1 @@
+../Delta/Extensions/NSManagedObject+Conveniences.swift

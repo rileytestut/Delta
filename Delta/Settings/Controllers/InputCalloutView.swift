@@ -6,7 +6,9 @@
 //  Copyright © 2017 Riley Testut. All rights reserved.
 //
 
-import SMCalloutView
+//import SMCalloutView
+
+import UIKit
 
 import DeltaCore
 
@@ -19,7 +21,7 @@ extension InputCalloutView
     }
 }
 
-class InputCalloutView: SMCalloutView
+class InputCalloutView: UIView
 {
     var input: Input? {
         didSet {
@@ -43,7 +45,7 @@ class InputCalloutView: SMCalloutView
         
         super.init(frame: CGRect.zero)
         
-        self.titleView = self.textLabel
+//        self.titleView = self.textLabel
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -62,23 +64,23 @@ private extension InputCalloutView
 {
     func updateState()
     {
-        switch self.state
-        {
-        case .normal: self.textLabel.text = self.input?.localizedName
-        case .listening: self.textLabel.text = NSLocalizedString("Press Button", comment: "")
-        }
-        
-        self.updateTintColor()
-        
-        self.textLabel.sizeToFit()
+//        switch self.state
+//        {
+//        case .normal: self.textLabel.text = self.input?.localizedName
+//        case .listening: self.textLabel.text = NSLocalizedString("Press Button", comment: "")
+//        }
+//
+//        self.updateTintColor()
+//
+//        self.textLabel.sizeToFit()
     }
     
     func updateTintColor()
     {
-        switch self.state
-        {
-        case .normal: self.textLabel.textColor = self.tintColor
-        case .listening: self.textLabel.textColor = .red
-        }
+//        switch self.state
+//        {
+//        case .normal: self.textLabel.textColor = self.tintColor
+//        case .listening: self.textLabel.textColor = .red
+//        }
     }
 }

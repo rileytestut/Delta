@@ -24,7 +24,12 @@ public class _ControllerSkin: NSManagedObject
 
     @NSManaged public var name: String
 
-    @NSManaged public var supportedConfigurations: ControllerSkinConfigurations
+    @nonobjc public var supportedConfigurations: ControllerSkinConfigurations {
+        get { return ControllerSkinConfigurations(rawValue: self._supportedConfigurations) }
+        set { self._supportedConfigurations = newValue.rawValue }
+    }
+    @NSManaged @objc(supportedConfigurations)
+    var _supportedConfigurations: Int16
 
     // MARK: - Relationships
 

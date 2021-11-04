@@ -1,0 +1,1 @@
+../Delta/Settings/LicensesViewController.swift

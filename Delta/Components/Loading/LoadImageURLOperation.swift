@@ -9,7 +9,7 @@
 import UIKit
 import ImageIO
 
-import SDWebImage
+//import SDWebImage
 
 import Roxas
 
@@ -31,7 +31,7 @@ class LoadImageURLOperation: RSTLoadOperation<UIImage, NSURL>
         return !self.url.isFileURL
     }
     
-    private var downloadOperation: SDWebImageOperation?
+//    private var downloadOperation: SDWebImageOperation?
     
     init(url: URL)
     {
@@ -44,7 +44,7 @@ class LoadImageURLOperation: RSTLoadOperation<UIImage, NSURL>
     {
         super.cancel()
         
-        self.downloadOperation?.cancel()
+//        self.downloadOperation?.cancel()
         
         if self.isAsynchronous
         {
@@ -95,17 +95,18 @@ class LoadImageURLOperation: RSTLoadOperation<UIImage, NSURL>
     
     private func loadRemoteImage(completion: @escaping (UIImage?, Error?) -> Void)
     {
-        let manager = SDWebImageManager.shared()
-        
-        self.downloadOperation = manager?.downloadImage(with: self.url, options: [.retryFailed, .continueInBackground], progress: nil, completed: { (image, error, cacheType, finished, imageURL) in
-            if let error = error
-            {
-                completion(nil, .downloadFailed(error))
-            }
-            else
-            {
-                completion(image, nil)
-            }
-        })
+        completion(nil, .downloadFailed(CocoaError(.fileNoSuchFile)))
+//        let manager = SDWebImageManager.shared()
+//
+//        self.downloadOperation = manager?.downloadImage(with: self.url, options: [.retryFailed, .continueInBackground], progress: nil, completed: { (image, error, cacheType, finished, imageURL) in
+//            if let error = error
+//            {
+//                completion(nil, .downloadFailed(error))
+//            }
+//            else
+//            {
+//                completion(image, nil)
+//            }
+//        })
     }
 }

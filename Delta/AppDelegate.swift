@@ -9,10 +9,10 @@
 import UIKit
 
 import DeltaCore
-import Harmony
+//import Harmony
 
-import Fabric
-import Crashlytics
+//import Fabric
+//import Crashlytics
 
 private extension CFNotificationName
 {
@@ -26,7 +26,11 @@ private let ReceivedApplicationState: @convention(c) (CFNotificationCenter?, Uns
     appDelegate.receivedApplicationStateRequest()
 }
 
-@UIApplicationMain
+#if XCODE_PROJECT
+@main
+extension AppDelegate {}
+#endif
+
 class AppDelegate: UIResponder, UIApplicationDelegate
 {
     var window: UIWindow?
@@ -40,23 +44,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         
         self.registerCores()
         
-        #if DEBUG
-        
-        // Must go AFTER registering cores, or else NESDeltaCore may not work correctly when not connected to debugger 🤷‍♂️
-        Fabric.with([Crashlytics.self])
-        
-        #else
-        
-        // Fabric doesn't allow us to change what value it uses for the bundle identifier.
-        // Normally this wouldn't be an issue, except AltStore creates a unique bundle identifier per user.
-        // Rather than have every copy of Delta be listed separately in Fabric, we temporarily swizzle Bundle.infoDictionary
-        // to return a constant identifier while Fabric is starting up. This way, Fabric will now group
-        // all copies of Delta under the bundle identifier "com.rileytestut.Delta.AltStore".
-        Bundle.swizzleBundleID {
-            Fabric.with([Crashlytics.self])
-        }
-        
-        #endif
+//        #if DEBUG
+//
+//        // Must go AFTER registering cores, or else NESDeltaCore may not work correctly when not connected to debugger 🤷‍♂️
+//        Fabric.with([Crashlytics.self])
+//
+//        #else
+//
+//        // Fabric doesn't allow us to change what value it uses for the bundle identifier.
+//        // Normally this wouldn't be an issue, except AltStore creates a unique bundle identifier per user.
+//        // Rather than have every copy of Delta be listed separately in Fabric, we temporarily swizzle Bundle.infoDictionary
+//        // to return a constant identifier while Fabric is starting up. This way, Fabric will now group
+//        // all copies of Delta under the bundle identifier "com.rileytestut.Delta.AltStore".
+//        Bundle.swizzleBundleID {
+//            Fabric.with([Crashlytics.self])
+//        }
+//
+//        #endif
         
         self.configureAppearance()
         
@@ -114,24 +118,24 @@ private extension AppDelegate
 {
     func registerCores()
     {
-        #if LITE
-        
-        #if BETA
-        Delta.register(System.nes.deltaCore)
-        Delta.register(System.gbc.deltaCore)
-        #else
-        Delta.register(System.nes.deltaCore)
-        #endif
-        
-        #else
-        
-        #if BETA
-        System.allCases.forEach { Delta.register($0.deltaCore) }
-        #else
-        System.allCases.filter { $0 != .genesis }.forEach { Delta.register($0.deltaCore) }
-        #endif
-        
-        #endif
+//        #if LITE
+//
+//        #if BETA
+//        Delta.register(System.nes.deltaCore)
+//        Delta.register(System.gbc.deltaCore)
+//        #else
+//        Delta.register(System.nes.deltaCore)
+//        #endif
+//
+//        #else
+//
+//        #if BETA
+//        System.allCases.forEach { Delta.register($0.deltaCore) }
+//        #else
+//        System.allCases.filter { $0 != .genesis }.forEach { Delta.register($0.deltaCore) }
+//        #endif
+//
+//        #endif
     }
     
     func configureAppearance()
@@ -160,10 +164,10 @@ extension AppDelegate
                 return self.importControllerSkin(at: url)
             }
         }
-        else if url.scheme?.hasPrefix("db-") == true
-        {
-            return DropboxService.shared.handleDropboxURL(url)
-        }
+//        else if url.scheme?.hasPrefix("db-") == true
+//        {
+//            return DropboxService.shared.handleDropboxURL(url)
+//        }
         else if url.scheme?.lowercased() == "delta"
         {
             return self.deepLinkController.handle(.url(url))

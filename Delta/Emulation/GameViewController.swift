@@ -9,10 +9,10 @@
 import UIKit
 
 import DeltaCore
-import GBADeltaCore
-import Systems
-
-import struct DSDeltaCore.DS
+//import GBADeltaCore
+//import Systems
+//
+//import struct DSDeltaCore.DS
 
 import Roxas
 
@@ -201,8 +201,8 @@ class GameViewController: DeltaCore.GameViewController
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.settingsDidChange(with:)), name: .settingsDidChange, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.deepLinkControllerLaunchGame(with:)), name: .deepLinkControllerLaunchGame, object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.didActivateGyro(with:)), name: GBA.didActivateGyroNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.didDeactivateGyro(with:)), name: GBA.didDeactivateGyroNotification, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.didActivateGyro(with:)), name: GBA.didActivateGyroNotification, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.didDeactivateGyro(with:)), name: GBA.didDeactivateGyroNotification, object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.emulationDidQuit(with:)), name: EmulatorCore.emulationDidQuitNotification, object: nil)
     }
@@ -323,13 +323,13 @@ extension GameViewController
     {
         super.viewDidAppear(animated)
         
-        if self.emulatorCore?.deltaCore == DS.core, UserDefaults.standard.desmumeDeprecatedAlertCount < 3
-        {
-            let toastView = RSTToastView(text: NSLocalizedString("DeSmuME Core Deprecated", comment: ""), detailText: NSLocalizedString("Switch to the melonDS core in Settings for latest improvements.", comment: ""))
-            self.show(toastView, duration: 5.0)
-            
-            UserDefaults.standard.desmumeDeprecatedAlertCount += 1
-        }
+//        if self.emulatorCore?.deltaCore == DS.core, UserDefaults.standard.desmumeDeprecatedAlertCount < 3
+//        {
+//            let toastView = RSTToastView(text: NSLocalizedString("DeSmuME Core Deprecated", comment: ""), detailText: NSLocalizedString("Switch to the melonDS core in Settings for latest improvements.", comment: ""))
+//            self.show(toastView, duration: 5.0)
+//            
+//            UserDefaults.standard.desmumeDeprecatedAlertCount += 1
+//        }
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator)
@@ -417,9 +417,9 @@ extension GameViewController
             
             switch self.game?.type
             {
-            case .ds? where self.emulatorCore?.deltaCore == DS.core:
-                // Cheats are not supported by DeSmuME core.
-                pauseViewController.cheatCodesItem = nil
+//            case .ds? where self.emulatorCore?.deltaCore == DS.core:
+//                // Cheats are not supported by DeSmuME core.
+//                pauseViewController.cheatCodesItem = nil
                 
             case .genesis?:
                 // GPGX core does not support cheats yet.

@@ -6,6 +6,9 @@
 //  Copyright © 2018 Riley Testut. All rights reserved.
 //
 
+import UIKit
+import CoreData
+
 import Harmony
 
 private extension UserDefaults
@@ -53,11 +56,12 @@ extension SyncManager
         }
         
         var service: Harmony.Service {
-            switch self
-            {
-            case .googleDrive: return DriveService.shared
-            case .dropbox: return DropboxService.shared
-            }
+//            switch self
+//            {
+//            case .googleDrive: return DriveService.shared
+//            case .dropbox: return DropboxService.shared
+//            }
+            fatalError()
         }
     }
     
@@ -103,10 +107,10 @@ final class SyncManager
     
     private init()
     {
-        DriveService.shared.clientID = "457607414709-7oc45nq59frd7rre6okq22fafftd55g1.apps.googleusercontent.com"
-        
-        DropboxService.shared.clientID = "f5btgysf9ma9bb6"
-        DropboxService.shared.preferredDirectoryName = "Delta Emulator"
+//        DriveService.shared.clientID = "457607414709-7oc45nq59frd7rre6okq22fafftd55g1.apps.googleusercontent.com"
+//
+//        DropboxService.shared.clientID = "f5btgysf9ma9bb6"
+//        DropboxService.shared.preferredDirectoryName = "Delta Emulator"
         
         NotificationCenter.default.addObserver(self, selector: #selector(SyncManager.syncingDidFinish(_:)), name: SyncCoordinator.didFinishSyncingNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(SyncManager.didEnterBackground(_:)), name: UIApplication.didEnterBackgroundNotification, object: nil)

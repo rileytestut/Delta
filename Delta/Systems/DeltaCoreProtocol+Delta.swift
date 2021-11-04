@@ -8,17 +8,23 @@
 
 import DeltaCore
 
-import NESDeltaCore
-import SNESDeltaCore
-import GBCDeltaCore
-import GBADeltaCore
-import N64DeltaCore
-import MelonDSDeltaCore
+//import NESDeltaCore
+//import SNESDeltaCore
+//import GBCDeltaCore
+//import GBADeltaCore
+//import N64DeltaCore
+//import MelonDSDeltaCore
 
+//import Systems
+//
+//// Legacy Cores
+//import struct DSDeltaCore.DS
+
+#if XCODE_PROJECT
 import Systems
-
-// Legacy Cores
-import struct DSDeltaCore.DS
+#else
+import GPGXDeltaCore
+#endif
 
 @dynamicMemberLookup
 struct DeltaCoreMetadata
@@ -68,12 +74,12 @@ extension DeltaCoreProtocol
     private var maximumFastForwardSpeed: Double {
         switch self
         {
-        case NES.core, SNES.core, GBC.core: return 4
-        case GBA.core: return 3
-        case N64.core where UIDevice.current.hasA11ProcessorOrBetter: return 3
-        case N64.core where UIDevice.current.hasA9ProcessorOrBetter: return 1.5
-        case MelonDS.core where UIDevice.current.supportsJIT: return 3
-        case MelonDS.core where UIDevice.current.hasA11ProcessorOrBetter: return 1.5
+//        case NES.core, SNES.core, GBC.core: return 4
+//        case GBA.core: return 3
+//        case N64.core where UIDevice.current.hasA11ProcessorOrBetter: return 3
+//        case N64.core where UIDevice.current.hasA9ProcessorOrBetter: return 1.5
+//        case MelonDS.core where UIDevice.current.supportsJIT: return 3
+//        case MelonDS.core where UIDevice.current.hasA11ProcessorOrBetter: return 1.5
         case GPGX.core: return 4
         default: return 1
         }
@@ -82,16 +88,16 @@ extension DeltaCoreProtocol
     var metadata: DeltaCoreMetadata? {
         switch self
         {
-        case DS.core:
-            return DeltaCoreMetadata([.name: .init(value: NSLocalizedString("DeSmuME (Legacy)", comment: ""), url: URL(string: "http://desmume.org")),
-                                      .developer: .init(value: NSLocalizedString("DeSmuME team", comment: ""), url: URL(string: "https://wiki.desmume.org/index.php?title=DeSmuME:About")),
-                                      .source: .init(value: NSLocalizedString("GitHub", comment: ""), url: URL(string: "https://github.com/TASVideos/desmume"))])
-            
-        case MelonDS.core:
-            return DeltaCoreMetadata([.name: .init(value: NSLocalizedString("melonDS", comment: ""), url: URL(string: "http://melonds.kuribo64.net")),
-                                      .developer: .init(value: NSLocalizedString("Arisotura", comment: ""), url: URL(string: "https://twitter.com/Arisotura")),
-                                      .source: .init(value: NSLocalizedString("GitHub", comment: ""), url: URL(string: "https://github.com/Arisotura/melonDS")),
-                                      .donate: .init(value: NSLocalizedString("Patreon", comment: ""), url: URL(string: "https://www.patreon.com/staplebutter"))])
+//        case DS.core:
+//            return DeltaCoreMetadata([.name: .init(value: NSLocalizedString("DeSmuME (Legacy)", comment: ""), url: URL(string: "http://desmume.org")),
+//                                      .developer: .init(value: NSLocalizedString("DeSmuME team", comment: ""), url: URL(string: "https://wiki.desmume.org/index.php?title=DeSmuME:About")),
+//                                      .source: .init(value: NSLocalizedString("GitHub", comment: ""), url: URL(string: "https://github.com/TASVideos/desmume"))])
+//            
+//        case MelonDS.core:
+//            return DeltaCoreMetadata([.name: .init(value: NSLocalizedString("melonDS", comment: ""), url: URL(string: "http://melonds.kuribo64.net")),
+//                                      .developer: .init(value: NSLocalizedString("Arisotura", comment: ""), url: URL(string: "https://twitter.com/Arisotura")),
+//                                      .source: .init(value: NSLocalizedString("GitHub", comment: ""), url: URL(string: "https://github.com/Arisotura/melonDS")),
+//                                      .donate: .init(value: NSLocalizedString("Patreon", comment: ""), url: URL(string: "https://www.patreon.com/staplebutter"))])
             
         default: return nil
         }

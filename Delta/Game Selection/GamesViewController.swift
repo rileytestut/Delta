@@ -15,6 +15,41 @@ import DeltaCore
 import Roxas
 import Harmony
 
+#if !XCODE_PROJECT
+
+extension NSFetchedResultsController
+{
+    @objc
+    func performFetchIfNeeded() -> Bool
+    {
+        do
+        {
+            if self.sections != nil
+            {
+                return false
+            }
+            
+            var error: NSError?
+            let success = self.perform(#selector(NSFetchedResultsController.performFetch), with: &error)
+            
+            if let error = error
+            {
+                throw error
+            }
+            
+//            try self.performFetch()
+        }
+        catch
+        {
+            print("Failed to fetch:", error)
+        }
+        
+        return true
+    }
+}
+
+#endif
+
 class GamesViewController: UIViewController
 {
     var theme: Theme = .opaque {

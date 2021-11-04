@@ -1,0 +1,61 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "DeltaCore",
+        "repositoryURL": "https://github.com/rileytestut/DeltaCore.git",
+        "state": {
+          "branch": "main",
+          "revision": "9c6462589f85e3cce3876e6ad64d1448aed62bfc",
+          "version": null
+        }
+      },
+      {
+        "package": "GPGXDeltaCore",
+        "repositoryURL": "https://github.com/rileytestut/GPGXDeltaCore.git",
+        "state": {
+          "branch": "main",
+          "revision": "ad4ba365acf1800d372ebfaa98df86b9c1b23dce",
+          "version": null
+        }
+      },
+      {
+        "package": "Harmony",
+        "repositoryURL": "https://github.com/rileytestut/Harmony.git",
+        "state": {
+          "branch": "swiftpm",
+          "revision": "2cc65f10f6ad24110b036ccc0787ddc594c73aae",
+          "version": null
+        }
+      },
+      {
+        "package": "Roxas",
+        "repositoryURL": "https://github.com/rileytestut/Roxas.git",
+        "state": {
+          "branch": "swiftpm",
+          "revision": "41f4c1d0109a9b4cae59bf90b57dcbb816e6358b",
+          "version": null
+        }
+      },
+      {
+        "package": "SQLite.swift",
+        "repositoryURL": "https://github.com/stephencelis/SQLite.swift.git",
+        "state": {
+          "branch": null,
+          "revision": "9af51e2edf491c0ea632e369a6566e09b65aa333",
+          "version": "0.13.0"
+        }
+      },
+      {
+        "package": "ZIPFoundation",
+        "repositoryURL": "https://github.com/weichsel/ZIPFoundation.git",
+        "state": {
+          "branch": null,
+          "revision": "cf10bbff6ac3b873e97b36b9784c79866a051a8e",
+          "version": "0.9.12"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

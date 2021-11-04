@@ -6,7 +6,7 @@
 //  Copyright (c) 2016 Riley Testut. All rights reserved.
 //
 
-import Foundation
+import CoreData
 
 import DeltaCore
 import Harmony
