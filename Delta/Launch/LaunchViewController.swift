@@ -60,7 +60,32 @@ class LaunchViewController: RSTLaunchViewController
     {
         super.viewDidAppear(animated)
         
+        #if !XCODE_PROJECT
+        self.view.backgroundColor = .black
         self.view.window?.tintColor = UIColor.deltaPurple
+        
+        if let parentViewController = self.parent
+        {
+            parentViewController.view.backgroundColor = .black
+        }
+        #endif
+    }
+    
+    override func viewDidLayoutSubviews()
+    {
+        super.viewDidLayoutSubviews()
+        
+        #if !XCODE_PROJECT
+        if let parentViewController = self.parent, let safeAreaInsets = self.view.window?.safeAreaInsets
+        {
+            parentViewController.additionalSafeAreaInsets.top = -safeAreaInsets.top
+            parentViewController.additionalSafeAreaInsets.bottom = -safeAreaInsets.bottom
+            parentViewController.additionalSafeAreaInsets.left = -safeAreaInsets.left
+            parentViewController.additionalSafeAreaInsets.right = -safeAreaInsets.right
+            
+            self.additionalSafeAreaInsets = safeAreaInsets
+        }
+        #endif
     }
 }
 

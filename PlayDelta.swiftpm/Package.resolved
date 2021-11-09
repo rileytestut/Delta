@@ -11,6 +11,15 @@
         }
       },
       {
+        "package": "GBADeltaCore",
+        "repositoryURL": "https://github.com/rileytestut/GBADeltaCore.git",
+        "state": {
+          "branch": "swiftpm",
+          "revision": "d067244e278132bf8bb213f03b158d7b930c06bc",
+          "version": null
+        }
+      },
+      {
         "package": "GPGXDeltaCore",
         "repositoryURL": "https://github.com/rileytestut/GPGXDeltaCore.git",
         "state": {
@@ -25,6 +34,15 @@
         "state": {
           "branch": "swiftpm",
           "revision": "9b682db70e2d092a03fabe03e57898f995e97347",
+          "version": null
+        }
+      },
+      {
+        "package": "MelonDSDeltaCore",
+        "repositoryURL": "https://github.com/rileytestut/MelonDSDeltaCore.git",
+        "state": {
+          "branch": "swiftpm",
+          "revision": "0b0ce5af3c661c9d9b1024faea84bb07cdf9403f",
           "version": null
         }
       },

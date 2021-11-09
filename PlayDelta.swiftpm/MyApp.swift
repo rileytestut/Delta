@@ -6,8 +6,7 @@ struct MyApp: App {
     
     var body: some Scene {
         WindowGroup {
-            MainView()
-                .edgesIgnoringSafeArea(.all)
+            ContentView()
         }
     }
 }
