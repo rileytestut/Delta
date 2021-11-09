@@ -31,6 +31,9 @@ let package = Package(
                 .landscapeRight,
                 .landscapeLeft,
                 .portraitUpsideDown(.when(deviceFamilies: [.pad]))
+            ],
+            capabilities: [
+                .microphone(purposeString: "Delta uses your microphone to emulate the Nintendo DS microphone.")
             ]
         )
     ],
@@ -39,7 +42,8 @@ let package = Package(
         .package(url: "https://github.com/rileytestut/Roxas.git", .branch("swiftpm")),
         .package(url: "https://github.com/rileytestut/Harmony.git", .branch("swiftpm")),
         .package(url: "https://github.com/rileytestut/GPGXDeltaCore.git", .branch("main")),
-        .package(url: "https://github.com/stephencelis/SQLite.swift.git", "0.9.2"..<"1.0.0")
+        .package(url: "https://github.com/stephencelis/SQLite.swift.git", "0.9.2"..<"1.0.0"),
+        .package(url: "https://github.com/rileytestut/MelonDSDeltaCore.git", .branch("swiftpm"))
     ],
     targets: [
         .executableTarget(
@@ -49,7 +53,8 @@ let package = Package(
                 .product(name: "Roxas", package: "roxas"),
                 .product(name: "Harmony", package: "harmony"),
                 .product(name: "GPGXDeltaCore", package: "gpgxdeltacore"),
-                .product(name: "SQLite", package: "sqlite.swift")
+                .product(name: "SQLite", package: "sqlite.swift"),
+                .product(name: "MelonDSDeltaCore", package: "melondsdeltacore")
             ],
             path: ".",
             resources: [

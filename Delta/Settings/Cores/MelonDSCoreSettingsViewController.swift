@@ -12,7 +12,7 @@ import MobileCoreServices
 import CryptoKit
 
 import DeltaCore
-//import MelonDSDeltaCore
+import MelonDSDeltaCore
 //
 //import struct DSDeltaCore.DS
 
@@ -157,6 +157,9 @@ private extension MelonDSCoreSettingsViewController
 //            // Using DeSmuME core, which doesn't require BIOS,
 //            // or using public Delta version, which doesn't support DSi (yet).
 //            return true
+            
+        case .dsiBIOS where !isBeta:
+            return true
             
         case .changeCore where !isBeta:
             // Using public Delta version, which only supports melonDS core.

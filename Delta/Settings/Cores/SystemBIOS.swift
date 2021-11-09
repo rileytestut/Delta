@@ -8,7 +8,7 @@
 
 import Foundation
 
-//import MelonDSDeltaCore
+import MelonDSDeltaCore
 
 protocol SystemBIOS
 {
@@ -45,13 +45,12 @@ enum DSBIOS: SystemBIOS, CaseIterable
     case firmware
     
     var fileURL: URL {
-//        switch self
-//        {
-//        case .bios7: return MelonDSEmulatorBridge.shared.bios7URL
-//        case .bios9: return MelonDSEmulatorBridge.shared.bios9URL
-//        case .firmware: return MelonDSEmulatorBridge.shared.firmwareURL
-//        }
-        return Bundle.main.bundleURL
+        switch self
+        {
+        case .bios7: return MelonDSEmulatorBridge.shared.bios7URL
+        case .bios9: return MelonDSEmulatorBridge.shared.bios9URL
+        case .firmware: return MelonDSEmulatorBridge.shared.firmwareURL
+        }
     }
     
     var expectedMD5Hash: String? {
@@ -90,14 +89,13 @@ enum DSiBIOS: SystemBIOS, CaseIterable
     case nand
     
     var fileURL: URL {
-//        switch self
-//        {
-//        case .bios7: return MelonDSEmulatorBridge.shared.dsiBIOS7URL
-//        case .bios9: return MelonDSEmulatorBridge.shared.dsiBIOS9URL
-//        case .firmware: return MelonDSEmulatorBridge.shared.dsiFirmwareURL
-//        case .nand: return MelonDSEmulatorBridge.shared.dsiNANDURL
-//        }
-        return Bundle.main.bundleURL
+        switch self
+        {
+        case .bios7: return MelonDSEmulatorBridge.shared.dsiBIOS7URL
+        case .bios9: return MelonDSEmulatorBridge.shared.dsiBIOS9URL
+        case .firmware: return MelonDSEmulatorBridge.shared.dsiFirmwareURL
+        case .nand: return MelonDSEmulatorBridge.shared.dsiNANDURL
+        }
     }
     
     var unsupportedMD5Hashes: Set<String> {

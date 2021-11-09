@@ -13,18 +13,13 @@ import DeltaCore
 //import GBCDeltaCore
 //import NESDeltaCore
 //import N64DeltaCore
-//import MelonDSDeltaCore
+import MelonDSDeltaCore
 //import Systems
 //
 //// Legacy Cores
 //import struct DSDeltaCore.DS
 
 import GPGXDeltaCore
-
-public extension GameType
-{
-    static let ds = GameType("com.rileytestut.delta.game.ds")
-}
 
 enum System: CaseIterable
 {
@@ -42,7 +37,7 @@ enum System: CaseIterable
     }
     
     static var allCores: [DeltaCoreProtocol] {
-        return [/*NES.core, SNES.core, N64.core, GBC.core, GBA.core, DS.core, MelonDS.core,*/ GPGX.core]
+        return [/*NES.core, SNES.core, N64.core, GBC.core, GBA.core, DS.core,*/ MelonDS.core, GPGX.core]
     }
 }
 
@@ -98,7 +93,7 @@ extension System
 //        case .n64: return N64.core
 //        case .gbc: return GBC.core
 //        case .gba: return GBA.core
-        case .ds: return GPGX.core // return Settings.preferredCore(for: .ds) ?? MelonDS.core
+        case .ds: return Settings.preferredCore(for: .ds) ?? MelonDS.core
         case .genesis: return GPGX.core
         }
     }

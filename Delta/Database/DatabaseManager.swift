@@ -14,7 +14,7 @@ import DeltaCore
 import Harmony
 import Roxas
 import ZIPFoundation
-//import MelonDSDeltaCore
+import MelonDSDeltaCore
 
 extension DatabaseManager
 {
@@ -110,7 +110,6 @@ extension DatabaseManager
         
         switch system
         {
-        #if false
         case .ds where core == MelonDS.core:
             
             // Returns nil if game already exists.
@@ -190,7 +189,6 @@ extension DatabaseManager
             gameCollection.identifier = GameType.ds.rawValue
             gameCollection.index = Int16(System.ds.year)
             gameCollection.games.formUnion(insertedGames)
-        #endif
         
         case .ds:
             let predicate = NSPredicate(format: "%K IN %@", #keyPath(Game.identifier), [Game.melonDSBIOSIdentifier, Game.melonDSDSiBIOSIdentifier])

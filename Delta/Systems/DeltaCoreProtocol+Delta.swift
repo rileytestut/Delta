@@ -6,6 +6,8 @@
 //  Copyright © 2017 Riley Testut. All rights reserved.
 //
 
+import UIKit
+
 import DeltaCore
 
 //import NESDeltaCore
@@ -13,7 +15,7 @@ import DeltaCore
 //import GBCDeltaCore
 //import GBADeltaCore
 //import N64DeltaCore
-//import MelonDSDeltaCore
+import MelonDSDeltaCore
 
 //import Systems
 //
@@ -78,8 +80,8 @@ extension DeltaCoreProtocol
 //        case GBA.core: return 3
 //        case N64.core where UIDevice.current.hasA11ProcessorOrBetter: return 3
 //        case N64.core where UIDevice.current.hasA9ProcessorOrBetter: return 1.5
-//        case MelonDS.core where UIDevice.current.supportsJIT: return 3
-//        case MelonDS.core where UIDevice.current.hasA11ProcessorOrBetter: return 1.5
+        case MelonDS.core where UIDevice.current.supportsJIT: return 3
+        case MelonDS.core where UIDevice.current.hasA11ProcessorOrBetter: return 1.5
         case GPGX.core: return 4
         default: return 1
         }
@@ -93,11 +95,11 @@ extension DeltaCoreProtocol
 //                                      .developer: .init(value: NSLocalizedString("DeSmuME team", comment: ""), url: URL(string: "https://wiki.desmume.org/index.php?title=DeSmuME:About")),
 //                                      .source: .init(value: NSLocalizedString("GitHub", comment: ""), url: URL(string: "https://github.com/TASVideos/desmume"))])
 //            
-//        case MelonDS.core:
-//            return DeltaCoreMetadata([.name: .init(value: NSLocalizedString("melonDS", comment: ""), url: URL(string: "http://melonds.kuribo64.net")),
-//                                      .developer: .init(value: NSLocalizedString("Arisotura", comment: ""), url: URL(string: "https://twitter.com/Arisotura")),
-//                                      .source: .init(value: NSLocalizedString("GitHub", comment: ""), url: URL(string: "https://github.com/Arisotura/melonDS")),
-//                                      .donate: .init(value: NSLocalizedString("Patreon", comment: ""), url: URL(string: "https://www.patreon.com/staplebutter"))])
+        case MelonDS.core:
+            return DeltaCoreMetadata([.name: .init(value: NSLocalizedString("melonDS", comment: ""), url: URL(string: "http://melonds.kuribo64.net")),
+                                      .developer: .init(value: NSLocalizedString("Arisotura", comment: ""), url: URL(string: "https://twitter.com/Arisotura")),
+                                      .source: .init(value: NSLocalizedString("GitHub", comment: ""), url: URL(string: "https://github.com/Arisotura/melonDS")),
+                                      .donate: .init(value: NSLocalizedString("Patreon", comment: ""), url: URL(string: "https://www.patreon.com/staplebutter"))])
             
         default: return nil
         }

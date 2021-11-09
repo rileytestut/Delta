@@ -9,7 +9,7 @@
 import Foundation
 
 import DeltaCore
-//import MelonDSDeltaCore
+import MelonDSDeltaCore
 
 import Roxas
 
@@ -59,8 +59,8 @@ struct Settings
                         #keyPath(UserDefaults.isButtonHapticFeedbackEnabled): true,
                         #keyPath(UserDefaults.isThumbstickHapticFeedbackEnabled): true,
                         #keyPath(UserDefaults.sortSaveStatesByOldestFirst): true,
-                        #keyPath(UserDefaults.isPreviewsEnabled): true] as [String : Any]
-//                        Settings.preferredCoreSettingsKey(for: .ds): MelonDS.core.identifier] as [String : Any]
+                        #keyPath(UserDefaults.isPreviewsEnabled): true,
+                        Settings.preferredCoreSettingsKey(for: .ds): MelonDS.core.identifier] as [String : Any]
         UserDefaults.standard.register(defaults: defaults)
     }
 }
