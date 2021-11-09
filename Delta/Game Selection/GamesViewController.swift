@@ -386,7 +386,7 @@ extension GamesViewController: ImportControllerDelegate
         documentTypes.insert(kUTTypeZipArchive as String)
         documentTypes.insert("com.rileytestut.delta.skin")
         
-        #if BETA
+        #if BETA || !XCODE_PROJECT
         // .bin files (Genesis ROMs)
         documentTypes.insert("com.apple.macbinary-archive")
         #endif

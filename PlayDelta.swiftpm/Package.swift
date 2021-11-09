@@ -34,7 +34,8 @@ let package = Package(
             ],
             capabilities: [
                 .microphone(purposeString: "Delta uses your microphone to emulate the Nintendo DS microphone.")
-            ]
+            ],
+            additionalInfoPlistContentFilePath: "Info.plist"
         )
     ],
     dependencies: [
