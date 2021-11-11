@@ -5,8 +5,8 @@
         "package": "DeltaCore",
         "repositoryURL": "https://github.com/rileytestut/DeltaCore.git",
         "state": {
-          "branch": "main",
-          "revision": "9c6462589f85e3cce3876e6ad64d1448aed62bfc",
+          "branch": "swiftpm",
+          "revision": "2ad30eccb9657c016c8c46199884d0204d440df8",
           "version": null
         }
       },
@@ -15,7 +15,7 @@
         "repositoryURL": "https://github.com/rileytestut/GBADeltaCore.git",
         "state": {
           "branch": "swiftpm",
-          "revision": "d067244e278132bf8bb213f03b158d7b930c06bc",
+          "revision": "3f122ab79a8bca62c1ec3e472752ec936079aecc",
           "version": null
         }
       },
@@ -23,8 +23,8 @@
         "package": "GPGXDeltaCore",
         "repositoryURL": "https://github.com/rileytestut/GPGXDeltaCore.git",
         "state": {
-          "branch": "main",
-          "revision": "ad4ba365acf1800d372ebfaa98df86b9c1b23dce",
+          "branch": "swiftpm",
+          "revision": "c1ef924444f7ed184cf8c60ed5f0cae7a2e37f8e",
           "version": null
         }
       },
@@ -42,7 +42,7 @@
         "repositoryURL": "https://github.com/rileytestut/MelonDSDeltaCore.git",
         "state": {
           "branch": "swiftpm",
-          "revision": "0b0ce5af3c661c9d9b1024faea84bb07cdf9403f",
+          "revision": "d419bd5584883778164847abd361656907b8a48e",
           "version": null
         }
       },
