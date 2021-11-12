@@ -45,7 +45,8 @@ let package = Package(
         .package(url: "https://github.com/rileytestut/MelonDSDeltaCore.git", .branch("swiftpm")),
         .package(url: "https://github.com/rileytestut/GBADeltaCore.git", .branch("swiftpm")),
         .package(url: "https://github.com/rileytestut/GPGXDeltaCore.git", .branch("swiftpm")),
-        .package(url: "https://github.com/rileytestut/DeltaCore.git", .branch("swiftpm"))
+        .package(url: "https://github.com/rileytestut/DeltaCore.git", .branch("swiftpm")),
+        .package(url: "https://github.com/rileytestut/N64DeltaCore.git", .branch("swiftpm"))
     ],
     targets: [
         .executableTarget(
@@ -57,7 +58,8 @@ let package = Package(
                 .product(name: "MelonDSDeltaCore", package: "melondsdeltacore"),
                 .product(name: "GBADeltaCore", package: "gbadeltacore"),
                 .product(name: "GPGXDeltaCore", package: "gpgxdeltacore"),
-                .product(name: "DeltaCore", package: "deltacore")
+                .product(name: "DeltaCore", package: "deltacore"),
+                .product(name: "N64DeltaCore", package: "n64deltacore")
             ],
             path: ".",
             resources: [

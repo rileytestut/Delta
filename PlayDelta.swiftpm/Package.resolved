@@ -42,7 +42,16 @@
         "repositoryURL": "https://github.com/rileytestut/MelonDSDeltaCore.git",
         "state": {
           "branch": "swiftpm",
-          "revision": "d419bd5584883778164847abd361656907b8a48e",
+          "revision": "e4cf51aba79275557b8c9cebd493c652967cc053",
+          "version": null
+        }
+      },
+      {
+        "package": "N64DeltaCore",
+        "repositoryURL": "https://github.com/rileytestut/N64DeltaCore.git",
+        "state": {
+          "branch": "swiftpm",
+          "revision": "a41121a03bb783c709a43a06aaf229e129c9d22c",
           "version": null
         }
       },
