@@ -24,6 +24,7 @@
     "SFML/src/SFML/System/{Err,Time,Thread,String}.cpp",
     "SFML/src/SFML/System/Unix/ThreadImpl.{hpp,cpp}"
   ],
+  "exclude_files": "GBADeltaCore/Bridge/DeltaCoreObjC.h",
   "public_header_files": [
     "GBADeltaCore/Types/GBATypes.h",
     "GBADeltaCore/Bridge/GBAEmulatorBridge.h",

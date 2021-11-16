@@ -15,7 +15,7 @@
         "repositoryURL": "https://github.com/rileytestut/GBADeltaCore.git",
         "state": {
           "branch": "swiftpm",
-          "revision": "3f122ab79a8bca62c1ec3e472752ec936079aecc",
+          "revision": "9cd7548cc50bbc04cec7269cc84b62d5fc82b84e",
           "version": null
         }
       },
@@ -42,7 +42,7 @@
         "repositoryURL": "https://github.com/rileytestut/MelonDSDeltaCore.git",
         "state": {
           "branch": "swiftpm",
-          "revision": "e4cf51aba79275557b8c9cebd493c652967cc053",
+          "revision": "2988aeecc5ccffe66067459800b47f1d9ba132f0",
           "version": null
         }
       },
