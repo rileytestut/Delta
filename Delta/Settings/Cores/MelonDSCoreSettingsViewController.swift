@@ -150,6 +150,10 @@ private extension MelonDSCoreSettingsViewController
         
         switch section
         {
+        case .performance:
+            guard Settings.preferredCore(for: .ds) == MelonDS.core else { return true }
+            return !UIDevice.current.supportsJIT
+            
         case .dsBIOS where Settings.preferredCore(for: .ds) == DS.core:
             // Using DeSmuME core, which doesn't require BIOS.
             return true
