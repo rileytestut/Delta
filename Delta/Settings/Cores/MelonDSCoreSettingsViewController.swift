@@ -23,6 +23,7 @@ private extension MelonDSCoreSettingsViewController
     enum Section: Int
     {
         case general
+        case performance
         case dsBIOS
         case dsiBIOS
         case changeCore
@@ -252,6 +253,11 @@ private extension MelonDSCoreSettingsViewController
         }
     }
     
+    @IBAction func toggleAltJITEnabled(_ sender: UISwitch)
+    {
+        Settings.isAltJITEnabled = sender.isOn
+    }
+    
     @objc func willEnterForeground(_ notification: Notification)
     {
         self.tableView.reloadData()
@@ -299,6 +305,10 @@ extension MelonDSCoreSettingsViewController
             }
             
             cell.contentView.isHidden = (item == nil)
+            
+        case .performance:
+            let cell = cell as! SwitchTableViewCell
+            cell.switchView.isOn = Settings.isAltJITEnabled
             
         case .dsBIOS:
             let bios = DSBIOS.allCases[indexPath.row]
@@ -378,6 +388,8 @@ extension MelonDSCoreSettingsViewController
             
         case .changeCore:
             self.changeCore()
+            
+        case .performance: break
         }
     }
     
