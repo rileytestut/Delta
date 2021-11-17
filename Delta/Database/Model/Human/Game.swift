@@ -45,11 +45,15 @@ public class Game: _Game, GameProtocol
                     // Recreate the stored URL relative to current sandbox location.
                     artworkURL = URL(fileURLWithPath: unwrappedArtworkURL.relativePath, relativeTo: DatabaseManager.gamesDirectoryURL)
                 }
-                else if unwrappedArtworkURL.host?.lowercased() == "img.gamefaqs.net", var components = URLComponents(url: unwrappedArtworkURL, resolvingAgainstBaseURL: false)
+                else if let host = unwrappedArtworkURL.host?.lowercased(), host == "img.gamefaqs.net" || host == "gamefaqs1.cbsistatic.com",
+                        var components = URLComponents(url: unwrappedArtworkURL, resolvingAgainstBaseURL: false)
                 {
                     // Quick fix for broken album artwork URLs due to host change.
-                    components.host = "gamefaqs1.cbsistatic.com"
+                    components.host = "gamefaqs.gamespot.com"
                     components.scheme = "https"
+                    
+                    let updatedPath = "/a" + components.path
+                    components.path = updatedPath
                     
                     if let url = components.url
                     {
