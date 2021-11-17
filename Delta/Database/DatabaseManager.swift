@@ -255,10 +255,10 @@ private extension DatabaseManager
             
             do
             {                
-                if !FileManager.default.fileExists(atPath: DatabaseManager.gamesDatabaseURL.path)
+                if !FileManager.default.fileExists(atPath: DatabaseManager.gamesDatabaseURL.path) || GamesDatabase.version != GamesDatabase.previousVersion
                 {
                     guard let bundleURL = Bundle.main.url(forResource: "openvgdb", withExtension: "sqlite") else { throw GamesDatabase.Error.doesNotExist }
-                    try FileManager.default.copyItem(at: bundleURL, to: DatabaseManager.gamesDatabaseURL)
+                    try FileManager.default.copyItem(at: bundleURL, to: DatabaseManager.gamesDatabaseURL, shouldReplace: true)
                 }
                 
                 self.gamesDatabase = try GamesDatabase()

@@ -66,7 +66,10 @@ extension GamesDatabase
 
 class GamesDatabase
 {
-    static let version = -1
+    static let version = 2
+    static var previousVersion: Int? {
+        return UserDefaults.standard.previousGamesDatabaseVersion
+    }
     
     private let connection: Connection
     
