@@ -64,6 +64,11 @@ struct Settings
                         #keyPath(UserDefaults.isAltJITEnabled): true,
                         Settings.preferredCoreSettingsKey(for: .ds): MelonDS.core.identifier] as [String : Any]
         UserDefaults.standard.register(defaults: defaults)
+        
+        #if !BETA
+        // Manually set MelonDS as preferred DS core in case DeSmuME is cached from a previous version.
+        UserDefaults.standard.set(MelonDS.core.identifier, forKey: Settings.preferredCoreSettingsKey(for: .ds))
+        #endif
     }
 }
 
