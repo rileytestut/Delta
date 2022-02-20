@@ -20,7 +20,7 @@ Delta is an iOS application that allows you to emulate and play video games for 
 - Game Boy / Game Boy Color (GBC)
 - Game Boy Advance (GBA)
 - Nintendo DS (DS)
-- Sega Genesis / Mega Drive (GEN) **(in progress)**
+- Sega Genesis / Mega Drive (GEN) **(in beta)**
 
 ## Features
 - Accurate, full speed emulation thanks to mature underlying emulator cores.
