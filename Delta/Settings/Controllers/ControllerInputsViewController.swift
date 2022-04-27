@@ -40,6 +40,8 @@ class ControllerInputsViewController: UIViewController
     
     private var activeCalloutView: InputCalloutView?
     
+    private var _didLayoutSubviews = false
+    
     @IBOutlet private var actionsMenuViewControllerHeightConstraint: NSLayoutConstraint!
     @IBOutlet private var cancelTapGestureRecognizer: UITapGestureRecognizer!
     
@@ -65,7 +67,15 @@ class ControllerInputsViewController: UIViewController
         
         self.gameViewController.controllerView.addReceiver(self)
         
-        self.navigationController?.navigationBar.barStyle = .black
+        if let navigationController = self.navigationController, #available(iOS 13, *)
+        {
+            navigationController.overrideUserInterfaceStyle = .dark
+            navigationController.navigationBar.scrollEdgeAppearance = navigationController.navigationBar.standardAppearance // Fixes invisible navigation bar on iPad.
+        }
+        else
+        {
+            self.navigationController?.navigationBar.barStyle = .black
+        }
         
         NSLayoutConstraint.activate([self.gameViewController.gameView.centerYAnchor.constraint(equalTo: self.actionsMenuViewController.view.centerYAnchor)])
         
@@ -80,6 +90,23 @@ class ControllerInputsViewController: UIViewController
         if self.actionsMenuViewController.preferredContentSize.height > 0
         {
             self.actionsMenuViewControllerHeightConstraint.constant = self.actionsMenuViewController.preferredContentSize.height
+        }
+        
+        if let window = self.view.window, !_didLayoutSubviews
+        {
+            var traits = DeltaCore.ControllerSkin.Traits.defaults(for: window)
+            traits.orientation = .portrait
+            
+            if traits.device == .ipad
+            {
+                // Use standard iPhone skins instead of iPad skins.
+                traits.device = .iphone
+                traits.displayType = .standard
+            }
+            
+            self.gameViewController.controllerView.overrideControllerSkinTraits = traits
+            
+            _didLayoutSubviews = true
         }
     }
     
@@ -403,6 +430,7 @@ private extension ControllerInputsViewController
         }
         
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alertController.popoverPresentationController?.barButtonItem = sender
         alertController.addAction(.cancel)
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Reset Controls to Defaults", comment: ""), style: .destructive, handler: { (action) in
             reset()
@@ -560,5 +588,17 @@ extension ControllerInputsViewController: SMCalloutViewDelegate
         guard let calloutView = calloutView as? InputCalloutView else { return }
 
         self.toggle(calloutView)
+    }
+}
+
+extension ControllerInputsViewController: UIAdaptivePresentationControllerDelegate
+{
+    func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle
+    {
+        switch (traitCollection.horizontalSizeClass, traitCollection.verticalSizeClass)
+        {
+        case (.regular, .regular): return .formSheet // Regular width and height, so display as form sheet
+        default: return .fullScreen // Compact width and/or height, so display full screen
+        }
     }
 }

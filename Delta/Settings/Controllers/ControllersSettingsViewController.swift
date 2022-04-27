@@ -108,8 +108,17 @@ extension ControllersSettingsViewController
         switch identifier
         {
         case "controllerInputsSegue":
-            let controllerInputsViewController = (segue.destination as! UINavigationController).topViewController as! ControllerInputsViewController
+            let navigationController = segue.destination as! UINavigationController
+            
+            let controllerInputsViewController = navigationController.topViewController as! ControllerInputsViewController
             controllerInputsViewController.gameController = self.gameController
+            
+            if self.view.traitCollection.userInterfaceIdiom == .pad
+            {
+                // For now, only iPads can display ControllerInputsViewController as a form sheet.
+                navigationController.modalPresentationStyle = .formSheet
+                navigationController.presentationController?.delegate = controllerInputsViewController
+            }
             
         default: break
         }
