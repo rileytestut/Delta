@@ -93,10 +93,6 @@ extension GameCollectionViewController
         self.collectionView?.prefetchDataSource = self.dataSource
         self.collectionView?.delegate = self
         
-        let layout = self.collectionViewLayout as! GridCollectionViewLayout
-        layout.itemWidth = 90
-        layout.minimumInteritemSpacing = 12
-        
         if #available(iOS 13, *) {}
         else
         {
@@ -105,6 +101,8 @@ extension GameCollectionViewController
             let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(GameCollectionViewController.handleLongPressGesture(_:)))
             self.collectionView?.addGestureRecognizer(longPressGestureRecognizer)
         }
+        
+        self.update()
     }
     
     override func viewWillDisappear(_ animated: Bool)
@@ -130,6 +128,13 @@ extension GameCollectionViewController
     {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?)
+    {
+        super.traitCollectionDidChange(previousTraitCollection)
+        
+        self.update()
     }
 }
 
@@ -224,6 +229,26 @@ extension GameCollectionViewController
 //MARK: - Private Methods -
 private extension GameCollectionViewController
 {
+    func update()
+    {
+        let layout = self.collectionViewLayout as! GridCollectionViewLayout
+        
+        switch self.traitCollection.horizontalSizeClass
+        {
+        case .regular:
+            layout.itemWidth = 150
+            layout.minimumInteritemSpacing = 25 // 30 == only 3 games per line for iPad mini 6 in portrait
+            
+        case .unspecified, .compact:
+            layout.itemWidth = 90
+            layout.minimumInteritemSpacing = 12
+            
+        @unknown default: break
+        }
+        
+        self.collectionView.reloadData()
+    }
+    
     //MARK: - Data Source
     func prepareDataSource()
     {
@@ -284,7 +309,19 @@ private extension GameCollectionViewController
         
         cell.imageView.image = #imageLiteral(resourceName: "BoxArt")
         
-        cell.maximumImageSize = CGSize(width: 90, height: 90)
+        if self.traitCollection.horizontalSizeClass == .regular
+        {
+            let fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .subheadline).withSymbolicTraits(.traitBold)!
+            cell.textLabel.font = UIFont(descriptor: fontDescriptor, size: 0)
+        }
+        else
+        {
+            cell.textLabel.font = UIFont.preferredFont(forTextStyle: .caption1)
+        }
+        
+        let layout = self.collectionViewLayout as! GridCollectionViewLayout
+        cell.maximumImageSize = CGSize(width: layout.itemWidth, height: layout.itemWidth)
+        
         cell.textLabel.text = game.name
         cell.textLabel.textColor = UIColor.gray
         cell.tintColor = cell.textLabel.textColor
