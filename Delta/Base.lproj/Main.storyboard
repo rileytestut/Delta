@@ -46,6 +46,9 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="importButton" destination="FeA-O5-xd2" id="A44-3S-Okz"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JYx-xE-nis" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

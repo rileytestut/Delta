@@ -47,6 +47,7 @@ class GamesViewController: UIViewController
     private let fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>
     
     private var searchController: RSTSearchController?
+    private lazy var importController: ImportController = self.makeImportController()
     
     private var syncingToastView: RSTToastView? {
         didSet {
@@ -57,6 +58,8 @@ class GamesViewController: UIViewController
         }
     }
     private var syncingProgressObservation: NSKeyValueObservation?
+    
+    @IBOutlet private var importButton: UIBarButtonItem!
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         fatalError("initWithNibName: not implemented")
@@ -131,6 +134,8 @@ extension GamesViewController
                 navigationController.toolbar.barStyle = .blackTranslucent
             }            
         }
+        
+        self.importController.barButtonItem = self.importButton
         
         self.prepareSearchController()
         
@@ -358,8 +363,8 @@ private extension GamesViewController
 /// Importing
 extension GamesViewController: ImportControllerDelegate
 {
-    @IBAction private func importFiles()
-    {        
+    private func makeImportController() -> ImportController
+    {
         var documentTypes = Set(System.registeredSystems.map { $0.gameType.rawValue })
         documentTypes.insert(kUTTypeZipArchive as String)
         documentTypes.insert("com.rileytestut.delta.skin")
@@ -379,7 +384,13 @@ extension GamesViewController: ImportControllerDelegate
         let importController = ImportController(documentTypes: documentTypes)
         importController.delegate = self
         importController.importOptions = [itunesImportOption]
-        self.present(importController, animated: true, completion: nil)
+        
+        return importController
+    }
+    
+    @IBAction private func importFiles()
+    {
+        self.present(self.importController, animated: true, completion: nil)
     }
     
     func importController(_ importController: ImportController, didImportItemsAt urls: Set<URL>, errors: [Error])

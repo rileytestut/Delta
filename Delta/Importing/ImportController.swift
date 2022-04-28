@@ -37,6 +37,8 @@ class ImportController: NSObject
     var delegate: ImportControllerDelegate?
     var importOptions: [ImportOption]?
     
+    var barButtonItem: UIBarButtonItem?
+    
     private weak var presentingViewController: UIViewController?
     
     // Store presentedViewController separately, since when we dismiss we don't know if it has already been dismissed.
@@ -81,6 +83,8 @@ class ImportController: NSObject
                 self.presentDocumentBrowser()
             }
             alertController.addAction(filesAction)
+            
+            alertController.popoverPresentationController?.barButtonItem = self.barButtonItem
             
             self.presentedViewController = alertController
             self.presentingViewController?.present(alertController, animated: true, completion: nil)
@@ -198,7 +202,7 @@ private var ImportControllerKey: UInt8 = 0
 
 extension UIViewController
 {
-    fileprivate(set) var importController: ImportController?
+    fileprivate var importController: ImportController?
     {
         set
         {
