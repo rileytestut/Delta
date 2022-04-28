@@ -114,10 +114,16 @@ extension GamesViewController
                 let navigationBarAppearance = navigationController.navigationBar.standardAppearance.copy()
                 navigationBarAppearance.backgroundEffect = UIBlurEffect(style: .dark)
                 navigationController.navigationBar.standardAppearance = navigationBarAppearance
+                navigationController.navigationBar.scrollEdgeAppearance = navigationBarAppearance
                 
                 let toolbarAppearance = navigationController.toolbar.standardAppearance.copy()
                 toolbarAppearance.backgroundEffect = UIBlurEffect(style: .dark)
-                navigationController.toolbar.standardAppearance = toolbarAppearance                
+                navigationController.toolbar.standardAppearance = toolbarAppearance
+                
+                if #available(iOS 15, *)
+                {
+                    navigationController.toolbar.scrollEdgeAppearance = toolbarAppearance
+                }
             }
             else
             {
