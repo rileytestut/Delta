@@ -66,6 +66,8 @@ class GameCollectionViewController: UICollectionViewController
     private weak var _previewTransitionViewController: PreviewGameViewController?
     private weak var _previewTransitionDestinationViewController: UIViewController?
     
+    private weak var _popoverSourceView: UIView?
+    
     private var _renameAction: UIAlertAction?
     private var _changingArtworkGame: Game?
     private var _importingSaveFileGame: Game?
@@ -521,7 +523,9 @@ private extension GameCollectionViewController
     
     func delete(_ game: Game)
     {
-        let confirmationAlertController = UIAlertController(title: NSLocalizedString("Are you sure you want to delete this game? All associated data, such as saves, save states, and cheat codes, will also be deleted.", comment: ""), message: nil, preferredStyle: .actionSheet)
+        let confirmationAlertController = UIAlertController(title: NSLocalizedString("Are you sure you want to delete this game?", comment: ""),
+                                                            message: NSLocalizedString("All associated data, such as saves, save states, and cheat codes, will also be deleted.", comment: ""),
+                                                            preferredStyle: .alert)
         confirmationAlertController.addAction(UIAlertAction(title: NSLocalizedString("Delete Game", comment: ""), style: .destructive, handler: { action in
             
             DatabaseManager.shared.performBackgroundTask { (context) in
@@ -591,6 +595,7 @@ private extension GameCollectionViewController
         let importController = ImportController(documentTypes: [kUTTypeImage as String])
         importController.delegate = self
         importController.importOptions = [clipboardImportOption, photoLibraryImportOption, gamesDatabaseImportOption]
+        importController.sourceView = self._popoverSourceView
         self.present(importController, animated: true, completion: nil)
     }
     
@@ -719,6 +724,8 @@ private extension GameCollectionViewController
         let copyDeepLinkActivity = CopyDeepLinkActivity()
         
         let activityViewController = UIActivityViewController(activityItems: [symbolicURL, game], applicationActivities: [copyDeepLinkActivity])
+        activityViewController.popoverPresentationController?.sourceView = self._popoverSourceView?.superview
+        activityViewController.popoverPresentationController?.sourceRect = self._popoverSourceView?.frame ?? .zero
         activityViewController.completionWithItemsHandler = { (activityType, finished, returnedItems, error) in
             do
             {
@@ -843,6 +850,9 @@ extension GameCollectionViewController: UIViewControllerPreviewingDelegate
         else { return nil }
         
         previewingContext.sourceRect = layoutAttributes.frame
+        
+        let cell = collectionView.cellForItem(at: indexPath)
+        self._popoverSourceView = cell
         
         let game = self.dataSource.item(at: indexPath)
         
@@ -1011,6 +1021,9 @@ extension GameCollectionViewController
         let game = self.dataSource.item(at: indexPath)
         let actions = self.actions(for: game)
         
+        let cell = self.collectionView.cellForItem(at: indexPath)
+        self._popoverSourceView = cell
+                
         return UIContextMenuConfiguration(identifier: indexPath as NSIndexPath, previewProvider: { [weak self] in
             guard let self = self else { return nil }
             

@@ -37,7 +37,8 @@ class ImportController: NSObject
     var delegate: ImportControllerDelegate?
     var importOptions: [ImportOption]?
     
-    var barButtonItem: UIBarButtonItem?
+    weak var barButtonItem: UIBarButtonItem?
+    weak var sourceView: UIView?
     
     private weak var presentingViewController: UIViewController?
     
@@ -84,7 +85,15 @@ class ImportController: NSObject
             }
             alertController.addAction(filesAction)
             
-            alertController.popoverPresentationController?.barButtonItem = self.barButtonItem
+            if let sourceView = self.sourceView
+            {
+                alertController.popoverPresentationController?.sourceView = sourceView.superview
+                alertController.popoverPresentationController?.sourceRect = sourceView.frame
+            }
+            else
+            {
+                alertController.popoverPresentationController?.barButtonItem = self.barButtonItem
+            }
             
             self.presentedViewController = alertController
             self.presentingViewController?.present(alertController, animated: true, completion: nil)
