@@ -37,10 +37,10 @@ class ImportController: NSObject
     var delegate: ImportControllerDelegate?
     var importOptions: [ImportOption]?
     
+    weak var presentingViewController: UIViewController?
+    
     weak var barButtonItem: UIBarButtonItem?
     weak var sourceView: UIView?
-    
-    private weak var presentingViewController: UIViewController?
     
     // Store presentedViewController separately, since when we dismiss we don't know if it has already been dismissed.
     // Calling dismiss on presentingViewController in that case would dismiss presentingViewController, which is bad.
@@ -64,26 +64,44 @@ class ImportController: NSObject
         super.init()
     }
     
+    func makeActions() -> [Action]
+    {
+        assert(self.presentingViewController != nil, "presentingViewController must be set before calling makeActions()")
+        
+        var actions = (self.importOptions ?? []).map { (option) -> Action in
+            let action = Action(title: option.title, style: .default, image: option.image) { _ in
+                option.import { importedURLs in
+                    self.finish(with: importedURLs, errors: [])
+                }
+            }
+            
+            return action
+        }
+        
+        let filesAction = Action(title: NSLocalizedString("Files", comment: ""), style: .default, image: UIImage(symbolNameIfAvailable: "doc")) { action in
+            self.presentDocumentBrowser()
+        }
+        actions.append(filesAction)
+        
+        return actions
+    }
+    
     fileprivate func presentImportController(from presentingViewController: UIViewController, animated: Bool, completionHandler: (() -> Void)?)
     {
         self.presentingViewController = presentingViewController
         
-        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        alertController.addAction(UIAlertAction.cancel)
+        let actions = self.makeActions()
         
-        if let importOptions = self.importOptions
+        if actions.count > 1
         {
-            for importOption in importOptions
-            {
-                alertController.add(importOption) { [unowned self] (urls) in
-                    self.finish(with: urls, errors: [])
-                }
-            }
+            let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+            alertController.addAction(UIAlertAction.cancel)
             
-            let filesAction = UIAlertAction(title: NSLocalizedString("Files", comment: ""), style: .default) { (action) in
-                self.presentDocumentBrowser()
+            let alertActions = actions.map { UIAlertAction($0) }
+            for action in alertActions
+            {
+                alertController.addAction(action)
             }
-            alertController.addAction(filesAction)
             
             if let sourceView = self.sourceView
             {

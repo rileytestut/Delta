@@ -135,7 +135,21 @@ extension GamesViewController
             }            
         }
         
-        self.importController.barButtonItem = self.importButton
+        if #available(iOS 14, *)
+        {
+            self.importController.presentingViewController = self
+            
+            let importActions = self.importController.makeActions().menuActions
+            let importMenu = UIMenu(title: NSLocalizedString("Import From…", comment: ""), image: UIImage(systemName: "square.and.arrow.down"), children: importActions)
+            self.importButton.menu = importMenu
+
+            self.importButton.action = nil
+            self.importButton.target = nil
+        }
+        else
+        {
+            self.importController.barButtonItem = self.importButton
+        }
         
         self.prepareSearchController()
         
