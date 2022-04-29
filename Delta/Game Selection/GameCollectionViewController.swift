@@ -705,28 +705,36 @@ private extension GameCollectionViewController
     
     func share(_ game: Game)
     {
-        let temporaryDirectory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
-        let symbolicURL = temporaryDirectory.appendingPathComponent(game.name + "." + game.fileURL.pathExtension)
+        let temporaryDirectory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString, isDirectory: true)
+        
+        let sanitizedName = game.name.components(separatedBy: .urlFilenameAllowed.inverted).joined()
+        let temporaryURL = temporaryDirectory.appendingPathComponent(sanitizedName + "." + game.fileURL.pathExtension, isDirectory: false)
         
         do
         {
             try FileManager.default.createDirectory(at: temporaryDirectory, withIntermediateDirectories: true, attributes: nil)
-            
-            // Create a symbolic link so we can control the file name used when sharing.
+                                    
+            // Make a temporary copy so we can control the filename used when sharing.
             // Otherwise, if we just passed in game.fileURL to UIActivityViewController, the file name would be the game's SHA1 hash.
-            try FileManager.default.createSymbolicLink(at: symbolicURL, withDestinationURL: game.fileURL)
+            try FileManager.default.copyItem(at: game.fileURL, to: temporaryURL, shouldReplace: true)
         }
         catch
         {
-            print(error)
+            let alertController = UIAlertController(title: NSLocalizedString("Could Not Share Game", comment: ""), error: error)
+            self.present(alertController, animated: true, completion: nil)
+            
+            return
         }
         
         let copyDeepLinkActivity = CopyDeepLinkActivity()
         
-        let activityViewController = UIActivityViewController(activityItems: [symbolicURL, game], applicationActivities: [copyDeepLinkActivity])
+        let activityViewController = UIActivityViewController(activityItems: [temporaryURL, game], applicationActivities: [copyDeepLinkActivity])
         activityViewController.popoverPresentationController?.sourceView = self._popoverSourceView?.superview
         activityViewController.popoverPresentationController?.sourceRect = self._popoverSourceView?.frame ?? .zero
         activityViewController.completionWithItemsHandler = { (activityType, finished, returnedItems, error) in
+            // Make sure the user either shared the game or cancelled before deleting temporaryDirectory.
+            guard finished || activityType == nil else { return }
+            
             do
             {
                 try FileManager.default.removeItem(at: temporaryDirectory)
@@ -736,6 +744,7 @@ private extension GameCollectionViewController
                 print(error)
             }
         }
+        
         self.present(activityViewController, animated: true, completion: nil)
     }
     
@@ -791,8 +800,7 @@ private extension GameCollectionViewController
     {
         do
         {
-            let illegalCharacterSet = CharacterSet(charactersIn: "\"\\/?<>:*|")
-            let sanitizedFilename = game.name.components(separatedBy: illegalCharacterSet).joined() + "." + game.gameSaveURL.pathExtension
+            let sanitizedFilename = game.name.components(separatedBy: .urlFilenameAllowed.inverted).joined()
             
             let temporaryURL = FileManager.default.temporaryDirectory.appendingPathComponent(sanitizedFilename)
             try FileManager.default.copyItem(at: game.gameSaveURL, to: temporaryURL, shouldReplace: true)
