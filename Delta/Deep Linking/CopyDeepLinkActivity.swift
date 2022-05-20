@@ -15,6 +15,8 @@ extension UIActivity.ActivityType
 
 class CopyDeepLinkActivity: UIActivity
 {
+    private var deepLink: URL?
+    
     override class var activityCategory: UIActivity.Category {
         return .action
     }
@@ -28,7 +30,7 @@ class CopyDeepLinkActivity: UIActivity
     }
     
     override var activityImage: UIImage? {
-        return UIImage(named: "Link")
+        return UIImage(symbolNameIfAvailable: "link") ?? UIImage(named: "Link")
     }
     
     override func canPerform(withActivityItems activityItems: [Any]) -> Bool
@@ -47,7 +49,19 @@ class CopyDeepLinkActivity: UIActivity
     {
         guard let game = activityItems.first(where: { $0 is Game }) as? Game else { return }
         
-        let deepLink = URL(action: .launchGame(identifier: game.identifier))
-        UIPasteboard.general.url = deepLink
+        self.deepLink = URL(action: .launchGame(identifier: game.identifier))
+    }
+    
+    override func perform()
+    {
+        if let deepLink = self.deepLink
+        {
+            UIPasteboard.general.url = deepLink
+            self.activityDidFinish(true)
+        }
+        else
+        {
+            self.activityDidFinish(false)
+        }
     }
 }
