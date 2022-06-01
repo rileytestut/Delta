@@ -38,6 +38,7 @@ extension Settings
         case syncingService
         case isButtonHapticFeedbackEnabled
         case isThumbstickHapticFeedbackEnabled
+        case isAltJITEnabled
     }
 }
 
@@ -60,6 +61,7 @@ struct Settings
                         #keyPath(UserDefaults.isThumbstickHapticFeedbackEnabled): true,
                         #keyPath(UserDefaults.sortSaveStatesByOldestFirst): true,
                         #keyPath(UserDefaults.isPreviewsEnabled): true,
+                        #keyPath(UserDefaults.isAltJITEnabled): true,
                         Settings.preferredCoreSettingsKey(for: .ds): MelonDS.core.identifier] as [String : Any]
         UserDefaults.standard.register(defaults: defaults)
         
@@ -192,6 +194,17 @@ extension Settings
         get {
             let isPreviewsEnabled = UserDefaults.standard.isPreviewsEnabled
             return isPreviewsEnabled
+        }
+    }
+    
+    static var isAltJITEnabled: Bool {
+        get {
+            let isAltJITEnabled = UserDefaults.standard.isAltJITEnabled
+            return isAltJITEnabled
+        }
+        set {
+            UserDefaults.standard.isAltJITEnabled = newValue
+            NotificationCenter.default.post(name: .settingsDidChange, object: nil, userInfo: [NotificationUserInfoKey.name: Name.isAltJITEnabled])
         }
     }
     
@@ -390,4 +403,6 @@ private extension UserDefaults
     @NSManaged var sortSaveStatesByOldestFirst: Bool
     
     @NSManaged var isPreviewsEnabled: Bool
+    
+    @NSManaged var isAltJITEnabled: Bool
 }

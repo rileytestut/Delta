@@ -2,6 +2,15 @@
   "object": {
     "pins": [
       {
+        "package": "AltKit",
+        "repositoryURL": "https://github.com/rileytestut/AltKit.git",
+        "state": {
+          "branch": null,
+          "revision": "2fd376df1c79ec06a5c80cc8933da027f65b3148",
+          "version": null
+        }
+      },
+      {
         "package": "DeltaCore",
         "repositoryURL": "https://github.com/rileytestut/DeltaCore.git",
         "state": {

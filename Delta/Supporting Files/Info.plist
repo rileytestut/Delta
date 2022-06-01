@@ -400,5 +400,13 @@
 			</dict>
 		</dict>
 	</array>
+    <key>NSBonjourServices</key>
+    <array>
+        <string>_altserver._tcp</string>
+    </array>
+    <key>ALTDeviceID</key>
+    <string>00008110-000A68390A82801E</string>
+    <key>NSLocalNetworkUsageDescription</key>
+    <string>Delta uses the local network to communicate with AltServer and enable JIT.</string>
 </dict>
 </plist>

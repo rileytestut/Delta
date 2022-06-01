@@ -10,6 +10,7 @@ import UIKit
 
 import DeltaCore
 import Harmony
+import AltKit
 
 import Fabric
 import Crashlytics
@@ -62,6 +63,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         
         // Controllers
         ExternalGameControllerManager.shared.startMonitoring()
+        
+        // JIT
+        ServerManager.shared.prepare()
         
         // Notifications
         let center = CFNotificationCenterGetDarwinNotifyCenter()
