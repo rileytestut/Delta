@@ -108,8 +108,17 @@ extension ControllersSettingsViewController
         switch identifier
         {
         case "controllerInputsSegue":
-            let controllerInputsViewController = (segue.destination as! UINavigationController).topViewController as! ControllerInputsViewController
+            let navigationController = segue.destination as! UINavigationController
+            
+            let controllerInputsViewController = navigationController.topViewController as! ControllerInputsViewController
             controllerInputsViewController.gameController = self.gameController
+            
+            if self.view.traitCollection.userInterfaceIdiom == .pad
+            {
+                // For now, only iPads can display ControllerInputsViewController as a form sheet.
+                navigationController.modalPresentationStyle = .formSheet
+                navigationController.presentationController?.delegate = controllerInputsViewController
+            }
             
         default: break
         }
@@ -296,6 +305,8 @@ extension ControllersSettingsViewController
 {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
     {
+        let previousGameController = self.gameController
+        
         switch Section(rawValue: indexPath.section)!
         {
         case .localDevice: self.gameController = self.localDeviceController
@@ -310,7 +321,7 @@ extension ControllersSettingsViewController
         
         let previousIndexPath: IndexPath?
         
-        if let gameController = self.gameController
+        if let gameController = previousGameController
         {
             if gameController == self.localDeviceController
             {

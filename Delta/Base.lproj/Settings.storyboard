@@ -1048,6 +1048,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="0QR-U9-gtx" customClass="RSTNavigationController" sceneMemberID="viewController">
                     <toolbarItems/>
+                    <value key="contentSizeForViewInPopover" type="size" width="375" height="667"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" barStyle="black" id="Y5H-O6-CQ5">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
