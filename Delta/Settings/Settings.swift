@@ -61,7 +61,7 @@ struct Settings
                         #keyPath(UserDefaults.isThumbstickHapticFeedbackEnabled): true,
                         #keyPath(UserDefaults.sortSaveStatesByOldestFirst): true,
                         #keyPath(UserDefaults.isPreviewsEnabled): true,
-                        #keyPath(UserDefaults.isAltJITEnabled): true,
+                        #keyPath(UserDefaults.isAltJITEnabled): false,
                         Settings.preferredCoreSettingsKey(for: .ds): MelonDS.core.identifier] as [String : Any]
         UserDefaults.standard.register(defaults: defaults)
         
