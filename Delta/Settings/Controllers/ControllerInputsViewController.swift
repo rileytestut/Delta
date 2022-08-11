@@ -91,6 +91,9 @@ class ControllerInputsViewController: UIViewController
         {
             self.prepareCallouts()
         }
+        
+        // controllerView must be first responder to receive keyboard presses.
+        self.gameViewController.controllerView.becomeFirstResponder()
     }
 }
 
