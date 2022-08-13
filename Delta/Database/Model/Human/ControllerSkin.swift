@@ -71,11 +71,6 @@ extension ControllerSkin: ControllerSkinProtocol
         return self.controllerSkin?.thumbstick(for: item, traits: traits, preferredSize: preferredSize)
     }
     
-    public func inputs(for traits: DeltaCore.ControllerSkin.Traits, at point: CGPoint) -> [Input]?
-    {
-        return self.controllerSkin?.inputs(for: traits, at: point)
-    }
-    
     public func items(for traits: DeltaCore.ControllerSkin.Traits) -> [DeltaCore.ControllerSkin.Item]?
     {
         return self.controllerSkin?.items(for: traits)
