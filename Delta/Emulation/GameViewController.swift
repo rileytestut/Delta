@@ -346,6 +346,8 @@ extension GameViewController
     {
         super.viewWillTransition(to: size, with: coordinator)
         
+        guard UIApplication.shared.applicationState != .background else { return }
+                
         coordinator.animate(alongsideTransition: { (context) in
             self.updateControllerSkin()
         }, completion: nil)        
