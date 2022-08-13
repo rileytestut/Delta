@@ -1084,6 +1084,8 @@ extension GameViewController: GameViewControllerDelegate
         else if self.presentedViewController == nil
         {
             self.pauseEmulation()
+            self.controllerView.resignFirstResponder()
+            
             self.performSegue(withIdentifier: "pause", sender: gameController)
         }
     }
