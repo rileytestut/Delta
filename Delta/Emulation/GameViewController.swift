@@ -665,10 +665,13 @@ private extension GameViewController
             var touchControllerSkin = TouchControllerSkin(controllerSkin: controllerSkin)
             touchControllerSkin.layoutGuide = self.view.safeAreaLayoutGuide
             
-            switch traits.orientation
+            if self.view.bounds.width > self.view.bounds.height
             {
-            case .portrait: touchControllerSkin.screenLayoutAxis = .vertical
-            case .landscape: touchControllerSkin.screenLayoutAxis = .horizontal
+                touchControllerSkin.screenLayoutAxis = .horizontal
+            }
+            else
+            {
+                touchControllerSkin.screenLayoutAxis = .vertical
             }
             
             self.controllerView.controllerSkin = touchControllerSkin
