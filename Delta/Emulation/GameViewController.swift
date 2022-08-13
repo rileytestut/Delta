@@ -955,6 +955,8 @@ private extension GameViewController
         UIView.animate(withDuration: 0.4) {
             self.sustainButtonsBlurView.effect = blurEffect
             self.sustainButtonsBackgroundView.alpha = 1.0
+        } completion: { _ in
+            self.controllerView.becomeFirstResponder()
         }
     }
     
