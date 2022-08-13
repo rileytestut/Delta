@@ -663,7 +663,6 @@ private extension GameViewController
         else if let controllerSkin = DeltaCore.ControllerSkin.standardControllerSkin(for: game.type), controllerSkin.hasTouchScreen(for: traits)
         {
             var touchControllerSkin = TouchControllerSkin(controllerSkin: controllerSkin)
-            touchControllerSkin.layoutGuide = self.view.safeAreaLayoutGuide
             
             if self.view.bounds.width > self.view.bounds.height
             {

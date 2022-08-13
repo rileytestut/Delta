@@ -14,7 +14,20 @@ import Harmony
 @objc(SceneDelegate) @available(iOS 13, *)
 class SceneDelegate: UIResponder, UIWindowSceneDelegate
 {
-    var window: UIWindow?
+    var window: UIWindow? {
+        get {
+            if _window == nil
+            {
+                _window = GameWindow()
+            }
+            
+            return _window
+        }
+        set {
+            _window = newValue as? GameWindow
+        }
+    }
+    private var _window: GameWindow?
     
     private let deepLinkController = DeepLinkController()
     
@@ -35,6 +48,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate
         {
             self.handle(.shortcut(shortcutItem))
         }
+        
+        self.window?.makeKeyAndVisible()
     }
     
     func sceneDidDisconnect(_ scene: UIScene)
