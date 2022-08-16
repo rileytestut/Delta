@@ -51,6 +51,11 @@
     "CLANG_ENABLE_MODULES": "NO",
     "GCC_PREPROCESSOR_DEFINITIONS": "STATIC_LIBRARY=1"
   },
+  "script_phases": {
+    "name": "Get GlideN64 Revision.h",
+    "script": "\"${PODS_TARGET_SRCROOT}/Mupen64Plus/GLideN64/src/getRevision.sh\"",
+    "execution_position": "before_compile"
+  },
   "dependencies": {
     "DeltaCore": [
 
