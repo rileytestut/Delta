@@ -21,6 +21,7 @@ target 'Delta' do
     pod 'MelonDSDeltaCore', :path => 'Cores/MelonDSDeltaCore'
     pod 'Roxas', :path => 'External/Roxas'
     pod 'Harmony', :path => 'External/Harmony'
+#    pod 'SteamController'
 end
 
 # Unlink DeltaCore to prevent conflicts with Systems.framework

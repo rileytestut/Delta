@@ -3,6 +3,7 @@ PODS:
   - Crashlytics (3.8.6):
     - Fabric (~> 1.6.3)
   - DeltaCore (0.1):
+    - SteamController
     - ZIPFoundation
   - DSDeltaCore (0.1):
     - DeltaCore
@@ -66,6 +67,9 @@ PODS:
   - SQLite.swift (0.12.2):
     - SQLite.swift/standard (= 0.12.2)
   - SQLite.swift/standard (0.12.2)
+  - SteamController (1.3):
+    - SteamController/default (= 1.3)
+  - SteamController/default (1.3)
   - SwiftyDropbox (5.0.0):
     - Alamofire (~> 4.7.3)
   - ZIPFoundation (0.9.11)
@@ -99,6 +103,7 @@ SPEC REPOS:
     - SDWebImage
     - SMCalloutView
     - SQLite.swift
+    - SteamController
     - SwiftyDropbox
     - ZIPFoundation
 
@@ -127,7 +132,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
   Crashlytics: e156f27e43abaa331f9b7afed091bda37e1052cc
-  DeltaCore: 86a78ac8fb0d40190231b5fb64d109f7516de187
+  DeltaCore: 9519a6af84fcd13cf064fda78f5da19cf42cf333
   DSDeltaCore: c113b64288d253fafe350ee23df143c76a11e173
   Fabric: be0459577cee96fe21f68de24588be2dd71482b8
   GBADeltaCore: 55e32d21508ce7383a1b1587e425ccc60620ad66
@@ -145,9 +150,10 @@ SPEC CHECKSUMS:
   SMCalloutView: 5c0ee363dc8e7204b2fda17dfad38c93e9e23481
   SNESDeltaCore: 1e9cc751501082480f8181d4449322ee4ec26dac
   SQLite.swift: d2b4642190917051ce6bd1d49aab565fe794eea3
+  SteamController: a868a0d6818dc38697f21d4556c9db6ed003f6a8
   SwiftyDropbox: 378b4425a2e8d0cb24c7b0f2e3af72bfbaaf1e73
   ZIPFoundation: b1f0de4eed33e74a676f76e12559ab6b75990197
 
-PODFILE CHECKSUM: 2f9219b1db18479e650fc2159f58160b4cc13aad
+PODFILE CHECKSUM: 8b26e270d52714412ffcea0ccfe32a2d456c8354
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.11.2

@@ -3,12 +3,13 @@
   "version": "0.1",
   "summary": "iOS Emulator Plug-in Framework",
   "description": "iOS framework that powers Delta emulator.",
-  "homepage": "https://github.com/rileytestut/DeltaCore",
+  "homepage": "https://github.com/lbibass/DeltaCore",
   "platforms": {
     "ios": "12.0"
   },
   "source": {
-    "git": "https://github.com/rileytestut/DeltaCore.git"
+    "git": "https://github.com/lbibass/DeltaCore.git",
+    "branch": "feature/SteamController"
   },
   "authors": {
     "Riley Testut": "riley@rileytestut.com"
@@ -27,6 +28,9 @@
   },
   "dependencies": {
     "ZIPFoundation": [
+
+    ],
+    "SteamController": [
 
     ]
   },

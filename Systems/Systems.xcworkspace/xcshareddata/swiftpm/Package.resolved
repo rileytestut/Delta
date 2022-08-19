@@ -2,6 +2,15 @@
   "object": {
     "pins": [
       {
+        "package": "SteamController",
+        "repositoryURL": "https://github.com/zydeco/SteamController",
+        "state": {
+          "branch": "master",
+          "revision": "59d257823a422da57c5acf57d56f740b4b8eb8dd",
+          "version": null
+        }
+      },
+      {
         "package": "ZIPFoundation",
         "repositoryURL": "https://github.com/weichsel/ZIPFoundation.git",
         "state": {

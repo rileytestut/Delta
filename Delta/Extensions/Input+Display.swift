@@ -103,7 +103,12 @@ extension Input
             let input = MFiGameController.Input(input: self)!
             switch input
             {
+            case.steamBackButton: return NSLocalizedString("Steam Back Button", comment: "")
+            case.steamForwardButton: return NSLocalizedString("Steam Forward Button", comment: "")
+            case.steamSteamButton:return NSLocalizedString("Steam Logo Button", comment: "")
             case .menu: return NSLocalizedString("Menu", comment: "")
+            case .options: return NSLocalizedString("Options", comment: "")
+            case .home: return NSLocalizedString("Home", comment: "")
             case .up: return NSLocalizedString("Up", comment: "")
             case .down: return NSLocalizedString("Down", comment: "")
             case .left: return NSLocalizedString("Left", comment: "")
@@ -122,8 +127,15 @@ extension Input
             case .y: return NSLocalizedString("Y", comment: "")
             case .leftShoulder: return NSLocalizedString("L1", comment: "")
             case .leftTrigger: return NSLocalizedString("L2", comment: "")
+            case .leftThumbstickButton: return NSLocalizedString("L3", comment: "")
             case .rightShoulder: return NSLocalizedString("R1", comment: "")
             case .rightTrigger: return NSLocalizedString("R2", comment: "")
+            case .rightThumbstickButton: return NSLocalizedString("R3", comment: "")
+            case .psTouchpadButton: return NSLocalizedString("Touchpad", comment: "")
+            case .xboxPaddleButton1: return NSLocalizedString("Paddle1", comment: "")
+            case .xboxPaddleButton2: return NSLocalizedString("Paddle2", comment: "")
+            case .xboxPaddleButton3: return NSLocalizedString("Paddle3", comment: "")
+            case .xboxPaddleButton4: return NSLocalizedString("Paddle4", comment: "")
             }
             
         case .controller(.keyboard):

@@ -3,10 +3,19 @@
     "pins": [
       {
         "package": "DeltaCore",
-        "repositoryURL": "https://github.com/rileytestut/DeltaCore.git",
+        "repositoryURL": "https://github.com/lbibass/DeltaCore",
         "state": {
-          "branch": "main",
-          "revision": "eeefb30bd78fb130f1113e823afbce6f4f767cfb",
+          "branch": "feature/SteamController",
+          "revision": "4735ed22467ae67877806286f86744647dbebf0e",
+          "version": null
+        }
+      },
+      {
+        "package": "SteamController",
+        "repositoryURL": "https://github.com/zydeco/SteamController",
+        "state": {
+          "branch": "master",
+          "revision": "59d257823a422da57c5acf57d56f740b4b8eb8dd",
           "version": null
         }
       },
@@ -15,8 +24,8 @@
         "repositoryURL": "https://github.com/weichsel/ZIPFoundation.git",
         "state": {
           "branch": null,
-          "revision": "ec32d62d412578542c0ffb7a6ce34d3e64b43b94",
-          "version": "0.9.11"
+          "revision": "cf10bbff6ac3b873e97b36b9784c79866a051a8e",
+          "version": "0.9.12"
         }
       }
     ]
