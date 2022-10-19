@@ -453,6 +453,12 @@ extension ControllerInputsViewController: UIGestureRecognizerDelegate
         return self.activeCalloutView != nil
     }
     
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool
+    {
+        // Necessary to prevent other gestures (e.g. GameViewController's resumeEmulationIfNeeded() tap gesture) from cancelling tap.
+        return true
+    }
+    
     @IBAction private func handleTapGesture(_ tapGestureRecognizer: UITapGestureRecognizer)
     {
         self.updateActiveCalloutView(with: nil)
