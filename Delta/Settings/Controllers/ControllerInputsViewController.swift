@@ -573,13 +573,19 @@ extension ControllerInputsViewController: GameControllerReceiver
 {
     func gameController(_ gameController: GameController, didActivate controllerInput: DeltaCore.Input, value: Double)
     {
-        guard self.isViewLoaded else { return }
+        guard self.isViewLoaded, value > 0.9 else { return }
         
         switch gameController
         {
         case self.gameViewController.controllerView:
             if let calloutView = self.calloutViews[AnyInput(controllerInput)]
             {
+                if controllerInput.isContinuous
+                {
+                    // Make sure we only toggle calloutView once in a single gesture.
+                    guard calloutView.state == .normal else { break }
+                }
+                
                 self.toggle(calloutView)
             }
             
