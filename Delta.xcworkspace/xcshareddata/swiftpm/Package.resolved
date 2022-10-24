@@ -15,7 +15,7 @@
         "repositoryURL": "https://github.com/rileytestut/DeltaCore.git",
         "state": {
           "branch": "main",
-          "revision": "accca065797dd0d22c2b83e94bdc6e8b7a627020",
+          "revision": "27a574a46238817084f80d811b3e6c2884d9cdc0",
           "version": null
         }
       },
@@ -24,8 +24,8 @@
         "repositoryURL": "https://github.com/weichsel/ZIPFoundation.git",
         "state": {
           "branch": null,
-          "revision": "7254c74b49cec2cb81520523ba993c671f71b066",
-          "version": "0.9.14"
+          "revision": "f6a22e7da26314b38bf9befce34ae8e4b2543090",
+          "version": "0.9.15"
         }
       }
     ]
