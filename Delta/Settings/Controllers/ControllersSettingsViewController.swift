@@ -296,6 +296,8 @@ extension ControllersSettingsViewController
 {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
     {
+        let previousGameController = self.gameController
+        
         switch Section(rawValue: indexPath.section)!
         {
         case .localDevice: self.gameController = self.localDeviceController
@@ -310,7 +312,7 @@ extension ControllersSettingsViewController
         
         let previousIndexPath: IndexPath?
         
-        if let gameController = self.gameController
+        if let gameController = previousGameController
         {
             if gameController == self.localDeviceController
             {

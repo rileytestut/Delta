@@ -91,6 +91,9 @@ class ControllerInputsViewController: UIViewController
         {
             self.prepareCallouts()
         }
+        
+        // controllerView must be first responder to receive keyboard presses.
+        self.gameViewController.controllerView.becomeFirstResponder()
     }
 }
 
@@ -183,6 +186,10 @@ private extension ControllerInputsViewController
         listMenuViewController.title = NSLocalizedString("Game System", comment: "")
         
         let navigationController = UINavigationController(rootViewController: listMenuViewController)
+        if #available(iOS 13, *)
+        {
+            navigationController.navigationBar.scrollEdgeAppearance = navigationController.navigationBar.standardAppearance
+        }
         
         let popoverMenuController = PopoverMenuController(popoverViewController: navigationController)
         self.navigationItem.popoverMenuController = popoverMenuController

@@ -21,7 +21,8 @@ class ListMenuViewController: UITableViewController
     
     override var preferredContentSize: CGSize {
         get {
-            let navigationBarHeight = self.navigationController?.navigationBar.bounds.height ?? 0.0
+            // Don't include navigation bar height in calculation (as of iOS 13).
+            let navigationBarHeight: CGFloat = 0.0 // self.navigationController?.navigationBar.bounds.height ?? 0.0
             return CGSize(width: 0, height: (self.tableView.rowHeight * CGFloat(self.items.count)) + navigationBarHeight)
         }
         set {}
