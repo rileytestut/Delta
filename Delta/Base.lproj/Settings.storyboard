@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18121" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="ssH-mM-uG6">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="ssH-mM-uG6">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18092"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -279,26 +279,26 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection headerTitle="Haptic Feedback" footerTitle="When enabled, your device will vibrate in response to touch screen controls." id="aJ4-xT-aZL">
+                            <tableViewSection headerTitle="Game Audio" footerTitle="When enabled, Delta will only play game audio if your device isn't silenced." id="aJ4-xT-aZL">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="SwitchCell" id="mRV-Bi-pZ8" customClass="SwitchTableViewCell">
-                                        <rect key="frame" x="0.0" y="765" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="794.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="mRV-Bi-pZ8" id="RtM-ok-LGu">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Buttons" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mue-uO-1xE">
-                                                    <rect key="frame" x="8" y="11.5" width="302" height="21"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Respect Silent Mode" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mue-uO-1xE">
+                                                    <rect key="frame" x="16" y="11.5" width="286" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mlO-iy-zU2">
-                                                    <rect key="frame" x="318" y="6.5" width="51" height="31"/>
+                                                    <rect key="frame" x="310" y="6.5" width="51" height="31"/>
                                                     <color key="onTintColor" name="Purple"/>
                                                     <connections>
-                                                        <action selector="toggleButtonHapticFeedbackEnabled:" destination="eHi-aO-uGS" eventType="primaryActionTriggered" id="au3-JT-77n"/>
+                                                        <action selector="toggleRespectSilentMode:" destination="eHi-aO-uGS" eventType="primaryActionTriggered" id="dyA-el-uRa"/>
                                                     </connections>
                                                 </switch>
                                             </subviews>
@@ -311,33 +311,67 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="SwitchCell" id="2Kn-Xu-sTo" customClass="SwitchTableViewCell">
-                                        <rect key="frame" x="0.0" y="809" width="375" height="44"/>
+                                </cells>
+                            </tableViewSection>
+                            <tableViewSection headerTitle="Haptic Feedback" footerTitle="When enabled, your device will vibrate in response to touch screen controls." id="avK-bg-nm6">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="SwitchCell" id="ZUx-5m-gPq" customClass="SwitchTableViewCell">
+                                        <rect key="frame" x="0.0" y="930" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2Kn-Xu-sTo" id="2pb-gv-gY2">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ZUx-5m-gPq" id="7fY-cO-dht">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Control Sticks" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UoA-qC-cKc">
-                                                    <rect key="frame" x="8" y="11.5" width="302" height="21"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Buttons" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XPP-qe-q75">
+                                                    <rect key="frame" x="16" y="11.5" width="286" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="s5f-Uz-GpH">
-                                                    <rect key="frame" x="318" y="6.5" width="51" height="31"/>
+                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="g7m-wj-ueP">
+                                                    <rect key="frame" x="310" y="6.5" width="51" height="31"/>
                                                     <color key="onTintColor" name="Purple"/>
                                                     <connections>
-                                                        <action selector="toggleThumbstickHapticFeedbackEnabled:" destination="eHi-aO-uGS" eventType="primaryActionTriggered" id="ELm-nK-kTr"/>
+                                                        <action selector="toggleButtonHapticFeedbackEnabled:" destination="eHi-aO-uGS" eventType="primaryActionTriggered" id="JkH-Ha-NqO"/>
                                                     </connections>
                                                 </switch>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="s5f-Uz-GpH" firstAttribute="centerY" secondItem="2pb-gv-gY2" secondAttribute="centerY" id="1yP-Wt-XbP"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="s5f-Uz-GpH" secondAttribute="trailing" id="3XM-jj-6TV"/>
-                                                <constraint firstItem="UoA-qC-cKc" firstAttribute="centerY" secondItem="2pb-gv-gY2" secondAttribute="centerY" id="AMH-D3-llc"/>
-                                                <constraint firstItem="UoA-qC-cKc" firstAttribute="leading" secondItem="2pb-gv-gY2" secondAttribute="leadingMargin" id="Fi5-Td-wMi"/>
-                                                <constraint firstItem="s5f-Uz-GpH" firstAttribute="leading" secondItem="UoA-qC-cKc" secondAttribute="trailing" constant="8" symbolic="YES" id="L7N-F1-Maf"/>
+                                                <constraint firstItem="XPP-qe-q75" firstAttribute="centerY" secondItem="7fY-cO-dht" secondAttribute="centerY" id="ML4-2L-ivB"/>
+                                                <constraint firstItem="XPP-qe-q75" firstAttribute="leading" secondItem="7fY-cO-dht" secondAttribute="leadingMargin" id="RcM-9w-cj3"/>
+                                                <constraint firstItem="g7m-wj-ueP" firstAttribute="leading" secondItem="XPP-qe-q75" secondAttribute="trailing" constant="8" symbolic="YES" id="U9Z-lS-tZm"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="g7m-wj-ueP" secondAttribute="trailing" id="W92-fx-sPH"/>
+                                                <constraint firstItem="g7m-wj-ueP" firstAttribute="centerY" secondItem="7fY-cO-dht" secondAttribute="centerY" id="mKM-Rs-8FG"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="SwitchCell" id="p47-ru-O9r" customClass="SwitchTableViewCell">
+                                        <rect key="frame" x="0.0" y="974" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="p47-ru-O9r" id="o9R-cP-Tge">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Control Sticks" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MDR-bb-TYm">
+                                                    <rect key="frame" x="16" y="11.5" width="286" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="19A-ef-F3V">
+                                                    <rect key="frame" x="310" y="6.5" width="51" height="31"/>
+                                                    <color key="onTintColor" name="Purple"/>
+                                                    <connections>
+                                                        <action selector="toggleThumbstickHapticFeedbackEnabled:" destination="eHi-aO-uGS" eventType="primaryActionTriggered" id="pHq-hK-bcL"/>
+                                                    </connections>
+                                                </switch>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="19A-ef-F3V" firstAttribute="centerY" secondItem="o9R-cP-Tge" secondAttribute="centerY" id="7S9-gQ-Elk"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="19A-ef-F3V" secondAttribute="trailing" id="IVw-V1-wRU"/>
+                                                <constraint firstItem="19A-ef-F3V" firstAttribute="leading" secondItem="MDR-bb-TYm" secondAttribute="trailing" constant="8" symbolic="YES" id="hPx-zJ-0qA"/>
+                                                <constraint firstItem="MDR-bb-TYm" firstAttribute="centerY" secondItem="o9R-cP-Tge" secondAttribute="centerY" id="m0V-TQ-ajv"/>
+                                                <constraint firstItem="MDR-bb-TYm" firstAttribute="leading" secondItem="o9R-cP-Tge" secondAttribute="leadingMargin" id="pSi-wU-tje"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -621,12 +655,13 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="buttonHapticFeedbackEnabledSwitch" destination="mlO-iy-zU2" id="ObD-uL-Si0"/>
+                        <outlet property="buttonHapticFeedbackEnabledSwitch" destination="g7m-wj-ueP" id="nOj-sc-foi"/>
                         <outlet property="controllerOpacityLabel" destination="zaz-yD-CYG" id="eUW-u9-xxx"/>
                         <outlet property="controllerOpacitySlider" destination="whi-If-wFf" id="6Cx-HY-xLG"/>
                         <outlet property="previewsEnabledSwitch" destination="OJE-9e-9i3" id="Ndg-eN-PPs"/>
+                        <outlet property="respectSilentModeSwitch" destination="mlO-iy-zU2" id="TDT-cx-kCf"/>
                         <outlet property="syncingServiceLabel" destination="kLY-5g-v8n" id="zzx-qM-q1g"/>
-                        <outlet property="thumbstickHapticFeedbackEnabledSwitch" destination="s5f-Uz-GpH" id="ffp-3M-FDL"/>
+                        <outlet property="thumbstickHapticFeedbackEnabledSwitch" destination="19A-ef-F3V" id="K03-kQ-lv3"/>
                         <outlet property="versionLabel" destination="Str-BY-agW" id="gU2-L0-pYt"/>
                         <segue destination="uBz-mm-mXr" kind="show" identifier="controllersSegue" id="MLY-hF-UB8"/>
                         <segue destination="56e-ul-z6v" kind="show" identifier="controllerSkinsSegue" id="GNM-Gt-YFf"/>

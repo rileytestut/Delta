@@ -20,6 +20,7 @@ private extension SettingsViewController
         case controllers
         case controllerSkins
         case controllerOpacity
+        case gameAudio
         case hapticFeedback
         case syncing
         case hapticTouch
@@ -56,6 +57,7 @@ class SettingsViewController: UITableViewController
     @IBOutlet private var controllerOpacityLabel: UILabel!
     @IBOutlet private var controllerOpacitySlider: UISlider!
     
+    @IBOutlet private var respectSilentModeSwitch: UISwitch!
     @IBOutlet private var buttonHapticFeedbackEnabledSwitch: UISwitch!
     @IBOutlet private var thumbstickHapticFeedbackEnabledSwitch: UISwitch!
     @IBOutlet private var previewsEnabledSwitch: UISwitch!
@@ -160,6 +162,8 @@ private extension SettingsViewController
         self.controllerOpacitySlider.value = Float(Settings.translucentControllerSkinOpacity)
         self.updateControllerOpacityLabel()
         
+        self.respectSilentModeSwitch.isOn = Settings.respectSilentMode
+        
         self.syncingServiceLabel.text = Settings.syncingService?.localizedName
         
         do
@@ -248,6 +252,11 @@ private extension SettingsViewController
         Settings.isPreviewsEnabled = sender.isOn
     }
     
+    @IBAction func toggleRespectSilentMode(_ sender: UISwitch)
+    {
+        Settings.respectSilentMode = sender.isOn
+    }
+    
     func openTwitter(username: String)
     {
         let twitterAppURL = URL(string: "twitter://user?screen_name=" + username)!
@@ -290,7 +299,7 @@ private extension SettingsViewController
                 self.tableView.selectRow(at: selectedIndexPath, animated: true, scrollPosition: .none)
             }
             
-        case .localControllerPlayerIndex, .preferredControllerSkin, .translucentControllerSkinOpacity, .isButtonHapticFeedbackEnabled, .isThumbstickHapticFeedbackEnabled, .isAltJITEnabled: break
+        case .localControllerPlayerIndex, .preferredControllerSkin, .translucentControllerSkinOpacity, .respectSilentMode, .isButtonHapticFeedbackEnabled, .isThumbstickHapticFeedbackEnabled, .isAltJITEnabled: break
         }
     }
 
@@ -367,7 +376,7 @@ extension SettingsViewController
             let preferredCore = Settings.preferredCore(for: .ds)
             cell.detailTextLabel?.text = preferredCore?.metadata?.name.value ?? preferredCore?.name ?? NSLocalizedString("Unknown", comment: "")
             
-        case .controllerOpacity, .hapticFeedback, .hapticTouch, .patreon, .credits: break
+        case .controllerOpacity, .gameAudio, .hapticFeedback, .hapticTouch, .patreon, .credits: break
         }
 
         return cell
@@ -383,7 +392,7 @@ extension SettingsViewController
         case .controllers: self.performSegue(withIdentifier: Segue.controllers.rawValue, sender: cell)
         case .controllerSkins: self.performSegue(withIdentifier: Segue.controllerSkins.rawValue, sender: cell)
         case .cores: self.performSegue(withIdentifier: Segue.dsSettings.rawValue, sender: cell)
-        case .controllerOpacity, .hapticFeedback, .hapticTouch, .syncing: break
+        case .controllerOpacity, .gameAudio, .hapticFeedback, .hapticTouch, .syncing: break
         case .patreon:
             let patreonURL = URL(string: "altstore://patreon")!
             

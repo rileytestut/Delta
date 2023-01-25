@@ -112,6 +112,7 @@ class GameViewController: DeltaCore.GameViewController
             }
             
             self.updateControllers()
+            self.updateAudio()
             
             self.presentedGyroAlert = false
         }
@@ -935,6 +936,16 @@ extension GameViewController: CheatsViewControllerDelegate
     }
 }
 
+//MARK: - Audio -
+/// Audio
+private extension GameViewController
+{
+    func updateAudio()
+    {
+        self.emulatorCore?.audioManager.respectsSilentMode = Settings.respectSilentMode
+    }
+}
+
 //MARK: - Sustain Buttons -
 private extension GameViewController
 {
@@ -1194,8 +1205,12 @@ private extension GameViewController
                 self.updateControllerSkin()
             }
             
-        case .translucentControllerSkinOpacity: self.controllerView.translucentControllerSkinOpacity = Settings.translucentControllerSkinOpacity
+        case .translucentControllerSkinOpacity:
+            self.controllerView.translucentControllerSkinOpacity = Settings.translucentControllerSkinOpacity
             
+        case .respectSilentMode:
+            self.updateAudio()
+                
         case .syncingService, .isAltJITEnabled: break
         }
     }

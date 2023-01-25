@@ -39,6 +39,7 @@ extension Settings
         case isButtonHapticFeedbackEnabled
         case isThumbstickHapticFeedbackEnabled
         case isAltJITEnabled
+        case respectSilentMode
     }
 }
 
@@ -62,6 +63,7 @@ struct Settings
                         #keyPath(UserDefaults.sortSaveStatesByOldestFirst): true,
                         #keyPath(UserDefaults.isPreviewsEnabled): true,
                         #keyPath(UserDefaults.isAltJITEnabled): false,
+                        #keyPath(UserDefaults.respectSilentMode): true,
                         Settings.preferredCoreSettingsKey(for: .ds): MelonDS.core.identifier] as [String : Any]
         UserDefaults.standard.register(defaults: defaults)
         
@@ -205,6 +207,17 @@ extension Settings
         set {
             UserDefaults.standard.isAltJITEnabled = newValue
             NotificationCenter.default.post(name: .settingsDidChange, object: nil, userInfo: [NotificationUserInfoKey.name: Name.isAltJITEnabled])
+        }
+    }
+    
+    static var respectSilentMode: Bool {
+        get {
+            let respectSilentMode = UserDefaults.standard.respectSilentMode
+            return respectSilentMode
+        }
+        set {
+            UserDefaults.standard.respectSilentMode = newValue
+            NotificationCenter.default.post(name: .settingsDidChange, object: nil, userInfo: [NotificationUserInfoKey.name: Name.respectSilentMode])
         }
     }
     
@@ -405,4 +418,6 @@ private extension UserDefaults
     @NSManaged var isPreviewsEnabled: Bool
     
     @NSManaged var isAltJITEnabled: Bool
+    
+    @NSManaged var respectSilentMode: Bool
 }
