@@ -261,6 +261,12 @@ private extension DatabaseManager
                     try FileManager.default.copyItem(at: bundleURL, to: DatabaseManager.gamesDatabaseURL, shouldReplace: true)
                 }
                 
+                if #available(iOS 14, *), !FileManager.default.fileExists(atPath: DatabaseManager.cheatBaseURL.path) || CheatBase.cheatsVersion != CheatBase.previousCheatsVersion
+                {
+                    guard let bundleURL = Bundle.main.url(forResource: "cheatbase", withExtension: "sqlite") else { throw GamesDatabase.Error.doesNotExist }
+                    try FileManager.default.copyItem(at: bundleURL, to: DatabaseManager.cheatBaseURL, shouldReplace: true)
+                }
+                
                 self.gamesDatabase = try GamesDatabase()
             }
             catch
@@ -616,6 +622,12 @@ extension DatabaseManager
     class var gamesDatabaseURL: URL
     {
         let gamesDatabaseURL = self.defaultDirectoryURL().appendingPathComponent("openvgdb.sqlite")
+        return gamesDatabaseURL
+    }
+    
+    class var cheatBaseURL: URL
+    {
+        let gamesDatabaseURL = self.defaultDirectoryURL().appendingPathComponent("cheatbase.sqlite")
         return gamesDatabaseURL
     }
 
