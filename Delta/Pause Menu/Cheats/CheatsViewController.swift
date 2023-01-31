@@ -31,6 +31,8 @@ class CheatsViewController: UITableViewController
     weak var delegate: CheatsViewControllerDelegate?
     
     private let dataSource = RSTFetchedResultsTableViewDataSource<Cheat>(fetchedResultsController: NSFetchedResultsController())
+    
+    private var cheatBaseCheats: [CheatMetadata]?
 }
 
 extension CheatsViewController
@@ -65,20 +67,17 @@ extension CheatsViewController
         
         if #available(iOS 14, *)
         {
-            let addCheatMenu = UIMenu(children: [
-                UIAction(title: NSLocalizedString("New Cheat Code", comment: ""), image: UIImage(systemName: "square.and.pencil")) { [weak self] _ in
-                    self?.addCheat()
-                },
-                
-                UIAction(title: NSLocalizedString("Search CheatBase", comment: ""), image: UIImage(systemName: "magnifyingglass")) { [weak self] _ in
-                    self?.searchCheatBase()
-                },
-            ])
-            
-            self.navigationItem.rightBarButtonItem?.target = nil
-            self.navigationItem.rightBarButtonItem?.action = nil
-            
-            self.navigationItem.rightBarButtonItem?.menu = addCheatMenu
+            self.updateAddCheatMenu()
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool)
+    {
+        super.viewWillAppear(animated)
+        
+        if #available(iOS 14, *), self.cheatBaseCheats == nil
+        {
+            self.fetchCheatBaseCheats()
         }
     }
 
@@ -110,6 +109,34 @@ private extension CheatsViewController
         
         self.dataSource.fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DatabaseManager.shared.viewContext, sectionNameKeyPath: nil, cacheName: nil)
     }
+    
+    @available(iOS 14, *) @MainActor
+    func updateAddCheatMenu()
+    {
+        var searchCheatBaseTitle = NSLocalizedString("Search CheatBase", comment: "")
+        var attributes: UIMenuElement.Attributes = []
+        
+        if let cheats = self.cheatBaseCheats, cheats.isEmpty
+        {
+            searchCheatBaseTitle = NSLocalizedString("No Cheats in CheatBase", comment: "")
+            attributes = [.disabled]
+        }
+        
+        let addCheatMenu = UIMenu(children: [
+            UIAction(title: NSLocalizedString("New Cheat Code", comment: ""), image: UIImage(systemName: "square.and.pencil")) { [weak self] _ in
+                self?.addCheat()
+            },
+            
+            UIAction(title: searchCheatBaseTitle, image: UIImage(systemName: "magnifyingglass"), attributes: attributes) { [weak self] _ in
+                self?.searchCheatBase()
+            },
+        ])
+        
+        self.navigationItem.rightBarButtonItem?.target = nil
+        self.navigationItem.rightBarButtonItem?.action = nil
+        
+        self.navigationItem.rightBarButtonItem?.menu = addCheatMenu
+    }
 }
 
 //MARK: - Managing Cheats -
@@ -123,9 +150,28 @@ private extension CheatsViewController
     }
     
     @available(iOS 14, *)
+    func fetchCheatBaseCheats()
+    {
+        Task {
+            do
+            {
+                let cheatBase = try CheatBase()
+                let cheats = try await cheatBase.cheats(for: self.game) ?? []
+                self.cheatBaseCheats = cheats
+                
+                self.updateAddCheatMenu()
+            }
+            catch
+            {
+                print("[RSTLog] Failed to prefetch cheats from CheatBase:", error)
+            }
+        }
+    }
+    
+    @available(iOS 14, *)
     func searchCheatBase()
     {
-        var rootView = CheatBaseView(game: self.game)
+        var rootView = CheatBaseView(game: self.game, cheats: self.cheatBaseCheats)
         rootView.cancellationHandler = { [weak self] in
             self?.presentedViewController?.dismiss(animated: true)
         }

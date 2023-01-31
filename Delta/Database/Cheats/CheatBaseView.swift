@@ -14,10 +14,17 @@ extension CheatBaseView
     private class ViewModel: ObservableObject
     {
         @Published
-        private(set) var database: CheatBase?
-        
-        @Published
-        private(set) var allCheats: [CheatMetadata]?
+        var allCheats: [CheatMetadata]? {
+            didSet {
+                guard let cheats = allCheats else {
+                    self.cheatsByCategory = nil
+                    return
+                }
+                
+                let cheatsByCategory = Dictionary(grouping: cheats, by: { $0.category }).sorted { $0.key.id < $1.key.id }
+                self.cheatsByCategory = cheatsByCategory
+            }
+        }
         
         @Published
         private(set) var cheatsByCategory: [(CheatCategory, [CheatMetadata])]?
@@ -42,14 +49,9 @@ extension CheatBaseView
             
             do
             {
-                let database = try CheatBase()
-                self.database = database
-                
+                let database = try CheatBase()                
                 let cheats = try await database.cheats(for: game) ?? []
                 self.allCheats = cheats
-                                
-                let cheatsByCategory = Dictionary(grouping: cheats, by: { $0.category }).sorted { $0.key.id < $1.key.id }
-                self.cheatsByCategory = cheatsByCategory
             }
             catch
             {
@@ -238,6 +240,15 @@ struct CheatBaseView: View
         .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .center)
         .foregroundColor(.gray)
         .padding()
+    }
+    
+    init(game: Game, cheats: [CheatMetadata]? = nil)
+    {
+        self.game = game
+        
+        let viewModel = ViewModel()
+        viewModel.allCheats = cheats
+        self._viewModel = StateObject(wrappedValue: viewModel)
     }
 }
 
