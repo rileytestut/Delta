@@ -11,6 +11,7 @@ import CoreData
 import SwiftUI
 
 import DeltaCore
+import MelonDSDeltaCore
 
 import Roxas
 
@@ -113,6 +114,9 @@ private extension CheatsViewController
     @available(iOS 14, *) @MainActor
     func updateAddCheatMenu()
     {
+        // CheatBase only contains DS cheats for now, so hide option completely for other systems.
+        guard self.game.type == .ds else { return }
+        
         var searchCheatBaseTitle = NSLocalizedString("Search CheatBase", comment: "")
         var attributes: UIMenuElement.Attributes = []
         
