@@ -45,6 +45,7 @@ private extension SettingsViewController
     enum CreditsRow: Int, CaseIterable
     {
         case riley
+        case shane
         case caroline
         case grant
         case litRitt
@@ -413,6 +414,7 @@ extension SettingsViewController
             switch row
             {
             case .riley: self.openTwitter(username: "rileytestut")
+            case .shane: self.openTwitter(username: "shanegillio")
             case .caroline: self.openTwitter(username: "1carolinemoore")
             case .grant: self.openTwitter(username: "grantgliner")
             case .litRitt: self.openTwitter(username: "litritt_z")
