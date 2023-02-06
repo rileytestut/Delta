@@ -8,6 +8,8 @@
 
 import SwiftUI
 
+import enum SQLite.Result
+
 @available(iOS 14, *)
 extension CheatBaseView
 {
@@ -212,8 +214,17 @@ struct CheatBaseView: View
                 Text("Unable to Load Cheats")
                     .font(.title)
                 
-                Text(error.localizedDescription)
-                    .font(.callout)
+                if let error = error as? SQLite.Result
+                {
+                    // SQLite.Result implements CustomStringConvertible.description, but not localizedDescription.
+                    Text(String(describing: error))
+                        .font(.callout)
+                }
+                else
+                {
+                    Text(error.localizedDescription)
+                        .font(.callout)
+                }
             }
             else if let filteredCheats = viewModel.filteredCheats, filteredCheats.isEmpty
             {

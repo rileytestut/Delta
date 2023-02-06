@@ -80,6 +80,8 @@ class CheatBase: GamesDatabase
     override init() throws
     {
         let fileURL = DatabaseManager.cheatBaseURL
+        guard FileManager.default.fileExists(atPath: fileURL.path) else { throw GamesDatabase.Error.doesNotExist }
+        
         self.connection = try Connection(fileURL.path)
         
         try super.init()

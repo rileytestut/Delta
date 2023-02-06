@@ -57,9 +57,17 @@ extension VirtualTable
 
 extension GamesDatabase
 {
-    enum Error: Swift.Error
+    enum Error: LocalizedError
     {
         case doesNotExist
+        
+        var errorDescription: String? {
+            switch self
+            {
+            case .doesNotExist:
+                return NSLocalizedString("The SQLite database could not be found.", comment: "")
+            }
+        }
     }
 }
 
