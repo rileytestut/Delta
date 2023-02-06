@@ -425,7 +425,7 @@ extension SettingsViewController
             case .shane: self.openTwitter(username: "shanegillio")
             case .caroline: self.openTwitter(username: "1carolinemoore")
             case .grant: self.openTwitter(username: "grantgliner")
-            case .litRitt: self.openTwitter(username: "litritt_z")
+            case .litRitt: self.openTwitter(username: "lit_ritt")
             case .contributors:
                 guard #available(iOS 14, *) else { return }
                 self.showContributors()
