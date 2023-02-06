@@ -49,6 +49,7 @@ private extension SettingsViewController
         case caroline
         case grant
         case litRitt
+        case contributors
         case softwareLicenses
     }
 }
@@ -279,6 +280,13 @@ private extension SettingsViewController
             }
         }
     }
+    
+    @available(iOS 14, *)
+    func showContributors()
+    {
+        let hostingController = ContributorsView.makeViewController()
+        self.navigationController?.pushViewController(hostingController, animated: true)
+    }
 }
 
 private extension SettingsViewController
@@ -418,6 +426,10 @@ extension SettingsViewController
             case .caroline: self.openTwitter(username: "1carolinemoore")
             case .grant: self.openTwitter(username: "grantgliner")
             case .litRitt: self.openTwitter(username: "litritt_z")
+            case .contributors:
+                guard #available(iOS 14, *) else { return }
+                self.showContributors()
+                
             case .softwareLicenses: break
             }
         }
@@ -425,13 +437,35 @@ extension SettingsViewController
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
     {
+    primary:
         switch Section(rawValue: indexPath.section)!
         {
-        #if !BETA
-        case .credits where indexPath.row == CreditsRow.litRitt.rawValue: return 0.0
-        #endif
-        default: return super.tableView(tableView, heightForRowAt: indexPath)
+        case .credits:
+            let row = CreditsRow(rawValue: indexPath.row)!
+            switch row
+            {
+            case .grant:
+                // Hide row on iOS 14 and above
+                guard #available(iOS 14, *) else { break primary }
+                return 0.0
+                
+            case .litRitt:
+                // Hide row on iOS 14 and above
+                guard #available(iOS 14, *) else { break primary }
+                return 0.0
+                
+            case .contributors:
+                // Hide row on iOS 13 and below
+                guard #unavailable(iOS 14) else { break primary }
+                return 0.0
+                
+            default: break
+            }
+            
+        default: break
         }
+        
+        return super.tableView(tableView, heightForRowAt: indexPath)
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String?
