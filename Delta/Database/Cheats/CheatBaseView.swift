@@ -105,7 +105,7 @@ struct CheatBaseView: View
                 placeholderView()
             }
             .alert(item: $activationHintCheat) { cheat in
-                Alert(title: Text("Activation Hint"),
+                Alert(title: Text("How to Activate"),
                       message: Text(cheat.activationHint ?? ""),
                       dismissButton: .default(Text("OK")))
             }
