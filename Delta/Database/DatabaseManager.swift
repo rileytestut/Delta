@@ -263,8 +263,19 @@ private extension DatabaseManager
                 
                 if #available(iOS 14, *), !FileManager.default.fileExists(atPath: DatabaseManager.cheatBaseURL.path) || CheatBase.cheatsVersion != CheatBase.previousCheatsVersion
                 {
-                    guard let bundleURL = Bundle.main.url(forResource: "cheatbase", withExtension: "sqlite") else { throw GamesDatabase.Error.doesNotExist }
-                    try FileManager.default.copyItem(at: bundleURL, to: DatabaseManager.cheatBaseURL, shouldReplace: true)
+                    guard let archiveURL = Bundle.main.url(forResource: "cheatbase", withExtension: "zip") else { throw GamesDatabase.Error.doesNotExist }
+                    
+                    let temporaryDirectoryURL = FileManager.default.uniqueTemporaryURL()
+                    try FileManager.default.createDirectory(at: temporaryDirectoryURL, withIntermediateDirectories: true)
+                    defer {
+                        try? FileManager.default.removeItem(at: temporaryDirectoryURL)
+                    }
+                    
+                    // Unzip to temporaryDirectoryURL first to ensure we don't accidentally unzip other items into DatabaseManager.cheatBaseURL directory (e.g. __MACOSX directory).
+                    try FileManager.default.unzipItem(at: archiveURL, to: temporaryDirectoryURL, skipCRC32: true) // skipCRC32 to avoid ~10 second extraction.
+                    
+                    let extractedDatabaseURL = temporaryDirectoryURL.appendingPathComponent("cheatbase.sqlite")
+                    try FileManager.default.copyItem(at: extractedDatabaseURL, to: DatabaseManager.cheatBaseURL, shouldReplace: true)
                 }
                 
                 self.gamesDatabase = try GamesDatabase()
