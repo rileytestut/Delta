@@ -151,6 +151,9 @@ private extension MelonDSCoreSettingsViewController
         switch section
         {
         case .performance:
+            // Hide AltJIT section for public builds.
+            guard isBeta else { return true }
+            
             guard Settings.preferredCore(for: .ds) == MelonDS.core else { return true }
             return !UIDevice.current.supportsJIT
             
