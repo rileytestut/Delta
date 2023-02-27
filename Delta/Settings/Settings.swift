@@ -70,6 +70,9 @@ struct Settings
         #if !BETA
         // Manually set MelonDS as preferred DS core in case DeSmuME is cached from a previous version.
         UserDefaults.standard.set(MelonDS.core.identifier, forKey: Settings.preferredCoreSettingsKey(for: .ds))
+        
+        // Manually disable AltJIT for public builds.
+        UserDefaults.standard.isAltJITEnabled = false
         #endif
     }
 }
