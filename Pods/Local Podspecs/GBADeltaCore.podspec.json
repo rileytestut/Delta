@@ -5,7 +5,7 @@
   "description": "iOS framework that wraps VBA-M to allow playing Game Boy Advance games with Delta emulator.",
   "homepage": "https://github.com/rileytestut/GBADeltaCore",
   "platforms": {
-    "ios": "12.0"
+    "ios": "14.0"
   },
   "source": {
     "git": "https://github.com/rileytestut/GBADeltaCore.git"

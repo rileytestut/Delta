@@ -14,8 +14,8 @@
         "package": "DeltaCore",
         "repositoryURL": "https://github.com/rileytestut/DeltaCore.git",
         "state": {
-          "branch": "main",
-          "revision": "27a574a46238817084f80d811b3e6c2884d9cdc0",
+          "branch": "ios14",
+          "revision": "602cf730167692b68a0bfa679756ed39f92f5765",
           "version": null
         }
       },
