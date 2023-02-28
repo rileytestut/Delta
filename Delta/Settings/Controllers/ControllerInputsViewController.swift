@@ -40,6 +40,8 @@ class ControllerInputsViewController: UIViewController
     
     private var activeCalloutView: InputCalloutView?
     
+    private var _didLayoutSubviews = false
+    
     @IBOutlet private var actionsMenuViewControllerHeightConstraint: NSLayoutConstraint!
     @IBOutlet private var cancelTapGestureRecognizer: UITapGestureRecognizer!
     
@@ -65,7 +67,15 @@ class ControllerInputsViewController: UIViewController
         
         self.gameViewController.controllerView.addReceiver(self)
         
-        self.navigationController?.navigationBar.barStyle = .black
+        if let navigationController = self.navigationController, #available(iOS 13, *)
+        {
+            navigationController.overrideUserInterfaceStyle = .dark
+            navigationController.navigationBar.scrollEdgeAppearance = navigationController.navigationBar.standardAppearance // Fixes invisible navigation bar on iPad.
+        }
+        else
+        {
+            self.navigationController?.navigationBar.barStyle = .black
+        }
         
         NSLayoutConstraint.activate([self.gameViewController.gameView.centerYAnchor.constraint(equalTo: self.actionsMenuViewController.view.centerYAnchor)])
         
@@ -81,6 +91,23 @@ class ControllerInputsViewController: UIViewController
         {
             self.actionsMenuViewControllerHeightConstraint.constant = self.actionsMenuViewController.preferredContentSize.height
         }
+        
+        if let window = self.view.window, !_didLayoutSubviews
+        {
+            var traits = DeltaCore.ControllerSkin.Traits.defaults(for: window)
+            traits.orientation = .portrait
+            
+            if traits.device == .ipad
+            {
+                // Use standard iPhone skins instead of iPad skins.
+                traits.device = .iphone
+                traits.displayType = .standard
+            }
+            
+            self.gameViewController.controllerView.overrideControllerSkinTraits = traits
+            
+            _didLayoutSubviews = true
+        }
     }
     
     override func viewDidAppear(_ animated: Bool)
@@ -91,6 +118,9 @@ class ControllerInputsViewController: UIViewController
         {
             self.prepareCallouts()
         }
+        
+        // controllerView must be first responder to receive keyboard presses.
+        self.gameViewController.controllerView.becomeFirstResponder()
     }
 }
 
@@ -183,6 +213,10 @@ private extension ControllerInputsViewController
         listMenuViewController.title = NSLocalizedString("Game System", comment: "")
         
         let navigationController = UINavigationController(rootViewController: listMenuViewController)
+        if #available(iOS 13, *)
+        {
+            navigationController.navigationBar.scrollEdgeAppearance = navigationController.navigationBar.standardAppearance
+        }
         
         let popoverMenuController = PopoverMenuController(popoverViewController: navigationController)
         self.navigationItem.popoverMenuController = popoverMenuController
@@ -403,6 +437,7 @@ private extension ControllerInputsViewController
         }
         
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alertController.popoverPresentationController?.barButtonItem = sender
         alertController.addAction(.cancel)
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Reset Controls to Defaults", comment: ""), style: .destructive, handler: { (action) in
             reset()
@@ -416,6 +451,12 @@ extension ControllerInputsViewController: UIGestureRecognizerDelegate
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool
     {
         return self.activeCalloutView != nil
+    }
+    
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool
+    {
+        // Necessary to prevent other gestures (e.g. GameViewController's resumeEmulationIfNeeded() tap gesture) from cancelling tap.
+        return true
     }
     
     @IBAction private func handleTapGesture(_ tapGestureRecognizer: UITapGestureRecognizer)
@@ -532,13 +573,19 @@ extension ControllerInputsViewController: GameControllerReceiver
 {
     func gameController(_ gameController: GameController, didActivate controllerInput: DeltaCore.Input, value: Double)
     {
-        guard self.isViewLoaded else { return }
+        guard self.isViewLoaded, value > 0.9 else { return }
         
         switch gameController
         {
         case self.gameViewController.controllerView:
             if let calloutView = self.calloutViews[AnyInput(controllerInput)]
             {
+                if controllerInput.isContinuous
+                {
+                    // Make sure we only toggle calloutView once in a single gesture.
+                    guard calloutView.state == .normal else { break }
+                }
+                
                 self.toggle(calloutView)
             }
             
@@ -560,5 +607,17 @@ extension ControllerInputsViewController: SMCalloutViewDelegate
         guard let calloutView = calloutView as? InputCalloutView else { return }
 
         self.toggle(calloutView)
+    }
+}
+
+extension ControllerInputsViewController: UIAdaptivePresentationControllerDelegate
+{
+    func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle
+    {
+        switch (traitCollection.horizontalSizeClass, traitCollection.verticalSizeClass)
+        {
+        case (.regular, .regular): return .formSheet // Regular width and height, so display as form sheet
+        default: return .fullScreen // Compact width and/or height, so display full screen
+        }
     }
 }

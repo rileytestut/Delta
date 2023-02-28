@@ -38,6 +38,8 @@ extension Settings
         case syncingService
         case isButtonHapticFeedbackEnabled
         case isThumbstickHapticFeedbackEnabled
+        case isAltJITEnabled
+        case respectSilentMode
     }
 }
 
@@ -60,8 +62,18 @@ struct Settings
                         #keyPath(UserDefaults.isThumbstickHapticFeedbackEnabled): true,
                         #keyPath(UserDefaults.sortSaveStatesByOldestFirst): true,
                         #keyPath(UserDefaults.isPreviewsEnabled): true,
+                        #keyPath(UserDefaults.isAltJITEnabled): false,
+                        #keyPath(UserDefaults.respectSilentMode): true,
                         Settings.preferredCoreSettingsKey(for: .ds): MelonDS.core.identifier] as [String : Any]
         UserDefaults.standard.register(defaults: defaults)
+        
+        #if !BETA
+        // Manually set MelonDS as preferred DS core in case DeSmuME is cached from a previous version.
+        UserDefaults.standard.set(MelonDS.core.identifier, forKey: Settings.preferredCoreSettingsKey(for: .ds))
+        
+        // Manually disable AltJIT for public builds.
+        UserDefaults.standard.isAltJITEnabled = false
+        #endif
     }
 }
 
@@ -187,6 +199,28 @@ extension Settings
         get {
             let isPreviewsEnabled = UserDefaults.standard.isPreviewsEnabled
             return isPreviewsEnabled
+        }
+    }
+    
+    static var isAltJITEnabled: Bool {
+        get {
+            let isAltJITEnabled = UserDefaults.standard.isAltJITEnabled
+            return isAltJITEnabled
+        }
+        set {
+            UserDefaults.standard.isAltJITEnabled = newValue
+            NotificationCenter.default.post(name: .settingsDidChange, object: nil, userInfo: [NotificationUserInfoKey.name: Name.isAltJITEnabled])
+        }
+    }
+    
+    static var respectSilentMode: Bool {
+        get {
+            let respectSilentMode = UserDefaults.standard.respectSilentMode
+            return respectSilentMode
+        }
+        set {
+            UserDefaults.standard.respectSilentMode = newValue
+            NotificationCenter.default.post(name: .settingsDidChange, object: nil, userInfo: [NotificationUserInfoKey.name: Name.respectSilentMode])
         }
     }
     
@@ -385,4 +419,8 @@ private extension UserDefaults
     @NSManaged var sortSaveStatesByOldestFirst: Bool
     
     @NSManaged var isPreviewsEnabled: Bool
+    
+    @NSManaged var isAltJITEnabled: Bool
+    
+    @NSManaged var respectSilentMode: Bool
 }

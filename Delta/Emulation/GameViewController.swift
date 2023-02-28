@@ -10,11 +10,13 @@ import UIKit
 
 import DeltaCore
 import GBADeltaCore
+import MelonDSDeltaCore
 import Systems
 
 import struct DSDeltaCore.DS
 
 import Roxas
+import AltKit
 
 private var kvoContext = 0
 
@@ -110,6 +112,7 @@ class GameViewController: DeltaCore.GameViewController
             }
             
             self.updateControllers()
+            self.updateAudio()
             
             self.presentedGyroAlert = false
         }
@@ -167,6 +170,8 @@ class GameViewController: DeltaCore.GameViewController
     private var isGyroActive = false
     private var presentedGyroAlert = false
     
+    private var presentedJITAlert = false
+    
     override var shouldAutorotate: Bool {
         return !self.isGyroActive
     }
@@ -205,6 +210,8 @@ class GameViewController: DeltaCore.GameViewController
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.didDeactivateGyro(with:)), name: GBA.didDeactivateGyroNotification, object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.emulationDidQuit(with:)), name: EmulatorCore.emulationDidQuitNotification, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.didEnableJIT(with:)), name: ServerManager.didEnableJITNotification, object: nil)
     }
     
     deinit
@@ -330,12 +337,18 @@ extension GameViewController
             
             UserDefaults.standard.desmumeDeprecatedAlertCount += 1
         }
+        else if self.emulatorCore?.deltaCore == MelonDS.core, ProcessInfo.processInfo.isJITAvailable
+        {
+            self.showJITEnabledAlert()
+        }
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator)
     {
         super.viewWillTransition(to: size, with: coordinator)
         
+        guard UIApplication.shared.applicationState != .background else { return }
+                
         coordinator.animate(alongsideTransition: { (context) in
             self.updateControllerSkin()
         }, completion: nil)        
@@ -474,6 +487,13 @@ extension GameViewController
                 }
                 
                 self._isLoadingSaveState = false
+                
+                if self.emulatorCore?.deltaCore == MelonDS.core, ProcessInfo.processInfo.isJITAvailable
+                {
+                    self.transitionCoordinator?.animate(alongsideTransition: nil, completion: { (context) in
+                        self.showJITEnabledAlert()
+                    })
+                }
             }
             
         case "unwindToGames":
@@ -646,12 +666,14 @@ private extension GameViewController
         else if let controllerSkin = DeltaCore.ControllerSkin.standardControllerSkin(for: game.type), controllerSkin.hasTouchScreen(for: traits)
         {
             var touchControllerSkin = TouchControllerSkin(controllerSkin: controllerSkin)
-            touchControllerSkin.layoutGuide = self.view.safeAreaLayoutGuide
             
-            switch traits.orientation
+            if self.view.bounds.width > self.view.bounds.height
             {
-            case .portrait: touchControllerSkin.screenLayoutAxis = .vertical
-            case .landscape: touchControllerSkin.screenLayoutAxis = .horizontal
+                touchControllerSkin.screenLayoutAxis = .horizontal
+            }
+            else
+            {
+                touchControllerSkin.screenLayoutAxis = .vertical
             }
             
             self.controllerView.controllerSkin = touchControllerSkin
@@ -914,6 +936,16 @@ extension GameViewController: CheatsViewControllerDelegate
     }
 }
 
+//MARK: - Audio -
+/// Audio
+private extension GameViewController
+{
+    func updateAudio()
+    {
+        self.emulatorCore?.audioManager.respectsSilentMode = Settings.respectSilentMode
+    }
+}
+
 //MARK: - Sustain Buttons -
 private extension GameViewController
 {
@@ -934,6 +966,8 @@ private extension GameViewController
         UIView.animate(withDuration: 0.4) {
             self.sustainButtonsBlurView.effect = blurEffect
             self.sustainButtonsBackgroundView.alpha = 1.0
+        } completion: { _ in
+            self.controllerView.becomeFirstResponder()
         }
     }
     
@@ -1061,6 +1095,8 @@ extension GameViewController: GameViewControllerDelegate
         else if self.presentedViewController == nil
         {
             self.pauseEmulation()
+            self.controllerView.resignFirstResponder()
+            
             self.performSegue(withIdentifier: "pause", sender: gameController)
         }
     }
@@ -1084,6 +1120,48 @@ private extension GameViewController
         toastView.textLabel.textAlignment = .center
         toastView.presentationEdge = .top
         toastView.show(in: self.view, duration: duration)
+    }
+    
+    func showJITEnabledAlert()
+    {
+        guard !self.presentedJITAlert, self.presentedViewController == nil, self.game != nil else { return }
+        self.presentedJITAlert = true
+        
+        func presentToastView()
+        {
+            let detailText: String?
+            let duration: TimeInterval
+            
+            if UserDefaults.standard.jitEnabledAlertCount < 3
+            {
+                detailText = NSLocalizedString("You can now Fast Forward DS games up to 3x speed.", comment: "")
+                duration = 5.0
+            }
+            else
+            {
+                detailText = nil
+                duration = 2.0
+            }
+            
+            let toastView = RSTToastView(text: NSLocalizedString("JIT Compilation Enabled", comment: ""), detailText: detailText)
+            toastView.edgeOffset.vertical = 8
+            self.show(toastView, duration: duration)
+            
+            UserDefaults.standard.jitEnabledAlertCount += 1
+        }
+        
+        DispatchQueue.main.async {
+            if let transitionCoordinator = self.transitionCoordinator
+            {
+                transitionCoordinator.animate(alongsideTransition: nil) { (context) in
+                    presentToastView()
+                }
+            }
+            else
+            {
+                presentToastView()
+            }
+        }
     }
 }
 
@@ -1127,9 +1205,13 @@ private extension GameViewController
                 self.updateControllerSkin()
             }
             
-        case .translucentControllerSkinOpacity: self.controllerView.translucentControllerSkinOpacity = Settings.translucentControllerSkinOpacity
+        case .translucentControllerSkinOpacity:
+            self.controllerView.translucentControllerSkinOpacity = Settings.translucentControllerSkinOpacity
             
-        case .syncingService: break
+        case .respectSilentMode:
+            self.updateAudio()
+                
+        case .syncingService, .isAltJITEnabled: break
         }
     }
     
@@ -1207,6 +1289,60 @@ private extension GameViewController
         self.isGyroActive = false
     }
     
+    @objc func didEnableJIT(with notification: Notification)
+    {
+        DispatchQueue.main.async {
+            self.showJITEnabledAlert()
+        }
+        
+        DispatchQueue.global(qos: .utility).async {
+            guard let emulatorCore = self.emulatorCore, let emulatorBridge = emulatorCore.deltaCore.emulatorBridge as? MelonDSEmulatorBridge, !emulatorBridge.isJITEnabled
+            else { return }
+            
+            guard emulatorCore.state != .stopped else {
+                // Emulator core is not running, which means we can set
+                // isJITEnabled to true without resetting the core.
+                emulatorBridge.isJITEnabled = true
+                return
+            }
+            
+            let isVideoEnabled = emulatorCore.videoManager.isEnabled
+            emulatorCore.videoManager.isEnabled = false
+            
+            let isRunning = (emulatorCore.state == .running)
+            if isRunning
+            {
+                self.pauseEmulation()
+            }
+            
+            let temporaryFileURL = FileManager.default.uniqueTemporaryURL()
+            
+            let saveState = emulatorCore.saveSaveState(to: temporaryFileURL)
+            emulatorCore.stop()
+            
+            emulatorBridge.isJITEnabled = true
+            
+            emulatorCore.start()
+            emulatorCore.pause()
+            
+            do
+            {
+                try emulatorCore.load(saveState)
+            }
+            catch
+            {
+                print("Failed to load save state after enabling JIT.", error)
+            }
+            
+            if isRunning
+            {
+                self.resumeEmulation()
+            }
+            
+            emulatorCore.videoManager.isEnabled = isVideoEnabled
+        }
+    }
+    
     @objc func emulationDidQuit(with notification: Notification)
     {
         DispatchQueue.main.async {
@@ -1231,4 +1367,6 @@ private extension GameViewController
 private extension UserDefaults
 {
     @NSManaged var desmumeDeprecatedAlertCount: Int
+    
+    @NSManaged var jitEnabledAlertCount: Int
 }

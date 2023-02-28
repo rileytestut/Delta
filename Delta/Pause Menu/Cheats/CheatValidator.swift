@@ -12,13 +12,26 @@ import DeltaCore
 
 extension CheatValidator
 {
-    enum Error: Swift.Error
+    enum Error: LocalizedError
     {
         case invalidCode
         case invalidName
         case invalidGame
         case duplicateName
         case duplicateCode
+        case unknownCheatType
+        
+        var errorDescription: String? {
+            switch self
+            {
+            case .invalidCode: return NSLocalizedString("The cheat code isn't in the correct format.", comment: "")
+            case .invalidName: return NSLocalizedString("The name of this cheat is invalid.", comment: "")
+            case .invalidGame: return NSLocalizedString("There is no associated game with this cheat.", comment: "")
+            case .duplicateName: return NSLocalizedString("A cheat already exists with this name.", comment: "")
+            case .duplicateCode: return NSLocalizedString("A cheat already exists with this code.", comment: "")
+            case .unknownCheatType: return NSLocalizedString("Delta does not support this cheat type.", comment: "")
+            }
+        }
     }
 }
 

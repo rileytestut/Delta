@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXAggregateTarget section */
@@ -165,6 +165,20 @@
 		BFFDF03723E3BB2600931B96 /* libSnes9x.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BFFDF03623E3BB2600931B96 /* libSnes9x.a */; };
 		BFFDF03F23E3C28A00931B96 /* libGambatte.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BFFDF03D23E3C0F000931B96 /* libGambatte.a */; };
 		BFFDF04623E3D3A600931B96 /* libMupen64Plus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BFFDF04523E3D3A600931B96 /* libMupen64Plus.a */; };
+		D524F4A1273DE9A100D500B2 /* AltKit in Frameworks */ = {isa = PBXBuildFile; productRef = D524F4A0273DE9A100D500B2 /* AltKit */; };
+		D524F4A3273DE9C000D500B2 /* ProcessInfo+JIT.swift in Sources */ = {isa = PBXBuildFile; fileRef = D524F4A2273DE9C000D500B2 /* ProcessInfo+JIT.swift */; };
+		D524F4A5273DEBB400D500B2 /* ServerManager+Delta.swift in Sources */ = {isa = PBXBuildFile; fileRef = D524F4A4273DEBB400D500B2 /* ServerManager+Delta.swift */; };
+		D5011C48281B6E8B00A0760B /* CharacterSet+Filename.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5011C47281B6E8B00A0760B /* CharacterSet+Filename.swift */; };
+		D53415A5298C782A00FD67B1 /* ContributorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53415A4298C782A00FD67B1 /* ContributorsView.swift */; };
+		D53415A7298C78BC00FD67B1 /* Contributors.plist in Resources */ = {isa = PBXBuildFile; fileRef = D53415A6298C78BC00FD67B1 /* Contributors.plist */; };
+		D5864970297734280081477E /* CheatMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586496F297734280081477E /* CheatMetadata.swift */; };
+		D586497229774ABD0081477E /* CheatBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586497129774ABD0081477E /* CheatBase.swift */; };
+		D5864978297756CE0081477E /* CheatBaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5864977297756CE0081477E /* CheatBaseView.swift */; };
+		D5A98CE2284EF14B00E023E5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A98CE1284EF14B00E023E5 /* SceneDelegate.swift */; };
+		D5AAF27729884F8600F21ACF /* CheatDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5AAF27629884F8600F21ACF /* CheatDevice.swift */; };
+		D5D797E6298D946200738869 /* Contributor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D797E5298D946200738869 /* Contributor.swift */; };
+		D5D797E9298DCC7300738869 /* cheatbase.zip in Resources */ = {isa = PBXBuildFile; fileRef = D5D797E7298DC9E200738869 /* cheatbase.zip */; };
+		D5F82FB82981D3AC00B229AF /* LegacySearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F82FB72981D3AC00B229AF /* LegacySearchBar.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -358,6 +372,19 @@
 		BFFDF03D23E3C0F000931B96 /* libGambatte.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libGambatte.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFFDF04523E3D3A600931B96 /* libMupen64Plus.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libMupen64Plus.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C786AF1D2DDB6223BE2063CC /* Pods-Delta.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Delta.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Delta/Pods-Delta.debug.xcconfig"; sourceTree = "<group>"; };
+		D524F4A2273DE9C000D500B2 /* ProcessInfo+JIT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProcessInfo+JIT.swift"; sourceTree = "<group>"; };
+		D524F4A4273DEBB400D500B2 /* ServerManager+Delta.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ServerManager+Delta.swift"; sourceTree = "<group>"; };
+		D5011C47281B6E8B00A0760B /* CharacterSet+Filename.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CharacterSet+Filename.swift"; sourceTree = "<group>"; };
+		D53415A4298C782A00FD67B1 /* ContributorsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContributorsView.swift; sourceTree = "<group>"; };
+		D53415A6298C78BC00FD67B1 /* Contributors.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Contributors.plist; sourceTree = "<group>"; };
+		D586496F297734280081477E /* CheatMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheatMetadata.swift; sourceTree = "<group>"; };
+		D586497129774ABD0081477E /* CheatBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheatBase.swift; sourceTree = "<group>"; };
+		D5864977297756CE0081477E /* CheatBaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheatBaseView.swift; sourceTree = "<group>"; };
+		D5A98CE1284EF14B00E023E5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		D5AAF27629884F8600F21ACF /* CheatDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheatDevice.swift; sourceTree = "<group>"; };
+		D5D797E5298D946200738869 /* Contributor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contributor.swift; sourceTree = "<group>"; };
+		D5D797E7298DC9E200738869 /* cheatbase.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = cheatbase.zip; sourceTree = "<group>"; };
+		D5F82FB72981D3AC00B229AF /* LegacySearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacySearchBar.swift; sourceTree = "<group>"; };
 		DC866E433B3BA9AE18ABA1EC /* libPods-Delta.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Delta.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -373,6 +400,7 @@
 				BFDCA1E6244EBAA900B8FBDB /* liblibDeSmuME.a in Frameworks */,
 				BFCADF1E25D22FE2008D78FB /* Systems.framework in Frameworks */,
 				BF69FBC923E3A8380051BEEA /* libNestopia.a in Frameworks */,
+				D524F4A1273DE9A100D500B2 /* AltKit in Frameworks */,
 				1FA4ABA79AB72914FE414A61 /* libPods-Delta.a in Frameworks */,
 				BFFDF03F23E3C28A00931B96 /* libGambatte.a in Frameworks */,
 				BFFDF03723E3BB2600931B96 /* libSnes9x.a in Frameworks */,
@@ -403,6 +431,9 @@
 				BF647A6922FB8FCE0061D76D /* Bundle+SwizzleBundleID.swift */,
 				BFD1EF3F2336BD8800D197CF /* UIDevice+Processor.swift */,
 				BFE56E1823EB7BE00014FECD /* UIImage+SymbolFallback.swift */,
+				D524F4A2273DE9C000D500B2 /* ProcessInfo+JIT.swift */,
+				D524F4A4273DEBB400D500B2 /* ServerManager+Delta.swift */,
+				D5011C47281B6E8B00A0760B /* CharacterSet+Filename.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -514,6 +545,7 @@
 				BF59426D1E09BC5D0051894B /* DatabaseManager.swift */,
 				BF5942711E09BC690051894B /* Model */,
 				BF95E2751E49763D0030E7AD /* OpenVGDB */,
+				D586496E297734060081477E /* Cheats */,
 			);
 			path = Database;
 			sourceTree = "<group>";
@@ -718,6 +750,7 @@
 				BF11734E1DA32CEC00047DF8 /* Controllers */,
 				BF1DAD5B1D9F574900E752A7 /* Controller Skins */,
 				BF48F74C219A16C100BC2FC1 /* Syncing */,
+				D5D797E4298D944C00738869 /* Contributors */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -768,6 +801,8 @@
 			children = (
 				BF6BB2451BB73FE800CCF94A /* Assets.xcassets */,
 				BF02D5D91DDEBB3000A5E131 /* openvgdb.sqlite */,
+				D5D797E7298DC9E200738869 /* cheatbase.zip */,
+				D53415A6298C78BC00FD67B1 /* Contributors.plist */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -817,6 +852,7 @@
 			isa = PBXGroup;
 			children = (
 				BFFA71DC1AAC406100EE9DD1 /* AppDelegate.swift */,
+				D5A98CE1284EF14B00E023E5 /* SceneDelegate.swift */,
 				BFFA71E01AAC406100EE9DD1 /* Main.storyboard */,
 				BFFC46211D59848000AF2CC6 /* Launch */,
 				BF46894D1AAC469800A2586D /* Game Selection */,
@@ -877,6 +913,27 @@
 			path = Launch;
 			sourceTree = "<group>";
 		};
+		D586496E297734060081477E /* Cheats */ = {
+			isa = PBXGroup;
+			children = (
+				D586496F297734280081477E /* CheatMetadata.swift */,
+				D5AAF27629884F8600F21ACF /* CheatDevice.swift */,
+				D586497129774ABD0081477E /* CheatBase.swift */,
+				D5864977297756CE0081477E /* CheatBaseView.swift */,
+				D5F82FB72981D3AC00B229AF /* LegacySearchBar.swift */,
+			);
+			path = Cheats;
+			sourceTree = "<group>";
+		};
+		D5D797E4298D944C00738869 /* Contributors */ = {
+			isa = PBXGroup;
+			children = (
+				D5D797E5298D946200738869 /* Contributor.swift */,
+				D53415A4298C782A00FD67B1 /* ContributorsView.swift */,
+			);
+			path = Contributors;
+			sourceTree = "<group>";
+		};
 		FD1E8AE87FA2DB8793F7B937 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -908,6 +965,7 @@
 			);
 			name = Delta;
 			packageProductDependencies = (
+				D524F4A0273DE9A100D500B2 /* AltKit */,
 			);
 			productName = Delta;
 			productReference = BFFA71D71AAC406100EE9DD1 /* Delta.app */;
@@ -957,6 +1015,9 @@
 				Base,
 			);
 			mainGroup = BFFA71CE1AAC406100EE9DD1;
+			packageReferences = (
+				D524F49F273DE9A100D500B2 /* XCRemoteSwiftPackageReference "AltKit" */,
+			);
 			productRefGroup = BFFA71D81AAC406100EE9DD1 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -973,12 +1034,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D5D797E9298DCC7300738869 /* cheatbase.zip in Resources */,
 				BFFA71E21AAC406100EE9DD1 /* Main.storyboard in Resources */,
 				BF6BF3211EB82362008E83CD /* GamesDatabase.storyboard in Resources */,
 				BFAB9F88219A4B670080EC7D /* GoogleService-Info.plist in Resources */,
 				BF3540001C5DA3C500C1184C /* PausePresentationControllerContentView.xib in Resources */,
 				BF5E7F461B9A652600AE44F8 /* Settings.storyboard in Resources */,
 				BF02D5DA1DDEBB3000A5E131 /* openvgdb.sqlite in Resources */,
+				D53415A7298C78BC00FD67B1 /* Contributors.plist in Resources */,
 				BF71CF8A1FE904B1001F1613 /* GameTableViewCell.xib in Resources */,
 				BFFC46461D59861000AF2CC6 /* LaunchScreen.storyboard in Resources */,
 				BF1F45AB21AF4B5800EF9895 /* SyncResultsViewController.storyboard in Resources */,
@@ -1114,6 +1177,7 @@
 				BF525EEA1FF6CD12004AA849 /* DeepLink.swift in Sources */,
 				BF8A334621A4926F00A42FD4 /* GameSyncStatusViewController.swift in Sources */,
 				BF59427E1E09BC830051894B /* Game.swift in Sources */,
+				D5011C48281B6E8B00A0760B /* CharacterSet+Filename.swift in Sources */,
 				BFE593CC21F3F8C2003412A6 /* _GameSave.swift in Sources */,
 				BF63A1A321A4AAAE00EE8F61 /* RecordSyncStatusViewController.swift in Sources */,
 				BFAA1FED1B8AA4FA00495943 /* Settings.swift in Sources */,
@@ -1137,8 +1201,10 @@
 				BF5942951E09BD1A0051894B /* NSManagedObjectContext+Conveniences.swift in Sources */,
 				BFC3628021ADE2BA00EF2BE6 /* UIAlertController+Error.swift in Sources */,
 				BF353FF91C5D870B00C1184C /* MenuItem.swift in Sources */,
+				D5D797E6298D946200738869 /* Contributor.swift in Sources */,
 				BFDB3418219E4B1700595A62 /* SyncStatusViewController.swift in Sources */,
 				BF18B61F1E2985F900F70067 /* UIAlertController+Importing.swift in Sources */,
+				D586497229774ABD0081477E /* CheatBase.swift in Sources */,
 				BFDD04F11D5E2C27002D450E /* GameCollectionViewController.swift in Sources */,
 				BFE4269E1D9C68E600DC913F /* SaveStatesStoryboardSegue.swift in Sources */,
 				BFFA71DD1AAC406100EE9DD1 /* AppDelegate.swift in Sources */,
@@ -1146,8 +1212,11 @@
 				BF59426B1E09BBD00051894B /* GridCollectionViewLayout.swift in Sources */,
 				BF6424851F5CBDC900D6AB44 /* UIView+ParentViewController.swift in Sources */,
 				BF04E6FF1DB8625C000F35D3 /* ControllerSkinsViewController.swift in Sources */,
+				D53415A5298C782A00FD67B1 /* ContributorsView.swift in Sources */,
 				BF5942891E09BC8B0051894B /* _GameCollection.swift in Sources */,
 				BF34FA111CF1899D006624C7 /* CheatTextView.swift in Sources */,
+				D524F4A5273DEBB400D500B2 /* ServerManager+Delta.swift in Sources */,
+				D5AAF27729884F8600F21ACF /* CheatDevice.swift in Sources */,
 				BF1F45AD21AF57BA00EF9895 /* HarmonyMetadataKey+Keys.swift in Sources */,
 				BFD1EF402336BD8800D197CF /* UIDevice+Processor.swift in Sources */,
 				BF71CF871FE90006001F1613 /* AppIconShortcutsViewController.swift in Sources */,
@@ -1156,6 +1225,7 @@
 				BF6BF31C1EB821A0008E83CD /* GamesDatabaseImportOption.swift in Sources */,
 				BFFA4C091E8A24D600D87934 /* GameTableViewCell.swift in Sources */,
 				BFFC46231D5984A000AF2CC6 /* LaunchViewController.swift in Sources */,
+				D5864970297734280081477E /* CheatMetadata.swift in Sources */,
 				BF8DDD241F4F6C880088A21B /* InputCalloutView.swift in Sources */,
 				BF5942701E09BC5D0051894B /* GamesDatabase.swift in Sources */,
 				BF34FA071CF0F510006624C7 /* EditCheatViewController.swift in Sources */,
@@ -1167,6 +1237,7 @@
 				BFFC461F1D59823500AF2CC6 /* GamesStoryboardSegue.swift in Sources */,
 				BF2B98E61C97E32F00F6D57D /* SaveStatesCollectionHeaderView.swift in Sources */,
 				BFC9B7391CEFCD34008629BB /* CheatsViewController.swift in Sources */,
+				D5864978297756CE0081477E /* CheatBaseView.swift in Sources */,
 				BF353FFF1C5DA3C500C1184C /* PausePresentationController.swift in Sources */,
 				BFFC464C1D5998D600AF2CC6 /* CheatTableViewCell.swift in Sources */,
 				BF5942941E09BD1A0051894B /* NSManagedObject+Conveniences.swift in Sources */,
@@ -1175,14 +1246,17 @@
 				BF797A2D1C2D339F00F1A000 /* UILabel+FontSize.swift in Sources */,
 				BF80E1D21F13117000847008 /* ControllerInputsViewController.swift in Sources */,
 				BF5942641E09BBB10051894B /* LoadControllerSkinImageOperation.swift in Sources */,
+				D5A98CE2284EF14B00E023E5 /* SceneDelegate.swift in Sources */,
 				BFE56E1923EB7BE00014FECD /* UIImage+SymbolFallback.swift in Sources */,
 				BF6EE5E91F7C5F860051AD6C /* _GameControllerInputMapping.swift in Sources */,
 				BF5942871E09BC8B0051894B /* _ControllerSkin.swift in Sources */,
 				BF95E2791E4982A10030E7AD /* GamesDatabaseBrowserViewController.swift in Sources */,
+				D524F4A3273DE9C000D500B2 /* ProcessInfo+JIT.swift in Sources */,
 				BFDCA1E9244F7E1000B8FBDB /* Delta5ToDelta6.xcmappingmodel in Sources */,
 				BFD097211D3A01B8005A44C2 /* SaveStatesViewController.swift in Sources */,
 				BF6EE5EB1F7C5F8F0051AD6C /* GameControllerInputMapping.swift in Sources */,
 				BF8A333421A484A000A42FD4 /* BadgedTableViewCell.swift in Sources */,
+				D5F82FB82981D3AC00B229AF /* LegacySearchBar.swift in Sources */,
 				BF3540021C5DA3D500C1184C /* PauseStoryboardSegue.swift in Sources */,
 				BF107EC41BF413F000E0C32C /* GamesViewController.swift in Sources */,
 				BF3D6C512202865F0083E05A /* Delta2ToDelta3.xcmappingmodel in Sources */,
@@ -1407,7 +1481,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.rileytestut.Delta;
 				PRODUCT_NAME = Delta;
 				SDKROOT = iphoneos;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -1422,11 +1497,11 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 43;
+				CURRENT_PROJECT_VERSION = 61;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "Delta/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.3;
+				MARKETING_VERSION = 1.4;
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" -DDEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.rileytestut.Delta;
 				PROVISIONING_PROFILE = "";
@@ -1438,6 +1513,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "Delta/Supporting Files/Delta-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -1451,21 +1527,23 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 43;
+				CURRENT_PROJECT_VERSION = 61;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "Delta/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.3;
+				MARKETING_VERSION = 1.4;
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" -DIMPACTOR";
 				PRODUCT_BUNDLE_IDENTIFIER = com.rileytestut.Delta;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				STRIP_INSTALLED_PRODUCT = YES;
 				STRIP_STYLE = "non-global";
+				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_INCLUDE_PATHS = "$(inherited) \"$(SRCROOT)/Cores/GPGXDeltaCore/Sources/GPGXBridge\"";
 				SWIFT_OBJC_BRIDGING_HEADER = "Delta/Supporting Files/Delta-Bridging-Header.h";
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -1509,6 +1587,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		D524F49F273DE9A100D500B2 /* XCRemoteSwiftPackageReference "AltKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/rileytestut/AltKit.git";
+			requirement = {
+				kind = revision;
+				revision = 2fd376df1c79ec06a5c80cc8933da027f65b3148;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D524F4A0273DE9A100D500B2 /* AltKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D524F49F273DE9A100D500B2 /* XCRemoteSwiftPackageReference "AltKit" */;
+			productName = AltKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		BF4828811F9027B600028B97 /* Delta.xcdatamodeld */ = {

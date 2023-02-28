@@ -47,6 +47,7 @@ class GamesViewController: UIViewController
     private let fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>
     
     private var searchController: RSTSearchController?
+    private lazy var importController: ImportController = self.makeImportController()
     
     private var syncingToastView: RSTToastView? {
         didSet {
@@ -57,6 +58,8 @@ class GamesViewController: UIViewController
         }
     }
     private var syncingProgressObservation: NSKeyValueObservation?
+    
+    @IBOutlet private var importButton: UIBarButtonItem!
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         fatalError("initWithNibName: not implemented")
@@ -114,16 +117,38 @@ extension GamesViewController
                 let navigationBarAppearance = navigationController.navigationBar.standardAppearance.copy()
                 navigationBarAppearance.backgroundEffect = UIBlurEffect(style: .dark)
                 navigationController.navigationBar.standardAppearance = navigationBarAppearance
+                navigationController.navigationBar.scrollEdgeAppearance = navigationBarAppearance
                 
                 let toolbarAppearance = navigationController.toolbar.standardAppearance.copy()
                 toolbarAppearance.backgroundEffect = UIBlurEffect(style: .dark)
-                navigationController.toolbar.standardAppearance = toolbarAppearance                
+                navigationController.toolbar.standardAppearance = toolbarAppearance
+                
+                if #available(iOS 15, *)
+                {
+                    navigationController.toolbar.scrollEdgeAppearance = toolbarAppearance
+                }
             }
             else
             {
                 navigationController.navigationBar.barStyle = .blackTranslucent
                 navigationController.toolbar.barStyle = .blackTranslucent
             }            
+        }
+        
+        if #available(iOS 14, *)
+        {
+            self.importController.presentingViewController = self
+            
+            let importActions = self.importController.makeActions().menuActions
+            let importMenu = UIMenu(title: NSLocalizedString("Import From…", comment: ""), image: UIImage(systemName: "square.and.arrow.down"), children: importActions)
+            self.importButton.menu = importMenu
+
+            self.importButton.action = nil
+            self.importButton.target = nil
+        }
+        else
+        {
+            self.importController.barButtonItem = self.importButton
         }
         
         self.prepareSearchController()
@@ -352,8 +377,8 @@ private extension GamesViewController
 /// Importing
 extension GamesViewController: ImportControllerDelegate
 {
-    @IBAction private func importFiles()
-    {        
+    private func makeImportController() -> ImportController
+    {
         var documentTypes = Set(System.registeredSystems.map { $0.gameType.rawValue })
         documentTypes.insert(kUTTypeZipArchive as String)
         documentTypes.insert("com.rileytestut.delta.skin")
@@ -373,7 +398,13 @@ extension GamesViewController: ImportControllerDelegate
         let importController = ImportController(documentTypes: documentTypes)
         importController.delegate = self
         importController.importOptions = [itunesImportOption]
-        self.present(importController, animated: true, completion: nil)
+        
+        return importController
+    }
+    
+    @IBAction private func importFiles()
+    {
+        self.present(self.importController, animated: true, completion: nil)
     }
     
     func importController(_ importController: ImportController, didImportItemsAt urls: Set<URL>, errors: [Error])

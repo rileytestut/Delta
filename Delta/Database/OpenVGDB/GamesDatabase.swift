@@ -57,16 +57,26 @@ extension VirtualTable
 
 extension GamesDatabase
 {
-    enum Error: Swift.Error
+    enum Error: LocalizedError
     {
         case doesNotExist
-        case connection(Swift.Error)
+        
+        var errorDescription: String? {
+            switch self
+            {
+            case .doesNotExist:
+                return NSLocalizedString("The SQLite database could not be found.", comment: "")
+            }
+        }
     }
 }
 
 class GamesDatabase
 {
-    static let version = -1
+    static let version = 3
+    static var previousVersion: Int? {
+        return UserDefaults.standard.previousGamesDatabaseVersion
+    }
     
     private let connection: Connection
     
@@ -80,7 +90,7 @@ class GamesDatabase
         }
         catch
         {
-            throw Error.connection(error)
+            throw error
         }
         
         self.invalidateVirtualTableIfNeeded()
@@ -89,10 +99,11 @@ class GamesDatabase
     func metadataResults(forGameName gameName: String) -> [GameMetadata]
     {
         let releaseID = Expression<Any>.releaseID
+        let romID = Expression<Any>.romID
         let name = Expression<Any>.name
         let artworkAddress = Expression<Any>.artworkAddress
         
-        let query = VirtualTable.search.select(releaseID, name, artworkAddress).filter(name.match(gameName + "*"))
+        let query = VirtualTable.search.select(releaseID, romID, name, artworkAddress).filter(name.match(gameName + "*"))
         
         do
         {
@@ -111,7 +122,7 @@ class GamesDatabase
                 }
                 
 
-                let metadata = GameMetadata(identifier: row[releaseID], name: row[name], artworkURL: artworkURL)
+                let metadata = GameMetadata(releaseID: row[releaseID], romID: row[romID], name: row[name], artworkURL: artworkURL)
                 return metadata
             }
             
@@ -145,7 +156,7 @@ class GamesDatabase
         let romID = Expression<Any>.romID
         
         let gameHash = game.identifier.uppercased()
-        let query = Table.roms.select(releaseID, name, artworkAddress).filter(sha1Hash == gameHash).join(Table.releases, on: Table.roms[romID] == Table.releases[romID])
+        let query = Table.roms.select(releaseID, name, artworkAddress, Table.roms[romID]).filter(sha1Hash == gameHash).join(Table.releases, on: Table.roms[romID] == Table.releases[romID])
         
         do
         {
@@ -161,7 +172,7 @@ class GamesDatabase
                     artworkURL = nil
                 }
                 
-                let metadata = GameMetadata(identifier: row[releaseID], name: row[name], artworkURL: artworkURL)
+                let metadata = GameMetadata(releaseID: row[releaseID], romID: row[Table.roms[romID]], name: row[name], artworkURL: artworkURL)
                 return metadata
             }
         }
@@ -197,12 +208,13 @@ private extension GamesDatabase
         let name = Expression<Any>.name
         let artworkAddress = Expression<Any>.artworkAddress
         let releaseID = Expression<Any>.releaseID
+        let romID = Expression<Any>.romID
         
         do
         {
-            try self.connection.run(VirtualTable.search.create(.FTS4([releaseID, name, artworkAddress], tokenize: .Unicode61())))
+            try self.connection.run(VirtualTable.search.create(.FTS4([releaseID, romID, name, artworkAddress], tokenize: .Unicode61())))
             
-            let update = VirtualTable.search.insert(Table.releases.select(releaseID, name, artworkAddress))
+            let update = VirtualTable.search.insert(Table.releases.select(releaseID, romID, name, artworkAddress))
             _ = try self.connection.run(update)
         }
         catch

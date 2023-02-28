@@ -23,8 +23,16 @@ extension UIViewController
 struct DeepLinkController
 {
     private var window: UIWindow? {
-        guard let delegate = UIApplication.shared.delegate, let window = delegate.window else { return nil }
-        return window
+        if #available(iOS 13, *)
+        {
+            guard let delegate = UIApplication.shared.connectedScenes.lazy.compactMap({ $0.delegate as? UIWindowSceneDelegate }).first, let window = delegate.window else { return nil }
+            return window
+        }
+        else
+        {
+            guard let delegate = UIApplication.shared.delegate, let window = delegate.window else { return nil }
+            return window
+        }
     }
     
     private var topViewController: UIViewController? {

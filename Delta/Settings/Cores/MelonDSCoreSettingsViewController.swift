@@ -23,18 +23,18 @@ private extension MelonDSCoreSettingsViewController
     enum Section: Int
     {
         case general
+        case performance
         case dsBIOS
         case dsiBIOS
         case changeCore
     }
     
+    @available(iOS 13, *)
     enum BIOSError: LocalizedError
     {
         case unknownSize(URL)
         case incorrectHash(URL, hash: String, expectedHash: String)
         case unsupportedHash(URL, hash: String)
-        
-        @available(iOS 13, *)
         case incorrectSize(URL, size: Int, validSizes: Set<ClosedRange<Measurement<UnitInformationStorage>>>)
                 
         private static let byteFormatter: ByteCountFormatter = {
@@ -150,6 +150,13 @@ private extension MelonDSCoreSettingsViewController
         
         switch section
         {
+        case .performance:
+            // Hide AltJIT section for public builds.
+            guard isBeta else { return true }
+            
+            guard Settings.preferredCore(for: .ds) == MelonDS.core else { return true }
+            return !UIDevice.current.supportsJIT
+            
         case .dsBIOS where Settings.preferredCore(for: .ds) == DS.core:
             // Using DeSmuME core, which doesn't require BIOS.
             return true
@@ -253,6 +260,11 @@ private extension MelonDSCoreSettingsViewController
         }
     }
     
+    @IBAction func toggleAltJITEnabled(_ sender: UISwitch)
+    {
+        Settings.isAltJITEnabled = sender.isOn
+    }
+    
     @objc func willEnterForeground(_ notification: Notification)
     {
         self.tableView.reloadData()
@@ -300,6 +312,10 @@ extension MelonDSCoreSettingsViewController
             }
             
             cell.contentView.isHidden = (item == nil)
+            
+        case .performance:
+            let cell = cell as! SwitchTableViewCell
+            cell.switchView.isOn = Settings.isAltJITEnabled
             
         case .dsBIOS:
             let bios = DSBIOS.allCases[indexPath.row]
@@ -379,6 +395,8 @@ extension MelonDSCoreSettingsViewController
             
         case .changeCore:
             self.changeCore()
+            
+        case .performance: break
         }
     }
     

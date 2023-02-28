@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>name</key>
+		<string>Grant Gliner</string>
+		<key>link</key>
+		<string>https://twitter.com/GrantGliner</string>
+		<key>linkName</key>
+		<string>@GrantGliner</string>
+		<key>contributions</key>
+		<array>
+			<dict>
+				<key>name</key>
+				<string>Pause Menu Icons</string>
+			</dict>
+		</array>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>Eric Lewis</string>
+		<key>link</key>
+		<string>https://github.com/ericlewis</string>
+		<key>linkName</key>
+		<string>github.com/ericlewis</string>
+		<key>contributions</key>
+		<array>
+			<dict>
+				<key>name</key>
+				<string>Dark Mode</string>
+				<key>link</key>
+				<string>https://github.com/rileytestut/Delta/pull/82</string>
+			</dict>
+		</array>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>Chris Rittenhouse</string>
+		<key>link</key>
+		<string>https://www.litritt.com</string>
+		<key>linkName</key>
+		<string>litritt.com</string>
+		<key>contributions</key>
+		<array>
+			<dict>
+				<key>name</key>
+				<string>Genesis Skin</string>
+			</dict>
+		</array>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>Noah Keck</string>
+		<key>link</key>
+		<string>https://github.com/noah978</string>
+		<key>linkName</key>
+		<string>github.com/noah978</string>
+		<key>contributions</key>
+		<array>
+			<dict>
+				<key>name</key>
+				<string>CheatBase</string>
+				<key>link</key>
+				<string>https://github.com/CheatBase/CheatBase</string>
+			</dict>
+		</array>
+	</dict>
+</array>
+</plist>
