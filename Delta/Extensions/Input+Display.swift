@@ -124,6 +124,8 @@ extension Input
             case .leftTrigger: return NSLocalizedString("L2", comment: "")
             case .rightShoulder: return NSLocalizedString("R1", comment: "")
             case .rightTrigger: return NSLocalizedString("R2", comment: "")
+            case .start: return NSLocalizedString("Start", comment: "")
+            case .select: return NSLocalizedString("Select", comment: "")
             }
             
         case .controller(.keyboard):
