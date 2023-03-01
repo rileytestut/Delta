@@ -66,5 +66,22 @@
 			</dict>
 		</array>
 	</dict>
+	<dict>
+		<key>name</key>
+		<string>Ian Clawson</string>
+		<key>link</key>
+		<string>https://github.com/ianclawson</string>
+		<key>linkName</key>
+		<string>github.com/ianclawson</string>
+		<key>contributions</key>
+		<array>
+			<dict>
+				<key>name</key>
+				<string>Local Multiplayer</string>
+				<key>link</key>
+				<string>https://github.com/rileytestut/DeltaCore/pull/32</string>
+			</dict>
+		</array>
+	</dict>
 </array>
 </plist>
