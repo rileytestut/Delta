@@ -13,36 +13,6 @@ import MelonDSDeltaCore
 
 import Roxas
 
-extension Notification.Name
-{
-    static let settingsDidChange = Notification.Name("SettingsDidChangeNotification")
-}
-
-extension Settings
-{
-    enum NotificationUserInfoKey: String
-    {
-        case name
-        
-        case system
-        case traits
-        
-        case core
-    }
-    
-    enum Name: String
-    {
-        case localControllerPlayerIndex
-        case translucentControllerSkinOpacity
-        case preferredControllerSkin
-        case syncingService
-        case isButtonHapticFeedbackEnabled
-        case isThumbstickHapticFeedbackEnabled
-        case isAltJITEnabled
-        case respectSilentMode
-    }
-}
-
 extension Settings
 {
     enum GameShortcutsMode: String
@@ -52,7 +22,7 @@ extension Settings
     }
 }
 
-struct Settings
+extension Settings
 {
     static func registerDefaults()
     {

@@ -284,7 +284,8 @@ private extension SettingsViewController
     @available(iOS 14, *)
     func showContributors()
     {
-        let hostingController = ContributorsView.makeViewController()
+//        let hostingController = ContributorsView.makeViewController()
+        let hostingController = ExperimentalFeaturesView.makeViewController()
         self.navigationController?.pushViewController(hostingController, animated: true)
     }
 }
