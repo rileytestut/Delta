@@ -33,6 +33,12 @@ class VariableFastForward: ExperimentalFeature, ObservableObject
     var value: FastForwardSpeed = .x2
 }
 
+class VariableFastForwardOptions: ObservableObject
+{
+    @FeatureSetting(name: "Speed", key: "speed", detailView: { FastForwardSpeedView(speed: $0) })
+    var value: FastForwardSpeed = .x2
+}
+
 private struct FastForwardSpeedView: View
 {
     @Binding
