@@ -994,6 +994,7 @@
 		D58F39CD29E0AA35008B4100 /* Implementation */ = {
 			isa = PBXGroup;
 			children = (
+				D5A9BFFD29DDECF100A8D610 /* Feature.swift */,
 				D58F39C529E0A473008B4100 /* Option.swift */,
 				D5A9C00229DDED6D00A8D610 /* ExperimentalFeaturesView.swift */,
 				D58F39C229E0A141008B4100 /* ExperimentalFeatures+Private.swift */,
@@ -1007,7 +1008,6 @@
 			isa = PBXGroup;
 			children = (
 				D5A817B229DF6C6C00904AFE /* ExperimentalFeatures.swift */,
-				D5A9BFFD29DDECF100A8D610 /* Feature.swift */,
 				D58F39CB29E0A9C8008B4100 /* Features */,
 				D58F39CD29E0AA35008B4100 /* Implementation */,
 			);
