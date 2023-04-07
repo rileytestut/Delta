@@ -9,17 +9,6 @@
 import SwiftUI
 import Combine
 
-extension ExperimentalFeatures
-{
-    var allFeatures: [AnyFeature] {
-        let features = Mirror(reflecting: self).children.compactMap { (child) -> (AnyFeature)? in
-            let feature = child.value as? AnyFeature
-            return feature
-        }
-        return features
-    }
-}
-
 struct ExperimentalFeaturesView: View
 {
     var body: some View {

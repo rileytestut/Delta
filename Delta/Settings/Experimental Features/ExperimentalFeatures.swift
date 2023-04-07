@@ -15,18 +15,17 @@ struct ExperimentalFeatures
     @Feature(name: "Custom Box Art")
     var customBoxArt
     
-    @Feature(name: "Variable Fast Forward")
+    @Feature(name: "Random Dancing")
+    var randomDancing
+    
+    @Feature(name: "Variable Fast Forward", options: VariableFastForwardOptions())
     var variableFastForward
     
-    @Feature(name: "Custom Tint Color", options: VariableFastForwardOptions())
+    @Feature(name: "Custom Tint Color", options: CustomTintColorOptions())
     var customTintColor
     
     private init()
     {
-        // Assign keys to property names.
-        for case (let key?, let feature as AnyFeature) in Mirror(reflecting: self).children
-        {
-            feature.key = key
-        }
+        self.prepareFeatures()
     }
 }

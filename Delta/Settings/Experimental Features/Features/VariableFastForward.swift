@@ -22,20 +22,9 @@ enum FastForwardSpeed: String, CaseIterable, Identifiable, CustomStringConvertib
     }
 }
 
-class VariableFastForward: ExperimentalFeature, ObservableObject
-{
-    static var settingsKey: String { "variableFastForward" }
-
-    var name: String { NSLocalizedString("Variable Fast Forward Speeds", comment: "") }
-    var description: String? { NSLocalizedString("Change your preferred Fast Forward speed.", comment: "") }
-
-    @FeatureSetting(name: "Speed", key: "speed", detailView: { FastForwardSpeedView(speed: $0) })
-    var value: FastForwardSpeed = .x2
-}
-
 class VariableFastForwardOptions: ObservableObject
 {
-    @FeatureSetting(name: "Speed", key: "speed", detailView: { FastForwardSpeedView(speed: $0) })
+    @Option(name: "Speed", detailView: { FastForwardSpeedView(speed: $0) })
     var value: FastForwardSpeed = .x2
 }
 
@@ -53,5 +42,3 @@ private struct FastForwardSpeedView: View
         .pickerStyle(.inline)
     }
 }
-
-

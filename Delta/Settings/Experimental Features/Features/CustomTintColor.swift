@@ -45,14 +45,9 @@ enum TintColor: String, CaseIterable, Identifiable, CustomStringConvertible
     }
 }
 
-class CustomTintColor: ExperimentalFeature, ObservableObject
+struct CustomTintColorOptions
 {
-    static var settingsKey: String { "customTintColor" }
-
-    var name: String { NSLocalizedString("Custom Tint Color", comment: "") }
-    var description: String? { NSLocalizedString("Change the accent color of Delta.", comment: "") }
-
-    @FeatureSetting(name: "Tint Color", key: "color", detailView: { CustomTintColorView(tintColor: $0) })
+    @Option(name: "Tint Color", detailView: { CustomTintColorView(tintColor: $0) })
     var value: TintColor = .purple
 }
 
@@ -62,7 +57,7 @@ private struct CustomTintColorView: View
     var tintColor: TintColor
 
     var body: some View {
-        Picker("Fast Forward Speed", selection: $tintColor.animation()) {
+        Picker("Tint Color", selection: $tintColor.animation()) {
             ForEach(TintColor.allCases) { tintColor in
                 HStack(spacing: 8) {
                     Circle()

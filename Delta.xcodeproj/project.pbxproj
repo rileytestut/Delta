@@ -174,6 +174,13 @@
 		D5864970297734280081477E /* CheatMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586496F297734280081477E /* CheatMetadata.swift */; };
 		D586497229774ABD0081477E /* CheatBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586497129774ABD0081477E /* CheatBase.swift */; };
 		D5864978297756CE0081477E /* CheatBaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5864977297756CE0081477E /* CheatBaseView.swift */; };
+		D58F39C329E0A141008B4100 /* ExperimentalFeatures+Private.swift in Sources */ = {isa = PBXBuildFile; fileRef = D58F39C229E0A141008B4100 /* ExperimentalFeatures+Private.swift */; };
+		D58F39C429E0A141008B4100 /* ExperimentalFeatures+Private.swift in Sources */ = {isa = PBXBuildFile; fileRef = D58F39C229E0A141008B4100 /* ExperimentalFeatures+Private.swift */; };
+		D58F39C629E0A473008B4100 /* Option.swift in Sources */ = {isa = PBXBuildFile; fileRef = D58F39C529E0A473008B4100 /* Option.swift */; };
+		D58F39C729E0A473008B4100 /* Option.swift in Sources */ = {isa = PBXBuildFile; fileRef = D58F39C529E0A473008B4100 /* Option.swift */; };
+		D58F39C929E0A702008B4100 /* UserDefaults+FeatureOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D58F39C829E0A702008B4100 /* UserDefaults+FeatureOptions.swift */; };
+		D58F39CA29E0A702008B4100 /* UserDefaults+FeatureOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D58F39C829E0A702008B4100 /* UserDefaults+FeatureOptions.swift */; };
+		D58F39CC29E0A9DC008B4100 /* ExperimentalFeaturePropertyWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A817AD29DF46D300904AFE /* ExperimentalFeaturePropertyWrapper.swift */; };
 		D5A817AE29DF46D300904AFE /* ExperimentalFeaturePropertyWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A817AD29DF46D300904AFE /* ExperimentalFeaturePropertyWrapper.swift */; };
 		D5A817B029DF4E6E00904AFE /* CustomTintColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A817AF29DF4E6E00904AFE /* CustomTintColor.swift */; };
 		D5A817B129DF4E6E00904AFE /* CustomTintColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A817AF29DF4E6E00904AFE /* CustomTintColor.swift */; };
@@ -404,6 +411,9 @@
 		D586496F297734280081477E /* CheatMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheatMetadata.swift; sourceTree = "<group>"; };
 		D586497129774ABD0081477E /* CheatBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheatBase.swift; sourceTree = "<group>"; };
 		D5864977297756CE0081477E /* CheatBaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheatBaseView.swift; sourceTree = "<group>"; };
+		D58F39C229E0A141008B4100 /* ExperimentalFeatures+Private.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ExperimentalFeatures+Private.swift"; sourceTree = "<group>"; };
+		D58F39C529E0A473008B4100 /* Option.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Option.swift; sourceTree = "<group>"; };
+		D58F39C829E0A702008B4100 /* UserDefaults+FeatureOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+FeatureOptions.swift"; sourceTree = "<group>"; };
 		D5A817AD29DF46D300904AFE /* ExperimentalFeaturePropertyWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExperimentalFeaturePropertyWrapper.swift; sourceTree = "<group>"; };
 		D5A817AF29DF4E6E00904AFE /* CustomTintColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTintColor.swift; sourceTree = "<group>"; };
 		D5A817B229DF6C6C00904AFE /* ExperimentalFeatures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExperimentalFeatures.swift; sourceTree = "<group>"; };
@@ -972,15 +982,34 @@
 			path = Cheats;
 			sourceTree = "<group>";
 		};
+		D58F39CB29E0A9C8008B4100 /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				D5A9C01C29DE058C00A8D610 /* VariableFastForward.swift */,
+				D5A817AF29DF4E6E00904AFE /* CustomTintColor.swift */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		D58F39CD29E0AA35008B4100 /* Implementation */ = {
+			isa = PBXGroup;
+			children = (
+				D58F39C529E0A473008B4100 /* Option.swift */,
+				D5A9C00229DDED6D00A8D610 /* ExperimentalFeaturesView.swift */,
+				D58F39C229E0A141008B4100 /* ExperimentalFeatures+Private.swift */,
+				D58F39C829E0A702008B4100 /* UserDefaults+FeatureOptions.swift */,
+				D5A817AD29DF46D300904AFE /* ExperimentalFeaturePropertyWrapper.swift */,
+			);
+			path = Implementation;
+			sourceTree = "<group>";
+		};
 		D5A9BFFF29DDECF500A8D610 /* Experimental Features */ = {
 			isa = PBXGroup;
 			children = (
-				D5A9BFFD29DDECF100A8D610 /* Feature.swift */,
 				D5A817B229DF6C6C00904AFE /* ExperimentalFeatures.swift */,
-				D5A9C00229DDED6D00A8D610 /* ExperimentalFeaturesView.swift */,
-				D5A817AD29DF46D300904AFE /* ExperimentalFeaturePropertyWrapper.swift */,
-				D5A9C01C29DE058C00A8D610 /* VariableFastForward.swift */,
-				D5A817AF29DF4E6E00904AFE /* CustomTintColor.swift */,
+				D5A9BFFD29DDECF100A8D610 /* Feature.swift */,
+				D58F39CB29E0A9C8008B4100 /* Features */,
+				D58F39CD29E0AA35008B4100 /* Implementation */,
 			);
 			path = "Experimental Features";
 			sourceTree = "<group>";
@@ -1286,6 +1315,7 @@
 				D5A817B029DF4E6E00904AFE /* CustomTintColor.swift in Sources */,
 				BF525EEA1FF6CD12004AA849 /* DeepLink.swift in Sources */,
 				BF8A334621A4926F00A42FD4 /* GameSyncStatusViewController.swift in Sources */,
+				D58F39C629E0A473008B4100 /* Option.swift in Sources */,
 				BF59427E1E09BC830051894B /* Game.swift in Sources */,
 				D5011C48281B6E8B00A0760B /* CharacterSet+Filename.swift in Sources */,
 				BFE593CC21F3F8C2003412A6 /* _GameSave.swift in Sources */,
@@ -1315,6 +1345,7 @@
 				D5D797E6298D946200738869 /* Contributor.swift in Sources */,
 				BFDB3418219E4B1700595A62 /* SyncStatusViewController.swift in Sources */,
 				BF18B61F1E2985F900F70067 /* UIAlertController+Importing.swift in Sources */,
+				D58F39C929E0A702008B4100 /* UserDefaults+FeatureOptions.swift in Sources */,
 				D586497229774ABD0081477E /* CheatBase.swift in Sources */,
 				BFDD04F11D5E2C27002D450E /* GameCollectionViewController.swift in Sources */,
 				BFE4269E1D9C68E600DC913F /* SaveStatesStoryboardSegue.swift in Sources */,
@@ -1362,6 +1393,7 @@
 				D5A98CE2284EF14B00E023E5 /* SceneDelegate.swift in Sources */,
 				BFE56E1923EB7BE00014FECD /* UIImage+SymbolFallback.swift in Sources */,
 				BF6EE5E91F7C5F860051AD6C /* _GameControllerInputMapping.swift in Sources */,
+				D58F39C329E0A141008B4100 /* ExperimentalFeatures+Private.swift in Sources */,
 				BF5942871E09BC8B0051894B /* _ControllerSkin.swift in Sources */,
 				BF95E2791E4982A10030E7AD /* GamesDatabaseBrowserViewController.swift in Sources */,
 				D524F4A3273DE9C000D500B2 /* ProcessInfo+JIT.swift in Sources */,
@@ -1410,10 +1442,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D58F39C729E0A473008B4100 /* Option.swift in Sources */,
 				D5A9C01629DDF44600A8D610 /* Feature.swift in Sources */,
 				D5A817B129DF4E6E00904AFE /* CustomTintColor.swift in Sources */,
+				D58F39CA29E0A702008B4100 /* UserDefaults+FeatureOptions.swift in Sources */,
+				D58F39C429E0A141008B4100 /* ExperimentalFeatures+Private.swift in Sources */,
 				D5A817B429DF6C7400904AFE /* ExperimentalFeatures.swift in Sources */,
 				D5A9C01E29DE058F00A8D610 /* VariableFastForward.swift in Sources */,
+				D58F39CC29E0A9DC008B4100 /* ExperimentalFeaturePropertyWrapper.swift in Sources */,
 				D5A9C01B29DDFBE800A8D610 /* SettingsTypes.swift in Sources */,
 				D5A9C01829DDF45200A8D610 /* ExperimentalFeaturesView.swift in Sources */,
 			);
