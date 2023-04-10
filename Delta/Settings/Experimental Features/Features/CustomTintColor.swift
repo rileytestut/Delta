@@ -9,7 +9,7 @@
 import Foundation
 import SwiftUI
 
-enum TintColor: String, CaseIterable, Identifiable, CustomStringConvertible
+enum TintColor: String, CaseIterable, Identifiable
 {
     case red
     case orange
@@ -20,18 +20,6 @@ enum TintColor: String, CaseIterable, Identifiable, CustomStringConvertible
     
     var id: Self { self }
     
-    var description: String {
-        switch self
-        {
-        case .red: return NSLocalizedString("Red", comment: "")
-        case .orange: return NSLocalizedString("Orange", comment: "")
-        case .yellow: return NSLocalizedString("Yellow", comment: "")
-        case .green: return NSLocalizedString("Green", comment: "")
-        case .blue: return NSLocalizedString("Blue", comment: "")
-        case .purple: return NSLocalizedString("Purple", comment: "")
-        }
-    }
-    
     var color: Color {
         switch self
         {
@@ -41,6 +29,21 @@ enum TintColor: String, CaseIterable, Identifiable, CustomStringConvertible
         case .green: return .green
         case .blue: return .blue
         case .purple: return .purple
+        }
+    }
+}
+
+extension TintColor: LocalizedOptionValue
+{
+    var localizedDescription: Text {
+        switch self
+        {
+        case .red: return Text("Red")
+        case .orange: return Text("Orange")
+        case .yellow: return Text("Yellow")
+        case .green: return Text("Green")
+        case .blue: return Text("Blue")
+        case .purple: return Text("Purple")
         }
     }
 }
@@ -64,7 +67,7 @@ private struct CustomTintColorView: View
                         .fill(tintColor.color)
                         .frame(width: 44, height: 44)
                     
-                    Text(tintColor.description)
+                    tintColor.localizedDescription
                 }
             }
         }

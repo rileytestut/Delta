@@ -9,6 +9,11 @@
 import SwiftUI
 import Combine
 
+protocol LocalizedOptionValue
+{
+    var localizedDescription: Text { get }
+}
+
 struct ExperimentalFeaturesView: View
 {
     var body: some View {
@@ -42,10 +47,15 @@ struct ExperimentalFeatureSection<T: AnyFeature>: View
                     {
                         NavigationLink(destination: detailView) {
                             HStack {
-                                Text(option.name)
+                                Text(name)
                                 Spacer()
                                 
-                                if let stringConvertible = option.wrappedValue as? CustomStringConvertible
+                                if let localizedValue = option.wrappedValue as? LocalizedOptionValue
+                                {
+                                    localizedValue.localizedDescription
+                                        .foregroundColor(.secondary)
+                                }
+                                else if let stringConvertible = option.wrappedValue as? CustomStringConvertible
                                 {
                                     Text(stringConvertible.description)
                                         .foregroundColor(.secondary)
