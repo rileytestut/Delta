@@ -45,9 +45,9 @@ extension AnyFeature: Identifiable
 @propertyWrapper @dynamicMemberLookup
 final class Feature<Options>: AnyFeature
 {
-    private let options: Options
+    private var options: Options
     
-    var wrappedValue: some AnyFeature {
+    var wrappedValue: some Feature {
         return self
     }
     
@@ -60,10 +60,15 @@ final class Feature<Options>: AnyFeature
         self.prepareOptions()
     }
     
-    subscript<T>(dynamicMember keyPath: KeyPath<Options, T>) -> T
-    {
-        let value = options[keyPath: keyPath]
-        return value
+    subscript<T>(dynamicMember keyPath: WritableKeyPath<Options, T>) -> T {
+        get {
+            let value = options[keyPath: keyPath]
+            return value
+        }
+        set {
+            options[keyPath: keyPath] = newValue
+        }
+        
     }
     
     override var allOptions: [any AnyOption] {
