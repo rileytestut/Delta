@@ -8,44 +8,91 @@
 
 import Foundation
 
+protocol MyOptionalProtocol
+{
+    associatedtype Wrapped
+    
+    static var wrappedType: Wrapped.Type { get }
+    
+    static var nilValue: Wrapped? { get }
+}
+
+extension Optional: MyOptionalProtocol {
+    static var wrappedType: Wrapped.Type {
+        return Wrapped.self
+    }
+    
+    static var nilValue: Wrapped? {
+        return nil
+    }
+}
+
+private func wrap<RawType, WrapperType: RawRepresentable>(rawValue: RawType, in type: WrapperType.Type) -> WrapperType?
+{
+    // Ensure rawValue is correct type.
+    guard let rawValue = rawValue as? WrapperType.RawValue else { return nil }
+
+    let representingValue = WrapperType.init(rawValue: rawValue)
+    return representingValue
+}
+
 extension UserDefaults
 {
-    func setOptionValue(_ newValue: some Any, forKey key: String) throws
+    func setOptionValue<T>(_ newValue: T?, forKey key: String) throws
     {
         switch newValue
         {
         case let rawRepresentable as any RawRepresentable: self.set(rawRepresentable.rawValue, forKey: key)
-        case let secureCoding as any NSSecureCoding: self.set(secureCoding, forKey: key)
+//        case let nsDictionary as NSDictionary:
+//            var sanitizedDictionary = nsDictionary.copy() as! [AnyHashable: Any]
+//            // Remove userInfo values that don't conform to NSSecureEncoding.
+//            sanitizedDictionary = sanitizedDictionary.filter { (key, value) in
+//                return (value as AnyObject) is NSSecureCoding
+//            }
+//
+        case let secureCoding as any NSSecureCoding:
+            if secureCoding is NSNull
+            {
+                let zombie = ["isExplicitNil": true] as NSDictionary
+                self.set(zombie, forKey: key)
+            }
+            else
+            {
+                self.set(secureCoding, forKey: key)
+            }
+            
         case let codable as any Codable:
             let data = try PropertyListEncoder().encode(codable)
-            UserDefaults.standard.set(data, forKey: key)
+            self.set(data, forKey: key)
             
         default:
             // Try anyway.
-            UserDefaults.standard.set(newValue, forKey: key)
+            self.set(newValue, forKey: key)
         }
     }
     
     func optionValue<Value>(forKey key: String, type: Value.Type) throws -> Value?
     {
         guard let rawValue = UserDefaults.standard.object(forKey: key) else { return nil }
-                
+        
+        if let zombie = rawValue as? [String: Bool], zombie["isExplicitNil"] ?? false, let optionalType = Value.self as? any OptionalType.Type
+        {
+            return optionalType.none as? Value
+        }
+
         if let value = rawValue as? Value
         {
             return value
         }
+        else if let optionalType = Value.self as? any MyOptionalProtocol.Type, let rawRepresentableType = optionalType.wrappedType as? any RawRepresentable.Type
+        {
+            // Open `rawRepresentableType` existential as concrete type so we can initialize RawRepresentable.
+            let rawRepresentable = wrap(rawValue: rawValue, in: rawRepresentableType) as? Value
+            return rawRepresentable
+        }
         else if let rawRepresentableType = Value.self as? any RawRepresentable.Type
         {
             // Open `rawRepresentableType` existential as concrete type so we can initialize RawRepresentable.
-            func wrap<RawType, WrapperType: RawRepresentable>(rawValue: RawType, in type: WrapperType.Type) -> WrapperType?
-            {
-                // Ensure rawValue is correct type.
-                guard let rawValue = rawValue as? WrapperType.RawValue else { return nil }
-
-                let representingValue = WrapperType.init(rawValue: rawValue)
-                return representingValue
-            }
-                        
             let rawRepresentable = wrap(rawValue: rawValue, in: rawRepresentableType) as? Value
             return rawRepresentable
         }
@@ -56,6 +103,7 @@ extension UserDefaults
         }
         else
         {
+            print("[ALTLog] Unsupported Option Type:", Value.self)
             return nil
         }
     }

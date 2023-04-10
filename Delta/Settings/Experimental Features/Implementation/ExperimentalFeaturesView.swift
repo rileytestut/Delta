@@ -9,11 +9,6 @@
 import SwiftUI
 import Combine
 
-protocol LocalizedOptionValue
-{
-    var localizedDescription: Text { get }
-}
-
 struct ExperimentalFeaturesView: View
 {
     var body: some View {
