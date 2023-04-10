@@ -43,7 +43,8 @@ struct ExperimentalFeatureSection<T: AnyFeature>: View
             if feature.isEnabled
             {
                 ForEach(feature.allOptions, id: \.key) { option in
-                    if let detailView = option.detailView()
+                    // Only show if option has a name and detailView.
+                    if let name = option.name, let detailView = option.detailView()
                     {
                         NavigationLink(destination: detailView) {
                             HStack {

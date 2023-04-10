@@ -13,7 +13,7 @@ protocol AnyOption<Value>: AnyObject, Identifiable
 {
     associatedtype Value
     
-    var name: LocalizedStringKey { get }
+    var name: LocalizedStringKey? { get }
     var key: String { get }
     var description: LocalizedStringKey? { get }
     
@@ -38,7 +38,8 @@ protocol _AnyOption: AnyOption
 @propertyWrapper
 class Option<Value>: _AnyOption
 {
-    let name: LocalizedStringKey
+    // Nil name == hidden option.
+    let name: LocalizedStringKey?
     let description: LocalizedStringKey?
     
     private(set) var detailView: () -> AnyView? = { nil }
@@ -59,7 +60,7 @@ class Option<Value>: _AnyOption
     }
     
     // No SwiftUI view.
-    init(wrappedValue: Value, name: LocalizedStringKey, description: LocalizedStringKey? = nil)
+    init(wrappedValue: Value, name: LocalizedStringKey? = nil, description: LocalizedStringKey? = nil)
     {
         self.initialValue = wrappedValue
         
@@ -68,7 +69,7 @@ class Option<Value>: _AnyOption
     }
     
     // Custom SwiftUI view.
-    init(wrappedValue: Value, name: LocalizedStringKey, description: LocalizedStringKey? = nil, @ViewBuilder detailView: @escaping (Binding<Value>) -> some View)
+    init(wrappedValue: Value, name: LocalizedStringKey? = nil, description: LocalizedStringKey? = nil, @ViewBuilder detailView: @escaping (Binding<Value>) -> some View)
     {
         self.initialValue = wrappedValue
         
