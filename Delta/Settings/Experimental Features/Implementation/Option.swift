@@ -9,15 +9,27 @@
 import SwiftUI
 import Combine
 
+private extension Array
+{
+    func appendingNil() -> [Element] where Element: OptionalProtocol, Element.Wrapped: LocalizedOptionValue
+    {
+        var values = self
+        values.append(Element.none)
+        return values
+    }
+}
+
 protocol AnyOption<Value>: AnyObject, Identifiable
 {
-    associatedtype Value
+    associatedtype Value: OptionValue
+    associatedtype DetailView: View
     
     var name: LocalizedStringKey? { get }
     var key: String { get }
     var description: LocalizedStringKey? { get }
     
-    var detailView: () -> AnyView? { get }
+    var values: [Value]? { get }
+    var detailView: () -> DetailView? { get }
     
     // TODO: Remove below
     var wrappedValue: Value { get }
@@ -36,14 +48,14 @@ protocol _AnyOption: AnyOption
 }
 
 @propertyWrapper
-class Option<Value: OptionValue>: _AnyOption
+class Option<Value: OptionValue, DetailView: View>: _AnyOption
 {
     // Nil name == hidden option.
     let name: LocalizedStringKey?
     let description: LocalizedStringKey?
     
     let values: [Value]?
-    private(set) var detailView: () -> AnyView? = { nil }
+    private(set) var detailView: () -> DetailView? = { nil }
     
     //TODO: Make fileprivate
     internal(set) var key: String = ""
@@ -60,76 +72,8 @@ class Option<Value: OptionValue>: _AnyOption
         })
     }
     
-//    // (Optionals) Pre-set options with default picker UI.
-//    init<Wrapped: LocalizedOptionValue>(wrappedValue: Value, name: LocalizedStringKey, description: LocalizedStringKey? = nil, values: [Value]) where Value == Optional<Wrapped>
-//    {
-//        self.initialValue = wrappedValue
-//
-//        let wrappedValue = value as
-//
-//        self.name = name
-//        self.description = description
-//        self.values = values
-//
-//        self.detailView = { [weak self] in
-//            guard let self else { return nil }
-//
-//            let allValues = values + [Value.none]
-//            let view = OptionPickerView(name: name, options: allValues, selectedValue: self.valueBinding)
-//            return AnyView(
-//                Form {
-//                    view
-//                }
-//            )
-//        }
-//    }
-    
-    // Pre-set options with default picker UI.
-    init(wrappedValue: Value, name: LocalizedStringKey, description: LocalizedStringKey? = nil, values: [Value]) where Value: LocalizedOptionValue
-    {
-        self.initialValue = wrappedValue
-
-        self.name = name
-        self.description = description
-        self.values = values
-        
-        self.detailView = { [weak self] () -> AnyView? in
-            guard let self else { return nil }
-
-            let view = OptionPickerView(name: name, options: values, selectedValue: self.valueBinding)
-            return AnyView(
-                Form {
-                    view
-                }
-            )
-        }
-    }
-    
-    // (Optionals) Pre-set options with default picker UI.
-    init(wrappedValue: Value, name: LocalizedStringKey, description: LocalizedStringKey? = nil, values: [Value]) where Value: LocalizedOptionValue & OptionalType, Value.Wrapped: LocalizedOptionValue
-    {
-        self.initialValue = wrappedValue
-
-        self.name = name
-        self.description = description
-        self.values = values
-        
-        self.detailView = { [weak self] () -> AnyView? in
-            guard let self else { return nil }
-
-            let allValues = values.expanded()
-            
-            let view = OptionPickerView(name: name, options: allValues, selectedValue: self.valueBinding)
-            return AnyView(
-                Form {
-                    view
-                }
-            )
-        }
-    }
-    
     // No options or custom SwiftUI view.
-    init(wrappedValue: Value, name: LocalizedStringKey? = nil, description: LocalizedStringKey? = nil)
+    init(wrappedValue: Value, name: LocalizedStringKey? = nil, description: LocalizedStringKey? = nil) where DetailView == EmptyView
     {
         self.initialValue = wrappedValue
         
@@ -138,8 +82,59 @@ class Option<Value: OptionValue>: _AnyOption
         self.values = nil
     }
     
+    // Pre-set options with default picker UI.
+    init(wrappedValue: Value, name: LocalizedStringKey, description: LocalizedStringKey? = nil, values: some Collection<Value>) where Value: LocalizedOptionValue, DetailView == OptionPickerView<Value>
+    {
+        self.initialValue = wrappedValue
+
+        self.name = name
+        self.description = description
+        
+        let values = Array(values)
+        self.values = values
+        
+        self.detailView = { [weak self] () -> DetailView? in
+            guard let self else { return nil }
+            return OptionPickerView(name: name, options: values, selectedValue: self.valueBinding)
+        }
+    }
+    
+    // (Optionals) Pre-set options with default picker UI (no default value)
+    init(name: LocalizedStringKey, description: LocalizedStringKey? = nil, values: some Collection<Value>) where Value: LocalizedOptionValue & OptionalProtocol, Value.Wrapped: LocalizedOptionValue, DetailView == OptionPickerView<Value>
+    {
+        self.initialValue = Value.none
+
+        self.name = name
+        self.description = description
+        
+        let values = Array(values)
+        self.values = values
+        
+        self.detailView = { [weak self] () -> DetailView? in
+            guard let self else { return nil }
+            return OptionPickerView(name: name, options: values.appendingNil(), selectedValue: self.valueBinding)
+        }
+    }
+    
+    // (Optionals) Pre-set options with default picker UI.
+    init(wrappedValue: Value, name: LocalizedStringKey, description: LocalizedStringKey? = nil, values: some Collection<Value>) where Value: LocalizedOptionValue & OptionalProtocol, Value.Wrapped: LocalizedOptionValue, DetailView == OptionPickerView<Value>
+    {
+        self.initialValue = wrappedValue
+
+        self.name = name
+        self.description = description
+        
+        let values = Array(values)
+        self.values = values
+        
+        self.detailView = { [weak self] () -> DetailView? in
+            guard let self else { return nil }
+            return OptionPickerView(name: name, options: values.appendingNil(), selectedValue: self.valueBinding)
+        }
+    }
+    
     // Custom SwiftUI view.
-    init(wrappedValue: Value, name: LocalizedStringKey? = nil, description: LocalizedStringKey? = nil, @ViewBuilder detailView: @escaping (Binding<Value>) -> some View)
+    init(wrappedValue: Value, name: LocalizedStringKey, description: LocalizedStringKey? = nil, @ViewBuilder detailView: @escaping (Binding<Value>) -> DetailView) where Value: LocalizedOptionValue
     {
         self.initialValue = wrappedValue
         
@@ -151,16 +146,12 @@ class Option<Value: OptionValue>: _AnyOption
             guard let self else { return nil }
             
             let view = detailView(self.valueBinding)
-            return AnyView(
-                Form {
-                    view
-                }
-            )
+            return view
         }
     }
     
     /// @propertyWrapper
-    var projectedValue: Option<Value> { self }
+    var projectedValue: Option<Value, DetailView> { self }
     
     var wrappedValue: Value {
         get {
@@ -185,42 +176,6 @@ class Option<Value: OptionValue>: _AnyOption
             catch {
                 print("[ALTLog] Failed to set option value for key \(self.key).", error)
             }
-        }
-    }
-}
-
-extension Option where Value: LocalizedOptionValue
-{
-//    func updateOptionsPickerView()
-//    {
-//        guard let name = self.name, let values = self.values else { return }
-//
-//        self.detailView = { [weak self] () -> AnyView? in
-//            guard let self else { return nil }
-//
-//            let view = OptionPickerView(name: name, options: values, selectedValue: self.valueBinding)
-//            return AnyView(
-//                Form {
-//                    view
-//                }
-//            )
-//        }
-//    }
-    
-    func updateOptionsPickerView<Wrapped: LocalizedOptionValue>() where Value == Optional<Wrapped>
-    {
-        guard let name = self.name, let values = self.values else { return }
-        
-        self.detailView = { [weak self] () -> AnyView? in
-            guard let self else { return nil }
-            
-            let allValues = values + [Value.none]
-            let view = OptionPickerView(name: name, options: allValues, selectedValue: self.valueBinding)
-            return AnyView(
-                Form {
-                    view
-                }
-            )
         }
     }
 }

@@ -9,8 +9,38 @@
 import SwiftUI
 import Combine
 
+//func test()
+//{
+//    let keyPath = \VariableFastForwardOptions.$snes
+//
+//    ExperimentalFeatures.shared.variableFastForward[dynamicMember: keyPath]
+//
+//    ExperimentalFeatures.shared.variableFastForward.snes = .x2
+//    let test = ExperimentalFeatures.shared.variableFastForward.$snes
+//}
+
+extension ExperimentalFeaturesView
+{
+    private class ViewModel: ObservableObject
+    {
+        @Published
+        var sortedFeatures: [AnyFeature]
+        
+        init()
+        {
+            // Sort features alphabetically by name.
+            self.sortedFeatures = ExperimentalFeatures.shared.allFeatures.sorted { (featureA, featureB) in
+                return String(describing: featureA.name) < String(describing: featureB.name)
+            }
+        }
+    }
+}
+
 struct ExperimentalFeaturesView: View
 {
+    @StateObject
+    private var viewModel = ViewModel()
+    
     var body: some View {
         Form {
             Section(content: {}, footer: {
@@ -18,51 +48,35 @@ struct ExperimentalFeaturesView: View
                     .font(.subheadline)
             })
             
-            ForEach(ExperimentalFeatures.shared.allFeatures) { feature in
-                ExperimentalFeatureSection(feature: feature)
+            ForEach(viewModel.sortedFeatures) { feature in
+//                ExperimentalFeatureSection(feature: feature)
+                ExperimentalFeatureSection2(feature: feature)
             }
         }
         .listStyle(.insetGrouped)
     }
 }
 
-struct ExperimentalFeatureSection<T: AnyFeature>: View
+struct ExperimentalFeatureSection2<T: AnyFeature>: View
 {
     @ObservedObject
     var feature: T
     
     var body: some View {
         Section {
-            Toggle(feature.name, isOn: $feature.isEnabled.animation())
-
-            if feature.isEnabled
-            {
-                ForEach(feature.allOptions, id: \.key) { option in
-                    // Only show if option has a name and detailView.
-                    if let name = option.name, let detailView = option.detailView()
+            NavigationLink(destination: ExperimentalFeatureView(feature: feature)) {
+                HStack {
+                    Text(feature.name)
+                    Spacer()
+                    
+                    if feature.isEnabled
                     {
-                        NavigationLink(destination: detailView) {
-                            HStack {
-                                Text(name)
-                                Spacer()
-                                
-                                if let localizedValue = option.wrappedValue as? LocalizedOptionValue
-                                {
-                                    localizedValue.localizedDescription
-                                        .foregroundColor(.secondary)
-                                }
-                                else if let stringConvertible = option.wrappedValue as? CustomStringConvertible
-                                {
-                                    Text(stringConvertible.description)
-                                        .foregroundColor(.secondary)
-                                }
-                            }
-                        }
+                        Text("On")
+                            .foregroundColor(.secondary)
                     }
                 }
             }
-            
-        } footer: {
+        }  footer: {
             if let description = feature.description
             {
                 Text(description)
@@ -70,6 +84,49 @@ struct ExperimentalFeatureSection<T: AnyFeature>: View
         }
     }
 }
+
+//struct ExperimentalFeatureSection<T: AnyFeature>: View
+//{
+//    @ObservedObject
+//    var feature: T
+//    
+//    var body: some View {
+//        Section {
+//            Toggle(feature.name, isOn: $feature.isEnabled.animation())
+//
+//            if feature.isEnabled
+//            {
+//                ForEach(feature.allOptions, id: \.key) { option in
+//                    optionView(option)
+//                }
+//            }
+//            
+//        } footer: {
+//            if let description = feature.description
+//            {
+//                Text(description)
+//            }
+//        }
+//    }
+//    
+//    @ViewBuilder
+//    func optionView<T: AnyOption>(_ option: T) -> some View
+//    {
+//        // Only show if option has a name and detailView.
+//        if let name = option.name, let detailView = option.detailView(), let value = option.wrappedValue as? any LocalizedOptionValue
+//        {
+//            NavigationLink(destination: detailView) {
+//                HStack {
+//                    Text(name)
+//                    Spacer()
+//                                                    
+//                    value.localizedDescription
+//                        .foregroundColor(.secondary)
+//                }
+//            }
+//        }
+//    }
+//}
 
 extension ExperimentalFeaturesView
 {

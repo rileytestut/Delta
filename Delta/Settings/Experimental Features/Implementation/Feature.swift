@@ -60,15 +60,14 @@ final class Feature<Options>: AnyFeature
         self.prepareOptions()
     }
     
-    subscript<T>(dynamicMember keyPath: WritableKeyPath<Options, T>) -> T {
+    subscript<T>(dynamicMember keyPath: KeyPath<Options, T>) -> T {
         get {
-            let value = options[keyPath: keyPath]
-            return value
+            options[keyPath: keyPath]
         }
         set {
-            options[keyPath: keyPath] = newValue
+            guard let writableKeyPath = keyPath as? WritableKeyPath<Options, T> else { return }
+            options[keyPath: writableKeyPath] = newValue
         }
-        
     }
     
     override var allOptions: [any AnyOption] {

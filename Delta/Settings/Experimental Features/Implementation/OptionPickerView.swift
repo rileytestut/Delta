@@ -8,20 +8,6 @@
 
 import SwiftUI
 
-protocol OptionalType
-{
-    associatedtype Wrapped
-    var optional: Wrapped? { get }
-    
-    static var none: Self { get }
-}
-
-extension Optional: OptionalType
-{
-    var optional: Self { self }
-}
-
-
 protocol OptionValue
 {
 }
@@ -30,16 +16,6 @@ extension String: OptionValue {}
 extension Double: OptionValue {}
 extension Optional: OptionValue where Wrapped: OptionValue {}
 extension Dictionary: OptionValue where Key: OptionValue, Value: OptionValue {}
-
-extension Array
-{
-    func expanded() -> [Element] where Element: OptionalType, Element.Wrapped: LocalizedOptionValue
-    {
-        var values = self
-        values.append(Element.none)
-        return values
-    }
-}
 
 protocol LocalizedOptionValue: OptionValue, Hashable
 {
@@ -70,8 +46,6 @@ extension LocalizedOptionValue where Self: Identifiable
     }
 }
 
-
-
 extension Optional: LocalizedOptionValue where Wrapped: LocalizedOptionValue
 {
     var localizedDescription: Text {
@@ -97,7 +71,7 @@ struct OptionPickerView<Value: LocalizedOptionValue>: View
                 value.localizedDescription
             }
         }
-        .pickerStyle(.inline)
+        .pickerStyle(.menu)
     }
 }
 

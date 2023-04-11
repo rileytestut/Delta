@@ -18,7 +18,7 @@ struct ExperimentalFeatures
     @Feature(name: "Random Dancing")
     var randomDancing
     
-    @Feature(name: "Variable Fast Forward", options: VariableFastForwardOptions())
+    @Feature(name: "Variable Fast Forward", description: "Change the maximum Fast Foward speed per-system.", options: VariableFastForwardOptions())
     var variableFastForward
     
     @Feature(name: "Custom Tint Color", options: CustomTintColorOptions())

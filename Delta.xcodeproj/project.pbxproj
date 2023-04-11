@@ -169,8 +169,12 @@
 		D524F4A1273DE9A100D500B2 /* AltKit in Frameworks */ = {isa = PBXBuildFile; productRef = D524F4A0273DE9A100D500B2 /* AltKit */; };
 		D524F4A3273DE9C000D500B2 /* ProcessInfo+JIT.swift in Sources */ = {isa = PBXBuildFile; fileRef = D524F4A2273DE9C000D500B2 /* ProcessInfo+JIT.swift */; };
 		D524F4A5273DEBB400D500B2 /* ServerManager+Delta.swift in Sources */ = {isa = PBXBuildFile; fileRef = D524F4A4273DEBB400D500B2 /* ServerManager+Delta.swift */; };
+		D532B8BD29E5EDAD009EE27C /* OptionalProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D532B8BC29E5EDAD009EE27C /* OptionalProtocol.swift */; };
+		D532B8BE29E5EE1B009EE27C /* OptionalProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D532B8BC29E5EDAD009EE27C /* OptionalProtocol.swift */; };
 		D53415A5298C782A00FD67B1 /* ContributorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53415A4298C782A00FD67B1 /* ContributorsView.swift */; };
 		D53415A7298C78BC00FD67B1 /* Contributors.plist in Resources */ = {isa = PBXBuildFile; fileRef = D53415A6298C78BC00FD67B1 /* Contributors.plist */; };
+		D54A4BB329E4D27E004C7D57 /* ExperimentalFeatureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54A4BB229E4D27E004C7D57 /* ExperimentalFeatureView.swift */; };
+		D54A4BB429E4D280004C7D57 /* ExperimentalFeatureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54A4BB229E4D27E004C7D57 /* ExperimentalFeatureView.swift */; };
 		D5864970297734280081477E /* CheatMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586496F297734280081477E /* CheatMetadata.swift */; };
 		D586497229774ABD0081477E /* CheatBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586497129774ABD0081477E /* CheatBase.swift */; };
 		D5864978297756CE0081477E /* CheatBaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5864977297756CE0081477E /* CheatBaseView.swift */; };
@@ -180,8 +184,8 @@
 		D58F39C729E0A473008B4100 /* Option.swift in Sources */ = {isa = PBXBuildFile; fileRef = D58F39C529E0A473008B4100 /* Option.swift */; };
 		D58F39C929E0A702008B4100 /* UserDefaults+FeatureOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D58F39C829E0A702008B4100 /* UserDefaults+FeatureOptions.swift */; };
 		D58F39CA29E0A702008B4100 /* UserDefaults+FeatureOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D58F39C829E0A702008B4100 /* UserDefaults+FeatureOptions.swift */; };
-		D58F39CC29E0A9DC008B4100 /* ExperimentalFeaturePropertyWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A817AD29DF46D300904AFE /* ExperimentalFeaturePropertyWrapper.swift */; };
-		D5A817AE29DF46D300904AFE /* ExperimentalFeaturePropertyWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A817AD29DF46D300904AFE /* ExperimentalFeaturePropertyWrapper.swift */; };
+		D592D6FF29E48FFB008D218A /* OptionPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D592D6FE29E48FFB008D218A /* OptionPickerView.swift */; };
+		D592D70029E48FFB008D218A /* OptionPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D592D6FE29E48FFB008D218A /* OptionPickerView.swift */; };
 		D5A817B029DF4E6E00904AFE /* CustomTintColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A817AF29DF4E6E00904AFE /* CustomTintColor.swift */; };
 		D5A817B129DF4E6E00904AFE /* CustomTintColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A817AF29DF4E6E00904AFE /* CustomTintColor.swift */; };
 		D5A817B329DF6C6C00904AFE /* ExperimentalFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A817B229DF6C6C00904AFE /* ExperimentalFeatures.swift */; };
@@ -189,8 +193,6 @@
 		D5A98CE2284EF14B00E023E5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A98CE1284EF14B00E023E5 /* SceneDelegate.swift */; };
 		D5A9C00329DDED6D00A8D610 /* ExperimentalFeaturesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A9C00229DDED6D00A8D610 /* ExperimentalFeaturesView.swift */; };
 		D5A9C00C29DDF3F500A8D610 /* DeltaUI.h in Headers */ = {isa = PBXBuildFile; fileRef = D5A9C00B29DDF3F500A8D610 /* DeltaUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D5A9C00F29DDF3F500A8D610 /* DeltaUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5A9C00929DDF3F500A8D610 /* DeltaUI.framework */; };
-		D5A9C01029DDF3F500A8D610 /* DeltaUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D5A9C00929DDF3F500A8D610 /* DeltaUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D5A9C01629DDF44600A8D610 /* Feature.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A9BFFD29DDECF100A8D610 /* Feature.swift */; };
 		D5A9C01729DDF44F00A8D610 /* Feature.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A9BFFD29DDECF100A8D610 /* Feature.swift */; };
 		D5A9C01829DDF45200A8D610 /* ExperimentalFeaturesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A9C00229DDED6D00A8D610 /* ExperimentalFeaturesView.swift */; };
@@ -212,13 +214,6 @@
 			remoteGlobalIDString = BF6E70B925D2187800E41CD1;
 			remoteInfo = Systems;
 		};
-		D5A9C00D29DDF3F500A8D610 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BFFA71CF1AAC406100EE9DD1 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = D5A9C00829DDF3F500A8D610;
-			remoteInfo = DeltaUI;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -229,7 +224,6 @@
 			dstSubfolderSpec = 10;
 			files = (
 				BFCADF1F25D22FE2008D78FB /* Systems.framework in Embed Frameworks */,
-				D5A9C01029DDF3F500A8D610 /* DeltaUI.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -406,15 +400,17 @@
 		D5011C47281B6E8B00A0760B /* CharacterSet+Filename.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CharacterSet+Filename.swift"; sourceTree = "<group>"; };
 		D524F4A2273DE9C000D500B2 /* ProcessInfo+JIT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProcessInfo+JIT.swift"; sourceTree = "<group>"; };
 		D524F4A4273DEBB400D500B2 /* ServerManager+Delta.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ServerManager+Delta.swift"; sourceTree = "<group>"; };
+		D532B8BC29E5EDAD009EE27C /* OptionalProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalProtocol.swift; sourceTree = "<group>"; };
 		D53415A4298C782A00FD67B1 /* ContributorsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContributorsView.swift; sourceTree = "<group>"; };
 		D53415A6298C78BC00FD67B1 /* Contributors.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Contributors.plist; sourceTree = "<group>"; };
+		D54A4BB229E4D27E004C7D57 /* ExperimentalFeatureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExperimentalFeatureView.swift; sourceTree = "<group>"; };
 		D586496F297734280081477E /* CheatMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheatMetadata.swift; sourceTree = "<group>"; };
 		D586497129774ABD0081477E /* CheatBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheatBase.swift; sourceTree = "<group>"; };
 		D5864977297756CE0081477E /* CheatBaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheatBaseView.swift; sourceTree = "<group>"; };
 		D58F39C229E0A141008B4100 /* ExperimentalFeatures+Private.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ExperimentalFeatures+Private.swift"; sourceTree = "<group>"; };
 		D58F39C529E0A473008B4100 /* Option.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Option.swift; sourceTree = "<group>"; };
 		D58F39C829E0A702008B4100 /* UserDefaults+FeatureOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+FeatureOptions.swift"; sourceTree = "<group>"; };
-		D5A817AD29DF46D300904AFE /* ExperimentalFeaturePropertyWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExperimentalFeaturePropertyWrapper.swift; sourceTree = "<group>"; };
+		D592D6FE29E48FFB008D218A /* OptionPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionPickerView.swift; sourceTree = "<group>"; };
 		D5A817AF29DF4E6E00904AFE /* CustomTintColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTintColor.swift; sourceTree = "<group>"; };
 		D5A817B229DF6C6C00904AFE /* ExperimentalFeatures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExperimentalFeatures.swift; sourceTree = "<group>"; };
 		D5A98CE1284EF14B00E023E5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -446,7 +442,6 @@
 				BF69FBC923E3A8380051BEEA /* libNestopia.a in Frameworks */,
 				D524F4A1273DE9A100D500B2 /* AltKit in Frameworks */,
 				1FA4ABA79AB72914FE414A61 /* libPods-Delta.a in Frameworks */,
-				D5A9C00F29DDF3F500A8D610 /* DeltaUI.framework in Frameworks */,
 				BFFDF03F23E3C28A00931B96 /* libGambatte.a in Frameworks */,
 				BFFDF03723E3BB2600931B96 /* libSnes9x.a in Frameworks */,
 			);
@@ -996,10 +991,12 @@
 			children = (
 				D5A9BFFD29DDECF100A8D610 /* Feature.swift */,
 				D58F39C529E0A473008B4100 /* Option.swift */,
+				D532B8BC29E5EDAD009EE27C /* OptionalProtocol.swift */,
 				D5A9C00229DDED6D00A8D610 /* ExperimentalFeaturesView.swift */,
+				D54A4BB229E4D27E004C7D57 /* ExperimentalFeatureView.swift */,
+				D592D6FE29E48FFB008D218A /* OptionPickerView.swift */,
 				D58F39C229E0A141008B4100 /* ExperimentalFeatures+Private.swift */,
 				D58F39C829E0A702008B4100 /* UserDefaults+FeatureOptions.swift */,
-				D5A817AD29DF46D300904AFE /* ExperimentalFeaturePropertyWrapper.swift */,
 			);
 			path = Implementation;
 			sourceTree = "<group>";
@@ -1070,7 +1067,6 @@
 			);
 			dependencies = (
 				BFEBE58325D3388F00222319 /* PBXTargetDependency */,
-				D5A9C00E29DDF3F500A8D610 /* PBXTargetDependency */,
 			);
 			name = Delta;
 			packageProductDependencies = (
@@ -1317,6 +1313,7 @@
 				BF8A334621A4926F00A42FD4 /* GameSyncStatusViewController.swift in Sources */,
 				D58F39C629E0A473008B4100 /* Option.swift in Sources */,
 				BF59427E1E09BC830051894B /* Game.swift in Sources */,
+				D532B8BD29E5EDAD009EE27C /* OptionalProtocol.swift in Sources */,
 				D5011C48281B6E8B00A0760B /* CharacterSet+Filename.swift in Sources */,
 				BFE593CC21F3F8C2003412A6 /* _GameSave.swift in Sources */,
 				BF63A1A321A4AAAE00EE8F61 /* RecordSyncStatusViewController.swift in Sources */,
@@ -1397,12 +1394,14 @@
 				BF5942871E09BC8B0051894B /* _ControllerSkin.swift in Sources */,
 				BF95E2791E4982A10030E7AD /* GamesDatabaseBrowserViewController.swift in Sources */,
 				D524F4A3273DE9C000D500B2 /* ProcessInfo+JIT.swift in Sources */,
+				D592D6FF29E48FFB008D218A /* OptionPickerView.swift in Sources */,
 				BFDCA1E9244F7E1000B8FBDB /* Delta5ToDelta6.xcmappingmodel in Sources */,
 				D5A817B329DF6C6C00904AFE /* ExperimentalFeatures.swift in Sources */,
 				BFD097211D3A01B8005A44C2 /* SaveStatesViewController.swift in Sources */,
 				BF6EE5EB1F7C5F8F0051AD6C /* GameControllerInputMapping.swift in Sources */,
 				BF8A333421A484A000A42FD4 /* BadgedTableViewCell.swift in Sources */,
 				D5F82FB82981D3AC00B229AF /* LegacySearchBar.swift in Sources */,
+				D54A4BB329E4D27E004C7D57 /* ExperimentalFeatureView.swift in Sources */,
 				BF3540021C5DA3D500C1184C /* PauseStoryboardSegue.swift in Sources */,
 				BF107EC41BF413F000E0C32C /* GamesViewController.swift in Sources */,
 				BF3D6C512202865F0083E05A /* Delta2ToDelta3.xcmappingmodel in Sources */,
@@ -1421,7 +1420,6 @@
 				BF99A5971DC2F9C400468E9E /* ControllerSkinTableViewCell.swift in Sources */,
 				BFE9908024451E15006409A7 /* MelonDSCoreSettingsViewController.swift in Sources */,
 				BF5942861E09BC8B0051894B /* _Cheat.swift in Sources */,
-				D5A817AE29DF46D300904AFE /* ExperimentalFeaturePropertyWrapper.swift in Sources */,
 				BF5E7F441B9A650B00AE44F8 /* SettingsViewController.swift in Sources */,
 				BF8CA9361F5F651900499FDD /* PopoverMenuController.swift in Sources */,
 				BFEF24F31F7DD4FD00454C62 /* SaveStateMigrationPolicy.swift in Sources */,
@@ -1449,9 +1447,11 @@
 				D58F39C429E0A141008B4100 /* ExperimentalFeatures+Private.swift in Sources */,
 				D5A817B429DF6C7400904AFE /* ExperimentalFeatures.swift in Sources */,
 				D5A9C01E29DE058F00A8D610 /* VariableFastForward.swift in Sources */,
-				D58F39CC29E0A9DC008B4100 /* ExperimentalFeaturePropertyWrapper.swift in Sources */,
 				D5A9C01B29DDFBE800A8D610 /* SettingsTypes.swift in Sources */,
+				D54A4BB429E4D280004C7D57 /* ExperimentalFeatureView.swift in Sources */,
+				D532B8BE29E5EE1B009EE27C /* OptionalProtocol.swift in Sources */,
 				D5A9C01829DDF45200A8D610 /* ExperimentalFeaturesView.swift in Sources */,
+				D592D70029E48FFB008D218A /* OptionPickerView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1462,11 +1462,6 @@
 			isa = PBXTargetDependency;
 			target = BF6E70B925D2187800E41CD1 /* Systems */;
 			targetProxy = BFEBE58225D3388F00222319 /* PBXContainerItemProxy */;
-		};
-		D5A9C00E29DDF3F500A8D610 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = D5A9C00829DDF3F500A8D610 /* DeltaUI */;
-			targetProxy = D5A9C00D29DDF3F500A8D610 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

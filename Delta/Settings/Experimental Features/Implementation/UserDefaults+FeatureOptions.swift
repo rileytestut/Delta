@@ -8,25 +8,6 @@
 
 import Foundation
 
-protocol MyOptionalProtocol
-{
-    associatedtype Wrapped
-    
-    static var wrappedType: Wrapped.Type { get }
-    
-    static var nilValue: Wrapped? { get }
-}
-
-extension Optional: MyOptionalProtocol {
-    static var wrappedType: Wrapped.Type {
-        return Wrapped.self
-    }
-    
-    static var nilValue: Wrapped? {
-        return nil
-    }
-}
-
 private func wrap<RawType, WrapperType: RawRepresentable>(rawValue: RawType, in type: WrapperType.Type) -> WrapperType?
 {
     // Ensure rawValue is correct type.
@@ -53,8 +34,8 @@ extension UserDefaults
         case let secureCoding as any NSSecureCoding:
             if secureCoding is NSNull
             {
-                let zombie = ["isExplicitNil": true] as NSDictionary
-                self.set(zombie, forKey: key)
+                let nullDictionary = ["isNull": true] as NSDictionary
+                self.set(nullDictionary, forKey: key)
             }
             else
             {
@@ -75,7 +56,7 @@ extension UserDefaults
     {
         guard let rawValue = UserDefaults.standard.object(forKey: key) else { return nil }
         
-        if let zombie = rawValue as? [String: Bool], zombie["isExplicitNil"] ?? false, let optionalType = Value.self as? any OptionalType.Type
+        if let nullDictionary = rawValue as? [String: Bool], let isNull = nullDictionary["isNull"], let optionalType = Value.self as? any OptionalProtocol.Type, isNull
         {
             return optionalType.none as? Value
         }
@@ -84,7 +65,7 @@ extension UserDefaults
         {
             return value
         }
-        else if let optionalType = Value.self as? any MyOptionalProtocol.Type, let rawRepresentableType = optionalType.wrappedType as? any RawRepresentable.Type
+        else if let optionalType = Value.self as? any OptionalProtocol.Type, let rawRepresentableType = optionalType.wrappedType as? any RawRepresentable.Type
         {
             // Open `rawRepresentableType` existential as concrete type so we can initialize RawRepresentable.
             let rawRepresentable = wrap(rawValue: rawValue, in: rawRepresentableType) as? Value
