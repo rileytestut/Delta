@@ -1063,7 +1063,16 @@ extension GameViewController
         
         if activate
         {
-            emulatorCore.rate = emulatorCore.deltaCore.supportedRates.upperBound
+            if ExperimentalFeatures.shared.variableFastForward.isEnabled,
+               let preferredSpeed = ExperimentalFeatures.shared.variableFastForward.preferredSpeedsBySystem[emulatorCore.game.type.rawValue],
+               preferredSpeed <= emulatorCore.deltaCore.supportedRates.upperBound
+            {
+                emulatorCore.rate = preferredSpeed
+            }
+            else
+            {
+                emulatorCore.rate = emulatorCore.deltaCore.supportedRates.upperBound
+            }
         }
         else
         {
@@ -1212,6 +1221,16 @@ private extension GameViewController
             self.updateAudio()
                 
         case .syncingService, .isAltJITEnabled: break
+        
+        case ExperimentalFeatures.shared.variableFastForward.$n64.settingsKey:
+            let value = notification.userInfo?[Settings.NotificationUserInfoKey.value] as? FastForwardSpeed
+            print("[ALTLog] Changed N64 Speed:", value)
+            
+        case ExperimentalFeatures.shared.variableFastForward.settingsKey:
+            let value = notification.userInfo?[Settings.NotificationUserInfoKey.value] as? Bool
+            print("[ALTLog] Enabled Variable FF:", value)
+            
+        default: break
         }
     }
     
