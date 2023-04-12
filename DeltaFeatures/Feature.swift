@@ -61,6 +61,13 @@ public final class Feature<Options>: AnyFeature
         return self
     }
     
+    public lazy var projectedValue: ObservedObject<Feature<Options>>.Wrapper = { [unowned self] in
+        ObservedObject(initialValue: self.observedFeature ?? self).projectedValue
+    }()
+    
+    // Track changes to another instance of this feature via key path.
+    private weak var observedFeature: Feature<Options>?
+    
     public init(name: LocalizedStringKey, description: LocalizedStringKey? = nil, options: Options = EmptyOptions())
     {
         self.options = options
@@ -68,6 +75,15 @@ public final class Feature<Options>: AnyFeature
         super.init(name: name, description: description)
         
         self.prepareOptions()
+    }
+    
+    public convenience init<Container: FeatureContainer, F: Feature>(_ keyPath: KeyPath<Container, F>)
+    {
+        let feature = Container.shared[keyPath: keyPath]
+        self.init(name: feature.name, description: feature.description, options: feature.options)
+        
+        self.key = feature.key
+        self.observedFeature = feature
     }
     
     // Use `KeyPath` instead of `WritableKeyPath` as parameter to allow accessing projected property wrappers.

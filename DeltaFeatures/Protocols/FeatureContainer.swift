@@ -10,10 +10,11 @@ import Foundation
 
 public protocol FeatureContainer
 {
+    static var shared: Self { get }
 }
 
 public extension FeatureContainer
-{
+{    
     var allFeatures: [AnyFeature] {
         let features = Mirror(reflecting: self).children.compactMap { (child) -> (AnyFeature)? in
             let feature = child.value as? AnyFeature
