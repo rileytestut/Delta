@@ -73,7 +73,7 @@ extension DeltaCoreProtocol
         case N64.core where UIDevice.current.hasA11ProcessorOrBetter: return 3
         case N64.core where UIDevice.current.hasA9ProcessorOrBetter: return 1.5
         case MelonDS.core where ProcessInfo.processInfo.isJITAvailable: return 3
-        case MelonDS.core where UIDevice.current.hasA11ProcessorOrBetter: return 1.5
+        case MelonDS.core where UIDevice.current.hasA11ProcessorOrBetter: return 2 //TODO: Test
         case GPGX.core: return 4
         default: return 1
         }
