@@ -19,7 +19,7 @@ private extension Array
     }
 }
 
-protocol AnyOption<Value>: AnyObject, Identifiable
+public protocol AnyOption<Value>: AnyObject, Identifiable
 {
     associatedtype Value: OptionValue
     associatedtype DetailView: View
@@ -37,31 +37,38 @@ protocol AnyOption<Value>: AnyObject, Identifiable
 
 extension AnyOption
 {
-    var id: String { key }
+    public var id: String { self.key }
 }
 
 // Don't expose `feature` property via AnyOption protocol.
-protocol _AnyOption: AnyOption
+internal protocol _AnyOption: AnyOption
 {
     var key: String { get set }
     var feature: AnyFeature? { get set }
 }
 
 @propertyWrapper
-class Option<Value: OptionValue, DetailView: View>: _AnyOption
+public class Option<Value: OptionValue, DetailView: View>: _AnyOption
 {
     // Nil name == hidden option.
-    let name: LocalizedStringKey?
-    let description: LocalizedStringKey?
+    public let name: LocalizedStringKey?
+    public let description: LocalizedStringKey?
     
-    let values: [Value]?
-    private(set) var detailView: () -> DetailView? = { nil }
+    public let values: [Value]?
+    public private(set) var detailView: () -> DetailView? = { nil }
     
-    //TODO: Make fileprivate
-    internal(set) var key: String = ""
+    public internal(set) var key: String = ""
     internal weak var feature: AnyFeature?
     
-    private let initialValue: Value
+    private let defaultValue: Value
+    
+    // Used for `NotificationUserInfoKey.name` value in .settingsDidChange notification.
+    public var settingsKey: Settings.Name {
+        guard let feature = self.feature else { return Settings.Name(rawValue: self.key) }
+        
+        let defaultsKey = feature.key + "_" + self.key
+        return Settings.Name(rawValue: defaultsKey)
+    }
     
     // Must be property in order for UI to update automatically.
     private var valueBinding: Binding<Value> {
@@ -73,19 +80,34 @@ class Option<Value: OptionValue, DetailView: View>: _AnyOption
     }
     
     // No options or custom SwiftUI view.
-    init(wrappedValue: Value, name: LocalizedStringKey? = nil, description: LocalizedStringKey? = nil) where DetailView == EmptyView
+    public init(wrappedValue: Value, name: LocalizedStringKey? = nil, description: LocalizedStringKey? = nil) where DetailView == EmptyView
     {
-        self.initialValue = wrappedValue
+        self.defaultValue = wrappedValue
         
         self.name = name
         self.description = description
         self.values = nil
     }
     
-    // Pre-set options with default picker UI.
-    init(wrappedValue: Value, name: LocalizedStringKey, description: LocalizedStringKey? = nil, values: some Collection<Value>) where Value: LocalizedOptionValue, DetailView == OptionPickerView<Value>
+    // Bool property with default toggle UI.
+    public init(wrappedValue: Value, name: LocalizedStringKey, description: LocalizedStringKey? = nil) where Value == Bool, DetailView == OptionToggleView
     {
-        self.initialValue = wrappedValue
+        self.defaultValue = wrappedValue
+        
+        self.name = name
+        self.description = description
+        self.values = nil
+        
+        self.detailView = { [weak self] () -> DetailView? in
+            guard let self else { return nil }
+            return OptionToggleView(name: name, selectedValue: self.valueBinding)
+        }
+    }
+    
+    // Pre-set options with default picker UI.
+    public init(wrappedValue: Value, name: LocalizedStringKey, description: LocalizedStringKey? = nil, values: some Collection<Value>) where Value: LocalizedOptionValue, DetailView == OptionPickerView<Value>
+    {
+        self.defaultValue = wrappedValue
 
         self.name = name
         self.description = description
@@ -100,9 +122,9 @@ class Option<Value: OptionValue, DetailView: View>: _AnyOption
     }
     
     // (Optionals) Pre-set options with default picker UI (no default value)
-    init(name: LocalizedStringKey, description: LocalizedStringKey? = nil, values: some Collection<Value>) where Value: LocalizedOptionValue & OptionalProtocol, Value.Wrapped: LocalizedOptionValue, DetailView == OptionPickerView<Value>
+    public init(name: LocalizedStringKey, description: LocalizedStringKey? = nil, values: some Collection<Value>) where Value: LocalizedOptionValue & OptionalProtocol, Value.Wrapped: LocalizedOptionValue, DetailView == OptionPickerView<Value>
     {
-        self.initialValue = Value.none
+        self.defaultValue = Value.none
 
         self.name = name
         self.description = description
@@ -117,9 +139,9 @@ class Option<Value: OptionValue, DetailView: View>: _AnyOption
     }
     
     // (Optionals) Pre-set options with default picker UI.
-    init(wrappedValue: Value, name: LocalizedStringKey, description: LocalizedStringKey? = nil, values: some Collection<Value>) where Value: LocalizedOptionValue & OptionalProtocol, Value.Wrapped: LocalizedOptionValue, DetailView == OptionPickerView<Value>
+    public init(wrappedValue: Value, name: LocalizedStringKey, description: LocalizedStringKey? = nil, values: some Collection<Value>) where Value: LocalizedOptionValue & OptionalProtocol, Value.Wrapped: LocalizedOptionValue, DetailView == OptionPickerView<Value>
     {
-        self.initialValue = wrappedValue
+        self.defaultValue = wrappedValue
 
         self.name = name
         self.description = description
@@ -134,9 +156,9 @@ class Option<Value: OptionValue, DetailView: View>: _AnyOption
     }
     
     // Custom SwiftUI view.
-    init(wrappedValue: Value, name: LocalizedStringKey, description: LocalizedStringKey? = nil, @ViewBuilder detailView: @escaping (Binding<Value>) -> DetailView) where Value: LocalizedOptionValue
+    public init(wrappedValue: Value, name: LocalizedStringKey, description: LocalizedStringKey? = nil, @ViewBuilder detailView: @escaping (Binding<Value>) -> DetailView) where Value: LocalizedOptionValue
     {
-        self.initialValue = wrappedValue
+        self.defaultValue = wrappedValue
         
         self.name = name
         self.description = description
@@ -151,17 +173,17 @@ class Option<Value: OptionValue, DetailView: View>: _AnyOption
     }
     
     /// @propertyWrapper
-    var projectedValue: Option<Value, DetailView> { self }
+    public var projectedValue: Option<Value, DetailView> { self }
     
-    var wrappedValue: Value {
+    public var wrappedValue: Value {
         get {
             do {
-                let wrappedValue = try UserDefaults.standard.optionValue(forKey: self.key, type: Value.self)
-                return wrappedValue ?? self.initialValue
+                let wrappedValue = try UserDefaults.standard.optionValue(forKey: self.settingsKey.rawValue, type: Value.self)
+                return wrappedValue ?? self.defaultValue
             }
             catch {
-                print("[ALTLog] Failed to read option value for key \(self.key).", error)
-                return self.initialValue
+                print("[ALTLog] Failed to read option value for key \(self.settingsKey.rawValue).", error)
+                return self.defaultValue
             }
         }
         set {
@@ -171,10 +193,11 @@ class Option<Value: OptionValue, DetailView: View>: _AnyOption
             }
             
             do {
-                try UserDefaults.standard.setOptionValue(newValue, forKey: self.key)
+                try UserDefaults.standard.setOptionValue(newValue, forKey: self.settingsKey.rawValue)
+                NotificationCenter.default.post(name: .settingsDidChange, object: nil, userInfo: [Settings.NotificationUserInfoKey.name: self.settingsKey, Settings.NotificationUserInfoKey.value: newValue])
             }
             catch {
-                print("[ALTLog] Failed to set option value for key \(self.key).", error)
+                print("[ALTLog] Failed to set option value for key \(self.settingsKey.rawValue).", error)
             }
         }
     }

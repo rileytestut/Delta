@@ -6,8 +6,9 @@
 //  Copyright © 2023 Riley Testut. All rights reserved.
 //
 
-import Foundation
 import SwiftUI
+
+import DeltaFeatures
 
 enum TintColor: String, CaseIterable, Identifiable
 {
@@ -52,6 +53,17 @@ struct CustomTintColorOptions
 {
     @Option(name: "Tint Color", detailView: { CustomTintColorView(tintColor: $0) })
     var value: TintColor = .purple
+    
+//    @Option(name: "Tint Color", detailView: { (binding) in
+//        Circle()
+//            .fill(Color.purple)
+//            .frame(width: 200, height: 200)
+////        .displayInline()
+//    })
+//    var value: TintColor = .purple
+    
+    @Option(name: "Respect Dark Mode")
+    var respectDarkMode: Bool = true
 }
 
 private struct CustomTintColorView: View

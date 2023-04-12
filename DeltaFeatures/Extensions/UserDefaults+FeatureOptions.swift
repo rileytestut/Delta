@@ -17,7 +17,7 @@ private func wrap<RawType, WrapperType: RawRepresentable>(rawValue: RawType, in 
     return representingValue
 }
 
-extension UserDefaults
+public extension UserDefaults
 {
     func setOptionValue<T>(_ newValue: T?, forKey key: String) throws
     {

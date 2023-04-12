@@ -13,6 +13,8 @@ import MelonDSDeltaCore
 
 import Roxas
 
+@_exported import DeltaFeatures
+
 extension Settings
 {
     enum GameShortcutsMode: String

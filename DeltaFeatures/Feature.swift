@@ -9,49 +9,59 @@
 import SwiftUI
 import Combine
 
-struct EmptyOptions {}
-
-class AnyFeature: ObservableObject
+public class AnyFeature: ObservableObject
 {
-    let name: LocalizedStringKey
-    let description: LocalizedStringKey?
+    public let name: LocalizedStringKey
+    public let description: LocalizedStringKey?
     
     // Assigned to property name.
-    var key: String = ""
+    public internal(set) var key: String = ""
     
-    var isEnabled: Bool {
+    // Used for `NotificationUserInfoKey.name` value in .settingsDidChange notification.
+    public var settingsKey: Settings.Name {
+        return Settings.Name(rawValue: self.key)
+    }
+    
+    public var isEnabled: Bool {
         get { UserDefaults.standard.bool(forKey: self.key) }
         set {
             self.objectWillChange.send()
             UserDefaults.standard.set(newValue, forKey: self.key)
+            
+            NotificationCenter.default.post(name: .settingsDidChange, object: nil, userInfo: [Settings.NotificationUserInfoKey.name: self.settingsKey, Settings.NotificationUserInfoKey.value: newValue])
         }
     }
     
-    init(name: LocalizedStringKey, description: LocalizedStringKey? = nil)
+    fileprivate init(name: LocalizedStringKey, description: LocalizedStringKey? = nil)
     {
         self.name = name
         self.description = description
     }
     
     // Overridden
-    var allOptions: [any AnyOption] { [] }
+    public var allOptions: [any AnyOption] { [] }
 }
 
 extension AnyFeature: Identifiable
 {
-    var id: String { self.key }
+    public var id: String { self.key }
+}
+
+extension AnyFeature
+{
+    public struct EmptyOptions {}
 }
 
 @propertyWrapper @dynamicMemberLookup
-final class Feature<Options>: AnyFeature
+public final class Feature<Options>: AnyFeature
 {
     private var options: Options
     
-    var wrappedValue: some Feature {
+    public var wrappedValue: some Feature {
         return self
     }
     
-    init(name: LocalizedStringKey, description: LocalizedStringKey? = nil, options: Options = EmptyOptions())
+    public init(name: LocalizedStringKey, description: LocalizedStringKey? = nil, options: Options = EmptyOptions())
     {
         self.options = options
         
@@ -60,7 +70,8 @@ final class Feature<Options>: AnyFeature
         self.prepareOptions()
     }
     
-    subscript<T>(dynamicMember keyPath: KeyPath<Options, T>) -> T {
+    // Use `KeyPath` instead of `WritableKeyPath` as parameter to allow accessing projected property wrappers.
+    public subscript<T>(dynamicMember keyPath: KeyPath<Options, T>) -> T {
         get {
             options[keyPath: keyPath]
         }
@@ -70,7 +81,7 @@ final class Feature<Options>: AnyFeature
         }
     }
     
-    override var allOptions: [any AnyOption] {
+    public override var allOptions: [any AnyOption] {
         let features = Mirror(reflecting: self.options).children.compactMap { (child) -> (any AnyOption)? in
             let feature = child.value as? (any AnyOption)
             return feature
@@ -86,7 +97,9 @@ private extension Feature
         // Update option keys + feature
         for case (let key?, let option as any _AnyOption) in Mirror(reflecting: self.options).children
         {
-            option.key = key
+            // Remove leading underscore.
+            let sanitizedKey = key.dropFirst()
+            option.key = String(sanitizedKey)
             option.feature = self
         }
     }

@@ -1,14 +1,18 @@
 //
-//  ExperimentalFeatures+Private.swift
-//  Delta
+//  FeatureContainer.swift
+//  DeltaFeatures
 //
-//  Created by Riley Testut on 4/7/23.
+//  Created by Riley Testut on 4/11/23.
 //  Copyright © 2023 Riley Testut. All rights reserved.
 //
 
 import Foundation
 
-internal extension ExperimentalFeatures
+public protocol FeatureContainer
+{
+}
+
+public extension FeatureContainer
 {
     var allFeatures: [AnyFeature] {
         let features = Mirror(reflecting: self).children.compactMap { (child) -> (AnyFeature)? in
@@ -23,7 +27,9 @@ internal extension ExperimentalFeatures
         // Assign keys to property names.
         for case (let key?, let feature as AnyFeature) in Mirror(reflecting: self).children
         {
-            feature.key = key
+            // Remove leading underscore.
+            let sanitizedKey = key.dropFirst()
+            feature.key = String(sanitizedKey)
         }
     }
 }

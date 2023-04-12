@@ -6,45 +6,53 @@
 //  Copyright © 2023 Riley Testut. All rights reserved.
 //
 
-import Foundation
 import SwiftUI
 
-enum FastForwardSpeed: Double, CaseIterable, Identifiable, CustomStringConvertible
+import DeltaFeatures
+
+enum FastForwardSpeed: Double, CaseIterable, CustomStringConvertible
 {
     case x2 = 2
     case x3 = 3
     case x4 = 4
     case x8 = 8
-
-    var id: Self { self }
-
+    
     var description: String {
-        return "\(self.rawValue)x"
+        if #available(iOS 15, *)
+        {
+            let formattedText = self.rawValue.formatted(.number.decimalSeparator(strategy: .automatic))
+            return "\(formattedText)x"
+        }
+        else
+        {
+            return "\(self.rawValue)x"
+        }
     }
 }
 
 extension FastForwardSpeed: LocalizedOptionValue
 {
     var localizedDescription: Text {
-        return Text(self.description)
+        Text(self.description)
+    }
+    
+    static var localizedNilDescription: Text {
+        Text("Maximum")
     }
 }
 
-class VariableFastForwardOptions: ObservableObject
+struct VariableFastForwardOptions
 {
-//    @Option(name: "Speed", values: FastForwardSpeed.allCases)
-//    var value: FastForwardSpeed? = nil
+    @Option // No name = hidden
+    var preferredSpeedsBySystem: [String: Double] = [:] // Type must be ObjC Plist compatible (with auto-bridging).
     
-    @Option // Type must be ObjC Plist compatible (with auto-conversations)
-    var preferredSpeedsBySystem: [String: Double] = [:]
-    
-    @Option(name: "NES", description: "Speed of NES system.", values: FastForwardSpeed.allCases.filter { $0.rawValue <= 4 })// System.nes.deltaCore.supportedRates.upperBound })
+    @Option(name: "NES", description: "Preferred Nintendo Entertainment System speed.", values: FastForwardSpeed.allCases.filter { $0.rawValue <= 4 })// System.nes.deltaCore.supportedRates.upperBound })
     var nes: FastForwardSpeed?
     
-    @Option(name: "SNES", description: "Speed of SNES system.", values: FastForwardSpeed.allCases.filter { $0.rawValue <= 4 })// System.snes.deltaCore.supportedRates.upperBound })
+    @Option(name: "SNES", description: "Preferred Super Nintendo speed.", values: FastForwardSpeed.allCases.filter { $0.rawValue <= 4 })// System.snes.deltaCore.supportedRates.upperBound })
     var snes: FastForwardSpeed?
     
-    @Option(name: "Nintendo 64", description: "Speed of N64 system.", values: FastForwardSpeed.allCases.filter { $0.rawValue <= 4 })// System.n64.deltaCore.supportedRates.upperBound })
+    @Option(name: "Nintendo 64", description: "Preferred Nintendo 64 speed.", values: FastForwardSpeed.allCases.filter { $0.rawValue <= 4 })// System.n64.deltaCore.supportedRates.upperBound })
     var n64: FastForwardSpeed?
     
     @Option(name: "Game Boy Color", description: "Speed of Game Boy Color system.", values: FastForwardSpeed.allCases.filter { $0.rawValue <= 4 })// System.gbc.deltaCore.supportedRates.upperBound })
@@ -55,4 +63,7 @@ class VariableFastForwardOptions: ObservableObject
     
     @Option(name: "Nintendo DS", description: "Speed of Nintendo DS system.", values: FastForwardSpeed.allCases.filter { $0.rawValue <= 4 })// System.ds.deltaCore.supportedRates.upperBound })
     var ds: FastForwardSpeed?
+    
+    @Option(name: "Genesis", description: "Preferred Sega Genesis speed.", values: FastForwardSpeed.allCases.filter { $0.rawValue <= 4 })// System.ds.deltaCore.supportedRates.upperBound })
+    var genesis: FastForwardSpeed?
 }

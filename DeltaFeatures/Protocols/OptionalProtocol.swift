@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol OptionalProtocol
+public protocol OptionalProtocol
 {
     associatedtype Wrapped
     
@@ -19,5 +19,5 @@ protocol OptionalProtocol
 
 extension Optional: OptionalProtocol
 {
-    static var wrappedType: Wrapped.Type { return Wrapped.self }
+    public static var wrappedType: Wrapped.Type { return Wrapped.self }
 }

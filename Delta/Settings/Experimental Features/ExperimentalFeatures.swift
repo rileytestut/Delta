@@ -6,9 +6,9 @@
 //  Copyright © 2023 Riley Testut. All rights reserved.
 //
 
-import Foundation
+import DeltaFeatures
 
-struct ExperimentalFeatures
+struct ExperimentalFeatures: FeatureContainer
 {
     static let shared = ExperimentalFeatures()
     
@@ -18,7 +18,9 @@ struct ExperimentalFeatures
     @Feature(name: "Random Dancing")
     var randomDancing
     
-    @Feature(name: "Variable Fast Forward", description: "Change the maximum Fast Foward speed per-system.", options: VariableFastForwardOptions())
+    @Feature(name: "Variable Fast Forward",
+             description: "Change the maximum Fast Foward speed per-system. You can also change it by long-pressing the Fast Forward button from the Pause Menu.",
+             options: VariableFastForwardOptions())
     var variableFastForward
     
     @Feature(name: "Custom Tint Color", options: CustomTintColorOptions())

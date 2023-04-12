@@ -166,11 +166,10 @@
 		BFFDF03F23E3C28A00931B96 /* libGambatte.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BFFDF03D23E3C0F000931B96 /* libGambatte.a */; };
 		BFFDF04623E3D3A600931B96 /* libMupen64Plus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BFFDF04523E3D3A600931B96 /* libMupen64Plus.a */; };
 		D5011C48281B6E8B00A0760B /* CharacterSet+Filename.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5011C47281B6E8B00A0760B /* CharacterSet+Filename.swift */; };
+		D517F6BA29E730DA000D14D0 /* SettingsTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A9C01929DDFBDD00A8D610 /* SettingsTypes.swift */; };
 		D524F4A1273DE9A100D500B2 /* AltKit in Frameworks */ = {isa = PBXBuildFile; productRef = D524F4A0273DE9A100D500B2 /* AltKit */; };
 		D524F4A3273DE9C000D500B2 /* ProcessInfo+JIT.swift in Sources */ = {isa = PBXBuildFile; fileRef = D524F4A2273DE9C000D500B2 /* ProcessInfo+JIT.swift */; };
 		D524F4A5273DEBB400D500B2 /* ServerManager+Delta.swift in Sources */ = {isa = PBXBuildFile; fileRef = D524F4A4273DEBB400D500B2 /* ServerManager+Delta.swift */; };
-		D532B8BD29E5EDAD009EE27C /* OptionalProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D532B8BC29E5EDAD009EE27C /* OptionalProtocol.swift */; };
-		D532B8BE29E5EE1B009EE27C /* OptionalProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D532B8BC29E5EDAD009EE27C /* OptionalProtocol.swift */; };
 		D53415A5298C782A00FD67B1 /* ContributorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53415A4298C782A00FD67B1 /* ContributorsView.swift */; };
 		D53415A7298C78BC00FD67B1 /* Contributors.plist in Resources */ = {isa = PBXBuildFile; fileRef = D53415A6298C78BC00FD67B1 /* Contributors.plist */; };
 		D54A4BB329E4D27E004C7D57 /* ExperimentalFeatureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54A4BB229E4D27E004C7D57 /* ExperimentalFeatureView.swift */; };
@@ -178,14 +177,6 @@
 		D5864970297734280081477E /* CheatMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586496F297734280081477E /* CheatMetadata.swift */; };
 		D586497229774ABD0081477E /* CheatBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586497129774ABD0081477E /* CheatBase.swift */; };
 		D5864978297756CE0081477E /* CheatBaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5864977297756CE0081477E /* CheatBaseView.swift */; };
-		D58F39C329E0A141008B4100 /* ExperimentalFeatures+Private.swift in Sources */ = {isa = PBXBuildFile; fileRef = D58F39C229E0A141008B4100 /* ExperimentalFeatures+Private.swift */; };
-		D58F39C429E0A141008B4100 /* ExperimentalFeatures+Private.swift in Sources */ = {isa = PBXBuildFile; fileRef = D58F39C229E0A141008B4100 /* ExperimentalFeatures+Private.swift */; };
-		D58F39C629E0A473008B4100 /* Option.swift in Sources */ = {isa = PBXBuildFile; fileRef = D58F39C529E0A473008B4100 /* Option.swift */; };
-		D58F39C729E0A473008B4100 /* Option.swift in Sources */ = {isa = PBXBuildFile; fileRef = D58F39C529E0A473008B4100 /* Option.swift */; };
-		D58F39C929E0A702008B4100 /* UserDefaults+FeatureOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D58F39C829E0A702008B4100 /* UserDefaults+FeatureOptions.swift */; };
-		D58F39CA29E0A702008B4100 /* UserDefaults+FeatureOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D58F39C829E0A702008B4100 /* UserDefaults+FeatureOptions.swift */; };
-		D592D6FF29E48FFB008D218A /* OptionPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D592D6FE29E48FFB008D218A /* OptionPickerView.swift */; };
-		D592D70029E48FFB008D218A /* OptionPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D592D6FE29E48FFB008D218A /* OptionPickerView.swift */; };
 		D5A817B029DF4E6E00904AFE /* CustomTintColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A817AF29DF4E6E00904AFE /* CustomTintColor.swift */; };
 		D5A817B129DF4E6E00904AFE /* CustomTintColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A817AF29DF4E6E00904AFE /* CustomTintColor.swift */; };
 		D5A817B329DF6C6C00904AFE /* ExperimentalFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A817B229DF6C6C00904AFE /* ExperimentalFeatures.swift */; };
@@ -193,16 +184,22 @@
 		D5A98CE2284EF14B00E023E5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A98CE1284EF14B00E023E5 /* SceneDelegate.swift */; };
 		D5A9C00329DDED6D00A8D610 /* ExperimentalFeaturesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A9C00229DDED6D00A8D610 /* ExperimentalFeaturesView.swift */; };
 		D5A9C00C29DDF3F500A8D610 /* DeltaUI.h in Headers */ = {isa = PBXBuildFile; fileRef = D5A9C00B29DDF3F500A8D610 /* DeltaUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D5A9C01629DDF44600A8D610 /* Feature.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A9BFFD29DDECF100A8D610 /* Feature.swift */; };
-		D5A9C01729DDF44F00A8D610 /* Feature.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A9BFFD29DDECF100A8D610 /* Feature.swift */; };
 		D5A9C01829DDF45200A8D610 /* ExperimentalFeaturesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A9C00229DDED6D00A8D610 /* ExperimentalFeaturesView.swift */; };
-		D5A9C01A29DDFBDD00A8D610 /* SettingsTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A9C01929DDFBDD00A8D610 /* SettingsTypes.swift */; };
-		D5A9C01B29DDFBE800A8D610 /* SettingsTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A9C01929DDFBDD00A8D610 /* SettingsTypes.swift */; };
 		D5A9C01D29DE058C00A8D610 /* VariableFastForward.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A9C01C29DE058C00A8D610 /* VariableFastForward.swift */; };
-		D5A9C01E29DE058F00A8D610 /* VariableFastForward.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A9C01C29DE058C00A8D610 /* VariableFastForward.swift */; };
 		D5AAF27729884F8600F21ACF /* CheatDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5AAF27629884F8600F21ACF /* CheatDevice.swift */; };
 		D5D797E6298D946200738869 /* Contributor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D797E5298D946200738869 /* Contributor.swift */; };
 		D5D797E9298DCC7300738869 /* cheatbase.zip in Resources */ = {isa = PBXBuildFile; fileRef = D5D797E7298DC9E200738869 /* cheatbase.zip */; };
+		D5D7C1F929E60EA500663793 /* UserDefaults+FeatureOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D58F39C829E0A702008B4100 /* UserDefaults+FeatureOptions.swift */; };
+		D5D7C1FA29E60EDE00663793 /* libDeltaFeatures.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D5D7C1F129E60DFF00663793 /* libDeltaFeatures.a */; };
+		D5D7C1FD29E60EEF00663793 /* OptionalProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D532B8BC29E5EDAD009EE27C /* OptionalProtocol.swift */; };
+		D5D7C20129E60F2000663793 /* LocalizedOptionValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D7C1E829E5FCDE00663793 /* LocalizedOptionValue.swift */; };
+		D5D7C20229E60F2000663793 /* OptionValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D7C1E629E5F90200663793 /* OptionValue.swift */; };
+		D5D7C20329E60F2000663793 /* Option.swift in Sources */ = {isa = PBXBuildFile; fileRef = D58F39C529E0A473008B4100 /* Option.swift */; };
+		D5D7C20429E60F2000663793 /* Feature.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A9BFFD29DDECF100A8D610 /* Feature.swift */; };
+		D5D7C20629E60F6100663793 /* OptionPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D592D6FE29E48FFB008D218A /* OptionPickerView.swift */; };
+		D5D7C20829E616CF00663793 /* FeatureContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D7C20729E616CF00663793 /* FeatureContainer.swift */; };
+		D5D7C20A29E61FA600663793 /* OptionToggleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D7C20929E61FA600663793 /* OptionToggleView.swift */; };
+		D5D7C20C29E624CB00663793 /* DisplayInlineKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D7C20B29E624CB00663793 /* DisplayInlineKey.swift */; };
 		D5F82FB82981D3AC00B229AF /* LegacySearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F82FB72981D3AC00B229AF /* LegacySearchBar.swift */; };
 /* End PBXBuildFile section */
 
@@ -213,6 +210,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = BF6E70B925D2187800E41CD1;
 			remoteInfo = Systems;
+		};
+		D5D7C1FB29E60EDE00663793 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFFA71CF1AAC406100EE9DD1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D5D7C1F029E60DFF00663793;
+			remoteInfo = DeltaFeatures;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -226,6 +230,15 @@
 				BFCADF1F25D22FE2008D78FB /* Systems.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D5D7C1EF29E60DFF00663793 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -407,7 +420,6 @@
 		D586496F297734280081477E /* CheatMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheatMetadata.swift; sourceTree = "<group>"; };
 		D586497129774ABD0081477E /* CheatBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheatBase.swift; sourceTree = "<group>"; };
 		D5864977297756CE0081477E /* CheatBaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheatBaseView.swift; sourceTree = "<group>"; };
-		D58F39C229E0A141008B4100 /* ExperimentalFeatures+Private.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ExperimentalFeatures+Private.swift"; sourceTree = "<group>"; };
 		D58F39C529E0A473008B4100 /* Option.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Option.swift; sourceTree = "<group>"; };
 		D58F39C829E0A702008B4100 /* UserDefaults+FeatureOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+FeatureOptions.swift"; sourceTree = "<group>"; };
 		D592D6FE29E48FFB008D218A /* OptionPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionPickerView.swift; sourceTree = "<group>"; };
@@ -424,6 +436,12 @@
 		D5AAF27629884F8600F21ACF /* CheatDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheatDevice.swift; sourceTree = "<group>"; };
 		D5D797E5298D946200738869 /* Contributor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contributor.swift; sourceTree = "<group>"; };
 		D5D797E7298DC9E200738869 /* cheatbase.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = cheatbase.zip; sourceTree = "<group>"; };
+		D5D7C1E629E5F90200663793 /* OptionValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionValue.swift; sourceTree = "<group>"; };
+		D5D7C1E829E5FCDE00663793 /* LocalizedOptionValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizedOptionValue.swift; sourceTree = "<group>"; };
+		D5D7C1F129E60DFF00663793 /* libDeltaFeatures.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libDeltaFeatures.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		D5D7C20729E616CF00663793 /* FeatureContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureContainer.swift; sourceTree = "<group>"; };
+		D5D7C20929E61FA600663793 /* OptionToggleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionToggleView.swift; sourceTree = "<group>"; };
+		D5D7C20B29E624CB00663793 /* DisplayInlineKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayInlineKey.swift; sourceTree = "<group>"; };
 		D5F82FB72981D3AC00B229AF /* LegacySearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacySearchBar.swift; sourceTree = "<group>"; };
 		DC866E433B3BA9AE18ABA1EC /* libPods-Delta.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Delta.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -438,6 +456,7 @@
 				BF69FBA223E375A20051BEEA /* libVBA-M.a in Frameworks */,
 				BFFDF04623E3D3A600931B96 /* libMupen64Plus.a in Frameworks */,
 				BFDCA1E6244EBAA900B8FBDB /* liblibDeSmuME.a in Frameworks */,
+				D5D7C1FA29E60EDE00663793 /* libDeltaFeatures.a in Frameworks */,
 				BFCADF1E25D22FE2008D78FB /* Systems.framework in Frameworks */,
 				BF69FBC923E3A8380051BEEA /* libNestopia.a in Frameworks */,
 				D524F4A1273DE9A100D500B2 /* AltKit in Frameworks */,
@@ -448,6 +467,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		D5A9C00629DDF3F500A8D610 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D5D7C1EE29E60DFF00663793 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -790,7 +816,6 @@
 			isa = PBXGroup;
 			children = (
 				BFAA1FEC1B8AA4FA00495943 /* Settings.swift */,
-				D5A9C01929DDFBDD00A8D610 /* SettingsTypes.swift */,
 				BF5E7F451B9A652600AE44F8 /* Settings.storyboard */,
 				BF5E7F431B9A650B00AE44F8 /* SettingsViewController.swift */,
 				BFB3645723245A6000CD0EB1 /* LicensesViewController.swift */,
@@ -884,6 +909,7 @@
 			children = (
 				BFFA71D91AAC406100EE9DD1 /* Delta */,
 				D5A9C00A29DDF3F500A8D610 /* DeltaUI */,
+				D5D7C1F229E60E0000663793 /* DeltaFeatures */,
 				BF9F4FCD1AAD7B25004C9500 /* Frameworks */,
 				BFEC732F1AAECCBD00650035 /* Resources */,
 				BFFA71D81AAC406100EE9DD1 /* Products */,
@@ -896,6 +922,7 @@
 			children = (
 				BFFA71D71AAC406100EE9DD1 /* Delta.app */,
 				D5A9C00929DDF3F500A8D610 /* DeltaUI.framework */,
+				D5D7C1F129E60DFF00663793 /* libDeltaFeatures.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -965,6 +992,15 @@
 			path = Launch;
 			sourceTree = "<group>";
 		};
+		D517F6BB29E737F5000D14D0 /* Types */ = {
+			isa = PBXGroup;
+			children = (
+				D5A9C01929DDFBDD00A8D610 /* SettingsTypes.swift */,
+				D5D7C20B29E624CB00663793 /* DisplayInlineKey.swift */,
+			);
+			path = Types;
+			sourceTree = "<group>";
+		};
 		D586496E297734060081477E /* Cheats */ = {
 			isa = PBXGroup;
 			children = (
@@ -989,14 +1025,7 @@
 		D58F39CD29E0AA35008B4100 /* Implementation */ = {
 			isa = PBXGroup;
 			children = (
-				D5A9BFFD29DDECF100A8D610 /* Feature.swift */,
-				D58F39C529E0A473008B4100 /* Option.swift */,
-				D532B8BC29E5EDAD009EE27C /* OptionalProtocol.swift */,
-				D5A9C00229DDED6D00A8D610 /* ExperimentalFeaturesView.swift */,
-				D54A4BB229E4D27E004C7D57 /* ExperimentalFeatureView.swift */,
-				D592D6FE29E48FFB008D218A /* OptionPickerView.swift */,
-				D58F39C229E0A141008B4100 /* ExperimentalFeatures+Private.swift */,
-				D58F39C829E0A702008B4100 /* UserDefaults+FeatureOptions.swift */,
+				D5D7C1EB29E5FD7000663793 /* Views */,
 			);
 			path = Implementation;
 			sourceTree = "<group>";
@@ -1026,6 +1055,56 @@
 				D53415A4298C782A00FD67B1 /* ContributorsView.swift */,
 			);
 			path = Contributors;
+			sourceTree = "<group>";
+		};
+		D5D7C1EB29E5FD7000663793 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D5A9C00229DDED6D00A8D610 /* ExperimentalFeaturesView.swift */,
+				D54A4BB229E4D27E004C7D57 /* ExperimentalFeatureView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		D5D7C1F229E60E0000663793 /* DeltaFeatures */ = {
+			isa = PBXGroup;
+			children = (
+				D5A9BFFD29DDECF100A8D610 /* Feature.swift */,
+				D58F39C529E0A473008B4100 /* Option.swift */,
+				D5D7C1E629E5F90200663793 /* OptionValue.swift */,
+				D5D7C1E829E5FCDE00663793 /* LocalizedOptionValue.swift */,
+				D5D7C20529E60F4A00663793 /* Views */,
+				D517F6BB29E737F5000D14D0 /* Types */,
+				D5D7C1FE29E60EF700663793 /* Protocols */,
+				D5D7C1F829E60E8600663793 /* Extensions */,
+			);
+			path = DeltaFeatures;
+			sourceTree = "<group>";
+		};
+		D5D7C1F829E60E8600663793 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				D58F39C829E0A702008B4100 /* UserDefaults+FeatureOptions.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		D5D7C1FE29E60EF700663793 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				D5D7C20729E616CF00663793 /* FeatureContainer.swift */,
+				D532B8BC29E5EDAD009EE27C /* OptionalProtocol.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		D5D7C20529E60F4A00663793 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D592D6FE29E48FFB008D218A /* OptionPickerView.swift */,
+				D5D7C20929E61FA600663793 /* OptionToggleView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		FD1E8AE87FA2DB8793F7B937 /* Pods */ = {
@@ -1067,6 +1146,7 @@
 			);
 			dependencies = (
 				BFEBE58325D3388F00222319 /* PBXTargetDependency */,
+				D5D7C1FC29E60EDE00663793 /* PBXTargetDependency */,
 			);
 			name = Delta;
 			packageProductDependencies = (
@@ -1094,6 +1174,23 @@
 			productReference = D5A9C00929DDF3F500A8D610 /* DeltaUI.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		D5D7C1F029E60DFF00663793 /* DeltaFeatures */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D5D7C1F529E60E0000663793 /* Build configuration list for PBXNativeTarget "DeltaFeatures" */;
+			buildPhases = (
+				D5D7C1ED29E60DFF00663793 /* Sources */,
+				D5D7C1EE29E60DFF00663793 /* Frameworks */,
+				D5D7C1EF29E60DFF00663793 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DeltaFeatures;
+			productName = DeltaFeatures;
+			productReference = D5D7C1F129E60DFF00663793 /* libDeltaFeatures.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -1101,7 +1198,7 @@
 			isa = PBXProject;
 			attributes = {
 				DefaultBuildSystemTypeForWorkspace = Original;
-				LastSwiftUpdateCheck = 1230;
+				LastSwiftUpdateCheck = 1420;
 				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = "Riley Testut";
 				TargetAttributes = {
@@ -1129,6 +1226,9 @@
 					D5A9C00829DDF3F500A8D610 = {
 						CreatedOnToolsVersion = 14.2;
 					};
+					D5D7C1F029E60DFF00663793 = {
+						CreatedOnToolsVersion = 14.2;
+					};
 				};
 			};
 			buildConfigurationList = BFFA71D21AAC406100EE9DD1 /* Build configuration list for PBXProject "Delta" */;
@@ -1152,6 +1252,7 @@
 				BF14D8941DE7A512002CA1BE /* mogenerator */,
 				BF6E70B925D2187800E41CD1 /* Systems */,
 				D5A9C00829DDF3F500A8D610 /* DeltaUI */,
+				D5D7C1F029E60DFF00663793 /* DeltaFeatures */,
 			);
 		};
 /* End PBXProject section */
@@ -1311,9 +1412,7 @@
 				D5A817B029DF4E6E00904AFE /* CustomTintColor.swift in Sources */,
 				BF525EEA1FF6CD12004AA849 /* DeepLink.swift in Sources */,
 				BF8A334621A4926F00A42FD4 /* GameSyncStatusViewController.swift in Sources */,
-				D58F39C629E0A473008B4100 /* Option.swift in Sources */,
 				BF59427E1E09BC830051894B /* Game.swift in Sources */,
-				D532B8BD29E5EDAD009EE27C /* OptionalProtocol.swift in Sources */,
 				D5011C48281B6E8B00A0760B /* CharacterSet+Filename.swift in Sources */,
 				BFE593CC21F3F8C2003412A6 /* _GameSave.swift in Sources */,
 				BF63A1A321A4AAAE00EE8F61 /* RecordSyncStatusViewController.swift in Sources */,
@@ -1342,7 +1441,6 @@
 				D5D797E6298D946200738869 /* Contributor.swift in Sources */,
 				BFDB3418219E4B1700595A62 /* SyncStatusViewController.swift in Sources */,
 				BF18B61F1E2985F900F70067 /* UIAlertController+Importing.swift in Sources */,
-				D58F39C929E0A702008B4100 /* UserDefaults+FeatureOptions.swift in Sources */,
 				D586497229774ABD0081477E /* CheatBase.swift in Sources */,
 				BFDD04F11D5E2C27002D450E /* GameCollectionViewController.swift in Sources */,
 				BFE4269E1D9C68E600DC913F /* SaveStatesStoryboardSegue.swift in Sources */,
@@ -1354,7 +1452,6 @@
 				D53415A5298C782A00FD67B1 /* ContributorsView.swift in Sources */,
 				BF5942891E09BC8B0051894B /* _GameCollection.swift in Sources */,
 				BF34FA111CF1899D006624C7 /* CheatTextView.swift in Sources */,
-				D5A9C01729DDF44F00A8D610 /* Feature.swift in Sources */,
 				D524F4A5273DEBB400D500B2 /* ServerManager+Delta.swift in Sources */,
 				D5AAF27729884F8600F21ACF /* CheatDevice.swift in Sources */,
 				BF1F45AD21AF57BA00EF9895 /* HarmonyMetadataKey+Keys.swift in Sources */,
@@ -1390,11 +1487,9 @@
 				D5A98CE2284EF14B00E023E5 /* SceneDelegate.swift in Sources */,
 				BFE56E1923EB7BE00014FECD /* UIImage+SymbolFallback.swift in Sources */,
 				BF6EE5E91F7C5F860051AD6C /* _GameControllerInputMapping.swift in Sources */,
-				D58F39C329E0A141008B4100 /* ExperimentalFeatures+Private.swift in Sources */,
 				BF5942871E09BC8B0051894B /* _ControllerSkin.swift in Sources */,
 				BF95E2791E4982A10030E7AD /* GamesDatabaseBrowserViewController.swift in Sources */,
 				D524F4A3273DE9C000D500B2 /* ProcessInfo+JIT.swift in Sources */,
-				D592D6FF29E48FFB008D218A /* OptionPickerView.swift in Sources */,
 				BFDCA1E9244F7E1000B8FBDB /* Delta5ToDelta6.xcmappingmodel in Sources */,
 				D5A817B329DF6C6C00904AFE /* ExperimentalFeatures.swift in Sources */,
 				BFD097211D3A01B8005A44C2 /* SaveStatesViewController.swift in Sources */,
@@ -1406,7 +1501,6 @@
 				BF107EC41BF413F000E0C32C /* GamesViewController.swift in Sources */,
 				BF3D6C512202865F0083E05A /* Delta2ToDelta3.xcmappingmodel in Sources */,
 				BF59426F1E09BC5D0051894B /* DatabaseManager.swift in Sources */,
-				D5A9C01A29DDFBDD00A8D610 /* SettingsTypes.swift in Sources */,
 				BF4828861F9028F500028B97 /* System.swift in Sources */,
 				BF13A7561D5D29B0000BB055 /* PreviewGameViewController.swift in Sources */,
 				BF6866171DCAC8B900BF2D06 /* ControllerSkin+Configuring.swift in Sources */,
@@ -1440,18 +1534,28 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D58F39C729E0A473008B4100 /* Option.swift in Sources */,
-				D5A9C01629DDF44600A8D610 /* Feature.swift in Sources */,
 				D5A817B129DF4E6E00904AFE /* CustomTintColor.swift in Sources */,
-				D58F39CA29E0A702008B4100 /* UserDefaults+FeatureOptions.swift in Sources */,
-				D58F39C429E0A141008B4100 /* ExperimentalFeatures+Private.swift in Sources */,
 				D5A817B429DF6C7400904AFE /* ExperimentalFeatures.swift in Sources */,
-				D5A9C01E29DE058F00A8D610 /* VariableFastForward.swift in Sources */,
-				D5A9C01B29DDFBE800A8D610 /* SettingsTypes.swift in Sources */,
 				D54A4BB429E4D280004C7D57 /* ExperimentalFeatureView.swift in Sources */,
-				D532B8BE29E5EE1B009EE27C /* OptionalProtocol.swift in Sources */,
 				D5A9C01829DDF45200A8D610 /* ExperimentalFeaturesView.swift in Sources */,
-				D592D70029E48FFB008D218A /* OptionPickerView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D5D7C1ED29E60DFF00663793 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D5D7C20829E616CF00663793 /* FeatureContainer.swift in Sources */,
+				D517F6BA29E730DA000D14D0 /* SettingsTypes.swift in Sources */,
+				D5D7C20429E60F2000663793 /* Feature.swift in Sources */,
+				D5D7C1FD29E60EEF00663793 /* OptionalProtocol.swift in Sources */,
+				D5D7C20C29E624CB00663793 /* DisplayInlineKey.swift in Sources */,
+				D5D7C20A29E61FA600663793 /* OptionToggleView.swift in Sources */,
+				D5D7C20129E60F2000663793 /* LocalizedOptionValue.swift in Sources */,
+				D5D7C20629E60F6100663793 /* OptionPickerView.swift in Sources */,
+				D5D7C20329E60F2000663793 /* Option.swift in Sources */,
+				D5D7C20229E60F2000663793 /* OptionValue.swift in Sources */,
+				D5D7C1F929E60EA500663793 /* UserDefaults+FeatureOptions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1462,6 +1566,11 @@
 			isa = PBXTargetDependency;
 			target = BF6E70B925D2187800E41CD1 /* Systems */;
 			targetProxy = BFEBE58225D3388F00222319 /* PBXContainerItemProxy */;
+		};
+		D5D7C1FC29E60EDE00663793 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D5D7C1F029E60DFF00663793 /* DeltaFeatures */;
+			targetProxy = D5D7C1FB29E60EDE00663793 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1807,6 +1916,53 @@
 			};
 			name = Release;
 		};
+		D5D7C1F629E60E0000663793 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 6XVY5G3U44;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		D5D7C1F729E60E0000663793 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 6XVY5G3U44;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				MTL_FAST_MATH = YES;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1851,6 +2007,15 @@
 			buildConfigurations = (
 				D5A9C01229DDF3F600A8D610 /* Debug */,
 				D5A9C01329DDF3F600A8D610 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D5D7C1F529E60E0000663793 /* Build configuration list for PBXNativeTarget "DeltaFeatures" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D5D7C1F629E60E0000663793 /* Debug */,
+				D5D7C1F729E60E0000663793 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

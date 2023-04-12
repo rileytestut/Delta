@@ -9,15 +9,7 @@
 import SwiftUI
 import Combine
 
-//func test()
-//{
-//    let keyPath = \VariableFastForwardOptions.$snes
-//
-//    ExperimentalFeatures.shared.variableFastForward[dynamicMember: keyPath]
-//
-//    ExperimentalFeatures.shared.variableFastForward.snes = .x2
-//    let test = ExperimentalFeatures.shared.variableFastForward.$snes
-//}
+import DeltaFeatures
 
 extension ExperimentalFeaturesView
 {
@@ -49,15 +41,14 @@ struct ExperimentalFeaturesView: View
             })
             
             ForEach(viewModel.sortedFeatures) { feature in
-//                ExperimentalFeatureSection(feature: feature)
-                ExperimentalFeatureSection2(feature: feature)
+                ExperimentalFeatureSection(feature: feature)
             }
         }
         .listStyle(.insetGrouped)
     }
 }
 
-struct ExperimentalFeatureSection2<T: AnyFeature>: View
+struct ExperimentalFeatureSection<T: AnyFeature>: View
 {
     @ObservedObject
     var feature: T
@@ -84,49 +75,6 @@ struct ExperimentalFeatureSection2<T: AnyFeature>: View
         }
     }
 }
-
-//struct ExperimentalFeatureSection<T: AnyFeature>: View
-//{
-//    @ObservedObject
-//    var feature: T
-//    
-//    var body: some View {
-//        Section {
-//            Toggle(feature.name, isOn: $feature.isEnabled.animation())
-//
-//            if feature.isEnabled
-//            {
-//                ForEach(feature.allOptions, id: \.key) { option in
-//                    optionView(option)
-//                }
-//            }
-//            
-//        } footer: {
-//            if let description = feature.description
-//            {
-//                Text(description)
-//            }
-//        }
-//    }
-//    
-//    @ViewBuilder
-//    func optionView<T: AnyOption>(_ option: T) -> some View
-//    {
-//        // Only show if option has a name and detailView.
-//        if let name = option.name, let detailView = option.detailView(), let value = option.wrappedValue as? any LocalizedOptionValue
-//        {
-//            NavigationLink(destination: detailView) {
-//                HStack {
-//                    Text(name)
-//                    Spacer()
-//                                                    
-//                    value.localizedDescription
-//                        .foregroundColor(.secondary)
-//                }
-//            }
-//        }
-//    }
-//}
 
 extension ExperimentalFeaturesView
 {
