@@ -9,16 +9,6 @@
 import SwiftUI
 import Combine
 
-private extension Array
-{
-    func appendingNil() -> [Element] where Element: OptionalProtocol, Element.Wrapped: LocalizedOptionValue
-    {
-        var values = self
-        values.append(Element.none)
-        return values
-    }
-}
-
 public protocol AnyOption<Value>: AnyObject, Identifiable
 {
     associatedtype Value: OptionValue

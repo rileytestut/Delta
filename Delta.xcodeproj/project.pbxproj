@@ -167,6 +167,7 @@
 		BFFDF04623E3D3A600931B96 /* libMupen64Plus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BFFDF04523E3D3A600931B96 /* libMupen64Plus.a */; };
 		D5011C48281B6E8B00A0760B /* CharacterSet+Filename.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5011C47281B6E8B00A0760B /* CharacterSet+Filename.swift */; };
 		D517F6BA29E730DA000D14D0 /* SettingsTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A9C01929DDFBDD00A8D610 /* SettingsTypes.swift */; };
+		D517F6BE29E7535F000D14D0 /* Array+Optionals.swift in Sources */ = {isa = PBXBuildFile; fileRef = D517F6BD29E7535F000D14D0 /* Array+Optionals.swift */; };
 		D524F4A1273DE9A100D500B2 /* AltKit in Frameworks */ = {isa = PBXBuildFile; productRef = D524F4A0273DE9A100D500B2 /* AltKit */; };
 		D524F4A3273DE9C000D500B2 /* ProcessInfo+JIT.swift in Sources */ = {isa = PBXBuildFile; fileRef = D524F4A2273DE9C000D500B2 /* ProcessInfo+JIT.swift */; };
 		D524F4A5273DEBB400D500B2 /* ServerManager+Delta.swift in Sources */ = {isa = PBXBuildFile; fileRef = D524F4A4273DEBB400D500B2 /* ServerManager+Delta.swift */; };
@@ -411,6 +412,7 @@
 		BFFDF04523E3D3A600931B96 /* libMupen64Plus.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libMupen64Plus.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C786AF1D2DDB6223BE2063CC /* Pods-Delta.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Delta.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Delta/Pods-Delta.debug.xcconfig"; sourceTree = "<group>"; };
 		D5011C47281B6E8B00A0760B /* CharacterSet+Filename.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CharacterSet+Filename.swift"; sourceTree = "<group>"; };
+		D517F6BD29E7535F000D14D0 /* Array+Optionals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Optionals.swift"; sourceTree = "<group>"; };
 		D524F4A2273DE9C000D500B2 /* ProcessInfo+JIT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProcessInfo+JIT.swift"; sourceTree = "<group>"; };
 		D524F4A4273DEBB400D500B2 /* ServerManager+Delta.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ServerManager+Delta.swift"; sourceTree = "<group>"; };
 		D532B8BC29E5EDAD009EE27C /* OptionalProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalProtocol.swift; sourceTree = "<group>"; };
@@ -1085,6 +1087,7 @@
 			isa = PBXGroup;
 			children = (
 				D58F39C829E0A702008B4100 /* UserDefaults+FeatureOptions.swift */,
+				D517F6BD29E7535F000D14D0 /* Array+Optionals.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1552,6 +1555,7 @@
 				D5D7C20C29E624CB00663793 /* DisplayInlineKey.swift in Sources */,
 				D5D7C20A29E61FA600663793 /* OptionToggleView.swift in Sources */,
 				D5D7C20129E60F2000663793 /* LocalizedOptionValue.swift in Sources */,
+				D517F6BE29E7535F000D14D0 /* Array+Optionals.swift in Sources */,
 				D5D7C20629E60F6100663793 /* OptionPickerView.swift in Sources */,
 				D5D7C20329E60F2000663793 /* Option.swift in Sources */,
 				D5D7C20229E60F2000663793 /* OptionValue.swift in Sources */,
