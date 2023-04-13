@@ -19,21 +19,18 @@ private func wrap<RawType, WrapperType: RawRepresentable>(rawValue: RawType, in 
 
 public extension UserDefaults
 {
-    func setOptionValue<T>(_ newValue: T?, forKey key: String) throws
+    func setOptionValue<Value: OptionValue>(_ newValue: Value?, forKey key: String) throws
     {
         switch newValue
         {
         case let rawRepresentable as any RawRepresentable: self.set(rawRepresentable.rawValue, forKey: key)
-//        case let nsDictionary as NSDictionary:
-//            var sanitizedDictionary = nsDictionary.copy() as! [AnyHashable: Any]
-//            // Remove userInfo values that don't conform to NSSecureEncoding.
-//            sanitizedDictionary = sanitizedDictionary.filter { (key, value) in
-//                return (value as AnyObject) is NSSecureCoding
-//            }
-//
         case let secureCoding as any NSSecureCoding:
             if secureCoding is NSNull
             {
+                // Removing value will make us return default value later,
+                // which isn't what we want if we explicitly set nil.
+                // Instead, we persist a dictionary with "isNull" key to let
+                // us know we should return nil later, not the default value.
                 let nullDictionary = ["isNull": true] as NSDictionary
                 self.set(nullDictionary, forKey: key)
             }
@@ -52,7 +49,7 @@ public extension UserDefaults
         }
     }
     
-    func optionValue<Value>(forKey key: String, type: Value.Type) throws -> Value?
+    func optionValue<Value: OptionValue>(forKey key: String, type: Value.Type) throws -> Value?
     {
         guard let rawValue = UserDefaults.standard.object(forKey: key) else { return nil }
         

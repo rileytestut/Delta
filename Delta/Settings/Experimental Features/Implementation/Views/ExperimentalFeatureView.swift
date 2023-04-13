@@ -32,12 +32,10 @@ struct ExperimentalFeatureView<Feature: AnyFeature>: View
             if feature.isEnabled
             {
                 ForEach(feature.allOptions, id: \.key) { option in
-                    
-                    // Only show options with non-nil names.
-                    if option.name != nil
+                    if let optionView = optionView(option)
                     {
                         Section {
-                            optionView(option)
+                            optionView
                         } footer: {
                             if let description = option.description
                             {
@@ -50,19 +48,16 @@ struct ExperimentalFeatureView<Feature: AnyFeature>: View
         }
     }
     
-    private func optionView(_ option: any AnyOption) -> some View
+    // Cannot open existential if return type uses concrete type T in non-covariant position (e.g. Box<T>).
+    // So instead we erase return type to AnyView.
+    private func optionView<T: AnyOption>(_ option: T) -> AnyView?
     {
-        func unwrap<T: AnyOption>(_ option: T) -> some View
-        {
-            OptionRow(option: option)
-        }
-        
-        // Must use concrete AnyView type to return `some View`.
-        return AnyView(unwrap(option))
+        guard let view = OptionRow(option: option) else { return nil }
+        return AnyView(view)
     }
 }
 
-struct OptionRow<Option: AnyOption, DetailView: View>: View where DetailView == Option.DetailView
+private struct OptionRow<Option: AnyOption, DetailView: View>: View where DetailView == Option.DetailView
 {
     var name: LocalizedStringKey
     var value: any LocalizedOptionValue
@@ -76,7 +71,7 @@ struct OptionRow<Option: AnyOption, DetailView: View>: View where DetailView == 
         // Only show if option has a name, localizable value, and detailView.
         guard
             let name = option.name,
-            let value = option.wrappedValue as? any LocalizedOptionValue,
+            let value = option.value as? any LocalizedOptionValue,
             let detailView = option.detailView()
         else { return nil }
         

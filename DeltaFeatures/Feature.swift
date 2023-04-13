@@ -9,7 +9,13 @@
 import SwiftUI
 import Combine
 
-public class AnyFeature: ObservableObject
+public struct EmptyOptions
+{
+    public init() {}
+}
+
+@propertyWrapper @dynamicMemberLookup
+public final class Feature<Options>: _AnyFeature
 {
     public let name: LocalizedStringKey
     public let description: LocalizedStringKey?
@@ -23,7 +29,10 @@ public class AnyFeature: ObservableObject
     }
     
     public var isEnabled: Bool {
-        get { UserDefaults.standard.bool(forKey: self.key) }
+        get {
+            let isEnabled = UserDefaults.standard.bool(forKey: self.key)
+            return isEnabled
+        }
         set {
             self.objectWillChange.send()
             UserDefaults.standard.set(newValue, forKey: self.key)
@@ -31,31 +40,6 @@ public class AnyFeature: ObservableObject
             NotificationCenter.default.post(name: .settingsDidChange, object: nil, userInfo: [Settings.NotificationUserInfoKey.name: self.settingsKey, Settings.NotificationUserInfoKey.value: newValue])
         }
     }
-    
-    fileprivate init(name: LocalizedStringKey, description: LocalizedStringKey? = nil)
-    {
-        self.name = name
-        self.description = description
-    }
-    
-    // Overridden
-    public var allOptions: [any AnyOption] { [] }
-}
-
-extension AnyFeature: Identifiable
-{
-    public var id: String { self.key }
-}
-
-extension AnyFeature
-{
-    public struct EmptyOptions {}
-}
-
-@propertyWrapper @dynamicMemberLookup
-public final class Feature<Options>: AnyFeature
-{
-    private var options: Options
     
     public var wrappedValue: some Feature {
         return self
@@ -65,6 +49,8 @@ public final class Feature<Options>: AnyFeature
         ObservedObject(initialValue: self.observedFeature ?? self).projectedValue
     }()
     
+    private var options: Options
+    
     // Track changes to another instance of this feature via key path.
     private weak var observedFeature: Feature<Options>?
     
@@ -72,18 +58,10 @@ public final class Feature<Options>: AnyFeature
     {
         self.options = options
         
-        super.init(name: name, description: description)
+        self.name = name
+        self.description = description
         
         self.prepareOptions()
-    }
-    
-    public convenience init<Container: FeatureContainer, F: Feature>(_ keyPath: KeyPath<Container, F>)
-    {
-        let feature = Container.shared[keyPath: keyPath]
-        self.init(name: feature.name, description: feature.description, options: feature.options)
-        
-        self.key = feature.key
-        self.observedFeature = feature
     }
     
     // Use `KeyPath` instead of `WritableKeyPath` as parameter to allow accessing projected property wrappers.
@@ -96,13 +74,26 @@ public final class Feature<Options>: AnyFeature
             options[keyPath: writableKeyPath] = newValue
         }
     }
-    
-    public override var allOptions: [any AnyOption] {
+}
+
+public extension Feature
+{
+    var allOptions: [any AnyOption] {
         let features = Mirror(reflecting: self.options).children.compactMap { (child) -> (any AnyOption)? in
             let feature = child.value as? (any AnyOption)
             return feature
         }
         return features
+    }
+    
+    convenience init<Container: FeatureContainer, F: Feature>(_ keyPath: KeyPath<Container, F>)
+    {
+        let feature = Container.shared[keyPath: keyPath]
+        
+        self.init(name: feature.name, description: feature.description, options: feature.options)
+        
+        self.key = feature.key
+        self.observedFeature = feature
     }
 }
 

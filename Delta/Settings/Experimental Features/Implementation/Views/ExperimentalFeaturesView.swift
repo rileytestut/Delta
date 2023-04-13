@@ -16,7 +16,7 @@ extension ExperimentalFeaturesView
     private class ViewModel: ObservableObject
     {
         @Published
-        var sortedFeatures: [AnyFeature]
+        var sortedFeatures: [any AnyFeature]
         
         init()
         {
@@ -40,11 +40,19 @@ struct ExperimentalFeaturesView: View
                     .font(.subheadline)
             })
             
-            ForEach(viewModel.sortedFeatures) { feature in
-                ExperimentalFeatureSection(feature: feature)
+            ForEach(viewModel.sortedFeatures, id: \.key) { feature in
+                section(for: feature)
             }
         }
         .listStyle(.insetGrouped)
+    }
+    
+    // Cannot open existential if return type uses concrete type T in non-covariant position (e.g. Box<T>).
+    // So instead we erase return type to AnyView.
+    private func section<T: AnyFeature>(for feature: T) -> AnyView
+    {
+        let section = ExperimentalFeatureSection(feature: feature)
+        return AnyView(section)
     }
 }
 

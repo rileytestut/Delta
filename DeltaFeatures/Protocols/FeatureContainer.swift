@@ -15,9 +15,9 @@ public protocol FeatureContainer
 
 public extension FeatureContainer
 {    
-    var allFeatures: [AnyFeature] {
-        let features = Mirror(reflecting: self).children.compactMap { (child) -> (AnyFeature)? in
-            let feature = child.value as? AnyFeature
+    var allFeatures: [any AnyFeature] {
+        let features = Mirror(reflecting: self).children.compactMap { (child) -> (any AnyFeature)? in
+            let feature = child.value as? any AnyFeature
             return feature
         }
         return features
@@ -26,7 +26,7 @@ public extension FeatureContainer
     func prepareFeatures()
     {
         // Assign keys to property names.
-        for case (let key?, let feature as AnyFeature) in Mirror(reflecting: self).children
+        for case (let key?, let feature as any _AnyFeature) in Mirror(reflecting: self).children
         {
             // Remove leading underscore.
             let sanitizedKey = key.dropFirst()

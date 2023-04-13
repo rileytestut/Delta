@@ -9,34 +9,6 @@
 import SwiftUI
 import Combine
 
-public protocol AnyOption<Value>: AnyObject, Identifiable
-{
-    associatedtype Value: OptionValue
-    associatedtype DetailView: View
-    
-    var name: LocalizedStringKey? { get }
-    var key: String { get }
-    var description: LocalizedStringKey? { get }
-    
-    var values: [Value]? { get }
-    var detailView: () -> DetailView? { get }
-    
-    // TODO: Remove below
-    var wrappedValue: Value { get }
-}
-
-extension AnyOption
-{
-    public var id: String { self.key }
-}
-
-// Don't expose `feature` property via AnyOption protocol.
-internal protocol _AnyOption: AnyOption
-{
-    var key: String { get set }
-    var feature: AnyFeature? { get set }
-}
-
 @propertyWrapper
 public class Option<Value: OptionValue, DetailView: View>: _AnyOption
 {
@@ -47,10 +19,8 @@ public class Option<Value: OptionValue, DetailView: View>: _AnyOption
     public let values: [Value]?
     public private(set) var detailView: () -> DetailView? = { nil }
     
+    // Assigned to property name.
     public internal(set) var key: String = ""
-    internal weak var feature: AnyFeature?
-    
-    private let defaultValue: Value
     
     // Used for `NotificationUserInfoKey.name` value in .settingsDidChange notification.
     public var settingsKey: Settings.Name {
@@ -59,6 +29,10 @@ public class Option<Value: OptionValue, DetailView: View>: _AnyOption
         let defaultsKey = feature.key + "_" + self.key
         return Settings.Name(rawValue: defaultsKey)
     }
+    
+    internal weak var feature: (any AnyFeature)?
+    
+    private let defaultValue: Value
     
     // Must be property in order for UI to update automatically.
     private var valueBinding: Binding<Value> {
@@ -86,7 +60,7 @@ public class Option<Value: OptionValue, DetailView: View>: _AnyOption
         set {
             Task { @MainActor in
                 // Delay to avoid "Publishing changes from within view updates is not allowed" runtime warning.
-                self.feature?.objectWillChange.send()
+                (self.feature?.objectWillChange as? ObservableObjectPublisher)?.send()
             }
             
             do {
