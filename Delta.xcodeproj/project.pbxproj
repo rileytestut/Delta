@@ -186,6 +186,7 @@
 		D5D797E9298DCC7300738869 /* cheatbase.zip in Resources */ = {isa = PBXBuildFile; fileRef = D5D797E7298DC9E200738869 /* cheatbase.zip */; };
 		D5D7C1FA29E60EDE00663793 /* libDeltaFeatures.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D5D7C1F129E60DFF00663793 /* libDeltaFeatures.a */; };
 		D5D7C20429E60F2000663793 /* Feature.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A9BFFD29DDECF100A8D610 /* Feature.swift */; };
+		D5D7C20829E616CF00663793 /* FeatureContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D7C20729E616CF00663793 /* FeatureContainer.swift */; };
 		D5F82FB82981D3AC00B229AF /* LegacySearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F82FB72981D3AC00B229AF /* LegacySearchBar.swift */; };
 /* End PBXBuildFile section */
 
@@ -419,6 +420,7 @@
 		D5D797E5298D946200738869 /* Contributor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contributor.swift; sourceTree = "<group>"; };
 		D5D797E7298DC9E200738869 /* cheatbase.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = cheatbase.zip; sourceTree = "<group>"; };
 		D5D7C1F129E60DFF00663793 /* libDeltaFeatures.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libDeltaFeatures.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		D5D7C20729E616CF00663793 /* FeatureContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureContainer.swift; sourceTree = "<group>"; };
 		D5F82FB72981D3AC00B229AF /* LegacySearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacySearchBar.swift; sourceTree = "<group>"; };
 		DC866E433B3BA9AE18ABA1EC /* libPods-Delta.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Delta.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -1013,6 +1015,7 @@
 			children = (
 				D5A9BFFD29DDECF100A8D610 /* Feature.swift */,
 				D517F6BB29E737F5000D14D0 /* Types */,
+				D5D7C1FE29E60EF700663793 /* Protocols */,
 				D5D7C1F829E60E8600663793 /* Extensions */,
 			);
 			path = DeltaFeatures;
@@ -1024,6 +1027,14 @@
 				D54F710329E89DFC009C069A /* NotificationName+Settings.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		D5D7C1FE29E60EF700663793 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				D5D7C20729E616CF00663793 /* FeatureContainer.swift */,
+			);
+			path = Protocols;
 			sourceTree = "<group>";
 		};
 		FD1E8AE87FA2DB8793F7B937 /* Pods */ = {
@@ -1504,6 +1515,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D5D7C20829E616CF00663793 /* FeatureContainer.swift in Sources */,
 				D517F6BA29E730DA000D14D0 /* SettingsName.swift in Sources */,
 				D5D7C20429E60F2000663793 /* Feature.swift in Sources */,
 				D54F710429E89DFC009C069A /* NotificationName+Settings.swift in Sources */,
