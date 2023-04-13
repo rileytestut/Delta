@@ -1212,6 +1212,8 @@ private extension GameViewController
             self.updateAudio()
                 
         case .syncingService, .isAltJITEnabled: break
+            
+        default: break
         }
     }
     

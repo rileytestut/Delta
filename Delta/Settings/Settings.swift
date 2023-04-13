@@ -9,6 +9,7 @@
 import Foundation
 
 import DeltaCore
+import DeltaFeatures
 import MelonDSDeltaCore
 
 import Roxas
@@ -18,29 +19,23 @@ extension Notification.Name
     static let settingsDidChange = Notification.Name("SettingsDidChangeNotification")
 }
 
-extension Settings
+extension Settings.NotificationUserInfoKey
 {
-    enum NotificationUserInfoKey: String
-    {
-        case name
-        
-        case system
-        case traits
-        
-        case core
-    }
-    
-    enum Name: String
-    {
-        case localControllerPlayerIndex
-        case translucentControllerSkinOpacity
-        case preferredControllerSkin
-        case syncingService
-        case isButtonHapticFeedbackEnabled
-        case isThumbstickHapticFeedbackEnabled
-        case isAltJITEnabled
-        case respectSilentMode
-    }
+    static let system: Settings.NotificationUserInfoKey = "system"
+    static let traits: Settings.NotificationUserInfoKey = "traits"
+    static let core: Settings.NotificationUserInfoKey = "core"
+}
+
+extension Settings.Name
+{
+    static let localControllerPlayerIndex: Settings.Name = "localControllerPlayerIndex"
+    static let translucentControllerSkinOpacity: Settings.Name = "translucentControllerSkinOpacity"
+    static let preferredControllerSkin: Settings.Name = "preferredControllerSkin"
+    static let syncingService: Settings.Name = "syncingService"
+    static let isButtonHapticFeedbackEnabled: Settings.Name = "isButtonHapticFeedbackEnabled"
+    static let isThumbstickHapticFeedbackEnabled: Settings.Name = "isThumbstickHapticFeedbackEnabled"
+    static let isAltJITEnabled: Settings.Name = "isAltJITEnabled"
+    static let respectSilentMode: Settings.Name = "respectSilentMode"
 }
 
 extension Settings
@@ -50,6 +45,9 @@ extension Settings
         case recent
         case manual
     }
+    
+    typealias Name = SettingsName
+    typealias NotificationUserInfoKey = SettingsUserInfoKey
 }
 
 struct Settings

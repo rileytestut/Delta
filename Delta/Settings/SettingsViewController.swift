@@ -309,6 +309,7 @@ private extension SettingsViewController
             }
             
         case .localControllerPlayerIndex, .preferredControllerSkin, .translucentControllerSkinOpacity, .respectSilentMode, .isButtonHapticFeedbackEnabled, .isThumbstickHapticFeedbackEnabled, .isAltJITEnabled: break
+        default: break
         }
     }
 

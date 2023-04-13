@@ -166,6 +166,7 @@
 		BFFDF03723E3BB2600931B96 /* libSnes9x.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BFFDF03623E3BB2600931B96 /* libSnes9x.a */; };
 		BFFDF03F23E3C28A00931B96 /* libGambatte.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BFFDF03D23E3C0F000931B96 /* libGambatte.a */; };
 		BFFDF04623E3D3A600931B96 /* libMupen64Plus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BFFDF04523E3D3A600931B96 /* libMupen64Plus.a */; };
+		D517F6BA29E730DA000D14D0 /* SettingsName.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A9C01929DDFBDD00A8D610 /* SettingsName.swift */; };
 		D524F4A1273DE9A100D500B2 /* AltKit in Frameworks */ = {isa = PBXBuildFile; productRef = D524F4A0273DE9A100D500B2 /* AltKit */; };
 		D524F4A3273DE9C000D500B2 /* ProcessInfo+JIT.swift in Sources */ = {isa = PBXBuildFile; fileRef = D524F4A2273DE9C000D500B2 /* ProcessInfo+JIT.swift */; };
 		D524F4A5273DEBB400D500B2 /* ServerManager+Delta.swift in Sources */ = {isa = PBXBuildFile; fileRef = D524F4A4273DEBB400D500B2 /* ServerManager+Delta.swift */; };
@@ -174,6 +175,7 @@
 		D53415A7298C78BC00FD67B1 /* Contributors.plist in Resources */ = {isa = PBXBuildFile; fileRef = D53415A6298C78BC00FD67B1 /* Contributors.plist */; };
 		D539103229E88B6C0006B350 /* DeltaPreviews.h in Headers */ = {isa = PBXBuildFile; fileRef = D539103129E88B6C0006B350 /* DeltaPreviews.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D539104029E88BC40006B350 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D539103F29E88BC40006B350 /* ContentView.swift */; };
+		D54F710229E89DCB009C069A /* SettingsUserInfoKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54F710129E89DCB009C069A /* SettingsUserInfoKey.swift */; };
 		D5864970297734280081477E /* CheatMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586496F297734280081477E /* CheatMetadata.swift */; };
 		D586497229774ABD0081477E /* CheatBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586497129774ABD0081477E /* CheatBase.swift */; };
 		D5864978297756CE0081477E /* CheatBaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5864977297756CE0081477E /* CheatBaseView.swift */; };
@@ -404,11 +406,13 @@
 		D539102F29E88B6B0006B350 /* DeltaPreviews.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DeltaPreviews.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D539103129E88B6C0006B350 /* DeltaPreviews.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DeltaPreviews.h; sourceTree = "<group>"; };
 		D539103F29E88BC40006B350 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		D54F710129E89DCB009C069A /* SettingsUserInfoKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsUserInfoKey.swift; sourceTree = "<group>"; };
 		D586496F297734280081477E /* CheatMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheatMetadata.swift; sourceTree = "<group>"; };
 		D586497129774ABD0081477E /* CheatBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheatBase.swift; sourceTree = "<group>"; };
 		D5864977297756CE0081477E /* CheatBaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheatBaseView.swift; sourceTree = "<group>"; };
 		D5A98CE1284EF14B00E023E5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		D5A9BFFD29DDECF100A8D610 /* Feature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feature.swift; sourceTree = "<group>"; };
+		D5A9C01929DDFBDD00A8D610 /* SettingsName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsName.swift; sourceTree = "<group>"; };
 		D5AAF27629884F8600F21ACF /* CheatDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheatDevice.swift; sourceTree = "<group>"; };
 		D5D797E5298D946200738869 /* Contributor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contributor.swift; sourceTree = "<group>"; };
 		D5D797E7298DC9E200738869 /* cheatbase.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = cheatbase.zip; sourceTree = "<group>"; };
@@ -963,6 +967,15 @@
 			path = Launch;
 			sourceTree = "<group>";
 		};
+		D517F6BB29E737F5000D14D0 /* Types */ = {
+			isa = PBXGroup;
+			children = (
+				D5A9C01929DDFBDD00A8D610 /* SettingsName.swift */,
+				D54F710129E89DCB009C069A /* SettingsUserInfoKey.swift */,
+			);
+			path = Types;
+			sourceTree = "<group>";
+		};
 		D539103029E88B6C0006B350 /* DeltaPreviews */ = {
 			isa = PBXGroup;
 			children = (
@@ -997,6 +1010,7 @@
 			isa = PBXGroup;
 			children = (
 				D5A9BFFD29DDECF100A8D610 /* Feature.swift */,
+				D517F6BB29E737F5000D14D0 /* Types */,
 			);
 			path = DeltaFeatures;
 			sourceTree = "<group>";
@@ -1479,7 +1493,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D517F6BA29E730DA000D14D0 /* SettingsName.swift in Sources */,
 				D5D7C20429E60F2000663793 /* Feature.swift in Sources */,
+				D54F710229E89DCB009C069A /* SettingsUserInfoKey.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
