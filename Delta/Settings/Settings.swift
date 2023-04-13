@@ -14,11 +14,6 @@ import MelonDSDeltaCore
 
 import Roxas
 
-extension Notification.Name
-{
-    static let settingsDidChange = Notification.Name("SettingsDidChangeNotification")
-}
-
 extension Settings.NotificationUserInfoKey
 {
     static let system: Settings.NotificationUserInfoKey = "system"
@@ -48,6 +43,8 @@ extension Settings
     
     typealias Name = SettingsName
     typealias NotificationUserInfoKey = SettingsUserInfoKey
+    
+    static let didChangeNotification = Notification.Name.settingsDidChange
 }
 
 struct Settings
@@ -81,7 +78,7 @@ extension Settings
     static var localControllerPlayerIndex: Int? = 0 {
         didSet {
             guard self.localControllerPlayerIndex != oldValue else { return }
-            NotificationCenter.default.post(name: .settingsDidChange, object: nil, userInfo: [NotificationUserInfoKey.name: Name.localControllerPlayerIndex])
+            NotificationCenter.default.post(name: Settings.didChangeNotification, object: nil, userInfo: [NotificationUserInfoKey.name: Name.localControllerPlayerIndex])
         }
     }
     
@@ -89,7 +86,7 @@ extension Settings
         set {
             guard newValue != self.translucentControllerSkinOpacity else { return }
             UserDefaults.standard.translucentControllerSkinOpacity = newValue
-            NotificationCenter.default.post(name: .settingsDidChange, object: nil, userInfo: [NotificationUserInfoKey.name: Name.translucentControllerSkinOpacity])
+            NotificationCenter.default.post(name: Settings.didChangeNotification, object: nil, userInfo: [NotificationUserInfoKey.name: Name.translucentControllerSkinOpacity])
         }
         get { return UserDefaults.standard.translucentControllerSkinOpacity }
     }
@@ -158,7 +155,7 @@ extension Settings
         }
         set {
             UserDefaults.standard.syncingService = newValue?.rawValue
-            NotificationCenter.default.post(name: .settingsDidChange, object: nil, userInfo: [NotificationUserInfoKey.name: Name.syncingService])
+            NotificationCenter.default.post(name: Settings.didChangeNotification, object: nil, userInfo: [NotificationUserInfoKey.name: Name.syncingService])
         }
     }
     
@@ -169,7 +166,7 @@ extension Settings
         }
         set {
             UserDefaults.standard.isButtonHapticFeedbackEnabled = newValue
-            NotificationCenter.default.post(name: .settingsDidChange, object: nil, userInfo: [NotificationUserInfoKey.name: Name.isButtonHapticFeedbackEnabled])
+            NotificationCenter.default.post(name: Settings.didChangeNotification, object: nil, userInfo: [NotificationUserInfoKey.name: Name.isButtonHapticFeedbackEnabled])
         }
     }
     
@@ -180,7 +177,7 @@ extension Settings
         }
         set {
             UserDefaults.standard.isThumbstickHapticFeedbackEnabled = newValue
-            NotificationCenter.default.post(name: .settingsDidChange, object: nil, userInfo: [NotificationUserInfoKey.name: Name.isThumbstickHapticFeedbackEnabled])
+            NotificationCenter.default.post(name: Settings.didChangeNotification, object: nil, userInfo: [NotificationUserInfoKey.name: Name.isThumbstickHapticFeedbackEnabled])
         }
     }
     
@@ -207,7 +204,7 @@ extension Settings
         }
         set {
             UserDefaults.standard.isAltJITEnabled = newValue
-            NotificationCenter.default.post(name: .settingsDidChange, object: nil, userInfo: [NotificationUserInfoKey.name: Name.isAltJITEnabled])
+            NotificationCenter.default.post(name: Settings.didChangeNotification, object: nil, userInfo: [NotificationUserInfoKey.name: Name.isAltJITEnabled])
         }
     }
     
@@ -218,7 +215,7 @@ extension Settings
         }
         set {
             UserDefaults.standard.respectSilentMode = newValue
-            NotificationCenter.default.post(name: .settingsDidChange, object: nil, userInfo: [NotificationUserInfoKey.name: Name.respectSilentMode])
+            NotificationCenter.default.post(name: Settings.didChangeNotification, object: nil, userInfo: [NotificationUserInfoKey.name: Name.respectSilentMode])
         }
     }
     
@@ -239,7 +236,7 @@ extension Settings
         let key = self.preferredCoreSettingsKey(for: gameType)
         
         UserDefaults.standard.set(core.identifier, forKey: key)
-        NotificationCenter.default.post(name: .settingsDidChange, object: nil, userInfo: [NotificationUserInfoKey.name: key, NotificationUserInfoKey.core: core])
+        NotificationCenter.default.post(name: Settings.didChangeNotification, object: nil, userInfo: [NotificationUserInfoKey.name: key, NotificationUserInfoKey.core: core])
     }
     
     static func preferredControllerSkin(for system: System, traits: DeltaCore.ControllerSkin.Traits) -> ControllerSkin?
@@ -290,7 +287,7 @@ extension Settings
         
         UserDefaults.standard.set(controllerSkin?.identifier, forKey: userDefaultKey)
         
-        NotificationCenter.default.post(name: .settingsDidChange, object: controllerSkin, userInfo: [NotificationUserInfoKey.name: Name.preferredControllerSkin, NotificationUserInfoKey.system: system, NotificationUserInfoKey.traits: traits])
+        NotificationCenter.default.post(name: Settings.didChangeNotification, object: controllerSkin, userInfo: [NotificationUserInfoKey.name: Name.preferredControllerSkin, NotificationUserInfoKey.system: system, NotificationUserInfoKey.traits: traits])
     }
     
     static func preferredControllerSkin(for game: Game, traits: DeltaCore.ControllerSkin.Traits) -> ControllerSkin?
@@ -348,7 +345,7 @@ extension Settings
         
         if let system = System(gameType: game.type)
         {
-            NotificationCenter.default.post(name: .settingsDidChange, object: controllerSkin, userInfo: [NotificationUserInfoKey.name: Name.preferredControllerSkin, NotificationUserInfoKey.system: system, NotificationUserInfoKey.traits: traits])
+            NotificationCenter.default.post(name: Settings.didChangeNotification, object: controllerSkin, userInfo: [NotificationUserInfoKey.name: Name.preferredControllerSkin, NotificationUserInfoKey.system: system, NotificationUserInfoKey.traits: traits])
         }
     }
 }

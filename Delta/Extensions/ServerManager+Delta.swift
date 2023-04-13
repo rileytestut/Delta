@@ -17,7 +17,7 @@ extension ServerManager
 {
     func prepare()
     {
-        NotificationCenter.default.addObserver(self, selector: #selector(ServerManager.didChangeJITMode(_:)), name: .settingsDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ServerManager.didChangeJITMode(_:)), name: Settings.didChangeNotification, object: nil)
         
         #if DEBUG
         if ProcessInfo.processInfo.isDebugging
