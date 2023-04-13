@@ -33,6 +33,7 @@
 
 /* Begin PBXBuildFile section */
 		1FA4ABA79AB72914FE414A61 /* libPods-Delta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DC866E433B3BA9AE18ABA1EC /* libPods-Delta.a */; };
+		87343D7B985519A5890A61C6 /* libPods-DeltaPreviews.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E3E5A45AB20C8A87754453B /* libPods-DeltaPreviews.a */; };
 		BF00BEA625B758AA00C8607D /* SystemBIOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF00BEA525B758AA00C8607D /* SystemBIOS.swift */; };
 		BF02D5DA1DDEBB3000A5E131 /* openvgdb.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = BF02D5D91DDEBB3000A5E131 /* openvgdb.sqlite */; };
 		BF04E6FF1DB8625C000F35D3 /* ControllerSkinsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF04E6FE1DB8625C000F35D3 /* ControllerSkinsViewController.swift */; };
@@ -209,6 +210,9 @@
 
 /* Begin PBXFileReference section */
 		22506DA00971C4300AF90A35 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7E3E5A45AB20C8A87754453B /* libPods-DeltaPreviews.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DeltaPreviews.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8ECE6641DE30D01EA30FE7F6 /* Pods-DeltaPreviews.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DeltaPreviews.release.xcconfig"; path = "Pods/Target Support Files/Pods-DeltaPreviews/Pods-DeltaPreviews.release.xcconfig"; sourceTree = "<group>"; };
+		A01281C7023C0041B25963BE /* Pods-DeltaPreviews.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DeltaPreviews.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DeltaPreviews/Pods-DeltaPreviews.debug.xcconfig"; sourceTree = "<group>"; };
 		A19FF50F55441BC2B2248241 /* Pods-Delta.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Delta.release.xcconfig"; path = "Pods/Target Support Files/Pods-Delta/Pods-Delta.release.xcconfig"; sourceTree = "<group>"; };
 		BF00BEA525B758AA00C8607D /* SystemBIOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemBIOS.swift; sourceTree = "<group>"; };
 		BF02D5D91DDEBB3000A5E131 /* openvgdb.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = openvgdb.sqlite; sourceTree = "<group>"; };
@@ -413,6 +417,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		D539102C29E88B6B0006B350 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				87343D7B985519A5890A61C6 /* libPods-DeltaPreviews.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D5D7C1EE29E60DFF00663793 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -746,6 +758,7 @@
 				BFC134E01AAD82460087AD7B /* SNESDeltaCore.framework */,
 				22506DA00971C4300AF90A35 /* Pods.framework */,
 				DC866E433B3BA9AE18ABA1EC /* libPods-Delta.a */,
+				7E3E5A45AB20C8A87754453B /* libPods-DeltaPreviews.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -962,6 +975,8 @@
 			children = (
 				C786AF1D2DDB6223BE2063CC /* Pods-Delta.debug.xcconfig */,
 				A19FF50F55441BC2B2248241 /* Pods-Delta.release.xcconfig */,
+				A01281C7023C0041B25963BE /* Pods-DeltaPreviews.debug.xcconfig */,
+				8ECE6641DE30D01EA30FE7F6 /* Pods-DeltaPreviews.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -1009,10 +1024,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D539103729E88B6C0006B350 /* Build configuration list for PBXNativeTarget "DeltaPreviews" */;
 			buildPhases = (
+				92EDD9C0CE3127182B2AF907 /* [CP] Check Pods Manifest.lock */,
 				D539102A29E88B6B0006B350 /* Headers */,
 				D539102B29E88B6B0006B350 /* Sources */,
 				D539102C29E88B6B0006B350 /* Frameworks */,
 				D539102D29E88B6B0006B350 /* Resources */,
+				CA9C6F6BA1C90E8127A301EC /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1158,6 +1175,28 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Delta/Pods-Delta-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		92EDD9C0CE3127182B2AF907 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-DeltaPreviews-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 		BF14D8981DE7A519002CA1BE /* mogenerator */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1202,6 +1241,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# Manually build Systems.framework to prevent conflicts between Cocoapods' and SwiftPM's DeltaCore.\n\ncd $SRCROOT/Systems\n./build.sh\n";
+		};
+		CA9C6F6BA1C90E8127A301EC /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-DeltaPreviews/Pods-DeltaPreviews-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/DeltaCore/DeltaCore.bundle",
+				"${PODS_ROOT}/../External/Roxas/Roxas/RSTCollectionViewCell.xib",
+				"${PODS_ROOT}/../External/Roxas/Roxas/RSTPlaceholderView.xib",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/DeltaCore.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/RSTCollectionViewCell.nib",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/RSTPlaceholderView.nib",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DeltaPreviews/Pods-DeltaPreviews-resources.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 		DBD91E7D7EC2729786B4C5B1 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1620,6 +1681,7 @@
 		};
 		D539103829E88B6C0006B350 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A01281C7023C0041B25963BE /* Pods-DeltaPreviews.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -1668,6 +1730,7 @@
 		};
 		D539103929E88B6C0006B350 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8ECE6641DE30D01EA30FE7F6 /* Pods-DeltaPreviews.release.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;

@@ -1093,6 +1093,7 @@
 		975E6847416F072AFEDB7A31CE539B4E /* StoneValidators.swift in Sources */ = {isa = PBXBuildFile; fileRef = C896FF6056EF6073CCFEB25599D37DC1 /* StoneValidators.swift */; };
 		97B1C675C31755288EB856C647FBDB85 /* Cheat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46419BA04293C44F08C03736D6B48308 /* Cheat.swift */; };
 		97BB72E4C486CA41110964F1DAD222AD /* NstApiEmulator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4BEB9E9721620F578D0426BDB238AD95 /* NstApiEmulator.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
+		9817437F468A9747991CC23D896B8FE6 /* Pods-DeltaPreviews-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = CDD676F1CFBC293A793BD1F2DE8EB4A5 /* Pods-DeltaPreviews-dummy.m */; };
 		9848E002F2A4BF48871D9DD1EF65259A /* NstApiDipSwitches.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 6A4D816174974D9B8D18C7000DB19127 /* NstApiDipSwitches.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		98753D35C009BD6255B67F2BB30EFFD8 /* xxhash.c in Sources */ = {isa = PBXBuildFile; fileRef = EF55878BD6EF8EBB692CE3CC29230405 /* xxhash.c */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		9888FEF1556A0E7753845F88F05C3D59 /* NstBoardAveD1012.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 364893996CF3D04EBFF0A11679E8B5AD /* NstBoardAveD1012.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -1265,7 +1266,7 @@
 		B1B0B44C669FC89BB9B0605DCACF5BA7 /* Standard.deltamapping in Resources */ = {isa = PBXBuildFile; fileRef = 440F728629AA81492F2374B22D158C8D /* Standard.deltamapping */; };
 		B1B726C37FEADFF066DA50A67B1A6FC7 /* UserDefaults+Harmony.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D15689BF394D0D4715A1CF27DC77AFF /* UserDefaults+Harmony.swift */; };
 		B1F2A524C6C6B182547F97DECAFDF468 /* GBADeltaCore.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D5333899F4FCD47BE18D2CFB9431CA3 /* GBADeltaCore.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		B258EAF739993BFAA77C6FA467A7B397 /* Pods-Delta-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 37221D699E77B16EA4FE6C376B827730 /* Pods-Delta-umbrella.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		B258EAF739993BFAA77C6FA467A7B397 /* Pods-Delta-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = E39B6D2E1349BC9CF76985C762A82797 /* Pods-Delta-umbrella.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		B297A13AF311273E3D3C05A89ADBBBE7 /* GTMSessionFetcherService.h in Headers */ = {isa = PBXBuildFile; fileRef = 7F7ED6CE3BC682B49D8D74C14E481F37 /* GTMSessionFetcherService.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		B2BA3D9EB6086382F29E54A66FF218FC /* cexcept.h in Headers */ = {isa = PBXBuildFile; fileRef = B2E4677AF53B14D10F76DC96D0EE8E81 /* cexcept.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		B2CED5356E1C5BDA73E7FDB98E84EE91 /* pshints.h in Headers */ = {isa = PBXBuildFile; fileRef = 89C960C16995AC56FBCD57A8A50D8C9E /* pshints.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -1327,7 +1328,7 @@
 		B9FA1E95A6FC0051578E5F9B90592A25 /* MergePolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = D120FB3DD7CE8E154F0178A7E383180A /* MergePolicy.swift */; };
 		BA956DCBC93D2815C285CBA3C0ADECC1 /* StandardGameControllerInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 667BB04531AD532495A6109121EC251F /* StandardGameControllerInput.swift */; };
 		BAFE59F8467A479C3024C8D1A6B63C1A /* NstBoardSunsoft4.hpp in Headers */ = {isa = PBXBuildFile; fileRef = C22D5AF4DB90EC26C2D5E7314FE452DA /* NstBoardSunsoft4.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
-		BB079FBCD203D0D585F07741BEB1359F /* Pods-Delta-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F8D603EBE941AC871B0A2F47AD5B6D5 /* Pods-Delta-dummy.m */; };
+		BB079FBCD203D0D585F07741BEB1359F /* Pods-Delta-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 11D58CDB406CFD79E7AC3E81C6B8B7BD /* Pods-Delta-dummy.m */; };
 		BB22175107C5B167BA3A503EF40C95BE /* UIImage+GIF.m in Sources */ = {isa = PBXBuildFile; fileRef = F5EA96C879945AA782B43E8FA302CAF0 /* UIImage+GIF.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		BB6C7F62ED6607CA3B07B737DE8956BF /* ControllerInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 916DC17A6938C4EB312870DB067BAFE2 /* ControllerInputView.swift */; };
 		BB83C478B7243E82DDB3C167A0671904 /* ftautoh.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D23AF10496651959F4FCBA8CD845C8C /* ftautoh.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -1535,6 +1536,7 @@
 		D48818E47B590985586B6836E47D5D2E /* SyncCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A959D02F6935A939FFC2709380B318D /* SyncCoordinator.swift */; };
 		D48A9D81633B41243E369A033A340C2F /* wst.h in Headers */ = {isa = PBXBuildFile; fileRef = C833FB0585E6763E62B2626B7775EDC2 /* wst.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		D4960B9F2D62C0DA4A5E1CE4128DCE05 /* F3DBETA.h in Headers */ = {isa = PBXBuildFile; fileRef = F2A86914FF9C66F460C255FE9FABBEC8 /* F3DBETA.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D497E6BC9761597F44309621D37BC1A6 /* Pods-DeltaPreviews-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = EBF2B463BB1DE7D9642507CD8AD0B459 /* Pods-DeltaPreviews-umbrella.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		D4C835DBBFFF24894884900A2117A216 /* saves.h in Headers */ = {isa = PBXBuildFile; fileRef = A4CF7FC6F159595512140F9E888B3518 /* saves.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		D4E348B3BF3AA1C09A9952A42A9838EA /* NstBoardHenggedianzi.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F030D5A2ACDFE755FF9CE1388B16AEB0 /* NstBoardHenggedianzi.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
 		D50BFC0109EF6E5B680609FA2CC27688 /* Music.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 716BF6C8E6DDDF89F269D9F9813DF54F /* Music.hpp */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -1924,6 +1926,13 @@
 			remoteGlobalIDString = DCBC8D45C727B1472F26E79661AF11B0;
 			remoteInfo = DSDeltaCore;
 		};
+		612161C2AE361027CB10DA943C56B5C5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = AA15C8469D67684160CC2A7098EB841C;
+			remoteInfo = ZIPFoundation;
+		};
 		64DC15ACA9C0BE50343C47C7556EF937 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
@@ -1951,6 +1960,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 280620EDC57ABB510508698A7233E414;
 			remoteInfo = "N64DeltaCore-Mupen64Plus";
+		};
+		68B4FFAC29F79C22868F1B74A1B7C53C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 530F469AED058B94728C278CCA514500;
+			remoteInfo = DeltaCore;
 		};
 		7087C0FF26AB5A74E2A39C29483140D2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1986,6 +2002,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = D20492B6476142DCA0C455340876BB98;
 			remoteInfo = SMCalloutView;
+		};
+		7F1F16C14DD6A01A7FBDBD3515F305E9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B5D1BA64AC676FF46408FCDE19A05767;
+			remoteInfo = Roxas;
 		};
 		8B84C12FA9DF88E9F0F56AEFB8624B9D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -2291,6 +2314,7 @@
 		117F03E796D3E4C1912371CA0722AF12 /* Thread.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; path = Thread.cpp; sourceTree = "<group>"; };
 		119BB39F7E9FD0CA9AEF703928526233 /* MelonDSDeltaCore-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "MelonDSDeltaCore-umbrella.h"; sourceTree = "<group>"; };
 		11A7287EE06F5FE2740FE9A1CAF92760 /* NstInpPokkunMoguraa.hpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.h; path = NstInpPokkunMoguraa.hpp; sourceTree = "<group>"; };
+		11D58CDB406CFD79E7AC3E81C6B8B7BD /* Pods-Delta-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Delta-dummy.m"; sourceTree = "<group>"; };
 		11D6B4F6E066DF2E8ED26399CF6D7821 /* render3D.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = render3D.h; sourceTree = "<group>"; };
 		12340527430BF0F362B63C225065A253 /* opengl_BufferManipulationObjectFactory.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = opengl_BufferManipulationObjectFactory.h; sourceTree = "<group>"; };
 		124410B31A9E378F93FDB8A1B6FA19A2 /* ContactsRoutes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ContactsRoutes.swift; path = Source/SwiftyDropbox/Shared/Generated/ContactsRoutes.swift; sourceTree = "<group>"; };
@@ -2419,7 +2443,6 @@
 		2158278AE32018CEB6355F65E9A01568 /* ftheader.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = ftheader.h; sourceTree = "<group>"; };
 		216ACFC72536D5772D02237D7C716E46 /* DLTAMuteSwitchMonitor.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = DLTAMuteSwitchMonitor.m; sourceTree = "<group>"; };
 		218362C970E305172BDC33EC29EE5E9A /* NstBoardBmcFk23c.hpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.h; path = NstBoardBmcFk23c.hpp; sourceTree = "<group>"; };
-		21D6D1EB35E3D74EDEA3C2CD85A05F52 /* Pods-Delta-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-Delta-acknowledgements.markdown"; sourceTree = "<group>"; };
 		21E398FC7D62E8D6680411C9513B39A0 /* Savestate.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; path = Savestate.cpp; sourceTree = "<group>"; };
 		21F887B2571901F5C1B0E7E06528AF66 /* NstBoardSachenSa0036.hpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.h; path = NstBoardSachenSa0036.hpp; sourceTree = "<group>"; };
 		2205C23EE949E458595B874E1F2F54B0 /* CombinerProgram.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = CombinerProgram.h; sourceTree = "<group>"; };
@@ -2572,7 +2595,6 @@
 		3657D29FC929113DDDDFC5C7E19C7391 /* NstBoardCony.hpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.h; path = NstBoardCony.hpp; sourceTree = "<group>"; };
 		36CE82CF693A751E8245859F6F1F0059 /* GoogleSignIn.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = GoogleSignIn.release.xcconfig; sourceTree = "<group>"; };
 		36D5303C814B207B5D7C9751CDC3F79E /* vidext.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = vidext.h; sourceTree = "<group>"; };
-		37221D699E77B16EA4FE6C376B827730 /* Pods-Delta-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-Delta-umbrella.h"; sourceTree = "<group>"; };
 		374DF1A46229CD6D1636720284963491 /* ARMInterpreter_LoadStore.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; path = ARMInterpreter_LoadStore.cpp; sourceTree = "<group>"; };
 		379BCFBDC4056CD29292B7F8110124D7 /* NstInpKonamiHyperShot.hpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.h; path = NstInpKonamiHyperShot.hpp; sourceTree = "<group>"; };
 		37C824FE92FEE981231F0E7F82D68830 /* wifi.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = wifi.h; sourceTree = "<group>"; };
@@ -2611,6 +2633,7 @@
 		3B46B04A3CCDD5165D5EF0121C30CE78 /* Standard.deltaskin */ = {isa = PBXFileReference; includeInIndex = 1; path = Standard.deltaskin; sourceTree = "<group>"; };
 		3B54726597AE9AF0483DF076A1CB773B /* BatchRecordOperation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BatchRecordOperation.swift; sourceTree = "<group>"; };
 		3B7AC8DBD44374B318026ED02323950B /* fpu.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = fpu.h; sourceTree = "<group>"; };
+		3B7FD5DF96760E0D16B8DD3B4CBD5A59 /* Pods-DeltaPreviews.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-DeltaPreviews.release.xcconfig"; sourceTree = "<group>"; };
 		3C07C9B57A5D082C07FD91A96267A69C /* F3DAM.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; path = F3DAM.cpp; sourceTree = "<group>"; };
 		3C247C0F032D07663F65ABCED580EF8A /* Record.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Record.swift; sourceTree = "<group>"; };
 		3C704D55B6FFA356BA5C8C4B7EB2754E /* NstInpPartyTap.hpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.h; path = NstInpPartyTap.hpp; sourceTree = "<group>"; };
@@ -2644,7 +2667,6 @@
 		4063428E1EE2BA0AA49484036B267DD0 /* ManagedAccount.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ManagedAccount.swift; sourceTree = "<group>"; };
 		40807140551163121D63FB8D225410AD /* NstBoardEvent.hpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.h; path = NstBoardEvent.hpp; sourceTree = "<group>"; };
 		409D014A9EBDA943F1EE0086C74D06F4 /* NDSCart.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; path = NDSCart.cpp; sourceTree = "<group>"; };
-		409F0AD5337C7D82401596430BE50AB0 /* Pods-Delta-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Delta-resources.sh"; sourceTree = "<group>"; };
 		40AB219ED1D7513FB3C92CB18411C525 /* GPU2D_Soft.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; path = GPU2D_Soft.cpp; sourceTree = "<group>"; };
 		40D82E7FA8824474E9E104C58BD5B7D4 /* ResourceBundle-melonDS-MelonDSDeltaCore-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "ResourceBundle-melonDS-MelonDSDeltaCore-Info.plist"; sourceTree = "<group>"; };
 		411E7554E19C572A693EDB486A957D57 /* alist_naudio.c */ = {isa = PBXFileReference; includeInIndex = 1; path = alist_naudio.c; sourceTree = "<group>"; };
@@ -2669,6 +2691,7 @@
 		4350D1FEB43D008EF6E9B2A8AF3F8D46 /* Standard.deltaskin */ = {isa = PBXFileReference; includeInIndex = 1; path = Standard.deltaskin; sourceTree = "<group>"; };
 		4361C606A9E2C67D96A18D5590A9AEB0 /* SoundSDL.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = SoundSDL.h; sourceTree = "<group>"; };
 		43742E54E76C8CD0C13816B1DE0B217C /* conffile.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = conffile.h; sourceTree = "<group>"; };
+		438D2375AA6FC8CECAFB0F98FFCB4A43 /* Pods-Delta.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-Delta.modulemap"; sourceTree = "<group>"; };
 		43949B838135A4C9AF88A573B762A429 /* DBChunkInputStream.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DBChunkInputStream.h; path = Source/SwiftyDropbox/Shared/Handwritten/DBChunkInputStream.h; sourceTree = "<group>"; };
 		43DB8C4B29085E6FE14954933B1854B8 /* ZlutTexture.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; path = ZlutTexture.cpp; sourceTree = "<group>"; };
 		43E8E60E56CB19A317F1DD05A4167EEE /* BPMDetect.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = BPMDetect.h; sourceTree = "<group>"; };
@@ -2761,7 +2784,6 @@
 		4EFA33B973ABB5052C6A15108A0A69CE /* NstPatcherIps.hpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.h; path = NstPatcherIps.hpp; sourceTree = "<group>"; };
 		4F185FE59FC46DA85E8E8D713F6D8D22 /* NstBoardWaixingSgz.hpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.h; path = NstBoardWaixingSgz.hpp; sourceTree = "<group>"; };
 		4F443577C83DB995BE6046BEC237E5F0 /* retro_inline.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = retro_inline.h; sourceTree = "<group>"; };
-		4F8D603EBE941AC871B0A2F47AD5B6D5 /* Pods-Delta-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Delta-dummy.m"; sourceTree = "<group>"; };
 		4FA0DFEF3BD031E4B756DA084DF77A84 /* m64p_plugin.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = m64p_plugin.h; sourceTree = "<group>"; };
 		4FE2A36D23FB9226ADB79E249073A671 /* adaptivesleep.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = adaptivesleep.h; sourceTree = "<group>"; };
 		4FFCA49336A99ADD0ECF13BCBFA359CC /* sdl_key_converter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = sdl_key_converter.h; sourceTree = "<group>"; };
@@ -3208,6 +3230,7 @@
 		86D8A5EB56D2B72C1973874D422CD16C /* Sound.hpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.h; path = Sound.hpp; sourceTree = "<group>"; };
 		86DFF83A4B95ADF0960D74BB55A4A86A /* ARMInterpreter_LoadStore.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = ARMInterpreter_LoadStore.h; sourceTree = "<group>"; };
 		86E81FBE0D6AA7042D5A17A61FD614F5 /* CRC32.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; path = CRC32.cpp; sourceTree = "<group>"; };
+		87025200BDD7098A51992DE1488B1C85 /* Pods-Delta-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Delta-resources.sh"; sourceTree = "<group>"; };
 		8725EAE2102B04E4489565CFB1A011DB /* Audio.hpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.h; path = Audio.hpp; sourceTree = "<group>"; };
 		872BC2F2D8826C3822D2E02AB2976B11 /* MelonDS.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MelonDS.swift; sourceTree = "<group>"; };
 		874D46F582C919DAECAE2F7A7A611809 /* TransportConfig.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TransportConfig.swift; path = Source/SwiftyDropbox/Shared/Handwritten/TransportConfig.swift; sourceTree = "<group>"; };
@@ -3271,6 +3294,7 @@
 		8F8B263C03C096BA48C120F0E908386D /* ereader.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = ereader.h; sourceTree = "<group>"; };
 		8F8E69A7A33F1B8CF300B1933EFB3070 /* ConfigManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = ConfigManager.h; sourceTree = "<group>"; };
 		8F9F113CDF0897B7162BDC16B4BEEA31 /* DropboxTeamClient.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DropboxTeamClient.swift; path = Source/SwiftyDropbox/Shared/Handwritten/DropboxTeamClient.swift; sourceTree = "<group>"; };
+		8FCA76413D5A2DBC427390B20410111E /* Pods-DeltaPreviews-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-DeltaPreviews-acknowledgements.markdown"; sourceTree = "<group>"; };
 		90108346CE8681BDF45E6A86AD56CDDD /* NstBoardBmcSuperBig7in1.hpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.h; path = NstBoardBmcSuperBig7in1.hpp; sourceTree = "<group>"; };
 		905D5F8B676ABDDA03A563E40A3330F1 /* gDP.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = gDP.h; sourceTree = "<group>"; };
 		9062040845AC2F15A091455D553746FA /* MelonDSDeltaCore.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = MelonDSDeltaCore.modulemap; sourceTree = "<group>"; };
@@ -3386,6 +3410,7 @@
 		9F65846296AA0445D9DA7FC1DE9B4CBE /* NstBoardSachenSa72008.hpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.h; path = NstBoardSachenSa72008.hpp; sourceTree = "<group>"; };
 		9FBEDF35986AA4976C5186CACDC036A7 /* SDWebImageDecoder.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SDWebImageDecoder.h; path = SDWebImage/SDWebImageDecoder.h; sourceTree = "<group>"; };
 		9FCE854CD1033DAE63BDD91C5DBEA512 /* m64p_debugger.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = m64p_debugger.h; sourceTree = "<group>"; };
+		A0082D3F46835BE2D0939FDB289C6E65 /* Pods-Delta.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Delta.debug.xcconfig"; sourceTree = "<group>"; };
 		A00FBF2E46DD44AB85A9E179CB0BBB29 /* pcap.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = pcap.h; sourceTree = "<group>"; };
 		A01927D51792C610278C84EC6FC937AC /* NESEmulatorBridge.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NESEmulatorBridge.swift; sourceTree = "<group>"; };
 		A0196C3B20F2D9E886462BCDA4B77E08 /* GPU3D_OpenGL_shaders.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = GPU3D_OpenGL_shaders.h; sourceTree = "<group>"; };
@@ -3411,6 +3436,7 @@
 		A1B435A350DD71C31D721B35C5E20353 /* MemoryStatus.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = MemoryStatus.h; sourceTree = "<group>"; };
 		A1C76F8411A39553082A70E918482202 /* FIFO.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = FIFO.h; sourceTree = "<group>"; };
 		A1DC4D0732A2D4A00391980B544DCC7A /* SDWebImageDecoder.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SDWebImageDecoder.m; path = SDWebImage/SDWebImageDecoder.m; sourceTree = "<group>"; };
+		A2B4D256B3D188077F6B41F821BF28C3 /* Pods-Delta-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Delta-acknowledgements.plist"; sourceTree = "<group>"; };
 		A2F06AF800FE00397A0393C4F2B21358 /* NstBoardBmcSuperHiK4in1.hpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.h; path = NstBoardBmcSuperHiK4in1.hpp; sourceTree = "<group>"; };
 		A2F603F5076A5C90C0F7F3B8E1964715 /* ftmm.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = ftmm.h; sourceTree = "<group>"; };
 		A305BD1E403F2080A66FACB6EE133DF8 /* ftgxval.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = ftgxval.h; sourceTree = "<group>"; };
@@ -3418,7 +3444,6 @@
 		A32A1F08621C3AC02C88619A32A00140 /* fterrdef.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = fterrdef.h; sourceTree = "<group>"; };
 		A32ACBDAAF06587E09AA2D7FBA1FE620 /* F5Rogue.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; path = F5Rogue.cpp; sourceTree = "<group>"; };
 		A334B63A7B2EF8C29B5D119E6B8E0C0C /* ARMJIT_Compiler.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = ARMJIT_Compiler.h; sourceTree = "<group>"; };
-		A34489EBF25913D7D0197EFF7FA146A3 /* Pods-Delta.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Delta.debug.xcconfig"; sourceTree = "<group>"; };
 		A360B5584C9A055FB323CD5BE3C7112A /* Transformable.hpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.h; path = Transformable.hpp; sourceTree = "<group>"; };
 		A363333B17E12DED3509264B7806E627 /* RSTHelperFile.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = RSTHelperFile.h; path = Roxas/RSTHelperFile.h; sourceTree = "<group>"; };
 		A3861AA996FB10FE608C9E586D90C9F7 /* registers.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = registers.h; sourceTree = "<group>"; };
@@ -3482,6 +3507,7 @@
 		A98D3E4D5028A18A48D898DDA29B1B6A /* NstStream.hpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.h; path = NstStream.hpp; sourceTree = "<group>"; };
 		A99D6FA874EC0CE5E6FF8B99009BC3CC /* tttypes.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = tttypes.h; sourceTree = "<group>"; };
 		A9C1FAD618686D13B2AEBF79B8CB40A2 /* NstBoardSunsoft3.hpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.h; path = NstBoardSunsoft3.hpp; sourceTree = "<group>"; };
+		A9D7AF60A10248042EB6FD2757BD8731 /* Pods-DeltaPreviews-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-DeltaPreviews-resources.sh"; sourceTree = "<group>"; };
 		AA1C0B3274E804CB44DE0C80AC3E1E9F /* Response.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Response.swift; path = Source/Response.swift; sourceTree = "<group>"; };
 		AA3D00922405E55EEC5C2AF48BB304DE /* UploadRecordsOperation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = UploadRecordsOperation.swift; sourceTree = "<group>"; };
 		AA41416AF760A4579E38926180FB7E98 /* Async.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Async.swift; path = Source/SwiftyDropbox/Shared/Generated/Async.swift; sourceTree = "<group>"; };
@@ -3511,7 +3537,6 @@
 		ADD04AF6D650BB8C6DC2C8B3CE4D50CE /* UIWindowScene+StageManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "UIWindowScene+StageManager.swift"; sourceTree = "<group>"; };
 		ADF5A4B1CDA7693D5DE8FDAE55230F5B /* svbdf.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = svbdf.h; sourceTree = "<group>"; };
 		ADF793502FD046991EE487F895BA270F /* SMClassicCalloutView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = SMClassicCalloutView.h; sourceTree = "<group>"; };
-		AE1179D5EA23BDBED2AEC4F50068090B /* Pods-Delta.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-Delta.modulemap"; sourceTree = "<group>"; };
 		AE4075237EF07EF0EF97D959D5273E5C /* ARMJIT_Memory.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; path = ARMJIT_Memory.cpp; sourceTree = "<group>"; };
 		AE552D959907002364F7DEB08F72AAC2 /* OpenGLESProcessor.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OpenGLESProcessor.swift; sourceTree = "<group>"; };
 		AE69FF77D057F65FCC92798BC814D0C0 /* DSi_AES.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = DSi_AES.h; sourceTree = "<group>"; };
@@ -3534,6 +3559,7 @@
 		B0F1D9E539EEFAF751D9F3EA1ED557D0 /* alist.c */ = {isa = PBXFileReference; includeInIndex = 1; path = alist.c; sourceTree = "<group>"; };
 		B1044F71995C46DC0FE073BBF10E9B13 /* statesaver.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = statesaver.h; sourceTree = "<group>"; };
 		B10B38D31A95FF99BBC00DA9C36C8D94 /* AggregateFunctions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AggregateFunctions.swift; path = Sources/SQLite/Typed/AggregateFunctions.swift; sourceTree = "<group>"; };
+		B10D64929F1FEAF657DE2891DDA14698 /* Pods-DeltaPreviews.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-DeltaPreviews.debug.xcconfig"; sourceTree = "<group>"; };
 		B160D4EFA5A5F1C8742E22E72E905F19 /* DSiCrypto.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; path = DSiCrypto.cpp; sourceTree = "<group>"; };
 		B16A40EA546C216777D9E352BC96AE3F /* dictionary.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = dictionary.h; sourceTree = "<group>"; };
 		B1731070434E5EFF380B47A5CF081A88 /* Turbo3D.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = Turbo3D.h; sourceTree = "<group>"; };
@@ -3560,6 +3586,7 @@
 		B3EBA4C7AF2961430F113BBF0D749FD2 /* NSFileManager+URLs.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSFileManager+URLs.m"; path = "Roxas/NSFileManager+URLs.m"; sourceTree = "<group>"; };
 		B406D46EC012C6003DF8D4CCFB546BC7 /* Standard.deltamapping */ = {isa = PBXFileReference; includeInIndex = 1; name = Standard.deltamapping; path = GBCDeltaCore/Standard.deltamapping; sourceTree = "<group>"; };
 		B40D570EAF3AC5F1FF34F6CFEB52975B /* Standard.deltaskin */ = {isa = PBXFileReference; includeInIndex = 1; path = Standard.deltaskin; sourceTree = "<group>"; };
+		B41D6FBA9FA48302E212F9EF98093CB0 /* Pods-Delta-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-Delta-acknowledgements.markdown"; sourceTree = "<group>"; };
 		B42015FFD3313AC17C168139F10E0C87 /* DSDeltaCore-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "DSDeltaCore-umbrella.h"; sourceTree = "<group>"; };
 		B42134C901D85FF595600E8BEF31D70B /* Export.hpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.h; path = Export.hpp; sourceTree = "<group>"; };
 		B43910F41F6960C33EF3CA1B15E6985B /* CP15.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; path = CP15.cpp; sourceTree = "<group>"; };
@@ -3738,6 +3765,7 @@
 		CDAEDE6317A2C17D4DB07ED6E3982F55 /* TaskDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TaskDelegate.swift; path = Source/TaskDelegate.swift; sourceTree = "<group>"; };
 		CDB8BB05395141733620E2774F380468 /* NstInpSuborKeyboard.hpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.h; path = NstInpSuborKeyboard.hpp; sourceTree = "<group>"; };
 		CDCC5902B2B69DCE162F96EA6B47E52B /* AudioRendering.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AudioRendering.swift; sourceTree = "<group>"; };
+		CDD676F1CFBC293A793BD1F2DE8EB4A5 /* Pods-DeltaPreviews-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-DeltaPreviews-dummy.m"; sourceTree = "<group>"; };
 		CDD6A8CDC5FCD0DA6B0B7F1F9F5689CA /* FinishUploadingRecordsOperation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FinishUploadingRecordsOperation.swift; sourceTree = "<group>"; };
 		CDE9C9A6E3FCD131E7936A7E0E5E9EDD /* NstBoardRexSoft.hpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.h; path = NstBoardRexSoft.hpp; sourceTree = "<group>"; };
 		CE0692DFDB826DC47131EF92FFE1618F /* N64DeltaCore-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "N64DeltaCore-umbrella.h"; sourceTree = "<group>"; };
@@ -3815,7 +3843,7 @@
 		D9A99AC4564024C83E5D7E12274FEA75 /* GLideN64.custom.ini */ = {isa = PBXFileReference; includeInIndex = 1; path = GLideN64.custom.ini; sourceTree = "<group>"; };
 		D9BE3D68F698321E8E2ABDD6FA14EC78 /* Text.hpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.h; path = Text.hpp; sourceTree = "<group>"; };
 		D9DA8FE84C120B2A520DC4D71D61CB2D /* RenderTarget.hpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.h; path = RenderTarget.hpp; sourceTree = "<group>"; };
-		DA78D0D081686B5372F0FFAABDF5733A /* Pods-Delta-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Delta-acknowledgements.plist"; sourceTree = "<group>"; };
+		DA2A0DBE0F65EA7F137BF7F1EA703E73 /* Pods-DeltaPreviews */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "Pods-DeltaPreviews"; path = "libPods-DeltaPreviews.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DAB38A1A17078FD95D88608D7190F6C3 /* GameViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		DAB448EADDF731C719FAF25EF2908CC6 /* fxemu.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = fxemu.h; sourceTree = "<group>"; };
 		DAC1CABF5E26C01147E714C571690DED /* TxQuantize.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; path = TxQuantize.cpp; sourceTree = "<group>"; };
@@ -3861,6 +3889,7 @@
 		E0C78CF3BBD7FAE4DF182AF1C994DD89 /* Standard.deltamapping */ = {isa = PBXFileReference; includeInIndex = 1; name = Standard.deltamapping; path = MelonDSDeltaCore/Standard.deltamapping; sourceTree = "<group>"; };
 		E0E396C6ACEADA6313110BA019AE87CF /* opengl_UnbufferedDrawer.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; path = opengl_UnbufferedDrawer.cpp; sourceTree = "<group>"; };
 		E0EED9847BD722A6C949B0DD99EB41C0 /* cstdint.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = cstdint.h; sourceTree = "<group>"; };
+		E0EF0E2268BF08E0C3082AF67D82ECC5 /* Pods-DeltaPreviews-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-DeltaPreviews-acknowledgements.plist"; sourceTree = "<group>"; };
 		E131823B02DA62033ACD68F90979B3A6 /* NstBoardJalecoJf11.hpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.h; path = NstBoardJalecoJf11.hpp; sourceTree = "<group>"; };
 		E18BAC1A364476138165E9DAA8E469F8 /* FIFOSamplePipe.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = FIFOSamplePipe.h; sourceTree = "<group>"; };
 		E19DE8A1E6B39848A1B39E4116DAF8FC /* RSTHelperFile.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RSTHelperFile.m; path = Roxas/RSTHelperFile.m; sourceTree = "<group>"; };
@@ -3882,6 +3911,7 @@
 		E34DBD5D2C3EF0D0B91A5E15B2AAF2F2 /* dummy_video.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = dummy_video.h; sourceTree = "<group>"; };
 		E35E5EA84C80DD35DB38191486374F7D /* RTC.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTC.h; sourceTree = "<group>"; };
 		E391CF9551BB3A4B87436C08C3130381 /* ControllerView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ControllerView.swift; sourceTree = "<group>"; };
+		E39B6D2E1349BC9CF76985C762A82797 /* Pods-Delta-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-Delta-umbrella.h"; sourceTree = "<group>"; };
 		E3E35D2003A87897EFBA643B7A078C3E /* RSP.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; path = RSP.cpp; sourceTree = "<group>"; };
 		E3EC5D23D9AC26F69D6F4ACF67BCFB67 /* memmap.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = memmap.h; sourceTree = "<group>"; };
 		E40DF036AF5317A3ED60CE4AF950DD05 /* counterdef.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = counterdef.h; sourceTree = "<group>"; };
@@ -3935,6 +3965,7 @@
 		EA54E632D567E615B08CD945946BA30C /* DeltaCore.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = DeltaCore.debug.xcconfig; sourceTree = "<group>"; };
 		EA9C6CC515F168E4D012A4DF11AA2ED6 /* assemble.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = assemble.h; sourceTree = "<group>"; };
 		EAACD8B3176E4E306106E019BACCC04C /* memory.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = memory.h; sourceTree = "<group>"; };
+		EAB58487403CD763EA77B6E5686C1C1C /* Pods-Delta.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Delta.release.xcconfig"; sourceTree = "<group>"; };
 		EABD40FB697D4F0BE526F3F31A5F7DE4 /* font.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = font.h; sourceTree = "<group>"; };
 		EAE62E0A0B61F051910B38B004280A0D /* TxTexCache.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; path = TxTexCache.cpp; sourceTree = "<group>"; };
 		EB16AA71CC23390203764C289FE05C1F /* DeltaCore-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "DeltaCore-prefix.pch"; sourceTree = "<group>"; };
@@ -3946,6 +3977,7 @@
 		EBB9F0A1BC69481A113A4FD4A1971F08 /* NSError+LocalizedFailureDescription.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "NSError+LocalizedFailureDescription.swift"; sourceTree = "<group>"; };
 		EBCB2D018FCD273A488F1FDD51D5AF46 /* xxh3.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = xxh3.h; sourceTree = "<group>"; };
 		EBE7E15F3ABAA53BA70833404896A6CC /* RecordRepresentation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RecordRepresentation.swift; sourceTree = "<group>"; };
+		EBF2B463BB1DE7D9642507CD8AD0B459 /* Pods-DeltaPreviews-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-DeltaPreviews-umbrella.h"; sourceTree = "<group>"; };
 		EC14010F5B81F5784EA4C38384B0A468 /* VideoRendering.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = VideoRendering.swift; sourceTree = "<group>"; };
 		EC547021A6C25CAC75D4CBEA991AF3F2 /* FileProperties.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FileProperties.swift; path = Source/SwiftyDropbox/Shared/Generated/FileProperties.swift; sourceTree = "<group>"; };
 		EC5C9682B97F1D9C7E273FC89260E663 /* MMU_timing.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = MMU_timing.h; sourceTree = "<group>"; };
@@ -4023,7 +4055,6 @@
 		F34B201A855CF314CE053AFABCE41DA5 /* DropboxService+Files.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "DropboxService+Files.swift"; path = "Backends/Dropbox/Harmony-Dropbox/DropboxService+Files.swift"; sourceTree = "<group>"; };
 		F3621D7BD773326AE63CB675C90BA4CB /* hle.c */ = {isa = PBXFileReference; includeInIndex = 1; path = hle.c; sourceTree = "<group>"; };
 		F36CCDA948DEABD79BA79A4B43EFF378 /* sdd1emu.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = sdd1emu.h; sourceTree = "<group>"; };
-		F381603DE2011262E9A2C37926028861 /* Pods-Delta.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Delta.release.xcconfig"; sourceTree = "<group>"; };
 		F393147DF602B1AF7C00B67655D80C30 /* RSTFetchedResultsDataSource.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = RSTFetchedResultsDataSource.h; path = Roxas/RSTFetchedResultsDataSource.h; sourceTree = "<group>"; };
 		F39D6AD262133DC7EC88CCFC7215A97F /* Setter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Setter.swift; path = Sources/SQLite/Typed/Setter.swift; sourceTree = "<group>"; };
 		F3A21D810CF81C7E8CB80F57ABB8F60E /* NstInpFamilyKeyboard.hpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.h; path = NstInpFamilyKeyboard.hpp; sourceTree = "<group>"; };
@@ -4040,6 +4071,7 @@
 		F58B6A269CCE0D6DC10601E490E20B54 /* PostProcessor.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = PostProcessor.h; sourceTree = "<group>"; };
 		F597EF6F3EFC780B48CBD503A27748B9 /* Vector2.inl */ = {isa = PBXFileReference; includeInIndex = 1; path = Vector2.inl; sourceTree = "<group>"; };
 		F5B730FDD71B3F180AF4FF2879E85E0B /* PluginAPI.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = PluginAPI.h; sourceTree = "<group>"; };
+		F5D6D408C7399EE158034BDE3D97FC45 /* Pods-DeltaPreviews.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-DeltaPreviews.modulemap"; sourceTree = "<group>"; };
 		F5DBEFEA68B991BD01BA0CF549877402 /* NstBoardBmcCtc65.hpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.h; path = NstBoardBmcCtc65.hpp; sourceTree = "<group>"; };
 		F5EA96C879945AA782B43E8FA302CAF0 /* UIImage+GIF.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIImage+GIF.m"; path = "SDWebImage/UIImage+GIF.m"; sourceTree = "<group>"; };
 		F5FA45A44C42CC2CA3A324A3E914CE19 /* SQLite.swift */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = SQLite.swift; path = libSQLite.swift.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -4110,6 +4142,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		0CE49AE837ED52894D2425427DC2CFA6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		0FDF7719A847993D82BCFEB867A4B296 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -4347,6 +4386,42 @@
 			path = apu;
 			sourceTree = "<group>";
 		};
+		04CF5B4661B2C9B83AAB13F34DA4F5F8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5D797E9A5C5782CE845840781FA1CC81 /* Alamofire */,
+				F93477FBF1E4488E506F9BB79AF57D38 /* DeltaCore */,
+				54ECA01A22C32DC89AB39DF9BFFD5FB6 /* DeltaCore-DeltaCore */,
+				8DF503EB5BF2CD824792BFD2BBC0992F /* DSDeltaCore */,
+				4A6CEB53419EF6042E06B56676D1DAF8 /* DSDeltaCore-DSDeltaCore */,
+				85A4BD81985AEDB6D9BA5E50804225D0 /* GBADeltaCore */,
+				30131336E11D11700AC99D314BDC275C /* GBADeltaCore-GBADeltaCore */,
+				D4C010E8572FAE8B51DFDBF2300ECF30 /* GBCDeltaCore */,
+				1F23DBC67505E77BE77552D6D84A3DAA /* GBCDeltaCore-GBCDeltaCore */,
+				FD519882861480B93B563B477CE1FA29 /* GoogleAPIClientForREST */,
+				251C6319AD50CB50F18D50CBF727F8B2 /* GoogleToolboxForMac */,
+				C1998E0D8085221AD87F89B614C10E52 /* GTMSessionFetcher */,
+				DBC0113CF73BE24525E670D024A85BE7 /* Harmony */,
+				4C22C82316853ABB688358B93486CF8E /* MelonDSDeltaCore */,
+				ECD0868BC2D1CFC2A22DDD56F79CF4B1 /* MelonDSDeltaCore-melonDS */,
+				C8D6AC695498645EEE4A66FCEF97D848 /* N64DeltaCore */,
+				9816EFF6A2268AAEA7B1C19BBE416477 /* N64DeltaCore-Mupen64Plus */,
+				1E5356E04E92615CFF0666E5987CE594 /* NESDeltaCore */,
+				487C7DB0A7257F16983BEF8324BEF561 /* NESDeltaCore-NESDeltaCore */,
+				9CA80A61ABF26FA89F4E22A30284B0DD /* Pods-Delta */,
+				DA2A0DBE0F65EA7F137BF7F1EA703E73 /* Pods-DeltaPreviews */,
+				4405793D5AF1EFD9D2BDA30AA0D2E514 /* Roxas */,
+				B0B214D775196BA7CA8E17E53048A493 /* SDWebImage */,
+				53A730F4F4248E7E3F38F8409A2DE97C /* SMCalloutView */,
+				FA400832D3E46B39D5EC83D09A7572FC /* SNESDeltaCore */,
+				7D751206A951D9727B38F71A2BB990AA /* SNESDeltaCore-SNESDeltaCore */,
+				F5FA45A44C42CC2CA3A324A3E914CE19 /* SQLite.swift */,
+				1CBA76EDD27FA2D20B1EA0F0BF7F082C /* SwiftyDropbox */,
+				48A4A6EDC08C8AC933D0DCD507E9D173 /* ZIPFoundation */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		05A41666D55BC6C698B7E30ECEF85512 /* uCodes */ = {
 			isa = PBXGroup;
 			children = (
@@ -4415,22 +4490,6 @@
 			);
 			name = minizip;
 			path = minizip;
-			sourceTree = "<group>";
-		};
-		08C58CF73AB8BFBF56E0EB8B4D727EE1 /* Pods-Delta */ = {
-			isa = PBXGroup;
-			children = (
-				AE1179D5EA23BDBED2AEC4F50068090B /* Pods-Delta.modulemap */,
-				21D6D1EB35E3D74EDEA3C2CD85A05F52 /* Pods-Delta-acknowledgements.markdown */,
-				DA78D0D081686B5372F0FFAABDF5733A /* Pods-Delta-acknowledgements.plist */,
-				4F8D603EBE941AC871B0A2F47AD5B6D5 /* Pods-Delta-dummy.m */,
-				409F0AD5337C7D82401596430BE50AB0 /* Pods-Delta-resources.sh */,
-				37221D699E77B16EA4FE6C376B827730 /* Pods-Delta-umbrella.h */,
-				A34489EBF25913D7D0197EFF7FA146A3 /* Pods-Delta.debug.xcconfig */,
-				F381603DE2011262E9A2C37926028861 /* Pods-Delta.release.xcconfig */,
-			);
-			name = "Pods-Delta";
-			path = "Target Support Files/Pods-Delta";
 			sourceTree = "<group>";
 		};
 		0987F7F2E4E50214BC3F95D7D7381782 /* Controller Skin */ = {
@@ -4689,6 +4748,22 @@
 				DC30E6531D1C727E6389B4A27F9674E0 /* Value.swift */,
 			);
 			name = standard;
+			sourceTree = "<group>";
+		};
+		141640A1C79F1058997CAC050E647C15 /* Pods-Delta */ = {
+			isa = PBXGroup;
+			children = (
+				438D2375AA6FC8CECAFB0F98FFCB4A43 /* Pods-Delta.modulemap */,
+				B41D6FBA9FA48302E212F9EF98093CB0 /* Pods-Delta-acknowledgements.markdown */,
+				A2B4D256B3D188077F6B41F821BF28C3 /* Pods-Delta-acknowledgements.plist */,
+				11D58CDB406CFD79E7AC3E81C6B8B7BD /* Pods-Delta-dummy.m */,
+				87025200BDD7098A51992DE1488B1C85 /* Pods-Delta-resources.sh */,
+				E39B6D2E1349BC9CF76985C762A82797 /* Pods-Delta-umbrella.h */,
+				A0082D3F46835BE2D0939FDB289C6E65 /* Pods-Delta.debug.xcconfig */,
+				EAB58487403CD763EA77B6E5686C1C1C /* Pods-Delta.release.xcconfig */,
+			);
+			name = "Pods-Delta";
+			path = "Target Support Files/Pods-Delta";
 			sourceTree = "<group>";
 		};
 		14E5FBFACF427B3C1D045BDCEBD2E99A /* libDeSmuME */ = {
@@ -7731,14 +7806,6 @@
 			path = dolphin;
 			sourceTree = "<group>";
 		};
-		BDDCAA316B6C4E2A467D14C79E23372C /* Targets Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				08C58CF73AB8BFBF56E0EB8B4D727EE1 /* Pods-Delta */,
-			);
-			name = "Targets Support Files";
-			sourceTree = "<group>";
-		};
 		BDE1B93BECA25E807730432C9E4B6DB8 /* pi */ = {
 			isa = PBXGroup;
 			children = (
@@ -8077,6 +8144,15 @@
 			path = "SNESDeltaCore/Controller Skin";
 			sourceTree = "<group>";
 		};
+		CA095B31908C638D4B82476FC01B08E5 /* Targets Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				141640A1C79F1058997CAC050E647C15 /* Pods-Delta */,
+				EFADE82A10EFD31C38A83A453AA62AD8 /* Pods-DeltaPreviews */,
+			);
+			name = "Targets Support Files";
+			sourceTree = "<group>";
+		};
 		CA3C3A07CE35C9DC062CB31AB4CFE37C /* libpng */ = {
 			isa = PBXGroup;
 			children = (
@@ -8169,8 +8245,8 @@
 				9C11018640D0B959BFF8EF95DCE54319 /* Development Pods */,
 				D89477F20FB1DE18A04690586D7808C4 /* Frameworks */,
 				37A13D22D37F4CBE50B9E137E884332C /* Pods */,
-				D8BFD1E747ACBB25E1D8A439EB1DF0FF /* Products */,
-				BDDCAA316B6C4E2A467D14C79E23372C /* Targets Support Files */,
+				04CF5B4661B2C9B83AAB13F34DA4F5F8 /* Products */,
+				CA095B31908C638D4B82476FC01B08E5 /* Targets Support Files */,
 			);
 			sourceTree = "<group>";
 		};
@@ -8325,41 +8401,6 @@
 			children = (
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		D8BFD1E747ACBB25E1D8A439EB1DF0FF /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				5D797E9A5C5782CE845840781FA1CC81 /* Alamofire */,
-				F93477FBF1E4488E506F9BB79AF57D38 /* DeltaCore */,
-				54ECA01A22C32DC89AB39DF9BFFD5FB6 /* DeltaCore-DeltaCore */,
-				8DF503EB5BF2CD824792BFD2BBC0992F /* DSDeltaCore */,
-				4A6CEB53419EF6042E06B56676D1DAF8 /* DSDeltaCore-DSDeltaCore */,
-				85A4BD81985AEDB6D9BA5E50804225D0 /* GBADeltaCore */,
-				30131336E11D11700AC99D314BDC275C /* GBADeltaCore-GBADeltaCore */,
-				D4C010E8572FAE8B51DFDBF2300ECF30 /* GBCDeltaCore */,
-				1F23DBC67505E77BE77552D6D84A3DAA /* GBCDeltaCore-GBCDeltaCore */,
-				FD519882861480B93B563B477CE1FA29 /* GoogleAPIClientForREST */,
-				251C6319AD50CB50F18D50CBF727F8B2 /* GoogleToolboxForMac */,
-				C1998E0D8085221AD87F89B614C10E52 /* GTMSessionFetcher */,
-				DBC0113CF73BE24525E670D024A85BE7 /* Harmony */,
-				4C22C82316853ABB688358B93486CF8E /* MelonDSDeltaCore */,
-				ECD0868BC2D1CFC2A22DDD56F79CF4B1 /* MelonDSDeltaCore-melonDS */,
-				C8D6AC695498645EEE4A66FCEF97D848 /* N64DeltaCore */,
-				9816EFF6A2268AAEA7B1C19BBE416477 /* N64DeltaCore-Mupen64Plus */,
-				1E5356E04E92615CFF0666E5987CE594 /* NESDeltaCore */,
-				487C7DB0A7257F16983BEF8324BEF561 /* NESDeltaCore-NESDeltaCore */,
-				9CA80A61ABF26FA89F4E22A30284B0DD /* Pods-Delta */,
-				4405793D5AF1EFD9D2BDA30AA0D2E514 /* Roxas */,
-				B0B214D775196BA7CA8E17E53048A493 /* SDWebImage */,
-				53A730F4F4248E7E3F38F8409A2DE97C /* SMCalloutView */,
-				FA400832D3E46B39D5EC83D09A7572FC /* SNESDeltaCore */,
-				7D751206A951D9727B38F71A2BB990AA /* SNESDeltaCore-SNESDeltaCore */,
-				F5FA45A44C42CC2CA3A324A3E914CE19 /* SQLite.swift */,
-				1CBA76EDD27FA2D20B1EA0F0BF7F082C /* SwiftyDropbox */,
-				48A4A6EDC08C8AC933D0DCD507E9D173 /* ZIPFoundation */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		D9498F7B5F0C578B2D49001DD485A674 /* Audio */ = {
@@ -8580,6 +8621,22 @@
 			);
 			name = "Support Files";
 			path = "../../Pods/Target Support Files/Roxas";
+			sourceTree = "<group>";
+		};
+		EFADE82A10EFD31C38A83A453AA62AD8 /* Pods-DeltaPreviews */ = {
+			isa = PBXGroup;
+			children = (
+				F5D6D408C7399EE158034BDE3D97FC45 /* Pods-DeltaPreviews.modulemap */,
+				8FCA76413D5A2DBC427390B20410111E /* Pods-DeltaPreviews-acknowledgements.markdown */,
+				E0EF0E2268BF08E0C3082AF67D82ECC5 /* Pods-DeltaPreviews-acknowledgements.plist */,
+				CDD676F1CFBC293A793BD1F2DE8EB4A5 /* Pods-DeltaPreviews-dummy.m */,
+				A9D7AF60A10248042EB6FD2757BD8731 /* Pods-DeltaPreviews-resources.sh */,
+				EBF2B463BB1DE7D9642507CD8AD0B459 /* Pods-DeltaPreviews-umbrella.h */,
+				B10D64929F1FEAF657DE2891DDA14698 /* Pods-DeltaPreviews.debug.xcconfig */,
+				3B7FD5DF96760E0D16B8DD3B4CBD5A59 /* Pods-DeltaPreviews.release.xcconfig */,
+			);
+			name = "Pods-DeltaPreviews";
+			path = "Target Support Files/Pods-DeltaPreviews";
 			sourceTree = "<group>";
 		};
 		F0006DD74DB36FD793F77731D76BA66F /* nestopia */ = {
@@ -10110,6 +10167,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		EDE1E282E73A6B3F3F5476A7F5952343 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D497E6BC9761597F44309621D37BC1A6 /* Pods-DeltaPreviews-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FC9A9F6E61D4CD7F7551E0AF307DADEB /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -10457,6 +10522,26 @@
 			productReference = 7D751206A951D9727B38F71A2BB990AA /* SNESDeltaCore-SNESDeltaCore */;
 			productType = "com.apple.product-type.bundle";
 		};
+		672646F0FFBE4A064673BBA527FFB5DD /* Pods-DeltaPreviews */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 44BB5310D332C81A65F6E63A5F17F3EA /* Build configuration list for PBXNativeTarget "Pods-DeltaPreviews" */;
+			buildPhases = (
+				EDE1E282E73A6B3F3F5476A7F5952343 /* Headers */,
+				DE36DB95BA6FF5DC20903112E55CC772 /* Sources */,
+				0CE49AE837ED52894D2425427DC2CFA6 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E21AB63C36D7137CA2F5593C57AFC689 /* PBXTargetDependency */,
+				E63D0301BA0E8864C0B79FF61E040DAB /* PBXTargetDependency */,
+				BF2BC8A27FB0E94A8B5015FAF32981E7 /* PBXTargetDependency */,
+			);
+			name = "Pods-DeltaPreviews";
+			productName = "Pods-DeltaPreviews";
+			productReference = DA2A0DBE0F65EA7F137BF7F1EA703E73 /* Pods-DeltaPreviews */;
+			productType = "com.apple.product-type.library.static";
+		};
 		7056A67459B0B8B62FACACCE167546B8 /* GBADeltaCore */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7D451455346583E2797B8B1CBBB13DA1 /* Build configuration list for PBXNativeTarget "GBADeltaCore" */;
@@ -10727,7 +10812,7 @@
 				en,
 			);
 			mainGroup = CF1408CF629C7361332E53B88F7BD30C;
-			productRefGroup = D8BFD1E747ACBB25E1D8A439EB1DF0FF /* Products */;
+			productRefGroup = 04CF5B4661B2C9B83AAB13F34DA4F5F8 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -10754,6 +10839,7 @@
 				0FAC8C4777DBD31221FE57848CB5F759 /* NESDeltaCore */,
 				7F839870ECBE0065B4BCC02E5F98F48A /* NESDeltaCore-NESDeltaCore */,
 				33C94426DAF58519DC6806AF4C44C9E7 /* Pods-Delta */,
+				672646F0FFBE4A064673BBA527FFB5DD /* Pods-DeltaPreviews */,
 				B5D1BA64AC676FF46408FCDE19A05767 /* Roxas */,
 				3847153A6E5EEFB86565BA840768F429 /* SDWebImage */,
 				D20492B6476142DCA0C455340876BB98 /* SMCalloutView */,
@@ -11822,6 +11908,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DE36DB95BA6FF5DC20903112E55CC772 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9817437F468A9747991CC23D896B8FE6 /* Pods-DeltaPreviews-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E1D67396B58F6A4609350F83B9905CDC /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -12143,6 +12237,12 @@
 			target = 126073BF5D2BF3A4BDD22FE9062C9D20 /* N64DeltaCore */;
 			targetProxy = 0B6CD0ABE88B501AAD50A39D0E445B8F /* PBXContainerItemProxy */;
 		};
+		BF2BC8A27FB0E94A8B5015FAF32981E7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = ZIPFoundation;
+			target = AA15C8469D67684160CC2A7098EB841C /* ZIPFoundation */;
+			targetProxy = 612161C2AE361027CB10DA943C56B5C5 /* PBXContainerItemProxy */;
+		};
 		BFBBC7C353D411E346EC54F80A8A8F56 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = DeltaCore;
@@ -12197,6 +12297,18 @@
 			target = B5D1BA64AC676FF46408FCDE19A05767 /* Roxas */;
 			targetProxy = 7B513CD2857B9A0B8B647BB86B98462D /* PBXContainerItemProxy */;
 		};
+		E21AB63C36D7137CA2F5593C57AFC689 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = DeltaCore;
+			target = 530F469AED058B94728C278CCA514500 /* DeltaCore */;
+			targetProxy = 68B4FFAC29F79C22868F1B74A1B7C53C /* PBXContainerItemProxy */;
+		};
+		E63D0301BA0E8864C0B79FF61E040DAB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Roxas;
+			target = B5D1BA64AC676FF46408FCDE19A05767 /* Roxas */;
+			targetProxy = 7F1F16C14DD6A01A7FBDBD3515F305E9 /* PBXContainerItemProxy */;
+		};
 		F79495F0D1A7769F86BA739EE38BE670 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = GoogleSignIn;
@@ -12231,7 +12343,7 @@
 		};
 		0C152D55E3AE7EA19E66016527A0FDBD /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F381603DE2011262E9A2C37926028861 /* Pods-Delta.release.xcconfig */;
+			baseConfigurationReference = EAB58487403CD763EA77B6E5686C1C1C /* Pods-Delta.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CLANG_ENABLE_OBJC_WEAK = NO;
@@ -12781,7 +12893,7 @@
 		};
 		5F2CE75395DE3122C205BFE85174FA07 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A34489EBF25913D7D0197EFF7FA146A3 /* Pods-Delta.debug.xcconfig */;
+			baseConfigurationReference = A0082D3F46835BE2D0939FDB289C6E65 /* Pods-Delta.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CLANG_ENABLE_OBJC_WEAK = NO;
@@ -13246,6 +13358,29 @@
 			};
 			name = Release;
 		};
+		B2D82D8390675204C44903B86B7977E7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3B7FD5DF96760E0D16B8DD3B4CBD5A59 /* Pods-DeltaPreviews.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-DeltaPreviews/Pods-DeltaPreviews.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 		B37D27BB17B1484BEF4368EBA58F2206 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 75769AD8AA1E6A55767E34444DEBA81E /* SQLite.swift.debug.xcconfig */;
@@ -13635,6 +13770,28 @@
 			};
 			name = Release;
 		};
+		F826D8E940068265C30AC171EBDEAC6F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B10D64929F1FEAF657DE2891DDA14698 /* Pods-DeltaPreviews.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-DeltaPreviews/Pods-DeltaPreviews.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
 		F8FF84F0611C62BB89806204320DCDFC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9A994D0970557F8DBF425A2E6710A042 /* GTMSessionFetcher.debug.xcconfig */;
@@ -13799,6 +13956,15 @@
 			buildConfigurations = (
 				F8FF84F0611C62BB89806204320DCDFC /* Debug */,
 				FCF81D5AEDD3E1CB1B260D2C93FEBB37 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		44BB5310D332C81A65F6E63A5F17F3EA /* Build configuration list for PBXNativeTarget "Pods-DeltaPreviews" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F826D8E940068265C30AC171EBDEAC6F /* Debug */,
+				B2D82D8390675204C44903B86B7977E7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

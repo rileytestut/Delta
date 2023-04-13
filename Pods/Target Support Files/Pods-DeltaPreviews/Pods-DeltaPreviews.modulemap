@@ -1,0 +1,6 @@
+module Pods_DeltaPreviews {
+  umbrella header "Pods-DeltaPreviews-umbrella.h"
+
+  export *
+  module * { export * }
+}

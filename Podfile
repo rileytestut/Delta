@@ -23,6 +23,13 @@ target 'Delta' do
     pod 'Harmony', :path => 'External/Harmony'
 end
 
+target 'DeltaPreviews' do
+    use_modular_headers!
+
+    pod 'DeltaCore', :path => 'Cores/DeltaCore'
+    pod 'Roxas', :path => 'External/Roxas'
+end
+
 # Unlink DeltaCore to prevent conflicts with Systems.framework
 post_install do |installer|
     installer.pods_project.targets.each do |target|
