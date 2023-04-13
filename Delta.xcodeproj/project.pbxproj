@@ -181,6 +181,8 @@
 		D5AAF27729884F8600F21ACF /* CheatDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5AAF27629884F8600F21ACF /* CheatDevice.swift */; };
 		D5D797E6298D946200738869 /* Contributor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D797E5298D946200738869 /* Contributor.swift */; };
 		D5D797E9298DCC7300738869 /* cheatbase.zip in Resources */ = {isa = PBXBuildFile; fileRef = D5D797E7298DC9E200738869 /* cheatbase.zip */; };
+		D5D7C1FA29E60EDE00663793 /* libDeltaFeatures.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D5D7C1F129E60DFF00663793 /* libDeltaFeatures.a */; };
+		D5D7C20429E60F2000663793 /* Feature.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A9BFFD29DDECF100A8D610 /* Feature.swift */; };
 		D5F82FB82981D3AC00B229AF /* LegacySearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F82FB72981D3AC00B229AF /* LegacySearchBar.swift */; };
 /* End PBXBuildFile section */
 
@@ -191,6 +193,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = BF6E70B925D2187800E41CD1;
 			remoteInfo = Systems;
+		};
+		D5D7C1FB29E60EDE00663793 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFFA71CF1AAC406100EE9DD1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D5D7C1F029E60DFF00663793;
+			remoteInfo = DeltaFeatures;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -204,6 +213,15 @@
 				BFCADF1F25D22FE2008D78FB /* Systems.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D5D7C1EF29E60DFF00663793 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -390,9 +408,11 @@
 		D586497129774ABD0081477E /* CheatBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheatBase.swift; sourceTree = "<group>"; };
 		D5864977297756CE0081477E /* CheatBaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheatBaseView.swift; sourceTree = "<group>"; };
 		D5A98CE1284EF14B00E023E5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		D5A9BFFD29DDECF100A8D610 /* Feature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feature.swift; sourceTree = "<group>"; };
 		D5AAF27629884F8600F21ACF /* CheatDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheatDevice.swift; sourceTree = "<group>"; };
 		D5D797E5298D946200738869 /* Contributor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contributor.swift; sourceTree = "<group>"; };
 		D5D797E7298DC9E200738869 /* cheatbase.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = cheatbase.zip; sourceTree = "<group>"; };
+		D5D7C1F129E60DFF00663793 /* libDeltaFeatures.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libDeltaFeatures.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5F82FB72981D3AC00B229AF /* LegacySearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacySearchBar.swift; sourceTree = "<group>"; };
 		DC866E433B3BA9AE18ABA1EC /* libPods-Delta.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Delta.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -407,6 +427,7 @@
 				BF69FBA223E375A20051BEEA /* libVBA-M.a in Frameworks */,
 				BFFDF04623E3D3A600931B96 /* libMupen64Plus.a in Frameworks */,
 				BFDCA1E6244EBAA900B8FBDB /* liblibDeSmuME.a in Frameworks */,
+				D5D7C1FA29E60EDE00663793 /* libDeltaFeatures.a in Frameworks */,
 				BFCADF1E25D22FE2008D78FB /* Systems.framework in Frameworks */,
 				BF69FBC923E3A8380051BEEA /* libNestopia.a in Frameworks */,
 				D524F4A1273DE9A100D500B2 /* AltKit in Frameworks */,
@@ -859,6 +880,7 @@
 			children = (
 				BFFA71D91AAC406100EE9DD1 /* Delta */,
 				D539103029E88B6C0006B350 /* DeltaPreviews */,
+				D5D7C1F229E60E0000663793 /* DeltaFeatures */,
 				BF9F4FCD1AAD7B25004C9500 /* Frameworks */,
 				BFEC732F1AAECCBD00650035 /* Resources */,
 				BFFA71D81AAC406100EE9DD1 /* Products */,
@@ -870,6 +892,7 @@
 			isa = PBXGroup;
 			children = (
 				BFFA71D71AAC406100EE9DD1 /* Delta.app */,
+				D5D7C1F129E60DFF00663793 /* libDeltaFeatures.a */,
 				D539102F29E88B6B0006B350 /* DeltaPreviews.framework */,
 			);
 			name = Products;
@@ -970,6 +993,14 @@
 			path = Contributors;
 			sourceTree = "<group>";
 		};
+		D5D7C1F229E60E0000663793 /* DeltaFeatures */ = {
+			isa = PBXGroup;
+			children = (
+				D5A9BFFD29DDECF100A8D610 /* Feature.swift */,
+			);
+			path = DeltaFeatures;
+			sourceTree = "<group>";
+		};
 		FD1E8AE87FA2DB8793F7B937 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -1011,6 +1042,7 @@
 			);
 			dependencies = (
 				BFEBE58325D3388F00222319 /* PBXTargetDependency */,
+				D5D7C1FC29E60EDE00663793 /* PBXTargetDependency */,
 			);
 			name = Delta;
 			packageProductDependencies = (
@@ -1039,6 +1071,23 @@
 			productName = DeltaPreviews;
 			productReference = D539102F29E88B6B0006B350 /* DeltaPreviews.framework */;
 			productType = "com.apple.product-type.framework";
+		};
+		D5D7C1F029E60DFF00663793 /* DeltaFeatures */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D5D7C1F529E60E0000663793 /* Build configuration list for PBXNativeTarget "DeltaFeatures" */;
+			buildPhases = (
+				D5D7C1ED29E60DFF00663793 /* Sources */,
+				D5D7C1EE29E60DFF00663793 /* Frameworks */,
+				D5D7C1EF29E60DFF00663793 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DeltaFeatures;
+			productName = DeltaFeatures;
+			productReference = D5D7C1F129E60DFF00663793 /* libDeltaFeatures.a */;
+			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
 
@@ -1075,6 +1124,9 @@
 					D539102E29E88B6B0006B350 = {
 						CreatedOnToolsVersion = 14.3;
 					};
+					D5D7C1F029E60DFF00663793 = {
+						CreatedOnToolsVersion = 14.2;
+					};
 				};
 			};
 			buildConfigurationList = BFFA71D21AAC406100EE9DD1 /* Build configuration list for PBXProject "Delta" */;
@@ -1098,6 +1150,7 @@
 				BF14D8941DE7A512002CA1BE /* mogenerator */,
 				BF6E70B925D2187800E41CD1 /* Systems */,
 				D539102E29E88B6B0006B350 /* DeltaPreviews */,
+				D5D7C1F029E60DFF00663793 /* DeltaFeatures */,
 			);
 		};
 /* End PBXProject section */
@@ -1422,6 +1475,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D5D7C1ED29E60DFF00663793 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D5D7C20429E60F2000663793 /* Feature.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -1429,6 +1490,11 @@
 			isa = PBXTargetDependency;
 			target = BF6E70B925D2187800E41CD1 /* Systems */;
 			targetProxy = BFEBE58225D3388F00222319 /* PBXContainerItemProxy */;
+		};
+		D5D7C1FC29E60EDE00663793 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D5D7C1F029E60DFF00663793 /* DeltaFeatures */;
+			targetProxy = D5D7C1FB29E60EDE00663793 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1774,6 +1840,53 @@
 			};
 			name = Release;
 		};
+		D5D7C1F629E60E0000663793 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 6XVY5G3U44;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		D5D7C1F729E60E0000663793 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 6XVY5G3U44;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				MTL_FAST_MATH = YES;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1818,6 +1931,15 @@
 			buildConfigurations = (
 				D539103829E88B6C0006B350 /* Debug */,
 				D539103929E88B6C0006B350 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D5D7C1F529E60E0000663793 /* Build configuration list for PBXNativeTarget "DeltaFeatures" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D5D7C1F629E60E0000663793 /* Debug */,
+				D5D7C1F729E60E0000663793 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
