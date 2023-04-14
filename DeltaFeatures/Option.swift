@@ -113,6 +113,21 @@ public extension Option where DetailView == EmptyView
     }
 }
 
+// "Toggle" Option (User-visible, Bool option with default toggle UI)
+public extension Option where Value == Bool, DetailView == OptionToggleView
+{
+    // Non-Optional
+    convenience init(wrappedValue: Value, name: LocalizedStringKey, description: LocalizedStringKey? = nil)
+    {
+        self.init(defaultValue: wrappedValue, name: name, description: description)
+        
+        self.detailView = { [weak self] () -> DetailView? in
+            guard let self else { return nil }
+            return OptionToggleView(name: name, selectedValue: self.valueBinding)
+        }
+    }
+}
+
 // "Picker" Option (User-visible, pre-set options with default picker UI)
 public extension Option where Value: LocalizedOptionValue, DetailView == OptionPickerView<Value>
 {

@@ -196,6 +196,7 @@
 		D5D7C20429E60F2000663793 /* Feature.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A9BFFD29DDECF100A8D610 /* Feature.swift */; };
 		D5D7C20629E60F6100663793 /* OptionPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D592D6FE29E48FFB008D218A /* OptionPickerView.swift */; };
 		D5D7C20829E616CF00663793 /* FeatureContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D7C20729E616CF00663793 /* FeatureContainer.swift */; };
+		D5D7C20A29E61FA600663793 /* OptionToggleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D7C20929E61FA600663793 /* OptionToggleView.swift */; };
 		D5F82FB82981D3AC00B229AF /* LegacySearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F82FB72981D3AC00B229AF /* LegacySearchBar.swift */; };
 /* End PBXBuildFile section */
 
@@ -439,6 +440,7 @@
 		D5D7C1E829E5FCDE00663793 /* LocalizedOptionValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizedOptionValue.swift; sourceTree = "<group>"; };
 		D5D7C1F129E60DFF00663793 /* libDeltaFeatures.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libDeltaFeatures.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5D7C20729E616CF00663793 /* FeatureContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureContainer.swift; sourceTree = "<group>"; };
+		D5D7C20929E61FA600663793 /* OptionToggleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionToggleView.swift; sourceTree = "<group>"; };
 		D5F82FB72981D3AC00B229AF /* LegacySearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacySearchBar.swift; sourceTree = "<group>"; };
 		DC866E433B3BA9AE18ABA1EC /* libPods-Delta.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Delta.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -1068,6 +1070,7 @@
 			isa = PBXGroup;
 			children = (
 				D592D6FE29E48FFB008D218A /* OptionPickerView.swift */,
+				D5D7C20929E61FA600663793 /* OptionToggleView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1555,6 +1558,7 @@
 				D5D7C20429E60F2000663793 /* Feature.swift in Sources */,
 				D55C469129E7631000EA6DE9 /* AnyOption.swift in Sources */,
 				D5D7C1FD29E60EEF00663793 /* OptionalProtocol.swift in Sources */,
+				D5D7C20A29E61FA600663793 /* OptionToggleView.swift in Sources */,
 				D55C468F29E761C000EA6DE9 /* AnyFeature.swift in Sources */,
 				D5D7C20129E60F2000663793 /* LocalizedOptionValue.swift in Sources */,
 				D54F710429E89DFC009C069A /* NotificationName+Settings.swift in Sources */,
