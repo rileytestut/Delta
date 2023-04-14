@@ -16,6 +16,7 @@ public class Option<Value: OptionValue, DetailView: View>: _AnyOption
     public let name: LocalizedStringKey?
     public let description: LocalizedStringKey?
     
+    public let values: [Value]?
     public private(set) var detailView: () -> DetailView? = { nil }
     
     // Assigned to property name.
@@ -73,17 +74,24 @@ public class Option<Value: OptionValue, DetailView: View>: _AnyOption
         }
     }
     
-    private init(defaultValue: Value, name: LocalizedStringKey?, description: LocalizedStringKey?)
+    private init(defaultValue: Value, name: LocalizedStringKey?, description: LocalizedStringKey?, values: (some Collection<Value>)?)
     {
         self.defaultValue = defaultValue
         
         self.name = name
         self.description = description
+        self.values = values.map { Array($0) }
+        
         self.detailView = { nil }
+    }
+    
+    private convenience init(defaultValue: Value, name: LocalizedStringKey?, description: LocalizedStringKey?)
+    {
+        self.init(defaultValue: defaultValue, name: name, description: description, values: [Value]?.none)
     }
 }
 
-// "Hidden" Option (no name or custom SwiftUI view)
+// "Hidden" Option (no name, pre-set values, or custom SwiftUI view)
 public extension Option where DetailView == EmptyView
 {
     // Non-Optional
@@ -102,6 +110,45 @@ public extension Option where DetailView == EmptyView
     convenience init(wrappedValue: Value) where Value: OptionalProtocol
     {
         self.init(defaultValue: wrappedValue, name: nil, description: nil)
+    }
+}
+
+// "Picker" Option (User-visible, pre-set options with default picker UI)
+public extension Option where Value: LocalizedOptionValue, DetailView == OptionPickerView<Value>
+{
+    // Non-Optional
+    convenience init(wrappedValue: Value, name: LocalizedStringKey, description: LocalizedStringKey? = nil, values: some Collection<Value>)
+    {
+        self.init(defaultValue: wrappedValue, name: name, description: description, values: values)
+        
+        self.detailView = { [weak self] () -> DetailView? in
+            guard let self else { return nil }
+            return OptionPickerView(name: name, options: Array(values), selectedValue: self.valueBinding)
+        }
+    }
+    
+    // Optional, default = nil
+    convenience init(name: LocalizedStringKey, description: LocalizedStringKey? = nil, values: some Collection<Value>) where Value: OptionalProtocol, Value.Wrapped: LocalizedOptionValue
+    {
+        self.init(defaultValue: Value.none, name: name, description: description, values: values)
+        
+        self.detailView = { [weak self] () -> DetailView? in
+            guard let self else { return nil }
+            return OptionPickerView(name: name, options: values.appendingNil(), selectedValue: self.valueBinding)
+        }
+    }
+    
+    // Optional, default = non-nil
+    convenience init(wrappedValue: Value, name: LocalizedStringKey, description: LocalizedStringKey? = nil, values: some Collection<Value>) where Value: OptionalProtocol, Value.Wrapped: LocalizedOptionValue
+    {
+        self.init(defaultValue: wrappedValue, name: name, description: description, values: values)
+        
+        self.detailView = { [weak self] () -> DetailView? in
+            guard let self else { return nil }
+            return OptionPickerView(name: name, options: values.appendingNil(), selectedValue: self.valueBinding)
+        }
+    }
+}
 
 // "Custom" Option (User-visible, provides SwiftUI view to configure option)
 public extension Option where Value: LocalizedOptionValue
