@@ -11,9 +11,15 @@ import SwiftUI
 public protocol AnyOption<Value>: AnyObject, Identifiable
 {
     associatedtype Value: OptionValue
+    associatedtype DetailView: View
+    
+    var name: LocalizedStringKey? { get }
+    var description: LocalizedStringKey? { get }
     
     var key: String { get }
     var settingsKey: SettingsName { get }
+    
+    var detailView: () -> DetailView? { get }
     
     var value: Value { get set }
 }

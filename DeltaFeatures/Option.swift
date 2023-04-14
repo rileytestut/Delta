@@ -10,8 +10,14 @@ import SwiftUI
 import Combine
 
 @propertyWrapper
-public class Option<Value: OptionValue>: _AnyOption
+public class Option<Value: OptionValue, DetailView: View>: _AnyOption
 {
+    // Nil name == hidden option.
+    public let name: LocalizedStringKey?
+    public let description: LocalizedStringKey?
+    
+    public private(set) var detailView: () -> DetailView? = { nil }
+    
     // Assigned to property name.
     public internal(set) var key: String = ""
     
@@ -26,6 +32,14 @@ public class Option<Value: OptionValue>: _AnyOption
     internal weak var feature: (any AnyFeature)?
     
     private let defaultValue: Value
+    
+    private var valueBinding: Binding<Value> {
+        Binding(get: {
+            self.wrappedValue
+        }, set: { newValue in
+            self.wrappedValue = newValue
+        })
+    }
     
     /// @propertyWrapper
     public var projectedValue: some Option {
@@ -59,21 +73,75 @@ public class Option<Value: OptionValue>: _AnyOption
         }
     }
     
-    // Non-Optional
-    public init(wrappedValue: Value)
+    private init(defaultValue: Value, name: LocalizedStringKey?, description: LocalizedStringKey?)
     {
-        self.defaultValue = wrappedValue
+        self.defaultValue = defaultValue
+        
+        self.name = name
+        self.description = description
+        self.detailView = { nil }
+    }
+}
+
+// "Hidden" Option (no name or custom SwiftUI view)
+public extension Option where DetailView == EmptyView
+{
+    // Non-Optional
+    convenience init(wrappedValue: Value)
+    {
+        self.init(defaultValue: wrappedValue, name: nil, description: nil)
     }
     
     // Optional, default = nil
-    public init() where Value: OptionalProtocol
+    convenience init() where Value: OptionalProtocol
     {
-        self.defaultValue = Value.none
+        self.init(defaultValue: Value.none, name: nil, description: nil)
     }
     
     // Optional, default = non-nil
-    public init(wrappedValue: Value) where Value: OptionalProtocol
+    convenience init(wrappedValue: Value) where Value: OptionalProtocol
     {
-        self.defaultValue = wrappedValue
+        self.init(defaultValue: wrappedValue, name: nil, description: nil)
+
+// "Custom" Option (User-visible, provides SwiftUI view to configure option)
+public extension Option where Value: LocalizedOptionValue
+{
+    // Non-Optional
+    convenience init(wrappedValue: Value, name: LocalizedStringKey, description: LocalizedStringKey? = nil, @ViewBuilder detailView: @escaping (Binding<Value>) -> DetailView)
+    {
+        self.init(defaultValue: wrappedValue, name: name, description: description)
+        
+        self.detailView = { [weak self] in
+            guard let self else { return nil }
+            
+            let view = detailView(self.valueBinding)
+            return view
+        }
+    }
+    
+    // Optional, default = nil
+    convenience init(name: LocalizedStringKey, description: LocalizedStringKey? = nil, @ViewBuilder detailView: @escaping (Binding<Value>) -> DetailView) where Value: OptionalProtocol, Value.Wrapped: LocalizedOptionValue
+    {
+        self.init(defaultValue: Value.none, name: name, description: description)
+        
+        self.detailView = { [weak self] in
+            guard let self else { return nil }
+            
+            let view = detailView(self.valueBinding)
+            return view
+        }
+    }
+    
+    // Optional, default = non-nil
+    convenience init(wrappedValue: Value, name: LocalizedStringKey, description: LocalizedStringKey? = nil, @ViewBuilder detailView: @escaping (Binding<Value>) -> DetailView) where Value: OptionalProtocol, Value.Wrapped: LocalizedOptionValue
+    {
+        self.init(defaultValue: wrappedValue, name: name, description: description)
+        
+        self.detailView = { [weak self] in
+            guard let self else { return nil }
+            
+            let view = detailView(self.valueBinding)
+            return view
+        }
     }
 }
