@@ -184,7 +184,9 @@
 		D5AAF27729884F8600F21ACF /* CheatDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5AAF27629884F8600F21ACF /* CheatDevice.swift */; };
 		D5D797E6298D946200738869 /* Contributor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D797E5298D946200738869 /* Contributor.swift */; };
 		D5D797E9298DCC7300738869 /* cheatbase.zip in Resources */ = {isa = PBXBuildFile; fileRef = D5D797E7298DC9E200738869 /* cheatbase.zip */; };
+		D5D7C1F929E60EA500663793 /* UserDefaults+OptionValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = D58F39C829E0A702008B4100 /* UserDefaults+OptionValues.swift */; };
 		D5D7C1FA29E60EDE00663793 /* libDeltaFeatures.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D5D7C1F129E60DFF00663793 /* libDeltaFeatures.a */; };
+		D5D7C1FD29E60EEF00663793 /* OptionalProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D532B8BC29E5EDAD009EE27C /* OptionalProtocol.swift */; };
 		D5D7C20129E60F2000663793 /* LocalizedOptionValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D7C1E829E5FCDE00663793 /* LocalizedOptionValue.swift */; };
 		D5D7C20229E60F2000663793 /* OptionValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D7C1E629E5F90200663793 /* OptionValue.swift */; };
 		D5D7C20429E60F2000663793 /* Feature.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A9BFFD29DDECF100A8D610 /* Feature.swift */; };
@@ -405,6 +407,7 @@
 		D524F4A2273DE9C000D500B2 /* ProcessInfo+JIT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProcessInfo+JIT.swift"; sourceTree = "<group>"; };
 		D524F4A4273DEBB400D500B2 /* ServerManager+Delta.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ServerManager+Delta.swift"; sourceTree = "<group>"; };
 		D5011C47281B6E8B00A0760B /* CharacterSet+Filename.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CharacterSet+Filename.swift"; sourceTree = "<group>"; };
+		D532B8BC29E5EDAD009EE27C /* OptionalProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalProtocol.swift; sourceTree = "<group>"; };
 		D53415A4298C782A00FD67B1 /* ContributorsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContributorsView.swift; sourceTree = "<group>"; };
 		D53415A6298C78BC00FD67B1 /* Contributors.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Contributors.plist; sourceTree = "<group>"; };
 		D539102F29E88B6B0006B350 /* DeltaPreviews.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DeltaPreviews.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -415,6 +418,7 @@
 		D586496F297734280081477E /* CheatMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheatMetadata.swift; sourceTree = "<group>"; };
 		D586497129774ABD0081477E /* CheatBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheatBase.swift; sourceTree = "<group>"; };
 		D5864977297756CE0081477E /* CheatBaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheatBaseView.swift; sourceTree = "<group>"; };
+		D58F39C829E0A702008B4100 /* UserDefaults+OptionValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+OptionValues.swift"; sourceTree = "<group>"; };
 		D5A98CE1284EF14B00E023E5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		D5A9BFFD29DDECF100A8D610 /* Feature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feature.swift; sourceTree = "<group>"; };
 		D5A9C01929DDFBDD00A8D610 /* SettingsName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsName.swift; sourceTree = "<group>"; };
@@ -1030,6 +1034,7 @@
 		D5D7C1F829E60E8600663793 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				D58F39C829E0A702008B4100 /* UserDefaults+OptionValues.swift */,
 				D54F710329E89DFC009C069A /* NotificationName+Settings.swift */,
 			);
 			path = Extensions;
@@ -1039,6 +1044,7 @@
 			isa = PBXGroup;
 			children = (
 				D5D7C20729E616CF00663793 /* FeatureContainer.swift */,
+				D532B8BC29E5EDAD009EE27C /* OptionalProtocol.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -1524,10 +1530,12 @@
 				D5D7C20829E616CF00663793 /* FeatureContainer.swift in Sources */,
 				D517F6BA29E730DA000D14D0 /* SettingsName.swift in Sources */,
 				D5D7C20429E60F2000663793 /* Feature.swift in Sources */,
+				D5D7C1FD29E60EEF00663793 /* OptionalProtocol.swift in Sources */,
 				D5D7C20129E60F2000663793 /* LocalizedOptionValue.swift in Sources */,
 				D54F710429E89DFC009C069A /* NotificationName+Settings.swift in Sources */,
 				D54F710229E89DCB009C069A /* SettingsUserInfoKey.swift in Sources */,
 				D5D7C20229E60F2000663793 /* OptionValue.swift in Sources */,
+				D5D7C1F929E60EA500663793 /* UserDefaults+OptionValues.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
