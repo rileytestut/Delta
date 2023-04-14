@@ -18,5 +18,6 @@ public struct OptionToggleView: View
 
     public var body: some View {
         Toggle(name, isOn: $selectedValue)
+            .displayInline()
     }
 }

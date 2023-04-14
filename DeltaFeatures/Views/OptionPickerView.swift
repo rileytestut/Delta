@@ -23,6 +23,7 @@ public struct OptionPickerView<Value: LocalizedOptionValue>: View
                 value.localizedDescription
             }
         }
-        .pickerStyle(.inline)
+        .pickerStyle(.menu)
+        .displayInline()
     }
 }
