@@ -168,6 +168,8 @@
 		BFFDF04623E3D3A600931B96 /* libMupen64Plus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BFFDF04523E3D3A600931B96 /* libMupen64Plus.a */; };
 		D517F6BA29E730DA000D14D0 /* SettingsName.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A9C01929DDFBDD00A8D610 /* SettingsName.swift */; };
 		D517F6BE29E7535F000D14D0 /* Collection+Optionals.swift in Sources */ = {isa = PBXBuildFile; fileRef = D517F6BD29E7535F000D14D0 /* Collection+Optionals.swift */; };
+		D51CB7A129EDC01400B59678 /* libDeltaFeatures.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D5D7C1F129E60DFF00663793 /* libDeltaFeatures.a */; };
+		D51CB7A629EDC15900B59678 /* ExperimentalFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = D51CB7A529EDC15900B59678 /* ExperimentalFeatures.swift */; };
 		D524F4A1273DE9A100D500B2 /* AltKit in Frameworks */ = {isa = PBXBuildFile; productRef = D524F4A0273DE9A100D500B2 /* AltKit */; };
 		D524F4A3273DE9C000D500B2 /* ProcessInfo+JIT.swift in Sources */ = {isa = PBXBuildFile; fileRef = D524F4A2273DE9C000D500B2 /* ProcessInfo+JIT.swift */; };
 		D524F4A5273DEBB400D500B2 /* ServerManager+Delta.swift in Sources */ = {isa = PBXBuildFile; fileRef = D524F4A4273DEBB400D500B2 /* ServerManager+Delta.swift */; };
@@ -181,6 +183,9 @@
 		D54F710429E89DFC009C069A /* NotificationName+Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54F710329E89DFC009C069A /* NotificationName+Settings.swift */; };
 		D55C468F29E761C000EA6DE9 /* AnyFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55C468E29E761C000EA6DE9 /* AnyFeature.swift */; };
 		D55C469129E7631000EA6DE9 /* AnyOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55C469029E7631000EA6DE9 /* AnyOption.swift */; };
+		D57D795629F300E100BB2CF8 /* CustomTintColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A817AF29DF4E6E00904AFE /* CustomTintColor.swift */; };
+		D57D795F29F315F700BB2CF8 /* FeatureDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54A4BB229E4D27E004C7D57 /* FeatureDetailView.swift */; };
+		D57D796029F315F700BB2CF8 /* ExperimentalFeaturesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A9C00229DDED6D00A8D610 /* ExperimentalFeaturesView.swift */; };
 		D5864970297734280081477E /* CheatMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586496F297734280081477E /* CheatMetadata.swift */; };
 		D586497229774ABD0081477E /* CheatBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586497129774ABD0081477E /* CheatBase.swift */; };
 		D5864978297756CE0081477E /* CheatBaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5864977297756CE0081477E /* CheatBaseView.swift */; };
@@ -415,6 +420,7 @@
 		BFFDF04523E3D3A600931B96 /* libMupen64Plus.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libMupen64Plus.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C786AF1D2DDB6223BE2063CC /* Pods-Delta.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Delta.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Delta/Pods-Delta.debug.xcconfig"; sourceTree = "<group>"; };
 		D517F6BD29E7535F000D14D0 /* Collection+Optionals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+Optionals.swift"; sourceTree = "<group>"; };
+		D51CB7A529EDC15900B59678 /* ExperimentalFeatures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExperimentalFeatures.swift; sourceTree = "<group>"; };
 		D524F4A2273DE9C000D500B2 /* ProcessInfo+JIT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProcessInfo+JIT.swift"; sourceTree = "<group>"; };
 		D524F4A4273DEBB400D500B2 /* ServerManager+Delta.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ServerManager+Delta.swift"; sourceTree = "<group>"; };
 		D5011C47281B6E8B00A0760B /* CharacterSet+Filename.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CharacterSet+Filename.swift"; sourceTree = "<group>"; };
@@ -435,6 +441,7 @@
 		D58F39C529E0A473008B4100 /* Option.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Option.swift; sourceTree = "<group>"; };
 		D58F39C829E0A702008B4100 /* UserDefaults+OptionValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+OptionValues.swift"; sourceTree = "<group>"; };
 		D592D6FE29E48FFB008D218A /* OptionPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionPickerView.swift; sourceTree = "<group>"; };
+		D5A817AF29DF4E6E00904AFE /* CustomTintColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTintColor.swift; sourceTree = "<group>"; };
 		D5A817B229DF6C6C00904AFE /* ExperimentalFeatures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExperimentalFeatures.swift; sourceTree = "<group>"; };
 		D5A98CE1284EF14B00E023E5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		D5A9BFFD29DDECF100A8D610 /* Feature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feature.swift; sourceTree = "<group>"; };
@@ -477,6 +484,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D51CB7A129EDC01400B59678 /* libDeltaFeatures.a in Frameworks */,
 				87343D7B985519A5890A61C6 /* libPods-DeltaPreviews.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1018,8 +1026,18 @@
 			children = (
 				D539103129E88B6C0006B350 /* DeltaPreviews.h */,
 				D539103F29E88BC40006B350 /* ContentView.swift */,
+				D57D795829F3054800BB2CF8 /* Experimental Features */,
 			);
 			path = DeltaPreviews;
+			sourceTree = "<group>";
+		};
+		D57D795829F3054800BB2CF8 /* Experimental Features */ = {
+			isa = PBXGroup;
+			children = (
+				D51CB7A529EDC15900B59678 /* ExperimentalFeatures.swift */,
+				D5A817AF29DF4E6E00904AFE /* CustomTintColor.swift */,
+			);
+			path = "Experimental Features";
 			sourceTree = "<group>";
 		};
 		D57D795C29F30B1400BB2CF8 /* Experimental Features */ = {
@@ -1577,6 +1595,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				D539104029E88BC40006B350 /* ContentView.swift in Sources */,
+				D57D795629F300E100BB2CF8 /* CustomTintColor.swift in Sources */,
+				D57D795F29F315F700BB2CF8 /* FeatureDetailView.swift in Sources */,
+				D51CB7A629EDC15900B59678 /* ExperimentalFeatures.swift in Sources */,
+				D57D796029F315F700BB2CF8 /* ExperimentalFeaturesView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
