@@ -10,8 +10,8 @@ import Foundation
 
 public extension SettingsUserInfoKey
 {
-    public static let name: SettingsUserInfoKey = "name"
-    public static let value: SettingsUserInfoKey = "value"
+    static let name: SettingsUserInfoKey = "name"
+    static let value: SettingsUserInfoKey = "value"
 }
 
 public struct SettingsUserInfoKey: RawRepresentable, Hashable, ExpressibleByStringLiteral
