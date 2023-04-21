@@ -14,6 +14,9 @@ struct ExperimentalFeatures: FeatureContainer
 {
     static let shared = ExperimentalFeatures()
     
+    @Feature(name: "Random Dancing")
+    var randomDancing
+    
     @Feature(name: "Custom Tint Color",
              description: "Change the accent color used throughout the app.",
              options: CustomTintColorOptions())
