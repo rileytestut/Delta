@@ -1108,7 +1108,8 @@ extension GameViewController
         let scale = ExperimentalFeatures.shared.gameScreenshots.scale != nil ? ExperimentalFeatures.shared.gameScreenshots.scale?.rawValue : 1.0
         let size = CGSize(width: snapshot.size.width * scale!, height: snapshot.size.height * scale!)
         
-        UIGraphicsBeginImageContextWithOptions(size, false, 0.0)
+        UIGraphicsBeginImageContextWithOptions(size, false, 1.0)
+        UIGraphicsGetCurrentContext()!.interpolationQuality = .none
         
         snapshot.draw(in: CGRect(origin: CGPoint.zero, size: size))
         let scaledSnapshot = UIGraphicsGetImageFromCurrentImageContext()
