@@ -180,6 +180,14 @@ class GameViewController: DeltaCore.GameViewController
         return .all
     }
     
+    override var prefersStatusBarHidden: Bool {
+        return !(ExperimentalFeatures.shared.showStatusBar.isEnabled && ExperimentalFeatures.shared.showStatusBar.isStatusBarEnabled)
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
     required init()
     {
         super.init()
@@ -421,6 +429,15 @@ extension GameViewController
                 
                 // Re-set gameController as pausingGameController.
                 self.pausingGameController = gameController
+            }
+            
+            pauseViewController.statusBarItem?.isSelected = ExperimentalFeatures.shared.showStatusBar.isStatusBarEnabled
+            pauseViewController.statusBarItem?.action = { [unowned self] item in
+                self.performStatusBarAction()
+            }
+            
+            pauseViewController.screenshotItem?.action = { [unowned self] item in
+                self.performScreenshotAction()
             }
             
             if self.emulatorCore?.deltaCore.supportedRates.upperBound == 1
@@ -1068,6 +1085,70 @@ extension GameViewController
         else
         {
             emulatorCore.rate = emulatorCore.deltaCore.supportedRates.lowerBound
+        }
+    }
+    
+    func performStatusBarAction()
+    {
+        let enabled = ExperimentalFeatures.shared.showStatusBar.isStatusBarEnabled
+        ExperimentalFeatures.shared.showStatusBar.isStatusBarEnabled = !enabled
+        
+        if let pauseView = self.pauseViewController
+        {
+            pauseView.dismiss()
+        }
+        
+        self.setNeedsStatusBarAppearanceUpdate()
+    }
+    
+    func performScreenshotAction()
+    {
+        guard let snapshot = self.emulatorCore?.videoManager.snapshot() else { return }
+        
+        let scale = ExperimentalFeatures.shared.gameScreenshots.scale != nil ? ExperimentalFeatures.shared.gameScreenshots.scale?.rawValue : 1.0
+        let size = CGSize(width: snapshot.size.width * scale!, height: snapshot.size.height * scale!)
+        
+        UIGraphicsBeginImageContextWithOptions(size, false, 0.0)
+        
+        snapshot.draw(in: CGRect(origin: CGPoint.zero, size: size))
+        let scaledSnapshot = UIGraphicsGetImageFromCurrentImageContext()
+        
+        UIGraphicsEndImageContext()
+        
+        if ExperimentalFeatures.shared.gameScreenshots.saveToPhotos
+        {
+            UIImageWriteToSavedPhotosAlbum(scaledSnapshot!, nil, nil, nil)
+        }
+        
+        if ExperimentalFeatures.shared.gameScreenshots.saveToFiles
+        {
+            let data = scaledSnapshot!.pngData()
+            
+            let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+            let folderName = paths[0].appendingPathComponent("Screenshots")
+            try? FileManager.default.createDirectory(at: folderName, withIntermediateDirectories: true, attributes: nil)
+            
+            let date = Date()
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd_HH-mm-ss"
+            
+            let fileName: URL
+            if let game = self.game
+            {
+                let gameDeepTitle = (game.fileURL.lastPathComponent as NSString).deletingPathExtension
+                fileName = folderName.appendingPathComponent(gameDeepTitle + "_" + dateFormatter.string(from: date) + ".png")
+            }
+            else
+            {
+                fileName = folderName.appendingPathComponent(dateFormatter.string(from: date) + ".png")
+            }
+            
+            try? data!.write(to: fileName)
+        }
+        
+        if let pauseView = self.pauseViewController
+        {
+            pauseView.dismiss()
         }
     }
 }
