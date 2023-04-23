@@ -34,6 +34,8 @@
 /* Begin PBXBuildFile section */
 		1FA4ABA79AB72914FE414A61 /* libPods-Delta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DC866E433B3BA9AE18ABA1EC /* libPods-Delta.a */; };
 		87343D7B985519A5890A61C6 /* libPods-DeltaPreviews.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E3E5A45AB20C8A87754453B /* libPods-DeltaPreviews.a */; };
+		AC254B6329F565BD00CCDE52 /* ShowStatusBarOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC254B6229F565BD00CCDE52 /* ShowStatusBarOptions.swift */; };
+		AC254B6C29F5718900CCDE52 /* GameScreenshotOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC254B6B29F5718900CCDE52 /* GameScreenshotOptions.swift */; };
 		BF00BEA625B758AA00C8607D /* SystemBIOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF00BEA525B758AA00C8607D /* SystemBIOS.swift */; };
 		BF02D5DA1DDEBB3000A5E131 /* openvgdb.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = BF02D5D91DDEBB3000A5E131 /* openvgdb.sqlite */; };
 		BF04E6FF1DB8625C000F35D3 /* ControllerSkinsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF04E6FE1DB8625C000F35D3 /* ControllerSkinsViewController.swift */; };
@@ -257,6 +259,8 @@
 		8ECE6641DE30D01EA30FE7F6 /* Pods-DeltaPreviews.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DeltaPreviews.release.xcconfig"; path = "Pods/Target Support Files/Pods-DeltaPreviews/Pods-DeltaPreviews.release.xcconfig"; sourceTree = "<group>"; };
 		A01281C7023C0041B25963BE /* Pods-DeltaPreviews.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DeltaPreviews.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DeltaPreviews/Pods-DeltaPreviews.debug.xcconfig"; sourceTree = "<group>"; };
 		A19FF50F55441BC2B2248241 /* Pods-Delta.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Delta.release.xcconfig"; path = "Pods/Target Support Files/Pods-Delta/Pods-Delta.release.xcconfig"; sourceTree = "<group>"; };
+		AC254B6229F565BD00CCDE52 /* ShowStatusBarOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowStatusBarOptions.swift; sourceTree = "<group>"; };
+		AC254B6B29F5718900CCDE52 /* GameScreenshotOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScreenshotOptions.swift; sourceTree = "<group>"; };
 		BF00BEA525B758AA00C8607D /* SystemBIOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemBIOS.swift; sourceTree = "<group>"; };
 		BF02D5D91DDEBB3000A5E131 /* openvgdb.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = openvgdb.sqlite; sourceTree = "<group>"; };
 		BF0418131D01E93400E85BCF /* GBADeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = GBADeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1068,6 +1072,8 @@
 			isa = PBXGroup;
 			children = (
 				D5A9C01C29DE058C00A8D610 /* VariableFastForward.swift */,
+				AC254B6229F565BD00CCDE52 /* ShowStatusBarOptions.swift */,
+				AC254B6B29F5718900CCDE52 /* GameScreenshotOptions.swift */,
 			);
 			path = Features;
 			sourceTree = "<group>";
@@ -1584,6 +1590,7 @@
 				BFCEA67E1D56FF640061A534 /* UIViewControllerContextTransitioning+Conveniences.swift in Sources */,
 				BF1173501DA32CF600047DF8 /* ControllersSettingsViewController.swift in Sources */,
 				BFFC461E1D59823500AF2CC6 /* GamesPresentationController.swift in Sources */,
+				AC254B6C29F5718900CCDE52 /* GameScreenshotOptions.swift in Sources */,
 				BF99A5971DC2F9C400468E9E /* ControllerSkinTableViewCell.swift in Sources */,
 				BFE9908024451E15006409A7 /* MelonDSCoreSettingsViewController.swift in Sources */,
 				BF5942861E09BC8B0051894B /* _Cheat.swift in Sources */,
@@ -1597,6 +1604,7 @@
 				BF353FF21C5D7FB000C1184C /* PauseViewController.swift in Sources */,
 				BF00BEA625B758AA00C8607D /* SystemBIOS.swift in Sources */,
 				BF696B801D9B2B02009639E0 /* Theme.swift in Sources */,
+				AC254B6329F565BD00CCDE52 /* ShowStatusBarOptions.swift in Sources */,
 				BF7AE8081C2E858400B1B5BC /* GridMenuViewController.swift in Sources */,
 				BF6BF31A1EB82146008E83CD /* ClipboardImportOption.swift in Sources */,
 				BF59427F1E09BC830051894B /* GameCollection.swift in Sources */,
@@ -1882,9 +1890,12 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 62;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = AQKFQ7V9C4;
 				INFOPLIST_FILE = "Delta/Supporting Files/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				MARKETING_VERSION = 1.5b1;
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" -DIMPACTOR";
 				PRODUCT_BUNDLE_IDENTIFIER = com.rileytestut.Delta;

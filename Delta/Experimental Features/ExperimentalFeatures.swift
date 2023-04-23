@@ -17,6 +17,16 @@ struct ExperimentalFeatures: FeatureContainer
              options: VariableFastForwardOptions())
     var variableFastForward
     
+    @Feature(name: "Show Status Bar",
+             description: "When enabled, a Status Bar button will appear in the Pause Menu, allowing you to toggle showing the status bar in-game.",
+             options: ShowStatusBarOptions())
+    var showStatusBar
+    
+    @Feature(name: "Game Screenshots",
+             description: "When enabled, a Screenshot button will appear in the Pause Menu, allowing you to save a screenshot of the Game Screen to your Photos.",
+             options: GameScreenshotOptions())
+    var gameScreenshots
+    
     private init()
     {
         self.prepareFeatures()
