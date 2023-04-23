@@ -66,7 +66,7 @@ extension GridMenuViewController
         self.collectionView?.dataSource = self.dataSource
                 
         let collectionViewLayout = self.collectionViewLayout as! GridCollectionViewLayout
-        collectionViewLayout.itemWidth = 90
+        collectionViewLayout.itemWidth = 80
         collectionViewLayout.usesEqualHorizontalSpacingDistributionForSingleRow = true
         
         // Manually update prototype cell properties
