@@ -11,36 +11,18 @@ import Photos
 
 extension PHPhotoLibrary
 {
-    static var isAuthorized: Bool
+    static func runIfAuthorized(code: @escaping () -> Void)
     {
-        // Check for authorization status
-        let status = PHPhotoLibrary.authorizationStatus()
-        switch status
-        {
-        case .authorized:
-            return true
-            
-        case .denied, .restricted:
-            return false
-            
-        case .notDetermined:
-            // Request photo access from the user
-            var success = false
-            PHPhotoLibrary.requestAuthorization({ status in
-                switch status
-                {
-                case .authorized:
-                    success = true
-                    
-                case .denied, .restricted, .notDetermined: break
-                    
-                @unknown default: break
-                }
-            })
-            return success
-        @unknown default:
-            return false
-        }
+        PHPhotoLibrary.requestAuthorization(for: .addOnly, handler: { success in
+            switch success
+            {
+            case .authorized:
+                code()
+                
+            case .denied, .restricted, .notDetermined, .limited:
+                break
+            }
+        })
     }
     
     static func saveUIImage(image: UIImage)
