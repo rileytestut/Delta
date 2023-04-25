@@ -59,14 +59,16 @@ public class Option<Value: OptionValue, DetailView: View>: _AnyOption
             }
         }
         set {
-            Task { @MainActor in
-                // Delay to avoid "Publishing changes from within view updates is not allowed" runtime warning.
-                (self.feature?.objectWillChange as? ObservableObjectPublisher)?.send()
-            }
-            
             do {
                 try UserDefaults.standard.setOptionValue(newValue, forKey: self.settingsKey.rawValue)
-                NotificationCenter.default.post(name: .settingsDidChange, object: nil, userInfo: [SettingsUserInfoKey.name: self.settingsKey, SettingsUserInfoKey.value: newValue])
+                
+                Task { @MainActor in
+                    // Delay to avoid "Publishing changes from within view updates is not allowed" runtime warning.
+                    (self.feature?.objectWillChange as? ObservableObjectPublisher)?.send()
+                    
+                    // Delay to avoid potential simultaneous memory access runtime error.
+                    NotificationCenter.default.post(name: .settingsDidChange, object: nil, userInfo: [SettingsUserInfoKey.name: self.settingsKey, SettingsUserInfoKey.value: newValue])
+                }
             }
             catch {
                 print("[ALTLog] Failed to set option value for key \(self.settingsKey.rawValue).", error)
