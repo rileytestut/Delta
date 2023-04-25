@@ -17,6 +17,11 @@ struct ExperimentalFeatures: FeatureContainer
              options: VariableFastForwardOptions())
     var variableFastForward
     
+    @Feature(name: "Game Screenshots",
+             description: "When enabled, a Screenshot button will appear in the Pause Menu, allowing you to save a screenshot of your game. You can choose to save the screenshot to Photos or Files.",
+             options: GameScreenshotsOptions())
+    var gameScreenshots
+    
     private init()
     {
         self.prepareFeatures()
