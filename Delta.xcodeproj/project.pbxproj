@@ -196,6 +196,8 @@
 		D5A9C00329DDED6D00A8D610 /* ExperimentalFeaturesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A9C00229DDED6D00A8D610 /* ExperimentalFeaturesView.swift */; };
 		D5A9C01D29DE058C00A8D610 /* VariableFastForward.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A9C01C29DE058C00A8D610 /* VariableFastForward.swift */; };
 		D5AAF27729884F8600F21ACF /* CheatDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5AAF27629884F8600F21ACF /* CheatDevice.swift */; };
+		D5ADD12229F33FBF00CE0560 /* Features.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5ADD12129F33FBF00CE0560 /* Features.swift */; };
+		D5D78AE529F9BC3700E064F0 /* DSAirPlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D78AE429F9BC3700E064F0 /* DSAirPlay.swift */; };
 		D5D797E6298D946200738869 /* Contributor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D797E5298D946200738869 /* Contributor.swift */; };
 		D5D797E9298DCC7300738869 /* cheatbase.zip in Resources */ = {isa = PBXBuildFile; fileRef = D5D797E7298DC9E200738869 /* cheatbase.zip */; };
 		D5D7C1F929E60EA500663793 /* UserDefaults+OptionValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = D58F39C829E0A702008B4100 /* UserDefaults+OptionValues.swift */; };
@@ -453,6 +455,8 @@
 		D5A9C01929DDFBDD00A8D610 /* SettingsName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsName.swift; sourceTree = "<group>"; };
 		D5A9C01C29DE058C00A8D610 /* VariableFastForward.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VariableFastForward.swift; sourceTree = "<group>"; };
 		D5AAF27629884F8600F21ACF /* CheatDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheatDevice.swift; sourceTree = "<group>"; };
+		D5ADD12129F33FBF00CE0560 /* Features.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Features.swift; sourceTree = "<group>"; };
+		D5D78AE429F9BC3700E064F0 /* DSAirPlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSAirPlay.swift; sourceTree = "<group>"; };
 		D5D797E5298D946200738869 /* Contributor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contributor.swift; sourceTree = "<group>"; };
 		D5D797E7298DC9E200738869 /* cheatbase.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = cheatbase.zip; sourceTree = "<group>"; };
 		D5D7C1E629E5F90200663793 /* OptionValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionValue.swift; sourceTree = "<group>"; };
@@ -845,6 +849,7 @@
 				BF11734E1DA32CEC00047DF8 /* Controllers */,
 				BF1DAD5B1D9F574900E752A7 /* Controller Skins */,
 				BF48F74C219A16C100BC2FC1 /* Syncing */,
+				D5D78AE329F9BC0200E064F0 /* Features */,
 				D5A9BFFF29DDECF500A8D610 /* Experimental Features */,
 				D5D797E4298D944C00738869 /* Contributors */,
 			);
@@ -1090,6 +1095,15 @@
 				D54A4BB229E4D27E004C7D57 /* FeatureDetailView.swift */,
 			);
 			path = "Experimental Features";
+			sourceTree = "<group>";
+		};
+		D5D78AE329F9BC0200E064F0 /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				D5ADD12129F33FBF00CE0560 /* Features.swift */,
+				D5D78AE429F9BC3700E064F0 /* DSAirPlay.swift */,
+			);
+			path = Features;
 			sourceTree = "<group>";
 		};
 		D5D797E4298D944C00738869 /* Contributors */ = {
@@ -1519,11 +1533,13 @@
 				D560BD8629EDC45600289847 /* ExternalDisplaySceneDelegate.swift in Sources */,
 				BFFC46201D59823500AF2CC6 /* InitialGamesStoryboardSegue.swift in Sources */,
 				BF15AF841F54B43B009B6AAB /* ActionInput.swift in Sources */,
+				D5D78AE529F9BC3700E064F0 /* DSAirPlay.swift in Sources */,
 				BF4828841F9027B600028B97 /* Delta.xcdatamodeld in Sources */,
 				BF5942951E09BD1A0051894B /* NSManagedObjectContext+Conveniences.swift in Sources */,
 				BFC3628021ADE2BA00EF2BE6 /* UIAlertController+Error.swift in Sources */,
 				BF353FF91C5D870B00C1184C /* MenuItem.swift in Sources */,
 				D5D797E6298D946200738869 /* Contributor.swift in Sources */,
+				D5ADD12229F33FBF00CE0560 /* Features.swift in Sources */,
 				BFDB3418219E4B1700595A62 /* SyncStatusViewController.swift in Sources */,
 				BF18B61F1E2985F900F70067 /* UIAlertController+Importing.swift in Sources */,
 				D586497229774ABD0081477E /* CheatBase.swift in Sources */,

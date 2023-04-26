@@ -49,6 +49,8 @@ extension Settings
 
 struct Settings
 {
+    static let features = Features.shared
+    
     static func registerDefaults()
     {
         let defaults = [#keyPath(UserDefaults.translucentControllerSkinOpacity): 0.7,
