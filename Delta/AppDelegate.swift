@@ -121,7 +121,17 @@ extension AppDelegate
     {
         // Called when a new scene session is being created.
         // Use this method to select a configuration to create the new scene with.
-        return UISceneConfiguration(name: "Main", sessionRole: connectingSceneSession.role)
+        
+        if connectingSceneSession.role == .windowExternalDisplay
+        {
+            // External Display
+            return UISceneConfiguration(name: "External Display", sessionRole: connectingSceneSession.role)
+        }
+        else
+        {
+            // Default Scene
+            return UISceneConfiguration(name: "Main", sessionRole: connectingSceneSession.role)
+        }
     }
     
     func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>)
