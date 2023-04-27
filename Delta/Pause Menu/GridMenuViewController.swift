@@ -174,3 +174,31 @@ extension GridMenuViewController
     }
 }
 
+extension GridMenuViewController
+{
+    override func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration?
+    {
+        let item = self.dataSource.item(at: indexPath)
+        guard let menu = item.menu else { return nil }
+        
+        return UIContextMenuConfiguration(identifier: indexPath as NSIndexPath, previewProvider: nil) { _ in menu }
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, previewForHighlightingContextMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview?
+    {
+        guard let indexPath = configuration.identifier as? IndexPath else { return nil }
+        guard let cell = collectionView.cellForItem(at: indexPath) as? GridCollectionViewCell else { return nil }
+        
+        let parameters = UIPreviewParameters()
+        parameters.backgroundColor = .clear
+        parameters.visiblePath = UIBezierPath(rect: cell.contentView.bounds)
+        
+        let preview = UITargetedPreview(view: cell.contentView, parameters: parameters)
+        return preview
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, previewForDismissingContextMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview?
+    {
+        return self.collectionView(collectionView, previewForHighlightingContextMenuWithConfiguration: configuration)
+    }
+}

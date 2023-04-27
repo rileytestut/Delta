@@ -15,6 +15,8 @@ class MenuItem: NSObject
     var image: UIImage?
     var action: ((MenuItem) -> Void)
     
+    var menu: UIMenu?
+    
     @objc dynamic var isSelected = false
     
     init(text: String, image: UIImage?, action: @escaping ((MenuItem) -> Void))

@@ -8,15 +8,32 @@
 
 import SwiftUI
 
+import DeltaCore
 import DeltaFeatures
 
-enum FastForwardSpeed: Double, CaseIterable, CustomStringConvertible
+struct FastForwardSpeed: RawRepresentable
 {
-    case x2 = 2
-    case x3 = 3
-    case x4 = 4
-    case x8 = 8
+    let rawValue: Double
     
+    init(rawValue: Double)
+    {
+        self.rawValue = rawValue
+    }
+    
+    static func speeds(in range: ClosedRange<Double>) -> [FastForwardSpeed]
+    {
+        // .dropFirst() to remove 1x speed.
+        var speeds = stride(from: range.lowerBound, to: range.upperBound, by: 1.0).dropFirst().map { FastForwardSpeed(rawValue: $0) }
+        
+        // Handles both integer and non-integer maximum speeds, because range.upperBound is not included in `speeds`.
+        speeds.append(.init(rawValue: range.upperBound))
+        
+        return speeds
+    }
+}
+
+extension FastForwardSpeed: CustomStringConvertible, LocalizedOptionValue
+{
     var description: String {
         if #available(iOS 15, *)
         {
@@ -28,10 +45,7 @@ enum FastForwardSpeed: Double, CaseIterable, CustomStringConvertible
             return "\(self.rawValue)x"
         }
     }
-}
-
-extension FastForwardSpeed: LocalizedOptionValue
-{
+    
     var localizedDescription: Text {
         Text(self.description)
     }
@@ -50,24 +64,56 @@ struct VariableFastForwardOptions
     // @Option // No name = hidden
     // var preferredSpeedsBySystem: [String: Double] = [:]
     
-    @Option(name: "Nintendo", description: "Preferred NES fast forward speed.", values: FastForwardSpeed.allCases)
+    @Option(name: "Nintendo", description: "Preferred NES fast forward speed.", values: FastForwardSpeed.speeds(in: System.nes.deltaCore.supportedRates))
     var nes: FastForwardSpeed?
 
-    @Option(name: "Super Nintendo", description: "Preferred SNES fast forward speed.", values: FastForwardSpeed.allCases)
+    @Option(name: "Super Nintendo", description: "Preferred SNES fast forward speed.", values: FastForwardSpeed.speeds(in: System.snes.deltaCore.supportedRates))
     var snes: FastForwardSpeed?
     
-    @Option(name: "Sega Genesis", description: "Preferred Genesis fast forward speed.", values: FastForwardSpeed.allCases)
+    @Option(name: "Sega Genesis", description: "Preferred Genesis fast forward speed.", values: FastForwardSpeed.speeds(in: System.genesis.deltaCore.supportedRates))
     var genesis: FastForwardSpeed?
 
-    @Option(name: "Nintendo 64", description: "Preferred N64 fast forward speed.", values: FastForwardSpeed.allCases)
+    @Option(name: "Nintendo 64", description: "Preferred N64 fast forward speed.", values: FastForwardSpeed.speeds(in: System.n64.deltaCore.supportedRates))
     var n64: FastForwardSpeed?
 
-    @Option(name: "Game Boy Color", description: "Preferred GBC fast forward speed.", values: FastForwardSpeed.allCases)
+    @Option(name: "Game Boy Color", description: "Preferred GBC fast forward speed.", values: FastForwardSpeed.speeds(in: System.gbc.deltaCore.supportedRates))
     var gbc: FastForwardSpeed?
 
-    @Option(name: "Game Boy Advance", description: "Preferred GBA fast forward speed.", values: FastForwardSpeed.allCases)
+    @Option(name: "Game Boy Advance", description: "Preferred GBA fast forward speed.", values: FastForwardSpeed.speeds(in: System.gba.deltaCore.supportedRates))
     var gba: FastForwardSpeed?
 
-    @Option(name: "Nintendo DS", description: "Preferred DS fast forward speed.", values: FastForwardSpeed.allCases)
+    @Option(name: "Nintendo DS", description: "Preferred DS fast forward speed.", values: FastForwardSpeed.speeds(in: System.ds.deltaCore.supportedRates))
     var ds: FastForwardSpeed?
+}
+
+extension Feature where Options == VariableFastForwardOptions
+{
+    subscript(gameType: GameType) -> FastForwardSpeed? {
+        get {
+            guard let system = System(gameType: gameType) else { return nil }
+            switch system
+            {
+            case .nes: return self.nes
+            case .snes: return self.snes
+            case .genesis: return self.genesis
+            case .n64: return self.n64
+            case .gbc: return self.gbc
+            case .gba: return self.gba
+            case .ds: return self.ds
+            }
+        }
+        set {
+            guard let system = System(gameType: gameType) else { return }
+            switch system
+            {
+            case .nes: self.nes = newValue
+            case .snes: self.snes = newValue
+            case .genesis: self.genesis = newValue
+            case .n64: self.n64 = newValue
+            case .gbc: self.gbc = newValue
+            case .gba: self.gba = newValue
+            case .ds: self.ds = newValue
+            }
+        }
+    }
 }
