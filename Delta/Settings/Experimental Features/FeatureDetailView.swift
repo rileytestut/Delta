@@ -59,9 +59,11 @@ struct FeatureDetailView<Feature: AnyFeature>: View
 
 private struct OptionRow<Option: AnyOption, DetailView: View>: View where DetailView == Option.DetailView
 {
-    var name: LocalizedStringKey
-    var value: any LocalizedOptionValue
-    var detailView: DetailView
+    let name: LocalizedStringKey
+    let value: any LocalizedOptionValue
+    let detailView: DetailView
+    
+    let option: Option
     
     @State
     private var displayInline: Bool = false
@@ -78,10 +80,16 @@ private struct OptionRow<Option: AnyOption, DetailView: View>: View where Detail
         self.name = name
         self.value = value
         self.detailView = detailView
+        
+        self.option = option
     }
     
     var body: some View {
         VStack {
+            let detailView = detailView
+                .environment(\.managedObjectContext, DatabaseManager.shared.viewContext)
+                .environment(\.featureOption, option)
+            
             if displayInline
             {
                 // Display entire view inline.

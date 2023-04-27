@@ -1144,7 +1144,13 @@ private extension GameViewController
         
         if let game = self.game, let traits = scene.gameViewController.controllerView.controllerSkinTraits
         {
-            if let standardSkin = DeltaCore.ControllerSkin.standardControllerSkin(for: game.type), standardSkin.supports(traits)
+            if ExperimentalFeatures.shared.airPlaySkins.isEnabled,
+               let preferredControllerSkin = ExperimentalFeatures.shared.airPlaySkins.preferredAirPlayControllerSkin(for: game.type), preferredControllerSkin.supports(traits)
+            {
+                // Use preferredControllerSkin directly.
+                controllerSkin = preferredControllerSkin
+            }
+            else if let standardSkin = DeltaCore.ControllerSkin.standardControllerSkin(for: game.type), standardSkin.supports(traits)
             {
                 if standardSkin.hasTouchScreen(for: traits)
                 {
@@ -1359,6 +1365,11 @@ private extension GameViewController
         case Settings.features.dsAirPlay.$layoutAxis.settingsKey:
             self.updateExternalDisplay()
         
+        case ExperimentalFeatures.shared.airPlaySkins.settingsKey: fallthrough
+        case _ where settingsName.rawValue.hasPrefix(ExperimentalFeatures.shared.airPlaySkins.settingsKey.rawValue):
+            // Update whenever any of the AirPlay skins have changed.
+            self.updateExternalDisplay()
+            
         default: break
         }
     }

@@ -34,19 +34,18 @@ extension ControllerSkin
         
         var configurations = ControllerSkinConfigurations()
         
-        let device: DeltaCore.ControllerSkin.Device = (UIDevice.current.userInterfaceIdiom == .pad) ? .ipad : .iphone
-        
-        let traitCollections: [(displayType: DeltaCore.ControllerSkin.DisplayType, orientation: DeltaCore.ControllerSkin.Orientation)] =
-            [(.standard, .portrait), (.standard, .landscape), (.edgeToEdge, .portrait), (.edgeToEdge, .landscape), (.splitView, .portrait), (.splitView, .landscape)]
-        
-        for collection in traitCollections
-        {
-            let traits = DeltaCore.ControllerSkin.Traits(device: device, displayType: collection.displayType, orientation: collection.orientation)
-            if skin.supports(traits)
-            {
-                let configuration = ControllerSkinConfigurations(traits: traits)
-                configurations.formUnion(configuration)
+        let allTraitCombinations = DeltaCore.ControllerSkin.Device.allCases.flatMap { device in
+            DeltaCore.ControllerSkin.DisplayType.allCases.flatMap { displayType in
+                DeltaCore.ControllerSkin.Orientation.allCases.map { orientation in
+                    DeltaCore.ControllerSkin.Traits(device: device, displayType: displayType, orientation: orientation)
+                }
             }
+        }
+        
+        for traits in allTraitCombinations
+        {
+            guard let configuration = ControllerSkinConfigurations(traits: traits), skin.supports(traits) else { continue }
+            configurations.formUnion(configuration)
         }
         
         self.supportedConfigurations = configurations

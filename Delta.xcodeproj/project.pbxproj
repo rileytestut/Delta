@@ -198,6 +198,7 @@
 		D5AAF27729884F8600F21ACF /* CheatDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5AAF27629884F8600F21ACF /* CheatDevice.swift */; };
 		D5ADD12229F33FBF00CE0560 /* Features.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5ADD12129F33FBF00CE0560 /* Features.swift */; };
 		D5D78AE529F9BC3700E064F0 /* DSAirPlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D78AE429F9BC3700E064F0 /* DSAirPlay.swift */; };
+		D5D78AE729F9D40A00E064F0 /* EnvironmentValues+FeatureOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D78AE629F9D40A00E064F0 /* EnvironmentValues+FeatureOption.swift */; };
 		D5D797E6298D946200738869 /* Contributor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D797E5298D946200738869 /* Contributor.swift */; };
 		D5D797E9298DCC7300738869 /* cheatbase.zip in Resources */ = {isa = PBXBuildFile; fileRef = D5D797E7298DC9E200738869 /* cheatbase.zip */; };
 		D5D7C1F929E60EA500663793 /* UserDefaults+OptionValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = D58F39C829E0A702008B4100 /* UserDefaults+OptionValues.swift */; };
@@ -211,6 +212,7 @@
 		D5D7C20829E616CF00663793 /* FeatureContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D7C20729E616CF00663793 /* FeatureContainer.swift */; };
 		D5D7C20A29E61FA600663793 /* OptionToggleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D7C20929E61FA600663793 /* OptionToggleView.swift */; };
 		D5D7C20C29E624CB00663793 /* DisplayInlineKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D7C20B29E624CB00663793 /* DisplayInlineKey.swift */; };
+		D5DF06E029F326E6009E577C /* AirPlaySkins.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DF06DE29F326E6009E577C /* AirPlaySkins.swift */; };
 		D5F82FB82981D3AC00B229AF /* LegacySearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F82FB72981D3AC00B229AF /* LegacySearchBar.swift */; };
 /* End PBXBuildFile section */
 
@@ -457,6 +459,7 @@
 		D5AAF27629884F8600F21ACF /* CheatDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheatDevice.swift; sourceTree = "<group>"; };
 		D5ADD12129F33FBF00CE0560 /* Features.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Features.swift; sourceTree = "<group>"; };
 		D5D78AE429F9BC3700E064F0 /* DSAirPlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSAirPlay.swift; sourceTree = "<group>"; };
+		D5D78AE629F9D40A00E064F0 /* EnvironmentValues+FeatureOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EnvironmentValues+FeatureOption.swift"; sourceTree = "<group>"; };
 		D5D797E5298D946200738869 /* Contributor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contributor.swift; sourceTree = "<group>"; };
 		D5D797E7298DC9E200738869 /* cheatbase.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = cheatbase.zip; sourceTree = "<group>"; };
 		D5D7C1E629E5F90200663793 /* OptionValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionValue.swift; sourceTree = "<group>"; };
@@ -465,6 +468,7 @@
 		D5D7C20729E616CF00663793 /* FeatureContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureContainer.swift; sourceTree = "<group>"; };
 		D5D7C20929E61FA600663793 /* OptionToggleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionToggleView.swift; sourceTree = "<group>"; };
 		D5D7C20B29E624CB00663793 /* DisplayInlineKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayInlineKey.swift; sourceTree = "<group>"; };
+		D5DF06DE29F326E6009E577C /* AirPlaySkins.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AirPlaySkins.swift; sourceTree = "<group>"; };
 		D5F82FB72981D3AC00B229AF /* LegacySearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacySearchBar.swift; sourceTree = "<group>"; };
 		DC866E433B3BA9AE18ABA1EC /* libPods-Delta.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Delta.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -1084,6 +1088,7 @@
 			isa = PBXGroup;
 			children = (
 				D5A9C01C29DE058C00A8D610 /* VariableFastForward.swift */,
+				D5DF06DE29F326E6009E577C /* AirPlaySkins.swift */,
 			);
 			path = Features;
 			sourceTree = "<group>";
@@ -1134,6 +1139,7 @@
 				D58F39C829E0A702008B4100 /* UserDefaults+OptionValues.swift */,
 				D517F6BD29E7535F000D14D0 /* Collection+Optionals.swift */,
 				D54F710329E89DFC009C069A /* NotificationName+Settings.swift */,
+				D5D78AE629F9D40A00E064F0 /* EnvironmentValues+FeatureOption.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1538,6 +1544,7 @@
 				BF5942951E09BD1A0051894B /* NSManagedObjectContext+Conveniences.swift in Sources */,
 				BFC3628021ADE2BA00EF2BE6 /* UIAlertController+Error.swift in Sources */,
 				BF353FF91C5D870B00C1184C /* MenuItem.swift in Sources */,
+				D5DF06E029F326E6009E577C /* AirPlaySkins.swift in Sources */,
 				D5D797E6298D946200738869 /* Contributor.swift in Sources */,
 				D5ADD12229F33FBF00CE0560 /* Features.swift in Sources */,
 				BFDB3418219E4B1700595A62 /* SyncStatusViewController.swift in Sources */,
@@ -1662,6 +1669,7 @@
 				D54F710229E89DCB009C069A /* SettingsUserInfoKey.swift in Sources */,
 				D5D7C20629E60F6100663793 /* OptionPickerView.swift in Sources */,
 				D5D7C20329E60F2000663793 /* Option.swift in Sources */,
+				D5D78AE729F9D40A00E064F0 /* EnvironmentValues+FeatureOption.swift in Sources */,
 				D5D7C20229E60F2000663793 /* OptionValue.swift in Sources */,
 				D5D7C1F929E60EA500663793 /* UserDefaults+OptionValues.swift in Sources */,
 			);

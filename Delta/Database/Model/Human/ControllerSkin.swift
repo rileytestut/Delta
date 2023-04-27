@@ -13,16 +13,27 @@ import Harmony
 
 extension ControllerSkinConfigurations
 {
-    init(traits: DeltaCore.ControllerSkin.Traits)
+    init?(traits: DeltaCore.ControllerSkin.Traits)
     {
-        switch (traits.displayType, traits.orientation)
+        switch (traits.device, traits.displayType, traits.orientation)
         {
-        case (.standard, .portrait): self = .standardPortrait
-        case (.standard, .landscape): self = .standardLandscape
-        case (.edgeToEdge, .portrait): self = .edgeToEdgePortrait
-        case (.edgeToEdge, .landscape): self = .edgeToEdgeLandscape
-        case (.splitView, .portrait): self = .splitViewPortrait
-        case (.splitView, .landscape): self = .splitViewLandscape
+        case (.iphone, .standard, .portrait): self = .iphoneStandardPortrait
+        case (.iphone, .standard, .landscape): self = .iphoneStandardLandscape
+        case (.iphone, .edgeToEdge, .portrait): self = .iphoneEdgeToEdgePortrait
+        case (.iphone, .edgeToEdge, .landscape): self = .iphoneEdgeToEdgeLandscape
+        case (.iphone, .splitView, _): return nil
+            
+        case (.ipad, .standard, .portrait): self = .ipadStandardPortrait
+        case (.ipad, .standard, .landscape): self = .ipadStandardLandscape
+        case (.ipad, .edgeToEdge, .portrait): self = .ipadEdgeToEdgePortrait
+        case (.ipad, .edgeToEdge, .landscape): self = .ipadEdgeToEdgeLandscape
+        case (.ipad, .splitView, .portrait): self = .ipadSplitViewPortrait
+        case (.ipad, .splitView, .landscape): self = .ipadSplitViewLandscape
+            
+        case (.tv, .standard, .portrait): self = .tvStandardPortrait
+        case (.tv, .standard, .landscape): self = .tvStandardLandscape
+        case (.tv, .edgeToEdge, _): return nil
+        case (.tv, .splitView, _): return nil
         }
     }
 }
