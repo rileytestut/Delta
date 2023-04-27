@@ -12,30 +12,14 @@ extension GameViewController
 {
     func presentExperimentalToastView(_ text: String)
     {
-        func presentToastView()
-        {
-            guard ExperimentalFeatures.shared.toastNotifications.isEnabled else { return }
-            
-            let duration = ExperimentalFeatures.shared.toastNotifications.duration
-            
+        guard ExperimentalFeatures.shared.toastNotifications.isEnabled else { return }
+        
+        DispatchQueue.main.async {
             let toastView = RSTToastView(text: text, detailText: nil)
             toastView.edgeOffset.vertical = 8
             toastView.textLabel.textAlignment = .center
             toastView.presentationEdge = .top
-            toastView.show(in: self.view, duration: duration)
-        }
-        
-        DispatchQueue.main.async {
-            if let transitionCoordinator = self.transitionCoordinator
-            {
-                transitionCoordinator.animate(alongsideTransition: nil) { (context) in
-                    presentToastView()
-                }
-            }
-            else
-            {
-                presentToastView()
-            }
+            toastView.show(in: self.view, duration: ExperimentalFeatures.shared.toastNotifications.duration)
         }
     }
 }

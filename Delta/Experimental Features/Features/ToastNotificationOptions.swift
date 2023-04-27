@@ -12,8 +12,7 @@ import DeltaFeatures
 
 struct ToastNotificationOptions
 {
-    @Option(name: "Duration", description: "Change how long toasts should be shown.", detailView: {
-        let duration = $0
+    @Option(name: "Duration", description: "Change how long toasts should be shown.", detailView: { duration in
         HStack {
             Text("Duration: \(duration.wrappedValue, specifier: "%.1f")s")
             Slider(value: duration, in: 1...5, step: 0.5).displayInline()
@@ -25,15 +24,15 @@ struct ToastNotificationOptions
             description: "Show toasts when performing an in game save.")
     var gameSaveEnabled: Bool = true
     
-    @Option(name: "Game State Saved",
-            description: "Show toasts when saving the game state.")
+    @Option(name: "Saved Save State",
+            description: "Show toasts when saving a save state.")
     var stateSaveEnabled: Bool = true
     
-    @Option(name: "Game State Loaded",
-            description: "Show toasts when loading the game state.")
+    @Option(name: "Loaded Save State",
+            description: "Show toasts when loading a save state.")
     var stateLoadEnabled: Bool = true
     
     @Option(name: "Fast Forward Toggled",
-            description: " Show toasts when toggling fast forward.")
+            description: "Show toasts when toggling fast forward.")
     var fastForwardEnabled: Bool = true
 }
