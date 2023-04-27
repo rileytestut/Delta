@@ -17,6 +17,11 @@ struct ExperimentalFeatures: FeatureContainer
              options: VariableFastForwardOptions())
     var variableFastForward
     
+    @Feature(name: "Toast Notifications",
+             description: "Show toast notifications as a confirmation for various actions, such as saving your game or loading a state",
+             options: ToastNotificationOptions())
+    var toastNotifications
+    
     private init()
     {
         self.prepareFeatures()
