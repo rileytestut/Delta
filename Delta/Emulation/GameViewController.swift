@@ -1111,7 +1111,7 @@ extension GameViewController
         {
             if ExperimentalFeatures.shared.variableFastForward.isEnabled,
                let preferredSpeed = ExperimentalFeatures.shared.variableFastForward[emulatorCore.game.type],
-               preferredSpeed.rawValue <= emulatorCore.deltaCore.supportedRates.upperBound
+               (preferredSpeed.rawValue <= emulatorCore.deltaCore.supportedRates.upperBound || ExperimentalFeatures.shared.variableFastForward.allowUnrestrictedSpeeds)
             {
                 emulatorCore.rate = preferredSpeed.rawValue
             }

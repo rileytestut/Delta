@@ -22,6 +22,13 @@ struct FastForwardSpeed: RawRepresentable
     
     static func speeds(in range: ClosedRange<Double>) -> [FastForwardSpeed]
     {
+        var range = range
+        
+        if ExperimentalFeatures.shared.variableFastForward.allowUnrestrictedSpeeds
+        {
+            range = 1.0...8.0
+        }
+        
         // .dropFirst() to remove 1x speed.
         var speeds = stride(from: range.lowerBound, to: range.upperBound, by: 1.0).dropFirst().map { FastForwardSpeed(rawValue: $0) }
         
@@ -84,6 +91,9 @@ struct VariableFastForwardOptions
 
     @Option(name: "Nintendo DS", description: "Preferred DS fast forward speed.", values: FastForwardSpeed.speeds(in: System.ds.deltaCore.supportedRates))
     var ds: FastForwardSpeed?
+    
+    @Option(name: "Allow Unrestricted Speeds", description: "Allow choosing speeds that exceed the maximum supported speed of a system.\n\nThis can be used to test the performance of new iOS devices.")
+    var allowUnrestrictedSpeeds: Bool = false
 }
 
 extension Feature where Options == VariableFastForwardOptions
