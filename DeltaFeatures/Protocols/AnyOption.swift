@@ -19,7 +19,7 @@ public protocol AnyOption<Value>: AnyObject, Identifiable
     var key: String { get }
     var settingsKey: SettingsName { get }
     
-    var values: [Value]? { get }
+    var values: (() -> [Value])? { get }
     var detailView: () -> DetailView? { get }
     
     var value: Value { get set }

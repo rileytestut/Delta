@@ -16,7 +16,7 @@ public class Option<Value: OptionValue, DetailView: View>: _AnyOption
     public let name: LocalizedStringKey?
     public let description: LocalizedStringKey?
     
-    public let values: [Value]?
+    public let values: (() -> [Value])?
     public private(set) var detailView: () -> DetailView? = { nil }
     
     // Assigned to property name.
@@ -76,20 +76,28 @@ public class Option<Value: OptionValue, DetailView: View>: _AnyOption
         }
     }
     
-    private init(defaultValue: Value, name: LocalizedStringKey?, description: LocalizedStringKey?, values: (some Collection<Value>)?)
+    private init(defaultValue: Value, name: LocalizedStringKey?, description: LocalizedStringKey?, values: (() -> some Collection<Value>)?)
     {
         self.defaultValue = defaultValue
         
         self.name = name
         self.description = description
-        self.values = values.map { Array($0) }
+        
+        if let values
+        {
+            self.values = { Array(values()) }
+        }
+        else
+        {
+            self.values = nil
+        }
         
         self.detailView = { nil }
     }
     
     private convenience init(defaultValue: Value, name: LocalizedStringKey?, description: LocalizedStringKey?)
     {
-        self.init(defaultValue: defaultValue, name: name, description: description, values: [Value]?.none)
+        self.init(defaultValue: defaultValue, name: name, description: description, values: (() -> [Value])?.none)
     }
 }
 
@@ -134,35 +142,35 @@ public extension Option where Value == Bool, DetailView == OptionToggleView
 public extension Option where Value: LocalizedOptionValue, DetailView == OptionPickerView<Value>
 {
     // Non-Optional
-    convenience init(wrappedValue: Value, name: LocalizedStringKey, description: LocalizedStringKey? = nil, values: some Collection<Value>)
+    convenience init(wrappedValue: Value, name: LocalizedStringKey, description: LocalizedStringKey? = nil, values: @autoclosure @escaping () -> some Collection<Value>)
     {
         self.init(defaultValue: wrappedValue, name: name, description: description, values: values)
         
         self.detailView = { [weak self] () -> DetailView? in
             guard let self else { return nil }
-            return OptionPickerView(name: name, options: Array(values), selectedValue: self.valueBinding)
+            return OptionPickerView(name: name, options: Array(values()), selectedValue: self.valueBinding)
         }
     }
     
     // Optional, default = nil
-    convenience init(name: LocalizedStringKey, description: LocalizedStringKey? = nil, values: some Collection<Value>) where Value: OptionalProtocol, Value.Wrapped: LocalizedOptionValue
+    convenience init(name: LocalizedStringKey, description: LocalizedStringKey? = nil, values: @autoclosure @escaping () -> some Collection<Value>) where Value: OptionalProtocol, Value.Wrapped: LocalizedOptionValue
     {
         self.init(defaultValue: Value.none, name: name, description: description, values: values)
         
         self.detailView = { [weak self] () -> DetailView? in
             guard let self else { return nil }
-            return OptionPickerView(name: name, options: values.appendingNil(), selectedValue: self.valueBinding)
+            return OptionPickerView(name: name, options: values().appendingNil(), selectedValue: self.valueBinding)
         }
     }
     
     // Optional, default = non-nil
-    convenience init(wrappedValue: Value, name: LocalizedStringKey, description: LocalizedStringKey? = nil, values: some Collection<Value>) where Value: OptionalProtocol, Value.Wrapped: LocalizedOptionValue
+    convenience init(wrappedValue: Value, name: LocalizedStringKey, description: LocalizedStringKey? = nil, values: @autoclosure @escaping () -> some Collection<Value>) where Value: OptionalProtocol, Value.Wrapped: LocalizedOptionValue
     {
         self.init(defaultValue: wrappedValue, name: name, description: description, values: values)
         
         self.detailView = { [weak self] () -> DetailView? in
             guard let self else { return nil }
-            return OptionPickerView(name: name, options: values.appendingNil(), selectedValue: self.valueBinding)
+            return OptionPickerView(name: name, options: values().appendingNil(), selectedValue: self.valueBinding)
         }
     }
 }
