@@ -27,7 +27,7 @@ struct ExperimentalFeatures: FeatureContainer
     var gameScreenshots
     
     @Feature(name: "Toast Notifications",
-             description: "Show toast notifications as a confirmation for various actions, such as saving your game or loading a state",
+             description: "Show toast notifications as a confirmation for various actions, such as saving your game or loading a save state.",
              options: ToastNotificationOptions())
     var toastNotifications
     

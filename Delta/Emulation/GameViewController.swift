@@ -852,7 +852,7 @@ extension GameViewController: SaveStatesViewControllerDelegate
         if ExperimentalFeatures.shared.toastNotifications.stateSaveEnabled,
            saveState.type != .auto
         {
-            self.presentExperimentalToastView(NSLocalizedString("Game State Saved", comment: ""))
+            self.presentExperimentalToastView(NSLocalizedString("Saved Save State", comment: ""))
         }
         
         if isRunning
@@ -905,7 +905,7 @@ extension GameViewController: SaveStatesViewControllerDelegate
             
             if ExperimentalFeatures.shared.toastNotifications.stateLoadEnabled
             {
-                self.presentExperimentalToastView(NSLocalizedString("Game State Loaded", comment: ""))
+                self.presentExperimentalToastView(NSLocalizedString("Loaded Save State", comment: ""))
             }
         }
         catch EmulatorCore.SaveStateError.doesNotExist
