@@ -1109,7 +1109,16 @@ extension GameViewController
         
         if activate
         {
-            emulatorCore.rate = emulatorCore.deltaCore.supportedRates.upperBound
+            if ExperimentalFeatures.shared.variableFastForward.isEnabled,
+               let preferredSpeed = ExperimentalFeatures.shared.variableFastForward[emulatorCore.game.type],
+               preferredSpeed.rawValue <= emulatorCore.deltaCore.supportedRates.upperBound
+            {
+                emulatorCore.rate = preferredSpeed.rawValue
+            }
+            else
+            {
+                emulatorCore.rate = emulatorCore.deltaCore.supportedRates.upperBound
+            }
         }
         else
         {
