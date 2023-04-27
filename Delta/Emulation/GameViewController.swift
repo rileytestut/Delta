@@ -726,6 +726,11 @@ private extension GameViewController
                 
                 try context.save()
                 try game.gameSaveURL.setExtendedAttribute(name: "com.rileytestut.delta.sha1Hash", value: hash)
+                
+                if ExperimentalFeatures.shared.toastNotifications.gameSaveEnabled
+                {
+                    self.presentExperimentalToastView(NSLocalizedString("Game Data Saved", comment: ""))
+                }
             }
             catch CocoaError.fileNoSuchFile
             {
@@ -844,6 +849,12 @@ extension GameViewController: SaveStatesViewControllerDelegate
         saveState.modifiedDate = Date()
         saveState.coreIdentifier = self.emulatorCore?.deltaCore.identifier
         
+        if ExperimentalFeatures.shared.toastNotifications.stateSaveEnabled,
+           saveState.type != .auto
+        {
+            self.presentExperimentalToastView(NSLocalizedString("Game State Saved", comment: ""))
+        }
+        
         if isRunning
         {
             self.resumeEmulation()
@@ -890,6 +901,11 @@ extension GameViewController: SaveStatesViewControllerDelegate
             else
             {
                 try self.emulatorCore?.load(saveState)
+            }
+            
+            if ExperimentalFeatures.shared.toastNotifications.stateLoadEnabled
+            {
+                self.presentExperimentalToastView(NSLocalizedString("Game State Loaded", comment: ""))
             }
         }
         catch EmulatorCore.SaveStateError.doesNotExist
@@ -1076,10 +1092,20 @@ extension GameViewController
         if activate
         {
             emulatorCore.rate = emulatorCore.deltaCore.supportedRates.upperBound
+            
+            if ExperimentalFeatures.shared.toastNotifications.fastForwardEnabled
+            {
+                self.presentExperimentalToastView(NSLocalizedString("Fast Forward Enabled", comment: ""))
+            }
         }
         else
         {
             emulatorCore.rate = emulatorCore.deltaCore.supportedRates.lowerBound
+            
+            if ExperimentalFeatures.shared.toastNotifications.fastForwardEnabled
+            {
+                self.presentExperimentalToastView(NSLocalizedString("Fast Forward Disabled", comment: ""))
+            }
         }
     }
     
