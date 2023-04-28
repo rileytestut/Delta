@@ -99,7 +99,7 @@ struct ContributorsView: View
                 }
             }
         }
-        .listStyle(.grouped) // TODO: Change to .insetGrouped once we drop iOS 13 support.
+        .listStyle(.insetGrouped)
         .environmentObject(viewModel)
         .alert(isPresented: $showErrorAlert) {
             Alert(title: Text("Unable to Load Contributors"), message: Text(viewModel.error?.localizedDescription ?? ""), dismissButton: .default(Text("OK")) {
