@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Photos
 
 import DeltaCore
 import GBADeltaCore
@@ -178,6 +179,14 @@ class GameViewController: DeltaCore.GameViewController
     
     override var preferredScreenEdgesDeferringSystemGestures: UIRectEdge {
         return .all
+    }
+    
+    override var prefersStatusBarHidden: Bool {
+        return !ExperimentalFeatures.shared.showStatusBar.isEnabled
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
     }
     
     required init()
@@ -406,6 +415,9 @@ extension GameViewController
             pauseViewController.fastForwardItem?.isSelected = (self.emulatorCore?.rate != self.emulatorCore?.deltaCore.supportedRates.lowerBound)
             pauseViewController.fastForwardItem?.action = { [unowned self] item in
                 self.performFastForwardAction(activate: item.isSelected)
+            }
+            pauseViewController.screenshotItem?.action = { [unowned self] item in
+                self.performScreenshotAction()
             }
             
             pauseViewController.sustainButtonsItem?.isSelected = gameController.sustainedInputs.count > 0
@@ -760,6 +772,11 @@ private extension GameViewController
                 
                 try context.save()
                 try game.gameSaveURL.setExtendedAttribute(name: "com.rileytestut.delta.sha1Hash", value: hash)
+                
+                if ExperimentalFeatures.shared.toastNotifications.gameSaveEnabled
+                {
+                    self.presentExperimentalToastView(NSLocalizedString("Game Data Saved", comment: ""))
+                }
             }
             catch CocoaError.fileNoSuchFile
             {
@@ -878,6 +895,12 @@ extension GameViewController: SaveStatesViewControllerDelegate
         saveState.modifiedDate = Date()
         saveState.coreIdentifier = self.emulatorCore?.deltaCore.identifier
         
+        if ExperimentalFeatures.shared.toastNotifications.stateSaveEnabled,
+           saveState.type != .auto
+        {
+            self.presentExperimentalToastView(NSLocalizedString("Saved Save State", comment: ""))
+        }
+        
         if isRunning
         {
             self.resumeEmulation()
@@ -924,6 +947,11 @@ extension GameViewController: SaveStatesViewControllerDelegate
             else
             {
                 try self.emulatorCore?.load(saveState)
+            }
+            
+            if ExperimentalFeatures.shared.toastNotifications.stateLoadEnabled
+            {
+                self.presentExperimentalToastView(NSLocalizedString("Loaded Save State", comment: ""))
             }
         }
         catch EmulatorCore.SaveStateError.doesNotExist
@@ -1119,11 +1147,88 @@ extension GameViewController
             {
                 emulatorCore.rate = emulatorCore.deltaCore.supportedRates.upperBound
             }
+            
+            if ExperimentalFeatures.shared.toastNotifications.fastForwardEnabled
+            {
+                self.presentExperimentalToastView(NSLocalizedString("Fast Forward Enabled", comment: ""))
+            }
         }
         else
         {
             emulatorCore.rate = emulatorCore.deltaCore.supportedRates.lowerBound
+            
+            if ExperimentalFeatures.shared.toastNotifications.fastForwardEnabled
+            {
+                self.presentExperimentalToastView(NSLocalizedString("Fast Forward Disabled", comment: ""))
+            }
         }
+    }
+    
+    func performScreenshotAction()
+    {
+        guard let snapshot = self.emulatorCore?.videoManager.snapshot() else { return }
+
+        let imageScale = ExperimentalFeatures.shared.gameScreenshots.size?.rawValue ?? 1.0
+        let imageSize = CGSize(width: snapshot.size.width * imageScale, height: snapshot.size.height * imageScale)
+        
+        let format = UIGraphicsImageRendererFormat()
+        format.scale = 1
+        let renderer = UIGraphicsImageRenderer(size: imageSize, format: format)
+
+        let scaledSnapshot = renderer.image { (context) in
+            context.cgContext.interpolationQuality = .none
+            snapshot.draw(in: CGRect(origin: .zero, size: imageSize))
+        }
+
+        if ExperimentalFeatures.shared.gameScreenshots.saveToPhotos
+        {
+            PHPhotoLibrary.runIfAuthorized
+            {
+                PHPhotoLibrary.saveUIImage(image: scaledSnapshot)
+            }
+        }
+        
+        if ExperimentalFeatures.shared.gameScreenshots.saveToFiles
+        {
+            guard let data = scaledSnapshot.pngData() else { return }
+            
+            let screenshotsDirectory = FileManager.default.documentsDirectory.appendingPathComponent("Screenshots")
+            
+            do
+            {
+                try FileManager.default.createDirectory(at: screenshotsDirectory, withIntermediateDirectories: true, attributes: nil)
+            }
+            catch
+            {
+                print(error)
+            }
+            
+            let date = Date()
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd_HH-mm-ss"
+            
+            let fileName: URL
+            if let game = self.game as? Game
+            {
+                let filename = game.name + "_" + dateFormatter.string(from: date) + ".png"
+                fileName = screenshotsDirectory.appendingPathComponent(filename)
+            }
+            else
+            {
+                fileName = screenshotsDirectory.appendingPathComponent(dateFormatter.string(from: date) + ".png")
+            }
+            
+            do
+            {
+                try data.write(to: fileName)
+            }
+            catch
+            {
+                print(error)
+            }
+        }
+        
+        self.pauseViewController?.screenshotItem?.isSelected = false
     }
 }
 
