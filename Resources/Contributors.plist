@@ -47,6 +47,24 @@
 				<key>name</key>
 				<string>Genesis Skin</string>
 			</dict>
+			<dict>
+				<key>name</key>
+				<string>Show Status Bar</string>
+				<key>link</key>
+				<string>https://github.com/rileytestut/Delta/pull/241</string>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>Game Screenshots</string>
+				<key>link</key>
+				<string>https://github.com/rileytestut/Delta/pull/242</string>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>Toast Notifications</string>
+				<key>link</key>
+				<string>https://github.com/rileytestut/Delta/pull/244</string>
+			</dict>
 		</array>
 	</dict>
 	<dict>
