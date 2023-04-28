@@ -34,6 +34,8 @@
 /* Begin PBXBuildFile section */
 		1FA4ABA79AB72914FE414A61 /* libPods-Delta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DC866E433B3BA9AE18ABA1EC /* libPods-Delta.a */; };
 		87343D7B985519A5890A61C6 /* libPods-DeltaPreviews.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E3E5A45AB20C8A87754453B /* libPods-DeltaPreviews.a */; };
+		AC1C991029F8B8C30020E6E4 /* ToastNotificationOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC1C990F29F8B8C30020E6E4 /* ToastNotificationOptions.swift */; };
+		AC1C992729F9F1CF0020E6E4 /* GameViewController+ExperimentalToasts.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC1C992629F9F1CF0020E6E4 /* GameViewController+ExperimentalToasts.swift */; };
 		ACF7E30D29F73D03000FE071 /* GameScreenshots.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACF7E30C29F73D03000FE071 /* GameScreenshots.swift */; };
 		ACF7E30F29F743A3000FE071 /* PHPhotoLibrary+Authorization.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACF7E30E29F743A3000FE071 /* PHPhotoLibrary+Authorization.swift */; };
 		BF00BEA625B758AA00C8607D /* SystemBIOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF00BEA525B758AA00C8607D /* SystemBIOS.swift */; };
@@ -259,6 +261,8 @@
 		8ECE6641DE30D01EA30FE7F6 /* Pods-DeltaPreviews.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DeltaPreviews.release.xcconfig"; path = "Pods/Target Support Files/Pods-DeltaPreviews/Pods-DeltaPreviews.release.xcconfig"; sourceTree = "<group>"; };
 		A01281C7023C0041B25963BE /* Pods-DeltaPreviews.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DeltaPreviews.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DeltaPreviews/Pods-DeltaPreviews.debug.xcconfig"; sourceTree = "<group>"; };
 		A19FF50F55441BC2B2248241 /* Pods-Delta.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Delta.release.xcconfig"; path = "Pods/Target Support Files/Pods-Delta/Pods-Delta.release.xcconfig"; sourceTree = "<group>"; };
+		AC1C990F29F8B8C30020E6E4 /* ToastNotificationOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastNotificationOptions.swift; sourceTree = "<group>"; };
+		AC1C992629F9F1CF0020E6E4 /* GameViewController+ExperimentalToasts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameViewController+ExperimentalToasts.swift"; sourceTree = "<group>"; };
 		ACF7E30C29F73D03000FE071 /* GameScreenshots.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScreenshots.swift; sourceTree = "<group>"; };
 		ACF7E30E29F743A3000FE071 /* PHPhotoLibrary+Authorization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PHPhotoLibrary+Authorization.swift"; sourceTree = "<group>"; };
 		BF00BEA525B758AA00C8607D /* SystemBIOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemBIOS.swift; sourceTree = "<group>"; };
@@ -531,6 +535,7 @@
 				D524F4A4273DEBB400D500B2 /* ServerManager+Delta.swift */,
 				D5011C47281B6E8B00A0760B /* CharacterSet+Filename.swift */,
 				ACF7E30E29F743A3000FE071 /* PHPhotoLibrary+Authorization.swift */,
+				AC1C992629F9F1CF0020E6E4 /* GameViewController+ExperimentalToasts.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1074,6 +1079,7 @@
 			children = (
 				D5A9C01C29DE058C00A8D610 /* VariableFastForward.swift */,
 				ACF7E30C29F73D03000FE071 /* GameScreenshots.swift */,
+				AC1C990F29F8B8C30020E6E4 /* ToastNotificationOptions.swift */,
 			);
 			path = Features;
 			sourceTree = "<group>";
@@ -1490,6 +1496,7 @@
 				BFBAB2E31EB685A2004E0B0E /* DeltaCoreProtocol+Delta.swift in Sources */,
 				BF3540081C5DAFAD00C1184C /* PauseTransitionCoordinator.swift in Sources */,
 				BF525EEA1FF6CD12004AA849 /* DeepLink.swift in Sources */,
+				AC1C991029F8B8C30020E6E4 /* ToastNotificationOptions.swift in Sources */,
 				BF8A334621A4926F00A42FD4 /* GameSyncStatusViewController.swift in Sources */,
 				BF59427E1E09BC830051894B /* Game.swift in Sources */,
 				D5011C48281B6E8B00A0760B /* CharacterSet+Filename.swift in Sources */,
@@ -1567,6 +1574,7 @@
 				BF5942641E09BBB10051894B /* LoadControllerSkinImageOperation.swift in Sources */,
 				D5A98CE2284EF14B00E023E5 /* SceneDelegate.swift in Sources */,
 				BFE56E1923EB7BE00014FECD /* UIImage+SymbolFallback.swift in Sources */,
+				AC1C992729F9F1CF0020E6E4 /* GameViewController+ExperimentalToasts.swift in Sources */,
 				BF6EE5E91F7C5F860051AD6C /* _GameControllerInputMapping.swift in Sources */,
 				BF5942871E09BC8B0051894B /* _ControllerSkin.swift in Sources */,
 				BF95E2791E4982A10030E7AD /* GamesDatabaseBrowserViewController.swift in Sources */,
