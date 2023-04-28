@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Photos
 
 import DeltaCore
 import GBADeltaCore
@@ -411,6 +412,9 @@ extension GameViewController
             pauseViewController.fastForwardItem?.isSelected = (self.emulatorCore?.rate != self.emulatorCore?.deltaCore.supportedRates.lowerBound)
             pauseViewController.fastForwardItem?.action = { [unowned self] item in
                 self.performFastForwardAction(activate: item.isSelected)
+            }
+            pauseViewController.screenshotItem?.action = { [unowned self] item in
+                self.performScreenshotAction()
             }
             
             pauseViewController.sustainButtonsItem?.isSelected = gameController.sustainedInputs.count > 0
@@ -1077,6 +1081,73 @@ extension GameViewController
         {
             emulatorCore.rate = emulatorCore.deltaCore.supportedRates.lowerBound
         }
+    }
+    
+    func performScreenshotAction()
+    {
+        guard let snapshot = self.emulatorCore?.videoManager.snapshot() else { return }
+
+        let imageScale = ExperimentalFeatures.shared.gameScreenshots.size?.rawValue ?? 1.0
+        let imageSize = CGSize(width: snapshot.size.width * imageScale, height: snapshot.size.height * imageScale)
+        
+        let format = UIGraphicsImageRendererFormat()
+        format.scale = 1
+        let renderer = UIGraphicsImageRenderer(size: imageSize, format: format)
+
+        let scaledSnapshot = renderer.image { (context) in
+            context.cgContext.interpolationQuality = .none
+            snapshot.draw(in: CGRect(origin: .zero, size: imageSize))
+        }
+
+        if ExperimentalFeatures.shared.gameScreenshots.saveToPhotos
+        {
+            PHPhotoLibrary.runIfAuthorized
+            {
+                PHPhotoLibrary.saveUIImage(image: scaledSnapshot)
+            }
+        }
+        
+        if ExperimentalFeatures.shared.gameScreenshots.saveToFiles
+        {
+            guard let data = scaledSnapshot.pngData() else { return }
+            
+            let screenshotsDirectory = FileManager.default.documentsDirectory.appendingPathComponent("Screenshots")
+            
+            do
+            {
+                try FileManager.default.createDirectory(at: screenshotsDirectory, withIntermediateDirectories: true, attributes: nil)
+            }
+            catch
+            {
+                print(error)
+            }
+            
+            let date = Date()
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd_HH-mm-ss"
+            
+            let fileName: URL
+            if let game = self.game as? Game
+            {
+                let filename = game.name + "_" + dateFormatter.string(from: date) + ".png"
+                fileName = screenshotsDirectory.appendingPathComponent(filename)
+            }
+            else
+            {
+                fileName = screenshotsDirectory.appendingPathComponent(dateFormatter.string(from: date) + ".png")
+            }
+            
+            do
+            {
+                try data.write(to: fileName)
+            }
+            catch
+            {
+                print(error)
+            }
+        }
+        
+        self.pauseViewController?.screenshotItem?.isSelected = false
     }
 }
 
