@@ -17,6 +17,10 @@ struct ExperimentalFeatures: FeatureContainer
              options: VariableFastForwardOptions())
     var variableFastForward
     
+    @Feature(name: "Show Status Bar",
+             description: "Enable to show the Status Bar during gameplay.")
+    var showStatusBar
+    
     private init()
     {
         self.prepareFeatures()

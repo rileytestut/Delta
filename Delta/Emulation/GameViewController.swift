@@ -180,6 +180,14 @@ class GameViewController: DeltaCore.GameViewController
         return .all
     }
     
+    override var prefersStatusBarHidden: Bool {
+        return !ExperimentalFeatures.shared.showStatusBar.isEnabled
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
     required init()
     {
         super.init()
