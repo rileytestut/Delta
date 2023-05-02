@@ -59,7 +59,8 @@ extension ContributorsView
         let contributorsView = ContributorsView(viewModel: viewModel)
         
         let hostingController = UIHostingController(rootView: contributorsView)
-        hostingController.title = NSLocalizedString("Contributors", comment: "")
+        hostingController.navigationItem.largeTitleDisplayMode = .never
+        hostingController.navigationItem.title = contributorsView.localizedTitle
         
         viewModel.hostingController = hostingController
                 
@@ -75,6 +76,8 @@ struct ContributorsView: View
     
     @State
     private var showErrorAlert: Bool = false
+    
+    private var localizedTitle: String { NSLocalizedString("Contributors", comment: "") }
     
     var body: some View {
         List {
@@ -100,6 +103,8 @@ struct ContributorsView: View
             }
         }
         .listStyle(.insetGrouped)
+        .navigationTitle(localizedTitle)
+        .navigationBarTitleDisplayMode(.inline)
         .environmentObject(viewModel)
         .alert(isPresented: $showErrorAlert) {
             Alert(title: Text("Unable to Load Contributors"), message: Text(viewModel.error?.localizedDescription ?? ""), dismissButton: .default(Text("OK")) {

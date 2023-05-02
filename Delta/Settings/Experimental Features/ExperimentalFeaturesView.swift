@@ -33,6 +33,8 @@ struct ExperimentalFeaturesView: View
     @StateObject
     private var viewModel: ViewModel = ViewModel()
     
+    private var localizedTitle: String { NSLocalizedString("Experimental Features", comment: "") }
+    
     var body: some View {
         Form {
             Section(content: {}, footer: {
@@ -45,8 +47,10 @@ struct ExperimentalFeaturesView: View
             }
         }
         .listStyle(.insetGrouped)
+        .navigationTitle(localizedTitle)
+        .navigationBarTitleDisplayMode(.inline)
     }
-
+    
     // Cannot open existential if return type uses concrete type T in non-covariant position (e.g. Box<T>).
     // So instead we erase return type to AnyView.
     private func section<T: AnyFeature>(for feature: T) -> AnyView
@@ -63,7 +67,8 @@ extension ExperimentalFeaturesView
         let experimentalFeaturesView = ExperimentalFeaturesView()
         
         let hostingController = UIHostingController(rootView: experimentalFeaturesView)
-        hostingController.title = NSLocalizedString("Experimental Features", comment: "")
+        hostingController.navigationItem.largeTitleDisplayMode = .never
+        hostingController.navigationItem.title = experimentalFeaturesView.localizedTitle
         return hostingController
     }
 }
