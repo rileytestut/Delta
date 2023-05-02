@@ -101,12 +101,18 @@ extension Game
         super.prepareForDeletion()
         
         guard let managedObjectContext = self.managedObjectContext else { return }
+                
+        // If filename == empty string (e.g. during merge), ignore this deletion.
+        // Otherwise, we may accidentally delete the entire Games directory!
+        guard !self.filename.isEmpty else { return }
         
         // If a game with the same identifier is also currently being inserted, Core Data is more than likely resolving a conflict by deleting the previous instance
         // In this case, we make sure we DON'T delete the game file + misc other Core Data relationships, or else we'll just lose all that data
         guard !managedObjectContext.insertedObjects.contains(where: { ($0 as? Game)?.identifier == self.identifier }) else { return }
         
-        guard FileManager.default.fileExists(atPath: self.fileURL.path) else { return }
+        // Double-check fileURL is NOT actually a directory, which we should never delete.
+        var isDirectory: ObjCBool = false
+        guard FileManager.default.fileExists(atPath: self.fileURL.path, isDirectory: &isDirectory), !isDirectory.boolValue else { return }
         
         do
         {
