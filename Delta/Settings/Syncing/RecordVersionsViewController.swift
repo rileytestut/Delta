@@ -358,6 +358,7 @@ private extension RecordVersionsViewController
         }
         
         let alertController = UIAlertController(title: nil, message: message, preferredStyle: .actionSheet)
+        alertController.popoverPresentationController?.barButtonItem = sender
         alertController.addAction(.cancel)
         alertController.addAction(UIAlertAction(title: actionTitle, style: .destructive) { (action) in
             self.restoreVersion()
