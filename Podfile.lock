@@ -1,5 +1,11 @@
 PODS:
   - Alamofire (4.7.3)
+  - AppAuth (1.6.2):
+    - AppAuth/Core (= 1.6.2)
+    - AppAuth/ExternalUserAgent (= 1.6.2)
+  - AppAuth/Core (1.6.2)
+  - AppAuth/ExternalUserAgent (1.6.2):
+    - AppAuth/Core
   - Crashlytics (3.8.6):
     - Fabric (~> 1.6.3)
   - DeltaCore (0.1):
@@ -16,30 +22,25 @@ PODS:
   - GoogleAPIClientForREST/Drive (1.3.11):
     - GoogleAPIClientForREST/Core
     - GTMSessionFetcher (>= 1.1.7)
-  - GoogleSignIn (4.4.0):
-    - "GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)"
-    - "GoogleToolboxForMac/NSString+URLArguments (~> 2.1)"
+  - GoogleSignIn (5.0.2):
+    - AppAuth (~> 1.2)
+    - GTMAppAuth (~> 1.0)
     - GTMSessionFetcher/Core (~> 1.1)
-  - GoogleToolboxForMac/DebugUtils (2.3.0):
-    - GoogleToolboxForMac/Defines (= 2.3.0)
-  - GoogleToolboxForMac/Defines (2.3.0)
-  - "GoogleToolboxForMac/NSDictionary+URLArguments (2.3.0)":
-    - GoogleToolboxForMac/DebugUtils (= 2.3.0)
-    - GoogleToolboxForMac/Defines (= 2.3.0)
-    - "GoogleToolboxForMac/NSString+URLArguments (= 2.3.0)"
-  - "GoogleToolboxForMac/NSString+URLArguments (2.3.0)"
-  - GTMSessionFetcher (1.5.0):
-    - GTMSessionFetcher/Full (= 1.5.0)
-  - GTMSessionFetcher/Core (1.5.0)
-  - GTMSessionFetcher/Full (1.5.0):
-    - GTMSessionFetcher/Core (= 1.5.0)
+  - GTMAppAuth (1.3.1):
+    - AppAuth/Core (~> 1.6)
+    - GTMSessionFetcher/Core (< 3.0, >= 1.5)
+  - GTMSessionFetcher (1.7.2):
+    - GTMSessionFetcher/Full (= 1.7.2)
+  - GTMSessionFetcher/Core (1.7.2)
+  - GTMSessionFetcher/Full (1.7.2):
+    - GTMSessionFetcher/Core (= 1.7.2)
   - Harmony (0.1):
     - Harmony/Harmony-Drive (= 0.1)
     - Harmony/Harmony-Dropbox (= 0.1)
     - Roxas
   - Harmony/Harmony-Drive (0.1):
     - GoogleAPIClientForREST/Drive (~> 1.3.0)
-    - GoogleSignIn (~> 4.4.0)
+    - GoogleSignIn (~> 5.0)
     - Roxas
   - Harmony/Harmony-Dropbox (0.1):
     - Roxas
@@ -90,11 +91,12 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - Alamofire
+    - AppAuth
     - Crashlytics
     - Fabric
     - GoogleAPIClientForREST
     - GoogleSignIn
-    - GoogleToolboxForMac
+    - GTMAppAuth
     - GTMSessionFetcher
     - SDWebImage
     - SMCalloutView
@@ -126,6 +128,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
+  AppAuth: 3bb1d1cd9340bd09f5ed189fb00b1cc28e1e8570
   Crashlytics: e156f27e43abaa331f9b7afed091bda37e1052cc
   DeltaCore: 6a430005ea397fcd5b40b964effe41ac69cc9037
   DSDeltaCore: d22a7cfbbe70f063b8c72dec9d1bcd2c59e14893
@@ -133,10 +136,10 @@ SPEC CHECKSUMS:
   GBADeltaCore: c2f7ce5e5616ed63d2b99c9ba9a7e020f2263248
   GBCDeltaCore: 27f09a1c88a4ac832aa549fbe34aaf277251b6b8
   GoogleAPIClientForREST: 0f19a8280dfe6471f76016645d26eb5dae305101
-  GoogleSignIn: 7ff245e1a7b26d379099d3243a562f5747e23d39
-  GoogleToolboxForMac: 1350d40e86a76f7863928d63bcb0b89c84c521c5
-  GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
-  Harmony: cea514db17c41c22f78f54b17d2135935b5e9b96
+  GoogleSignIn: 7137d297ddc022a7e0aa4619c86d72c909fa7213
+  GTMAppAuth: 0ff230db599948a9ad7470ca667337803b3fc4dd
+  GTMSessionFetcher: 5595ec75acf5be50814f81e9189490412bad82ba
+  Harmony: 5fdc51d0a4f2ce7dcd4439becbbdda1fac4c9e3f
   MelonDSDeltaCore: 46193f4fd88e4e18e4a5c841b1ae02dc46d1daa6
   N64DeltaCore: 4eeb468746722952bcd5467ecb9ebe7df070f53a
   NESDeltaCore: ffae3bba878fc505bac0914150a695ede7bc9550
