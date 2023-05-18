@@ -1,0 +1,159 @@
+/*title="Settings" id="eHi-aO-uGS"*/
+"eHi-aO-uGS.title" = "设置";
+/*title="Settings" id="DYU-tO-Lmw"*/
+"DYU-tO-Lmw.title" = "设置";
+"c6K-sJ-0vW.headerTitle" = "角色";
+"tqn-1q-p53.text" = "玩家 1";
+"tls-Hv-Rx2.text" = "玩家 1";
+"e3u-x9-IEC.text" = "玩家 2";
+"Cdn-11-xZe.text" = "玩家 3";
+"Hls-3b-EaS.text" = "玩家 4";
+
+"OeA-dF-xlk.text" = "蓝牙手柄未连接";
+/*title="Controls" id="x1g-pH-DnF"*/
+"x1g-pH-DnF.title" = "控制";
+
+
+"Nch-k1-6pR.headerTitle" = "皮肤";
+
+/*title="Controller Skins" largeTitleDisplayMode="never" id="Ful-dk-I0G">*/
+"Ful-dk-I0G.title" = "皮肤切换";
+
+/*headerTitle="Portrait" id="jGW-i7-nK1"*/
+"jGW-i7-nK1.headerTitle" = "竖屏";
+
+/*headerTitle="Landscape" id="PqP-JS-vGE"*/
+"PqP-JS-vGE.headerTitle" = "横屏";
+
+"SwK-m9-8gt.headerTitle" = "透明度";
+"SwK-m9-8gt.footerTitle" = "设置皮肤透明度(如果皮肤支持)";
+
+"aJ4-xT-aZL.headerTitle" = "触觉";
+"aJ4-xT-aZL.footerTitle" = "开启后,按键会有震动感反馈.";
+"mue-uO-1xE.text" = "屏幕按键";
+"UoA-qC-cKc.text" = "手柄按键";
+
+
+/*headerTitle="Delta Sync" footerTitle="Sync your games, save data, save states, and cheats between devices." id="y6U-7a-bnX" */
+"y6U-7a-bnX.headerTitle" = "模拟器同步";
+"y6U-7a-bnX.footerTitle" = "同步你的游戏,存档数据,即时存档以及金手指.(国内没啥用,非要用用手游加速器)";
+"y6U-7a-bnX.userLabel" = "开启同步";
+
+/*text="Service"  id="4U1-fe-PIb"*/
+"4U1-fe-PIb.text" = "服务器设置";
+
+/*title="Syncing Service" id="R9m-rV-VgV" "*/
+"R9m-rV-VgV.title" = "同步服务器";
+
+/*text="Google Drive"  id="4fb-TC-FrG"*/
+"4fb-TC-FrG.text" = "谷歌网盘(G墙)";
+/*text="Google Drive" id="kLY-5g-v8n"*/
+"kLY-5g-v8n.text" = "谷歌网盘(G墙)";
+
+/*text="Dropbox" id="qR3-zd-gmV"*/
+"qR3-zd-gmV.text" = "多宝箱(G墙)";
+
+/*text="Sign Out"  id="4TQ-cm-2sN"*/
+"4TQ-cm-2sN.text" = "退出登陆";
+
+/*text="Sync Status"  id="1u0-gh-zP7"*/
+"1u0-gh-zP7.text" = "同步状态";
+/*title="Sync Status" id="vVg-ci-JRa"*/
+"vVg-ci-JRa.title" = "同步状态";
+/*text="Previous Sync" id="Piz-MQ-rK5"*/
+"Piz-MQ-rK5.text" = "上次同步";
+/*headerTitle="Account" id="1Wk-cG-HDE"*/
+"1Wk-cG-HDE.headerTitle" = "用户";
+/*headerTitle="On Device" id="vpJ-Pg-nU9"*/
+"vpJ-Pg-nU9.headerTitle" = "本地";
+/*text="Status" id="npF-wl-PPC"*/
+"npF-wl-PPC.text" = "状态";
+/*text="Date"  id="EFZ-Om-S4W"*/
+"EFZ-Om-S4W.text" = "日期";
+/*headerTitle="Cloud" id="Bct-0y-ptf"*/
+"Bct-0y-ptf.headerTitle" = "网盘";
+/*text="Syncing Enabled"  id="QBt-p1-jpG"*/
+"QBt-p1-jpG.text" = "启用同步";
+/*text="View Versions"  id="8zd-va-DMf"*/
+"8zd-va-DMf.text" = "记录差异";
+/*title="Versions" id="GLC-Lc-6VM"*/
+"8zd-va-DMf.title" = "记录列表";
+/*text="Game" id="RWL-4W-NpH"*/
+"RWL-4W-NpH.text" = "游戏文件";
+
+
+
+/*Haptic Touch*/
+"fdp-8c-oOc.headerTitle" = "快捷菜单";
+
+/*Preview games and save states when using context menus.*/
+"fdp-8c-oOc.footerTitle" = "按住应用图标或者游戏图标的功能.";
+
+/*text="Home Screen Shortcuts" id="c5i-qG-ir9"*/
+"c5i-qG-ir9.text" = "应用图标";
+/*Context Menu Previews*/
+"rDR-EH-JuO.text" = "游戏图标";
+/*title="Home Screen Shortcuts" id="wfE-7e-l8g"*/
+"wfE-7e-l8g.title" = "手机应用图标";
+
+
+/*headerTitle="Core Settings" footerTitle="Manage settings for individual emulation cores." id="1eN-id-M8c"*/
+
+"1eN-id-M8c.headerTitle" = "核心设置";
+"1eN-id-M8c.footerTitle" = "管理模拟器运行的核心";
+
+/*headerTitle="Core Info" footerTitle="" id="ozc-x3-LhT"*/
+"ozc-x3-LhT.headerTitle" = "核心信息";
+
+/*text="Name"  id="kYg-4f-oTo"*/
+"kYg-4f-oTo.text" = "名称";
+
+/*text="Developer"  id="h6M-Uh-TBA"*/
+"h6M-Uh-TBA.text" = "开发者";
+
+/*text="Source"  id="Uvd-Lt-Ckx"*/
+"Uvd-Lt-Ckx.text" = "源代码";
+
+/*text="Donate"  id="6JV-NA-R4y"*/
+
+"6JV-NA-R4y.text" = "捐助";
+
+/*headerTitle="DS BIOS Files" footerTitle="Delta requires these BIOS files in order to play Nintendo DS games. Tap one to import it from Files." id="ObZ-cl-5sV"*/
+
+"ObZ-cl-5sV.headerTitle" = "DS BIOS文件";
+
+"ObZ-cl-5sV.footerTitle" = "模拟器需要这些BIOS运行NDS,不懂就看https://nenge.net/Emulator/HelpPage/#BIOS";
+
+
+
+
+/*headerTitle="Patreon" footerTitle="Receive early access to new features and more by becoming a patron." id="QvT-Yt-oP1"*/
+"QvT-Yt-oP1.headerTitle" = "赞助";
+"QvT-Yt-oP1.footerTitle" = "成为赞助人,尽早获得新功能版本.";
+
+/*text="Join the beta"  id="faT-qa-JP0"*/
+"faT-qa-JP0.text" = "参与测试新版本";
+
+/*headerTitle="Credits" id="foh-L9-g6W"*/
+
+"foh-L9-g6W.headerTitle" = "感谢";
+"foh-L9-g6W.footerTitle" = "中文汉化由Nenge.net制作!";
+
+/* text="Riley Testut"  id="Pum-dL-hGn"*/
+
+/*text="Developer" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="WQ6-m7-zhh"*/
+
+"WQ6-m7-zhh.text" = "开发者";
+/*text="Caroline Moore"  id="gWx-Xn-5Nf"*/
+/*text="Graphic Designer" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="09x-GX-cpy"*/
+"09x-GX-cpy.text" = "界面设计师";
+/*text="Grant Gliner"  id="zro-BX-EY9"*/
+/*text="Icon Guy" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="e45-FD-ug2"*/
+"e45-FD-ug2.text" = "图标设计";
+/*text="Licenses"  id="2K3-IL-94S"*/
+"2K3-IL-94S.text" = "授权许可";
+/*key="navigationItem" title="Licenses" largeTitleDisplayMode="never" id="Rmi-Mn-bdo"/>*/
+"Rmi-Mn-bdo.title" = "授权许可";
+/* destination="Lw6-5a-pvQ" id="KPi-AT-uSE"/>*/
+
+/*<textView id="Lw6-5a-pvQ">*/
