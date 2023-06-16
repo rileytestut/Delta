@@ -1171,27 +1171,34 @@ extension GameViewController
         let imageScale = ExperimentalFeatures.shared.gameScreenshots.size?.rawValue ?? 1.0
         let imageSize = CGSize(width: snapshot.size.width * imageScale, height: snapshot.size.height * imageScale)
         
-        let format = UIGraphicsImageRendererFormat()
-        format.scale = 1
-        let renderer = UIGraphicsImageRenderer(size: imageSize, format: format)
-
-        let scaledSnapshot = renderer.image { (context) in
-            context.cgContext.interpolationQuality = .none
-            snapshot.draw(in: CGRect(origin: .zero, size: imageSize))
+        let screenshotData: Data
+        if imageScale == 1, let data = snapshot.pngData()
+        {
+            // No need to redraw image because it's already the correct size.
+            screenshotData = data
         }
-
+        else
+        {
+            let format = UIGraphicsImageRendererFormat()
+            format.scale = 1
+            
+            let renderer = UIGraphicsImageRenderer(size: imageSize, format: format)
+            screenshotData = renderer.pngData { (context) in
+                context.cgContext.interpolationQuality = .none
+                snapshot.draw(in: CGRect(origin: .zero, size: imageSize))
+            }
+        }
+        
         if ExperimentalFeatures.shared.gameScreenshots.saveToPhotos
         {
             PHPhotoLibrary.runIfAuthorized
             {
-                PHPhotoLibrary.saveUIImage(image: scaledSnapshot)
+                PHPhotoLibrary.saveImageData(screenshotData)
             }
         }
         
         if ExperimentalFeatures.shared.gameScreenshots.saveToFiles
         {
-            guard let data = scaledSnapshot.pngData() else { return }
-            
             let screenshotsDirectory = FileManager.default.documentsDirectory.appendingPathComponent("Screenshots")
             
             do
@@ -1220,7 +1227,7 @@ extension GameViewController
             
             do
             {
-                try data.write(to: fileName)
+                try screenshotData.write(to: fileName)
             }
             catch
             {

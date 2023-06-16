@@ -25,11 +25,11 @@ extension PHPhotoLibrary
         })
     }
     
-    static func saveUIImage(image: UIImage)
+    static func saveImageData(_ data: Data)
     {
         // Save the image to the Photos app
         PHPhotoLibrary.shared().performChanges({
-            PHAssetChangeRequest.creationRequestForAsset(from: image)
+            PHAssetCreationRequest.forAsset().addResource(with: .photo, data: data, options: nil)
         }, completionHandler: { success, error in
             if success
             {
