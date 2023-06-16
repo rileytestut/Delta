@@ -82,10 +82,9 @@
 + (void)setLoggingDateStamp:(NSString *)dateStamp;
 + (NSString *)loggingDateStamp;
 
-// client apps can specify the directory for the log for this specific run,
-// typically to match the directory used by another fetcher class, like:
+// client apps can specify the directory for the log for this specific run:
 //
-//   [GTMSessionFetcher setLogDirectoryForCurrentRun:[GTMHTTPFetcher logDirectoryForCurrentRun]];
+//   [GTMSessionFetcher setLogDirectoryForCurrentRun:logDirectoryPath];
 //
 // Setting this overrides the logging directory, process name, and date stamp when writing
 // the log file.

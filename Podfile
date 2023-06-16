@@ -7,8 +7,6 @@ target 'Delta' do
 
     pod 'SQLite.swift', '~> 0.12.0'
     pod 'SDWebImage', '~> 3.8'
-    pod 'Fabric', '~> 1.6.0'
-    pod 'Crashlytics', '~> 3.8.0'
     pod 'SMCalloutView', '~> 2.1.0'
 
     pod 'DeltaCore', :path => 'Cores/DeltaCore'

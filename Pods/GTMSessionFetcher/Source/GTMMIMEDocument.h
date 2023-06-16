@@ -22,34 +22,33 @@
 
 #import <Foundation/Foundation.h>
 
+// These will be removed in the near future, folks should move off of them.
 #ifndef GTM_NONNULL
-  #if defined(__has_attribute)
-    #if __has_attribute(nonnull)
-      #define GTM_NONNULL(x) __attribute__((nonnull x))
-    #else
-      #define GTM_NONNULL(x)
-    #endif
-  #else
-    #define GTM_NONNULL(x)
-  #endif
+#if defined(__has_attribute)
+#if __has_attribute(nonnull)
+#define GTM_NONNULL(x) __attribute__((nonnull x))
+#else
+#define GTM_NONNULL(x)
 #endif
-
+#else
+#define GTM_NONNULL(x)
+#endif
+#endif
 #ifndef GTM_DECLARE_GENERICS
-  #if __has_feature(objc_generics)
-    #define GTM_DECLARE_GENERICS 1
-  #else
-    #define GTM_DECLARE_GENERICS 0
-  #endif
+#if __has_feature(objc_generics)
+#define GTM_DECLARE_GENERICS 1
+#else
+#define GTM_DECLARE_GENERICS 0
 #endif
-
+#endif
 #ifndef GTM_NSArrayOf
-  #if GTM_DECLARE_GENERICS
-    #define GTM_NSArrayOf(value) NSArray<value>
-    #define GTM_NSDictionaryOf(key, value) NSDictionary<key, value>
-  #else
-    #define GTM_NSArrayOf(value) NSArray
-    #define GTM_NSDictionaryOf(key, value) NSDictionary
-  #endif // GTM_DECLARE_GENERICS
+#if GTM_DECLARE_GENERICS
+#define GTM_NSArrayOf(value) NSArray<value>
+#define GTM_NSDictionaryOf(key, value) NSDictionary<key, value>
+#else
+#define GTM_NSArrayOf(value) NSArray
+#define GTM_NSDictionaryOf(key, value) NSDictionary
+#endif  // GTM_DECLARE_GENERICS
 #endif  // GTM_NSArrayOf
 
 
@@ -58,12 +57,13 @@
 // +[GTMMIMEDocument MIMEPartsWithBoundary:data:] returns an array of these.
 @interface GTMMIMEDocumentPart : NSObject
 
-@property(nonatomic, readonly) GTM_NSDictionaryOf(NSString *, NSString *) *headers;
-@property(nonatomic, readonly) NSData *headerData;
-@property(nonatomic, readonly) NSData *body;
+@property(nonatomic, readonly, nullable) NSDictionary<NSString *, NSString *> *headers;
+@property(nonatomic, readonly, nonnull) NSData *headerData;
+@property(nonatomic, readonly, nonnull) NSData *body;
 @property(nonatomic, readonly) NSUInteger length;
 
-+ (instancetype)partWithHeaders:(NSDictionary *)headers body:(NSData *)body;
++ (nonnull instancetype)partWithHeaders:(nullable NSDictionary *)headers
+                                   body:(nonnull NSData *)body;
 
 @end
 
@@ -73,24 +73,24 @@
 //
 // When creating a MIME document from parts, this is typically calculated
 // automatically after all parts have been added.
-@property(nonatomic, copy) NSString *boundary;
+@property(nonatomic, copy, null_resettable) NSString *boundary;
 
 #pragma mark - Methods for Creating a MIME Document
 
-+ (instancetype)MIMEDocument;
++ (nonnull instancetype)MIMEDocument;
 
 // Adds a new part to this mime document with the given headers and body.
 // The headers keys and values should be NSStrings.
 // Adding a part may cause the boundary string to change.
-- (void)addPartWithHeaders:(GTM_NSDictionaryOf(NSString *, NSString *) *)headers
-                      body:(NSData *)body GTM_NONNULL((1,2));
+- (void)addPartWithHeaders:(nonnull NSDictionary<NSString *, NSString *> *)headers
+                      body:(nonnull NSData *)body;
 
 // An inputstream that can be used to efficiently read the contents of the MIME document.
 //
 // Any parameter may be null if the result is not wanted.
-- (void)generateInputStream:(NSInputStream **)outStream
-                     length:(unsigned long long *)outLength
-                   boundary:(NSString **)outBoundary;
+- (void)generateInputStream:(NSInputStream *_Nullable *_Nullable)outStream
+                     length:(unsigned long long *_Nullable)outLength
+                   boundary:(NSString *_Nullable *_Nullable)outBoundary;
 
 // A dispatch_data_t with the contents of the MIME document.
 //
@@ -98,12 +98,12 @@
 // may be cast directly to NSData *.
 //
 // Any parameter may be null if the result is not wanted.
-- (void)generateDispatchData:(dispatch_data_t *)outDispatchData
-                      length:(unsigned long long *)outLength
-                    boundary:(NSString **)outBoundary;
+- (void)generateDispatchData:(dispatch_data_t _Nullable *_Nullable)outDispatchData
+                      length:(unsigned long long *_Nullable)outLength
+                    boundary:(NSString *_Nullable *_Nullable)outBoundary;
 
 // Utility method for making a header section, including trailing newlines.
-+ (NSData *)dataWithHeaders:(GTM_NSDictionaryOf(NSString *, NSString *) *)headers;
++ (nonnull NSData *)dataWithHeaders:(nullable NSDictionary<NSString *, NSString *> *)headers;
 
 #pragma mark - Methods for Parsing a MIME Document
 
@@ -111,8 +111,14 @@
 //
 // Returns an array of GTMMIMEDocumentParts.  Returns nil if no part can
 // be found.
-+ (GTM_NSArrayOf(GTMMIMEDocumentPart *) *)MIMEPartsWithBoundary:(NSString *)boundary
-                                                           data:(NSData *)fullDocumentData;
+//
+// NOTE: if MIME parts in the data are malformed, the resulting array may
+// still contain GTMMIMEDocumentParts in the position where the malformed
+// parts appeared; these parts will have an empty NSData body and nil
+// headers.
++ (nullable NSArray<GTMMIMEDocumentPart *> *)MIMEPartsWithBoundary:(nonnull NSString *)boundary
+                                                              data:(nonnull NSData *)
+                                                                       fullDocumentData;
 
 // Utility method for efficiently searching possibly discontiguous NSData
 // for occurrences of target byte. This method does not "flatten" an NSData
@@ -120,29 +126,29 @@
 //
 // The byte offsets of non-overlapping occurrences of the target are returned as
 // NSNumbers in the array.
-+ (void)searchData:(NSData *)data
-       targetBytes:(const void *)targetBytes
++ (void)searchData:(nonnull NSData *)data
+       targetBytes:(const void *_Nonnull)targetBytes
       targetLength:(NSUInteger)targetLength
-      foundOffsets:(GTM_NSArrayOf(NSNumber *) **)outFoundOffsets;
+      foundOffsets:(NSArray<NSNumber *> *_Nullable *_Nonnull)outFoundOffsets;
 
 // Utility method to parse header bytes into an NSDictionary.
-+ (GTM_NSDictionaryOf(NSString *, NSString *) *)headersWithData:(NSData *)data;
++ (nullable NSDictionary<NSString *, NSString *> *)headersWithData:(nonnull NSData *)data;
 
 // ------ UNIT TESTING ONLY BELOW ------
 
 // Internal methods, exposed for unit testing only.
 - (void)seedRandomWith:(u_int32_t)seed;
 
-+ (NSUInteger)findBytesWithNeedle:(const unsigned char *)needle
++ (NSUInteger)findBytesWithNeedle:(const unsigned char *_Nonnull)needle
                      needleLength:(NSUInteger)needleLength
-                         haystack:(const unsigned char *)haystack
+                         haystack:(const unsigned char *_Nonnull)haystack
                    haystackLength:(NSUInteger)haystackLength
-                      foundOffset:(NSUInteger *)foundOffset;
+                      foundOffset:(NSUInteger *_Nonnull)foundOffset;
 
-+ (void)searchData:(NSData *)data
-       targetBytes:(const void *)targetBytes
-      targetLength:(NSUInteger)targetLength
-      foundOffsets:(GTM_NSArrayOf(NSNumber *) **)outFoundOffsets
- foundBlockNumbers:(GTM_NSArrayOf(NSNumber *) **)outFoundBlockNumbers;
++ (void)searchData:(nonnull NSData *)data
+          targetBytes:(const void *_Nonnull)targetBytes
+         targetLength:(NSUInteger)targetLength
+         foundOffsets:(NSArray<NSNumber *> *_Nullable *_Nonnull)outFoundOffsets
+    foundBlockNumbers:(NSArray<NSNumber *> *_Nullable *_Nonnull)outFoundBlockNumbers;
 
 @end

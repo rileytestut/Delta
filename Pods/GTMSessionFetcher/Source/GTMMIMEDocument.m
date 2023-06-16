@@ -25,7 +25,7 @@
 
 @interface GTMGatherInputStream : NSInputStream <NSStreamDelegate>
 
-+ (NSInputStream *)streamWithArray:(NSArray *)dataArray GTM_NONNULL((1));
++ (nonnull instancetype)streamWithArray:(nonnull NSArray *)dataArray;
 
 @end
 #endif  // GTM_GATHERINPUTSTREAM_DECLARED
@@ -55,9 +55,7 @@ static void SearchDataForBytes(NSData *data, const void *targetBytes, NSUInteger
   NSData *_bodyData;
 }
 
-@synthesize headers = _headers,
-            headerData = _headerData,
-            body = _bodyData;
+@synthesize headers = _headers, headerData = _headerData, body = _bodyData;
 
 @dynamic length;
 
@@ -83,7 +81,7 @@ static void SearchDataForBytes(NSData *data, const void *targetBytes, NSUInteger
   // null values.
   NSData *headerData = self.headerData;
   return (FindBytes(bytes, length, headerData.bytes, headerData.length, NULL) == length ||
-          FindBytes(bytes, length, _bodyData.bytes,  _bodyData.length, NULL) == length);
+          FindBytes(bytes, length, _bodyData.bytes, _bodyData.length, NULL) == length);
 }
 
 - (NSData *)headerData {
@@ -102,16 +100,16 @@ static void SearchDataForBytes(NSData *data, const void *targetBytes, NSUInteger
 }
 
 - (NSString *)description {
-  return [NSString stringWithFormat:@"%@ %p (headers %lu keys, body %lu bytes)",
-          [self class], self, (unsigned long)_headers.count,
-          (unsigned long)_bodyData.length];
+  return [NSString stringWithFormat:@"%@ %p (headers %lu keys, body %lu bytes)", [self class], self,
+                                    (unsigned long)_headers.count, (unsigned long)_bodyData.length];
 }
 
-- (BOOL)isEqual:(GTMMIMEDocumentPart *)other {
+- (BOOL)isEqual:(id)other {
   if (self == other) return YES;
   if (![other isKindOfClass:[GTMMIMEDocumentPart class]]) return NO;
-  return ((_bodyData == other->_bodyData || [_bodyData isEqual:other->_bodyData])
-          && (_headers == other->_headers || [_headers isEqual:other->_headers]));
+  GTMMIMEDocumentPart *otherPart = (GTMMIMEDocumentPart *)other;
+  return ((_bodyData == otherPart->_bodyData || [_bodyData isEqual:otherPart->_bodyData]) &&
+          (_headers == otherPart->_headers || [_headers isEqual:otherPart->_headers]));
 }
 
 - (NSUInteger)hash {
@@ -121,10 +119,10 @@ static void SearchDataForBytes(NSData *data, const void *targetBytes, NSUInteger
 @end
 
 @implementation GTMMIMEDocument {
-  NSMutableArray *_parts;         // Ordered array of GTMMIMEDocumentParts.
-  unsigned long long _length;     // Length in bytes of the document.
+  NSMutableArray *_parts;      // Ordered array of GTMMIMEDocumentParts.
+  unsigned long long _length;  // Length in bytes of the document.
   NSString *_boundary;
-  u_int32_t _randomSeed;          // For testing.
+  u_int32_t _randomSeed;  // For testing.
 }
 
 + (instancetype)MIMEDocument {
@@ -140,8 +138,8 @@ static void SearchDataForBytes(NSData *data, const void *targetBytes, NSUInteger
 }
 
 - (NSString *)description {
-  return [NSString stringWithFormat:@"%@ %p (%lu parts)",
-          [self class], self, (unsigned long)_parts.count];
+  return [NSString
+      stringWithFormat:@"%@ %p (%lu parts)", [self class], self, (unsigned long)_parts.count];
 }
 
 #pragma mark - Joining Parts
@@ -188,7 +186,6 @@ static void SearchDataForBytes(NSData *data, const void *targetBytes, NSUInteger
 
   const int maxTries = 10;  // Arbitrarily chosen maximum attempts.
   for (int tries = 0; tries < maxTries; ++tries) {
-
     NSData *data = [_boundary dataUsingEncoding:NSUTF8StringEncoding];
     const void *dataBytes = data.bytes;
     NSUInteger dataLen = data.length;
@@ -198,7 +195,7 @@ static void SearchDataForBytes(NSData *data, const void *targetBytes, NSUInteger
       if (didCollide) break;
     }
 
-    if (!didCollide) break; // We're fine, no more attempts needed.
+    if (!didCollide) break;  // We're fine, no more attempts needed.
 
     // Try again with a random number appended.
     _boundary = [NSString stringWithFormat:@"%@_%08x", kBaseBoundary, [self random]];
@@ -219,7 +216,6 @@ static void SearchDataForBytes(NSData *data, const void *targetBytes, NSUInteger
 - (void)generateDataArray:(NSMutableArray *)dataArray
                    length:(unsigned long long *)outLength
                  boundary:(NSString **)outBoundary {
-
   // The input stream is of the form:
   //   --boundary
   //    [part_1_headers]
@@ -252,7 +248,7 @@ static void SearchDataForBytes(NSData *data, const void *targetBytes, NSUInteger
   [dataArray addObject:endBoundaryData];
   length += endBoundaryData.length;
 
-  if (outLength)   *outLength = length;
+  if (outLength) *outLength = length;
   if (outBoundary) *outBoundary = boundary;
 }
 
@@ -260,9 +256,7 @@ static void SearchDataForBytes(NSData *data, const void *targetBytes, NSUInteger
                      length:(unsigned long long *)outLength
                    boundary:(NSString **)outBoundary {
   NSMutableArray *dataArray = outStream ? [NSMutableArray array] : nil;
-  [self generateDataArray:dataArray
-                   length:outLength
-                 boundary:outBoundary];
+  [self generateDataArray:dataArray length:outLength boundary:outBoundary];
 
   if (outStream) {
     Class streamClass = NSClassFromString(@"GTMGatherInputStream");
@@ -276,9 +270,7 @@ static void SearchDataForBytes(NSData *data, const void *targetBytes, NSUInteger
                       length:(unsigned long long *)outLength
                     boundary:(NSString **)outBoundary {
   NSMutableArray *dataArray = outDispatchData ? [NSMutableArray array] : nil;
-  [self generateDataArray:dataArray
-                   length:outLength
-                 boundary:outBoundary];
+  [self generateDataArray:dataArray length:outLength boundary:outBoundary];
 
   if (outDispatchData) {
     // Create an empty data accumulator.
@@ -290,9 +282,9 @@ static void SearchDataForBytes(NSData *data, const void *targetBytes, NSUInteger
       __block NSData *immutablePartData = [partData copy];
       dispatch_data_t newDataPart =
           dispatch_data_create(immutablePartData.bytes, immutablePartData.length, bgQueue, ^{
-        // We want the data retained until this block executes.
-        immutablePartData = nil;
-      });
+            // We want the data retained until this block executes.
+            immutablePartData = nil;
+          });
 
       if (dataAccumulator == nil) {
         // First part.
@@ -308,7 +300,7 @@ static void SearchDataForBytes(NSData *data, const void *targetBytes, NSUInteger
 
 + (NSData *)dataWithHeaders:(NSDictionary *)headers {
   // Generate the header data by coalescing the dictionary as lines of "key: value\r\n".
-  NSMutableString* headerString = [NSMutableString string];
+  NSMutableString *headerString = [NSMutableString string];
 
   // Sort the header keys so we have a deterministic order for unit testing.
   SEL sortSel = @selector(caseInsensitiveCompare:);
@@ -340,8 +332,7 @@ static void SearchDataForBytes(NSData *data, const void *targetBytes, NSUInteger
 
 #pragma mark - Separating Parts
 
-+ (NSArray *)MIMEPartsWithBoundary:(NSString *)boundary
-                              data:(NSData *)fullDocumentData {
++ (NSArray *)MIMEPartsWithBoundary:(NSString *)boundary data:(NSData *)fullDocumentData {
   // In MIME documents, the boundary is preceded by CRLF and two dashes, and followed
   // at the end by two dashes.
   NSData *boundaryData = [boundary dataUsingEncoding:NSUTF8StringEncoding];
@@ -367,9 +358,9 @@ static void SearchDataForBytes(NSData *data, const void *targetBytes, NSUInteger
   } else {
     // A no-op self invocation on fullDocumentData will keep it retained until the block is invoked.
     dispatch_queue_t bgQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-    dataWrapper = dispatch_data_create(fullDocumentData.bytes,
-                                       fullDocumentData.length,
-                                       bgQueue, ^{ [fullDocumentData self]; });
+    dataWrapper = dispatch_data_create(fullDocumentData.bytes, fullDocumentData.length, bgQueue, ^{
+      [fullDocumentData self];
+    });
   }
   NSMutableArray *parts;
   NSInteger previousBoundaryOffset = -1;
@@ -394,15 +385,13 @@ static void SearchDataForBytes(NSData *data, const void *targetBytes, NSUInteger
       if (previousPartDataLength < 2) {
         // The preceding part was too short to be useful.
 #if DEBUG
-        NSLog(@"MIME part %ld has %ld bytes", (long)partCounter - 1,
-              (long)previousPartDataLength);
+        NSLog(@"MIME part %ld has %ld bytes", (long)partCounter - 1, (long)previousPartDataLength);
 #endif
       } else {
         if (!parts) parts = [NSMutableArray array];
 
-        dispatch_data_t partData =
-            dispatch_data_create_subrange(dataWrapper,
-                (size_t)previousPartDataStartOffset, (size_t)previousPartDataLength);
+        dispatch_data_t partData = dispatch_data_create_subrange(
+            dataWrapper, (size_t)previousPartDataStartOffset, (size_t)previousPartDataLength);
         // Scan the part data for the separator between headers and body. After the CRLF,
         // either the headers start immediately, or there's another CRLF and there are no headers.
         //
@@ -412,12 +401,18 @@ static void SearchDataForBytes(NSData *data, const void *targetBytes, NSUInteger
         // and map that two-byte subrange.
         const void *partDataBuffer;
         size_t partDataBufferSize;
+        // The clang included with Xcode 13.3 betas added a -Wunused-but-set-variable warning,
+        // which doesn't (yet) skip variables annotated with objc_precie_lifetime. Since that
+        // warning is not available in all Xcodes, turn off the -Wunused warning group entirely.
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused"
         dispatch_data_t mappedPartData NS_VALID_UNTIL_END_OF_SCOPE =
             dispatch_data_create_map(partData, &partDataBuffer, &partDataBufferSize);
+#pragma clang diagnostic pop
         dispatch_data_t bodyData;
         NSDictionary *headers;
-        BOOL hasAnotherCRLF = (((char *)partDataBuffer)[0] == '\r'
-                               && ((char *)partDataBuffer)[1] == '\n');
+        BOOL hasAnotherCRLF =
+            (((char *)partDataBuffer)[0] == '\r' && ((char *)partDataBuffer)[1] == '\n');
         mappedPartData = nil;
 
         if (hasAnotherCRLF) {
@@ -442,14 +437,18 @@ static void SearchDataForBytes(NSData *data, const void *targetBytes, NSUInteger
                 dispatch_data_create_subrange(partData, 0, (size_t)headerSeparatorOffset);
             headers = [self headersWithData:(NSData *)headerData];
 
-            bodyData = dispatch_data_create_subrange(partData, (size_t)headerSeparatorOffset + 4,
+            bodyData = dispatch_data_create_subrange(
+                partData, (size_t)headerSeparatorOffset + 4,
                 (size_t)(previousPartDataLength - (headerSeparatorOffset + 4)));
 
             numberOfPartsWithHeaders++;
           }  // crlfOffsets.count == 0
-        }  // hasAnotherCRLF
-        GTMMIMEDocumentPart *part = [GTMMIMEDocumentPart partWithHeaders:headers
-                                                                    body:(NSData *)bodyData];
+        }    // hasAnotherCRLF
+
+        // bodyData being nil reflects malformed data; if so provide an empty
+        // NSData object rather than pass nil to a nonnull parameter.
+        GTMMIMEDocumentPart *part =
+            [GTMMIMEDocumentPart partWithHeaders:headers body:(NSData *)bodyData ?: [NSData data]];
         [parts addObject:part];
       }  //  previousPartDataLength < 2
       previousBoundaryOffset = currentBoundaryOffset.integerValue;
@@ -461,10 +460,7 @@ static void SearchDataForBytes(NSData *data, const void *targetBytes, NSUInteger
     NSUInteger length = fullDocumentData.length;
     if (length > 20) {  // Reasonably long.
       NSMutableArray *foundCRLFs;
-      [self searchData:fullDocumentData
-           targetBytes:"\r\n"
-          targetLength:2
-          foundOffsets:&foundCRLFs];
+      [self searchData:fullDocumentData targetBytes:"\r\n" targetLength:2 foundOffsets:&foundCRLFs];
       if (foundCRLFs.count == 0) {
         // Parts were logged above (due to lacking header separators.)
         NSLog(@"Warning: MIME document lacks any headers (may have wrong line endings)");
@@ -484,21 +480,20 @@ static void SearchDataForBytes(NSData *data, const void *targetBytes, NSUInteger
 + (void)searchData:(NSData *)data
        targetBytes:(const void *)targetBytes
       targetLength:(NSUInteger)targetLength
-      foundOffsets:(GTM_NSArrayOf(NSNumber *) **)outFoundOffsets {
+      foundOffsets:(NSArray<NSNumber *> **)outFoundOffsets {
   NSMutableArray *foundOffsets = [NSMutableArray array];
   SearchDataForBytes(data, targetBytes, targetLength, foundOffsets, NULL);
   *outFoundOffsets = foundOffsets;
 }
 
-
 // This version of searchData: also returns the block numbers (0-based) where the
 // target was found, used for testing that the supplied dispatch_data buffer
 // has not been flattened.
 + (void)searchData:(NSData *)data
-       targetBytes:(const void *)targetBytes
-      targetLength:(NSUInteger)targetLength
-      foundOffsets:(GTM_NSArrayOf(NSNumber *) **)outFoundOffsets
- foundBlockNumbers:(GTM_NSArrayOf(NSNumber *) **)outFoundBlockNumbers {
+          targetBytes:(const void *)targetBytes
+         targetLength:(NSUInteger)targetLength
+         foundOffsets:(NSArray<NSNumber *> **)outFoundOffsets
+    foundBlockNumbers:(NSArray<NSNumber *> **)outFoundBlockNumbers {
   NSMutableArray *foundOffsets = [NSMutableArray array];
   NSMutableArray *foundBlockNumbers = [NSMutableArray array];
 
@@ -513,9 +508,7 @@ static void SearchDataForBytes(NSData *data, const void *targetBytes, NSUInteger
   __block NSInteger priorPartialMatchStartingBlockNumber = -1;
   __block NSInteger blockNumber = -1;
 
-  [data enumerateByteRangesUsingBlock:^(const void *bytes,
-                                        NSRange byteRange,
-                                        BOOL *stop) {
+  [data enumerateByteRangesUsingBlock:^(const void *bytes, NSRange byteRange, BOOL *stop) {
     // Search for the first character in the current range.
     const void *ptr = bytes;
     NSInteger remainingInCurrentRange = (NSInteger)byteRange.length;
@@ -524,9 +517,9 @@ static void SearchDataForBytes(NSData *data, const void *targetBytes, NSUInteger
     if (priorPartialMatchAmount > 0) {
       NSUInteger amountRemainingToBeMatched = targetLength - priorPartialMatchAmount;
       NSUInteger remainingFoundOffset;
-      NSUInteger amountMatched = FindBytes(targetBytes + priorPartialMatchAmount,
-                                           amountRemainingToBeMatched,
-                                           ptr, (NSUInteger)remainingInCurrentRange, &remainingFoundOffset);
+      NSUInteger amountMatched =
+          FindBytes(targetBytes + priorPartialMatchAmount, amountRemainingToBeMatched, ptr,
+                    (NSUInteger)remainingInCurrentRange, &remainingFoundOffset);
       if (amountMatched == 0 || remainingFoundOffset > 0) {
         // No match of the rest of the prior partial match in this range.
       } else if (amountMatched < amountRemainingToBeMatched) {
@@ -589,9 +582,9 @@ static void SearchDataForBytes(NSData *data, const void *targetBytes, NSUInteger
   NSCharacterSet *newlineCharacters = [NSCharacterSet newlineCharacterSet];
   NSString *key;
   NSString *value;
-  while ([scanner scanUpToString:@":" intoString:&key]
-         && [scanner scanString:@":" intoString:NULL]
-         && [scanner scanUpToCharactersFromSet:newlineCharacters intoString:&value]) {
+  while ([scanner scanUpToString:@":" intoString:&key] &&
+         [scanner scanString:@":" intoString:NULL] &&
+         [scanner scanUpToCharactersFromSet:newlineCharacters intoString:&value]) {
     [headers setObject:value forKey:key];
     // Discard the trailing newline.
     [scanner scanCharactersFromSet:newlineCharacters intoString:NULL];
@@ -605,8 +598,8 @@ static void SearchDataForBytes(NSData *data, const void *targetBytes, NSUInteger
 //
 // If the result is less than needleLen, then the beginning of the needle
 // was found at the end of the haystack.
-static NSUInteger FindBytes(const unsigned char* needle, NSUInteger needleLen,
-                            const unsigned char* haystack, NSUInteger haystackLen,
+static NSUInteger FindBytes(const unsigned char *needle, NSUInteger needleLen,
+                            const unsigned char *haystack, NSUInteger haystackLen,
                             NSUInteger *foundOffset) {
   const unsigned char *ptr = haystack;
   NSInteger remain = (NSInteger)haystackLen;

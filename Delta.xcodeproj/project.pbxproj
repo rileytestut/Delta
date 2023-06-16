@@ -1208,7 +1208,6 @@
 				BFFA71D31AAC406100EE9DD1 /* Sources */,
 				BFFA71D41AAC406100EE9DD1 /* Frameworks */,
 				BFFA71D51AAC406100EE9DD1 /* Resources */,
-				BF6BF3281EB897F6008E83CD /* Fabric */,
 				0E0279E4F38215820BB0C9A0 /* [CP] Copy Pods Resources */,
 				BF08DC3325CE07C3007A9CF4 /* Embed Frameworks */,
 			);
@@ -1436,20 +1435,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "/usr/local/bin/mogenerator -m \"Delta/Database/Model/Delta.xcdatamodeld\" --human-dir \"Delta/Database/Model/Human\" --machine-dir \"Delta/Database/Model/Machine\" --swift --template-var scalarsWhenNonOptional=true --template-path \"Delta/Database/Model/mogenerator/templates\"";
-		};
-		BF6BF3281EB897F6008E83CD /* Fabric */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = Fabric;
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Fabric/run\" d542629b4f6625cfd5564d27318550321272076d 333118df9345dcec21e4ba0bb7fa8f6c67c4eb41734374e24f6c71a8dcd5c870";
 		};
 		BF6E70BD25D2187F00E41CD1 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
