@@ -16,10 +16,10 @@ extension PHPhotoLibrary
         PHPhotoLibrary.requestAuthorization(for: .addOnly, handler: { success in
             switch success
             {
-            case .authorized:
+            case .authorized, .limited:
                 code()
                 
-            case .denied, .restricted, .notDetermined, .limited:
+            case .denied, .restricted, .notDetermined:
                 break
             }
         })
