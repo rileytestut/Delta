@@ -66,6 +66,18 @@ class GridCollectionViewLayout: UICollectionViewFlowLayout
         self.sectionInset.right = self.interitemSpacing + self.contentInset.right
     }
     
+    override func invalidateLayout(with context: UICollectionViewLayoutInvalidationContext)
+    {
+        super.invalidateLayout(with: context)
+        
+        if let context = context as? UICollectionViewFlowLayoutInvalidationContext,
+            context.invalidateFlowLayoutAttributes || context.invalidateFlowLayoutDelegateMetrics || context.invalidateEverything
+        {
+            // We must clear layout cache on iOS 17 or later to prevent crashing due to returning outdated layout attributes.
+            self.cachedLayoutAttributes = [:]
+        }
+    }
+    
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]?
     {
         let layoutAttributes = super.layoutAttributesForElements(in: rect)?.map({ $0.copy() }) as! [UICollectionViewLayoutAttributes]
