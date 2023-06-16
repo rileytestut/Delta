@@ -19,8 +19,8 @@ extension PHPhotoLibrary
             case .authorized, .limited:
                 code()
                 
-            case .denied, .restricted, .notDetermined:
-                break
+            case .denied, .restricted, .notDetermined: break
+            @unknown default: break
             }
         })
     }
