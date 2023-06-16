@@ -116,6 +116,7 @@ class GridCollectionViewCell: UICollectionViewCell
         self.imageViewWidthConstraint.isActive = true
         
         self.imageViewHeightConstraint = self.imageView.heightAnchor.constraint(equalToConstant: self.maximumImageSize.height)
+        self.imageViewHeightConstraint.priority = UILayoutPriority(999) // Fixes "Unable to simultaneously satisfy constraints" runtime error when inserting new grid row.
         self.imageViewHeightConstraint.isActive = true
         
         
