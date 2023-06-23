@@ -200,6 +200,16 @@
 		D5A9C01D29DE058C00A8D610 /* VariableFastForward.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A9C01C29DE058C00A8D610 /* VariableFastForward.swift */; };
 		D5AAF27729884F8600F21ACF /* CheatDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5AAF27629884F8600F21ACF /* CheatDevice.swift */; };
 		D5ADD12229F33FBF00CE0560 /* Features.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5ADD12129F33FBF00CE0560 /* Features.swift */; };
+		D5CC36892A44D4EE00DEC908 /* DeltaVisionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CC36882A44D4EE00DEC908 /* DeltaVisionApp.swift */; };
+		D5CC368B2A44D4EE00DEC908 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CC368A2A44D4EE00DEC908 /* ContentView.swift */; };
+		D5CC368D2A44D4EE00DEC908 /* ImmersiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CC368C2A44D4EE00DEC908 /* ImmersiveView.swift */; };
+		D5CC368F2A44D4F000DEC908 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5CC368E2A44D4F000DEC908 /* Assets.xcassets */; };
+		D5CC36922A44D4F000DEC908 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5CC36912A44D4F000DEC908 /* Preview Assets.xcassets */; };
+		D5CC36972A44D66B00DEC908 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CC36962A44D66B00DEC908 /* GameView.swift */; };
+		D5CC369A2A44D71E00DEC908 /* DeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5CC36982A44D71E00DEC908 /* DeltaCore.framework */; };
+		D5CC369B2A44D71E00DEC908 /* DeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D5CC36982A44D71E00DEC908 /* DeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D5CC369C2A44D71E00DEC908 /* GBADeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5CC36992A44D71E00DEC908 /* GBADeltaCore.framework */; };
+		D5CC369D2A44D71E00DEC908 /* GBADeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D5CC36992A44D71E00DEC908 /* GBADeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D5D78AE529F9BC3700E064F0 /* DSAirPlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D78AE429F9BC3700E064F0 /* DSAirPlay.swift */; };
 		D5D78AE729F9D40A00E064F0 /* EnvironmentValues+FeatureOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D78AE629F9D40A00E064F0 /* EnvironmentValues+FeatureOption.swift */; };
 		D5D797E6298D946200738869 /* Contributor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D797E5298D946200738869 /* Contributor.swift */; };
@@ -244,6 +254,18 @@
 			dstSubfolderSpec = 10;
 			files = (
 				BFCADF1F25D22FE2008D78FB /* Systems.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D5CC369E2A44D71F00DEC908 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				D5CC369B2A44D71E00DEC908 /* DeltaCore.framework in Embed Frameworks */,
+				D5CC369D2A44D71E00DEC908 /* GBADeltaCore.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -465,6 +487,16 @@
 		D5A9C01C29DE058C00A8D610 /* VariableFastForward.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VariableFastForward.swift; sourceTree = "<group>"; };
 		D5AAF27629884F8600F21ACF /* CheatDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheatDevice.swift; sourceTree = "<group>"; };
 		D5ADD12129F33FBF00CE0560 /* Features.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Features.swift; sourceTree = "<group>"; };
+		D5CC36822A44D4EE00DEC908 /* DeltaVision.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DeltaVision.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D5CC36852A44D4EE00DEC908 /* RealityKitContent */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = RealityKitContent; sourceTree = "<group>"; };
+		D5CC36882A44D4EE00DEC908 /* DeltaVisionApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeltaVisionApp.swift; sourceTree = "<group>"; };
+		D5CC368A2A44D4EE00DEC908 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		D5CC368C2A44D4EE00DEC908 /* ImmersiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImmersiveView.swift; sourceTree = "<group>"; };
+		D5CC368E2A44D4F000DEC908 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		D5CC36912A44D4F000DEC908 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		D5CC36962A44D66B00DEC908 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
+		D5CC36982A44D71E00DEC908 /* DeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D5CC36992A44D71E00DEC908 /* GBADeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = GBADeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5D78AE429F9BC3700E064F0 /* DSAirPlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSAirPlay.swift; sourceTree = "<group>"; };
 		D5D78AE629F9D40A00E064F0 /* EnvironmentValues+FeatureOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EnvironmentValues+FeatureOption.swift"; sourceTree = "<group>"; };
 		D5D797E5298D946200738869 /* Contributor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contributor.swift; sourceTree = "<group>"; };
@@ -506,6 +538,15 @@
 			files = (
 				D51CB7A129EDC01400B59678 /* libDeltaFeatures.a in Frameworks */,
 				87343D7B985519A5890A61C6 /* libPods-DeltaPreviews.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D5CC367F2A44D4EE00DEC908 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D5CC369A2A44D71E00DEC908 /* DeltaCore.framework in Frameworks */,
+				D5CC369C2A44D71E00DEC908 /* GBADeltaCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -813,6 +854,8 @@
 		BF9F4FCD1AAD7B25004C9500 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D5CC36982A44D71E00DEC908 /* DeltaCore.framework */,
+				D5CC36992A44D71E00DEC908 /* GBADeltaCore.framework */,
 				BF6E70C225D22F7600E41CD1 /* Systems.framework */,
 				BFDCA1E5244EBAA900B8FBDB /* liblibDeSmuME.a */,
 				BF30AC25244E88BE00F0C744 /* libMelonDSDeltaCore.a */,
@@ -949,8 +992,10 @@
 				BFFA71D91AAC406100EE9DD1 /* Delta */,
 				D539103029E88B6C0006B350 /* DeltaPreviews */,
 				D5D7C1F229E60E0000663793 /* DeltaFeatures */,
+				D5CC36832A44D4EE00DEC908 /* DeltaVision */,
 				BF9F4FCD1AAD7B25004C9500 /* Frameworks */,
 				BFEC732F1AAECCBD00650035 /* Resources */,
+				D5CC36842A44D4EE00DEC908 /* Packages */,
 				BFFA71D81AAC406100EE9DD1 /* Products */,
 				FD1E8AE87FA2DB8793F7B937 /* Pods */,
 			);
@@ -962,6 +1007,7 @@
 				BFFA71D71AAC406100EE9DD1 /* Delta.app */,
 				D5D7C1F129E60DFF00663793 /* libDeltaFeatures.a */,
 				D539102F29E88B6B0006B350 /* DeltaPreviews.framework */,
+				D5CC36822A44D4EE00DEC908 /* DeltaVision.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1113,6 +1159,35 @@
 			path = "Experimental Features";
 			sourceTree = "<group>";
 		};
+		D5CC36832A44D4EE00DEC908 /* DeltaVision */ = {
+			isa = PBXGroup;
+			children = (
+				D5CC36882A44D4EE00DEC908 /* DeltaVisionApp.swift */,
+				D5CC368A2A44D4EE00DEC908 /* ContentView.swift */,
+				D5CC36962A44D66B00DEC908 /* GameView.swift */,
+				D5CC368C2A44D4EE00DEC908 /* ImmersiveView.swift */,
+				D5CC368E2A44D4F000DEC908 /* Assets.xcassets */,
+				D5CC36902A44D4F000DEC908 /* Preview Content */,
+			);
+			path = DeltaVision;
+			sourceTree = "<group>";
+		};
+		D5CC36842A44D4EE00DEC908 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				D5CC36852A44D4EE00DEC908 /* RealityKitContent */,
+			);
+			path = Packages;
+			sourceTree = "<group>";
+		};
+		D5CC36902A44D4F000DEC908 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				D5CC36912A44D4F000DEC908 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
 		D5D78AE329F9BC0200E064F0 /* Features */ = {
 			isa = PBXGroup;
 			children = (
@@ -1245,6 +1320,24 @@
 			productReference = D539102F29E88B6B0006B350 /* DeltaPreviews.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		D5CC36812A44D4EE00DEC908 /* DeltaVision */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D5CC36952A44D4F000DEC908 /* Build configuration list for PBXNativeTarget "DeltaVision" */;
+			buildPhases = (
+				D5CC367E2A44D4EE00DEC908 /* Sources */,
+				D5CC367F2A44D4EE00DEC908 /* Frameworks */,
+				D5CC36802A44D4EE00DEC908 /* Resources */,
+				D5CC369E2A44D71F00DEC908 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DeltaVision;
+			productName = DeltaVision;
+			productReference = D5CC36822A44D4EE00DEC908 /* DeltaVision.app */;
+			productType = "com.apple.product-type.application";
+		};
 		D5D7C1F029E60DFF00663793 /* DeltaFeatures */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = D5D7C1F529E60E0000663793 /* Build configuration list for PBXNativeTarget "DeltaFeatures" */;
@@ -1296,6 +1389,9 @@
 					D539102E29E88B6B0006B350 = {
 						CreatedOnToolsVersion = 14.3;
 					};
+					D5CC36812A44D4EE00DEC908 = {
+						CreatedOnToolsVersion = 15.0;
+					};
 					D5D7C1F029E60DFF00663793 = {
 						CreatedOnToolsVersion = 14.2;
 					};
@@ -1323,6 +1419,7 @@
 				BF6E70B925D2187800E41CD1 /* Systems */,
 				D539102E29E88B6B0006B350 /* DeltaPreviews */,
 				D5D7C1F029E60DFF00663793 /* DeltaFeatures */,
+				D5CC36812A44D4EE00DEC908 /* DeltaVision */,
 			);
 		};
 /* End PBXProject section */
@@ -1355,6 +1452,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D5CC36802A44D4EE00DEC908 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D5CC36922A44D4F000DEC908 /* Preview Assets.xcassets in Resources */,
+				D5CC368F2A44D4F000DEC908 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
@@ -1369,7 +1475,6 @@
 				"${PODS_CONFIGURATION_BUILD_DIR}/DeltaCore/DeltaCore.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/GBADeltaCore/GBADeltaCore.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/GBCDeltaCore/GBCDeltaCore.bundle",
-				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
 				"${PODS_ROOT}/../External/Harmony/Harmony/Model/Core Data/Harmony.xcdatamodeld",
 				"${PODS_ROOT}/../External/Harmony/Harmony/Model/Core Data/Migrations/HarmonyToHarmony2.xcmappingmodel",
 				"${PODS_CONFIGURATION_BUILD_DIR}/MelonDSDeltaCore/melonDS.bundle",
@@ -1385,7 +1490,6 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/DeltaCore.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GBADeltaCore.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GBCDeltaCore.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Harmony.momd",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/HarmonyToHarmony2.cdm",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/melonDS.bundle",
@@ -1646,6 +1750,17 @@
 				D57D795F29F315F700BB2CF8 /* FeatureDetailView.swift in Sources */,
 				D51CB7A629EDC15900B59678 /* ExperimentalFeatures.swift in Sources */,
 				D57D796029F315F700BB2CF8 /* ExperimentalFeaturesView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D5CC367E2A44D4EE00DEC908 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D5CC368B2A44D4EE00DEC908 /* ContentView.swift in Sources */,
+				D5CC36892A44D4EE00DEC908 /* DeltaVisionApp.swift in Sources */,
+				D5CC36972A44D66B00DEC908 /* GameView.swift in Sources */,
+				D5CC368D2A44D4EE00DEC908 /* ImmersiveView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2036,6 +2151,89 @@
 			};
 			name = Release;
 		};
+		D5CC36932A44D4F000DEC908 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_ASSET_PATHS = "\"DeltaVision/Preview Content\"";
+				DEVELOPMENT_TEAM = 6XVY5G3U44;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rileytestut.DeltaVision;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = xros;
+				SUPPORTED_PLATFORMS = "xros xrsimulator";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,7";
+				XROS_DEPLOYMENT_TARGET = 1.0;
+			};
+			name = Debug;
+		};
+		D5CC36942A44D4F000DEC908 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"DeltaVision/Preview Content\"";
+				DEVELOPMENT_TEAM = 6XVY5G3U44;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rileytestut.DeltaVision;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = xros;
+				SUPPORTED_PLATFORMS = "xros xrsimulator";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,7";
+				XROS_DEPLOYMENT_TARGET = 1.0;
+			};
+			name = Release;
+		};
 		D5D7C1F629E60E0000663793 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2127,6 +2325,15 @@
 			buildConfigurations = (
 				D539103829E88B6C0006B350 /* Debug */,
 				D539103929E88B6C0006B350 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D5CC36952A44D4F000DEC908 /* Build configuration list for PBXNativeTarget "DeltaVision" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D5CC36932A44D4F000DEC908 /* Debug */,
+				D5CC36942A44D4F000DEC908 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

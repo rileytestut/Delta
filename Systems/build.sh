@@ -4,7 +4,7 @@
 set -e
 
 SCHEME="Systems"
-PLATFORM="iOS"
+PLATFORM="iOS Simulator"
 
 BUILD_DIR=".build"
 

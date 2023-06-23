@@ -1,11 +1,5 @@
 PODS:
   - Alamofire (4.7.3)
-  - AppAuth (1.6.2):
-    - AppAuth/Core (= 1.6.2)
-    - AppAuth/ExternalUserAgent (= 1.6.2)
-  - AppAuth/Core (1.6.2)
-  - AppAuth/ExternalUserAgent (1.6.2):
-    - AppAuth/Core
   - DeltaCore (0.1):
     - ZIPFoundation
   - DSDeltaCore (0.1):
@@ -14,30 +8,8 @@ PODS:
     - DeltaCore
   - GBCDeltaCore (0.1):
     - DeltaCore
-  - GoogleAPIClientForREST/Core (1.3.11):
-    - GTMSessionFetcher (>= 1.1.7)
-  - GoogleAPIClientForREST/Drive (1.3.11):
-    - GoogleAPIClientForREST/Core
-    - GTMSessionFetcher (>= 1.1.7)
-  - GoogleSignIn (5.0.2):
-    - AppAuth (~> 1.2)
-    - GTMAppAuth (~> 1.0)
-    - GTMSessionFetcher/Core (~> 1.1)
-  - GTMAppAuth (1.3.1):
-    - AppAuth/Core (~> 1.6)
-    - GTMSessionFetcher/Core (< 3.0, >= 1.5)
-  - GTMSessionFetcher (1.7.2):
-    - GTMSessionFetcher/Full (= 1.7.2)
-  - GTMSessionFetcher/Core (1.7.2)
-  - GTMSessionFetcher/Full (1.7.2):
-    - GTMSessionFetcher/Core (= 1.7.2)
   - Harmony (0.1):
-    - Harmony/Harmony-Drive (= 0.1)
     - Harmony/Harmony-Dropbox (= 0.1)
-    - Roxas
-  - Harmony/Harmony-Drive (0.1):
-    - GoogleAPIClientForREST/Drive (~> 1.3.0)
-    - GoogleSignIn (~> 5.0)
     - Roxas
   - Harmony/Harmony-Dropbox (0.1):
     - Roxas
@@ -86,11 +58,6 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - Alamofire
-    - AppAuth
-    - GoogleAPIClientForREST
-    - GoogleSignIn
-    - GTMAppAuth
-    - GTMSessionFetcher
     - SDWebImage
     - SMCalloutView
     - SQLite.swift
@@ -121,16 +88,11 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
-  AppAuth: 3bb1d1cd9340bd09f5ed189fb00b1cc28e1e8570
   DeltaCore: 6a430005ea397fcd5b40b964effe41ac69cc9037
   DSDeltaCore: d22a7cfbbe70f063b8c72dec9d1bcd2c59e14893
   GBADeltaCore: c2f7ce5e5616ed63d2b99c9ba9a7e020f2263248
   GBCDeltaCore: 27f09a1c88a4ac832aa549fbe34aaf277251b6b8
-  GoogleAPIClientForREST: 0f19a8280dfe6471f76016645d26eb5dae305101
-  GoogleSignIn: 7137d297ddc022a7e0aa4619c86d72c909fa7213
-  GTMAppAuth: 0ff230db599948a9ad7470ca667337803b3fc4dd
-  GTMSessionFetcher: 5595ec75acf5be50814f81e9189490412bad82ba
-  Harmony: 5fdc51d0a4f2ce7dcd4439becbbdda1fac4c9e3f
+  Harmony: 85055e0746e749fcb5e6a0b5083258d1877ba47b
   MelonDSDeltaCore: 46193f4fd88e4e18e4a5c841b1ae02dc46d1daa6
   N64DeltaCore: 4eeb468746722952bcd5467ecb9ebe7df070f53a
   NESDeltaCore: ffae3bba878fc505bac0914150a695ede7bc9550
@@ -144,4 +106,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: b33e8da65952bdb2b77ee1fca9bd0104d3da1713
 
-COCOAPODS: 1.12.0
+COCOAPODS: 1.12.1

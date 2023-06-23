@@ -23,7 +23,11 @@ struct iTunesImportOption: ImportOption
     }
     
     func `import`(withCompletionHandler completionHandler: @escaping (Set<URL>?) -> Void)
-    {
+    {        
+        UIApplication.shared.requestSceneSessionActivation(nil, userActivity: nil, options: nil) { error in
+            print("Failed to activate scene:", error)
+        }
+        
         let alertController = UIAlertController(title: NSLocalizedString("Import from iTunes?", comment: ""), message: NSLocalizedString("Delta will import the games and controller skins copied over via iTunes.", comment: ""), preferredStyle: .alert)
         
         let importAction = UIAlertAction(title: NSLocalizedString("Import", comment: ""), style: .default) { action in

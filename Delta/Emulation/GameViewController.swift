@@ -116,6 +116,10 @@ class GameViewController: DeltaCore.GameViewController
             self.updateAudio()
             
             self.presentedGyroAlert = false
+            
+            let sizeRestrictions = self.view.window?.windowScene?.sizeRestrictions
+            sizeRestrictions?.minimumSize = self.emulatorCore!.deltaCore.videoFormat.dimensions
+            sizeRestrictions?.maximumSize = CGSize(width: self.emulatorCore!.deltaCore.videoFormat.dimensions.width * 10, height: self.emulatorCore!.deltaCore.videoFormat.dimensions.height * 10)
         }
     }
     
