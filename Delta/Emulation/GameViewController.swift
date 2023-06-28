@@ -755,23 +755,25 @@ private extension GameViewController
                 let game = context.object(with: game.objectID) as! Game
                 
                 let hash = try RSTHasher.sha1HashOfFile(at: game.gameSaveURL)
-                let previousHash = game.gameSaveURL.extendedAttribute(name: "com.rileytestut.delta.sha1Hash")
+                let previousHash = game.gameSave?.sha1
                 
                 guard hash != previousHash else { return }
                 
                 if let gameSave = game.gameSave
                 {
                     gameSave.modifiedDate = Date()
+                    gameSave.sha1 = hash
                 }
                 else
                 {
                     let gameSave = GameSave(context: context)
                     gameSave.identifier = game.identifier
+                    gameSave.sha1 = hash
+                    
                     game.gameSave = gameSave
                 }
                 
                 try context.save()
-                try game.gameSaveURL.setExtendedAttribute(name: "com.rileytestut.delta.sha1Hash", value: hash)
                 
                 if ExperimentalFeatures.shared.toastNotifications.gameSaveEnabled
                 {

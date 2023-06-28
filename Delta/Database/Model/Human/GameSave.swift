@@ -30,7 +30,7 @@ extension GameSave: Syncable
     }
     
     public var syncableKeys: Set<AnyKeyPath> {
-        return [\GameSave.modifiedDate]
+        return [\GameSave.modifiedDate, \GameSave.sha1]
     }
     
     public var syncableRelationships: Set<AnyKeyPath> {
