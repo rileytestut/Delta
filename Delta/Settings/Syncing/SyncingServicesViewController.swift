@@ -170,7 +170,7 @@ extension SyncingServicesViewController
             
             if SyncManager.shared.coordinator?.account != nil
             {
-                let alertController = UIAlertController(title: NSLocalizedString("Are you sure you want to change sync services?", comment: ""), message: NSLocalizedString("Switching back later may result in conflicts that must be resolved manually.", comment: ""), preferredStyle: .actionSheet)
+                let alertController = UIAlertController(title: NSLocalizedString("Are you sure you want to change sync services?", comment: ""), message: NSLocalizedString("Switching back later may result in conflicts that must be resolved manually.", comment: ""), preferredStyle: .alert)
                 alertController.addAction(.cancel)
                 alertController.addAction(UIAlertAction(title: NSLocalizedString("Change Sync Service", comment: ""), style: .destructive, handler: { (action) in
                     self.changeService(to: syncingService)
@@ -188,7 +188,7 @@ extension SyncingServicesViewController
         case .authenticate:            
             if SyncManager.shared.coordinator?.account != nil
             {
-                let alertController = UIAlertController(title: NSLocalizedString("Are you sure you want to sign out?", comment: ""), message: NSLocalizedString("Signing in again later may result in conflicts that must be resolved manually.", comment: ""), preferredStyle: .actionSheet)
+                let alertController = UIAlertController(title: NSLocalizedString("Are you sure you want to sign out?", comment: ""), message: NSLocalizedString("Signing in again later may result in conflicts that must be resolved manually.", comment: ""), preferredStyle: .alert)
                 alertController.addAction(.cancel)
                 alertController.addAction(UIAlertAction(title: NSLocalizedString("Sign Out", comment: ""), style: .destructive) { (action) in
                     SyncManager.shared.deauthenticate { (result) in
