@@ -209,31 +209,7 @@ extension SyncManager
     {
         guard let coordinator = self.coordinator else { return completionHandler(.failure(AuthenticationError(Error.nilService))) }
         
-        coordinator.authenticate(presentingViewController: presentingViewController) { (result) in
-            do
-            {
-                let account = try result.get()
-                
-                if !coordinator.recordController.isSeeded
-                {
-                    coordinator.recordController.seedFromPersistentContainer { (result) in
-                        switch result
-                        {
-                        case .success: completionHandler(.success(account))
-                        case .failure(let error): completionHandler(.failure(AuthenticationError(error)))
-                        }
-                    }
-                }
-                else
-                {
-                    completionHandler(.success(account))
-                }
-            }
-            catch
-            {
-                completionHandler(.failure(AuthenticationError(error)))
-            }
-        }
+        coordinator.authenticate(presentingViewController: presentingViewController, completionHandler: completionHandler)
     }
     
     func deauthenticate(completionHandler: @escaping (Result<Void, DeauthenticationError>) -> Void)
