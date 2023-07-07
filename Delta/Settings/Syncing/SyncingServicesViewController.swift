@@ -32,12 +32,19 @@ extension SyncingServicesViewController
 class SyncingServicesViewController: UITableViewController
 {
     @IBOutlet private var syncingEnabledSwitch: UISwitch!
+    private var activityIndicatorView: UIActivityIndicatorView!
     
     private var selectedSyncingService = Settings.syncingService
     
     override func viewDidLoad()
     {
         super.viewDidLoad()
+        
+        self.activityIndicatorView = UIActivityIndicatorView(style: .medium)
+        self.activityIndicatorView.hidesWhenStopped = true
+        
+        let barButtonItem = UIBarButtonItem(customView: self.activityIndicatorView)
+        self.navigationItem.rightBarButtonItem = barButtonItem
         
         self.syncingEnabledSwitch.onTintColor = .deltaPurple
         self.syncingEnabledSwitch.isOn = (self.selectedSyncingService != nil)
@@ -215,6 +222,8 @@ extension SyncingServicesViewController
             }
             else
             {
+                self.activityIndicatorView.startAnimating()
+                
                 SyncManager.shared.authenticate(presentingViewController: self) { (result) in
                     DispatchQueue.main.async {
                         do
@@ -233,6 +242,8 @@ extension SyncingServicesViewController
                             let alertController = UIAlertController(title: NSLocalizedString("Failed to Sign In", comment: ""), error: error)
                             self.present(alertController, animated: true, completion: nil)
                         }
+                        
+                        self.activityIndicatorView.stopAnimating()
                     }
                 }
             }
