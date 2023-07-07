@@ -646,7 +646,7 @@ extension GamesViewController: NSFetchedResultsControllerDelegate
 
 extension GamesViewController: UIAdaptivePresentationControllerDelegate
 {
-    func presentationControllerWillDismiss(_ presentationController: UIPresentationController)
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController)
     {
         self.sync()
     }
