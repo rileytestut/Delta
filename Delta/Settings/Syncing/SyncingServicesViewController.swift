@@ -57,7 +57,9 @@ private extension SyncingServicesViewController
             if SyncManager.shared.coordinator?.account != nil
             {
                 let alertController = UIAlertController(title: NSLocalizedString("Disable Syncing?", comment: ""), message: NSLocalizedString("Enabling syncing again later may result in conflicts that must be resolved manually.", comment: ""), preferredStyle: .alert)
-                alertController.addAction(.cancel)
+                alertController.addAction(UIAlertAction(title: UIAlertAction.cancel.title, style: UIAlertAction.cancel.style) { (action) in
+                    sender.setOn(true, animated: true)
+                })
                 alertController.addAction(UIAlertAction(title: NSLocalizedString("Disable", comment: ""), style: .default) { (action) in
                     self.changeService(to: nil)
                 })
