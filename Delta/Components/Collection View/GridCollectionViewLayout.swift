@@ -50,7 +50,7 @@ class GridCollectionViewLayout: UICollectionViewFlowLayout
         return interitemSpacing
     }
     
-    private var cachedLayoutAttributes = [IndexPath: UICollectionViewLayoutAttributes]()
+    private var cachedCellLayoutAttributes = [IndexPath: UICollectionViewLayoutAttributes]()
     
     override var estimatedItemSize: CGSize {
         didSet {
@@ -73,8 +73,8 @@ class GridCollectionViewLayout: UICollectionViewFlowLayout
         if let context = context as? UICollectionViewFlowLayoutInvalidationContext,
             context.invalidateFlowLayoutAttributes || context.invalidateFlowLayoutDelegateMetrics || context.invalidateEverything
         {
-            // We must clear layout cache on iOS 17 or later to prevent crashing due to returning outdated layout attributes.
-            self.cachedLayoutAttributes = [:]
+            // Clear layout cache to prevent crashing due to returning outdated layout attributes.
+            self.cachedCellLayoutAttributes = [:]
         }
     }
     
@@ -151,10 +151,10 @@ class GridCollectionViewLayout: UICollectionViewFlowLayout
             }
         }
         
-        for attributes in layoutAttributes
+        for attributes in layoutAttributes where attributes.representedElementCategory == .cell
         {
             // Update cached attributes for layoutAttributesForItem(at:)
-            self.cachedLayoutAttributes[attributes.indexPath] = attributes
+            self.cachedCellLayoutAttributes[attributes.indexPath] = attributes
         }
         
         return layoutAttributes
@@ -162,7 +162,7 @@ class GridCollectionViewLayout: UICollectionViewFlowLayout
     
     override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes?
     {
-        if let cachedAttributes = self.cachedLayoutAttributes[indexPath]
+        if let cachedAttributes = self.cachedCellLayoutAttributes[indexPath]
         {
             return cachedAttributes
         }
