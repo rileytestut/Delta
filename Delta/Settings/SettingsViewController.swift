@@ -276,7 +276,7 @@ private extension SettingsViewController
                 let safariURL = URL(string: "https://twitter.com/" + username)!
                 
                 let safariViewController = SFSafariViewController(url: safariURL)
-                safariViewController.preferredControlTintColor = .deltaPurple
+                safariViewController.preferredControlTintColor = .themeColor
                 self.present(safariViewController, animated: true, completion: nil)
             }
         }
@@ -420,7 +420,7 @@ extension SettingsViewController
                 let patreonURL = URL(string: "https://www.patreon.com/rileytestut")!
                 
                 let safariViewController = SFSafariViewController(url: patreonURL)
-                safariViewController.preferredControlTintColor = .deltaPurple
+                safariViewController.preferredControlTintColor = .themeColor
                 self.present(safariViewController, animated: true, completion: nil)
             }
             

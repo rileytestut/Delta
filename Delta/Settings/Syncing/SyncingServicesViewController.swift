@@ -46,7 +46,7 @@ class SyncingServicesViewController: UITableViewController
         let barButtonItem = UIBarButtonItem(customView: self.activityIndicatorView)
         self.navigationItem.rightBarButtonItem = barButtonItem
         
-        self.syncingEnabledSwitch.onTintColor = .deltaPurple
+        self.syncingEnabledSwitch.onTintColor = .themeColor
         self.syncingEnabledSwitch.isOn = (self.selectedSyncingService != nil)
     }
 }
@@ -159,7 +159,7 @@ extension SyncingServicesViewController
             }
             else
             {
-                cell.textLabel?.textColor = .deltaPurple
+                cell.textLabel?.textColor = .themeColor
                 cell.textLabel?.text = NSLocalizedString("Sign In", comment: "")
             }
         }

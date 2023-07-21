@@ -179,7 +179,7 @@ private extension RecordVersionsViewController
         {
         case .restoreVersion:
             self.restoreButton.title = NSLocalizedString("Restore", comment: "")
-            self.restoreButton.tintColor = .deltaPurple
+            self.restoreButton.tintColor = .themeColor
             
             self.restoreButton.isEnabled = (self._selectedVersionIndexPath?.section == Section.remote.rawValue)
             

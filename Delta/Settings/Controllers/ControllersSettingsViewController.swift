@@ -141,6 +141,7 @@ private extension ControllersSettingsViewController
     {
         cell.accessoryType = .none
         cell.detailTextLabel?.text = nil
+        cell.tintColor = UIColor.themeColor
         
         if #available(iOS 13.0, *) {
             cell.textLabel?.textColor = .label

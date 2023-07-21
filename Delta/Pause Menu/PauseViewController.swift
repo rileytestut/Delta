@@ -90,7 +90,7 @@ extension PauseViewController
         case "embedNavigationController":
             self.pauseNavigationController = segue.destination as? UINavigationController
             self.pauseNavigationController.delegate = self
-            self.pauseNavigationController.navigationBar.tintColor = UIColor.deltaPurple
+            self.pauseNavigationController.navigationBar.tintColor = UIColor.themeColor
             self.pauseNavigationController.view.backgroundColor = UIColor.clear
             
             let gridMenuViewController = self.pauseNavigationController.topViewController as! GridMenuViewController
@@ -232,7 +232,7 @@ private extension PauseViewController
                     
                     if #available(iOS 16, *)
                     {
-                        let configuration = UIImage.SymbolConfiguration(hierarchicalColor: .deltaPurple)
+                        let configuration = UIImage.SymbolConfiguration(hierarchicalColor: .themeColor)
                         
                         let percentage = Double(index + 1) / Double(supportedSpeeds.count)
                         action.image = UIImage(systemName: "timelapse", variableValue: percentage, configuration: configuration)

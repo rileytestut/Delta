@@ -45,7 +45,7 @@ class ExternalDisplaySceneDelegate: UIResponder, UIWindowSceneDelegate
         guard let windowScene = scene as? UIWindowScene, let externalDisplayScene = scene as? ExternalDisplayScene else { return }
         
         self.window = GameWindow(windowScene: windowScene)
-        self.window?.tintColor = .deltaPurple
+        self.window?.tintColor = .themeColor
         self.window?.rootViewController = externalDisplayScene.gameViewController
         self.window?.makeKeyAndVisible()
     }
