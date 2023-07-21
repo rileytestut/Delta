@@ -36,6 +36,11 @@ struct ExperimentalFeatures: FeatureContainer
              options: ToastNotificationOptions())
     var toastNotifications
     
+    @Feature(name: "Theme Color",
+             description: "Change the theme color of the app. This affects the accent color of the UI.",
+             options: ThemeColorOptions())
+    var themeColor
+    
     private init()
     {
         self.prepareFeatures()
