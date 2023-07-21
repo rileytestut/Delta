@@ -282,6 +282,26 @@ private extension SettingsViewController
         }
     }
     
+    func updateAppIcon()
+    {
+        let currentIcon = UIApplication.shared.alternateIconName
+        
+        if Settings.experimentalFeatures.alternateAppIcons.isEnabled
+        {
+            let icon = Settings.experimentalFeatures.alternateAppIcons.icon
+            
+            switch icon
+            {
+            case .normal: if currentIcon != nil { UIApplication.shared.setAlternateIconName(nil) }
+            default: if currentIcon != icon.assetName { UIApplication.shared.setAlternateIconName(icon.assetName) }
+            }
+        }
+        else
+        {
+            if currentIcon != nil { UIApplication.shared.setAlternateIconName(nil) }
+        }
+    }
+    
     @available(iOS 14, *)
     func showContributors()
     {
@@ -314,6 +334,9 @@ private extension SettingsViewController
             {
                 self.tableView.selectRow(at: selectedIndexPath, animated: true, scrollPosition: .none)
             }
+            
+        case Settings.experimentalFeatures.alternateAppIcons.settingsKey, Settings.experimentalFeatures.alternateAppIcons.$icon.settingsKey:
+            self.updateAppIcon()
             
         case .localControllerPlayerIndex, .preferredControllerSkin, .translucentControllerSkinOpacity, .respectSilentMode, .isButtonHapticFeedbackEnabled, .isThumbstickHapticFeedbackEnabled, .isAltJITEnabled: break
         default: break
