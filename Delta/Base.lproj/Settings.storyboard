@@ -3,7 +3,7 @@
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -295,7 +295,7 @@
                                                 </label>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mlO-iy-zU2">
                                                     <rect key="frame" x="278" y="6.5" width="51" height="31"/>
-                                                    <color key="onTintColor" name="Purple"/>
+                                                    <color key="onTintColor" systemColor="tintColor"/>
                                                     <connections>
                                                         <action selector="toggleRespectSilentMode:" destination="eHi-aO-uGS" eventType="primaryActionTriggered" id="dyA-el-uRa"/>
                                                     </connections>
@@ -329,7 +329,7 @@
                                                 </label>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="g7m-wj-ueP">
                                                     <rect key="frame" x="278" y="6.5" width="51" height="31"/>
-                                                    <color key="onTintColor" name="Purple"/>
+                                                    <color key="onTintColor" systemColor="tintColor"/>
                                                     <connections>
                                                         <action selector="toggleButtonHapticFeedbackEnabled:" destination="eHi-aO-uGS" eventType="primaryActionTriggered" id="JkH-Ha-NqO"/>
                                                     </connections>
@@ -359,7 +359,7 @@
                                                 </label>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="19A-ef-F3V">
                                                     <rect key="frame" x="278" y="6.5" width="51" height="31"/>
-                                                    <color key="onTintColor" name="Purple"/>
+                                                    <color key="onTintColor" systemColor="tintColor"/>
                                                     <connections>
                                                         <action selector="toggleThumbstickHapticFeedbackEnabled:" destination="eHi-aO-uGS" eventType="primaryActionTriggered" id="pHq-hK-bcL"/>
                                                     </connections>
@@ -461,7 +461,7 @@
                                                 </label>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OJE-9e-9i3">
                                                     <rect key="frame" x="278" y="6.5" width="51" height="31"/>
-                                                    <color key="onTintColor" name="Purple"/>
+                                                    <color key="onTintColor" systemColor="tintColor"/>
                                                     <connections>
                                                         <action selector="togglePreviewsEnabled:" destination="eHi-aO-uGS" eventType="primaryActionTriggered" id="Rdg-zi-J7B"/>
                                                     </connections>
@@ -972,6 +972,7 @@
                                     <subviews>
                                         <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4bh-Lf-zgk">
                                             <rect key="frame" x="278" y="6.5" width="51" height="31"/>
+                                            <color key="onTintColor" systemColor="tintColor"/>
                                             <connections>
                                                 <action selector="switchGameShortcutsModeWith:" destination="yXS-6u-1AN" eventType="valueChanged" id="bX8-gd-h4g"/>
                                             </connections>
@@ -1174,6 +1175,7 @@
                                             <subviews>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vXS-JG-YrF">
                                                     <rect key="frame" x="278" y="6.5" width="51" height="31"/>
+                                                    <color key="onTintColor" systemColor="tintColor"/>
                                                     <connections>
                                                         <action selector="toggleSyncing:" destination="R9m-rV-VgV" eventType="primaryActionTriggered" id="KNw-Wb-hIW"/>
                                                     </connections>
@@ -1340,7 +1342,7 @@
                                             <rect key="frame" x="16" y="0.0" width="292.5" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" name="Purple"/>
+                                            <color key="textColor" systemColor="tintColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
@@ -1429,7 +1431,7 @@
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="K0v-VD-uUj">
                                                     <rect key="frame" x="163" y="6" width="49" height="31"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <color key="onTintColor" name="Purple"/>
+                                                    <color key="onTintColor" systemColor="tintColor"/>
                                                     <connections>
                                                         <action selector="toggleSyncingEnabled:" destination="kBh-Lp-rBr" eventType="primaryActionTriggered" id="OoQ-XU-uYY"/>
                                                     </connections>
@@ -1967,7 +1969,7 @@ Delta uses OpenVGDB to provide automatic artwork for imported games.</string>
                                                 </label>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="erK-Wq-1Lx">
                                                     <rect key="frame" x="278" y="6.5" width="51" height="31"/>
-                                                    <color key="onTintColor" name="Purple"/>
+                                                    <color key="onTintColor" systemColor="tintColor"/>
                                                     <connections>
                                                         <action selector="toggleTopScreenOnly:" destination="OwL-4c-EEA" eventType="valueChanged" id="Muw-Xa-Wy1"/>
                                                     </connections>
@@ -2000,7 +2002,7 @@ Delta uses OpenVGDB to provide automatic artwork for imported games.</string>
                                                 </label>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="F3O-5s-93H">
                                                     <rect key="frame" x="278" y="6.5" width="51" height="31"/>
-                                                    <color key="onTintColor" name="Purple"/>
+                                                    <color key="onTintColor" systemColor="tintColor"/>
                                                     <connections>
                                                         <action selector="toggleLayoutHorizontally:" destination="OwL-4c-EEA" eventType="valueChanged" id="Wnh-tj-Z01"/>
                                                     </connections>
@@ -2037,7 +2039,7 @@ Delta uses OpenVGDB to provide automatic artwork for imported games.</string>
                                                 </label>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4Y4-gY-MaX">
                                                     <rect key="frame" x="278" y="6.5" width="51" height="31"/>
-                                                    <color key="onTintColor" name="Purple"/>
+                                                    <color key="onTintColor" systemColor="tintColor"/>
                                                     <connections>
                                                         <action selector="toggleAltJITEnabled:" destination="OwL-4c-EEA" eventType="valueChanged" id="lfe-xg-J5o"/>
                                                     </connections>
@@ -2283,6 +2285,9 @@ Delta uses OpenVGDB to provide automatic artwork for imported games.</string>
         </systemColor>
         <systemColor name="systemRedColor">
             <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="tintColor">
+            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
