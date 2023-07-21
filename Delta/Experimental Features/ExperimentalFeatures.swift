@@ -36,6 +36,11 @@ struct ExperimentalFeatures: FeatureContainer
              options: ToastNotificationOptions())
     var toastNotifications
     
+    @Feature(name: "Alternate App Icon",
+             description: "Change the app icon.",
+             options: AlternateAppIconOptions())
+    var alternateAppIcons
+    
     private init()
     {
         self.prepareFeatures()
