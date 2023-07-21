@@ -568,6 +568,15 @@ private extension GamesViewController
     
     @objc func settingsDidChange(_ notification: Notification)
     {
+        guard let settingsName = notification.userInfo?[Settings.NotificationUserInfoKey.name] as? Settings.Name else { return }
+        
+        switch settingsName
+        {
+        case Settings.experimentalFeatures.themeColor.settingsKey, Settings.experimentalFeatures.themeColor.$presetColor.settingsKey, Settings.experimentalFeatures.themeColor.$useCustom.settingsKey, Settings.experimentalFeatures.themeColor.$customColor.settingsKey:
+            self.pageControl.currentPageIndicatorTintColor = UIColor.themeColor
+        default: break
+        }
+        
         guard let emulatorCore = self.activeEmulatorCore else { return }
         guard let game = emulatorCore.game as? Game else { return }
         

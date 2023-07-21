@@ -315,6 +315,9 @@ private extension SettingsViewController
                 self.tableView.selectRow(at: selectedIndexPath, animated: true, scrollPosition: .none)
             }
             
+        case Settings.experimentalFeatures.themeColor.settingsKey, Settings.experimentalFeatures.themeColor.$presetColor.settingsKey, Settings.experimentalFeatures.themeColor.$useCustom.settingsKey, Settings.experimentalFeatures.themeColor.$customColor.settingsKey:
+            self.update()
+            
         case .localControllerPlayerIndex, .preferredControllerSkin, .translucentControllerSkinOpacity, .respectSilentMode, .isButtonHapticFeedbackEnabled, .isThumbstickHapticFeedbackEnabled, .isAltJITEnabled: break
         default: break
         }

@@ -39,6 +39,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate
         
         self.window?.tintColor = .themeColor
         
+        NotificationCenter.default.addObserver(self, selector: #selector(SceneDelegate.settingsDidChange(with:)), name: .settingsDidChange, object: nil)
+        
         if let context = connectionOptions.urlContexts.first
         {
             self.handle(.url(context.url))
@@ -186,5 +188,19 @@ private extension SceneDelegate
         }
         
         rootViewController?.present(alertController, animated: true, completion: nil)
+    }
+    
+    
+    @objc func settingsDidChange(with notification: Notification)
+    {
+        guard let settingsName = notification.userInfo?[Settings.NotificationUserInfoKey.name] as? Settings.Name else { return }
+
+        switch settingsName
+        {
+        case Settings.experimentalFeatures.themeColor.settingsKey, Settings.experimentalFeatures.themeColor.$presetColor.settingsKey, Settings.experimentalFeatures.themeColor.$useCustom.settingsKey, Settings.experimentalFeatures.themeColor.$customColor.settingsKey:
+            self.window?.tintColor = UIColor.themeColor
+            self.window?.setNeedsLayout()
+        default: break
+        }
     }
 }
