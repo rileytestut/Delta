@@ -29,8 +29,9 @@ enum AppIcon: String, CaseIterable, CustomStringConvertible, Identifiable
     var author: String {
         switch self
         {
-        case .normal: return "Paul Thorsen"
-        case .inverted, .gba4ios, .skin, .pixelated: return "LitRitt"
+        case .normal: return "Caroline Moore"
+        case .gba4ios: return "Paul Thorsen"
+        case .inverted, .skin, .pixelated: return "LitRitt"
         }
     }
     
