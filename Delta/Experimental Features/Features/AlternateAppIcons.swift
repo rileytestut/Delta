@@ -13,10 +13,10 @@ import DeltaFeatures
 enum AppIcon: String, CaseIterable, CustomStringConvertible, Identifiable
 {
     case normal = "Default"
-    case inverted = "Inverted"
     case gba4ios = "GBA4iOS"
-    case skin = "Controller Skin"
+    case inverted = "Inverted"
     case pixelated = "Pixelated"
+    case skin = "Controller Skin"
     
     var description: String {
         return self.rawValue
@@ -39,10 +39,10 @@ enum AppIcon: String, CaseIterable, CustomStringConvertible, Identifiable
         switch self
         {
         case .normal: return "AppIcon"
-        case .inverted: return "IconInverted"
         case .gba4ios: return "IconGBA4iOS"
-        case .skin: return "IconSkin"
+        case .inverted: return "IconInverted"
         case .pixelated: return "IconPixelated"
+        case .skin: return "IconSkin"
         }
     }
 }
