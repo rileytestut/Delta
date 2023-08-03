@@ -50,7 +50,6 @@ extension Settings
 struct Settings
 {
     static let features = Features.shared
-    static let experimentalFeatures = ExperimentalFeatures.shared
     
     static func registerDefaults()
     {

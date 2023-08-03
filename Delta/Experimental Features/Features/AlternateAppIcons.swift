@@ -104,9 +104,9 @@ extension AlternateAppIconOptions
         let currentIcon = UIApplication.shared.alternateIconName
         
         // Apply chosen icon if feature is enabled
-        if Settings.experimentalFeatures.alternateAppIcons.isEnabled
+        if ExperimentalFeatures.shared.alternateAppIcons.isEnabled
         {
-            let icon = Settings.experimentalFeatures.alternateAppIcons.icon
+            let icon = ExperimentalFeatures.shared.alternateAppIcons.icon
             
             // Only apply new icon if it's not already the current icon
             switch icon
