@@ -282,30 +282,6 @@ private extension SettingsViewController
         }
     }
     
-    func updateAppIcon()
-    {
-        // Get current icon
-        let currentIcon = UIApplication.shared.alternateIconName
-        
-        // Apply chosen icon if feature is enabled
-        if Settings.experimentalFeatures.alternateAppIcons.isEnabled
-        {
-            let icon = Settings.experimentalFeatures.alternateAppIcons.icon
-            
-            // Only apply new icon if it's not already the current icon
-            switch icon
-            {
-            case .normal: if currentIcon != nil { UIApplication.shared.setAlternateIconName(nil) } // Default app icon
-            default: if currentIcon != icon.assetName { UIApplication.shared.setAlternateIconName(icon.assetName) } // Alternate app icon
-            }
-        }
-        else
-        {
-            // Remove alternate icons if feature is disabled
-            if currentIcon != nil { UIApplication.shared.setAlternateIconName(nil) }
-        }
-    }
-    
     @available(iOS 14, *)
     func showContributors()
     {
@@ -338,10 +314,6 @@ private extension SettingsViewController
             {
                 self.tableView.selectRow(at: selectedIndexPath, animated: true, scrollPosition: .none)
             }
-            
-        // Update app icon when alternate app icon feature is toggled or icon option is changed
-        case Settings.experimentalFeatures.alternateAppIcons.settingsKey, Settings.experimentalFeatures.alternateAppIcons.$icon.settingsKey:
-            self.updateAppIcon()
             
         case .localControllerPlayerIndex, .preferredControllerSkin, .translucentControllerSkinOpacity, .respectSilentMode, .isButtonHapticFeedbackEnabled, .isThumbstickHapticFeedbackEnabled, .isAltJITEnabled: break
         default: break

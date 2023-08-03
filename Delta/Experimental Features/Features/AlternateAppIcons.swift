@@ -47,6 +47,14 @@ enum AppIcon: String, CaseIterable, CustomStringConvertible, Identifiable
     }
 }
 
+extension AppIcon: Equatable
+{
+    static func == (lhs: AppIcon, rhs: AppIcon) -> Bool
+    {
+        return lhs.description == rhs.description
+    }
+}
+
 extension AppIcon: LocalizedOptionValue
 {
     var localizedDescription: Text {
@@ -79,7 +87,38 @@ struct AlternateAppIconOptions
                     value.wrappedValue = icon
                 }
             }
-        }.displayInline()
+        }
+        .onChange(of: value.wrappedValue) { _ in
+            updateAppIcon()
+        }
+        .displayInline()
     })
     var icon: AppIcon = .normal
+}
+
+extension AlternateAppIconOptions
+{
+    static func updateAppIcon()
+    {
+        // Get current icon
+        let currentIcon = UIApplication.shared.alternateIconName
+        
+        // Apply chosen icon if feature is enabled
+        if Settings.experimentalFeatures.alternateAppIcons.isEnabled
+        {
+            let icon = Settings.experimentalFeatures.alternateAppIcons.icon
+            
+            // Only apply new icon if it's not already the current icon
+            switch icon
+            {
+            case .normal: if currentIcon != nil { UIApplication.shared.setAlternateIconName(nil) } // Default app icon
+            default: if currentIcon != icon.assetName { UIApplication.shared.setAlternateIconName(icon.assetName) } // Alternate app icon
+            }
+        }
+        else
+        {
+            // Remove alternate icons if feature is disabled
+            if currentIcon != nil { UIApplication.shared.setAlternateIconName(nil) }
+        }
+    }
 }
