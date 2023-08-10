@@ -53,7 +53,7 @@ struct Settings
     
     static func registerDefaults()
     {
-        let defaults = [#keyPath(UserDefaults.translucentControllerSkinOpacity): 0.7,
+        var defaults = [#keyPath(UserDefaults.translucentControllerSkinOpacity): 0.7,
                         #keyPath(UserDefaults.gameShortcutsMode): GameShortcutsMode.recent.rawValue,
                         #keyPath(UserDefaults.isButtonHapticFeedbackEnabled): true,
                         #keyPath(UserDefaults.isThumbstickHapticFeedbackEnabled): true,
@@ -62,15 +62,21 @@ struct Settings
                         #keyPath(UserDefaults.isAltJITEnabled): false,
                         #keyPath(UserDefaults.respectSilentMode): true,
                         Settings.preferredCoreSettingsKey(for: .ds): MelonDS.core.identifier] as [String : Any]
-        UserDefaults.standard.register(defaults: defaults)
         
-        #if !BETA
+        #if BETA
+        
+        // Assume we need to repair database relationships until explicitly set to false.
+        defaults[#keyPath(UserDefaults.shouldRepairDatabase)] = true
+        
+        #else
         // Manually set MelonDS as preferred DS core in case DeSmuME is cached from a previous version.
         UserDefaults.standard.set(MelonDS.core.identifier, forKey: Settings.preferredCoreSettingsKey(for: .ds))
         
         // Manually disable AltJIT for public builds.
         UserDefaults.standard.isAltJITEnabled = false
         #endif
+        
+        UserDefaults.standard.register(defaults: defaults)
     }
 }
 

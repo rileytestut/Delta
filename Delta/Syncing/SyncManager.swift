@@ -221,6 +221,9 @@ extension SyncManager
     
     func sync()
     {
+        // Don't sync until we've repaired database.
+        guard !UserDefaults.standard.shouldRepairDatabase else { return }
+        
         let progress = self.coordinator?.sync()
         self.syncProgress = progress
     }

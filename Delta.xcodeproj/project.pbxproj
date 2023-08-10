@@ -200,6 +200,11 @@
 		D5A9C01D29DE058C00A8D610 /* VariableFastForward.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A9C01C29DE058C00A8D610 /* VariableFastForward.swift */; };
 		D5AAF27729884F8600F21ACF /* CheatDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5AAF27629884F8600F21ACF /* CheatDevice.swift */; };
 		D5ADD12229F33FBF00CE0560 /* Features.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5ADD12129F33FBF00CE0560 /* Features.swift */; };
+		D5CDCCEF2A859E5300E22131 /* OSLog+Delta.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CDCCC32A85765900E22131 /* OSLog+Delta.swift */; };
+		D5CDCCF02A859E5500E22131 /* UserDefaults+Delta.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CDCCEA2A8593FC00E22131 /* UserDefaults+Delta.swift */; };
+		D5CDCCF12A859E7500E22131 /* ReviewSaveStatesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A1375A2A7D8F2600AB1372 /* ReviewSaveStatesViewController.swift */; };
+		D5CDCCF22A859E7500E22131 /* RepairDatabaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A137442A7D814000AB1372 /* RepairDatabaseViewController.swift */; };
+		D5CDCCF32A859E7500E22131 /* GamePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A137662A7DB37200AB1372 /* GamePickerViewController.swift */; };
 		D5D78AE529F9BC3700E064F0 /* DSAirPlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D78AE429F9BC3700E064F0 /* DSAirPlay.swift */; };
 		D5D78AE729F9D40A00E064F0 /* EnvironmentValues+FeatureOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D78AE629F9D40A00E064F0 /* EnvironmentValues+FeatureOption.swift */; };
 		D5D797E6298D946200738869 /* Contributor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D797E5298D946200738869 /* Contributor.swift */; };
@@ -457,6 +462,9 @@
 		D58F39C529E0A473008B4100 /* Option.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Option.swift; sourceTree = "<group>"; };
 		D58F39C829E0A702008B4100 /* UserDefaults+OptionValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+OptionValues.swift"; sourceTree = "<group>"; };
 		D592D6FE29E48FFB008D218A /* OptionPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionPickerView.swift; sourceTree = "<group>"; };
+		D5A137442A7D814000AB1372 /* RepairDatabaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepairDatabaseViewController.swift; sourceTree = "<group>"; };
+		D5A1375A2A7D8F2600AB1372 /* ReviewSaveStatesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewSaveStatesViewController.swift; sourceTree = "<group>"; };
+		D5A137662A7DB37200AB1372 /* GamePickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamePickerViewController.swift; sourceTree = "<group>"; };
 		D5A817AF29DF4E6E00904AFE /* CustomTintColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTintColor.swift; sourceTree = "<group>"; };
 		D5A817B229DF6C6C00904AFE /* ExperimentalFeatures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExperimentalFeatures.swift; sourceTree = "<group>"; };
 		D5A98CE1284EF14B00E023E5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -466,6 +474,8 @@
 		D5A9C01C29DE058C00A8D610 /* VariableFastForward.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VariableFastForward.swift; sourceTree = "<group>"; };
 		D5AAF27629884F8600F21ACF /* CheatDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheatDevice.swift; sourceTree = "<group>"; };
 		D5ADD12129F33FBF00CE0560 /* Features.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Features.swift; sourceTree = "<group>"; };
+		D5CDCCC32A85765900E22131 /* OSLog+Delta.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OSLog+Delta.swift"; sourceTree = "<group>"; };
+		D5CDCCEA2A8593FC00E22131 /* UserDefaults+Delta.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Delta.swift"; sourceTree = "<group>"; };
 		D5D78AE429F9BC3700E064F0 /* DSAirPlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSAirPlay.swift; sourceTree = "<group>"; };
 		D5D78AE629F9D40A00E064F0 /* EnvironmentValues+FeatureOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EnvironmentValues+FeatureOption.swift"; sourceTree = "<group>"; };
 		D5D797E5298D946200738869 /* Contributor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contributor.swift; sourceTree = "<group>"; };
@@ -545,6 +555,8 @@
 				D5011C47281B6E8B00A0760B /* CharacterSet+Filename.swift */,
 				ACF7E30E29F743A3000FE071 /* PHPhotoLibrary+Authorization.swift */,
 				AC1C992629F9F1CF0020E6E4 /* GameViewController+ExperimentalToasts.swift */,
+				D5CDCCC32A85765900E22131 /* OSLog+Delta.swift */,
+				D5CDCCEA2A8593FC00E22131 /* UserDefaults+Delta.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -657,6 +669,7 @@
 				BF5942711E09BC690051894B /* Model */,
 				BF95E2751E49763D0030E7AD /* OpenVGDB */,
 				D586496E297734060081477E /* Cheats */,
+				D5CDCCE92A858DB900E22131 /* Repair */,
 			);
 			path = Database;
 			sourceTree = "<group>";
@@ -1114,6 +1127,16 @@
 			path = "Experimental Features";
 			sourceTree = "<group>";
 		};
+		D5CDCCE92A858DB900E22131 /* Repair */ = {
+			isa = PBXGroup;
+			children = (
+				D5A137442A7D814000AB1372 /* RepairDatabaseViewController.swift */,
+				D5A1375A2A7D8F2600AB1372 /* ReviewSaveStatesViewController.swift */,
+				D5A137662A7DB37200AB1372 /* GamePickerViewController.swift */,
+			);
+			path = Repair;
+			sourceTree = "<group>";
+		};
 		D5D78AE329F9BC0200E064F0 /* Features */ = {
 			isa = PBXGroup;
 			children = (
@@ -1511,6 +1534,7 @@
 				BFF6452E1F7CC5060056533E /* GameControllerInputMappingTransformer.swift in Sources */,
 				BF59427C1E09BC830051894B /* Cheat.swift in Sources */,
 				BFBAB2E31EB685A2004E0B0E /* DeltaCoreProtocol+Delta.swift in Sources */,
+				D5CDCCF22A859E7500E22131 /* RepairDatabaseViewController.swift in Sources */,
 				BF3540081C5DAFAD00C1184C /* PauseTransitionCoordinator.swift in Sources */,
 				BF525EEA1FF6CD12004AA849 /* DeepLink.swift in Sources */,
 				AC1C991029F8B8C30020E6E4 /* ToastNotificationOptions.swift in Sources */,
@@ -1537,6 +1561,7 @@
 				BF31878B1D489AAA00BD020D /* CheatValidator.swift in Sources */,
 				D560BD8629EDC45600289847 /* ExternalDisplaySceneDelegate.swift in Sources */,
 				BFFC46201D59823500AF2CC6 /* InitialGamesStoryboardSegue.swift in Sources */,
+				D5CDCCF02A859E5500E22131 /* UserDefaults+Delta.swift in Sources */,
 				BF15AF841F54B43B009B6AAB /* ActionInput.swift in Sources */,
 				D5D78AE529F9BC3700E064F0 /* DSAirPlay.swift in Sources */,
 				BF4828841F9027B600028B97 /* Delta.xcdatamodeld in Sources */,
@@ -1576,12 +1601,14 @@
 				BF34FA071CF0F510006624C7 /* EditCheatViewController.swift in Sources */,
 				BF1F45A421AF274D00EF9895 /* SyncResultViewController.swift in Sources */,
 				BF3D6C53220286750083E05A /* Delta3ToDelta4.xcmappingmodel in Sources */,
+				D5CDCCF12A859E7500E22131 /* ReviewSaveStatesViewController.swift in Sources */,
 				BF5942881E09BC8B0051894B /* _Game.swift in Sources */,
 				BF56450D220239B800A8EA26 /* GameControllerInputMappingMigrationPolicy.swift in Sources */,
 				BF95E2771E4977BF0030E7AD /* GameMetadata.swift in Sources */,
 				BFFC461F1D59823500AF2CC6 /* GamesStoryboardSegue.swift in Sources */,
 				BF2B98E61C97E32F00F6D57D /* SaveStatesCollectionHeaderView.swift in Sources */,
 				BFC9B7391CEFCD34008629BB /* CheatsViewController.swift in Sources */,
+				D5CDCCF32A859E7500E22131 /* GamePickerViewController.swift in Sources */,
 				D5864978297756CE0081477E /* CheatBaseView.swift in Sources */,
 				BF353FFF1C5DA3C500C1184C /* PausePresentationController.swift in Sources */,
 				BFFC464C1D5998D600AF2CC6 /* CheatTableViewCell.swift in Sources */,
@@ -1612,6 +1639,7 @@
 				BF107EC41BF413F000E0C32C /* GamesViewController.swift in Sources */,
 				BF3D6C512202865F0083E05A /* Delta2ToDelta3.xcmappingmodel in Sources */,
 				BF59426F1E09BC5D0051894B /* DatabaseManager.swift in Sources */,
+				D5CDCCEF2A859E5300E22131 /* OSLog+Delta.swift in Sources */,
 				BF4828861F9028F500028B97 /* System.swift in Sources */,
 				BF13A7561D5D29B0000BB055 /* PreviewGameViewController.swift in Sources */,
 				BF6866171DCAC8B900BF2D06 /* ControllerSkin+Configuring.swift in Sources */,
