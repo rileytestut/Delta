@@ -36,6 +36,11 @@ struct ExperimentalFeatures: FeatureContainer
              options: ToastNotificationOptions())
     var toastNotifications
     
+    @Feature(name: "Review Save States",
+             description: "Review recent Save States to make sure they are associated with the correct game.",
+             options: ReviewSaveStatesOptions())
+    var reviewSaveStates
+    
     private init()
     {
         self.prepareFeatures()

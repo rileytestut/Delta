@@ -97,11 +97,7 @@ private struct OptionRow<Option: AnyOption, DetailView: View>: View where Detail
             }
             else
             {
-                let wrappedDetailView = Form {
-                    detailView
-                }
-
-                NavigationLink(destination: wrappedDetailView) {
+                NavigationLink(destination: wrap(detailView)) {
                     HStack {
                         Text(name)
                         Spacer()
@@ -121,5 +117,25 @@ private struct OptionRow<Option: AnyOption, DetailView: View>: View where Detail
         .onPreferenceChange(DisplayInlineKey.self) { displayInline in
             self.displayInline = displayInline
         }
+    }
+    
+    func wrap(_ detailView: some View) -> AnyView
+    {
+        let wrappedDetailView: AnyView
+        
+        if self.detailView is any UIViewControllerRepresentable
+        {
+            wrappedDetailView = AnyView(detailView.ignoresSafeArea())
+        }
+        else
+        {
+            let form = Form {
+                detailView
+            }
+            
+            wrappedDetailView = AnyView(form)
+        }
+        
+        return wrappedDetailView
     }
 }
