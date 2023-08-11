@@ -12,6 +12,16 @@ import OSLog
 import Harmony
 import Roxas
 
+extension ReviewSaveStatesViewController
+{
+    enum Filter
+    {
+        case recent
+        case all
+        case sinceLastBeta
+    }
+}
+
 extension RecordFlags
 {
     static let isGameRelationshipVerified = RecordFlags(rawValue: 1 << 0)
@@ -19,6 +29,12 @@ extension RecordFlags
 
 class ReviewSaveStatesViewController: UITableViewController
 {
+    var filter: Filter = .recent {
+        didSet {
+            self.updateDataSource()
+        }
+    }
+    
     var completionHandler: (() -> Void)?
     
     private lazy var managedObjectContext = DatabaseManager.shared.newBackgroundSavingViewContext()
@@ -26,6 +42,8 @@ class ReviewSaveStatesViewController: UITableViewController
     private lazy var dataSource = self.makeDataSource()
     private lazy var descriptionDataSource = self.makeDescriptionDataSource()
     private lazy var saveStatesDataSource = self.makeSaveStatesDataSource()
+    
+    private weak var _parentNavigationController: UINavigationController?
     
     init()
     {
@@ -60,8 +78,36 @@ class ReviewSaveStatesViewController: UITableViewController
     {
         super.viewWillAppear(animated)
         
-        // Must set parent's navigationItem.title for when we're contained in SwiftUI View.
-        self.parent?.navigationItem.title = NSLocalizedString("Review Save States", comment: "")
+        if let parent = self.parent, parent.navigationItem.title == nil
+        {
+            // Must change parent's navigationItem when we're contained in SwiftUI View.
+            parent.navigationItem.title = NSLocalizedString("Review Save States", comment: "")
+            parent.navigationItem.rightBarButtonItem = self.makeFilterButton()
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool)
+    {
+        super.viewWillDisappear(animated)
+        
+        _parentNavigationController = self.parent?.navigationController
+    }
+    
+    override func viewDidDisappear(_ animated: Bool)
+    {
+        super.viewDidDisappear(animated)
+        
+        switch self.filter
+        {
+        case .all, .recent:
+            if self.parent == nil || self.parent?.parent == nil
+            {
+                // Only finish if we're popped off navigation controller.
+                self.finish()
+            }
+            
+        case .sinceLastBeta: break
+        }
     }
 }
 
@@ -83,13 +129,7 @@ private extension ReviewSaveStatesViewController
     
     func makeSaveStatesDataSource() -> RSTFetchedResultsTableViewPrefetchingDataSource<SaveState, UIImage>
     {
-        let oneMonthAgo = Calendar.current.date(byAdding: .month, value: -1, to: Date()) ?? Date().addingTimeInterval(-1 * 60 * 60 * 24 * 30)
-        
-        let fetchRequest = SaveState.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "%K > %@", #keyPath(SaveState.modifiedDate), oneMonthAgo as NSDate)
-        fetchRequest.sortDescriptors = [NSSortDescriptor(keyPath: \SaveState.game?.name, ascending: true), NSSortDescriptor(keyPath: \SaveState.modifiedDate, ascending: false)]
-        
-        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: #keyPath(SaveState.game.name), cacheName: nil)
+        let fetchedResultsController = self.makeSaveStatesFetchedResultsController()
         
         let dataSource = RSTFetchedResultsTableViewPrefetchingDataSource<SaveState, UIImage>(fetchedResultsController: fetchedResultsController)
         dataSource.cellConfigurationHandler = { (cell, saveState, indexPath) in
@@ -139,6 +179,67 @@ private extension ReviewSaveStatesViewController
         }
         
         return dataSource
+    }
+    
+    func makeSaveStatesFetchedResultsController() -> NSFetchedResultsController<SaveState>
+    {
+        let fetchRequest = SaveState.fetchRequest()
+        fetchRequest.returnsObjectsAsFaults = false
+        fetchRequest.sortDescriptors = [NSSortDescriptor(keyPath: \SaveState.game?.name, ascending: true), NSSortDescriptor(keyPath: \SaveState.modifiedDate, ascending: false)]
+        
+        let predicate = NSPredicate(format: "%K != %@", #keyPath(SaveState.type), SaveStateType.auto.rawValue as NSNumber)
+        
+        switch self.filter
+        {
+        case .recent:
+            let oneMonthAgo = Calendar.current.date(byAdding: .month, value: -1, to: Date()) ?? Date().addingTimeInterval(-1 * 60 * 60 * 24 * 30)
+            let recentPredicate = NSPredicate(format: "%K > %@", #keyPath(SaveState.modifiedDate), oneMonthAgo as NSDate)
+            
+            fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate, recentPredicate])
+            
+        case .all:
+            fetchRequest.predicate = predicate
+            
+        case .sinceLastBeta:
+            let dateComponents = DateComponents(year: 2023, month: 7, day: 18, hour: 0, minute: 0, second: 0)
+            let lastBetaDate = Calendar.current.date(from: dateComponents) ?? Date().addingTimeInterval(-1 * 60 * 60 * 24 * 45)
+            
+            let sinceLastBetaPredicate = NSPredicate(format: "%K > %@", #keyPath(SaveState.modifiedDate), lastBetaDate as NSDate)
+            fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate, sinceLastBetaPredicate])
+        }
+        
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: #keyPath(SaveState.game.name), cacheName: nil)
+        return fetchedResultsController
+    }
+    
+    func updateDataSource()
+    {
+        let fetchedResultsController = self.makeSaveStatesFetchedResultsController()
+        self.saveStatesDataSource.fetchedResultsController = fetchedResultsController
+    }
+    
+    func makeFilterButton() -> UIBarButtonItem
+    {
+        let recentAction = UIAction(title: NSLocalizedString("Past Month", comment: ""), image: UIImage(systemName: "calendar")) { [weak self] _ in
+            self?.filter = .recent
+        }
+        let allAction = UIAction(title: NSLocalizedString("All Time", comment: ""), image: UIImage(systemName: "clock")) { [weak self] _ in
+            self?.filter = .all
+        }
+        
+        var options: UIMenu.Options = []
+        if #available(iOS 15, *)
+        {
+            options = .singleSelection
+            
+            recentAction.state = self.filter == .recent ? .on : .off
+            allAction.state = self.filter == .all ? .on : .off
+        }
+        
+        let filterMenu = UIMenu(options: options, children: [recentAction, allAction])
+        
+        let filterButton = UIBarButtonItem(title: NSLocalizedString("Filter", comment: ""), image: UIImage(systemName: "calendar.badge.clock"), menu: filterMenu)
+        return filterButton
     }
 }
 
@@ -190,9 +291,22 @@ private extension ReviewSaveStatesViewController
         self.managedObjectContext.perform {
             do
             {
+                let saveStates: [SaveState]?
+                
+                switch self.filter
+                {
+                case .recent, .all:
+                    // Only upload metadata for changed SaveStates.
+                    saveStates = self.managedObjectContext.updatedObjects.compactMap { $0 as? SaveState }
+                    
+                case .sinceLastBeta:
+                    // Upload metadata for _all_ SaveStates.
+                    saveStates = self.saveStatesDataSource.fetchedResultsController.fetchedObjects
+                }
+                
                 try self.managedObjectContext.save()
                 
-                if let saveStates = self.saveStatesDataSource.fetchedResultsController.fetchedObjects, let coordinator = SyncManager.shared.coordinator
+                if let saveStates = saveStates, let coordinator = SyncManager.shared.coordinator
                 {
                     let records = try coordinator.recordController.fetchRecords(for: saveStates)
                     if let context = records.first?.recordedObject?.managedObjectContext
@@ -224,7 +338,7 @@ private extension ReviewSaveStatesViewController
                     self.navigationItem.rightBarButtonItem?.isIndicatingActivity = false
                     
                     let alertController = UIAlertController(title: NSLocalizedString("Unable to Save Changes", comment: ""), error: error)
-                    self.present(alertController, animated: true)
+                    (self._parentNavigationController ?? self).present(alertController, animated: true)
                 }
             }
         }

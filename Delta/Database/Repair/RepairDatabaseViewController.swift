@@ -422,6 +422,7 @@ private extension RepairDatabaseViewController
         Logger.database.info("Finished repairing Games and GameSaves, reviewing recent SaveStates...")
         
         let viewController = ReviewSaveStatesViewController()
+        viewController.filter = .sinceLastBeta
         viewController.completionHandler = { [weak self] in
             self?.finish()
         }
