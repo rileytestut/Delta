@@ -201,6 +201,7 @@
 		D5A9C01D29DE058C00A8D610 /* VariableFastForward.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A9C01C29DE058C00A8D610 /* VariableFastForward.swift */; };
 		D5AAF27729884F8600F21ACF /* CheatDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5AAF27629884F8600F21ACF /* CheatDevice.swift */; };
 		D5ADD12229F33FBF00CE0560 /* Features.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5ADD12129F33FBF00CE0560 /* Features.swift */; };
+		D5CDCCEE2A859DC200E22131 /* SyncValidationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CDCCEC2A859B2B00E22131 /* SyncValidationError.swift */; };
 		D5CDCCEF2A859E5300E22131 /* OSLog+Delta.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CDCCC32A85765900E22131 /* OSLog+Delta.swift */; };
 		D5CDCCF02A859E5500E22131 /* UserDefaults+Delta.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CDCCEA2A8593FC00E22131 /* UserDefaults+Delta.swift */; };
 		D5CDCCF12A859E7500E22131 /* ReviewSaveStatesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A1375A2A7D8F2600AB1372 /* ReviewSaveStatesViewController.swift */; };
@@ -478,6 +479,7 @@
 		D5ADD12129F33FBF00CE0560 /* Features.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Features.swift; sourceTree = "<group>"; };
 		D5CDCCC32A85765900E22131 /* OSLog+Delta.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OSLog+Delta.swift"; sourceTree = "<group>"; };
 		D5CDCCEA2A8593FC00E22131 /* UserDefaults+Delta.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Delta.swift"; sourceTree = "<group>"; };
+		D5CDCCEC2A859B2B00E22131 /* SyncValidationError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncValidationError.swift; sourceTree = "<group>"; };
 		D5D78AE429F9BC3700E064F0 /* DSAirPlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSAirPlay.swift; sourceTree = "<group>"; };
 		D5D78AE629F9D40A00E064F0 /* EnvironmentValues+FeatureOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EnvironmentValues+FeatureOption.swift"; sourceTree = "<group>"; };
 		D5D797E5298D946200738869 /* Contributor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contributor.swift; sourceTree = "<group>"; };
@@ -888,6 +890,7 @@
 			isa = PBXGroup;
 			children = (
 				BFAB9F7C219A43380080EC7D /* SyncManager.swift */,
+				D5CDCCEC2A859B2B00E22131 /* SyncValidationError.swift */,
 				BF1F45A321AF274D00EF9895 /* SyncResultViewController.swift */,
 				BF1F45AA21AF4B5800EF9895 /* SyncResultsViewController.storyboard */,
 			);
@@ -1660,6 +1663,7 @@
 				BF8CA9361F5F651900499FDD /* PopoverMenuController.swift in Sources */,
 				BFEF24F31F7DD4FD00454C62 /* SaveStateMigrationPolicy.swift in Sources */,
 				BF5942931E09BD1A0051894B /* NSFetchedResultsController+Conveniences.m in Sources */,
+				D5CDCCEE2A859DC200E22131 /* SyncValidationError.swift in Sources */,
 				BF4828881F90290F00028B97 /* Action.swift in Sources */,
 				BF6BF3271EB87EB8008E83CD /* PhotoLibraryImportOption.swift in Sources */,
 				BF5942661E09BBB10051894B /* LoadImageURLOperation.swift in Sources */,

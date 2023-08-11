@@ -53,7 +53,9 @@ extension GameSave: Syncable
     
     public var syncableMetadata: [HarmonyMetadataKey : String] {
         guard let game = self.game else { return [:] }
-        return [.gameID: game.identifier, .gameName: game.name]
+        
+        // Use self.identifier to always link with exact matching game.
+        return [.gameID: self.identifier, .gameName: game.name]
     }
     
     public var syncableLocalizedName: String? {
@@ -65,5 +67,31 @@ extension GameSave: Syncable
         // guard let identifier = self.game?.identifier else { return false }
         
         return self.game?.identifier != Game.melonDSBIOSIdentifier && self.game?.identifier != Game.melonDSDSiBIOSIdentifier
+    }
+    
+    public func awakeFromSync(_ record: AnyRecord) throws
+    {
+        guard let game = self.game else { throw SyncValidationError.incorrectGame(nil) }
+        
+        if game.identifier != self.identifier
+        {
+            let fetchRequest = GameSave.fetchRequest()
+            fetchRequest.predicate = NSPredicate(format: "%K == %@", #keyPath(GameSave.identifier), game.identifier)
+            
+            if let misplacedGameSave = try self.managedObjectContext?.fetch(fetchRequest).first, misplacedGameSave.game == nil
+            {
+                // Relink game with its correct gameSave, in case we accidentally misplaced it.
+                // Otherwise, corrupted records might displace already-downloaded GameSaves
+                // due to automatic Core Data relationship propagation, despite us throwing error.
+                game.gameSave = misplacedGameSave
+            }
+            else
+            {
+                // Either there is no misplacedGameSave, or there is but it's linked to another game somehow.
+                game.gameSave = nil
+            }
+            
+            throw SyncValidationError.incorrectGame(game.name)
+        }
     }
 }

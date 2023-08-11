@@ -199,4 +199,14 @@ extension Game: Syncable
     public var syncableLocalizedName: String? {
         return self.name
     }
+    
+    public func awakeFromSync(_ record: AnyRecord) throws
+    {
+        guard let gameCollection = self.gameCollection else { throw SyncValidationError.incorrectGameCollection(nil) }
+        
+        if gameCollection.identifier != self.type.rawValue
+        {
+            throw SyncValidationError.incorrectGameCollection(gameCollection.name)
+        }
+    }
 }
