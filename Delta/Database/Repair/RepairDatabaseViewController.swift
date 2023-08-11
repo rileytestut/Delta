@@ -119,7 +119,7 @@ private extension RepairDatabaseViewController
                     let gameCollection = gameCollectionsByID[game.type.rawValue]
                     game.gameCollection = gameCollection
                     
-                    Logger.database.debug("Re-associating “\(game.name, privacy: .public)” with GameCollection: \(gameCollection?.identifier ?? "nil", privacy: .public)")
+                    Logger.database.notice("Re-associating “\(game.name, privacy: .public)” with GameCollection: \(gameCollection?.identifier ?? "nil", privacy: .public)")
                 }
                 
                 try self.managedObjectContext.save()
@@ -178,7 +178,7 @@ private extension RepairDatabaseViewController
                             {
                                 record.perform { managedRecord in
                                     // Mark ALL affected GameSaves as conflicted.
-                                    Logger.database.debug("Marking record \(managedRecord.recordID, privacy: .public) as conflicted.")
+                                    Logger.database.notice("Marking record \(managedRecord.recordID, privacy: .public) as conflicted.")
                                     managedRecord.isConflicted = true
                                 }
                             }
@@ -205,7 +205,7 @@ private extension RepairDatabaseViewController
     
     func repair(_ gameSave: GameSave, backupsDirectory: URL)
     {
-        Logger.database.debug("Repairing GameSave \(gameSave.identifier, privacy: .public)...")
+        Logger.database.notice("Repairing GameSave \(gameSave.identifier, privacy: .public)...")
         
         guard let expectedGame = self.gamesByID?[gameSave.identifier] else {
             // Game doesn't exist, so we'll back up save file and delete record.
@@ -296,7 +296,7 @@ private extension RepairDatabaseViewController
     
     func backup(_ gameSave: GameSave, for expectedGame: Game?, to backupsDirectory: URL) throws
     {
-        Logger.database.debug("Backing up GameSave \(gameSave.identifier, privacy: .public). Expected Game: \(expectedGame?.name ?? "nil", privacy: .public)")
+        Logger.database.notice("Backing up GameSave \(gameSave.identifier, privacy: .public). Expected Game: \(expectedGame?.name ?? "nil", privacy: .public)")
         
         if let game = gameSave.game
         {
@@ -333,7 +333,7 @@ private extension RepairDatabaseViewController
                 let destinationURL = backupsDirectory.appendingPathComponent(sanitizedFilename).appendingPathExtension(saveFileExtension)
                 try FileManager.default.copyItem(at: game.gameSaveURL, to: destinationURL, shouldReplace: true)
                 
-                Logger.database.debug("Backed up save file \(game.gameSaveURL.lastPathComponent, privacy: .public) to \(destinationURL.lastPathComponent, privacy: .public)")
+                Logger.database.notice("Backed up save file \(game.gameSaveURL.lastPathComponent, privacy: .public) to \(destinationURL.lastPathComponent, privacy: .public)")
                 
                 let rtcFileURL = game.gameSaveURL.deletingPathExtension().appendingPathExtension("rtc")
                 if FileManager.default.fileExists(atPath: rtcFileURL.path)
@@ -341,7 +341,7 @@ private extension RepairDatabaseViewController
                     let destinationURL = backupsDirectory.appendingPathComponent(sanitizedFilename).appendingPathExtension("rtc")
                     try FileManager.default.copyItem(at: rtcFileURL, to: destinationURL, shouldReplace: true)
                     
-                    Logger.database.debug("Backed up RTC save file \(rtcFileURL.lastPathComponent, privacy: .public) to \(destinationURL.lastPathComponent, privacy: .public)")
+                    Logger.database.notice("Backed up RTC save file \(rtcFileURL.lastPathComponent, privacy: .public) to \(destinationURL.lastPathComponent, privacy: .public)")
                 }
             }
             
@@ -356,7 +356,7 @@ private extension RepairDatabaseViewController
                 let destinationURL = backupsDirectory.appendingPathComponent(sanitizedFilename).appendingPathExtension(saveFileExtension)
                 try FileManager.default.copyItem(at: expectedGame.gameSaveURL, to: destinationURL, shouldReplace: true)
                 
-                Logger.database.debug("Backed up expected save file \(expectedGame.gameSaveURL.lastPathComponent, privacy: .public) to \(destinationURL.lastPathComponent, privacy: .public)")
+                Logger.database.notice("Backed up expected save file \(expectedGame.gameSaveURL.lastPathComponent, privacy: .public) to \(destinationURL.lastPathComponent, privacy: .public)")
                 
                 let rtcFileURL = expectedGame.gameSaveURL.deletingPathExtension().appendingPathExtension("rtc")
                 if FileManager.default.fileExists(atPath: rtcFileURL.path)
@@ -364,7 +364,7 @@ private extension RepairDatabaseViewController
                     let destinationURL = backupsDirectory.appendingPathComponent(sanitizedFilename).appendingPathExtension("rtc")
                     try FileManager.default.copyItem(at: rtcFileURL, to: destinationURL, shouldReplace: true)
                     
-                    Logger.database.debug("Backed up expected RTC save file \(rtcFileURL.lastPathComponent, privacy: .public) to \(destinationURL.lastPathComponent, privacy: .public)")
+                    Logger.database.notice("Backed up expected RTC save file \(rtcFileURL.lastPathComponent, privacy: .public) to \(destinationURL.lastPathComponent, privacy: .public)")
                 }
             }
         }
@@ -392,7 +392,7 @@ private extension RepairDatabaseViewController
                 let destinationURL = backupsDirectory.appendingPathComponent(sanitizedFilename).appendingPathExtension(saveFileURL.pathExtension)
                 try FileManager.default.copyItem(at: saveFileURL, to: destinationURL, shouldReplace: true)
                 
-                Logger.database.debug("Backed up discovered save file \(saveFileURL.lastPathComponent, privacy: .public) to \(destinationURL.lastPathComponent, privacy: .public)")
+                Logger.database.notice("Backed up discovered save file \(saveFileURL.lastPathComponent, privacy: .public) to \(destinationURL.lastPathComponent, privacy: .public)")
                 
                 return true
             }

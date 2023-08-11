@@ -278,7 +278,7 @@ private extension ReviewSaveStatesViewController
             let tempGame = self.managedObjectContext.object(with: game.objectID) as! Game
             saveState.game = tempGame
             
-            Logger.database.debug("Re-associated SaveState “\(saveState.localizedName, privacy: .public)” with game “\(tempGame.name, privacy: .public)”. Previously: \(previousGame?.name ?? "nil", privacy: .public)")
+            Logger.database.notice("Re-associated SaveState “\(saveState.localizedName, privacy: .public)” with game “\(tempGame.name, privacy: .public)”. Previously: \(previousGame?.name ?? "nil", privacy: .public)")
         }
         
         self.navigationController?.pushViewController(gamePickerViewController, animated: true)
