@@ -136,7 +136,7 @@ private extension RecordVersionsViewController
         
         let localVersionsDataSource = RSTDynamicTableViewDataSource<Version>()
         localVersionsDataSource.numberOfSectionsHandler = { 1 }
-        localVersionsDataSource.numberOfItemsHandler = { [weak self] _ in self?.record.localModificationDate != nil ? 1 : 0 }
+        localVersionsDataSource.numberOfItemsHandler = { [weak self] _ in self?.record.localModificationDate != nil ? 1 : 0 } // fetchVersions() assumes this logic, so update there too.
         localVersionsDataSource.cellConfigurationHandler = { [weak self] (cell, _, indexPath) in
             guard let `self` = self else { return }
             
@@ -200,6 +200,19 @@ private extension RecordVersionsViewController
                 self.versions = versions
                 
                 DispatchQueue.main.async {
+                    let previousLocalVersionExists = self.tableView.numberOfRows(inSection: Section.local.rawValue) > 0
+                    let localVersionExists = self.record.localModificationDate != nil
+                    
+                    let localVersionIndexPath = IndexPath(row: 0, section: Section.local.rawValue)
+                    if !previousLocalVersionExists && localVersionExists
+                    {
+                        self.tableView.insertRows(at: [localVersionIndexPath], with: .fade)
+                    }
+                    else if previousLocalVersionExists && !localVersionExists
+                    {
+                        self.tableView.deleteRows(at: [localVersionIndexPath], with: .fade)
+                    }
+                    
                     let count = self.tableView.numberOfRows(inSection: Section.remote.rawValue)
                     
                     let deletions = (0 ..< count).map { (row) -> RSTCellContentChange in
