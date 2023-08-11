@@ -258,6 +258,8 @@ private extension RecordVersionsViewController
         {
             DispatchQueue.main.async {
                 
+                GameSave.ignoredCorruptedIDs.remove(self.record.recordID.identifier)
+                
                 CATransaction.begin()
                 
                 CATransaction.setCompletionBlock {
@@ -287,17 +289,34 @@ private extension RecordVersionsViewController
                 }
                 catch
                 {
-                    let title: String
-                    
-                    switch self.mode
+                    switch error
                     {
-                    case .restoreVersion: title = NSLocalizedString("Failed to Restore Version", comment: "")
-                    case .resolveConflict: title = NSLocalizedString("Failed to Resolve Conflict", comment: "")
+                    case RecordError.other(let record, let error as SyncValidationError):
+                        // Only allow restoring corrupted records with incorrect games.
+                        guard case .incorrectGame = error else { fallthrough }
+                        
+                        let message = NSLocalizedString("Would you like to download this version anyway?", comment: "")
+                        let alertController = UIAlertController(title: NSLocalizedString("Record Version Corrupted", comment: ""), message: message, preferredStyle: .alert)
+                        alertController.addAction(.cancel)
+                        alertController.addAction(UIAlertAction(title: NSLocalizedString("Download Anyway", comment: ""), style: .destructive) { _ in
+                            GameSave.ignoredCorruptedIDs.insert(record.recordID.identifier)
+                            self.restoreVersion()
+                        })
+                        self.present(alertController, animated: true, completion: nil)
+                        
+                    default:
+                        let title: String
+                        
+                        switch self.mode
+                        {
+                        case .restoreVersion: title = NSLocalizedString("Failed to Restore Version", comment: "")
+                        case .resolveConflict: title = NSLocalizedString("Failed to Resolve Conflict", comment: "")
+                        }
+                        
+                        let alertController = UIAlertController(title: title, message: error.localizedDescription, preferredStyle: .alert)
+                        alertController.addAction(.ok)
+                        self.present(alertController, animated: true, completion: nil)
                     }
-                    
-                    let alertController = UIAlertController(title: title, message: error.localizedDescription, preferredStyle: .alert)
-                    alertController.addAction(.ok)
-                    self.present(alertController, animated: true, completion: nil)
                 }
                 
                 CATransaction.commit()

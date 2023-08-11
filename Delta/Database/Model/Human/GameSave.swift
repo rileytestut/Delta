@@ -23,6 +23,12 @@ public class GameSave: _GameSave
     }
 }
 
+extension GameSave
+{
+    // Hacky, but YOLO I'm under time crunch.
+    public static var ignoredCorruptedIDs = Set<String>()
+}
+
 extension GameSave: Syncable
 {
     public static var syncablePrimaryKey: AnyKeyPath {
@@ -71,27 +77,46 @@ extension GameSave: Syncable
     
     public func awakeFromSync(_ record: AnyRecord) throws
     {
-        guard let game = self.game else { throw SyncValidationError.incorrectGame(nil) }
-        
-        if game.identifier != self.identifier
+        do
         {
-            let fetchRequest = GameSave.fetchRequest()
-            fetchRequest.predicate = NSPredicate(format: "%K == %@", #keyPath(GameSave.identifier), game.identifier)
+            guard let game = self.game else { throw SyncValidationError.incorrectGame(nil) }
             
-            if let misplacedGameSave = try self.managedObjectContext?.fetch(fetchRequest).first, misplacedGameSave.game == nil
+            if game.identifier != self.identifier
             {
-                // Relink game with its correct gameSave, in case we accidentally misplaced it.
-                // Otherwise, corrupted records might displace already-downloaded GameSaves
-                // due to automatic Core Data relationship propagation, despite us throwing error.
-                game.gameSave = misplacedGameSave
+                let fetchRequest = GameSave.fetchRequest()
+                fetchRequest.predicate = NSPredicate(format: "%K == %@", #keyPath(GameSave.identifier), game.identifier)
+                
+                if let misplacedGameSave = try self.managedObjectContext?.fetch(fetchRequest).first, misplacedGameSave.game == nil
+                {
+                    // Relink game with its correct gameSave, in case we accidentally misplaced it.
+                    // Otherwise, corrupted records might displace already-downloaded GameSaves
+                    // due to automatic Core Data relationship propagation, despite us throwing error.
+                    game.gameSave = misplacedGameSave
+                }
+                else
+                {
+                    // Either there is no misplacedGameSave, or there is but it's linked to another game somehow.
+                    game.gameSave = nil
+                }
+                
+                throw SyncValidationError.incorrectGame(game.name)
+            }
+        }
+        catch let error as SyncValidationError
+        {
+            guard GameSave.ignoredCorruptedIDs.contains(self.identifier) else { throw error }
+            
+            let fetchRequest = Game.fetchRequest()
+            fetchRequest.predicate = NSPredicate(format: "%K == %@", #keyPath(Game.identifier), self.identifier)
+            
+            if let correctGame = try self.managedObjectContext?.fetch(fetchRequest).first
+            {
+                self.game = correctGame
             }
             else
             {
-                // Either there is no misplacedGameSave, or there is but it's linked to another game somehow.
-                game.gameSave = nil
+                throw ValidationError.nilRelationshipObjects(keys: [#keyPath(GameSave.game)])
             }
-            
-            throw SyncValidationError.incorrectGame(game.name)
         }
     }
 }
