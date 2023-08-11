@@ -41,6 +41,11 @@ struct ExperimentalFeatures: FeatureContainer
              options: ReviewSaveStatesOptions())
     var reviewSaveStates
     
+    @Feature(name: "Alternate App Icon",
+             description: "Change the app icon.",
+             options: AlternateAppIconOptions())
+    var alternateAppIcons
+    
     private init()
     {
         self.prepareFeatures()
