@@ -95,6 +95,9 @@ final class SyncManager
         return self.coordinator?.recordController
     }
     
+    // Hacky, but YOLO I'm under time crunch.
+    public var ignoredCorruptedRecordIDs = Set<RecordID>()
+    
     private(set) var syncProgress: Progress?
         
     private(set) var previousSyncResult: SyncResult?

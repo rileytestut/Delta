@@ -258,7 +258,7 @@ private extension RecordVersionsViewController
         {
             DispatchQueue.main.async {
                 
-                GameSave.ignoredCorruptedIDs.remove(self.record.recordID.identifier)
+                SyncManager.shared.ignoredCorruptedRecordIDs.remove(self.record.recordID)
                 
                 CATransaction.begin()
                 
@@ -295,11 +295,11 @@ private extension RecordVersionsViewController
                         // Only allow restoring corrupted records with incorrect games.
                         guard case .incorrectGame = error else { fallthrough }
                         
-                        let message = NSLocalizedString("Would you like to download this version anyway?", comment: "")
-                        let alertController = UIAlertController(title: NSLocalizedString("Record Version Corrupted", comment: ""), message: message, preferredStyle: .alert)
+                        let message = NSLocalizedString("Would you like to download this version anyway? Delta will try to fix the corruption if possible.", comment: "")
+                        let alertController = UIAlertController(title: NSLocalizedString("Version Corrupted", comment: ""), message: message, preferredStyle: .alert)
                         alertController.addAction(.cancel)
                         alertController.addAction(UIAlertAction(title: NSLocalizedString("Download Anyway", comment: ""), style: .destructive) { _ in
-                            GameSave.ignoredCorruptedIDs.insert(record.recordID.identifier)
+                            SyncManager.shared.ignoredCorruptedRecordIDs.insert(record.recordID)
                             self.restoreVersion()
                         })
                         self.present(alertController, animated: true, completion: nil)

@@ -9,7 +9,13 @@
 import UIKit
 import OSLog
 
+import Harmony
 import Roxas
+
+extension RecordFlags
+{
+    static let isGameRelationshipVerified = RecordFlags(rawValue: 1 << 0)
+}
 
 class ReviewSaveStatesViewController: UITableViewController
 {
@@ -185,6 +191,28 @@ private extension ReviewSaveStatesViewController
             do
             {
                 try self.managedObjectContext.save()
+                
+                if let saveStates = self.saveStatesDataSource.fetchedResultsController.fetchedObjects, let coordinator = SyncManager.shared.coordinator
+                {
+                    let records = try coordinator.recordController.fetchRecords(for: saveStates)
+                    if let context = records.first?.recordedObject?.managedObjectContext
+                    {
+                        try context.performAndWait {
+                            for record in records
+                            {
+                                record.perform { managedRecord in
+                                    managedRecord.flags.insert(.isGameRelationshipVerified)
+                                    managedRecord.setNeedsMetadataUpdate()
+                                    
+                                    let saveState = record.recordedObject
+                                    Logger.database.notice("Flagged SaveState “\(saveState?.localizedName ?? record.recordID.identifier, privacy: .public)” for metadata update.")
+                                }
+                            }
+                            
+                            try context.save()
+                        }
+                    }
+                }
                 
                 DispatchQueue.main.async {
                     self.completionHandler?()

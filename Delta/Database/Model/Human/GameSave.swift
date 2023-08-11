@@ -23,12 +23,6 @@ public class GameSave: _GameSave
     }
 }
 
-extension GameSave
-{
-    // Hacky, but YOLO I'm under time crunch.
-    public static var ignoredCorruptedIDs = Set<String>()
-}
-
 extension GameSave: Syncable
 {
     public static var syncablePrimaryKey: AnyKeyPath {
@@ -104,7 +98,7 @@ extension GameSave: Syncable
         }
         catch let error as SyncValidationError
         {
-            guard GameSave.ignoredCorruptedIDs.contains(self.identifier) else { throw error }
+            guard SyncManager.shared.ignoredCorruptedRecordIDs.contains(record.recordID) else { throw error }
             
             let fetchRequest = Game.fetchRequest()
             fetchRequest.predicate = NSPredicate(format: "%K == %@", #keyPath(Game.identifier), self.identifier)
