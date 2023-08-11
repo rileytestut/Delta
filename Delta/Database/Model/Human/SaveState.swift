@@ -141,7 +141,7 @@ extension SaveState: Syncable
         return self.localizedName
     }
     
-    public func awakeFromSync(_ record: AnyRecord)
+    public func awakeFromSync(_ record: AnyRecord) throws
     {
         let verifiedGameID = record.remoteMetadata?[.verifiedGameID]
         
