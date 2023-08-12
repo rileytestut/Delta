@@ -62,7 +62,7 @@ private extension GamePickerViewController
             configuration.secondaryText = game.identifier
             configuration.secondaryTextProperties.font = .preferredFont(forTextStyle: .caption1)
             
-            configuration.image = UIImage(resource: .boxArt)
+            configuration.image = UIImage(named: "BoxArt")
             configuration.imageProperties.maximumSize = CGSize(width: 48, height: 48)
             configuration.imageProperties.reservedLayoutSize = CGSize(width: 48, height: 48)
             configuration.imageProperties.cornerRadius = 4

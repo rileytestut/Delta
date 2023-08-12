@@ -26,13 +26,13 @@ extension OSLogEntryLog.Level
     var localizedName: String {
         switch self
         {
-        case .undefined: NSLocalizedString("Undefined", comment: "")
-        case .debug: NSLocalizedString("Debug", comment: "")
-        case .info: NSLocalizedString("Info", comment: "")
-        case .notice: NSLocalizedString("Notice", comment: "")
-        case .error: NSLocalizedString("Error", comment: "")
-        case .fault: NSLocalizedString("Fault", comment: "")
-        @unknown default: NSLocalizedString("Unknown", comment: "")
+        case .undefined: return NSLocalizedString("Undefined", comment: "")
+        case .debug: return NSLocalizedString("Debug", comment: "")
+        case .info: return NSLocalizedString("Info", comment: "")
+        case .notice: return NSLocalizedString("Notice", comment: "")
+        case .error: return NSLocalizedString("Error", comment: "")
+        case .fault: return NSLocalizedString("Fault", comment: "")
+        @unknown default: return NSLocalizedString("Unknown", comment: "")
         }
     }
 }
