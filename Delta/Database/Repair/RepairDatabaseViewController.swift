@@ -162,37 +162,38 @@ private extension RepairDatabaseViewController
                 let savesBackupsDirectory = self.backupsDirectory.appendingPathComponent("Saves")
                 try FileManager.default.createDirectory(at: savesBackupsDirectory, withIntermediateDirectories: true)
                 
+                var conflictedGames = Set<Game>()
+                
                 for gameSave in gameSaves
                 {
-                    self.repair(gameSave, backupsDirectory: savesBackupsDirectory)
-                }
-                
-                if let coordinator = SyncManager.shared.coordinator
-                {
-                    let records = try coordinator.recordController.fetchRecords(for: gameSaves)
+                    let expectedGame = self.repair(gameSave, backupsDirectory: savesBackupsDirectory)
                     
-                    if let context = records.first?.recordedObject?.managedObjectContext
+                    // At this point, gameSave is only updated in gameSavesContext,
+                    // so gameSave here still points to previous game,
+                    
+                    if let game = gameSave.game
                     {
-                        try context.performAndWait {
-                            for record in records
-                            {
-                                record.perform { managedRecord in
-                                    // Mark ALL affected GameSaves as conflicted.
-                                    Logger.database.notice("Marking record \(managedRecord.recordID, privacy: .public) as conflicted.")
-                                    managedRecord.isConflicted = true
-                                }
-                            }
-                            
-                            try context.save()
-                        }
+                        Logger.database.notice("The save file for “\(game.name, privacy: .public)” is potentially corrupted, writing to conflicts.txt")
+                        conflictedGames.insert(game)
+                    }
+                    
+                    if let expectedGame
+                    {
+                        Logger.database.notice("The save file for “\(expectedGame.name, privacy: .public)” is potentially corrupted, writing to conflicts.txt")
+                        conflictedGames.insert(expectedGame)
                     }
                 }
-                                
+                
                 try self.gameSavesContext.performAndWait {
                     try self.gameSavesContext.save()
                 }
                 
                 try self.managedObjectContext.save()
+                
+                let outputURL = self.backupsDirectory.appendingPathComponent("conflicts.txt")
+                
+                let conflictsLog = conflictedGames.map { $0.name + " (" + $0.identifier + ")" }.sorted().joined(separator: "\n")
+                try conflictsLog.write(to: outputURL, atomically: true, encoding: .utf8)
                 
                 completion(.success)
             }
@@ -203,7 +204,8 @@ private extension RepairDatabaseViewController
         }
     }
     
-    func repair(_ gameSave: GameSave, backupsDirectory: URL)
+    // Returns expectedGame, but in managedObjectContext (not gameSavesContext)
+    func repair(_ gameSave: GameSave, backupsDirectory: URL) -> Game?
     {
         Logger.database.notice("Repairing GameSave \(gameSave.identifier, privacy: .public)...")
         
@@ -226,7 +228,7 @@ private extension RepairDatabaseViewController
                 gameSave.game = nil
             }
             
-            return
+            return nil
         }
         
         let misplacedGameSave: GameSave?
@@ -273,25 +275,28 @@ private extension RepairDatabaseViewController
                 // GameSave data differs from actual .sav file,
                 // so copy metadata from misplacedGameSave.
                 
-                Logger.database.info("GameSave \(gameSave.identifier, privacy: .public)'s hash does NOT match .sav, updating GameSave to match misplaced save \(misplacedGameSave.identifier, privacy: .public).")
+                Logger.database.info("GameSave \(gameSave.identifier, privacy: .public)'s hash does NOT match .sav, ignoring misplaced GameSave \(misplacedGameSave.identifier, privacy: .public).")
                 
-                gameSave.sha1 = misplacedGameSave.sha1
-                gameSave.modifiedDate = misplacedGameSave.modifiedDate
+                // Not worth potential conflicts.
+                // gameSave.sha1 = misplacedGameSave.sha1
+                // gameSave.modifiedDate = misplacedGameSave.modifiedDate
             }
             else
             {
                 // GameSave data differs from actual .sav file,
                 // so copy metadata from disk.
-                Logger.database.info("GameSave \(gameSave.identifier, privacy: .public)'s hash does NOT match .sav, updating GameSave from disk.")
+                Logger.database.info("GameSave \(gameSave.identifier, privacy: .public)'s hash does NOT match .sav, ignoring.")
                 
-                let modifiedDate = try? FileManager.default.attributesOfItem(atPath: expectedGame.gameSaveURL.path)[.modificationDate] as? Date
-                
-                gameSave.sha1 = hash
-                gameSave.modifiedDate = modifiedDate ?? Date()
+                // Not worth potential conflicts.
+                // let modifiedDate = try? FileManager.default.attributesOfItem(atPath: expectedGame.gameSaveURL.path)[.modificationDate] as? Date
+                // gameSave.sha1 = hash
+                // gameSave.modifiedDate = modifiedDate ?? Date()
             }
             
             gameSave.game = expectedGame
         }
+        
+        return expectedGame
     }
     
     func backup(_ gameSave: GameSave, for expectedGame: Game?, to backupsDirectory: URL) throws
