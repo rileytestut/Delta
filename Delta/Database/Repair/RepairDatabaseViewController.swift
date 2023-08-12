@@ -467,7 +467,7 @@ private extension RepairDatabaseViewController
             
             DispatchQueue.main.async {
                 let alertController = UIAlertController(title: NSLocalizedString("Database Repaired", comment: ""),
-                                                        message: NSLocalizedString("Some save files may be conflicted and require your attention before syncing.\n\nAs a precaution, Delta has backed up all conflicted save files to Delta/Backups/Saves in the Files app.", comment: ""),
+                                                        message: NSLocalizedString("Some save files may still be corrupted and require you to restore an older version from the Delta Sync settings.\n\nA text file listing all affected games has been saved to “On My Device/Delta/Backups/conflicts.txt” in the Files app, alongside backups of any conflicted save files.", comment: ""),
                                                         preferredStyle: .alert)
                 alertController.addAction(UIAlertAction(title: UIAlertAction.ok.title, style: UIAlertAction.ok.style) { _ in
                     self.completionHandler?()
