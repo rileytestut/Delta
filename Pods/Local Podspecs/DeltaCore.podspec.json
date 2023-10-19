@@ -5,7 +5,7 @@
   "description": "iOS framework that powers Delta emulator.",
   "homepage": "https://github.com/rileytestut/DeltaCore",
   "platforms": {
-    "ios": "12.0"
+    "ios": "14.0"
   },
   "source": {
     "git": "https://github.com/rileytestut/DeltaCore.git"

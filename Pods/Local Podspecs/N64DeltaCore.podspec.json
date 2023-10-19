@@ -5,7 +5,7 @@
   "description": "iOS framework that wraps Mupen64Plus to allow playing Nintendo 64 games with Delta emulator.",
   "homepage": "https://github.com/rileytestut/N64DeltaCore",
   "platforms": {
-    "ios": "12.0"
+    "ios": "14.0"
   },
   "source": {
     "git": "https://github.com/rileytestut/N64DeltaCore.git"

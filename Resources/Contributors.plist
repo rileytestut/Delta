@@ -47,6 +47,30 @@
 				<key>name</key>
 				<string>Genesis Skin</string>
 			</dict>
+			<dict>
+				<key>name</key>
+				<string>Show Status Bar</string>
+				<key>link</key>
+				<string>https://github.com/rileytestut/Delta/pull/241</string>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>Game Screenshots</string>
+				<key>link</key>
+				<string>https://github.com/rileytestut/Delta/pull/242</string>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>Toast Notifications</string>
+				<key>link</key>
+				<string>https://github.com/rileytestut/Delta/pull/244</string>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>Alternate App Icons</string>
+				<key>link</key>
+				<string>https://github.com/rileytestut/Delta/pull/259</string>
+			</dict>
 		</array>
 	</dict>
 	<dict>
@@ -63,6 +87,23 @@
 				<string>CheatBase</string>
 				<key>link</key>
 				<string>https://github.com/CheatBase/CheatBase</string>
+			</dict>
+		</array>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>Ian Clawson</string>
+		<key>link</key>
+		<string>https://github.com/ianclawson</string>
+		<key>linkName</key>
+		<string>github.com/ianclawson</string>
+		<key>contributions</key>
+		<array>
+			<dict>
+				<key>name</key>
+				<string>Local Multiplayer</string>
+				<key>link</key>
+				<string>https://github.com/rileytestut/DeltaCore/pull/32</string>
 			</dict>
 		</array>
 	</dict>

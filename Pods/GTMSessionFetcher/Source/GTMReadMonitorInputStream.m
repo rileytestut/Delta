@@ -20,12 +20,11 @@
 #import "GTMReadMonitorInputStream.h"
 
 @implementation GTMReadMonitorInputStream {
-  NSInputStream *_inputStream; // Encapsulated stream that does the work.
+  NSInputStream *_inputStream;  // Encapsulated stream that does the work.
 
-  NSThread *_thread;      // Thread in which this object was created.
-  NSArray *_runLoopModes; // Modes for calling callbacks, when necessary.
+  NSThread *_thread;       // Thread in which this object was created.
+  NSArray *_runLoopModes;  // Modes for calling callbacks, when necessary.
 }
-
 
 @synthesize readDelegate = _readDelegate;
 @synthesize readSelector = _readSelector;
@@ -38,7 +37,7 @@
   return [NSInputStream methodSignatureForSelector:selector];
 }
 
-+ (void)forwardInvocation:(NSInvocation*)invocation {
++ (void)forwardInvocation:(NSInvocation *)invocation {
   [invocation invokeWithTarget:[NSInputStream class]];
 }
 
@@ -46,11 +45,11 @@
   return [_inputStream respondsToSelector:selector];
 }
 
-- (NSMethodSignature*)methodSignatureForSelector:(SEL)selector {
+- (NSMethodSignature *)methodSignatureForSelector:(SEL)selector {
   return [_inputStream methodSignatureForSelector:selector];
 }
 
-- (void)forwardInvocation:(NSInvocation*)invocation {
+- (void)forwardInvocation:(NSInvocation *)invocation {
   [invocation invokeWithTarget:_inputStream];
 }
 
@@ -60,7 +59,7 @@
   return [[self alloc] initWithStream:input];
 }
 
-- (instancetype)initWithStream:(NSInputStream *)input  {
+- (instancetype)initWithStream:(NSInputStream *)input {
   self = [super init];
   if (self) {
     _inputStream = input;
@@ -103,10 +102,7 @@
                   waitUntilDone:NO
                           modes:_runLoopModes];
         } else {
-          [self performSelector:sel
-                       onThread:_thread
-                     withObject:data
-                  waitUntilDone:NO];
+          [self performSelector:sel onThread:_thread withObject:data waitUntilDone:NO];
         }
 #pragma clang diagnostic pop
       }
@@ -155,11 +151,11 @@
   [_inputStream close];
 }
 
-- (id)delegate {
+- (id<NSStreamDelegate>)delegate {
   return [_inputStream delegate];
 }
 
-- (void)setDelegate:(id)delegate {
+- (void)setDelegate:(id<NSStreamDelegate>)delegate {
   [_inputStream setDelegate:delegate];
 }
 

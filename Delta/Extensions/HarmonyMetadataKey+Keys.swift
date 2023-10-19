@@ -12,6 +12,7 @@ extension HarmonyMetadataKey
 {
     static let gameID = HarmonyMetadataKey("gameID")
     static let gameName = HarmonyMetadataKey("gameName")
+    static let verifiedGameID = HarmonyMetadataKey("verifiedGameID")
     
     // Backwards compatibility
     static let coreID = HarmonyMetadataKey("coreID")

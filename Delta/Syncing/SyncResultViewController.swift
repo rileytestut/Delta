@@ -173,6 +173,15 @@ private extension SyncResultViewController
                             errorMessage = NSLocalizedString("The game for this item is missing. Please re-import the game to resume syncing its data.", comment: "")
                         }
                         
+                    case .other(_, let error as SyncValidationError):
+                        var message = error.failureReason ?? error.localizedDescription
+                        if let recoverySuggestion = error.recoverySuggestion
+                        {
+                            message += "\n\n" + recoverySuggestion
+                        }
+                        
+                        errorMessage = message
+                        
                     case .other(_, let error as NSError): errorMessage = error.localizedFailureReason ?? error.localizedDescription
                     default: errorMessage = error.failureReason
                     }
@@ -249,9 +258,7 @@ private extension SyncResultViewController
                 case .gameControllerInputMapping: group = .gameControllerInputMapping
                     
                 case .gameSave:
-                    guard let gameID = metadata?[.gameID] else { continue }
-                    
-                    let recordID = RecordID(type: SyncManager.RecordType.game.rawValue, identifier: gameID)
+                    let recordID = RecordID(type: SyncManager.RecordType.game.rawValue, identifier: error.record.recordID.identifier)
                     group = .game(recordID)
                     
                 case .saveState:
@@ -387,7 +394,11 @@ extension SyncResultViewController
             
         case .game:
             guard let error = section.errors.first as? RecordError else { return nil }
-            return error.record.localizedName
+            
+            let recordID = RecordID(type: SyncManager.RecordType.game.rawValue, identifier: error.record.recordID.identifier)
+            
+            let gameName = self.gameNamesByRecordID[recordID] // In case the remote record is corrupted, rely on local names.
+            return gameName ?? error.record.localizedName
             
         case .saveState(let gameID):
             guard let error = section.errors.first as? RecordError else { return nil }

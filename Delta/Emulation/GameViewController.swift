@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Photos
 
 import DeltaCore
 import GBADeltaCore
@@ -180,6 +181,14 @@ class GameViewController: DeltaCore.GameViewController
         return .all
     }
     
+    override var prefersStatusBarHidden: Bool {
+        return !ExperimentalFeatures.shared.showStatusBar.isEnabled
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
     required init()
     {
         super.init()
@@ -203,7 +212,7 @@ class GameViewController: DeltaCore.GameViewController
         
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.didEnterBackground(with:)), name: UIApplication.didEnterBackgroundNotification, object: UIApplication.shared)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.settingsDidChange(with:)), name: .settingsDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.settingsDidChange(with:)), name: Settings.didChangeNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.deepLinkControllerLaunchGame(with:)), name: .deepLinkControllerLaunchGame, object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.didActivateGyro(with:)), name: GBA.didActivateGyroNotification, object: nil)
@@ -212,6 +221,9 @@ class GameViewController: DeltaCore.GameViewController
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.emulationDidQuit(with:)), name: EmulatorCore.emulationDidQuitNotification, object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.didEnableJIT(with:)), name: ServerManager.didEnableJITNotification, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.sceneWillConnect(with:)), name: UIScene.willConnectNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.sceneDidDisconnect(with:)), name: UIScene.didDisconnectNotification, object: nil)
     }
     
     deinit
@@ -403,6 +415,9 @@ extension GameViewController
             pauseViewController.fastForwardItem?.isSelected = (self.emulatorCore?.rate != self.emulatorCore?.deltaCore.supportedRates.lowerBound)
             pauseViewController.fastForwardItem?.action = { [unowned self] item in
                 self.performFastForwardAction(activate: item.isSelected)
+            }
+            pauseViewController.screenshotItem?.action = { [unowned self] item in
+                self.performScreenshotAction()
             }
             
             pauseViewController.sustainButtonsItem?.isSelected = gameController.sustainedInputs.count > 0
@@ -667,6 +682,12 @@ private extension GameViewController
         {
             var touchControllerSkin = TouchControllerSkin(controllerSkin: controllerSkin)
             
+            if UIApplication.shared.isExternalDisplayConnected
+            {
+                // Only show touch screen if external display is connected.
+                touchControllerSkin.screenPredicate = { $0.isTouchScreen }
+            }
+                        
             if self.view.bounds.width > self.view.bounds.height
             {
                 touchControllerSkin.screenLayoutAxis = .horizontal
@@ -679,7 +700,44 @@ private extension GameViewController
             self.controllerView.controllerSkin = touchControllerSkin
         }
         
+        self.updateExternalDisplay()
+        
         self.view.setNeedsLayout()
+    }
+    
+    func updateGameViews()
+    {
+        if UIApplication.shared.isExternalDisplayConnected
+        {
+            // AirPlaying, hide all (non-touch) screens.
+            
+            if let traits = self.controllerView.controllerSkinTraits, let screens = self.controllerView.controllerSkin?.screens(for: traits)
+            {
+                for (screen, gameView) in zip(screens, self.gameViews)
+                {
+                    gameView.isEnabled = screen.isTouchScreen
+                    gameView.isHidden = !screen.isTouchScreen
+                }
+            }
+            else
+            {
+                // Either self.controllerView.controllerSkin is `nil`, or it doesn't support these traits.
+                // Most likely this system only has 1 screen, so just hide self.gameView.
+                
+                self.gameView.isEnabled = false
+                self.gameView.isHidden = true
+            }
+        }
+        else
+        {
+            // Not AirPlaying, show all screens.
+            
+            for gameView in self.gameViews
+            {
+                gameView.isEnabled = true
+                gameView.isHidden = false
+            }
+        }
     }
 }
 
@@ -697,23 +755,30 @@ private extension GameViewController
                 let game = context.object(with: game.objectID) as! Game
                 
                 let hash = try RSTHasher.sha1HashOfFile(at: game.gameSaveURL)
-                let previousHash = game.gameSaveURL.extendedAttribute(name: "com.rileytestut.delta.sha1Hash")
+                let previousHash = game.gameSave?.sha1
                 
                 guard hash != previousHash else { return }
                 
                 if let gameSave = game.gameSave
                 {
                     gameSave.modifiedDate = Date()
+                    gameSave.sha1 = hash
                 }
                 else
                 {
                     let gameSave = GameSave(context: context)
                     gameSave.identifier = game.identifier
+                    gameSave.sha1 = hash
+                    
                     game.gameSave = gameSave
                 }
                 
                 try context.save()
-                try game.gameSaveURL.setExtendedAttribute(name: "com.rileytestut.delta.sha1Hash", value: hash)
+                
+                if ExperimentalFeatures.shared.toastNotifications.gameSaveEnabled
+                {
+                    self.presentExperimentalToastView(NSLocalizedString("Game Data Saved", comment: ""))
+                }
             }
             catch CocoaError.fileNoSuchFile
             {
@@ -832,6 +897,12 @@ extension GameViewController: SaveStatesViewControllerDelegate
         saveState.modifiedDate = Date()
         saveState.coreIdentifier = self.emulatorCore?.deltaCore.identifier
         
+        if ExperimentalFeatures.shared.toastNotifications.stateSaveEnabled,
+           saveState.type != .auto
+        {
+            self.presentExperimentalToastView(NSLocalizedString("Saved Save State", comment: ""))
+        }
+        
         if isRunning
         {
             self.resumeEmulation()
@@ -878,6 +949,11 @@ extension GameViewController: SaveStatesViewControllerDelegate
             else
             {
                 try self.emulatorCore?.load(saveState)
+            }
+            
+            if ExperimentalFeatures.shared.toastNotifications.stateLoadEnabled
+            {
+                self.presentExperimentalToastView(NSLocalizedString("Loaded Save State", comment: ""))
             }
         }
         catch EmulatorCore.SaveStateError.doesNotExist
@@ -1063,12 +1139,189 @@ extension GameViewController
         
         if activate
         {
-            emulatorCore.rate = emulatorCore.deltaCore.supportedRates.upperBound
+            if ExperimentalFeatures.shared.variableFastForward.isEnabled,
+               let preferredSpeed = ExperimentalFeatures.shared.variableFastForward[emulatorCore.game.type],
+               (preferredSpeed.rawValue <= emulatorCore.deltaCore.supportedRates.upperBound || ExperimentalFeatures.shared.variableFastForward.allowUnrestrictedSpeeds)
+            {
+                emulatorCore.rate = preferredSpeed.rawValue
+            }
+            else
+            {
+                emulatorCore.rate = emulatorCore.deltaCore.supportedRates.upperBound
+            }
+            
+            if ExperimentalFeatures.shared.toastNotifications.fastForwardEnabled
+            {
+                self.presentExperimentalToastView(NSLocalizedString("Fast Forward Enabled", comment: ""))
+            }
         }
         else
         {
             emulatorCore.rate = emulatorCore.deltaCore.supportedRates.lowerBound
+            
+            if ExperimentalFeatures.shared.toastNotifications.fastForwardEnabled
+            {
+                self.presentExperimentalToastView(NSLocalizedString("Fast Forward Disabled", comment: ""))
+            }
         }
+    }
+    
+    func performScreenshotAction()
+    {
+        guard let snapshot = self.emulatorCore?.videoManager.snapshot() else { return }
+
+        let imageScale = ExperimentalFeatures.shared.gameScreenshots.size?.rawValue ?? 1.0
+        let imageSize = CGSize(width: snapshot.size.width * imageScale, height: snapshot.size.height * imageScale)
+        
+        let screenshotData: Data
+        if imageScale == 1, let data = snapshot.pngData()
+        {
+            // No need to redraw image because it's already the correct size.
+            screenshotData = data
+        }
+        else
+        {
+            let format = UIGraphicsImageRendererFormat()
+            format.scale = 1
+            
+            let renderer = UIGraphicsImageRenderer(size: imageSize, format: format)
+            screenshotData = renderer.pngData { (context) in
+                context.cgContext.interpolationQuality = .none
+                snapshot.draw(in: CGRect(origin: .zero, size: imageSize))
+            }
+        }
+        
+        if ExperimentalFeatures.shared.gameScreenshots.saveToPhotos
+        {
+            PHPhotoLibrary.runIfAuthorized
+            {
+                PHPhotoLibrary.saveImageData(screenshotData)
+            }
+        }
+        
+        if ExperimentalFeatures.shared.gameScreenshots.saveToFiles
+        {
+            let screenshotsDirectory = FileManager.default.documentsDirectory.appendingPathComponent("Screenshots")
+            
+            do
+            {
+                try FileManager.default.createDirectory(at: screenshotsDirectory, withIntermediateDirectories: true, attributes: nil)
+            }
+            catch
+            {
+                print(error)
+            }
+            
+            let date = Date()
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd_HH-mm-ss"
+            
+            let fileName: URL
+            if let game = self.game as? Game
+            {
+                let filename = game.name + "_" + dateFormatter.string(from: date) + ".png"
+                fileName = screenshotsDirectory.appendingPathComponent(filename)
+            }
+            else
+            {
+                fileName = screenshotsDirectory.appendingPathComponent(dateFormatter.string(from: date) + ".png")
+            }
+            
+            do
+            {
+                try screenshotData.write(to: fileName)
+            }
+            catch
+            {
+                print(error)
+            }
+        }
+        
+        self.pauseViewController?.screenshotItem?.isSelected = false
+    }
+}
+
+private extension GameViewController
+{
+    func connectExternalDisplay(for scene: ExternalDisplayScene)
+    {
+        // We need to receive gameViewController(_:didUpdateGameViews) callback.
+        scene.gameViewController.delegate = self
+        
+        self.updateControllerSkin()
+        
+        // Implicitly called from updateControllerSkin()
+        // self.updateExternalDisplay()
+    }
+    
+    func updateExternalDisplay()
+    {
+        guard let scene = UIApplication.shared.externalDisplayScene else { return }
+        
+        if scene.game?.fileURL != self.game?.fileURL
+        {
+            scene.game = self.game
+        }
+        
+        var controllerSkin: ControllerSkinProtocol?
+        
+        if let game = self.game, let traits = scene.gameViewController.controllerView.controllerSkinTraits
+        {
+            if ExperimentalFeatures.shared.airPlaySkins.isEnabled,
+               let preferredControllerSkin = ExperimentalFeatures.shared.airPlaySkins.preferredAirPlayControllerSkin(for: game.type), preferredControllerSkin.supports(traits)
+            {
+                // Use preferredControllerSkin directly.
+                controllerSkin = preferredControllerSkin
+            }
+            else if let standardSkin = DeltaCore.ControllerSkin.standardControllerSkin(for: game.type), standardSkin.supports(traits)
+            {
+                if standardSkin.hasTouchScreen(for: traits)
+                {
+                    // Only use TouchControllerSkin for standard controller skins with touch screens.
+                    
+                    var touchControllerSkin = DeltaCore.TouchControllerSkin(controllerSkin: standardSkin)
+                    touchControllerSkin.screenLayoutAxis = Settings.features.dsAirPlay.layoutAxis
+
+                    if Settings.features.dsAirPlay.topScreenOnly
+                    {
+                        touchControllerSkin.screenPredicate = { !$0.isTouchScreen }
+                    }
+
+                    controllerSkin = touchControllerSkin
+                }
+                else
+                {
+                    controllerSkin = standardSkin
+                }
+            }
+        }
+        
+        scene.gameViewController.controllerView.controllerSkin = controllerSkin
+        
+        // Implicitly called when assigning controllerSkin.
+        // self.updateExternalDisplayGameViews()
+    }
+    
+    func updateExternalDisplayGameViews()
+    {
+        guard let scene = UIApplication.shared.externalDisplayScene, let emulatorCore = self.emulatorCore else { return }
+        
+        for gameView in scene.gameViewController.gameViews
+        {
+            emulatorCore.add(gameView)
+        }
+    }
+    
+    func disconnectExternalDisplay(for scene: ExternalDisplayScene)
+    {
+        scene.gameViewController.delegate = nil
+        
+        for gameView in scene.gameViewController.gameViews
+        {
+            self.emulatorCore?.remove(gameView)
+        }
+        
+        self.updateControllerSkin() // Reset TouchControllerSkin + GameViews
     }
 }
 
@@ -1078,6 +1331,8 @@ extension GameViewController: GameViewControllerDelegate
 {
     func gameViewController(_ gameViewController: DeltaCore.GameViewController, handleMenuInputFrom gameController: GameController)
     {
+        guard gameViewController == self else { return }
+        
         if let pausingGameController = self.pausingGameController
         {
             guard pausingGameController == gameController else { return }
@@ -1103,6 +1358,8 @@ extension GameViewController: GameViewControllerDelegate
     
     func gameViewControllerShouldResumeEmulation(_ gameViewController: DeltaCore.GameViewController) -> Bool
     {
+        guard gameViewController == self else { return false }
+        
         var result = false
         
         rst_dispatch_sync_on_main_thread {
@@ -1110,6 +1367,20 @@ extension GameViewController: GameViewControllerDelegate
         }
         
         return result
+    }
+    
+    func gameViewController(_ gameViewController: DeltaCore.GameViewController, didUpdateGameViews gameViews: [GameView])
+    {
+        // gameViewController could be `self` or ExternalDisplayScene.gameViewController.
+        
+        if gameViewController == self
+        {
+            self.updateGameViews()
+        }
+        else
+        {
+            self.updateExternalDisplayGameViews()
+        }
     }
 }
 
@@ -1212,6 +1483,17 @@ private extension GameViewController
             self.updateAudio()
                 
         case .syncingService, .isAltJITEnabled: break
+            
+        case Settings.features.dsAirPlay.$topScreenOnly.settingsKey: fallthrough
+        case Settings.features.dsAirPlay.$layoutAxis.settingsKey:
+            self.updateExternalDisplay()
+        
+        case ExperimentalFeatures.shared.airPlaySkins.settingsKey: fallthrough
+        case _ where settingsName.rawValue.hasPrefix(ExperimentalFeatures.shared.airPlaySkins.settingsKey.rawValue):
+            // Update whenever any of the AirPlay skins have changed.
+            self.updateExternalDisplay()
+            
+        default: break
         }
     }
     
@@ -1361,6 +1643,18 @@ private extension GameViewController
                 token?.invalidate()
             }
         }
+    }
+    
+    @objc func sceneWillConnect(with notification: Notification)
+    {
+        guard let scene = notification.object as? ExternalDisplayScene else { return }
+        self.connectExternalDisplay(for: scene)
+    }
+    
+    @objc func sceneDidDisconnect(with notification: Notification)
+    {
+        guard let scene = notification.object as? ExternalDisplayScene else { return }
+        self.disconnectExternalDisplay(for: scene)
     }
 }
 

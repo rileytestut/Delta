@@ -19,7 +19,7 @@ class PauseViewController: UIViewController, PauseInfoProviding
     }
     
     var pauseItems: [MenuItem] {
-        return [self.saveStateItem, self.loadStateItem, self.cheatCodesItem, self.fastForwardItem, self.sustainButtonsItem].compactMap { $0 }
+        return [self.saveStateItem, self.loadStateItem, self.cheatCodesItem, self.fastForwardItem, self.sustainButtonsItem, self.screenshotItem].compactMap { $0 }
     }
     
     /// Pause Items
@@ -28,6 +28,7 @@ class PauseViewController: UIViewController, PauseInfoProviding
     var cheatCodesItem: MenuItem?
     var fastForwardItem: MenuItem?
     var sustainButtonsItem: MenuItem?
+    var screenshotItem: MenuItem?
     
     /// PauseInfoProviding
     var pauseText: String?
@@ -160,8 +161,9 @@ private extension PauseViewController
         self.cheatCodesItem = nil
         self.sustainButtonsItem = nil
         self.fastForwardItem = nil
+        self.screenshotItem = nil
         
-        guard self.emulatorCore != nil else { return }
+        guard let emulatorCore = self.emulatorCore else { return }
         
         self.saveStateItem = MenuItem(text: NSLocalizedString("Save State", comment: ""), image: #imageLiteral(resourceName: "SaveSaveState"), action: { [unowned self] _ in
             self.saveStatesViewControllerMode = .saving
@@ -179,6 +181,17 @@ private extension PauseViewController
         
         self.fastForwardItem = MenuItem(text: NSLocalizedString("Fast Forward", comment: ""), image: #imageLiteral(resourceName: "FastForward"), action: { _ in })
         self.sustainButtonsItem = MenuItem(text: NSLocalizedString("Hold Buttons", comment: ""), image: #imageLiteral(resourceName: "SustainButtons"), action: { _ in })
+        
+        if ExperimentalFeatures.shared.gameScreenshots.isEnabled
+        {
+            self.screenshotItem = MenuItem(text: NSLocalizedString("Screenshot", comment: ""), image: #imageLiteral(resourceName: "Screenshot"), action: { _ in })
+        }
+        
+        if ExperimentalFeatures.shared.variableFastForward.isEnabled
+        {
+            let menu = self.makeFastForwardMenu(for: emulatorCore.game)
+            self.fastForwardItem?.menu = menu
+        }
     }
     
     func updateSafeAreaInsets()
@@ -193,5 +206,57 @@ private extension PauseViewController
             self.additionalSafeAreaInsets.left = 0
             self.additionalSafeAreaInsets.right = 0
         }
+    }
+    
+    func makeFastForwardMenu(for game: GameProtocol) -> UIMenu?
+    {
+        guard let deltaCore = Delta.core(for: game.type), #available(iOS 15, *) else { return nil }
+        
+        let menu = UIMenu(title: NSLocalizedString("Change the Fast Forward speed for this system.", comment: ""), options: [.singleSelection], children: [
+            UIDeferredMenuElement.uncached { [weak self] completion in
+                let preferredSpeed = ExperimentalFeatures.shared.variableFastForward[game.type]
+                
+                let supportedSpeeds = FastForwardSpeed.speeds(in: deltaCore.supportedRates)
+                var actions = zip(0..., supportedSpeeds).map { (index, speed) in
+                    
+                    let state: UIAction.State = (speed == preferredSpeed) ? .on : .off
+                    let action = UIAction(title: speed.description, state: state) { action in
+                        ExperimentalFeatures.shared.variableFastForward[game.type] = speed
+                        
+                        if let fastForwardItem = self?.fastForwardItem
+                        {
+                            fastForwardItem.isSelected = true // Always enable FF after selecting speed.
+                            fastForwardItem.action(fastForwardItem)
+                        }
+                    }
+                    
+                    if #available(iOS 16, *)
+                    {
+                        let configuration = UIImage.SymbolConfiguration(hierarchicalColor: .deltaPurple)
+                        
+                        let percentage = Double(index + 1) / Double(supportedSpeeds.count)
+                        action.image = UIImage(systemName: "timelapse", variableValue: percentage, configuration: configuration)
+                    }
+                    
+                    return action
+                }
+
+                let state: UIAction.State = (preferredSpeed == nil) ? .on : .off
+                let action = UIAction(title: NSLocalizedString("Maximum", comment: ""), state: state) { action in
+                    ExperimentalFeatures.shared.variableFastForward[game.type] = nil
+                    
+                    if let fastForwardItem = self?.fastForwardItem
+                    {
+                        fastForwardItem.isSelected = true // Always enable FF after selecting speed.
+                        fastForwardItem.action(fastForwardItem)
+                    }
+                }
+                actions.append(action)
+                
+                completion(actions)
+            }
+        ])
+        
+        return menu
     }
 }

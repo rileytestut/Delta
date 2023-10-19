@@ -78,7 +78,7 @@ class GamesViewController: UIViewController
         
         NotificationCenter.default.addObserver(self, selector: #selector(GamesViewController.syncingDidStart(_:)), name: SyncCoordinator.didStartSyncingNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GamesViewController.syncingDidFinish(_:)), name: SyncCoordinator.didFinishSyncingNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(GamesViewController.settingsDidChange(_:)), name: .settingsDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(GamesViewController.settingsDidChange(_:)), name: Settings.didChangeNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GamesViewController.emulationDidQuit(_:)), name: EmulatorCore.emulationDidQuitNotification, object: nil)
     }
 }
@@ -646,7 +646,7 @@ extension GamesViewController: NSFetchedResultsControllerDelegate
 
 extension GamesViewController: UIAdaptivePresentationControllerDelegate
 {
-    func presentationControllerWillDismiss(_ presentationController: UIPresentationController)
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController)
     {
         self.sync()
     }

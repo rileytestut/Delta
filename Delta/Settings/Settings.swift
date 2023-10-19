@@ -9,38 +9,28 @@
 import Foundation
 
 import DeltaCore
+import DeltaFeatures
 import MelonDSDeltaCore
 
 import Roxas
 
-extension Notification.Name
+extension Settings.NotificationUserInfoKey
 {
-    static let settingsDidChange = Notification.Name("SettingsDidChangeNotification")
+    static let system: Settings.NotificationUserInfoKey = "system"
+    static let traits: Settings.NotificationUserInfoKey = "traits"
+    static let core: Settings.NotificationUserInfoKey = "core"
 }
 
-extension Settings
+extension Settings.Name
 {
-    enum NotificationUserInfoKey: String
-    {
-        case name
-        
-        case system
-        case traits
-        
-        case core
-    }
-    
-    enum Name: String
-    {
-        case localControllerPlayerIndex
-        case translucentControllerSkinOpacity
-        case preferredControllerSkin
-        case syncingService
-        case isButtonHapticFeedbackEnabled
-        case isThumbstickHapticFeedbackEnabled
-        case isAltJITEnabled
-        case respectSilentMode
-    }
+    static let localControllerPlayerIndex: Settings.Name = "localControllerPlayerIndex"
+    static let translucentControllerSkinOpacity: Settings.Name = "translucentControllerSkinOpacity"
+    static let preferredControllerSkin: Settings.Name = "preferredControllerSkin"
+    static let syncingService: Settings.Name = "syncingService"
+    static let isButtonHapticFeedbackEnabled: Settings.Name = "isButtonHapticFeedbackEnabled"
+    static let isThumbstickHapticFeedbackEnabled: Settings.Name = "isThumbstickHapticFeedbackEnabled"
+    static let isAltJITEnabled: Settings.Name = "isAltJITEnabled"
+    static let respectSilentMode: Settings.Name = "respectSilentMode"
 }
 
 extension Settings
@@ -50,13 +40,20 @@ extension Settings
         case recent
         case manual
     }
+    
+    typealias Name = SettingsName
+    typealias NotificationUserInfoKey = SettingsUserInfoKey
+    
+    static let didChangeNotification = Notification.Name.settingsDidChange
 }
 
 struct Settings
 {
+    static let features = Features.shared
+    
     static func registerDefaults()
     {
-        let defaults = [#keyPath(UserDefaults.translucentControllerSkinOpacity): 0.7,
+        var defaults = [#keyPath(UserDefaults.translucentControllerSkinOpacity): 0.7,
                         #keyPath(UserDefaults.gameShortcutsMode): GameShortcutsMode.recent.rawValue,
                         #keyPath(UserDefaults.isButtonHapticFeedbackEnabled): true,
                         #keyPath(UserDefaults.isThumbstickHapticFeedbackEnabled): true,
@@ -65,15 +62,21 @@ struct Settings
                         #keyPath(UserDefaults.isAltJITEnabled): false,
                         #keyPath(UserDefaults.respectSilentMode): true,
                         Settings.preferredCoreSettingsKey(for: .ds): MelonDS.core.identifier] as [String : Any]
-        UserDefaults.standard.register(defaults: defaults)
         
-        #if !BETA
+        #if BETA
+        
+        // Assume we need to repair database relationships until explicitly set to false.
+        defaults[#keyPath(UserDefaults.shouldRepairDatabase)] = true
+        
+        #else
         // Manually set MelonDS as preferred DS core in case DeSmuME is cached from a previous version.
         UserDefaults.standard.set(MelonDS.core.identifier, forKey: Settings.preferredCoreSettingsKey(for: .ds))
         
         // Manually disable AltJIT for public builds.
         UserDefaults.standard.isAltJITEnabled = false
         #endif
+        
+        UserDefaults.standard.register(defaults: defaults)
     }
 }
 
@@ -83,7 +86,7 @@ extension Settings
     static var localControllerPlayerIndex: Int? = 0 {
         didSet {
             guard self.localControllerPlayerIndex != oldValue else { return }
-            NotificationCenter.default.post(name: .settingsDidChange, object: nil, userInfo: [NotificationUserInfoKey.name: Name.localControllerPlayerIndex])
+            NotificationCenter.default.post(name: Settings.didChangeNotification, object: nil, userInfo: [NotificationUserInfoKey.name: Name.localControllerPlayerIndex])
         }
     }
     
@@ -91,7 +94,7 @@ extension Settings
         set {
             guard newValue != self.translucentControllerSkinOpacity else { return }
             UserDefaults.standard.translucentControllerSkinOpacity = newValue
-            NotificationCenter.default.post(name: .settingsDidChange, object: nil, userInfo: [NotificationUserInfoKey.name: Name.translucentControllerSkinOpacity])
+            NotificationCenter.default.post(name: Settings.didChangeNotification, object: nil, userInfo: [NotificationUserInfoKey.name: Name.translucentControllerSkinOpacity])
         }
         get { return UserDefaults.standard.translucentControllerSkinOpacity }
     }
@@ -160,7 +163,7 @@ extension Settings
         }
         set {
             UserDefaults.standard.syncingService = newValue?.rawValue
-            NotificationCenter.default.post(name: .settingsDidChange, object: nil, userInfo: [NotificationUserInfoKey.name: Name.syncingService])
+            NotificationCenter.default.post(name: Settings.didChangeNotification, object: nil, userInfo: [NotificationUserInfoKey.name: Name.syncingService])
         }
     }
     
@@ -171,7 +174,7 @@ extension Settings
         }
         set {
             UserDefaults.standard.isButtonHapticFeedbackEnabled = newValue
-            NotificationCenter.default.post(name: .settingsDidChange, object: nil, userInfo: [NotificationUserInfoKey.name: Name.isButtonHapticFeedbackEnabled])
+            NotificationCenter.default.post(name: Settings.didChangeNotification, object: nil, userInfo: [NotificationUserInfoKey.name: Name.isButtonHapticFeedbackEnabled])
         }
     }
     
@@ -182,7 +185,7 @@ extension Settings
         }
         set {
             UserDefaults.standard.isThumbstickHapticFeedbackEnabled = newValue
-            NotificationCenter.default.post(name: .settingsDidChange, object: nil, userInfo: [NotificationUserInfoKey.name: Name.isThumbstickHapticFeedbackEnabled])
+            NotificationCenter.default.post(name: Settings.didChangeNotification, object: nil, userInfo: [NotificationUserInfoKey.name: Name.isThumbstickHapticFeedbackEnabled])
         }
     }
     
@@ -209,7 +212,7 @@ extension Settings
         }
         set {
             UserDefaults.standard.isAltJITEnabled = newValue
-            NotificationCenter.default.post(name: .settingsDidChange, object: nil, userInfo: [NotificationUserInfoKey.name: Name.isAltJITEnabled])
+            NotificationCenter.default.post(name: Settings.didChangeNotification, object: nil, userInfo: [NotificationUserInfoKey.name: Name.isAltJITEnabled])
         }
     }
     
@@ -220,7 +223,7 @@ extension Settings
         }
         set {
             UserDefaults.standard.respectSilentMode = newValue
-            NotificationCenter.default.post(name: .settingsDidChange, object: nil, userInfo: [NotificationUserInfoKey.name: Name.respectSilentMode])
+            NotificationCenter.default.post(name: Settings.didChangeNotification, object: nil, userInfo: [NotificationUserInfoKey.name: Name.respectSilentMode])
         }
     }
     
@@ -241,7 +244,7 @@ extension Settings
         let key = self.preferredCoreSettingsKey(for: gameType)
         
         UserDefaults.standard.set(core.identifier, forKey: key)
-        NotificationCenter.default.post(name: .settingsDidChange, object: nil, userInfo: [NotificationUserInfoKey.name: key, NotificationUserInfoKey.core: core])
+        NotificationCenter.default.post(name: Settings.didChangeNotification, object: nil, userInfo: [NotificationUserInfoKey.name: key, NotificationUserInfoKey.core: core])
     }
     
     static func preferredControllerSkin(for system: System, traits: DeltaCore.ControllerSkin.Traits) -> ControllerSkin?
@@ -292,7 +295,7 @@ extension Settings
         
         UserDefaults.standard.set(controllerSkin?.identifier, forKey: userDefaultKey)
         
-        NotificationCenter.default.post(name: .settingsDidChange, object: controllerSkin, userInfo: [NotificationUserInfoKey.name: Name.preferredControllerSkin, NotificationUserInfoKey.system: system, NotificationUserInfoKey.traits: traits])
+        NotificationCenter.default.post(name: Settings.didChangeNotification, object: controllerSkin, userInfo: [NotificationUserInfoKey.name: Name.preferredControllerSkin, NotificationUserInfoKey.system: system, NotificationUserInfoKey.traits: traits])
     }
     
     static func preferredControllerSkin(for game: Game, traits: DeltaCore.ControllerSkin.Traits) -> ControllerSkin?
@@ -350,7 +353,7 @@ extension Settings
         
         if let system = System(gameType: game.type)
         {
-            NotificationCenter.default.post(name: .settingsDidChange, object: controllerSkin, userInfo: [NotificationUserInfoKey.name: Name.preferredControllerSkin, NotificationUserInfoKey.system: system, NotificationUserInfoKey.traits: traits])
+            NotificationCenter.default.post(name: Settings.didChangeNotification, object: controllerSkin, userInfo: [NotificationUserInfoKey.name: Name.preferredControllerSkin, NotificationUserInfoKey.system: system, NotificationUserInfoKey.traits: traits])
         }
     }
 }

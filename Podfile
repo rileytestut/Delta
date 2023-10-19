@@ -1,4 +1,4 @@
-platform :ios, '12.0'
+platform :ios, '14.0'
 
 inhibit_all_warnings!
 
@@ -7,8 +7,6 @@ target 'Delta' do
 
     pod 'SQLite.swift', '~> 0.12.0'
     pod 'SDWebImage', '~> 3.8'
-    pod 'Fabric', '~> 1.6.0'
-    pod 'Crashlytics', '~> 3.8.0'
     pod 'SMCalloutView', '~> 2.1.0'
 
     pod 'DeltaCore', :path => 'Cores/DeltaCore'
@@ -21,6 +19,13 @@ target 'Delta' do
     pod 'MelonDSDeltaCore', :path => 'Cores/MelonDSDeltaCore'
     pod 'Roxas', :path => 'External/Roxas'
     pod 'Harmony', :path => 'External/Harmony'
+end
+
+target 'DeltaPreviews' do
+    use_modular_headers!
+
+    pod 'DeltaCore', :path => 'Cores/DeltaCore'
+    pod 'Roxas', :path => 'External/Roxas'
 end
 
 # Unlink DeltaCore to prevent conflicts with Systems.framework

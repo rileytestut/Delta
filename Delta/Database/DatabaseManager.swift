@@ -545,7 +545,7 @@ extension DatabaseManager
                             try FileManager.default.removeItem(at: outputURL)
                         }
                         
-                        _ = try archive.extract(entry, to: outputURL)
+                        _ = try archive.extract(entry, to: outputURL, skipCRC32: true)
                         
                         outputURLs.insert(outputURL)
                     }

@@ -20,18 +20,18 @@
 #import "GTMGatherInputStream.h"
 
 @implementation GTMGatherInputStream {
-  NSArray *_dataArray;  // NSDatas that should be "gathered" and streamed.
+  NSArray *_dataArray;     // NSDatas that should be "gathered" and streamed.
   NSUInteger _arrayIndex;  // Index in the array of the current NSData.
-  long long _dataOffset;  // Offset in the current NSData we are processing.
+  long long _dataOffset;   // Offset in the current NSData we are processing.
   NSStreamStatus _streamStatus;
   id<NSStreamDelegate> __weak _delegate;  // Stream delegate, defaults to self.
 }
 
-+ (NSInputStream *)streamWithArray:(NSArray *)dataArray {
-  return [(GTMGatherInputStream *)[self alloc] initWithArray:dataArray];
++ (instancetype)streamWithArray:(NSArray *)dataArray {
+  return [[self alloc] initWithDataArray:dataArray];
 }
 
-- (instancetype)initWithArray:(NSArray *)dataArray {
+- (instancetype)initWithDataArray:(NSArray *)dataArray {
   self = [super init];
   if (self) {
     _dataArray = dataArray;
@@ -108,7 +108,7 @@
     NSUInteger dataBytesLeft = dataLen - (NSUInteger)_dataOffset;
 
     NSUInteger bytesToCopy = MIN(bytesRemaining, dataBytesLeft);
-    NSRange range = NSMakeRange((NSUInteger) _dataOffset, bytesToCopy);
+    NSRange range = NSMakeRange((NSUInteger)_dataOffset, bytesToCopy);
 
     [data getBytes:(buffer + bytesRead) range:range];
 
@@ -168,7 +168,7 @@
   _arrayIndex = 0;
   _dataOffset = absoluteOffset;
   for (NSData *data in _dataArray) {
-    long long dataLen = (long long) data.length;
+    long long dataLen = (long long)data.length;
     if (dataLen > _dataOffset) {
       break;
     }

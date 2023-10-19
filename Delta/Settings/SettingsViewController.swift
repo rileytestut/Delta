@@ -25,6 +25,7 @@ private extension SettingsViewController
         case syncing
         case hapticTouch
         case cores
+        case advanced
         case patreon
         case credits
     }
@@ -78,7 +79,7 @@ class SettingsViewController: UITableViewController
     {
         super.init(coder: aDecoder)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(SettingsViewController.settingsDidChange(with:)), name: .settingsDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(SettingsViewController.settingsDidChange(with:)), name: Settings.didChangeNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(SettingsViewController.externalGameControllerDidConnect(_:)), name: .externalGameControllerDidConnect, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(SettingsViewController.externalGameControllerDidDisconnect(_:)), name: .externalGameControllerDidDisconnect, object: nil)
     }
@@ -287,6 +288,12 @@ private extension SettingsViewController
         let hostingController = ContributorsView.makeViewController()
         self.navigationController?.pushViewController(hostingController, animated: true)
     }
+    
+    func showExperimentalFeatures()
+    {
+        let hostingController = ExperimentalFeaturesView.makeViewController()
+        self.navigationController?.pushViewController(hostingController, animated: true)
+    }
 }
 
 private extension SettingsViewController
@@ -309,6 +316,7 @@ private extension SettingsViewController
             }
             
         case .localControllerPlayerIndex, .preferredControllerSkin, .translucentControllerSkinOpacity, .respectSilentMode, .isButtonHapticFeedbackEnabled, .isThumbstickHapticFeedbackEnabled, .isAltJITEnabled: break
+        default: break
         }
     }
 
@@ -330,7 +338,7 @@ extension SettingsViewController
         let section = Section(rawValue: sectionIndex)!
         switch section
         {
-        case .controllers: return 1 // Temporarily hide other controller indexes until controller logic is finalized
+        case .controllers: return 4
         case .controllerSkins: return System.registeredSystems.count
         case .syncing: return SyncManager.shared.coordinator?.account == nil ? 1 : super.tableView(tableView, numberOfRowsInSection: sectionIndex)
         default:
@@ -385,7 +393,7 @@ extension SettingsViewController
             let preferredCore = Settings.preferredCore(for: .ds)
             cell.detailTextLabel?.text = preferredCore?.metadata?.name.value ?? preferredCore?.name ?? NSLocalizedString("Unknown", comment: "")
             
-        case .controllerOpacity, .gameAudio, .hapticFeedback, .hapticTouch, .patreon, .credits: break
+        case .controllerOpacity, .gameAudio, .hapticFeedback, .hapticTouch, .advanced, .patreon, .credits: break
         }
 
         return cell
@@ -402,6 +410,7 @@ extension SettingsViewController
         case .controllerSkins: self.performSegue(withIdentifier: Segue.controllerSkins.rawValue, sender: cell)
         case .cores: self.performSegue(withIdentifier: Segue.dsSettings.rawValue, sender: cell)
         case .controllerOpacity, .gameAudio, .hapticFeedback, .hapticTouch, .syncing: break
+        case .advanced: self.showExperimentalFeatures()
         case .patreon:
             let patreonURL = URL(string: "altstore://patreon")!
             

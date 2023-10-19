@@ -18,6 +18,8 @@ public class _GameSave: NSManagedObject
 
     @NSManaged public var modifiedDate: Date
 
+    @NSManaged public var sha1: String?
+
     // MARK: - Relationships
 
     @NSManaged public var game: Game?

@@ -108,13 +108,13 @@ private extension ControllerSkinsViewController
     {
         guard let system = self.system, let traits = self.traits else { return }
         
-        let configuration = ControllerSkinConfigurations(traits: traits)
+        guard let configuration = ControllerSkinConfigurations(traits: traits) else { return }
         
         let fetchRequest: NSFetchRequest<ControllerSkin> = ControllerSkin.fetchRequest()
         
         if traits.device == .iphone && traits.displayType == .edgeToEdge
         {
-            let fallbackConfiguration: ControllerSkinConfigurations = (traits.orientation == .landscape) ? .standardLandscape : .standardPortrait
+            let fallbackConfiguration: ControllerSkinConfigurations = (traits.orientation == .landscape) ? .iphoneStandardLandscape : .iphoneStandardPortrait
             
             // Allow selecting skins that only support standard display types as well.
             fetchRequest.predicate = NSPredicate(format: "%K == %@ AND ((%K & %d) != 0 OR (%K & %d) != 0)",
