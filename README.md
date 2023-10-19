@@ -126,12 +126,10 @@ Each system in Delta is implemented as its own "Delta Core", which serves as a s
 - [MelonDSDeltaCore](https://github.com/rileytestut/MelonDSDeltaCore)
 - [GPGXDeltaCore](https://github.com/rileytestut/GPGXDeltaCore)
 
-## Project Requirements
-- Xcode 12
-- Swift 5+
-- iOS 12.2 or later
-
-Why iOS 12.2 or later? Doing so allows me to distribute Delta without embedding Swift libraries inside. This helps me afford bandwidth costs by reducing download sizes by roughly 30%, but also noticeably improves how long it takes to install/refresh Delta with AltStore. If you're compiling Delta yourself, however, you should be able to lower the deployment target to iOS 12.0 without any issues.
+## Minimum Project Requirements
+- Xcode 15
+- Swift 5.9
+- iOS 14.0
 
 ## Compilation Instructions
 
