@@ -11,8 +11,6 @@ All features added by third-party contributors will be considered *experimental*
 
 For more specific instructions regarding contributing features to Delta, see [ExperimentalFeatures.md](Docs/ExperimentalFeatures.md).
 
-> Make sure to use the `develop` branch as the base branch for all Pull Requests.
-
 ## Contribution Guidelines
 
 **Check out our project board first!**  
