@@ -505,10 +505,37 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection headerTitle="Advanced" footerTitle="Test out new features that have been added by contributors." id="EzW-IN-YAf" userLabel="Experimental Features">
+                            <tableViewSection headerTitle="Advanced" footerTitle="Test out new features that have been added by contributors." id="EzW-IN-YAf">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell" textLabel="Hl1-if-S1K" style="IBUITableViewCellStyleDefault" id="8fe-ab-zkf">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="gray" indentationWidth="10" reuseIdentifier="ActivityCell" id="0bj-he-6br" customClass="SwitchTableViewCell">
                                         <rect key="frame" x="16" y="1570.5" width="343" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="0bj-he-6br" id="oIP-D5-Xrm">
+                                            <rect key="frame" x="0.0" y="0.0" width="343" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Export Error Log" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XPB-zq-ssX">
+                                                    <rect key="frame" x="16" y="11.5" width="124.5" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" name="Purple"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" hidesWhenStopped="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="x5w-dE-ucW">
+                                                    <rect key="frame" x="307" y="12" width="20" height="21"/>
+                                                    <color key="color" name="Purple"/>
+                                                </activityIndicatorView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="x5w-dE-ucW" firstAttribute="centerY" secondItem="oIP-D5-Xrm" secondAttribute="centerY" id="2Du-al-MgG"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="x5w-dE-ucW" secondAttribute="trailing" id="7ek-gm-AM9"/>
+                                                <constraint firstItem="XPB-zq-ssX" firstAttribute="centerY" secondItem="oIP-D5-Xrm" secondAttribute="centerY" id="HsH-e7-iRR"/>
+                                                <constraint firstItem="XPB-zq-ssX" firstAttribute="leading" secondItem="oIP-D5-Xrm" secondAttribute="leadingMargin" id="Ulm-U3-OcK"/>
+                                                <constraint firstItem="x5w-dE-ucW" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="XPB-zq-ssX" secondAttribute="trailing" constant="8" symbolic="YES" id="vfa-y3-UZc"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell" textLabel="Hl1-if-S1K" style="IBUITableViewCellStyleDefault" id="8fe-ab-zkf">
+                                        <rect key="frame" x="16" y="1614.5" width="343" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8fe-ab-zkf" id="Py0-GQ-Z36">
                                             <rect key="frame" x="0.0" y="0.0" width="316.5" height="44"/>
@@ -717,6 +744,7 @@
                         <outlet property="buttonHapticFeedbackEnabledSwitch" destination="g7m-wj-ueP" id="nOj-sc-foi"/>
                         <outlet property="controllerOpacityLabel" destination="zaz-yD-CYG" id="eUW-u9-xxx"/>
                         <outlet property="controllerOpacitySlider" destination="whi-If-wFf" id="6Cx-HY-xLG"/>
+                        <outlet property="exportLogActivityIndicatorView" destination="x5w-dE-ucW" id="u5a-K3-2ag"/>
                         <outlet property="previewsEnabledSwitch" destination="OJE-9e-9i3" id="Ndg-eN-PPs"/>
                         <outlet property="respectSilentModeSwitch" destination="mlO-iy-zU2" id="TDT-cx-kCf"/>
                         <outlet property="syncingServiceLabel" destination="kLY-5g-v8n" id="zzx-qM-q1g"/>
