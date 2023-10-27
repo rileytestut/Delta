@@ -12645,6 +12645,31 @@
 			};
 			name = Release;
 		};
+		1A1444025E75F6B39111B81990FB1920 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = DE938F9D29DEE2089E52BCE4D765DF2B /* Harmony.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				GCC_PREFIX_HEADER = "Target Support Files/Harmony/Harmony-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				MODULEMAP_FILE = Headers/Public/Harmony/Harmony.modulemap;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_MODULE_NAME = Harmony;
+				PRODUCT_NAME = Harmony;
+				PUBLIC_HEADERS_FOLDER_PATH = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
 		1E7F8B6EB3D07FA3D8236A4BCB55962F /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 698A11ECCAF009BA9765514FEF63E5D2 /* SNESDeltaCore.release.xcconfig */;
@@ -12785,6 +12810,32 @@
 				PRIVATE_HEADERS_FOLDER_PATH = "";
 				PRODUCT_MODULE_NAME = N64DeltaCore;
 				PRODUCT_NAME = N64DeltaCore;
+				PUBLIC_HEADERS_FOLDER_PATH = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		2F70207C6F18AF342FEC2F08613C804F /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 143773242E2A521744AB37B4F8D49425 /* Harmony.release.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				GCC_PREFIX_HEADER = "Target Support Files/Harmony/Harmony-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				MODULEMAP_FILE = Headers/Public/Harmony/Harmony.modulemap;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_MODULE_NAME = Harmony;
+				PRODUCT_NAME = Harmony;
 				PUBLIC_HEADERS_FOLDER_PATH = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -13643,32 +13694,6 @@
 			};
 			name = Debug;
 		};
-		979B8CE91B81CC23F92BFAF9017FD30E /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 143773242E2A521744AB37B4F8D49425 /* Harmony.release.xcconfig */;
-			buildSettings = {
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				GCC_PREFIX_HEADER = "Target Support Files/Harmony/Harmony-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				MODULEMAP_FILE = Headers/Public/Harmony/Harmony.modulemap;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRIVATE_HEADERS_FOLDER_PATH = "";
-				PRODUCT_MODULE_NAME = Harmony;
-				PRODUCT_NAME = Harmony;
-				PUBLIC_HEADERS_FOLDER_PATH = "";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
 		99FB94707B9559CB88ACBC1B6D5AA3F1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9E90A4E912BD6E255A8140BE26A53D08 /* SDWebImage.debug.xcconfig */;
@@ -14092,31 +14117,6 @@
 			};
 			name = Debug;
 		};
-		FB4707879DC0D9B9AB55309F19257D69 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = DE938F9D29DEE2089E52BCE4D765DF2B /* Harmony.debug.xcconfig */;
-			buildSettings = {
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				GCC_PREFIX_HEADER = "Target Support Files/Harmony/Harmony-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				MODULEMAP_FILE = Headers/Public/Harmony/Harmony.modulemap;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRIVATE_HEADERS_FOLDER_PATH = "";
-				PRODUCT_MODULE_NAME = Harmony;
-				PRODUCT_NAME = Harmony;
-				PUBLIC_HEADERS_FOLDER_PATH = "";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -14294,8 +14294,8 @@
 		7C3E1190ABE8B5371898BF25BD61572F /* Build configuration list for PBXNativeTarget "Harmony" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				FB4707879DC0D9B9AB55309F19257D69 /* Debug */,
-				979B8CE91B81CC23F92BFAF9017FD30E /* Release */,
+				1A1444025E75F6B39111B81990FB1920 /* Debug */,
+				2F70207C6F18AF342FEC2F08613C804F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
