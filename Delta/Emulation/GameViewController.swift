@@ -711,12 +711,22 @@ private extension GameViewController
         {
             // AirPlaying, hide all (non-touch) screens.
             
-            if let traits = self.controllerView.controllerSkinTraits, let screens = self.controllerView.controllerSkin?.screens(for: traits)
+            if let traits = self.controllerView.controllerSkinTraits,
+               let supportedTraits = self.controllerView.controllerSkin?.supportedTraits(for: traits),
+               let screens = self.controllerView.controllerSkin?.screens(for: supportedTraits)
             {
                 for (screen, gameView) in zip(screens, self.gameViews)
                 {
                     gameView.isEnabled = screen.isTouchScreen
-                    gameView.isHidden = !screen.isTouchScreen
+                    
+                    if gameView == self.gameView
+                    {
+                        gameView.isAirPlaying = !screen.isTouchScreen
+                    }
+                    else
+                    {
+                        gameView.isHidden = !screen.isTouchScreen
+                    }
                 }
             }
             else
@@ -725,7 +735,8 @@ private extension GameViewController
                 // Most likely this system only has 1 screen, so just hide self.gameView.
                 
                 self.gameView.isEnabled = false
-                self.gameView.isHidden = true
+                self.gameView.isHidden = false
+                self.gameView.isAirPlaying = true
             }
         }
         else
@@ -736,6 +747,7 @@ private extension GameViewController
             {
                 gameView.isEnabled = true
                 gameView.isHidden = false
+                gameView.isAirPlaying = false
             }
         }
     }
@@ -1252,6 +1264,8 @@ private extension GameViewController
         
         // Implicitly called from updateControllerSkin()
         // self.updateExternalDisplay()
+        
+        self.gameView?.isAirPlaying = true
     }
     
     func updateExternalDisplay()
@@ -1322,6 +1336,8 @@ private extension GameViewController
         }
         
         self.updateControllerSkin() // Reset TouchControllerSkin + GameViews
+        
+        self.gameView?.isAirPlaying = false
     }
 }
 
