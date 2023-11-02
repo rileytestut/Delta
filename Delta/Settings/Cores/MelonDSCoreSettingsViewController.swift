@@ -235,7 +235,8 @@ private extension MelonDSCoreSettingsViewController
     
     func changeCore()
     {
-        let alertController = UIAlertController(title: NSLocalizedString("Change Emulator Core", comment: ""), message: NSLocalizedString("Save states are not compatible between different emulator cores. Make sure to use in-game saves in order to keep using your save data.\n\nYour existing save states will not be deleted and will be available whenever you switch cores again.", comment: ""), preferredStyle: .actionSheet)
+        let preferredStyle: UIAlertController.Style = (self.traitCollection.horizontalSizeClass == .compact) ? .actionSheet : .alert
+        let alertController = UIAlertController(title: NSLocalizedString("Change Emulator Core", comment: ""), message: NSLocalizedString("Save states are not compatible between different emulator cores. Make sure to use in-game saves in order to keep using your save data.\n\nYour existing save states will not be deleted and will be available whenever you switch cores again.", comment: ""), preferredStyle: preferredStyle)
         
         var desmumeActionTitle = DS.core.metadata?.name.value ?? DS.core.name
         var melonDSActionTitle = MelonDS.core.metadata?.name.value ?? MelonDS.core.name
