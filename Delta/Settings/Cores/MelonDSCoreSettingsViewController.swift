@@ -402,7 +402,7 @@ extension MelonDSCoreSettingsViewController
     
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath)
     {
-        guard let core = Settings.preferredCore(for: .ds) else { return }
+        guard let core = Settings.preferredCore(for: .ds), let section = Section(rawValue: indexPath.section), section == .general else { return }
         
         let key = DeltaCoreMetadata.Key.allCases[indexPath.row]
         let lastKey = DeltaCoreMetadata.Key.allCases.reversed().first { core.metadata?[$0] != nil }
@@ -414,7 +414,7 @@ extension MelonDSCoreSettingsViewController
         }
         else
         {
-            cell.separatorInset.left = self.view.layoutMargins.left
+            cell.separatorInset.left = cell.layoutMargins.left
         }
     }
     
