@@ -314,9 +314,17 @@ extension MelonDSCoreSettingsViewController
         switch section
         {
         case _ where isSectionHidden(section): return 0
+        case .general:
+            guard let core = Settings.preferredCore(for: .ds) else { break }
+            
+            let validKeys = DeltaCoreMetadata.Key.allCases.filter { core.metadata?[$0] != nil }
+            return validKeys.count
+            
         case .airPlay where Settings.features.dsAirPlay.topScreenOnly: return 1 // Layout axis is irrelevant if only AirPlaying top screen.
-        default: return super.tableView(tableView, numberOfRowsInSection: sectionIndex)
+        default: break
         }
+        
+        return super.tableView(tableView, numberOfRowsInSection: sectionIndex)
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
@@ -401,24 +409,6 @@ extension MelonDSCoreSettingsViewController
         return cell
     }
     
-    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath)
-    {
-        guard let core = Settings.preferredCore(for: .ds), let section = Section(rawValue: indexPath.section), section == .general else { return }
-        
-        let key = DeltaCoreMetadata.Key.allCases[indexPath.row]
-        let lastKey = DeltaCoreMetadata.Key.allCases.reversed().first { core.metadata?[$0] != nil }
-        
-        if key == lastKey
-        {
-            // Hide separator for last visible row in case we've hidden additional rows.
-            cell.separatorInset.left = 0
-        }
-        else
-        {
-            cell.separatorInset.left = cell.layoutMargins.left
-        }
-    }
-    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
     {
         switch Section(rawValue: indexPath.section)!
@@ -472,20 +462,6 @@ extension MelonDSCoreSettingsViewController
             
         default: return super.tableView(tableView, titleForFooterInSection: section.rawValue)
         }
-    }
-    
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
-    {
-        switch Section(rawValue: indexPath.section)!
-        {
-        case .general:
-            let key = DeltaCoreMetadata.Key.allCases[indexPath.row]
-            guard Settings.preferredCore(for: .ds)?.metadata?[key] != nil else { return  0 }
-            
-        default: break
-        }
-        
-        return super.tableView(tableView, heightForRowAt: indexPath)
     }
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat
