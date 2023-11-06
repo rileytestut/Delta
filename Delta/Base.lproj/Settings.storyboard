@@ -904,7 +904,7 @@
             </objects>
             <point key="canvasLocation" x="2513" y="-244"/>
         </scene>
-        <!--Game Boy Advance-->
+        <!--Preferred Controller Skins View Controller-->
         <scene sceneID="pkL-Te-puh">
             <objects>
                 <tableViewController storyboardIdentifier="preferredControllerSkins" id="56e-ul-z6v" customClass="PreferredControllerSkinsViewController" customModule="Delta" customModuleProvider="target" sceneMemberID="viewController">
@@ -965,7 +965,7 @@
                             <outlet property="delegate" destination="56e-ul-z6v" id="08A-GG-8bs"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Game Boy Advance" id="2GJ-l7-DgY">
+                    <navigationItem key="navigationItem" id="2GJ-l7-DgY">
                         <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="3iE-lg-bkA">
                             <connections>
                                 <segue destination="eMT-K0-PiM" kind="unwind" unwindAction="unwindToGameCollectionViewController:" id="fFx-zM-kfa"/>
@@ -973,12 +973,24 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="displayTypeSegmentedControl" destination="6ej-H3-R0j" id="0hk-2S-335"/>
                         <outlet property="landscapeImageView" destination="XY1-es-oZe" id="d6S-ez-jh2"/>
                         <outlet property="portraitImageView" destination="5r7-OQ-i7w" id="C5r-uX-SlN"/>
                         <segue destination="pG9-hI-tRE" kind="show" identifier="showControllerSkins" id="kiq-86-5B7"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Nx1-Ly-oRu" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="6ej-H3-R0j">
+                    <rect key="frame" x="0.0" y="0.0" width="225" height="33"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <segments>
+                        <segment title="Full Screen"/>
+                        <segment title="Split View"/>
+                    </segments>
+                    <connections>
+                        <action selector="toggleDisplayType:" destination="56e-ul-z6v" eventType="primaryActionTriggered" id="gao-FQ-Vxw"/>
+                    </connections>
+                </segmentedControl>
                 <exit id="eMT-K0-PiM" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="2513" y="466"/>

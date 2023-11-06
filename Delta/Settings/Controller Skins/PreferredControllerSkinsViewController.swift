@@ -17,6 +17,12 @@ extension PreferredControllerSkinsViewController
         case portrait
         case landscape
     }
+    
+    public enum DisplayType: Int
+    {
+        case fullScreen
+        case splitView
+    }
 }
 
 class PreferredControllerSkinsViewController: UITableViewController
@@ -30,10 +36,20 @@ class PreferredControllerSkinsViewController: UITableViewController
         }
     }
     
+    private var displayType: DisplayType = .fullScreen {
+        didSet {
+            self.updateControllerSkins()
+        }
+    }
+    
     @IBOutlet private var portraitImageView: UIImageView!
     @IBOutlet private var landscapeImageView: UIImageView!
+    @IBOutlet private var displayTypeSegmentedControl: UISegmentedControl!
     
     private var _previousBoundsSize: CGSize?
+    private var _previousPortraitTraits: DeltaCore.ControllerSkin.Traits?
+    private var _previousLandscapeTraits: DeltaCore.ControllerSkin.Traits?
+    
     private var portraitControllerSkin: ControllerSkin?
     private var landscapeControllerSkin: ControllerSkin?
 }
@@ -50,6 +66,13 @@ extension PreferredControllerSkinsViewController
         {
             // Hide Done button since we are not root view controller.
             self.navigationItem.rightBarButtonItem = nil
+        }
+        
+        if UIDevice.current.userInterfaceIdiom == .pad
+        {
+            // Only show segmented control for iPads.
+            self.displayTypeSegmentedControl.sizeToFit()
+            self.navigationItem.titleView = self.displayTypeSegmentedControl
         }
     }
     
@@ -72,7 +95,6 @@ extension PreferredControllerSkinsViewController
         if self.view.bounds.size != self._previousBoundsSize
         {
             self.updateControllerSkins()
-            self.tableView.reloadData()
         }
     }
     
@@ -161,6 +183,11 @@ private extension PreferredControllerSkinsViewController
         let portraitTraits = self.makeTraits(orientation: .portrait, in: window)
         let landscapeTraits = self.makeTraits(orientation: .landscape, in: window)
         
+        defer {
+            self._previousPortraitTraits = portraitTraits
+            self._previousLandscapeTraits = landscapeTraits
+        }
+        
         var portraitControllerSkin: ControllerSkin?
         var landscapeControllerSkin: ControllerSkin?
         
@@ -180,20 +207,28 @@ private extension PreferredControllerSkinsViewController
             landscapeControllerSkin = Settings.preferredControllerSkin(for: self.system, traits: landscapeTraits)
         }
         
-        if portraitControllerSkin != self.portraitControllerSkin
+        if portraitControllerSkin != self.portraitControllerSkin || portraitTraits != _previousPortraitTraits
         {
             self.portraitImageView.image = nil
-            self.portraitImageView.isIndicatingActivity = true
-            
             self.portraitControllerSkin = portraitControllerSkin
         }
         
-        if landscapeControllerSkin != self.landscapeControllerSkin
+        if landscapeControllerSkin != self.landscapeControllerSkin || landscapeTraits != _previousLandscapeTraits
         {
             self.landscapeImageView.image = nil
-            self.landscapeImageView.isIndicatingActivity = true
-            
             self.landscapeControllerSkin = landscapeControllerSkin
+        }
+        
+        self.tableView.reloadData()
+        
+        if self.portraitImageView.image == nil
+        {
+            self.portraitImageView.isIndicatingActivity = true
+        }
+        
+        if self.landscapeImageView.image == nil
+        {
+            self.landscapeImageView.isIndicatingActivity = true
         }
         
         DatabaseManager.shared.performBackgroundTask { (context) in
@@ -235,7 +270,26 @@ private extension PreferredControllerSkinsViewController
     {
         var traits = DeltaCore.ControllerSkin.Traits.defaults(for: window)
         traits.orientation = orientation
+        
+        if traits.device == .ipad
+        {
+            switch self.displayType
+            {
+            case .fullScreen: traits.displayType = .standard //TODO: Handle edgeToEdge skins
+            case .splitView: traits.displayType = .splitView
+            }
+        }
+        
         return traits
+    }
+}
+
+private extension PreferredControllerSkinsViewController
+{
+    @IBAction func toggleDisplayType(_ segmentedControl: UISegmentedControl)
+    {
+        let displayType = DisplayType(rawValue: segmentedControl.selectedSegmentIndex)!
+        self.displayType = displayType
     }
 }
 
