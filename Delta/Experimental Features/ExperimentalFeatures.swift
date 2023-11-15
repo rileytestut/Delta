@@ -41,6 +41,10 @@ struct ExperimentalFeatures: FeatureContainer
              options: ReviewSaveStatesOptions())
     var reviewSaveStates
     
+    @Feature(name: "Repair Database",
+             description: "Repair invalid relationships in Delta's game database on next app launch.")
+    var repairDatabase
+    
     @Feature(name: "Alternate App Icon",
              description: "Change the app icon.",
              options: AlternateAppIconOptions())
