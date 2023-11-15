@@ -207,6 +207,8 @@ private extension SettingsViewController
     {
         switch section
         {
+        case .hapticFeedback where !UIDevice.current.isVibrationSupported: return true
+            
         case .advanced:
             guard #unavailable(iOS 15) else { return false }
             
