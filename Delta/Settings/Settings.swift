@@ -53,7 +53,7 @@ struct Settings
     
     static func registerDefaults()
     {
-        var defaults = [#keyPath(UserDefaults.translucentControllerSkinOpacity): 0.7,
+        let defaults = [#keyPath(UserDefaults.translucentControllerSkinOpacity): 0.7,
                         #keyPath(UserDefaults.gameShortcutsMode): GameShortcutsMode.recent.rawValue,
                         #keyPath(UserDefaults.isButtonHapticFeedbackEnabled): true,
                         #keyPath(UserDefaults.isThumbstickHapticFeedbackEnabled): true,
@@ -63,12 +63,7 @@ struct Settings
                         #keyPath(UserDefaults.respectSilentMode): true,
                         Settings.preferredCoreSettingsKey(for: .ds): MelonDS.core.identifier] as [String : Any]
         
-        #if BETA
-        
-        // Assume we need to repair database relationships until explicitly set to false.
-        defaults[#keyPath(UserDefaults.shouldRepairDatabase)] = true
-        
-        #else
+        #if !BETA
         // Manually set MelonDS as preferred DS core in case DeSmuME is cached from a previous version.
         UserDefaults.standard.set(MelonDS.core.identifier, forKey: Settings.preferredCoreSettingsKey(for: .ds))
         
@@ -77,6 +72,12 @@ struct Settings
         #endif
         
         UserDefaults.standard.register(defaults: defaults)
+        
+        if ExperimentalFeatures.shared.repairDatabase.isEnabled
+        {
+            UserDefaults.standard.shouldRepairDatabase = true
+            ExperimentalFeatures.shared.repairDatabase.isEnabled = false // Disable so we only repair database once.
+        }
     }
 }
 

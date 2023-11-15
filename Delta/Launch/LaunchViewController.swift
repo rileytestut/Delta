@@ -78,33 +78,12 @@ extension LaunchViewController
         
         // Repair database _after_ starting SyncManager so we can access RecordController.
         let isDatabaseRepaired = RSTLaunchCondition(condition: { !UserDefaults.standard.shouldRepairDatabase }) { completionHandler in
-            func finish()
-            {
-                UserDefaults.standard.shouldRepairDatabase = false
-                completionHandler(nil)
-            }
-            
-            do
-            {
-                let fetchRequest = Game.fetchRequest()
-                fetchRequest.fetchLimit = 1
-                
-                let isDatabaseEmpty = try DatabaseManager.shared.viewContext.count(for: fetchRequest) == 0
-                guard !isDatabaseEmpty else {
-                    // Database has no games, so no need to repair database.
-                    finish()
-                    return
-                }
-            }
-            catch
-            {
-                print("Failed to fetch games at launch, repairing database just to be safe.", error)
-            }
-            
             let repairViewController = RepairDatabaseViewController()
             repairViewController.completionHandler = { [weak repairViewController] in
                 repairViewController?.dismiss(animated: true)
-                finish()
+                
+                UserDefaults.standard.shouldRepairDatabase = false
+                completionHandler(nil)
             }
             
             let navigationController = UINavigationController(rootViewController: repairViewController)
