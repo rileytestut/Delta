@@ -91,10 +91,17 @@ extension GamesViewController
     {
         super.viewDidLoad()
         
+        let faqButton = UIButton(type: .system)
+        faqButton.addTarget(self, action: #selector(GamesViewController.openFAQ), for: .primaryActionTriggered)
+        faqButton.setTitle(NSLocalizedString("Learn More…", comment: ""), for: .normal)
+        faqButton.titleLabel?.font = UIFont.preferredFont(forTextStyle: .title3)
+                
         self.placeholderView = RSTPlaceholderView(frame: self.view.bounds)
         self.placeholderView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.placeholderView.textLabel.text = NSLocalizedString("No Games", comment: "")
         self.placeholderView.detailTextLabel.text = NSLocalizedString("You can import games by pressing the + button in the top right.", comment: "")
+        self.placeholderView.stackView.addArrangedSubview(faqButton)
+        self.placeholderView.stackView.setCustomSpacing(20.0, after: self.placeholderView.detailTextLabel)
         self.view.insertSubview(self.placeholderView, at: 0)
         
         self.pageControl = UIPageControl()
@@ -350,6 +357,7 @@ private extension GamesViewController
                 if let viewController = self.viewControllerForIndex(index)
                 {
                     self.pageViewController.view.setHidden(false, animated: animated)
+                    self.pageViewController.view.superview?.setHidden(false, animated: animated)
                     self.placeholderView.setHidden(true, animated: animated)
                     
                     self.pageViewController.setViewControllers([viewController], direction: .forward, animated: false, completion: nil)
@@ -368,8 +376,15 @@ private extension GamesViewController
             self.title = NSLocalizedString("Games", comment: "")
             
             self.pageViewController.view.setHidden(true, animated: animated)
+            self.pageViewController.view.superview?.setHidden(true, animated: animated)
             self.placeholderView.setHidden(false, animated: animated)
         }
+    }
+    
+    @objc func openFAQ()
+    {
+        let faqURL = URL(string: "https://faq.deltaemulator.com/getting-started/importing-games")!
+        UIApplication.shared.open(faqURL)
     }
 }
 
