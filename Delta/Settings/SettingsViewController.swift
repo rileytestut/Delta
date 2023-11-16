@@ -115,6 +115,11 @@ class SettingsViewController: UITableViewController
             self.versionLabel.text = NSLocalizedString("Delta", comment: "")
             #endif
         }
+        
+        if #available(iOS 15, *)
+        {
+            self.tableView.register(AttributedHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: AttributedHeaderFooterView.reuseIdentifier)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool)
@@ -588,6 +593,33 @@ extension SettingsViewController
         }
     }
     
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? 
+    {
+        let section = Section(rawValue: section)!
+        guard !isSectionHidden(section) else { return nil }
+        
+        switch section
+        {
+        case .controllerSkins:
+            guard #available(iOS 15, *), let footerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: AttributedHeaderFooterView.reuseIdentifier) as? AttributedHeaderFooterView else { break }
+            
+            var attributedText = AttributedString(localized: "Customize the appearance of each system.")
+            attributedText += " "
+            
+            var learnMore = AttributedString(localized: "Learn more…")
+            learnMore.link = URL(string: "https://faq.deltaemulator.com/using-delta/controller-skins")
+            attributedText += learnMore
+            
+            footerView.attributedText = attributedText
+                        
+            return footerView
+            
+        default: break
+        }
+        
+        return super.tableView(tableView, viewForFooterInSection: section.rawValue)
+    }
+    
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String?
     {
         let section = Section(rawValue: section)!
@@ -598,7 +630,7 @@ extension SettingsViewController
         #if !BETA
         case .advanced: return nil
         #endif
-            
+        case .controllerSkins: return nil
         default: return super.tableView(tableView, titleForFooterInSection: section.rawValue)
         }
     }
@@ -620,14 +652,24 @@ extension SettingsViewController
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat
     {
         let section = Section(rawValue: section)!
+        guard !isSectionHidden(section) else { return 1 }
         
-        if isSectionHidden(section)
+        switch section
         {
-            return 1
+        case .controllerSkins: return UITableView.automaticDimension
+        default: return super.tableView(tableView, heightForFooterInSection: section.rawValue)
         }
-        else
+    }
+    
+    override func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat 
+    {
+        let section = Section(rawValue: section)!
+        guard !isSectionHidden(section) else { return 1 }
+        
+        switch section
         {
-            return super.tableView(tableView, heightForFooterInSection: section.rawValue)
+        case .controllerSkins: return 30
+        default: return UITableView.automaticDimension
         }
     }
 }
