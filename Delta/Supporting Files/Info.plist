@@ -435,5 +435,21 @@
 			</dict>
 		</dict>
 	</array>
+	<key>OSLogPreferences</key>
+	<dict>
+		<key>com.rileytestut.Harmony</key>
+		<dict>
+			<key>Sync</key>
+			<dict>
+				<key>Level</key>
+				<dict>
+					<key>Enable</key>
+					<string>Info</string>
+					<key>Persist</key>
+					<string>Info</string>
+				</dict>
+			</dict>
+		</dict>
+	</dict>
 </dict>
 </plist>
