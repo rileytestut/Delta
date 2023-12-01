@@ -1941,18 +1941,18 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 74;
+				CURRENT_PROJECT_VERSION = 78;
 				DEVELOPMENT_TEAM = 6XVY5G3U44;
 				INFOPLIST_FILE = "Delta/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.5b4;
-                OTHER_LDFLAGS = (
-                    "-ld64",
-                    "$(inherited)",
-                );
+				MARKETING_VERSION = 1.5rc;
+				OTHER_LDFLAGS = (
+					"-ld64",
+					"$(inherited)",
+				);
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" -DDEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.rileytestut.Delta;
 				PROVISIONING_PROFILE = "";
@@ -1979,18 +1979,18 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 74;
+				CURRENT_PROJECT_VERSION = 78;
 				DEVELOPMENT_TEAM = 6XVY5G3U44;
 				INFOPLIST_FILE = "Delta/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.5b4;
-                OTHER_LDFLAGS = (
-                    "-ld64",
-                    "$(inherited)",
-                );
+				MARKETING_VERSION = 1.5rc;
+				OTHER_LDFLAGS = (
+					"-ld64",
+					"$(inherited)",
+				);
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" -DIMPACTOR";
 				PRODUCT_BUNDLE_IDENTIFIER = com.rileytestut.Delta;
 				PROVISIONING_PROFILE = "";
