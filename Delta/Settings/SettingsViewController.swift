@@ -442,7 +442,7 @@ extension SettingsViewController
         case .controllers:
             if indexPath.row == Settings.localControllerPlayerIndex
             {
-                cell.detailTextLabel?.text = UIDevice.current.name
+                cell.detailTextLabel?.text = LocalDeviceController().name
             }
             else if let index = ExternalGameControllerManager.shared.connectedControllers.firstIndex(where: { $0.playerIndex == indexPath.row })
             {

@@ -22,22 +22,6 @@ extension ControllersSettingsViewController
     }
 }
 
-private class LocalDeviceController: NSObject, GameController
-{
-    var name: String {
-        return UIDevice.current.name
-    }
-    
-    var playerIndex: Int? {
-        set { Settings.localControllerPlayerIndex = newValue }
-        get { return Settings.localControllerPlayerIndex }
-    }
-    
-    let inputType: GameControllerInputType = .standard
-    
-    var defaultInputMapping: GameControllerInputMappingProtocol?
-}
-
 class ControllersSettingsViewController: UITableViewController
 {
     var playerIndex: Int! {
