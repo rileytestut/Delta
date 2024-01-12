@@ -140,7 +140,7 @@ extension SyncManager
                 }
                 catch
                 {
-                    print("Failed to remove Harmony database.", error)
+                    Logger.sync.error("Failed to remove Harmony database. \(error.localizedDescription, privacy: .public)")
                 }
                 
                 self.start(service: service, completionHandler: completionHandler)
@@ -166,11 +166,12 @@ extension SyncManager
                 {
                 case .other(ServiceError.connectionFailed):
                     // Authentication failed due to network connection, but otherwise started successfully so we ignore this error.
+                    Logger.sync.error("Failed to authenticate SyncManager due to network connection (ignoring). \(authError.localizedDescription, privacy: .public)")
                     completionHandler(.success)
                     
                 default:
                     // Another authentication error occured, so we'll deauthenticate ourselves.
-                    print("SyncManager.start auth error:", authError)
+                    Logger.sync.error("Failed to authenticate SyncManager. \(authError.localizedDescription, privacy: .public)")
                     
                     self.deauthenticate() { (result) in
                         switch result
@@ -187,7 +188,7 @@ extension SyncManager
             }
             catch
             {
-                print("SyncManager.start error:", error)
+                Logger.sync.error("Failed to start SyncManager. \(error.localizedDescription, privacy: .public)")
                 completionHandler(.failure(error))
             }
         }
