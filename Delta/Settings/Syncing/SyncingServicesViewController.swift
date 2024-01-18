@@ -90,8 +90,17 @@ private extension SyncingServicesViewController
                     let previousService = self.selectedSyncingService
                     self.selectedSyncingService = service
                     
-                    // Set to non-nil if we later authenticate.
-                    Settings.syncingService = nil
+                    // Same check as below when showing Sign In or Sign Out.
+                    if let coordinator = SyncManager.shared.coordinator, coordinator.account != nil
+                    {
+                        // Authenticated, so assign syncingService.
+                        Settings.syncingService = service
+                    }
+                    else
+                    {
+                        // Set to non-nil if we later authenticate.
+                        Settings.syncingService = nil
+                    }
                                         
                     if (previousService == nil && service != nil) || (previousService != nil && service == nil)
                     {
