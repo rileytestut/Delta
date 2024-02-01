@@ -1,27 +1,27 @@
 [submodule "Cores/DeltaCore"]
 	path = Cores/DeltaCore
-	url = git@github.com:rileytestut/DeltaCore.git
+	url = https://github.com/rileytestut/DeltaCore.git
 [submodule "Cores/SNESDeltaCore"]
 	path = Cores/SNESDeltaCore
-	url = git@github.com:rileytestut/SNESDeltaCore.git
+	url = https://github.com/rileytestut/SNESDeltaCore.git
 [submodule "External/Roxas"]
 	path = External/Roxas
-	url = git@github.com:rileytestut/Roxas.git
+	url = https://github.com/rileytestut/Roxas.git
 [submodule "Cores/GBADeltaCore"]
 	path = Cores/GBADeltaCore
-	url = git@github.com:rileytestut/GBADeltaCore.git
+	url = https://github.com/rileytestut/GBADeltaCore.git
 [submodule "Cores/GBCDeltaCore"]
 	path = Cores/GBCDeltaCore
-	url = git@github.com:rileytestut/GBCDeltaCore.git
+	url = https://github.com/rileytestut/GBCDeltaCore.git
 [submodule "External/Harmony"]
 	path = External/Harmony
 	url = https://github.com/rileytestut/Harmony.git
 [submodule "Cores/NESDeltaCore"]
 	path = Cores/NESDeltaCore
-	url = git@github.com:rileytestut/NESDeltaCore.git
+	url = https://github.com/rileytestut/NESDeltaCore.git
 [submodule "Cores/N64DeltaCore"]
 	path = Cores/N64DeltaCore
-	url = git@github.com:rileytestut/N64DeltaCore.git
+	url = https://github.com/rileytestut/N64DeltaCore.git
 [submodule "Cores/DSDeltaCore"]
 	path = Cores/DSDeltaCore
 	url = https://github.com/rileytestut/DSDeltaCore.git
