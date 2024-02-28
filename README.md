@@ -135,21 +135,15 @@ Each system in Delta is implemented as its own "Delta Core", which serves as a s
 
 > Delta uses Git LFS to manage large files, so first make sure you have [installed Git LFS](https://git-lfs.github.com).
 
-1. Clone this repository by running the following command in Terminal*  
+1. Clone this repository by running the following command in Terminal and update Git submodules*  
 ```bash
-$ git clone https://github.com/rileytestut/Delta.git
+$ git clone --recurse-submodules https://github.com/rileytestut/Delta.git
 ```  
 
-2. Update Git submodules
-```bash
-$ cd Delta
-$ git submodule update --init --recursive
-```  
-
-3. Open `Systems/Systems.xcworkspace` and select the "Systems" project in the project navigator (a.k.a. the left sidebar).
-4. Select "Systems" under `Targets`, then click the `Signing & Capabilities` tab.
-5. Change `Team` from "Yvette Testut" to your own account.
-6. Close `Systems/Systems.xcworkspace`, then open `Delta.xcworkspace`.
+2. Open `Systems/Systems.xcworkspace` and select the "Systems" project in the project navigator (a.k.a. the left sidebar).
+3. Select "Systems" under `Targets`, then click the `Signing & Capabilities` tab.
+4. Change `Team` from "Yvette Testut" to your own account.
+5. Close `Systems/Systems.xcworkspace`, then open `Delta.xcworkspace`.
 6. Repeat steps 4 & 5 with the "Delta" target.
 7. Change Delta's `Bundle Identifier` to something unique, such as by appending your GitHub username (ex: `com.rileytestut.Delta.MyGitHubUsername`).
 8. Build + run app! 🎉
@@ -157,7 +151,7 @@ $ git submodule update --init --recursive
 
 \* This will checkout the `main` branch by default, which is kept up-to-date with the latest public version. Ongoing development (including [Patreon betas](https://www.patreon.com/rileytestut)) is done on the `develop` branch, and is periodically merged into `main` whenever a new public version is released. If you'd prefer to compile the `develop` version instead, replace the `git clone` command in Step #1 with this one:
 ```bash
-$ git clone -b develop https://github.com/rileytestut/Delta.git
+$ git clone --recurse-submodules -b develop https://github.com/rileytestut/Delta.git
 ```  
 
 ## Licensing
