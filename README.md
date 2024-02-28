@@ -135,7 +135,7 @@ Each system in Delta is implemented as its own "Delta Core", which serves as a s
 
 > Delta uses Git LFS to manage large files, so first make sure you have [installed Git LFS](https://git-lfs.github.com).
 
-1. Clone this repository by running the following command in Terminal and update Git submodules*  
+1. Clone this repository and update Git submodules by running the following command in Terminal*  
 ```bash
 $ git clone --recurse-submodules https://github.com/rileytestut/Delta.git
 ```  
