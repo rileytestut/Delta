@@ -226,9 +226,9 @@ public final class Archive: Sequence {
     /// - Returns: An `Entry` with the given `path`. Otherwise, `nil`.
     public subscript(path: String) -> Entry? {
         if let encoding = preferredEncoding {
-            return self.filter { $0.path(using: encoding) == path }.first
+            return self.first(where: { $0.path(using: encoding) == path })
         }
-        return self.filter { $0.path == path }.first
+        return self.first(where: { $0.path == path })
     }
 
     // MARK: - Helpers
