@@ -161,7 +161,7 @@ $ git clone -b develop https://github.com/rileytestut/Delta.git
 ```  
 
 ## Licensing
-Due to the licensing of emulator cores used by Delta, I have no choice but to distribute Delta under the **AGPLv3 license**. That being said, I explicitly give permission for anyone to use, modify, and distribute all *my* original code for this project in any form, with or without attribution, without fear of legal consequences (dependencies remain under their original licenses, however).
+Due to the licensing of emulator cores used by Delta, I have no choice but to distribute Delta under the **AGPLv3 license**. That being said, I explicitly give permission for anyone to use, modify, and distribute all *my* original code for this project in any form, with or without attribution, without fear of legal consequences — unless you plan to submit your app to Apple’s App Store, in which case written permission from me is explicitly required. Dependencies remain under their original licenses.
 
 ## Contact Me
 
