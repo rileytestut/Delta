@@ -9,6 +9,7 @@
 import UIKit
 import SafariServices
 import QuickLook
+import MessageUI
 
 import DeltaCore
 import Harmony
@@ -30,6 +31,7 @@ private extension SettingsViewController
         case advanced
         case patreon
         case credits
+        case support
     }
     
     enum Segue: String
@@ -60,6 +62,12 @@ private extension SettingsViewController
         case litRitt
         case contributors
         case softwareLicenses
+    }
+    
+    enum SupportRow: Int, CaseIterable
+    {
+        case contactUs
+        case privacyPolicy
     }
 }
 
@@ -480,7 +488,7 @@ extension SettingsViewController
             let preferredCore = Settings.preferredCore(for: .ds)
             cell.detailTextLabel?.text = preferredCore?.metadata?.name.value ?? preferredCore?.name ?? NSLocalizedString("Unknown", comment: "")
             
-        case .controllerOpacity, .gameAudio, .hapticFeedback, .hapticTouch, .advanced, .patreon, .credits: break
+        case .controllerOpacity, .gameAudio, .hapticFeedback, .hapticTouch, .advanced, .patreon, .credits, .support: break
         }
 
         return cell
@@ -537,6 +545,39 @@ extension SettingsViewController
                 self.showContributors()
                 
             case .softwareLicenses: break
+            }
+            
+        case .support:
+            let row = SupportRow.allCases[indexPath.row]
+            switch row
+            {
+            case .contactUs:
+                if MFMailComposeViewController.canSendMail()
+                {
+                    let mailViewController = MFMailComposeViewController()
+                    mailViewController.mailComposeDelegate = self
+                    mailViewController.setToRecipients(["support@altstore.io"])
+                    
+                    if let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
+                    {
+                        mailViewController.setSubject("Delta \(version) Feedback")
+                    }
+                    else
+                    {
+                        mailViewController.setSubject("Delta Feedback")
+                    }
+                    
+                    self.present(mailViewController, animated: true, completion: nil)
+                }
+                else
+                {
+                    let toastView = RSTToastView(text: NSLocalizedString("Cannot Send Mail", comment: ""), detailText: nil)
+                    toastView.show(in: self.navigationController?.view ?? self.view, duration: 4.0)
+                }
+                
+            case .privacyPolicy:
+                let safariURL = URL(string: "https://altstore.io/privacy")!
+                UIApplication.shared.open(safariURL, options: [:])
             }
         }
     }
@@ -698,5 +739,19 @@ extension SettingsViewController: QLPreviewControllerDataSource, QLPreviewContro
         try? FileManager.default.removeItem(at: parentDirectory)
         
         _exportedLogURL = nil
+    }
+}
+
+extension SettingsViewController: MFMailComposeViewControllerDelegate
+{
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?)
+    {
+        if let error = error
+        {
+            let toastView = RSTToastView(error: error)
+            toastView.show(in: self.navigationController?.view ?? self.view, duration: 4.0)
+        }
+        
+        controller.dismiss(animated: true, completion: nil)
     }
 }
