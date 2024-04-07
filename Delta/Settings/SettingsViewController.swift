@@ -309,6 +309,14 @@ private extension SettingsViewController
         }
     }
     
+    func openThreads(username: String)
+    {
+        // Rely on universal links to open app.
+        
+        let safariURL = URL(string: "https://www.threads.net/@" + username)!
+        UIApplication.shared.open(safariURL, options: [:])
+    }
+    
     @available(iOS 14, *)
     func showContributors()
     {
@@ -519,8 +527,8 @@ extension SettingsViewController
             let row = CreditsRow(rawValue: indexPath.row)!
             switch row
             {
-            case .riley: self.openTwitter(username: "rileytestut")
-            case .shane: self.openTwitter(username: "shanegillio")
+            case .riley: self.openThreads(username: "rileytestut")
+            case .shane: self.openThreads(username: "shanegill.io")
             case .caroline: self.openTwitter(username: "1carolinemoore")
             case .grant: self.openTwitter(username: "grantgliner")
             case .litRitt: self.openTwitter(username: "lit_ritt")
