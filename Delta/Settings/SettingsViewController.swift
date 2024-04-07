@@ -241,6 +241,11 @@ private extension SettingsViewController
             {
                 return self.view.traitCollection.forceTouchCapability != .available
             }
+        
+        #if APP_STORE
+            // No external payments in App Store builds!
+        case .patreon: return true
+        #endif
             
         default: return false
         }
