@@ -241,11 +241,6 @@ private extension SettingsViewController
             {
                 return self.view.traitCollection.forceTouchCapability != .available
             }
-        
-        #if APP_STORE
-            // No external payments in App Store builds!
-        case .patreon: return true
-        #endif
             
         default: return false
         }
@@ -522,16 +517,22 @@ extension SettingsViewController
             }
 
         case .patreon:
-            let patreonURL = URL(string: "altstore://patreon")!
+            let patreonDeepLink = URL(string: "altstore://patreon")!
+            let patreonURL = URL(string: "https://www.patreon.com/rileyshane")!
             
-            UIApplication.shared.open(patreonURL, options: [:]) { (success) in
-                guard !success else { return }
+            if UIApplication.shared.canOpenURL(patreonDeepLink)
+            {
+                // AltStore is installed, so open Patreon page in AltStore.
                 
-                let patreonURL = URL(string: "https://www.patreon.com/rileytestut")!
-                
-                let safariViewController = SFSafariViewController(url: patreonURL)
-                safariViewController.preferredControlTintColor = .deltaPurple
-                self.present(safariViewController, animated: true, completion: nil)
+                UIApplication.shared.open(patreonDeepLink, options: [:]) { (success) in
+                    guard !success else { return }
+                    
+                    UIApplication.shared.open(patreonURL)
+                }
+            }
+            else
+            {
+                UIApplication.shared.open(patreonURL)
             }
             
             tableView.deselectRow(at: indexPath, animated: true)

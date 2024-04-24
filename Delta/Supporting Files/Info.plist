@@ -191,6 +191,7 @@
 	<array>
 		<string>dbapi-8-emm</string>
 		<string>dbapi-2</string>
+		<string>altstore</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
