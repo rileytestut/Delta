@@ -310,7 +310,18 @@ private extension GameCollectionViewController
             cell.isImageViewVibrancyEnabled = true
         }
         
+        cell.imageView.shouldAlignBaselines = true
         cell.imageView.image = #imageLiteral(resourceName: "BoxArt")
+        
+        if game.identifier == Game.melonDSBIOSIdentifier || game.identifier == Game.melonDSDSiBIOSIdentifier
+        {
+            // Don't clip bounds to avoid clipping Home Screen icon.
+            cell.imageView.clipsToBounds = false
+        }
+        else
+        {
+            cell.imageView.clipsToBounds = true
+        }
         
         if self.traitCollection.horizontalSizeClass == .regular
         {

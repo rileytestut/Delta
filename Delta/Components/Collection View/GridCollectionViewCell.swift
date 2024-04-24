@@ -10,7 +10,7 @@ import UIKit
 
 class GridCollectionViewCell: UICollectionViewCell
 {
-    let imageView = UIImageView()
+    let imageView = RoundedImageView()
     let textLabel = UILabel()
     
     var isImageViewVibrancyEnabled = true {
