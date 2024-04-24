@@ -9,6 +9,7 @@
 import UIKit
 import MobileCoreServices
 import AVFoundation
+import RegexBuilder
 
 import DeltaCore
 import MelonDSDeltaCore
@@ -590,7 +591,25 @@ private extension GameCollectionViewController
         
         let clipboardImportOption = ClipboardImportOption()
         let photoLibraryImportOption = PhotoLibraryImportOption(presentingViewController: self)
-        let gamesDatabaseImportOption = GamesDatabaseImportOption(presentingViewController: self)
+        
+        var sanitizedGameName = game.name
+        
+        if #available(iOS 16, *)
+        {
+            // Remove parentheses + everything inside.
+            
+            let regex = Regex {
+                "("
+                OneOrMore(.anyNonNewline)
+                ")"
+            }
+            
+            sanitizedGameName = sanitizedGameName.replacing(regex, with: "")
+        }
+        
+        sanitizedGameName = sanitizedGameName.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        let gamesDatabaseImportOption = GamesDatabaseImportOption(searchText: sanitizedGameName, presentingViewController: self)
         
         let importController = ImportController(documentTypes: [kUTTypeImage as String])
         importController.delegate = self
