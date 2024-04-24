@@ -719,14 +719,15 @@ private extension GameViewController
                 {
                     gameView.isEnabled = screen.isTouchScreen
                     
-                    if gameView == self.gameView
+                    if gameView == self.gameView && !(screen.isTouchScreen && Settings.features.dsAirPlay.topScreenOnly)
                     {
-                        // Always show AirPlay indicator on self.gameView
+                        // Always show AirPlay indicator on self.gameView, unless it is a touch screen AND we're only AirPlaying top screen.
                         gameView.isAirPlaying = true
                         gameView.isHidden = false
                     }
                     else
                     {
+                        gameView.isAirPlaying = false
                         gameView.isHidden = !screen.isTouchScreen
                     }
                 }
@@ -1267,7 +1268,7 @@ private extension GameViewController
         // Implicitly called from updateControllerSkin()
         // self.updateExternalDisplay()
         
-        self.gameView?.isAirPlaying = true
+        self.updateGameViews()
     }
     
     func updateExternalDisplay()
