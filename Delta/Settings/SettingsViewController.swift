@@ -543,8 +543,8 @@ extension SettingsViewController
             {
             case .riley: self.openThreads(username: "rileytestut")
             case .shane: self.openThreads(username: "shanegill.io")
-            case .caroline: self.openTwitter(username: "1carolinemoore")
-            case .grant: self.openTwitter(username: "grantgliner")
+            case .caroline: self.openThreads(username: "carolinemoore")
+            case .grant: self.openThreads(username: "glinstagrant")
             case .litRitt: self.openTwitter(username: "lit_ritt")
             case .contributors:
                 guard #available(iOS 14, *) else { return }
