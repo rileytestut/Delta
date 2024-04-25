@@ -157,6 +157,10 @@ class GameViewController: DeltaCore.GameViewController
     }
     
     private var _isLoadingSaveState = false
+    
+    private var fastForwardSwipeGestureRecognizer: UISwipeGestureRecognizer!
+    private var isMenuButtonHeldDown = false
+    private var ignoreNextMenuInput = false
         
     // Sustain Buttons
     private var isSelectingSustainedButtons = false
@@ -245,10 +249,15 @@ class GameViewController: DeltaCore.GameViewController
                 self.inputsToSustain[AnyInput(input)] = value
             }
         }
-        else if let emulatorCore = self.emulatorCore, emulatorCore.state == .running
+        else if let standardInput = StandardGameControllerInput(input: input), standardInput == .menu
         {
-            guard let actionInput = ActionInput(input: input) else { return }
+            self.isMenuButtonHeldDown = true
             
+            let sustainInputsMapping = SustainInputsMapping(gameController: gameController)
+            gameController.addReceiver(self, inputMapping: sustainInputsMapping)
+        }
+        else if let actionInput = ActionInput(input: input), let emulatorCore = self.emulatorCore, emulatorCore.state == .running
+        {
             switch actionInput
             {
             case .quickSave: self.performQuickSaveAction()
@@ -257,6 +266,21 @@ class GameViewController: DeltaCore.GameViewController
             case .toggleFastForward:
                 let isFastForwarding = (emulatorCore.rate != emulatorCore.deltaCore.supportedRates.lowerBound)
                 self.performFastForwardAction(activate: !isFastForwarding)
+            }
+        }
+        else if self.isMenuButtonHeldDown
+        {
+            self.ignoreNextMenuInput = true
+            
+            if gameController.sustainedInputs.keys.contains(AnyInput(input))
+            {
+                DispatchQueue.main.async {
+                    gameController.unsustain(input)
+                }
+            }
+            else
+            {                
+                gameController.sustain(input, value: value)
             }
         }
     }
@@ -272,10 +296,15 @@ class GameViewController: DeltaCore.GameViewController
                 self.inputsToSustain[AnyInput(input)] = nil
             }
         }
-        else
+        else if let standardInput = StandardGameControllerInput(input: input), standardInput == .menu
         {
-            guard let actionInput = ActionInput(input: input) else { return }
+            self.isMenuButtonHeldDown = false
             
+            // Reset controller mapping back to what it should be.
+            self.updateControllers()
+        }
+        else if let actionInput = ActionInput(input: input)
+        {
             switch actionInput
             {
             case .quickSave: break
@@ -328,6 +357,12 @@ extension GameViewController
         self.sustainButtonsBackgroundView.detailTextLabel.text = NSLocalizedString("Press the Menu button when finished.", comment: "")
         self.sustainButtonsBackgroundView.alpha = 0.0
         vibrancyView.contentView.addSubview(self.sustainButtonsBackgroundView)
+        
+        // Gestures
+        self.fastForwardSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(GameViewController.handleSwipeGesture(_:)))
+        self.fastForwardSwipeGestureRecognizer.delegate = self
+        self.fastForwardSwipeGestureRecognizer.direction = [.left, .right]
+        self.view.addGestureRecognizer(self.fastForwardSwipeGestureRecognizer)
         
         // Auto Layout
         self.sustainButtonsContentView.leadingAnchor.constraint(equalTo: self.gameView.leadingAnchor).isActive = true
@@ -1352,6 +1387,11 @@ extension GameViewController: GameViewControllerDelegate
     {
         guard gameViewController == self else { return }
         
+        guard !self.ignoreNextMenuInput else {
+            self.ignoreNextMenuInput = false
+            return
+        }
+        
         if let pausingGameController = self.pausingGameController
         {
             guard pausingGameController == gameController else { return }
@@ -1400,6 +1440,30 @@ extension GameViewController: GameViewControllerDelegate
         {
             self.updateExternalDisplayGameViews()
         }
+    }
+}
+
+//MARK: - UIGestureRecognizerDelegate -
+/// UIGestureRecognizerDelegate
+extension GameViewController
+{
+    override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool
+    {
+        guard super.gestureRecognizer(gestureRecognizer, shouldReceive: touch) else { return false }
+        guard gestureRecognizer == self.fastForwardSwipeGestureRecognizer else { return true }
+        
+        let shouldBegin = self.isMenuButtonHeldDown
+        return shouldBegin
+    }
+    
+    @objc private func handleSwipeGesture(_ gestureRecognizer: UISwipeGestureRecognizer)
+    {
+        guard let emulatorCore = self.emulatorCore else { return }
+        
+        let isFastForwarding = (emulatorCore.rate != emulatorCore.deltaCore.supportedRates.lowerBound)
+        self.performFastForwardAction(activate: !isFastForwarding)
+        
+        self.ignoreNextMenuInput = true
     }
 }
 
