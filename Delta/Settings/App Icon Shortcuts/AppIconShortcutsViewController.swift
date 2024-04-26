@@ -178,8 +178,7 @@ private extension AppIconShortcutsViewController
             
             do
             {
-                let games = try DatabaseManager.shared.viewContext.fetch(fetchRequest)
-                self.shortcutsDataSource.setItems(games, with: [])
+                let _ = try DatabaseManager.shared.viewContext.fetch(fetchRequest)
             }
             catch
             {
