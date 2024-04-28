@@ -43,6 +43,7 @@ class GamesViewController: UIViewController
     private var pageViewController: UIPageViewController!
     private var placeholderView: RSTPlaceholderView!
     private var pageControl: UIPageControl!
+    private var lastSelectedPageIndex: Int = 0
     
     private let fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>
     
@@ -114,6 +115,7 @@ extension GamesViewController
         
         self.pageControl.centerXAnchor.constraint(equalTo: (self.navigationController?.toolbar.centerXAnchor)!, constant: 0).isActive = true
         self.pageControl.centerYAnchor.constraint(equalTo: (self.navigationController?.toolbar.centerYAnchor)!, constant: 0).isActive = true
+        self.pageControl.addTarget(self, action: #selector(pageControlTapped(_:)), for: .valueChanged)
         
         if let navigationController = self.navigationController
         {
@@ -322,12 +324,14 @@ private extension GamesViewController
             if let index = self.fetchedResultsController.fetchedObjects?.firstIndex(where: { $0 as! GameCollection == gameCollection })
             {
                 self.pageControl.currentPage = index
+                self.lastSelectedPageIndex = index
             }
             else
             {
                 resetPageViewController = true
                 
                 self.pageControl.currentPage = 0
+                self.lastSelectedPageIndex = 0
             }
             
         }
@@ -353,6 +357,8 @@ private extension GamesViewController
                         index = gameCollectionIndex
                     }
                 }
+
+                self.lastSelectedPageIndex = index
                 
                 if let viewController = self.viewControllerForIndex(index)
                 {
@@ -380,7 +386,18 @@ private extension GamesViewController
             self.placeholderView.setHidden(false, animated: animated)
         }
     }
-    
+
+    @objc func pageControlTapped(_ sender: UIPageControl) {
+        let direction: UIPageViewController.NavigationDirection = (sender.currentPage > self.lastSelectedPageIndex) ? .forward : .reverse
+        self.lastSelectedPageIndex = self.pageControl.currentPage
+
+        guard let nextViewController = self.viewControllerForIndex(sender.currentPage) else { return }
+        self.pageViewController.setViewControllers([nextViewController], direction: direction, animated: true) { [weak self] completed in
+			guard let self = self else { return }
+			self.pageViewController(self.pageViewController, didFinishAnimating: true, previousViewControllers: [nextViewController], transitionCompleted: true)
+        }
+    }
+
     @objc func openFAQ()
     {
         let faqURL = URL(string: "https://faq.deltaemulator.com/getting-started/importing-games")!
