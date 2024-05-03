@@ -82,9 +82,8 @@ Delta is an iOS application that allows you to emulate and play video games for 
 - Microphone support **(DS only)**
 
 ## Installation
-<p align="center">
 [<img src="https://github.com/rileytestut/Delta/assets/48800753/a9eaf6a7-8e2c-4e4b-b8aa-7c5feed8decc">](https://apps.apple.com/us/app/delta-game-emulator/id1048524688)
-</p>
+
 <p align="center">
   <img src="https://user-images.githubusercontent.com/705880/114452847-c1db4980-9b8d-11eb-8f8f-de7998562222.png" width=100px height=100px>
 </p>
