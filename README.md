@@ -83,6 +83,7 @@ Delta is an iOS application that allows you to emulate and play video games for 
 
 ## Installation
 Due to changes made to app store guidelines, Apple now allows Delta on the App store. 
+
 [<img src="https://github.com/rileytestut/Delta/assets/48800753/a9eaf6a7-8e2c-4e4b-b8aa-7c5feed8decc">](https://apps.apple.com/us/app/delta-game-emulator/id1048524688)
 
 <p align="center">
