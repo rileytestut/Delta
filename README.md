@@ -83,11 +83,13 @@ Delta is an iOS application that allows you to emulate and play video games for 
 
 ## Installation
 
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/705880/114452847-c1db4980-9b8d-11eb-8f8f-de7998562222.png" width=100px height=100px>
-</p>
+Download Delta from the Apple App Store.
 
-Delta was originally developed under the impression Apple would allow it into the App Store. Unfortunately Apple later changed their minds, leaving me no choice but to find a new way to distribute Delta. Long story short, this led me to create [AltStore](https://github.com/rileytestut/AltStore), which now serves as the official way to install Delta onto your device.
+[<img src="https://github.com/rileytestut/Delta/assets/48800753/a9eaf6a7-8e2c-4e4b-b8aa-7c5feed8decc">](https://apps.apple.com/us/app/delta-game-emulator/id1048524688)
+
+### Sideloading
+
+Delta was originally developed under the impression Apple would allow it into the App Store (which it now is). For a long time, Apple wouldn't allow it on the app store, leaving me no choice but to find a new way to distribute Delta. Long story short, this led me to create [AltStore](https://github.com/rileytestut/AltStore), which now serves as the official way to install Delta onto your device.
 
 To install Delta with AltStore:
 1. Download AltServer for Mac or PC from https://altstore.io
