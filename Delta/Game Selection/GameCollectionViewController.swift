@@ -1102,7 +1102,8 @@ extension GameCollectionViewController
         
         if let image = cell.imageView.image
         {
-            let artworkFrame = AVMakeRect(aspectRatio: image.size, insideRect: cell.imageView.bounds)
+            var artworkFrame = AVMakeRect(aspectRatio: image.size, insideRect: cell.imageView.bounds)
+            artworkFrame.origin.y = cell.imageView.bounds.height - artworkFrame.height
             
             let bezierPath = UIBezierPath(rect: artworkFrame)
             parameters.visiblePath = bezierPath
