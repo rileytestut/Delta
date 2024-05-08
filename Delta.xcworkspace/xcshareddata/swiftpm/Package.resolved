@@ -3,7 +3,7 @@
     "pins": [
       {
         "package": "AltKit",
-        "repositoryURL": "https://github.com/rileytestut/AltKit.git",
+        "repositoryURL": "https://github.com/altstoreio/AltKit.git",
         "state": {
           "branch": null,
           "revision": "2fd376df1c79ec06a5c80cc8933da027f65b3148",
