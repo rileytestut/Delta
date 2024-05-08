@@ -6,10 +6,11 @@
 //  Copyright © 2023 Riley Testut. All rights reserved.
 //
 
-import OSLog
+@_exported import OSLog
 
 extension OSLog.Category
 {
+    static let main = "Main"
     static let database = "Database"
 }
 
@@ -17,6 +18,7 @@ extension Logger
 {
     static let deltaSubsystem = "com.rileytestut.Delta"
     
+    static let main = Logger(subsystem: deltaSubsystem, category: OSLog.Category.main)
     static let database = Logger(subsystem: deltaSubsystem, category: OSLog.Category.database)
 }
 
