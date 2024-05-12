@@ -14,7 +14,7 @@ import DeltaCore
 import Roxas
 
 @objc(SwitchTableViewCell)
-private class SwitchTableViewCell: UITableViewCell
+class SwitchTableViewCell: UITableViewCell
 {
     @IBOutlet var switchView: UISwitch!
 }

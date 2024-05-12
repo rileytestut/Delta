@@ -2,11 +2,20 @@
   "object": {
     "pins": [
       {
+        "package": "AltKit",
+        "repositoryURL": "https://github.com/rileytestut/AltKit.git",
+        "state": {
+          "branch": null,
+          "revision": "2fd376df1c79ec06a5c80cc8933da027f65b3148",
+          "version": null
+        }
+      },
+      {
         "package": "DeltaCore",
         "repositoryURL": "https://github.com/rileytestut/DeltaCore.git",
         "state": {
-          "branch": "main",
-          "revision": "eeefb30bd78fb130f1113e823afbce6f4f767cfb",
+          "branch": "ios14",
+          "revision": "cdd384dbacd5033183bbc3697c9738e3fb0b1d07",
           "version": null
         }
       },
@@ -15,8 +24,8 @@
         "repositoryURL": "https://github.com/weichsel/ZIPFoundation.git",
         "state": {
           "branch": null,
-          "revision": "ec32d62d412578542c0ffb7a6ce34d3e64b43b94",
-          "version": "0.9.11"
+          "revision": "f6a22e7da26314b38bf9befce34ae8e4b2543090",
+          "version": "0.9.15"
         }
       }
     ]

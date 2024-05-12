@@ -15,26 +15,11 @@ extension ControllersSettingsViewController
 {
     private enum Section: Int
     {
+        case none
         case localDevice
         case externalControllers
         case customizeControls
     }
-}
-
-private class LocalDeviceController: NSObject, GameController
-{
-    var name: String {
-        return UIDevice.current.name
-    }
-    
-    var playerIndex: Int? {
-        set { Settings.localControllerPlayerIndex = newValue }
-        get { return Settings.localControllerPlayerIndex }
-    }
-    
-    let inputType: GameControllerInputType = .standard
-    
-    var defaultInputMapping: GameControllerInputMappingProtocol?
 }
 
 class ControllersSettingsViewController: UITableViewController
@@ -108,8 +93,17 @@ extension ControllersSettingsViewController
         switch identifier
         {
         case "controllerInputsSegue":
-            let controllerInputsViewController = (segue.destination as! UINavigationController).topViewController as! ControllerInputsViewController
+            let navigationController = segue.destination as! UINavigationController
+            
+            let controllerInputsViewController = navigationController.topViewController as! ControllerInputsViewController
             controllerInputsViewController.gameController = self.gameController
+            
+            if self.view.traitCollection.userInterfaceIdiom == .pad
+            {
+                // For now, only iPads can display ControllerInputsViewController as a form sheet.
+                navigationController.modalPresentationStyle = .formSheet
+                navigationController.presentationController?.delegate = controllerInputsViewController
+            }
             
         default: break
         }
@@ -140,6 +134,18 @@ private extension ControllersSettingsViewController
         
         switch Section(rawValue: indexPath.section)!
         {
+        case .none:
+            cell.textLabel?.text = NSLocalizedString("None", comment: "")
+            
+            if self.gameController == nil
+            {
+                cell.accessoryType = .checkmark
+            }
+            else
+            {
+                cell.accessoryType = .none
+            }
+            
         case .localDevice, .externalControllers:
             let controller: GameController
             
@@ -163,7 +169,7 @@ private extension ControllersSettingsViewController
                 cell.accessoryType = .checkmark
             }
             else
-            {                
+            {
                 cell.accessoryType = .none
             }
             
@@ -248,18 +254,20 @@ extension ControllersSettingsViewController
 {
     override func numberOfSections(in tableView: UITableView) -> Int
     {
-        if self.gameController == self.localDeviceController
+        if self.gameController == self.localDeviceController || self.gameController == nil
         {
-            return 2
+            return 3
         }
 
-        return 3
+        return 4
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
         switch Section(rawValue: section)!
         {
+        case .none where self.playerIndex == 0: return 0
+        case .none: return 1
         case .localDevice: return 1
         case .externalControllers: return self.connectedControllers.isEmpty ? 1 : self.connectedControllers.count
         case .customizeControls: return 1
@@ -285,9 +293,28 @@ extension ControllersSettingsViewController
     {
         switch Section(rawValue: section)!
         {
+        case .none: return nil
         case .localDevice: return NSLocalizedString("This Device", comment: "")
         case .externalControllers: return NSLocalizedString("Game Controllers", comment: "")
         case .customizeControls: return nil
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat
+    {
+        switch Section(rawValue: section)!
+        {
+        case .none where self.playerIndex == 0: return 1
+        default: return UITableView.automaticDimension
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat
+    {
+        switch Section(rawValue: section)!
+        {
+        case .none where self.playerIndex == 0: return 1
+        default: return UITableView.automaticDimension
         }
     }
 }
@@ -296,8 +323,11 @@ extension ControllersSettingsViewController
 {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
     {
+        let previousGameController = self.gameController
+        
         switch Section(rawValue: indexPath.section)!
         {
+        case .none: self.gameController = nil
         case .localDevice: self.gameController = self.localDeviceController
         case .externalControllers where self.connectedControllers.isEmpty: return
         case .externalControllers: self.gameController = self.connectedControllers[indexPath.row]
@@ -310,7 +340,7 @@ extension ControllersSettingsViewController
         
         let previousIndexPath: IndexPath?
         
-        if let gameController = self.gameController
+        if let gameController = previousGameController
         {
             if gameController == self.localDeviceController
             {
@@ -327,7 +357,7 @@ extension ControllersSettingsViewController
         }
         else
         {
-            previousIndexPath = nil
+            previousIndexPath = IndexPath(row: 0, section: Section.none.rawValue)
         }
         
         self.tableView.beginUpdates()

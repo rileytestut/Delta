@@ -93,14 +93,6 @@ extension SaveStatesViewController
         self.collectionView?.dataSource = self.dataSource
         self.collectionView?.prefetchDataSource = self.dataSource
         
-        let collectionViewLayout = self.collectionViewLayout as! GridCollectionViewLayout
-        let averageHorizontalInset = (collectionViewLayout.sectionInset.left + collectionViewLayout.sectionInset.right) / 2
-        let portraitScreenWidth = UIScreen.main.coordinateSpace.convert(UIScreen.main.bounds, to: UIScreen.main.fixedCoordinateSpace).width
-        
-        // Use dimensions that allow two cells to fill the screen horizontally with padding in portrait mode
-        // We'll keep the same size for landscape orientation, which will allow more to fit
-        collectionViewLayout.itemWidth = floor((portraitScreenWidth - (averageHorizontalInset * 3)) / 2)
-        
         switch self.mode
         {
         case .saving:
@@ -113,8 +105,7 @@ extension SaveStatesViewController
             self.navigationItem.rightBarButtonItems?.removeFirst()
         }
         
-        // Manually update prototype cell properties
-        self.prototypeCellWidthConstraint = self.prototypeCell.contentView.widthAnchor.constraint(equalToConstant: collectionViewLayout.itemWidth)
+        self.prototypeCellWidthConstraint = self.prototypeCell.contentView.widthAnchor.constraint(equalToConstant: 0)
         self.prototypeCellWidthConstraint.isActive = true
         
         self.prepareEmulatorCoreSaveState()
@@ -238,6 +229,26 @@ private extension SaveStatesViewController
         }
         
         self.sortButton.transform = CGAffineTransform.identity.rotated(by: Settings.sortSaveStatesByOldestFirst ? 0 : .pi)
+        
+        let collectionViewLayout = self.collectionViewLayout as! GridCollectionViewLayout
+        
+        if self.traitCollection.horizontalSizeClass == .regular
+        {
+            collectionViewLayout.itemWidth = 180
+            collectionViewLayout.minimumInteritemSpacing = 30
+        }
+        else
+        {
+            let averageHorizontalInset = (collectionViewLayout.sectionInset.left + collectionViewLayout.sectionInset.right) / 2
+            let portraitScreenWidth = UIScreen.main.coordinateSpace.convert(UIScreen.main.bounds, to: UIScreen.main.fixedCoordinateSpace).width
+            
+            // Use dimensions that allow two cells to fill the screen horizontally with padding in portrait mode
+            // We'll keep the same size for landscape orientation, which will allow more to fit
+            collectionViewLayout.itemWidth = floor((portraitScreenWidth - (averageHorizontalInset * 3)) / 2)
+        }
+        
+        // Manually update prototype cell properties
+        self.prototypeCellWidthConstraint.constant = collectionViewLayout.itemWidth
     }
     
     //MARK: - Configure Views -

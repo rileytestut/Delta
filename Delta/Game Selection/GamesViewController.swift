@@ -47,6 +47,7 @@ class GamesViewController: UIViewController
     private let fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>
     
     private var searchController: RSTSearchController?
+    private lazy var importController: ImportController = self.makeImportController()
     
     private var syncingToastView: RSTToastView? {
         didSet {
@@ -57,6 +58,8 @@ class GamesViewController: UIViewController
         }
     }
     private var syncingProgressObservation: NSKeyValueObservation?
+    
+    @IBOutlet private var importButton: UIBarButtonItem!
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         fatalError("initWithNibName: not implemented")
@@ -75,7 +78,7 @@ class GamesViewController: UIViewController
         
         NotificationCenter.default.addObserver(self, selector: #selector(GamesViewController.syncingDidStart(_:)), name: SyncCoordinator.didStartSyncingNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GamesViewController.syncingDidFinish(_:)), name: SyncCoordinator.didFinishSyncingNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(GamesViewController.settingsDidChange(_:)), name: .settingsDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(GamesViewController.settingsDidChange(_:)), name: Settings.didChangeNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GamesViewController.emulationDidQuit(_:)), name: EmulatorCore.emulationDidQuitNotification, object: nil)
     }
 }
@@ -88,10 +91,17 @@ extension GamesViewController
     {
         super.viewDidLoad()
         
+        let faqButton = UIButton(type: .system)
+        faqButton.addTarget(self, action: #selector(GamesViewController.openFAQ), for: .primaryActionTriggered)
+        faqButton.setTitle(NSLocalizedString("Learn More…", comment: ""), for: .normal)
+        faqButton.titleLabel?.font = UIFont.preferredFont(forTextStyle: .title3)
+                
         self.placeholderView = RSTPlaceholderView(frame: self.view.bounds)
         self.placeholderView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.placeholderView.textLabel.text = NSLocalizedString("No Games", comment: "")
         self.placeholderView.detailTextLabel.text = NSLocalizedString("You can import games by pressing the + button in the top right.", comment: "")
+        self.placeholderView.stackView.addArrangedSubview(faqButton)
+        self.placeholderView.stackView.setCustomSpacing(20.0, after: self.placeholderView.detailTextLabel)
         self.view.insertSubview(self.placeholderView, at: 0)
         
         self.pageControl = UIPageControl()
@@ -114,16 +124,38 @@ extension GamesViewController
                 let navigationBarAppearance = navigationController.navigationBar.standardAppearance.copy()
                 navigationBarAppearance.backgroundEffect = UIBlurEffect(style: .dark)
                 navigationController.navigationBar.standardAppearance = navigationBarAppearance
+                navigationController.navigationBar.scrollEdgeAppearance = navigationBarAppearance
                 
                 let toolbarAppearance = navigationController.toolbar.standardAppearance.copy()
                 toolbarAppearance.backgroundEffect = UIBlurEffect(style: .dark)
-                navigationController.toolbar.standardAppearance = toolbarAppearance                
+                navigationController.toolbar.standardAppearance = toolbarAppearance
+                
+                if #available(iOS 15, *)
+                {
+                    navigationController.toolbar.scrollEdgeAppearance = toolbarAppearance
+                }
             }
             else
             {
                 navigationController.navigationBar.barStyle = .blackTranslucent
                 navigationController.toolbar.barStyle = .blackTranslucent
             }            
+        }
+        
+        if #available(iOS 14, *)
+        {
+            self.importController.presentingViewController = self
+            
+            let importActions = self.importController.makeActions().menuActions
+            let importMenu = UIMenu(title: NSLocalizedString("Import From…", comment: ""), image: UIImage(systemName: "square.and.arrow.down"), children: importActions)
+            self.importButton.menu = importMenu
+
+            self.importButton.action = nil
+            self.importButton.target = nil
+        }
+        else
+        {
+            self.importController.barButtonItem = self.importButton
         }
         
         self.prepareSearchController()
@@ -325,6 +357,7 @@ private extension GamesViewController
                 if let viewController = self.viewControllerForIndex(index)
                 {
                     self.pageViewController.view.setHidden(false, animated: animated)
+                    self.pageViewController.view.superview?.setHidden(false, animated: animated)
                     self.placeholderView.setHidden(true, animated: animated)
                     
                     self.pageViewController.setViewControllers([viewController], direction: .forward, animated: false, completion: nil)
@@ -343,8 +376,15 @@ private extension GamesViewController
             self.title = NSLocalizedString("Games", comment: "")
             
             self.pageViewController.view.setHidden(true, animated: animated)
+            self.pageViewController.view.superview?.setHidden(true, animated: animated)
             self.placeholderView.setHidden(false, animated: animated)
         }
+    }
+    
+    @objc func openFAQ()
+    {
+        let faqURL = URL(string: "https://faq.deltaemulator.com/getting-started/importing-games")!
+        UIApplication.shared.open(faqURL)
     }
 }
 
@@ -352,8 +392,8 @@ private extension GamesViewController
 /// Importing
 extension GamesViewController: ImportControllerDelegate
 {
-    @IBAction private func importFiles()
-    {        
+    private func makeImportController() -> ImportController
+    {
         var documentTypes = Set(System.registeredSystems.map { $0.gameType.rawValue })
         documentTypes.insert(kUTTypeZipArchive as String)
         documentTypes.insert("com.rileytestut.delta.skin")
@@ -373,7 +413,13 @@ extension GamesViewController: ImportControllerDelegate
         let importController = ImportController(documentTypes: documentTypes)
         importController.delegate = self
         importController.importOptions = [itunesImportOption]
-        self.present(importController, animated: true, completion: nil)
+        
+        return importController
+    }
+    
+    @IBAction private func importFiles()
+    {
+        self.present(self.importController, animated: true, completion: nil)
     }
     
     func importController(_ importController: ImportController, didImportItemsAt urls: Set<URL>, errors: [Error])
@@ -615,7 +661,7 @@ extension GamesViewController: NSFetchedResultsControllerDelegate
 
 extension GamesViewController: UIAdaptivePresentationControllerDelegate
 {
-    func presentationControllerWillDismiss(_ presentationController: UIPresentationController)
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController)
     {
         self.sync()
     }

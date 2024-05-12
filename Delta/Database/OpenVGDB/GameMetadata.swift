@@ -11,15 +11,17 @@ import Foundation
 // Must be an NSObject subclass so it can be used with RSTCellContentDataSource.
 class GameMetadata: NSObject
 {
-    let identifier: Int
+    let releaseID: Int
+    let romID: Int
     
     let name: String?
     let artworkURL: URL?
     
-    init(identifier: Int, name: String?, artworkURL: URL?)
+    init(releaseID: Int, romID: Int, name: String?, artworkURL: URL?)
     {
+        self.releaseID = releaseID
+        self.romID = romID
         self.name = name
-        self.identifier = identifier
         self.artworkURL = artworkURL
     }
 }
@@ -27,13 +29,13 @@ class GameMetadata: NSObject
 extension GameMetadata
 {
     override var hash: Int {
-        return self.identifier.hashValue
+        return self.releaseID.hashValue ^ self.romID.hashValue
     }
     
     override func isEqual(_ object: Any?) -> Bool
     {
         guard let metadata = object as? GameMetadata else { return false }
         
-        return self.identifier == metadata.identifier
+        return self.releaseID == metadata.releaseID && self.romID == metadata.romID
     }
 }

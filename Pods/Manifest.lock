@@ -1,12 +1,15 @@
 PODS:
   - Alamofire (4.7.3)
-  - Crashlytics (3.8.6):
-    - Fabric (~> 1.6.3)
+  - AppAuth (1.6.2):
+    - AppAuth/Core (= 1.6.2)
+    - AppAuth/ExternalUserAgent (= 1.6.2)
+  - AppAuth/Core (1.6.2)
+  - AppAuth/ExternalUserAgent (1.6.2):
+    - AppAuth/Core
   - DeltaCore (0.1):
     - ZIPFoundation
   - DSDeltaCore (0.1):
     - DeltaCore
-  - Fabric (1.6.13)
   - GBADeltaCore (0.1):
     - DeltaCore
   - GBCDeltaCore (0.1):
@@ -16,30 +19,25 @@ PODS:
   - GoogleAPIClientForREST/Drive (1.3.11):
     - GoogleAPIClientForREST/Core
     - GTMSessionFetcher (>= 1.1.7)
-  - GoogleSignIn (4.4.0):
-    - "GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)"
-    - "GoogleToolboxForMac/NSString+URLArguments (~> 2.1)"
+  - GoogleSignIn (5.0.2):
+    - AppAuth (~> 1.2)
+    - GTMAppAuth (~> 1.0)
     - GTMSessionFetcher/Core (~> 1.1)
-  - GoogleToolboxForMac/DebugUtils (2.3.0):
-    - GoogleToolboxForMac/Defines (= 2.3.0)
-  - GoogleToolboxForMac/Defines (2.3.0)
-  - "GoogleToolboxForMac/NSDictionary+URLArguments (2.3.0)":
-    - GoogleToolboxForMac/DebugUtils (= 2.3.0)
-    - GoogleToolboxForMac/Defines (= 2.3.0)
-    - "GoogleToolboxForMac/NSString+URLArguments (= 2.3.0)"
-  - "GoogleToolboxForMac/NSString+URLArguments (2.3.0)"
-  - GTMSessionFetcher (1.5.0):
-    - GTMSessionFetcher/Full (= 1.5.0)
-  - GTMSessionFetcher/Core (1.5.0)
-  - GTMSessionFetcher/Full (1.5.0):
-    - GTMSessionFetcher/Core (= 1.5.0)
+  - GTMAppAuth (1.3.1):
+    - AppAuth/Core (~> 1.6)
+    - GTMSessionFetcher/Core (< 3.0, >= 1.5)
+  - GTMSessionFetcher (1.7.2):
+    - GTMSessionFetcher/Full (= 1.7.2)
+  - GTMSessionFetcher/Core (1.7.2)
+  - GTMSessionFetcher/Full (1.7.2):
+    - GTMSessionFetcher/Core (= 1.7.2)
   - Harmony (0.1):
     - Harmony/Harmony-Drive (= 0.1)
     - Harmony/Harmony-Dropbox (= 0.1)
     - Roxas
   - Harmony/Harmony-Drive (0.1):
     - GoogleAPIClientForREST/Drive (~> 1.3.0)
-    - GoogleSignIn (~> 4.4.0)
+    - GoogleSignIn (~> 5.0)
     - Roxas
   - Harmony/Harmony-Dropbox (0.1):
     - Roxas
@@ -71,10 +69,8 @@ PODS:
   - ZIPFoundation (0.9.11)
 
 DEPENDENCIES:
-  - Crashlytics (~> 3.8.0)
   - DeltaCore (from `Cores/DeltaCore`)
   - DSDeltaCore (from `Cores/DSDeltaCore`)
-  - Fabric (~> 1.6.0)
   - GBADeltaCore (from `Cores/GBADeltaCore`)
   - GBCDeltaCore (from `Cores/GBCDeltaCore`)
   - Harmony (from `External/Harmony`)
@@ -90,11 +86,10 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - Alamofire
-    - Crashlytics
-    - Fabric
+    - AppAuth
     - GoogleAPIClientForREST
     - GoogleSignIn
-    - GoogleToolboxForMac
+    - GTMAppAuth
     - GTMSessionFetcher
     - SDWebImage
     - SMCalloutView
@@ -126,28 +121,27 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
-  Crashlytics: e156f27e43abaa331f9b7afed091bda37e1052cc
-  DeltaCore: 86a78ac8fb0d40190231b5fb64d109f7516de187
-  DSDeltaCore: c113b64288d253fafe350ee23df143c76a11e173
-  Fabric: be0459577cee96fe21f68de24588be2dd71482b8
-  GBADeltaCore: 55e32d21508ce7383a1b1587e425ccc60620ad66
-  GBCDeltaCore: 7468dff742927139a14f6fc909e810f253b6293c
+  AppAuth: 3bb1d1cd9340bd09f5ed189fb00b1cc28e1e8570
+  DeltaCore: 6a430005ea397fcd5b40b964effe41ac69cc9037
+  DSDeltaCore: d22a7cfbbe70f063b8c72dec9d1bcd2c59e14893
+  GBADeltaCore: c2f7ce5e5616ed63d2b99c9ba9a7e020f2263248
+  GBCDeltaCore: 27f09a1c88a4ac832aa549fbe34aaf277251b6b8
   GoogleAPIClientForREST: 0f19a8280dfe6471f76016645d26eb5dae305101
-  GoogleSignIn: 7ff245e1a7b26d379099d3243a562f5747e23d39
-  GoogleToolboxForMac: 1350d40e86a76f7863928d63bcb0b89c84c521c5
-  GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
-  Harmony: cea514db17c41c22f78f54b17d2135935b5e9b96
-  MelonDSDeltaCore: 3de2a2e2ebcd630a6dd756818b5a26dde7afa726
-  N64DeltaCore: 6b0f07f2078193a15d736f153ce701661853fa36
-  NESDeltaCore: 41ab438dd78d51d4636aacb7d9a7336ea3d4728c
+  GoogleSignIn: 7137d297ddc022a7e0aa4619c86d72c909fa7213
+  GTMAppAuth: 0ff230db599948a9ad7470ca667337803b3fc4dd
+  GTMSessionFetcher: 5595ec75acf5be50814f81e9189490412bad82ba
+  Harmony: 1d8166b6168eec8cce046c4366765d15f7e3b9fc
+  MelonDSDeltaCore: 46193f4fd88e4e18e4a5c841b1ae02dc46d1daa6
+  N64DeltaCore: 4eeb468746722952bcd5467ecb9ebe7df070f53a
+  NESDeltaCore: ffae3bba878fc505bac0914150a695ede7bc9550
   Roxas: 1990039f843f5dc284918dc82375feb80020ef62
   SDWebImage: a72e880a8fe0f7fc31efe15aaed443c074d2a80c
   SMCalloutView: 5c0ee363dc8e7204b2fda17dfad38c93e9e23481
-  SNESDeltaCore: 1e9cc751501082480f8181d4449322ee4ec26dac
+  SNESDeltaCore: d9b60ba8851d5d9cc8ab61616cc72396c292c87b
   SQLite.swift: d2b4642190917051ce6bd1d49aab565fe794eea3
   SwiftyDropbox: 378b4425a2e8d0cb24c7b0f2e3af72bfbaaf1e73
   ZIPFoundation: b1f0de4eed33e74a676f76e12559ab6b75990197
 
-PODFILE CHECKSUM: 2f9219b1db18479e650fc2159f58160b4cc13aad
+PODFILE CHECKSUM: b33e8da65952bdb2b77ee1fca9bd0104d3da1713
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.12.1

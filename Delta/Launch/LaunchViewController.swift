@@ -76,7 +76,21 @@ extension LaunchViewController
             }
         }
         
-        return [isDatabaseManagerStarted, isSyncingManagerStarted]
+        // Repair database _after_ starting SyncManager so we can access RecordController.
+        let isDatabaseRepaired = RSTLaunchCondition(condition: { !UserDefaults.standard.shouldRepairDatabase }) { completionHandler in
+            let repairViewController = RepairDatabaseViewController()
+            repairViewController.completionHandler = { [weak repairViewController] in
+                repairViewController?.dismiss(animated: true)
+                
+                UserDefaults.standard.shouldRepairDatabase = false
+                completionHandler(nil)
+            }
+            
+            let navigationController = UINavigationController(rootViewController: repairViewController)
+            self.present(navigationController, animated: true)
+        }
+        
+        return [isDatabaseManagerStarted, isSyncingManagerStarted, isDatabaseRepaired]
     }
     
     override func handleLaunchError(_ error: Error)

@@ -13,10 +13,13 @@ struct GamesDatabaseImportOption: ImportOption
     let title = NSLocalizedString("Games Database", comment: "")
     let image: UIImage? = nil
     
+    let searchText: String?
+    
     private let presentingViewController: UIViewController
     
-    init(presentingViewController: UIViewController)
+    init(searchText: String?, presentingViewController: UIViewController)
     {
+        self.searchText = searchText
         self.presentingViewController = presentingViewController
     }
     
@@ -26,6 +29,7 @@ struct GamesDatabaseImportOption: ImportOption
         let navigationController = (storyboard.instantiateInitialViewController() as! UINavigationController)
         
         let gamesDatabaseBrowserViewController = navigationController.topViewController as! GamesDatabaseBrowserViewController
+        gamesDatabaseBrowserViewController.searchText = self.searchText
         gamesDatabaseBrowserViewController.selectionHandler = { (metadata) in
             if let artworkURL = metadata.artworkURL
             {

@@ -136,7 +136,7 @@ private extension RecordVersionsViewController
         
         let localVersionsDataSource = RSTDynamicTableViewDataSource<Version>()
         localVersionsDataSource.numberOfSectionsHandler = { 1 }
-        localVersionsDataSource.numberOfItemsHandler = { [weak self] _ in self?.record.localModificationDate != nil ? 1 : 0 }
+        localVersionsDataSource.numberOfItemsHandler = { [weak self] _ in self?.record.localModificationDate != nil ? 1 : 0 } // fetchVersions() assumes this logic, so update there too.
         localVersionsDataSource.cellConfigurationHandler = { [weak self] (cell, _, indexPath) in
             guard let `self` = self else { return }
             
@@ -200,6 +200,19 @@ private extension RecordVersionsViewController
                 self.versions = versions
                 
                 DispatchQueue.main.async {
+                    let previousLocalVersionExists = self.tableView.numberOfRows(inSection: Section.local.rawValue) > 0
+                    let localVersionExists = self.record.localModificationDate != nil
+                    
+                    let localVersionIndexPath = IndexPath(row: 0, section: Section.local.rawValue)
+                    if !previousLocalVersionExists && localVersionExists
+                    {
+                        self.tableView.insertRows(at: [localVersionIndexPath], with: .fade)
+                    }
+                    else if previousLocalVersionExists && !localVersionExists
+                    {
+                        self.tableView.deleteRows(at: [localVersionIndexPath], with: .fade)
+                    }
+                    
                     let count = self.tableView.numberOfRows(inSection: Section.remote.rawValue)
                     
                     let deletions = (0 ..< count).map { (row) -> RSTCellContentChange in
@@ -245,6 +258,8 @@ private extension RecordVersionsViewController
         {
             DispatchQueue.main.async {
                 
+                SyncManager.shared.ignoredCorruptedRecordIDs.remove(self.record.recordID)
+                
                 CATransaction.begin()
                 
                 CATransaction.setCompletionBlock {
@@ -274,17 +289,34 @@ private extension RecordVersionsViewController
                 }
                 catch
                 {
-                    let title: String
-                    
-                    switch self.mode
+                    switch error
                     {
-                    case .restoreVersion: title = NSLocalizedString("Failed to Restore Version", comment: "")
-                    case .resolveConflict: title = NSLocalizedString("Failed to Resolve Conflict", comment: "")
+                    case RecordError.other(let record, let error as SyncValidationError):
+                        // Only allow restoring corrupted records with incorrect games.
+                        guard case .incorrectGame = error else { fallthrough }
+                        
+                        let message = NSLocalizedString("Would you like to download this version anyway? Delta will try to fix the corruption if possible.", comment: "")
+                        let alertController = UIAlertController(title: NSLocalizedString("Version Corrupted", comment: ""), message: message, preferredStyle: .alert)
+                        alertController.addAction(.cancel)
+                        alertController.addAction(UIAlertAction(title: NSLocalizedString("Download Anyway", comment: ""), style: .destructive) { _ in
+                            SyncManager.shared.ignoredCorruptedRecordIDs.insert(record.recordID)
+                            self.restoreVersion()
+                        })
+                        self.present(alertController, animated: true, completion: nil)
+                        
+                    default:
+                        let title: String
+                        
+                        switch self.mode
+                        {
+                        case .restoreVersion: title = NSLocalizedString("Failed to Restore Version", comment: "")
+                        case .resolveConflict: title = NSLocalizedString("Failed to Resolve Conflict", comment: "")
+                        }
+                        
+                        let alertController = UIAlertController(title: title, message: error.localizedDescription, preferredStyle: .alert)
+                        alertController.addAction(.ok)
+                        self.present(alertController, animated: true, completion: nil)
                     }
-                    
-                    let alertController = UIAlertController(title: title, message: error.localizedDescription, preferredStyle: .alert)
-                    alertController.addAction(.ok)
-                    self.present(alertController, animated: true, completion: nil)
                 }
                 
                 CATransaction.commit()
@@ -358,6 +390,7 @@ private extension RecordVersionsViewController
         }
         
         let alertController = UIAlertController(title: nil, message: message, preferredStyle: .actionSheet)
+        alertController.popoverPresentationController?.barButtonItem = sender
         alertController.addAction(.cancel)
         alertController.addAction(UIAlertAction(title: actionTitle, style: .destructive) { (action) in
             self.restoreVersion()

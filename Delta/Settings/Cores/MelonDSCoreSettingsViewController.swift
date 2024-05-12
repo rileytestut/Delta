@@ -23,18 +23,25 @@ private extension MelonDSCoreSettingsViewController
     enum Section: Int
     {
         case general
+        case airPlay
+        case performance
         case dsBIOS
         case dsiBIOS
         case changeCore
     }
     
+    enum AirPlayRow: Int, CaseIterable
+    {
+        case topScreenOnly
+        case layoutHorizontally
+    }
+    
+    @available(iOS 13, *)
     enum BIOSError: LocalizedError
     {
         case unknownSize(URL)
         case incorrectHash(URL, hash: String, expectedHash: String)
         case unsupportedHash(URL, hash: String)
-        
-        @available(iOS 13, *)
         case incorrectSize(URL, size: Int, validSizes: Set<ClosedRange<Measurement<UnitInformationStorage>>>)
                 
         private static let byteFormatter: ByteCountFormatter = {
@@ -113,6 +120,11 @@ class MelonDSCoreSettingsViewController: UITableViewController
             self.navigationItem.rightBarButtonItem = nil
         }
         
+        if #available(iOS 15, *)
+        {
+            self.tableView.register(AttributedHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: AttributedHeaderFooterView.reuseIdentifier)
+        }
+        
         NotificationCenter.default.addObserver(self, selector: #selector(MelonDSCoreSettingsViewController.willEnterForeground(_:)), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
     
@@ -150,6 +162,13 @@ private extension MelonDSCoreSettingsViewController
         
         switch section
         {
+        case .performance:
+            // Hide AltJIT section for public builds.
+            guard isBeta else { return true }
+            
+            guard Settings.preferredCore(for: .ds) == MelonDS.core else { return true }
+            return !UIDevice.current.supportsJIT
+            
         case .dsBIOS where Settings.preferredCore(for: .ds) == DS.core:
             // Using DeSmuME core, which doesn't require BIOS.
             return true
@@ -221,7 +240,8 @@ private extension MelonDSCoreSettingsViewController
     
     func changeCore()
     {
-        let alertController = UIAlertController(title: NSLocalizedString("Change Emulator Core", comment: ""), message: NSLocalizedString("Save states are not compatible between different emulator cores. Make sure to use in-game saves in order to keep using your save data.\n\nYour existing save states will not be deleted and will be available whenever you switch cores again.", comment: ""), preferredStyle: .actionSheet)
+        let preferredStyle: UIAlertController.Style = (self.traitCollection.horizontalSizeClass == .compact) ? .actionSheet : .alert
+        let alertController = UIAlertController(title: NSLocalizedString("Change Emulator Core", comment: ""), message: NSLocalizedString("Save states are not compatible between different emulator cores. Make sure to use in-game saves in order to keep using your save data.\n\nYour existing save states will not be deleted and will be available whenever you switch cores again.", comment: ""), preferredStyle: preferredStyle)
         
         var desmumeActionTitle = DS.core.metadata?.name.value ?? DS.core.name
         var melonDSActionTitle = MelonDS.core.metadata?.name.value ?? MelonDS.core.name
@@ -253,6 +273,37 @@ private extension MelonDSCoreSettingsViewController
         }
     }
     
+    @IBAction func toggleAltJITEnabled(_ sender: UISwitch)
+    {
+        Settings.isAltJITEnabled = sender.isOn
+    }
+    
+    @IBAction func toggleTopScreenOnly(_ sender: UISwitch)
+    {
+        Settings.features.dsAirPlay.topScreenOnly = sender.isOn
+        
+        self.tableView.performBatchUpdates({
+            let layoutHorizontallyIndexPath = IndexPath(row: AirPlayRow.layoutHorizontally.rawValue, section: Section.airPlay.rawValue)
+            if sender.isOn
+            {
+                self.tableView.deleteRows(at: [layoutHorizontallyIndexPath], with: .automatic)
+            }
+            else
+            {
+                self.tableView.insertRows(at: [layoutHorizontallyIndexPath], with: .automatic)
+            }
+        }) { _ in
+            self.tableView.reloadSections([Section.airPlay.rawValue], with: .none)
+        }
+    }
+    
+    @IBAction func toggleLayoutHorizontally(_ sender: UISwitch)
+    {
+        Settings.features.dsAirPlay.layoutAxis = sender.isOn ? .horizontal : .vertical
+        
+        self.tableView.reloadSections([Section.airPlay.rawValue], with: .none)
+    }
+    
     @objc func willEnterForeground(_ notification: Notification)
     {
         self.tableView.reloadData()
@@ -265,14 +316,20 @@ extension MelonDSCoreSettingsViewController
     {
         let section = Section(rawValue: sectionIndex)!
         
-        if isSectionHidden(section)
+        switch section
         {
-            return 0
+        case _ where isSectionHidden(section): return 0
+        case .general:
+            guard let core = Settings.preferredCore(for: .ds) else { break }
+            
+            let validKeys = DeltaCoreMetadata.Key.allCases.filter { core.metadata?[$0] != nil }
+            return validKeys.count
+            
+        case .airPlay where Settings.features.dsAirPlay.topScreenOnly: return 1 // Layout axis is irrelevant if only AirPlaying top screen.
+        default: break
         }
-        else
-        {
-            return super.tableView(tableView, numberOfRowsInSection: sectionIndex)
-        }
+        
+        return super.tableView(tableView, numberOfRowsInSection: sectionIndex)
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
@@ -300,6 +357,20 @@ extension MelonDSCoreSettingsViewController
             }
             
             cell.contentView.isHidden = (item == nil)
+            
+        case .airPlay:
+            let cell = cell as! SwitchTableViewCell
+            
+            let row = AirPlayRow.allCases[indexPath.row]
+            switch row
+            {
+            case .topScreenOnly: cell.switchView.isOn = Settings.features.dsAirPlay.topScreenOnly
+            case .layoutHorizontally: cell.switchView.isOn = (Settings.features.dsAirPlay.layoutAxis == .horizontal)
+            }
+            
+        case .performance:
+            let cell = cell as! SwitchTableViewCell
+            cell.switchView.isOn = Settings.isAltJITEnabled
             
         case .dsBIOS:
             let bios = DSBIOS.allCases[indexPath.row]
@@ -343,24 +414,6 @@ extension MelonDSCoreSettingsViewController
         return cell
     }
     
-    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath)
-    {
-        guard let core = Settings.preferredCore(for: .ds) else { return }
-        
-        let key = DeltaCoreMetadata.Key.allCases[indexPath.row]
-        let lastKey = DeltaCoreMetadata.Key.allCases.reversed().first { core.metadata?[$0] != nil }
-        
-        if key == lastKey
-        {
-            // Hide separator for last visible row in case we've hidden additional rows.
-            cell.separatorInset.left = 0
-        }
-        else
-        {
-            cell.separatorInset.left = self.view.layoutMargins.left
-        }
-    }
-    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
     {
         switch Section(rawValue: indexPath.section)!
@@ -379,6 +432,8 @@ extension MelonDSCoreSettingsViewController
             
         case .changeCore:
             self.changeCore()
+            
+        case .airPlay, .performance: break
         }
     }
     
@@ -399,29 +454,54 @@ extension MelonDSCoreSettingsViewController
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String?
     {
         let section = Section(rawValue: section)!
-        
-        if isSectionHidden(section)
+        switch section
         {
+        case _ where isSectionHidden(section): return nil
+        case .airPlay:
+            switch (Settings.features.dsAirPlay.topScreenOnly, Settings.features.dsAirPlay.layoutAxis)
+            {
+            case (true, _): return NSLocalizedString("When AirPlaying DS games, only the top screen will appear on the external display.", comment: "")
+            case (false, .vertical): return NSLocalizedString("When AirPlaying DS games, both screens will be stacked vertically on the external display.", comment: "")
+            case (false, .horizontal): return NSLocalizedString("When AirPlaying DS games, both screens will be placed side-by-side on the external display.", comment: "")
+            }
+            
+        case .dsBIOS, .dsiBIOS:
+            guard #available(iOS 15, *) else { break }
             return nil
-        }
-        else
-        {
-            return super.tableView(tableView, titleForFooterInSection: section.rawValue)
-        }
-    }
-    
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
-    {
-        switch Section(rawValue: indexPath.section)!
-        {
-        case .general:
-            let key = DeltaCoreMetadata.Key.allCases[indexPath.row]
-            guard Settings.preferredCore(for: .ds)?.metadata?[key] != nil else { return  0 }
             
         default: break
         }
         
-        return super.tableView(tableView, heightForRowAt: indexPath)
+        return super.tableView(tableView, titleForFooterInSection: section.rawValue)
+    }
+    
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView?
+    {
+        let section = Section(rawValue: section)!
+        guard !isSectionHidden(section) else { return nil }
+        
+        switch section
+        {
+        case .dsBIOS, .dsiBIOS:
+            guard #available(iOS 15, *), let footerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: AttributedHeaderFooterView.reuseIdentifier) as? AttributedHeaderFooterView else { break }
+            
+            let systemName = (section == .dsiBIOS) ? String(localized: "DSi") : String(localized: "DS")
+            
+            var attributedText = AttributedString(localized: "Delta requires these BIOS files in order to play Nintendo \(systemName) games.")
+            attributedText += " "
+            
+            var learnMore = AttributedString(localized: "Learn more…")
+            learnMore.link = URL(string: "https://faq.deltaemulator.com/getting-started/nintendo-ds-bios-files")
+            attributedText += learnMore
+            
+            footerView.attributedText = attributedText
+            
+            return footerView
+            
+        default: break
+        }
+        
+        return super.tableView(tableView, viewForFooterInSection: section.rawValue)
     }
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat
@@ -441,14 +521,24 @@ extension MelonDSCoreSettingsViewController
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat
     {
         let section = Section(rawValue: section)!
+        guard !isSectionHidden(section) else { return 1 }
         
-        if isSectionHidden(section)
+        switch section
         {
-            return 1
+        case .dsBIOS, .dsiBIOS: return UITableView.automaticDimension
+        default: return super.tableView(tableView, heightForFooterInSection: section.rawValue)
         }
-        else
+    }
+    
+    override func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat 
+    {
+        let section = Section(rawValue: section)!
+        guard !isSectionHidden(section) else { return 1 }
+        
+        switch section
         {
-            return super.tableView(tableView, heightForFooterInSection: section.rawValue)
+        case .dsBIOS, .dsiBIOS: return 30
+        default: return UITableView.automaticDimension
         }
     }
 }

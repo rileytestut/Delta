@@ -9,6 +9,7 @@
 import UIKit
 import MobileCoreServices
 import AVFoundation
+import RegexBuilder
 
 import DeltaCore
 import MelonDSDeltaCore
@@ -66,6 +67,8 @@ class GameCollectionViewController: UICollectionViewController
     private weak var _previewTransitionViewController: PreviewGameViewController?
     private weak var _previewTransitionDestinationViewController: UIViewController?
     
+    private weak var _popoverSourceView: UIView?
+    
     private var _renameAction: UIAlertAction?
     private var _changingArtworkGame: Game?
     private var _importingSaveFileGame: Game?
@@ -93,10 +96,6 @@ extension GameCollectionViewController
         self.collectionView?.prefetchDataSource = self.dataSource
         self.collectionView?.delegate = self
         
-        let layout = self.collectionViewLayout as! GridCollectionViewLayout
-        layout.itemWidth = 90
-        layout.minimumInteritemSpacing = 12
-        
         if #available(iOS 13, *) {}
         else
         {
@@ -105,6 +104,8 @@ extension GameCollectionViewController
             let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(GameCollectionViewController.handleLongPressGesture(_:)))
             self.collectionView?.addGestureRecognizer(longPressGestureRecognizer)
         }
+        
+        self.update()
     }
     
     override func viewWillDisappear(_ animated: Bool)
@@ -130,6 +131,13 @@ extension GameCollectionViewController
     {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?)
+    {
+        super.traitCollectionDidChange(previousTraitCollection)
+        
+        self.update()
     }
 }
 
@@ -180,7 +188,7 @@ extension GameCollectionViewController
                     emulatorBridge.systemType = .ds
                 }
                 
-                emulatorBridge.isJITEnabled = UIDevice.current.supportsJIT
+                emulatorBridge.isJITEnabled = ProcessInfo.processInfo.isJITAvailable
             }
             
             if let saveState = self.activeSaveState
@@ -224,6 +232,26 @@ extension GameCollectionViewController
 //MARK: - Private Methods -
 private extension GameCollectionViewController
 {
+    func update()
+    {
+        let layout = self.collectionViewLayout as! GridCollectionViewLayout
+        
+        switch self.traitCollection.horizontalSizeClass
+        {
+        case .regular:
+            layout.itemWidth = 150
+            layout.minimumInteritemSpacing = 25 // 30 == only 3 games per line for iPad mini 6 in portrait
+            
+        case .unspecified, .compact:
+            layout.itemWidth = 90
+            layout.minimumInteritemSpacing = 12
+            
+        @unknown default: break
+        }
+        
+        self.collectionView.reloadData()
+    }
+    
     //MARK: - Data Source
     func prepareDataSource()
     {
@@ -282,9 +310,32 @@ private extension GameCollectionViewController
             cell.isImageViewVibrancyEnabled = true
         }
         
+        cell.imageView.shouldAlignBaselines = true
         cell.imageView.image = #imageLiteral(resourceName: "BoxArt")
         
-        cell.maximumImageSize = CGSize(width: 90, height: 90)
+        if game.identifier == Game.melonDSBIOSIdentifier || game.identifier == Game.melonDSDSiBIOSIdentifier
+        {
+            // Don't clip bounds to avoid clipping Home Screen icon.
+            cell.imageView.clipsToBounds = false
+        }
+        else
+        {
+            cell.imageView.clipsToBounds = true
+        }
+        
+        if self.traitCollection.horizontalSizeClass == .regular
+        {
+            let fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .subheadline).withSymbolicTraits(.traitBold)!
+            cell.textLabel.font = UIFont(descriptor: fontDescriptor, size: 0)
+        }
+        else
+        {
+            cell.textLabel.font = UIFont.preferredFont(forTextStyle: .caption1)
+        }
+        
+        let layout = self.collectionViewLayout as! GridCollectionViewLayout
+        cell.maximumImageSize = CGSize(width: layout.itemWidth, height: layout.itemWidth)
+        
         cell.textLabel.text = game.name
         cell.textLabel.textColor = UIColor.gray
         cell.tintColor = cell.textLabel.textColor
@@ -484,7 +535,9 @@ private extension GameCollectionViewController
     
     func delete(_ game: Game)
     {
-        let confirmationAlertController = UIAlertController(title: NSLocalizedString("Are you sure you want to delete this game? All associated data, such as saves, save states, and cheat codes, will also be deleted.", comment: ""), message: nil, preferredStyle: .actionSheet)
+        let confirmationAlertController = UIAlertController(title: NSLocalizedString("Are you sure you want to delete this game?", comment: ""),
+                                                            message: NSLocalizedString("All associated data, such as saves, save states, and cheat codes, will also be deleted.", comment: ""),
+                                                            preferredStyle: .alert)
         confirmationAlertController.addAction(UIAlertAction(title: NSLocalizedString("Delete Game", comment: ""), style: .destructive, handler: { action in
             
             DatabaseManager.shared.performBackgroundTask { (context) in
@@ -549,11 +602,30 @@ private extension GameCollectionViewController
         
         let clipboardImportOption = ClipboardImportOption()
         let photoLibraryImportOption = PhotoLibraryImportOption(presentingViewController: self)
-        let gamesDatabaseImportOption = GamesDatabaseImportOption(presentingViewController: self)
+        
+        var sanitizedGameName = game.name
+        
+        if #available(iOS 16, *)
+        {
+            // Remove parentheses + everything inside.
+            
+            let regex = Regex {
+                "("
+                OneOrMore(.anyNonNewline)
+                ")"
+            }
+            
+            sanitizedGameName = sanitizedGameName.replacing(regex, with: "")
+        }
+        
+        sanitizedGameName = sanitizedGameName.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        let gamesDatabaseImportOption = GamesDatabaseImportOption(searchText: sanitizedGameName, presentingViewController: self)
         
         let importController = ImportController(documentTypes: [kUTTypeImage as String])
         importController.delegate = self
         importController.importOptions = [clipboardImportOption, photoLibraryImportOption, gamesDatabaseImportOption]
+        importController.sourceView = self._popoverSourceView
         self.present(importController, animated: true, completion: nil)
     }
     
@@ -663,26 +735,36 @@ private extension GameCollectionViewController
     
     func share(_ game: Game)
     {
-        let temporaryDirectory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
-        let symbolicURL = temporaryDirectory.appendingPathComponent(game.name + "." + game.fileURL.pathExtension)
+        let temporaryDirectory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString, isDirectory: true)
+        
+        let sanitizedName = game.name.components(separatedBy: .urlFilenameAllowed.inverted).joined()
+        let temporaryURL = temporaryDirectory.appendingPathComponent(sanitizedName + "." + game.fileURL.pathExtension, isDirectory: false)
         
         do
         {
             try FileManager.default.createDirectory(at: temporaryDirectory, withIntermediateDirectories: true, attributes: nil)
-            
-            // Create a symbolic link so we can control the file name used when sharing.
+                                    
+            // Make a temporary copy so we can control the filename used when sharing.
             // Otherwise, if we just passed in game.fileURL to UIActivityViewController, the file name would be the game's SHA1 hash.
-            try FileManager.default.createSymbolicLink(at: symbolicURL, withDestinationURL: game.fileURL)
+            try FileManager.default.copyItem(at: game.fileURL, to: temporaryURL, shouldReplace: true)
         }
         catch
         {
-            print(error)
+            let alertController = UIAlertController(title: NSLocalizedString("Could Not Share Game", comment: ""), error: error)
+            self.present(alertController, animated: true, completion: nil)
+            
+            return
         }
         
         let copyDeepLinkActivity = CopyDeepLinkActivity()
         
-        let activityViewController = UIActivityViewController(activityItems: [symbolicURL, game], applicationActivities: [copyDeepLinkActivity])
+        let activityViewController = UIActivityViewController(activityItems: [temporaryURL, game], applicationActivities: [copyDeepLinkActivity])
+        activityViewController.popoverPresentationController?.sourceView = self._popoverSourceView?.superview
+        activityViewController.popoverPresentationController?.sourceRect = self._popoverSourceView?.frame ?? .zero
         activityViewController.completionWithItemsHandler = { (activityType, finished, returnedItems, error) in
+            // Make sure the user either shared the game or cancelled before deleting temporaryDirectory.
+            guard finished || activityType == nil else { return }
+            
             do
             {
                 try FileManager.default.removeItem(at: temporaryDirectory)
@@ -692,6 +774,7 @@ private extension GameCollectionViewController
                 print(error)
             }
         }
+        
         self.present(activityViewController, animated: true, completion: nil)
     }
     
@@ -747,8 +830,7 @@ private extension GameCollectionViewController
     {
         do
         {
-            let illegalCharacterSet = CharacterSet(charactersIn: "\"\\/?<>:*|")
-            let sanitizedFilename = game.name.components(separatedBy: illegalCharacterSet).joined() + "." + game.gameSaveURL.pathExtension
+            let sanitizedFilename = game.name.components(separatedBy: .urlFilenameAllowed.inverted).joined()
             
             let temporaryURL = FileManager.default.temporaryDirectory.appendingPathComponent(sanitizedFilename)
             try FileManager.default.copyItem(at: game.gameSaveURL, to: temporaryURL, shouldReplace: true)
@@ -807,6 +889,9 @@ extension GameCollectionViewController: UIViewControllerPreviewingDelegate
         
         previewingContext.sourceRect = layoutAttributes.frame
         
+        let cell = collectionView.cellForItem(at: indexPath)
+        self._popoverSourceView = cell
+        
         let game = self.dataSource.item(at: indexPath)
         
         let gameViewController = self.makePreviewGameViewController(for: game)
@@ -843,7 +928,7 @@ extension GameCollectionViewController: UIViewControllerPreviewingDelegate
                 emulatorBridge.systemType = .ds
             }
 
-            emulatorBridge.isJITEnabled = UIDevice.current.supportsJIT
+            emulatorBridge.isJITEnabled = ProcessInfo.processInfo.isJITAvailable
         }
         
         let actions = self.actions(for: game).previewActions
@@ -974,6 +1059,9 @@ extension GameCollectionViewController
         let game = self.dataSource.item(at: indexPath)
         let actions = self.actions(for: game)
         
+        let cell = self.collectionView.cellForItem(at: indexPath)
+        self._popoverSourceView = cell
+                
         return UIContextMenuConfiguration(identifier: indexPath as NSIndexPath, previewProvider: { [weak self] in
             guard let self = self else { return nil }
             

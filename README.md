@@ -20,7 +20,7 @@ Delta is an iOS application that allows you to emulate and play video games for 
 - Game Boy / Game Boy Color (GBC)
 - Game Boy Advance (GBA)
 - Nintendo DS (DS)
-- Sega Genesis / Mega Drive (GEN) **(in progress)**
+- Sega Genesis / Mega Drive (GEN) **(in beta)**
 
 ## Features
 - Accurate, full speed emulation thanks to mature underlying emulator cores.
@@ -126,14 +126,15 @@ Each system in Delta is implemented as its own "Delta Core", which serves as a s
 - [MelonDSDeltaCore](https://github.com/rileytestut/MelonDSDeltaCore)
 - [GPGXDeltaCore](https://github.com/rileytestut/GPGXDeltaCore)
 
-## Project Requirements
-- Xcode 12
-- Swift 5+
-- iOS 12.2 or later
-
-Why iOS 12.2 or later? Doing so allows me to distribute Delta without embedding Swift libraries inside. This helps me afford bandwidth costs by reducing download sizes by roughly 30%, but also noticeably improves how long it takes to install/refresh Delta with AltStore. If you're compiling Delta yourself, however, you should be able to lower the deployment target to iOS 12.0 without any issues.
+## Minimum Project Requirements
+- Xcode 15
+- Swift 5.9
+- iOS 14.0
 
 ## Compilation Instructions
+
+> Delta uses Git LFS to manage large files, so first make sure you have [installed Git LFS](https://git-lfs.github.com).
+
 1. Clone this repository by running the following command in Terminal*  
 ```bash
 $ git clone https://github.com/rileytestut/Delta.git
@@ -145,11 +146,14 @@ $ cd Delta
 $ git submodule update --init --recursive
 ```  
 
-3. Open `Delta.xcworkspace` and select the Delta project in the project navigator. 
-4. Select "Delta" under targets, then click the `Signing & Capabilities` tab.
-5. Change `Team` from `Yvette Testut` to your own account.
-6. Change `Bundle Identifier` to something unique, such as by appending your GitHub username (ex: `com.rileytestut.Delta.MyGitHubUsername`).
-7. Build + run app! 🎉
+3. Open `Systems/Systems.xcworkspace` and select the "Systems" project in the project navigator (a.k.a. the left sidebar).
+4. Select "Systems" under `Targets`, then click the `Signing & Capabilities` tab.
+5. Change `Team` from "Yvette Testut" to your own account.
+6. Close `Systems/Systems.xcworkspace`, then open `Delta.xcworkspace`.
+6. Repeat steps 4 & 5 with the "Delta" target.
+7. Change Delta's `Bundle Identifier` to something unique, such as by appending your GitHub username (ex: `com.rileytestut.Delta.MyGitHubUsername`).
+8. Build + run app! 🎉
+
 
 \* This will checkout the `main` branch by default, which is kept up-to-date with the latest public version. Ongoing development (including [Patreon betas](https://www.patreon.com/rileytestut)) is done on the `develop` branch, and is periodically merged into `main` whenever a new public version is released. If you'd prefer to compile the `develop` version instead, replace the `git clone` command in Step #1 with this one:
 ```bash
@@ -157,7 +161,7 @@ $ git clone -b develop https://github.com/rileytestut/Delta.git
 ```  
 
 ## Licensing
-Due to the licensing of emulator cores used by Delta, I have no choice but to distribute Delta under the **AGPLv3 license**. That being said, I explicitly give permission for anyone to use, modify, and distribute all *my* original code for this project in any form, with or without attribution, without fear of legal consequences (dependencies remain under their original licenses, however).
+Due to the licensing of emulator cores used by Delta, I have no choice but to distribute Delta under the **AGPLv3 license**. That being said, I explicitly give permission for anyone to use, modify, and distribute all *my* original code for this project in any form, with or without attribution, without fear of legal consequences — unless you plan to submit your app to Apple’s App Store, in which case written permission from me is explicitly required. Dependencies remain under their original licenses.
 
 ## Contact Me
 

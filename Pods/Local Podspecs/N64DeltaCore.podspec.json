@@ -5,7 +5,7 @@
   "description": "iOS framework that wraps Mupen64Plus to allow playing Nintendo 64 games with Delta emulator.",
   "homepage": "https://github.com/rileytestut/N64DeltaCore",
   "platforms": {
-    "ios": "12.0"
+    "ios": "14.0"
   },
   "source": {
     "git": "https://github.com/rileytestut/N64DeltaCore.git"
@@ -50,6 +50,11 @@
     "USER_HEADER_SEARCH_PATHS": "\"${PODS_CONFIGURATION_BUILD_DIR}/DeltaCore/Swift Compatibility Header\" \"${PODS_ROOT}/Headers/Public/DeltaCore\" \"$(PODS_ROOT)/Headers/Private/N64DeltaCore/Mupen64Plus/mupen64plus-core/src\" \"$(PODS_ROOT)/Headers/Private/N64DeltaCore/Mupen64Plus/mupen64plus-core/src/api\" \"$(PODS_ROOT)/Headers/Private/N64DeltaCore/Mupen64Plus/mupen64plus-core/src/osd\" \"$(PODS_ROOT)/Headers/Private/N64DeltaCore/Mupen64Plus/GLideN64/src\"",
     "CLANG_ENABLE_MODULES": "NO",
     "GCC_PREPROCESSOR_DEFINITIONS": "STATIC_LIBRARY=1"
+  },
+  "script_phases": {
+    "name": "Get GlideN64 Revision.h",
+    "script": "\"${PODS_TARGET_SRCROOT}/Mupen64Plus/GLideN64/src/getRevision.sh\"",
+    "execution_position": "before_compile"
   },
   "dependencies": {
     "DeltaCore": [

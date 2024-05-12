@@ -10,9 +10,7 @@ import UIKit
 
 import DeltaCore
 import Harmony
-
-import Fabric
-import Crashlytics
+import AltKit
 
 private extension CFNotificationName
 {
@@ -39,29 +37,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         Settings.registerDefaults()
         
         self.registerCores()
-        
-        #if DEBUG
-        
-        // Must go AFTER registering cores, or else NESDeltaCore may not work correctly when not connected to debugger 🤷‍♂️
-        Fabric.with([Crashlytics.self])
-        
-        #else
-        
-        // Fabric doesn't allow us to change what value it uses for the bundle identifier.
-        // Normally this wouldn't be an issue, except AltStore creates a unique bundle identifier per user.
-        // Rather than have every copy of Delta be listed separately in Fabric, we temporarily swizzle Bundle.infoDictionary
-        // to return a constant identifier while Fabric is starting up. This way, Fabric will now group
-        // all copies of Delta under the bundle identifier "com.rileytestut.Delta.AltStore".
-        Bundle.swizzleBundleID {
-            Fabric.with([Crashlytics.self])
-        }
-        
-        #endif
-        
         self.configureAppearance()
         
         // Controllers
         ExternalGameControllerManager.shared.startMonitoring()
+        
+        // JIT
+        ServerManager.shared.prepare()
         
         // Notifications
         let center = CFNotificationCenterGetDarwinNotifyCenter()
@@ -107,6 +89,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate
     func applicationWillTerminate(_ application: UIApplication)
     {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    }
+}
+
+@available(iOS 13, *)
+extension AppDelegate
+{
+    func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration
+    {
+        // Called when a new scene session is being created.
+        // Use this method to select a configuration to create the new scene with.
+        
+        if connectingSceneSession.role == .windowExternalDisplay
+        {
+            // External Display
+            return UISceneConfiguration(name: "External Display", sessionRole: connectingSceneSession.role)
+        }
+        else
+        {
+            // Default Scene
+            return UISceneConfiguration(name: "Main", sessionRole: connectingSceneSession.role)
+        }
+    }
+    
+    func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>)
+    {
+        // Called when the user discards a scene session.
+        // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
+        // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
 }
 

@@ -32,12 +32,19 @@ extension SyncingServicesViewController
 class SyncingServicesViewController: UITableViewController
 {
     @IBOutlet private var syncingEnabledSwitch: UISwitch!
+    private var activityIndicatorView: UIActivityIndicatorView!
     
     private var selectedSyncingService = Settings.syncingService
     
     override func viewDidLoad()
     {
         super.viewDidLoad()
+        
+        self.activityIndicatorView = UIActivityIndicatorView(style: .medium)
+        self.activityIndicatorView.hidesWhenStopped = true
+        
+        let barButtonItem = UIBarButtonItem(customView: self.activityIndicatorView)
+        self.navigationItem.rightBarButtonItem = barButtonItem
         
         self.syncingEnabledSwitch.onTintColor = .deltaPurple
         self.syncingEnabledSwitch.isOn = (self.selectedSyncingService != nil)
@@ -57,7 +64,9 @@ private extension SyncingServicesViewController
             if SyncManager.shared.coordinator?.account != nil
             {
                 let alertController = UIAlertController(title: NSLocalizedString("Disable Syncing?", comment: ""), message: NSLocalizedString("Enabling syncing again later may result in conflicts that must be resolved manually.", comment: ""), preferredStyle: .alert)
-                alertController.addAction(.cancel)
+                alertController.addAction(UIAlertAction(title: UIAlertAction.cancel.title, style: UIAlertAction.cancel.style) { (action) in
+                    sender.setOn(true, animated: true)
+                })
                 alertController.addAction(UIAlertAction(title: NSLocalizedString("Disable", comment: ""), style: .default) { (action) in
                     self.changeService(to: nil)
                 })
@@ -81,8 +90,17 @@ private extension SyncingServicesViewController
                     let previousService = self.selectedSyncingService
                     self.selectedSyncingService = service
                     
-                    // Set to non-nil if we later authenticate.
-                    Settings.syncingService = nil
+                    // Same check as below when showing Sign In or Sign Out.
+                    if let coordinator = SyncManager.shared.coordinator, coordinator.account != nil
+                    {
+                        // Authenticated, so assign syncingService.
+                        Settings.syncingService = service
+                    }
+                    else
+                    {
+                        // Set to non-nil if we later authenticate.
+                        Settings.syncingService = nil
+                    }
                                         
                     if (previousService == nil && service != nil) || (previousService != nil && service == nil)
                     {
@@ -170,7 +188,7 @@ extension SyncingServicesViewController
             
             if SyncManager.shared.coordinator?.account != nil
             {
-                let alertController = UIAlertController(title: NSLocalizedString("Are you sure you want to change sync services?", comment: ""), message: NSLocalizedString("Switching back later may result in conflicts that must be resolved manually.", comment: ""), preferredStyle: .actionSheet)
+                let alertController = UIAlertController(title: NSLocalizedString("Are you sure you want to change sync services?", comment: ""), message: NSLocalizedString("Switching back later may result in conflicts that must be resolved manually.", comment: ""), preferredStyle: .alert)
                 alertController.addAction(.cancel)
                 alertController.addAction(UIAlertAction(title: NSLocalizedString("Change Sync Service", comment: ""), style: .destructive, handler: { (action) in
                     self.changeService(to: syncingService)
@@ -188,7 +206,7 @@ extension SyncingServicesViewController
         case .authenticate:            
             if SyncManager.shared.coordinator?.account != nil
             {
-                let alertController = UIAlertController(title: NSLocalizedString("Are you sure you want to sign out?", comment: ""), message: NSLocalizedString("Signing in again later may result in conflicts that must be resolved manually.", comment: ""), preferredStyle: .actionSheet)
+                let alertController = UIAlertController(title: NSLocalizedString("Are you sure you want to sign out?", comment: ""), message: NSLocalizedString("Signing in again later may result in conflicts that must be resolved manually.", comment: ""), preferredStyle: .alert)
                 alertController.addAction(.cancel)
                 alertController.addAction(UIAlertAction(title: NSLocalizedString("Sign Out", comment: ""), style: .destructive) { (action) in
                     SyncManager.shared.deauthenticate { (result) in
@@ -213,6 +231,8 @@ extension SyncingServicesViewController
             }
             else
             {
+                self.activityIndicatorView.startAnimating()
+                
                 SyncManager.shared.authenticate(presentingViewController: self) { (result) in
                     DispatchQueue.main.async {
                         do
@@ -231,6 +251,8 @@ extension SyncingServicesViewController
                             let alertController = UIAlertController(title: NSLocalizedString("Failed to Sign In", comment: ""), error: error)
                             self.present(alertController, animated: true, completion: nil)
                         }
+                        
+                        self.activityIndicatorView.stopAnimating()
                     }
                 }
             }

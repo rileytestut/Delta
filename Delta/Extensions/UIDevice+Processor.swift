@@ -26,12 +26,9 @@ extension UIDevice
     }
     
     var supportsJIT: Bool {
-        // As of iOS 14.4 beta 2, JIT is no longer supported :(
-        // Hopefully this change is reversed before the public release...
-        let ios14_4 = OperatingSystemVersion(majorVersion: 14, minorVersion: 4, patchVersion: 0)
-        guard #available(iOS 14.2, *), !ProcessInfo.processInfo.isOperatingSystemAtLeast(ios14_4) else { return false }
+        guard #available(iOS 14.0, *) else { return false }
         
-        // JIT is supported on devices with an A12 processor or better running iOS 14.2 or later.
+        // JIT is supported on devices with an A12 processor or better running iOS 14.0 or later.
         // ARKit 3 is only supported by devices with an A12 processor or better, according to the documentation.
         return ARBodyTrackingConfiguration.isSupported
     }

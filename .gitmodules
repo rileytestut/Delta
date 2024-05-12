@@ -31,3 +31,6 @@
 [submodule "Cores/GPGXDeltaCore"]
 	path = Cores/GPGXDeltaCore
 	url = https://github.com/rileytestut/GPGXDeltaCore.git
+[submodule "External/CheatBase"]
+	path = External/CheatBase
+	url = https://github.com/rileytestut/CheatBase.git

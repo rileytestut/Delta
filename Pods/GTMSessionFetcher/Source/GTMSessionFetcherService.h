@@ -22,7 +22,7 @@
 
 #import "GTMSessionFetcher.h"
 
-GTM_ASSUME_NONNULL_BEGIN
+NS_ASSUME_NONNULL_BEGIN
 
 // Notifications.
 
@@ -34,12 +34,14 @@ GTM_ASSUME_NONNULL_BEGIN
 extern NSString *const kGTMSessionFetcherServiceSessionBecameInvalidNotification;
 extern NSString *const kGTMSessionFetcherServiceSessionKey;
 
-@interface GTMSessionFetcherService : NSObject<GTMSessionFetcherServiceProtocol>
+@interface GTMSessionFetcherService : NSObject <GTMSessionFetcherServiceProtocol>
 
 // Queues of delayed and running fetchers. Each dictionary contains arrays
 // of GTMSessionFetcher *fetchers, keyed by NSString *host
-@property(atomic, strong, readonly, GTM_NULLABLE) GTM_NSDictionaryOf(NSString *, NSArray *) *delayedFetchersByHost;
-@property(atomic, strong, readonly, GTM_NULLABLE) GTM_NSDictionaryOf(NSString *, NSArray *) *runningFetchersByHost;
+@property(atomic, strong, readonly, nullable)
+    NSDictionary<NSString *, NSArray *> *delayedFetchersByHost;
+@property(atomic, strong, readonly, nullable)
+    NSDictionary<NSString *, NSArray *> *runningFetchersByHost;
 
 // A max value of 0 means no fetchers should be delayed.
 // The default limit is 10 simultaneous fetchers targeting each host.
@@ -48,24 +50,24 @@ extern NSString *const kGTMSessionFetcherServiceSessionKey;
 @property(atomic, assign) NSUInteger maxRunningFetchersPerHost;
 
 // Properties to be applied to each fetcher; see GTMSessionFetcher.h for descriptions
-@property(atomic, strong, GTM_NULLABLE) NSURLSessionConfiguration *configuration;
-@property(atomic, copy, GTM_NULLABLE) GTMSessionFetcherConfigurationBlock configurationBlock;
-@property(atomic, strong, GTM_NULLABLE) NSHTTPCookieStorage *cookieStorage;
-@property(atomic, strong, GTM_NULL_RESETTABLE) dispatch_queue_t callbackQueue;
-@property(atomic, copy, GTM_NULLABLE) GTMSessionFetcherChallengeBlock challengeBlock;
-@property(atomic, strong, GTM_NULLABLE) NSURLCredential *credential;
+@property(atomic, strong, nullable) NSURLSessionConfiguration *configuration;
+@property(atomic, copy, nullable) GTMSessionFetcherConfigurationBlock configurationBlock;
+@property(atomic, strong, nullable) NSHTTPCookieStorage *cookieStorage;
+@property(atomic, strong, null_resettable) dispatch_queue_t callbackQueue;
+@property(atomic, copy, nullable) GTMSessionFetcherChallengeBlock challengeBlock;
+@property(atomic, strong, nullable) NSURLCredential *credential;
 @property(atomic, strong) NSURLCredential *proxyCredential;
-@property(atomic, copy, GTM_NULLABLE) GTM_NSArrayOf(NSString *) *allowedInsecureSchemes;
+@property(atomic, copy, nullable) NSArray<NSString *> *allowedInsecureSchemes;
 @property(atomic, assign) BOOL allowLocalhostRequest;
 @property(atomic, assign) BOOL allowInvalidServerCertificates;
 @property(atomic, assign, getter=isRetryEnabled) BOOL retryEnabled;
-@property(atomic, copy, GTM_NULLABLE) GTMSessionFetcherRetryBlock retryBlock;
+@property(atomic, copy, nullable) GTMSessionFetcherRetryBlock retryBlock;
 @property(atomic, assign) NSTimeInterval maxRetryInterval;
 @property(atomic, assign) NSTimeInterval minRetryInterval;
-@property(atomic, copy, GTM_NULLABLE) GTM_NSDictionaryOf(NSString *, id) *properties;
-@property(atomic, copy, GTM_NULLABLE)
+@property(atomic, copy, nullable) NSDictionary<NSString *, id> *properties;
+@property(atomic, copy, nullable)
     GTMSessionFetcherMetricsCollectionBlock metricsCollectionBlock API_AVAILABLE(
-        ios(10.0), macosx(10.12), tvos(10.0), watchos(3.0));
+        ios(10.0), macosx(10.12), tvos(10.0), watchos(6.0));
 
 #if GTM_BACKGROUND_TASK_FETCHING
 @property(atomic, assign) BOOL skipBackgroundTask;
@@ -76,17 +78,17 @@ extern NSString *const kGTMSessionFetcherServiceSessionKey;
 // This default will be added starting with builds with the SDKs for OS X 10.11 and iOS 9.
 //
 // To use the configuration's default user agent, set this property to nil.
-@property(atomic, copy, GTM_NULLABLE) NSString *userAgent;
+@property(atomic, copy, nullable) NSString *userAgent;
 
 // The authorizer to attach to the created fetchers. If a specific fetcher should
 // not authorize its requests, the fetcher's authorizer property may be set to nil
 // before the fetch begins.
-@property(atomic, strong, GTM_NULLABLE) id<GTMFetcherAuthorizationProtocol> authorizer;
+@property(atomic, strong, nullable) id<GTMFetcherAuthorizationProtocol> authorizer;
 
 // Delegate queue used by the session when calling back to the fetcher.  The default
 // is the main queue.  Changing this does not affect the queue used to call back to the
 // application; that is specified by the callbackQueue property above.
-@property(atomic, strong, GTM_NULL_RESETTABLE) NSOperationQueue *sessionDelegateQueue;
+@property(atomic, strong, null_resettable) NSOperationQueue *sessionDelegateQueue;
 
 // When enabled, indicates the same session should be used by subsequent fetchers.
 //
@@ -120,12 +122,11 @@ extern NSString *const kGTMSessionFetcherServiceSessionKey;
 // -fetcherWithRequest:fetcherClass: may be overridden to customize creation of
 // fetchers.  This is the ONLY method in the GTMSessionFetcher library intended to
 // be overridden.
-- (id)fetcherWithRequest:(NSURLRequest *)request
-            fetcherClass:(Class)fetcherClass;
+- (id)fetcherWithRequest:(NSURLRequest *)request fetcherClass:(Class)fetcherClass;
 
 - (BOOL)isDelayingFetcher:(GTMSessionFetcher *)fetcher;
 
-- (NSUInteger)numberOfFetchers;        // running + delayed fetchers
+- (NSUInteger)numberOfFetchers;  // running + delayed fetchers
 - (NSUInteger)numberOfRunningFetchers;
 - (NSUInteger)numberOfDelayedFetchers;
 
@@ -133,24 +134,33 @@ extern NSString *const kGTMSessionFetcherServiceSessionKey;
 // by the service which have been started and have not yet stopped.
 //
 // Returns an array of fetcher objects, or nil if none.
-- (GTM_NULLABLE GTM_NSArrayOf(GTMSessionFetcher *) *)issuedFetchers;
+- (nullable NSArray<GTMSessionFetcher *> *)issuedFetchers;
 
 // Search for running or delayed fetchers with the specified URL.
 //
 // Returns an array of fetcher objects found, or nil if none found.
-- (GTM_NULLABLE GTM_NSArrayOf(GTMSessionFetcher *) *)issuedFetchersWithRequestURL:(NSURL *)requestURL;
+- (nullable NSArray<GTMSessionFetcher *> *)issuedFetchersWithRequestURL:(NSURL *)requestURL;
 
 - (void)stopAllFetchers;
 
+// Holds a weak reference to `decorator`. When creating a fetcher via
+// `-fetcherWithRequest:fetcherClass:`, each registered `decorator` can inspect and potentially
+// change the fetcher's request before it starts. Decorators are invoked in the order in which
+// they are passed to this method.
+- (void)addDecorator:(id<GTMFetcherDecoratorProtocol>)decorator;
+
+// Removes a `decorator` previously passed to `-removeDecorator:`.
+- (void)removeDecorator:(id<GTMFetcherDecoratorProtocol>)decorator;
+
 // Methods for use by the fetcher class only.
-- (GTM_NULLABLE NSURLSession *)session;
-- (GTM_NULLABLE NSURLSession *)sessionForFetcherCreation;
-- (GTM_NULLABLE id<NSURLSessionDelegate>)sessionDelegate;
-- (GTM_NULLABLE NSDate *)stoppedAllFetchersDate;
+- (nullable NSURLSession *)session;
+- (nullable NSURLSession *)sessionForFetcherCreation;
+- (nullable id<NSURLSessionDelegate>)sessionDelegate;
+- (nullable NSDate *)stoppedAllFetchersDate;
 
 // The testBlock can inspect its fetcher parameter's request property to
 // determine which fetcher is being faked.
-@property(atomic, copy, GTM_NULLABLE) GTMSessionFetcherTestBlock testBlock;
+@property(atomic, copy, nullable) GTMSessionFetcherTestBlock testBlock;
 
 @end
 
@@ -166,12 +176,14 @@ extern NSString *const kGTMSessionFetcherServiceSessionKey;
 // or fetcher; the test block can inspect the fetcher's request or other properties.
 //
 // See the description of the testBlock property below.
-+ (instancetype)mockFetcherServiceWithFakedData:(GTM_NULLABLE NSData *)fakedDataOrNil
-                                     fakedError:(GTM_NULLABLE NSError *)fakedErrorOrNil;
-+ (instancetype)mockFetcherServiceWithFakedData:(GTM_NULLABLE NSData *)fakedDataOrNil
++ (instancetype)mockFetcherServiceWithFakedData:(nullable NSData *)fakedDataOrNil
+                                     fakedError:(nullable NSError *)fakedErrorOrNil;
++ (instancetype)mockFetcherServiceWithFakedData:(nullable NSData *)fakedDataOrNil
                                   fakedResponse:(NSHTTPURLResponse *)fakedResponse
-                                     fakedError:(GTM_NULLABLE NSError *)fakedErrorOrNil;
+                                     fakedError:(nullable NSError *)fakedErrorOrNil;
 
+// DEPRECATED: Callers should use XCTestExpectation instead.
+//
 // Spin the run loop and discard events (or, if not on the main thread, just sleep the thread)
 // until all running and delayed fetchers have completed.
 //
@@ -181,16 +193,18 @@ extern NSString *const kGTMSessionFetcherServiceSessionKey;
 // sufficient reason for rejection from the app store.
 //
 // Returns NO if timed out.
-- (BOOL)waitForCompletionOfAllFetchersWithTimeout:(NSTimeInterval)timeoutInSeconds;
+- (BOOL)waitForCompletionOfAllFetchersWithTimeout:(NSTimeInterval)timeoutInSeconds
+    __deprecated_msg("Use XCTestExpectation instead");
 
 @end
 
 @interface GTMSessionFetcherService (BackwardsCompatibilityOnly)
 
-// Clients using GTMSessionFetcher should set the cookie storage explicitly themselves.
-// This method is just for compatibility with the old fetcher.
-@property(atomic, assign) NSInteger cookieStorageMethod;
+// Clients using GTMSessionFetcher should set the cookie storage explicitly themselves;
+// this property is deprecated and will be removed soon.
+@property(atomic, assign) NSInteger cookieStorageMethod __deprecated_msg(
+    "Create an NSHTTPCookieStorage and set .cookieStorage directly.");
 
 @end
 
-GTM_ASSUME_NONNULL_END
+NS_ASSUME_NONNULL_END

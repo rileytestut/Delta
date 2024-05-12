@@ -17,7 +17,7 @@ extension UINavigationBar
         }
         
         // Make "copy" of self.
-        let navigationBar = UINavigationBar(frame: .zero)
+        let navigationBar = UINavigationBar(frame: self.bounds) // Use self.bounds to avoid "Unable to simultaneously satisfy constraints" runtime error.
         navigationBar.barStyle = self.barStyle
         
         // Set item with title so we can retrieve default text attributes.
@@ -38,10 +38,32 @@ extension UINavigationBar
     private var _defaultTitleTextAttributes: [NSAttributedString.Key: Any]? {
         guard self.titleTextAttributes == nil else { return self.titleTextAttributes }
         
-        guard
-            let contentView = self.subviews.first(where: { NSStringFromClass(type(of: $0)).contains("ContentView") || NSStringFromClass(type(of: $0)).contains("ItemView") }),
-            let titleLabel = contentView.subviews.first(where: { $0 is UILabel }) as? UILabel
+        guard let contentView = self.subviews.first(where: { NSStringFromClass(type(of: $0)).contains("ContentView") || NSStringFromClass(type(of: $0)).contains("ItemView") })
         else { return nil }
+        
+        let containerView: UIView
+        
+        //TODO: Recursively search all subviews for title UILabel instead of hardcoded OS version-specific hierarchy traversals...
+        if #available(iOS 16, *)
+        {
+            guard let titleControl = contentView.subviews.first(where: { NSStringFromClass(type(of: $0)).contains("Title") }) else { return nil }
+            
+            if #available(iOS 17, *)
+            {
+                guard let view = titleControl.subviews.first else { return nil }
+                containerView = view
+            }
+            else
+            {
+                containerView = titleControl
+            }
+        }
+        else
+        {
+            containerView = contentView
+        }
+        
+        guard let titleLabel = containerView.subviews.first(where: { $0 is UILabel }) as? UILabel else { return nil }
         
         let textAttributes = titleLabel.attributedText?.attributes(at: 0, effectiveRange: nil)
         return textAttributes

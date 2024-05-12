@@ -8,8 +8,10 @@
 
 import UIKit
 import CoreData
+import SwiftUI
 
 import DeltaCore
+import MelonDSDeltaCore
 
 import Roxas
 
@@ -30,6 +32,8 @@ class CheatsViewController: UITableViewController
     weak var delegate: CheatsViewControllerDelegate?
     
     private let dataSource = RSTFetchedResultsTableViewDataSource<Cheat>(fetchedResultsController: NSFetchedResultsController())
+    
+    private var cheatBaseCheats: [CheatMetadata]?
 }
 
 extension CheatsViewController
@@ -61,6 +65,21 @@ extension CheatsViewController
         self.tableView.separatorEffect = vibrancyEffect
         
         self.registerForPreviewing(with: self, sourceView: self.tableView)
+        
+        if #available(iOS 14, *)
+        {
+            self.updateAddCheatMenu()
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool)
+    {
+        super.viewWillAppear(animated)
+        
+        if #available(iOS 14, *), self.cheatBaseCheats == nil
+        {
+            self.fetchCheatBaseCheats()
+        }
     }
 
     override func didReceiveMemoryWarning()
@@ -91,6 +110,37 @@ private extension CheatsViewController
         
         self.dataSource.fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DatabaseManager.shared.viewContext, sectionNameKeyPath: nil, cacheName: nil)
     }
+    
+    @available(iOS 14, *) @MainActor
+    func updateAddCheatMenu()
+    {
+        // CheatBase only contains DS cheats for now, so hide option completely for other systems.
+        guard self.game.type == .ds else { return }
+        
+        var searchCheatBaseTitle = NSLocalizedString("Search CheatBase", comment: "")
+        var attributes: UIMenuElement.Attributes = []
+        
+        if let cheats = self.cheatBaseCheats, cheats.isEmpty
+        {
+            searchCheatBaseTitle = NSLocalizedString("No Cheats in CheatBase", comment: "")
+            attributes = [.disabled]
+        }
+        
+        let addCheatMenu = UIMenu(children: [
+            UIAction(title: NSLocalizedString("New Cheat Code", comment: ""), image: UIImage(systemName: "square.and.pencil")) { [weak self] _ in
+                self?.addCheat()
+            },
+            
+            UIAction(title: searchCheatBaseTitle, image: UIImage(systemName: "magnifyingglass"), attributes: attributes) { [weak self] _ in
+                self?.searchCheatBase()
+            },
+        ])
+        
+        self.navigationItem.rightBarButtonItem?.target = nil
+        self.navigationItem.rightBarButtonItem?.action = nil
+        
+        self.navigationItem.rightBarButtonItem?.menu = addCheatMenu
+    }
 }
 
 //MARK: - Managing Cheats -
@@ -101,6 +151,78 @@ private extension CheatsViewController
     {
         let editCheatViewController = self.makeEditCheatViewController(cheat: nil)
         editCheatViewController.presentWithPresentingViewController(self)
+    }
+    
+    @available(iOS 14, *)
+    func fetchCheatBaseCheats()
+    {
+        Task {
+            do
+            {
+                let cheatBase = try CheatBase()
+                let cheats = try await cheatBase.cheats(for: self.game) ?? []
+                self.cheatBaseCheats = cheats
+                
+                self.updateAddCheatMenu()
+            }
+            catch
+            {
+                print("[RSTLog] Failed to prefetch cheats from CheatBase:", error)
+            }
+        }
+    }
+    
+    @available(iOS 14, *)
+    func searchCheatBase()
+    {
+        var rootView = CheatBaseView(game: self.game, cheats: self.cheatBaseCheats)
+        rootView.cancellationHandler = { [weak self] in
+            self?.presentedViewController?.dismiss(animated: true)
+        }
+        
+        rootView.selectionHandler = { [weak self] cheatMetadata in
+            self?.saveCheatMetadata(cheatMetadata)
+            self?.presentedViewController?.dismiss(animated: true)
+        }
+        
+        let hostingController = UIHostingController(rootView: rootView)
+        self.present(hostingController, animated: true, completion: nil)
+    }
+    
+    func saveCheatMetadata(_ cheatMetadata: CheatMetadata)
+    {
+        DatabaseManager.shared.performBackgroundTask { context in
+            do
+            {
+                guard let cheatType = cheatMetadata.device.cheatType, let cheatFormat = cheatMetadata.device.cheatFormat else { throw CheatValidator.Error.unknownCheatType }
+                
+                let cheat = Cheat(context: context)
+                cheat.name = cheatMetadata.name
+                cheat.type = cheatType
+                cheat.isEnabled = true
+                
+                let sanitizedCode = cheatMetadata.code.components(separatedBy: .whitespacesAndNewlines).joined()
+                let formattedCode = sanitizedCode.formatted(with: cheatFormat)
+                cheat.code = formattedCode
+                
+                let game = context.object(with: self.game.objectID) as! Game
+                cheat.game = game
+                
+                let validator = CheatValidator(format: cheatFormat, managedObjectContext: context)
+                try validator.validate(cheat)
+                
+                self.delegate?.cheatsViewController(self, activateCheat: cheat)
+                
+                try context.save()
+            }
+            catch
+            {
+                DispatchQueue.main.async {
+                    let alertController = UIAlertController(title: NSLocalizedString("Unable to Add Cheat", comment: ""), error: error)
+                    self.present(alertController, animated: true, completion: nil)
+                }
+            }
+        }
     }
     
     func deleteCheat(_ cheat: Cheat)

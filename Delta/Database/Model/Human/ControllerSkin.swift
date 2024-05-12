@@ -13,16 +13,27 @@ import Harmony
 
 extension ControllerSkinConfigurations
 {
-    init(traits: DeltaCore.ControllerSkin.Traits)
+    init?(traits: DeltaCore.ControllerSkin.Traits)
     {
-        switch (traits.displayType, traits.orientation)
+        switch (traits.device, traits.displayType, traits.orientation)
         {
-        case (.standard, .portrait): self = .standardPortrait
-        case (.standard, .landscape): self = .standardLandscape
-        case (.edgeToEdge, .portrait): self = .edgeToEdgePortrait
-        case (.edgeToEdge, .landscape): self = .edgeToEdgeLandscape
-        case (.splitView, .portrait): self = .splitViewPortrait
-        case (.splitView, .landscape): self = .splitViewLandscape
+        case (.iphone, .standard, .portrait): self = .iphoneStandardPortrait
+        case (.iphone, .standard, .landscape): self = .iphoneStandardLandscape
+        case (.iphone, .edgeToEdge, .portrait): self = .iphoneEdgeToEdgePortrait
+        case (.iphone, .edgeToEdge, .landscape): self = .iphoneEdgeToEdgeLandscape
+        case (.iphone, .splitView, _): return nil
+            
+        case (.ipad, .standard, .portrait): self = .ipadStandardPortrait
+        case (.ipad, .standard, .landscape): self = .ipadStandardLandscape
+        case (.ipad, .edgeToEdge, .portrait): self = .ipadEdgeToEdgePortrait
+        case (.ipad, .edgeToEdge, .landscape): self = .ipadEdgeToEdgeLandscape
+        case (.ipad, .splitView, .portrait): self = .ipadSplitViewPortrait
+        case (.ipad, .splitView, .landscape): self = .ipadSplitViewLandscape
+            
+        case (.tv, .standard, .portrait): self = .tvStandardPortrait
+        case (.tv, .standard, .landscape): self = .tvStandardLandscape
+        case (.tv, .edgeToEdge, _): return nil
+        case (.tv, .splitView, _): return nil
         }
     }
 }
@@ -71,11 +82,6 @@ extension ControllerSkin: ControllerSkinProtocol
         return self.controllerSkin?.thumbstick(for: item, traits: traits, preferredSize: preferredSize)
     }
     
-    public func inputs(for traits: DeltaCore.ControllerSkin.Traits, at point: CGPoint) -> [Input]?
-    {
-        return self.controllerSkin?.inputs(for: traits, at: point)
-    }
-    
     public func items(for traits: DeltaCore.ControllerSkin.Traits) -> [DeltaCore.ControllerSkin.Item]?
     {
         return self.controllerSkin?.items(for: traits)
@@ -94,6 +100,11 @@ extension ControllerSkin: ControllerSkinProtocol
     public func aspectRatio(for traits: DeltaCore.ControllerSkin.Traits) -> CGSize?
     {
         return self.controllerSkin?.aspectRatio(for: traits)
+    }
+    
+    public func contentSize(for traits: DeltaCore.ControllerSkin.Traits) -> CGSize?
+    {
+        return self.controllerSkin?.contentSize(for: traits)
     }
 }
 
@@ -117,5 +128,10 @@ extension ControllerSkin: Syncable
     
     public var syncableLocalizedName: String? {
         return self.name
+    }
+    
+    public func resolveConflict(_ record: AnyRecord) -> ConflictResolution
+    {
+        return .newest
     }
 }

@@ -15,6 +15,8 @@ class GamesDatabaseBrowserViewController: UITableViewController
 {
     var selectionHandler: ((GameMetadata) -> Void)?
     
+    var searchText: String?
+    
     private let database: GamesDatabase?
     
     private let dataSource: RSTArrayTableViewPrefetchingDataSource<GameMetadata, UIImage>
@@ -69,6 +71,13 @@ class GamesDatabaseBrowserViewController: UITableViewController
         self.navigationItem.hidesSearchBarWhenScrolling = false
         
         self.updatePlaceholderView()
+        
+        if let searchText
+        {
+            // Manually update results
+            self.dataSource.searchController.searchBar.text = searchText
+            self.dataSource.searchController.updateSearchResults(for: self.dataSource.searchController)
+        }
     }
     
     override func viewDidAppear(_ animated: Bool)

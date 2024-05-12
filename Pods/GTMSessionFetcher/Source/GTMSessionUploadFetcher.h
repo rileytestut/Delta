@@ -40,7 +40,7 @@
 #import "GTMSessionFetcher.h"
 #import "GTMSessionFetcherService.h"
 
-GTM_ASSUME_NONNULL_BEGIN
+NS_ASSUME_NONNULL_BEGIN
 
 // The value to use for file size parameters when the file size is not yet known.
 extern int64_t const kGTMSessionUploadFetcherUnknownFileSize;
@@ -68,24 +68,23 @@ extern NSString *const kGTMSessionFetcherUploadLocationObtainedNotification;
 // to its proper value.
 //
 // Pass nil as the data (and optionally an NSError) for a failure.
-typedef void (^GTMSessionUploadFetcherDataProviderResponse)(NSData * GTM_NULLABLE_TYPE data,
+typedef void (^GTMSessionUploadFetcherDataProviderResponse)(NSData *_Nullable data,
                                                             int64_t fullUploadLength,
-                                                            NSError * GTM_NULLABLE_TYPE error);
+                                                            NSError *_Nullable error);
 // Do not call the response with an NSData object with less data than the requested length unless
 // you are passing the fullUploadLength to the fetcher for the first time and it is the last chunk
 // of data in the file being uploaded.
-typedef void (^GTMSessionUploadFetcherDataProvider)(int64_t offset, int64_t length,
-    GTMSessionUploadFetcherDataProviderResponse response);
+typedef void (^GTMSessionUploadFetcherDataProvider)(
+    int64_t offset, int64_t length, GTMSessionUploadFetcherDataProviderResponse response);
 
 // Block to be notified about the final status of the cancellation request started in stopFetching.
 //
 // |fetcher| will be the cancel request that was sent to the server, or nil if stopFetching is not
 // going to send a cancel request. If |fetcher| is provided, the other parameters correspond to the
 // completion handler of the cancellation request fetcher.
-typedef void (^GTMSessionUploadFetcherCancellationHandler)(
-    GTMSessionFetcher * GTM_NULLABLE_TYPE fetcher,
-    NSData * GTM_NULLABLE_TYPE data,
-    NSError * GTM_NULLABLE_TYPE error);
+typedef void (^GTMSessionUploadFetcherCancellationHandler)(GTMSessionFetcher *_Nullable fetcher,
+                                                           NSData *_Nullable data,
+                                                           NSError *_Nullable error);
 
 @interface GTMSessionUploadFetcher : GTMSessionFetcher
 
@@ -100,37 +99,37 @@ typedef void (^GTMSessionUploadFetcherCancellationHandler)(
 + (instancetype)uploadFetcherWithRequest:(NSURLRequest *)request
                           uploadMIMEType:(NSString *)uploadMIMEType
                                chunkSize:(int64_t)chunkSize
-                          fetcherService:(GTM_NULLABLE GTMSessionFetcherService *)fetcherServiceOrNil;
+                          fetcherService:(nullable GTMSessionFetcherService *)fetcherServiceOrNil;
 
 // Allows cellular access.
-+ (instancetype)uploadFetcherWithLocation:(NSURL * GTM_NULLABLE_TYPE)uploadLocationURL
++ (instancetype)uploadFetcherWithLocation:(nullable NSURL *)uploadLocationURL
                            uploadMIMEType:(NSString *)uploadMIMEType
                                 chunkSize:(int64_t)chunkSize
-                           fetcherService:(GTM_NULLABLE GTMSessionFetcherService *)fetcherServiceOrNil;
+                           fetcherService:(nullable GTMSessionFetcherService *)fetcherServiceOrNil;
 
-+ (instancetype)uploadFetcherWithLocation:(NSURL *GTM_NULLABLE_TYPE)uploadLocationURL
++ (instancetype)uploadFetcherWithLocation:(nullable NSURL *)uploadLocationURL
                            uploadMIMEType:(NSString *)uploadMIMEType
                                 chunkSize:(int64_t)chunkSize
                      allowsCellularAccess:(BOOL)allowsCellularAccess
-                           fetcherService:(GTM_NULLABLE GTMSessionFetcherService *)fetcherServiceOrNil;
+                           fetcherService:(nullable GTMSessionFetcherService *)fetcherServiceOrNil;
 
 // Allows dataProviders for files of unknown length. Pass kGTMSessionUploadFetcherUnknownFileSize as
 // |fullLength| if the length is unknown.
 - (void)setUploadDataLength:(int64_t)fullLength
-                   provider:(GTM_NULLABLE GTMSessionUploadFetcherDataProvider)block;
+                   provider:(nullable GTMSessionUploadFetcherDataProvider)block;
 
 + (NSArray *)uploadFetchersForBackgroundSessions;
-+ (GTM_NULLABLE instancetype)uploadFetcherForSessionIdentifier:(NSString *)sessionIdentifier;
++ (nullable instancetype)uploadFetcherForSessionIdentifier:(NSString *)sessionIdentifier;
 
 - (void)pauseFetching;
 - (void)resumeFetching;
 - (BOOL)isPaused;
 
-@property(atomic, strong, GTM_NULLABLE) NSURL *uploadLocationURL;
-@property(atomic, strong, GTM_NULLABLE) NSData *uploadData;
-@property(atomic, strong, GTM_NULLABLE) NSURL *uploadFileURL;
-@property(atomic, strong, GTM_NULLABLE) NSFileHandle *uploadFileHandle;
-@property(atomic, copy, readonly, GTM_NULLABLE) GTMSessionUploadFetcherDataProvider uploadDataProvider;
+@property(atomic, strong, nullable) NSURL *uploadLocationURL;
+@property(atomic, strong, nullable) NSData *uploadData;
+@property(atomic, strong, nullable) NSURL *uploadFileURL;
+@property(atomic, strong, nullable) NSFileHandle *uploadFileHandle;
+@property(atomic, copy, readonly, nullable) GTMSessionUploadFetcherDataProvider uploadDataProvider;
 @property(atomic, copy) NSString *uploadMIMEType;
 @property(atomic, readonly, assign) int64_t chunkSize;
 @property(atomic, readonly, assign) int64_t currentOffset;
@@ -138,14 +137,14 @@ typedef void (^GTMSessionUploadFetcherCancellationHandler)(
 @property(atomic, readonly, assign) BOOL allowsCellularAccess;
 
 // The fetcher for the current data chunk, if any
-@property(atomic, strong, GTM_NULLABLE) GTMSessionFetcher *chunkFetcher;
+@property(atomic, strong, nullable) GTMSessionFetcher *chunkFetcher;
 
 // The active fetcher is the current chunk fetcher, or the upload fetcher itself
 // if no chunk fetcher has yet been created.
 @property(atomic, readonly) GTMSessionFetcher *activeFetcher;
 
 // The last request made by an active fetcher.  Useful for testing.
-@property(atomic, readonly, GTM_NULLABLE) NSURLRequest *lastChunkRequest;
+@property(atomic, readonly, nullable) NSURLRequest *lastChunkRequest;
 
 // The status code from the most recently-completed fetch.
 @property(atomic, assign) NSInteger statusCode;
@@ -157,19 +156,18 @@ typedef void (^GTMSessionUploadFetcherCancellationHandler)(
 // Unlike other callbacks, since this is related specifically to the stopFetching flow it is not
 // cleared by stopFetching. It will instead clear itself after it is invoked or if the completion
 // has occured before stopFetching is called.
-@property(atomic, copy, GTM_NULLABLE) GTMSessionUploadFetcherCancellationHandler
-    cancellationHandler;
+@property(atomic, copy, nullable) GTMSessionUploadFetcherCancellationHandler cancellationHandler;
 
 // Exposed for testing only.
-@property(atomic, readonly, GTM_NULLABLE) dispatch_queue_t delegateCallbackQueue;
-@property(atomic, readonly, GTM_NULLABLE) GTMSessionFetcherCompletionHandler delegateCompletionHandler;
+@property(atomic, readonly, nullable) dispatch_queue_t delegateCallbackQueue;
+@property(atomic, readonly, nullable) GTMSessionFetcherCompletionHandler delegateCompletionHandler;
 
 @end
 
 @interface GTMSessionFetcher (GTMSessionUploadFetcherMethods)
 
-@property(readonly, GTM_NULLABLE) GTMSessionUploadFetcher *parentUploadFetcher;
+@property(readonly, nullable) GTMSessionUploadFetcher *parentUploadFetcher;
 
 @end
 
-GTM_ASSUME_NONNULL_END
+NS_ASSUME_NONNULL_END

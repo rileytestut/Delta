@@ -95,6 +95,9 @@ final class SyncManager
         return self.coordinator?.recordController
     }
     
+    // Hacky, but YOLO I'm under time crunch.
+    public var ignoredCorruptedRecordIDs = Set<RecordID>()
+    
     private(set) var syncProgress: Progress?
         
     private(set) var previousSyncResult: SyncResult?
@@ -137,7 +140,7 @@ extension SyncManager
                 }
                 catch
                 {
-                    print("Failed to remove Harmony database.", error)
+                    Logger.sync.error("Failed to remove Harmony database. \(error.localizedDescription, privacy: .public)")
                 }
                 
                 self.start(service: service, completionHandler: completionHandler)
@@ -163,11 +166,12 @@ extension SyncManager
                 {
                 case .other(ServiceError.connectionFailed):
                     // Authentication failed due to network connection, but otherwise started successfully so we ignore this error.
+                    Logger.sync.error("Failed to authenticate SyncManager due to network connection (ignoring). \(authError.localizedDescription, privacy: .public)")
                     completionHandler(.success)
                     
                 default:
                     // Another authentication error occured, so we'll deauthenticate ourselves.
-                    print("SyncManager.start auth error:", authError)
+                    Logger.sync.error("Failed to authenticate SyncManager. \(authError.localizedDescription, privacy: .public)")
                     
                     self.deauthenticate() { (result) in
                         switch result
@@ -184,7 +188,7 @@ extension SyncManager
             }
             catch
             {
-                print("SyncManager.start error:", error)
+                Logger.sync.error("Failed to start SyncManager. \(error.localizedDescription, privacy: .public)")
                 completionHandler(.failure(error))
             }
         }
@@ -209,31 +213,7 @@ extension SyncManager
     {
         guard let coordinator = self.coordinator else { return completionHandler(.failure(AuthenticationError(Error.nilService))) }
         
-        coordinator.authenticate(presentingViewController: presentingViewController) { (result) in
-            do
-            {
-                let account = try result.get()
-                
-                if !coordinator.recordController.isSeeded
-                {
-                    coordinator.recordController.seedFromPersistentContainer { (result) in
-                        switch result
-                        {
-                        case .success: completionHandler(.success(account))
-                        case .failure(let error): completionHandler(.failure(AuthenticationError(error)))
-                        }
-                    }
-                }
-                else
-                {
-                    completionHandler(.success(account))
-                }
-            }
-            catch
-            {
-                completionHandler(.failure(AuthenticationError(error)))
-            }
-        }
+        coordinator.authenticate(presentingViewController: presentingViewController, completionHandler: completionHandler)
     }
     
     func deauthenticate(completionHandler: @escaping (Result<Void, DeauthenticationError>) -> Void)
@@ -245,6 +225,9 @@ extension SyncManager
     
     func sync()
     {
+        // Don't sync until we've repaired database.
+        guard !UserDefaults.standard.shouldRepairDatabase else { return }
+        
         let progress = self.coordinator?.sync()
         self.syncProgress = progress
     }
