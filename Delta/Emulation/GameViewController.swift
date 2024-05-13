@@ -119,6 +119,11 @@ class GameViewController: DeltaCore.GameViewController
         }
     }
     
+    private var isGameScene: Bool {
+        let gameScene = self.view.window?.windowScene as? GameScene
+        return gameScene != nil
+    }
+    
     //MARK: - Private Properties -
     private var pauseViewController: PauseViewController?
     private var pausingGameController: GameController?
@@ -396,6 +401,16 @@ extension GameViewController
         {
             self.showJITEnabledAlert()
         }
+        
+        if let game = self.game as? Game
+        {
+            let userActivity = NSUserActivity(game: game)
+            self.view.window?.windowScene?.userActivity = userActivity
+        }
+        else
+        {
+            self.view.window?.windowScene?.userActivity = nil
+        }
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator)
@@ -454,6 +469,7 @@ extension GameViewController
             pauseViewController.emulatorCore = self.emulatorCore
             pauseViewController.saveStatesViewControllerDelegate = self
             pauseViewController.cheatsViewControllerDelegate = self
+            pauseViewController.closeButtonTitle = self.isGameScene ? NSLocalizedString("Close", comment: "") : NSLocalizedString("Main Menu", comment: "")
             
             pauseViewController.fastForwardItem?.isSelected = (self.emulatorCore?.rate != self.emulatorCore?.deltaCore.supportedRates.lowerBound)
             pauseViewController.fastForwardItem?.action = { [unowned self] item in
@@ -555,12 +571,25 @@ extension GameViewController
             }
             
         case "unwindToGames":
-            DispatchQueue.main.async {
-                self.transitionCoordinator?.animate(alongsideTransition: nil, completion: { (context) in
-                    self.performSegue(withIdentifier: "showGamesViewController", sender: nil)
-                })
+            if self.isGameScene
+            {
+                guard let session = self.view.window?.windowScene?.session else { return }
+                UIApplication.shared.requestSceneSessionDestruction(session, options: nil) { error in
+                    Logger.main.error("Failed to close game window. \(error.localizedDescription, privacy: .public)")
+                }
+                
+                // Ensure emulation stops when explicitly quit.
+                self.emulatorCore?.stop()
             }
-            
+            else
+            {
+                DispatchQueue.main.async {
+                    self.transitionCoordinator?.animate(alongsideTransition: nil, completion: { (context) in
+                        self.performSegue(withIdentifier: "showGamesViewController", sender: nil)
+                    })
+                }
+            }
+                        
         default: break
         }
     }

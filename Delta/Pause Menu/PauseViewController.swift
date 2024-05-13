@@ -22,6 +22,8 @@ class PauseViewController: UIViewController, PauseInfoProviding
         return [self.saveStateItem, self.loadStateItem, self.cheatCodesItem, self.fastForwardItem, self.sustainButtonsItem, self.screenshotItem].compactMap { $0 }
     }
     
+    var closeButtonTitle: String = NSLocalizedString("Main Menu", comment: "")
+    
     /// Pause Items
     var saveStateItem: MenuItem?
     var loadStateItem: MenuItem?
@@ -64,6 +66,16 @@ class PauseViewController: UIViewController, PauseInfoProviding
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
+    }
+    
+    override func viewDidLoad() 
+    {
+        super.viewDidLoad()
+        
+        if let gridMenuViewController = self.navigationController?.topViewController as? GridMenuViewController
+        {
+            gridMenuViewController.closeButton.title = self.closeButtonTitle
+        }
     }
     
     override func viewDidLayoutSubviews()

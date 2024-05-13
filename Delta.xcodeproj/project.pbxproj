@@ -185,6 +185,7 @@
 		D539103229E88B6C0006B350 /* DeltaPreviews.h in Headers */ = {isa = PBXBuildFile; fileRef = D539103129E88B6C0006B350 /* DeltaPreviews.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D539104029E88BC40006B350 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D539103F29E88BC40006B350 /* ContentView.swift */; };
 		D54A4BB329E4D27E004C7D57 /* FeatureDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54A4BB229E4D27E004C7D57 /* FeatureDetailView.swift */; };
+		D54E46D02BED714F00780713 /* NSUserActivity+Delta.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54E46CF2BED714F00780713 /* NSUserActivity+Delta.swift */; };
 		D54F710229E89DCB009C069A /* SettingsUserInfoKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54F710129E89DCB009C069A /* SettingsUserInfoKey.swift */; };
 		D54F710429E89DFC009C069A /* NotificationName+Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54F710329E89DFC009C069A /* NotificationName+Settings.swift */; };
 		D55917D82B51CF7D007B7DC0 /* ProcessInfo+visionOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55917D72B51CF7D007B7DC0 /* ProcessInfo+visionOS.swift */; };
@@ -205,6 +206,7 @@
 		D5A9C01D29DE058C00A8D610 /* VariableFastForward.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A9C01C29DE058C00A8D610 /* VariableFastForward.swift */; };
 		D5AAF27729884F8600F21ACF /* CheatDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5AAF27629884F8600F21ACF /* CheatDevice.swift */; };
 		D5ADD12229F33FBF00CE0560 /* Features.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5ADD12129F33FBF00CE0560 /* Features.swift */; };
+		D5AE78832BEAAD6100ED25DC /* GameSceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5AE78822BEAAD6100ED25DC /* GameSceneDelegate.swift */; };
 		D5B4235C2BD9C24000093054 /* RoundedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B4235B2BD9C24000093054 /* RoundedImageView.swift */; };
 		D5C45FEF2BE992A80009DBB0 /* AltKit in Frameworks */ = {isa = PBXBuildFile; productRef = D5C45FEE2BE992A80009DBB0 /* AltKit */; };
 		D5CDCCEE2A859DC200E22131 /* SyncValidationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CDCCEC2A859B2B00E22131 /* SyncValidationError.swift */; };
@@ -462,6 +464,7 @@
 		D539103129E88B6C0006B350 /* DeltaPreviews.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DeltaPreviews.h; sourceTree = "<group>"; };
 		D539103F29E88BC40006B350 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		D54A4BB229E4D27E004C7D57 /* FeatureDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureDetailView.swift; sourceTree = "<group>"; };
+		D54E46CF2BED714F00780713 /* NSUserActivity+Delta.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSUserActivity+Delta.swift"; sourceTree = "<group>"; };
 		D54F710129E89DCB009C069A /* SettingsUserInfoKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsUserInfoKey.swift; sourceTree = "<group>"; };
 		D54F710329E89DFC009C069A /* NotificationName+Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationName+Settings.swift"; sourceTree = "<group>"; };
 		D554C3822A58D89700E93359 /* Delta 7.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Delta 7.xcdatamodel"; sourceTree = "<group>"; };
@@ -489,6 +492,7 @@
 		D5A9C01C29DE058C00A8D610 /* VariableFastForward.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VariableFastForward.swift; sourceTree = "<group>"; };
 		D5AAF27629884F8600F21ACF /* CheatDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheatDevice.swift; sourceTree = "<group>"; };
 		D5ADD12129F33FBF00CE0560 /* Features.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Features.swift; sourceTree = "<group>"; };
+		D5AE78822BEAAD6100ED25DC /* GameSceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSceneDelegate.swift; sourceTree = "<group>"; };
 		D5B4235B2BD9C24000093054 /* RoundedImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedImageView.swift; sourceTree = "<group>"; };
 		D5CDCCC32A85765900E22131 /* OSLog+Delta.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OSLog+Delta.swift"; sourceTree = "<group>"; };
 		D5CDCCEA2A8593FC00E22131 /* UserDefaults+Delta.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Delta.swift"; sourceTree = "<group>"; };
@@ -578,6 +582,7 @@
 				AC1AE30B2A6A068F00956EB9 /* Bundle+AppIconImage.swift */,
 				D5D39E782AF2D624004BE3F7 /* GameView+AirPlay.swift */,
 				D55917D72B51CF7D007B7DC0 /* ProcessInfo+visionOS.swift */,
+				D54E46CF2BED714F00780713 /* NSUserActivity+Delta.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1075,6 +1080,7 @@
 			isa = PBXGroup;
 			children = (
 				D5A98CE1284EF14B00E023E5 /* SceneDelegate.swift */,
+				D5AE78822BEAAD6100ED25DC /* GameSceneDelegate.swift */,
 				D560BD8529EDC45600289847 /* ExternalDisplaySceneDelegate.swift */,
 			);
 			path = Scenes;
@@ -1640,6 +1646,7 @@
 				D5CDCCF32A859E7500E22131 /* GamePickerViewController.swift in Sources */,
 				D5864978297756CE0081477E /* CheatBaseView.swift in Sources */,
 				BF353FFF1C5DA3C500C1184C /* PausePresentationController.swift in Sources */,
+				D54E46D02BED714F00780713 /* NSUserActivity+Delta.swift in Sources */,
 				BFFC464C1D5998D600AF2CC6 /* CheatTableViewCell.swift in Sources */,
 				D5B4235C2BD9C24000093054 /* RoundedImageView.swift in Sources */,
 				BF5942941E09BD1A0051894B /* NSManagedObject+Conveniences.swift in Sources */,
@@ -1695,6 +1702,7 @@
 				BF4828881F90290F00028B97 /* Action.swift in Sources */,
 				BF6BF3271EB87EB8008E83CD /* PhotoLibraryImportOption.swift in Sources */,
 				BF5942661E09BBB10051894B /* LoadImageURLOperation.swift in Sources */,
+				D5AE78832BEAAD6100ED25DC /* GameSceneDelegate.swift in Sources */,
 				BF353FF21C5D7FB000C1184C /* PauseViewController.swift in Sources */,
 				BF00BEA625B758AA00C8607D /* SystemBIOS.swift in Sources */,
 				BF696B801D9B2B02009639E0 /* Theme.swift in Sources */,

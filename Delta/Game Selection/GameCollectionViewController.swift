@@ -97,13 +97,9 @@ extension GameCollectionViewController
         self.collectionView?.prefetchDataSource = self.dataSource
         self.collectionView?.delegate = self
         
-        if #available(iOS 13, *) {}
-        else
+        if UIApplication.shared.supportsMultipleScenes
         {
-            self.registerForPreviewing(with: self, sourceView: self.collectionView!)
-            
-            let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(GameCollectionViewController.handleLongPressGesture(_:)))
-            self.collectionView?.addGestureRecognizer(longPressGestureRecognizer)
+            self.collectionView?.dragDelegate = self
         }
         
         self.update()
@@ -452,6 +448,15 @@ private extension GameCollectionViewController
                 guard let delegate = mainScene.delegate as? SceneDelegate else { continue }
                 
                 if let otherGame = delegate.game, otherGame.type == game.type
+                {
+                    // Can't emulate multiple games from same system simultaneously.
+                    throw LaunchError.systemAlreadyRunning(otherGame)
+                }
+            }
+            
+            for gameScene in UIApplication.shared.gameScenes ?? [] where gameScene != scene
+            {
+                if let otherGame = gameScene.game as? Game, otherGame.type == game.type
                 {
                     // Can't emulate multiple games from same system simultaneously.
                     throw LaunchError.systemAlreadyRunning(otherGame)
@@ -882,19 +887,6 @@ private extension GameCollectionViewController
         let text = textField.text ?? ""
         self._renameAction?.isEnabled = text.count > 0
     }
-    
-    @objc func handleLongPressGesture(_ gestureRecognizer: UILongPressGestureRecognizer)
-    {
-        guard gestureRecognizer.state == .began else { return }
-        
-        guard let indexPath = self.collectionView?.indexPathForItem(at: gestureRecognizer.location(in: self.collectionView)) else { return }
-        
-        let game = self.dataSource.item(at: indexPath)
-        let actions = self.actions(for: game)
-        
-        let alertController = UIAlertController(actions: actions)
-        self.present(alertController, animated: true, completion: nil)
-    }
 }
 
 //MARK: - UIViewControllerPreviewingDelegate -
@@ -1164,5 +1156,29 @@ extension GameCollectionViewController: UIDocumentPickerDelegate
         }
         
         self._exportedSaveFileURL = nil
+    }
+}
+
+extension GameCollectionViewController: UICollectionViewDragDelegate
+{
+    func collectionView(_ collectionView: UICollectionView, itemsForBeginning session: any UIDragSession, at indexPath: IndexPath) -> [UIDragItem] 
+    {
+        do
+        {
+            let game = self.dataSource.item(at: indexPath)
+            try self.validateLaunchingGame(game, ignoringErrors: [])
+            
+            let userActivity = NSUserActivity(game: game)
+            
+            let itemProvider = NSItemProvider()
+            itemProvider.registerObject(userActivity, visibility: .all)
+                    
+            return [UIDragItem(itemProvider: itemProvider)]
+        }
+        catch
+        {
+            Logger.main.error("Error validating dragging game. \(error.localizedDescription, privacy: .public)")
+            return []
+        }
     }
 }

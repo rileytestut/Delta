@@ -18,6 +18,8 @@ class GridMenuViewController: UICollectionViewController
     
     var isVibrancyEnabled = true
     
+    @IBOutlet private(set) var closeButton: UIBarButtonItem!
+    
     override var preferredContentSize: CGSize {
         set { }
         get { return self.collectionView?.contentSize ?? CGSize.zero }

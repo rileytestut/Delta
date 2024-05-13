@@ -105,6 +105,11 @@ extension AppDelegate
             // External Display
             return UISceneConfiguration(name: "External Display", sessionRole: connectingSceneSession.role)
         }
+        else if options.userActivities.contains(where: { $0.activityType == NSUserActivity.playGameActivityType })
+        {
+            // Game Scene
+            return UISceneConfiguration(name: "Game", sessionRole: connectingSceneSession.role)
+        }
         else
         {
             // Default Scene

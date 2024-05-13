@@ -13,12 +13,12 @@ import Harmony
 
 class LaunchViewController: RSTLaunchViewController
 {
+    var deepLinkGame: Game?
+    
     @IBOutlet private var gameViewContainerView: UIView!
     private(set) var gameViewController: GameViewController!
     
     private var presentedGameViewController: Bool = false
-    
-    private var applicationLaunchDeepLinkGame: Game?
     
     private var didAttemptStartingSyncManager = false
     
@@ -130,7 +130,7 @@ extension LaunchViewController
             self.setNeedsUpdateOfHomeIndicatorAutoHidden()
         }
         
-        if let game = self.applicationLaunchDeepLinkGame
+        if let game = self.deepLinkGame
         {
             self.gameViewController.game = game
             
@@ -158,6 +158,6 @@ private extension LaunchViewController
         
         guard let game = notification.userInfo?[DeepLink.Key.game] as? Game else { return }
         
-        self.applicationLaunchDeepLinkGame = game
+        self.deepLinkGame = game
     }
 }

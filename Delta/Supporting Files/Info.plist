@@ -241,6 +241,18 @@
 					<key>UISceneStoryboardFile</key>
 					<string>Main</string>
 				</dict>
+				<dict>
+					<key>UILaunchStoryboardName</key>
+					<string>LaunchScreen</string>
+					<key>UISceneConfigurationName</key>
+					<string>Game</string>
+					<key>UISceneDelegateClassName</key>
+					<string>$(PRODUCT_MODULE_NAME).GameSceneDelegate</string>
+					<key>UISceneStoryboardFile</key>
+					<string>Main</string>
+					<key>UISceneClassName</key>
+					<string>$(PRODUCT_MODULE_NAME).GameScene</string>
+				</dict>
 			</array>
 			<key>UIWindowSceneSessionRoleExternalDisplay</key>
 			<array>
@@ -460,6 +472,10 @@
 				</array>
 			</dict>
 		</dict>
+	</array>
+	<key>NSUserActivityTypes</key>
+	<array>
+		<string>com.rileytestut.Delta.PlayGame</string>
 	</array>
 </dict>
 </plist>
