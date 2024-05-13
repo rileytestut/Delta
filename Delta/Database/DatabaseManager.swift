@@ -56,6 +56,9 @@ final class DatabaseManager: RSTPersistentContainer
     
     private let importController = ImportController(documentTypes: [])
     
+    private var startCompletionHandlers = [(Error?) -> Void]()
+    private let dispatchQueue = DispatchQueue(label: "io.altstore.DatabaseManager")
+    
     private init()
     {
         guard
@@ -74,23 +77,36 @@ extension DatabaseManager
 {
     func start(completionHandler: @escaping (Error?) -> Void)
     {
-        guard !self.isStarted else { return }
-        
-        for description in self.persistentStoreDescriptions
+        func finish(_ error: Error?)
         {
-            // Set configuration so RSTPersistentContainer can determine how to migrate this and Harmony's database independently.
-            description.configuration = NSManagedObjectModel.Configuration.external.rawValue
+            self.dispatchQueue.async {
+                self.startCompletionHandlers.forEach { $0(error) }
+                self.startCompletionHandlers.removeAll()
+            }
         }
         
-        self.loadPersistentStores { (description, error) in
-            guard error == nil else { return completionHandler(error) }
+        self.dispatchQueue.async {
+            self.startCompletionHandlers.append(completionHandler)
+            guard self.startCompletionHandlers.count == 1 else { return }
             
-            self.prepareDatabase {
-                self.isStarted = true
+            guard !self.isStarted else { return finish(nil) }
+            
+            for description in self.persistentStoreDescriptions
+            {
+                // Set configuration so RSTPersistentContainer can determine how to migrate this and Harmony's database independently.
+                description.configuration = NSManagedObjectModel.Configuration.external.rawValue
+            }
+            
+            self.loadPersistentStores { (description, error) in
+                guard error == nil else { return finish(error) }
                 
-                NotificationCenter.default.post(name: DatabaseManager.didStartNotification, object: self)
-                
-                completionHandler(nil)
+                self.prepareDatabase {
+                    self.isStarted = true
+                    
+                    NotificationCenter.default.post(name: DatabaseManager.didStartNotification, object: self)
+                    
+                    finish(nil)
+                }
             }
         }
     }
