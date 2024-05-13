@@ -11,6 +11,14 @@ import UIKit
 import DeltaCore
 import Harmony
 
+extension UIApplication
+{
+    var mainScenes: Set<UIScene>? {
+        let scenes = UIApplication.shared.connectedScenes.filter { $0.delegate is SceneDelegate }
+        return Set(scenes)
+    }
+}
+
 @objc(SceneDelegate) @available(iOS 13, *)
 class SceneDelegate: UIResponder, UIWindowSceneDelegate
 {
@@ -29,7 +37,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate
     }
     private var _window: GameWindow?
     
+    var game: Game? {
+        return self.launchViewController.gameViewController.game as? Game
+    }
+    
     private let deepLinkController = DeepLinkController()
+    private var launchViewController: LaunchViewController!
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions)
     {
@@ -48,6 +61,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate
         {
             self.handle(.shortcut(shortcutItem))
         }
+        
+        let launchViewController = self.window?.rootViewController as! LaunchViewController
+        self.launchViewController = launchViewController
         
         self.window?.makeKeyAndVisible()
     }

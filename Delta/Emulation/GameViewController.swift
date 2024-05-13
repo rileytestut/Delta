@@ -240,6 +240,9 @@ class GameViewController: DeltaCore.GameViewController
     {
         super.gameController(gameController, didActivate: input, value: value)
         
+        // Ignore unless we're the active scene.
+        guard self.view.window?.windowScene?.hasKeyboardFocus == true else { return }
+        
         if self.isSelectingSustainedButtons
         {
             guard let pausingGameController = self.pausingGameController, gameController == pausingGameController else { return }
@@ -288,6 +291,9 @@ class GameViewController: DeltaCore.GameViewController
     override func gameController(_ gameController: GameController, didDeactivate input: Input)
     {
         super.gameController(gameController, didDeactivate: input)
+        
+        // Ignore unless we're the active scene.
+        guard self.view.window?.windowScene?.hasKeyboardFocus == true else { return }
         
         if self.isSelectingSustainedButtons
         {

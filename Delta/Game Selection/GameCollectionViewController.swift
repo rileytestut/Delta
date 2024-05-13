@@ -26,6 +26,7 @@ extension GameCollectionViewController
         case alreadyRunning
         case downloadingGameSave
         case biosNotFound
+        case systemAlreadyRunning(Game)
     }
 }
 
@@ -409,6 +410,15 @@ private extension GameCollectionViewController
                 
                 self.present(alertController, animated: true, completion: nil)
             }
+            catch LaunchError.systemAlreadyRunning(let game)
+            {
+                let message = String(format: NSLocalizedString("Delta can only play one game per system at a time.\n\nPlease quit the other game (“%@”), or choose another game for a different system.", comment: ""), game.name)
+                
+                let alertController = UIAlertController(title: NSLocalizedString("System Already Running", comment: ""), message: message, preferredStyle: .alert)
+                alertController.addAction(.ok)
+                
+                self.present(alertController, animated: true, completion: nil)
+            }
             catch
             {
                 let alertController = UIAlertController(title: NSLocalizedString("Unable to Launch Game", comment: ""), error: error)
@@ -433,6 +443,20 @@ private extension GameCollectionViewController
         if !ignoredErrors.contains(where: { $0.domain == (LaunchError.alreadyRunning as NSError).domain && $0.code == (LaunchError.alreadyRunning as NSError).code })
         {
             guard game.fileURL != self.activeEmulatorCore?.game.fileURL else { throw LaunchError.alreadyRunning }
+        }
+        
+        if let scene = self.view.window?.windowScene
+        {
+            for mainScene in UIApplication.shared.mainScenes ?? [] where mainScene != scene
+            {
+                guard let delegate = mainScene.delegate as? SceneDelegate else { continue }
+                
+                if let otherGame = delegate.game, otherGame.type == game.type
+                {
+                    // Can't emulate multiple games from same system simultaneously.
+                    throw LaunchError.systemAlreadyRunning(otherGame)
+                }
+            }
         }
         
         if let coordinator = SyncManager.shared.coordinator, coordinator.isSyncing

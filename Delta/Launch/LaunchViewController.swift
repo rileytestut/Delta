@@ -14,7 +14,7 @@ import Harmony
 class LaunchViewController: RSTLaunchViewController
 {
     @IBOutlet private var gameViewContainerView: UIView!
-    private var gameViewController: GameViewController!
+    private(set) var gameViewController: GameViewController!
     
     private var presentedGameViewController: Bool = false
     
