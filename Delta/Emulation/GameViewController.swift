@@ -228,6 +228,8 @@ class GameViewController: DeltaCore.GameViewController
         
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.sceneWillConnect(with:)), name: UIScene.willConnectNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.sceneDidDisconnect(with:)), name: UIScene.didDisconnectNotification, object: nil)
+        
+        self.automaticallyPausesWhileInactive = Settings.pauseWhileInactive
     }
     
     deinit
@@ -1581,6 +1583,8 @@ private extension GameViewController
         case _ where settingsName.rawValue.hasPrefix(ExperimentalFeatures.shared.airPlaySkins.settingsKey.rawValue):
             // Update whenever any of the AirPlay skins have changed.
             self.updateExternalDisplay()
+            
+        case .pauseWhileInactive: self.automaticallyPausesWhileInactive = Settings.pauseWhileInactive
             
         default: break
         }

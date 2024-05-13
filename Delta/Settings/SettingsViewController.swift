@@ -24,6 +24,7 @@ private extension SettingsViewController
         case controllerSkins
         case controllerOpacity
         case gameAudio
+        case stageManager
         case hapticFeedback
         case syncing
         case hapticTouch
@@ -77,6 +78,7 @@ class SettingsViewController: UITableViewController
     @IBOutlet private var controllerOpacitySlider: UISlider!
     
     @IBOutlet private var respectSilentModeSwitch: UISwitch!
+    @IBOutlet private var pauseWhileInactiveSwitch: UISwitch!
     @IBOutlet private var buttonHapticFeedbackEnabledSwitch: UISwitch!
     @IBOutlet private var thumbstickHapticFeedbackEnabledSwitch: UISwitch!
     @IBOutlet private var previewsEnabledSwitch: UISwitch!
@@ -190,6 +192,7 @@ private extension SettingsViewController
         self.updateControllerOpacityLabel()
         
         self.respectSilentModeSwitch.isOn = Settings.respectSilentMode
+        self.pauseWhileInactiveSwitch.isOn = Settings.pauseWhileInactive
         
         self.syncingServiceLabel.text = Settings.syncingService?.localizedName
         
@@ -220,6 +223,7 @@ private extension SettingsViewController
     {
         switch section
         {
+        case .stageManager where !UIApplication.shared.supportsMultipleScenes: return true
         case .hapticFeedback where !UIDevice.current.isVibrationSupported: return true
             
         case .advanced:
@@ -293,6 +297,11 @@ private extension SettingsViewController
     @IBAction func toggleRespectSilentMode(_ sender: UISwitch)
     {
         Settings.respectSilentMode = sender.isOn
+    }
+    
+    @IBAction func togglePauseWhileInactive(_ sender: UISwitch)
+    {
+        Settings.pauseWhileInactive = sender.isOn
     }
     
     func openTwitter(username: String)
@@ -488,7 +497,7 @@ extension SettingsViewController
             let preferredCore = Settings.preferredCore(for: .ds)
             cell.detailTextLabel?.text = preferredCore?.metadata?.name.value ?? preferredCore?.name ?? NSLocalizedString("Unknown", comment: "")
             
-        case .controllerOpacity, .gameAudio, .hapticFeedback, .hapticTouch, .advanced, .patreon, .credits, .support: break
+        case .controllerOpacity, .gameAudio, .stageManager, .hapticFeedback, .hapticTouch, .advanced, .patreon, .credits, .support: break
         }
 
         return cell
@@ -504,7 +513,7 @@ extension SettingsViewController
         case .controllers: self.performSegue(withIdentifier: Segue.controllers.rawValue, sender: cell)
         case .controllerSkins: self.performSegue(withIdentifier: Segue.controllerSkins.rawValue, sender: cell)
         case .cores: self.performSegue(withIdentifier: Segue.dsSettings.rawValue, sender: cell)
-        case .controllerOpacity, .gameAudio, .hapticFeedback, .hapticTouch, .syncing: break
+        case .controllerOpacity, .gameAudio, .stageManager, .hapticFeedback, .hapticTouch, .syncing: break
         case .advanced:
             let row = AdvancedRow(rawValue: indexPath.row)!
             switch row

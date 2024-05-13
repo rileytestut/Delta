@@ -31,6 +31,7 @@ extension Settings.Name
     static let isThumbstickHapticFeedbackEnabled: Settings.Name = "isThumbstickHapticFeedbackEnabled"
     static let isAltJITEnabled: Settings.Name = "isAltJITEnabled"
     static let respectSilentMode: Settings.Name = "respectSilentMode"
+    static let pauseWhileInactive: Settings.Name = "pauseWhileInactive"
 }
 
 extension Settings
@@ -61,6 +62,7 @@ struct Settings
                         #keyPath(UserDefaults.isPreviewsEnabled): true,
                         #keyPath(UserDefaults.isAltJITEnabled): false,
                         #keyPath(UserDefaults.respectSilentMode): true,
+                        #keyPath(UserDefaults.pauseWhileInactive): true,
                         Settings.preferredCoreSettingsKey(for: .ds): MelonDS.core.identifier] as [String : Any]
         
         #if !BETA
@@ -225,6 +227,17 @@ extension Settings
         set {
             UserDefaults.standard.respectSilentMode = newValue
             NotificationCenter.default.post(name: Settings.didChangeNotification, object: nil, userInfo: [NotificationUserInfoKey.name: Name.respectSilentMode])
+        }
+    }
+    
+    static var pauseWhileInactive: Bool {
+        get {
+            let pauseWhileInactive = UserDefaults.standard.pauseWhileInactive
+            return pauseWhileInactive
+        }
+        set {
+            UserDefaults.standard.pauseWhileInactive = newValue
+            NotificationCenter.default.post(name: Settings.didChangeNotification, object: nil, userInfo: [NotificationUserInfoKey.name: Name.pauseWhileInactive])
         }
     }
     
@@ -427,4 +440,6 @@ private extension UserDefaults
     @NSManaged var isAltJITEnabled: Bool
     
     @NSManaged var respectSilentMode: Bool
+    
+    @NSManaged var pauseWhileInactive: Bool
 }
