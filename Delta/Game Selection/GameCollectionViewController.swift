@@ -515,50 +515,51 @@ private extension GameCollectionViewController
 //MARK: - Game Actions -
 private extension GameCollectionViewController
 {
-    func actions(for game: Game) -> [Action]
+    func actions(for game: Game) -> [UIMenuElement]
     {
-        let cancelAction = Action(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, action: nil)
-        
-        let renameAction = Action(title: NSLocalizedString("Rename", comment: ""), style: .default, image: UIImage(symbolNameIfAvailable: "pencil.and.ellipsis.rectangle"), action: { [unowned self] action in
+        let renameAction = UIAction(title: NSLocalizedString("Rename", comment: ""), image: UIImage(symbolNameIfAvailable: "pencil")) { [unowned self] action in
             self.rename(game)
-        })
+        }
         
-        let changeArtworkAction = Action(title: NSLocalizedString("Change Artwork", comment: ""), style: .default, image: UIImage(symbolNameIfAvailable: "photo")) { [unowned self] action in
+        let changeArtworkAction = UIAction(title: NSLocalizedString("Change Artwork", comment: ""), image: UIImage(symbolNameIfAvailable: "photo")) { [unowned self] action in
             self.changeArtwork(for: game)
         }
         
-        let changeControllerSkinAction = Action(title: NSLocalizedString("Change Controller Skin", comment: ""), style: .default, image: UIImage(symbolNameIfAvailable: "gamecontroller")) { [unowned self] _ in
+        let changeControllerSkinAction = UIAction(title: NSLocalizedString("Change Controller Skin", comment: ""), image: UIImage(symbolNameIfAvailable: "gamecontroller")) { [unowned self] _ in
             self.changePreferredControllerSkin(for: game)
         }
         
-        let shareAction = Action(title: NSLocalizedString("Share", comment: ""), style: .default, image: UIImage(symbolNameIfAvailable: "square.and.arrow.up"), action: { [unowned self] action in
+        let shareAction = UIAction(title: NSLocalizedString("Share", comment: ""), image: UIImage(symbolNameIfAvailable: "square.and.arrow.up")) { [unowned self] action in
             self.share(game)
-        })
+        }
         
-        let saveStatesAction = Action(title: NSLocalizedString("Save States", comment: ""), style: .default, image: UIImage(symbolNameIfAvailable: "doc.on.doc"), action: { [unowned self] action in
+        let saveStatesAction = UIAction(title: NSLocalizedString("View Save States", comment: ""), image: UIImage(symbolNameIfAvailable: "doc.on.doc")) { [unowned self] action in
             self.viewSaveStates(for: game)
-        })
+        }
         
-        let importSaveFile = Action(title: NSLocalizedString("Import Save File", comment: ""), style: .default, image: UIImage(symbolNameIfAvailable: "tray.and.arrow.down")) { [unowned self] _ in
+        let importSaveFile = UIAction(title: NSLocalizedString("Import Save File", comment: ""), image: UIImage(symbolNameIfAvailable: "tray.and.arrow.down")) { [unowned self] _ in
             self.importSaveFile(for: game)
         }
         
-        let exportSaveFile = Action(title: NSLocalizedString("Export Save File", comment: ""), style: .default, image: UIImage(symbolNameIfAvailable: "tray.and.arrow.up")) { [unowned self] _ in
+        let exportSaveFile = UIAction(title: NSLocalizedString("Export Save File", comment: ""), image: UIImage(symbolNameIfAvailable: "tray.and.arrow.up")) { [unowned self] _ in
             self.exportSaveFile(for: game)
         }
         
-        let deleteAction = Action(title: NSLocalizedString("Delete", comment: ""), style: .destructive, image: UIImage(symbolNameIfAvailable: "trash"), action: { [unowned self] action in
+        let deleteAction = UIAction(title: NSLocalizedString("Delete", comment: ""), image: UIImage(symbolNameIfAvailable: "trash"), attributes: .destructive) { [unowned self] action in
             self.delete(game)
-        })
+        }
+        
+        let saveFileMenu = UIMenu(title: NSLocalizedString("Manage Save File", comment: ""), image: UIImage(symbolNameIfAvailable: "doc"), children: [importSaveFile, exportSaveFile])
+        let savesMenu = UIMenu(title: "", options: .displayInline, children: [saveStatesAction, saveFileMenu])
         
         switch game.type
         {
         case GameType.unknown:
-            return [cancelAction, renameAction, changeArtworkAction, shareAction, deleteAction]
+            return [renameAction, changeArtworkAction, shareAction, deleteAction]
         case .ds where game.identifier == Game.melonDSBIOSIdentifier || game.identifier == Game.melonDSDSiBIOSIdentifier:
-            return [cancelAction, renameAction, changeArtworkAction, changeControllerSkinAction, saveStatesAction]
+            return [renameAction, changeArtworkAction, changeControllerSkinAction, saveStatesAction]
         default:
-            return [cancelAction, renameAction, changeArtworkAction, changeControllerSkinAction, shareAction, saveStatesAction, importSaveFile, exportSaveFile, deleteAction]
+            return [renameAction, changeArtworkAction, changeControllerSkinAction, shareAction, savesMenu, deleteAction]
         }
     }
     
@@ -957,9 +958,6 @@ extension GameCollectionViewController: UIViewControllerPreviewingDelegate
             emulatorBridge.isJITEnabled = ProcessInfo.processInfo.isJITAvailable
         }
         
-        let actions = self.actions(for: game).previewActions
-        gameViewController.overridePreviewActionItems = actions
-        
         return gameViewController
     }
     
@@ -1109,7 +1107,7 @@ extension GameCollectionViewController
             
             return previewViewController
         }) { suggestedActions in
-            return UIMenu(title: game.name, children: actions.menuActions)
+            return UIMenu(title: game.name, children: actions)
         }
     }
     
