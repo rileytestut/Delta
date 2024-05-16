@@ -861,7 +861,17 @@ private extension GameCollectionViewController
         {
             let sanitizedFilename = game.name.components(separatedBy: .urlFilenameAllowed.inverted).joined()
             
-            let temporaryURL = FileManager.default.temporaryDirectory.appendingPathComponent(sanitizedFilename)
+            let saveFileExtension: String
+            if let deltaCore = Delta.core(for: game.type)
+            {
+                saveFileExtension = deltaCore.gameSaveFileExtension
+            }
+            else
+            {
+                saveFileExtension = "sav"
+            }
+            
+            let temporaryURL = FileManager.default.temporaryDirectory.appendingPathComponent(sanitizedFilename).appendingPathExtension(saveFileExtension)
             try FileManager.default.copyItem(at: game.gameSaveURL, to: temporaryURL, shouldReplace: true)
             
             self._exportedSaveFileURL = temporaryURL
