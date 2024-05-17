@@ -186,6 +186,24 @@ class GameViewController: DeltaCore.GameViewController
         return !self.isGyroActive
     }
     
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        guard self.isGyroActive else { return super.supportedInterfaceOrientations }
+        
+        // Lock orientation to whatever current device orientation is.
+        
+        switch UIDevice.current.orientation
+        {
+        case .portrait: return .portrait
+        case .portraitUpsideDown: return .portraitUpsideDown
+            
+        // UIDevice.landscapeLeft == UIInterfaceOrientation.landscapeRight (and vice versa)
+        case .landscapeLeft: return .landscapeRight
+        case .landscapeRight: return .landscapeLeft
+            
+        default: return super.supportedInterfaceOrientations
+        }
+    }
+    
     override var preferredScreenEdgesDeferringSystemGestures: UIRectEdge {
         return .all
     }
@@ -1664,6 +1682,14 @@ private extension GameViewController
     {
         self.isGyroActive = true
         
+        if #available(iOS 16, *)
+        {
+            DispatchQueue.main.async {
+                self.setNeedsUpdateOfSupportedInterfaceOrientations()
+                self.parent?.setNeedsUpdateOfSupportedInterfaceOrientations() // LaunchViewController
+            }
+        }
+        
         guard !self.presentedGyroAlert else { return }
         
         self.presentedGyroAlert = true
@@ -1691,6 +1717,14 @@ private extension GameViewController
     @objc func didDeactivateGyro(with notification: Notification)
     {
         self.isGyroActive = false
+        
+        if #available(iOS 16, *)
+        {
+            DispatchQueue.main.async {
+                self.setNeedsUpdateOfSupportedInterfaceOrientations()
+                self.parent?.setNeedsUpdateOfSupportedInterfaceOrientations() // LaunchViewController
+            }
+        }
     }
     
     @objc func didEnableJIT(with notification: Notification)

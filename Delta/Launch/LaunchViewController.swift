@@ -42,6 +42,10 @@ class LaunchViewController: RSTLaunchViewController
         return self.gameViewController?.shouldAutorotate ?? true
     }
     
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return self.gameViewController?.supportedInterfaceOrientations ?? super.supportedInterfaceOrientations
+    }
+    
     required init?(coder aDecoder: NSCoder)
     {
         super.init(coder: aDecoder)
