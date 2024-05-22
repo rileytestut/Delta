@@ -1,0 +1,1 @@
+../../../../../../../../Cores/MelonDSDeltaCore/melonDS/src/frontend/qt_sdl/Config.h
