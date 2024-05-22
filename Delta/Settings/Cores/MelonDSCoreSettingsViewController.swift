@@ -164,10 +164,13 @@ private extension MelonDSCoreSettingsViewController
         {
         case .performance:
             // Hide AltJIT section for public builds.
-            guard isBeta else { return true }
+            // guard isBeta else { return true }
+            //
+            // guard Settings.preferredCore(for: .ds) == MelonDS.core else { return true }
+            // return !UIDevice.current.supportsJIT
             
-            guard Settings.preferredCore(for: .ds) == MelonDS.core else { return true }
-            return !UIDevice.current.supportsJIT
+            // AltJIT not currently supported with melonDS 0.9.5.
+            return true
             
         case .dsBIOS where Settings.preferredCore(for: .ds) == DS.core:
             // Using DeSmuME core, which doesn't require BIOS.
@@ -339,9 +342,13 @@ extension MelonDSCoreSettingsViewController
         switch Section(rawValue: indexPath.section)!
         {
         case .general:
-            let key = DeltaCoreMetadata.Key.allCases[indexPath.row]
-            let item = Settings.preferredCore(for: .ds)?.metadata?[key]
+            guard let core = Settings.preferredCore(for: .ds) else { break }
+            let filteredKeys = DeltaCoreMetadata.Key.allCases.filter { core.metadata?[$0] != nil }
             
+            let key = filteredKeys[indexPath.row]
+            cell.textLabel?.text = key.localizedName
+            
+            let item = core.metadata?[key]
             cell.detailTextLabel?.text = item?.value ?? NSLocalizedString("-", comment: "")
             cell.detailTextLabel?.textColor = .gray
             
@@ -419,7 +426,10 @@ extension MelonDSCoreSettingsViewController
         switch Section(rawValue: indexPath.section)!
         {
         case .general:
-            let key = DeltaCoreMetadata.Key.allCases[indexPath.row]
+            guard let core = Settings.preferredCore(for: .ds) else { break }
+            let filteredKeys = DeltaCoreMetadata.Key.allCases.filter { core.metadata?[$0] != nil }
+            
+            let key = filteredKeys[indexPath.row]
             self.openMetadataURL(for: key)
             
         case .dsBIOS:
@@ -487,7 +497,7 @@ extension MelonDSCoreSettingsViewController
             
             let systemName = (section == .dsiBIOS) ? String(localized: "DSi") : String(localized: "DS")
             
-            var attributedText = AttributedString(localized: "Delta requires these BIOS files to emulate the Nintendo \(systemName) home screen.")
+            var attributedText = AttributedString(localized: "Delta requires these BIOS files to emulate certain Nintendo \(systemName) features.")
             attributedText += " "
             
             var learnMore = AttributedString(localized: "Learn more…")

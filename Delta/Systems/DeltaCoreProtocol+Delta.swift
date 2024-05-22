@@ -23,12 +23,17 @@ import struct DSDeltaCore.DS
 @dynamicMemberLookup
 struct DeltaCoreMetadata
 {
-    enum Key: CaseIterable
+    enum Key: String, CaseIterable
     {
         case name
         case developer
+        case version
         case source
         case donate
+        
+        var localizedName: String {
+            return self.rawValue.capitalized
+        }
     }
     
     struct Item
@@ -90,6 +95,7 @@ extension DeltaCoreProtocol
         case MelonDS.core:
             return DeltaCoreMetadata([.name: .init(value: NSLocalizedString("melonDS", comment: ""), url: URL(string: "http://melonds.kuribo64.net")),
                                       .developer: .init(value: NSLocalizedString("Arisotura", comment: ""), url: URL(string: "https://twitter.com/Arisotura")),
+                                      .version: .init(value: NSLocalizedString("0.9.5", comment: ""), url: URL(string: "https://github.com/melonDS-emu/melonDS/releases/tag/0.9.5")),
                                       .source: .init(value: NSLocalizedString("GitHub", comment: ""), url: URL(string: "https://github.com/Arisotura/melonDS")),
                                       .donate: .init(value: NSLocalizedString("Patreon", comment: ""), url: URL(string: "https://www.patreon.com/staplebutter"))])
             
