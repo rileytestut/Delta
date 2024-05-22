@@ -32,6 +32,7 @@ extension Settings.Name
     static let isAltJITEnabled: Settings.Name = "isAltJITEnabled"
     static let respectSilentMode: Settings.Name = "respectSilentMode"
     static let pauseWhileInactive: Settings.Name = "pauseWhileInactive"
+    static let supportsExternalDisplays: Settings.Name = "supportsExternalDisplays"
 }
 
 extension Settings
@@ -63,6 +64,7 @@ struct Settings
                         #keyPath(UserDefaults.isAltJITEnabled): false,
                         #keyPath(UserDefaults.respectSilentMode): true,
                         #keyPath(UserDefaults.pauseWhileInactive): true,
+                        #keyPath(UserDefaults.supportsExternalDisplays): true,
                         Settings.preferredCoreSettingsKey(for: .ds): MelonDS.core.identifier] as [String : Any]
         
         #if !BETA
@@ -238,6 +240,17 @@ extension Settings
         set {
             UserDefaults.standard.pauseWhileInactive = newValue
             NotificationCenter.default.post(name: Settings.didChangeNotification, object: nil, userInfo: [NotificationUserInfoKey.name: Name.pauseWhileInactive])
+        }
+    }
+    
+    static var supportsExternalDisplays: Bool {
+        get {
+            let supportsExternalDisplays = UserDefaults.standard.supportsExternalDisplays
+            return supportsExternalDisplays
+        }
+        set {
+            UserDefaults.standard.supportsExternalDisplays = newValue
+            NotificationCenter.default.post(name: Settings.didChangeNotification, object: nil, userInfo: [NotificationUserInfoKey.name: Name.supportsExternalDisplays])
         }
     }
     
@@ -442,4 +455,5 @@ private extension UserDefaults
     @NSManaged var respectSilentMode: Bool
     
     @NSManaged var pauseWhileInactive: Bool
+    @NSManaged var supportsExternalDisplays: Bool
 }

@@ -1803,13 +1803,13 @@ private extension GameViewController
     
     @objc func sceneWillConnect(with notification: Notification)
     {
-        guard let scene = notification.object as? ExternalDisplayScene else { return }
+        guard let scene = notification.object as? ExternalDisplayScene, Settings.supportsExternalDisplays else { return }
         self.connectExternalDisplay(for: scene)
     }
     
     @objc func sceneDidDisconnect(with notification: Notification)
     {
-        guard let scene = notification.object as? ExternalDisplayScene else { return }
+        guard let scene = notification.object as? ExternalDisplayScene, Settings.supportsExternalDisplays else { return }
         self.disconnectExternalDisplay(for: scene)
     }
 }

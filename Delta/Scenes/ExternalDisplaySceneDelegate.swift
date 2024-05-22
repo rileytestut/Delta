@@ -13,11 +13,15 @@ import DeltaCore
 extension UIApplication
 {
     var isExternalDisplayConnected: Bool {
+        guard Settings.supportsExternalDisplays else { return false }
+        
         let scene = UIApplication.shared.connectedScenes.first { $0.session.role == .windowExternalDisplay }
         return scene != nil
     }
     
     var externalDisplayScene: ExternalDisplayScene? {
+        guard Settings.supportsExternalDisplays else { return nil }
+        
         let scene = UIApplication.shared.connectedScenes.compactMap({ $0 as? ExternalDisplayScene }).first(where: { $0.session.role == .windowExternalDisplay })
         return scene
     }
@@ -42,12 +46,14 @@ class ExternalDisplaySceneDelegate: UIResponder, UIWindowSceneDelegate
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
-        guard let windowScene = scene as? UIWindowScene, let externalDisplayScene = scene as? ExternalDisplayScene else { return }
+        guard let externalDisplayScene = scene as? ExternalDisplayScene else { return }
         
-        self.window = GameWindow(windowScene: windowScene)
-        self.window?.tintColor = .deltaPurple
-        self.window?.rootViewController = externalDisplayScene.gameViewController
-        self.window?.makeKeyAndVisible()
+        // If we don't attach a window, iOS won't show the scene.
+        if Settings.supportsExternalDisplays
+        {
+            self.prepare(externalDisplayScene)
+        }
+        
     }
     
     func sceneDidDisconnect(_ scene: UIScene)
@@ -81,5 +87,18 @@ class ExternalDisplaySceneDelegate: UIResponder, UIWindowSceneDelegate
         // Called as the scene transitions from the foreground to the background.
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
+    }
+}
+
+private extension ExternalDisplaySceneDelegate
+{
+    func prepare(_ scene: ExternalDisplayScene)
+    {
+        guard self.window == nil else { return }
+        
+        self.window = GameWindow(windowScene: scene)
+        self.window?.tintColor = .deltaPurple
+        self.window?.rootViewController = scene.gameViewController
+        self.window?.makeKeyAndVisible()
     }
 }

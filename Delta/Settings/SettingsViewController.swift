@@ -79,6 +79,7 @@ class SettingsViewController: UITableViewController
     
     @IBOutlet private var respectSilentModeSwitch: UISwitch!
     @IBOutlet private var pauseWhileInactiveSwitch: UISwitch!
+    @IBOutlet private var supportExternalDisplaysSwitch: UISwitch!
     @IBOutlet private var buttonHapticFeedbackEnabledSwitch: UISwitch!
     @IBOutlet private var thumbstickHapticFeedbackEnabledSwitch: UISwitch!
     @IBOutlet private var previewsEnabledSwitch: UISwitch!
@@ -193,6 +194,7 @@ private extension SettingsViewController
         
         self.respectSilentModeSwitch.isOn = Settings.respectSilentMode
         self.pauseWhileInactiveSwitch.isOn = Settings.pauseWhileInactive
+        self.supportExternalDisplaysSwitch.isOn = Settings.supportsExternalDisplays
         
         self.syncingServiceLabel.text = Settings.syncingService?.localizedName
         
@@ -302,6 +304,11 @@ private extension SettingsViewController
     @IBAction func togglePauseWhileInactive(_ sender: UISwitch)
     {
         Settings.pauseWhileInactive = sender.isOn
+    }
+    
+    @IBAction func toggleSupportExternalDisplays(_ sender: UISwitch)
+    {
+        Settings.supportsExternalDisplays = sender.isOn
     }
     
     func openTwitter(username: String)
