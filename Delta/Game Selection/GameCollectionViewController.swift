@@ -500,13 +500,17 @@ private extension GameCollectionViewController
                     FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.dsiNANDURL.path)
                 else { throw LaunchError.biosNotFound }
             }
-            else
+            else if game.identifier == Game.melonDSBIOSIdentifier
             {
                 guard
                     FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.bios7URL.path) &&
                     FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.bios9URL.path) &&
                     FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.firmwareURL.path)
                 else { throw LaunchError.biosNotFound }
+            }
+            else
+            {
+                // BIOS files are only required to emulate DS(i) home screen.
             }
         }
     }

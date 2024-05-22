@@ -384,8 +384,8 @@ extension MelonDSCoreSettingsViewController
             else
             {
                 cell.accessoryType = .disclosureIndicator
-                cell.detailTextLabel?.text = NSLocalizedString("Required", comment: "")
-                cell.detailTextLabel?.textColor = .red
+                cell.detailTextLabel?.text = NSLocalizedString("Optional", comment: "")
+                cell.detailTextLabel?.textColor = .deltaPurple
             }
             
             cell.selectionStyle = .default
@@ -402,8 +402,8 @@ extension MelonDSCoreSettingsViewController
             else
             {
                 cell.accessoryType = .disclosureIndicator
-                cell.detailTextLabel?.text = NSLocalizedString("Required", comment: "")
-                cell.detailTextLabel?.textColor = .red
+                cell.detailTextLabel?.text = NSLocalizedString("Optional", comment: "")
+                cell.detailTextLabel?.textColor = .deltaPurple
             }
             
             cell.selectionStyle = .default
@@ -487,7 +487,7 @@ extension MelonDSCoreSettingsViewController
             
             let systemName = (section == .dsiBIOS) ? String(localized: "DSi") : String(localized: "DS")
             
-            var attributedText = AttributedString(localized: "Delta requires these BIOS files in order to play Nintendo \(systemName) games.")
+            var attributedText = AttributedString(localized: "Delta requires these BIOS files to emulate the Nintendo \(systemName) home screen.")
             attributedText += " "
             
             var learnMore = AttributedString(localized: "Learn more…")
