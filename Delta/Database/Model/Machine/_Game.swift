@@ -40,7 +40,11 @@ public class _Game: NSManagedObject
 
     @NSManaged public var previewSaveState: SaveState?
 
+    @NSManaged public var primaryGames: Set<Game>
+
     @NSManaged public var saveStates: Set<SaveState>
+
+    @NSManaged public var secondaryGame: Game?
 
 }
 

@@ -186,6 +186,7 @@ extension GameCollectionViewController
                 }
                 
                 emulatorBridge.isJITEnabled = ProcessInfo.processInfo.isJITAvailable
+                emulatorBridge.gbaGameURL = game.secondaryGame?.fileURL
             }
             
             if let saveState = self.activeSaveState
@@ -560,8 +561,15 @@ private extension GameCollectionViewController
         {
         case GameType.unknown:
             return [renameAction, changeArtworkAction, shareAction, deleteAction]
+            
         case .ds where game.identifier == Game.melonDSBIOSIdentifier || game.identifier == Game.melonDSDSiBIOSIdentifier:
             return [renameAction, changeArtworkAction, changeControllerSkinAction, saveStatesAction]
+            
+        case .ds:
+            let insertGBAGameMenu = self.insertGBAGameMenu(for: game)
+            let insertGBAGameSection = UIMenu(title: "", image: nil, options: .displayInline, children: [insertGBAGameMenu])
+            return [renameAction, changeArtworkAction, changeControllerSkinAction, shareAction, savesMenu, insertGBAGameSection, deleteAction]
+            
         default:
             return [renameAction, changeArtworkAction, changeControllerSkinAction, shareAction, savesMenu, deleteAction]
         }
@@ -897,6 +905,98 @@ private extension GameCollectionViewController
         self.performSegue(withIdentifier: "preferredControllerSkins", sender: game)
     }
     
+    func insertGBAGameMenu(for game: Game) -> UIMenu
+    {
+        func makeAction(for gbaGame: Game?) -> UIMenuElement
+        {
+            let state: UIAction.State = (gbaGame == game.secondaryGame) ? .on : .off
+            
+            if let gbaGame
+            {
+                return UIAction(title: gbaGame.name, state: state) { _ in
+                    DatabaseManager.shared.performBackgroundTask { (context) in
+                        let temporaryGame = context.object(with: game.objectID) as! Game
+                        let temporarySecondaryGame = context.object(with: gbaGame.objectID) as! Game
+                        
+                        temporaryGame.secondaryGame = temporarySecondaryGame
+                        context.saveWithErrorLogging()
+                    }
+                }
+            }
+            else
+            {
+                return UIAction(title: NSLocalizedString("None", comment: ""), state: state) { _ in
+                    DatabaseManager.shared.performBackgroundTask { (context) in
+                        let temporaryGame = context.object(with: game.objectID) as! Game
+                        temporaryGame.secondaryGame = nil
+                        context.saveWithErrorLogging()
+                    }
+                }
+            }
+        }
+        
+        let actions: [UIMenuElement]
+        
+        if FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.bios7URL.path) &&
+            FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.bios9URL.path) &&
+            FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.firmwareURL.path)
+        {
+            func makeElements(completion: @escaping ([UIMenuElement]) -> Void)
+            {
+                let fetchRequest = Game.fetchRequest()
+                fetchRequest.predicate = NSPredicate(format: "%K == %@", #keyPath(Game.type), System.gba.gameType.rawValue)
+                fetchRequest.sortDescriptors = [NSSortDescriptor(keyPath: \Game.name, ascending: true)]
+                
+                do
+                {
+                    let games = try DatabaseManager.shared.viewContext.fetch(fetchRequest)
+                    
+                    let actions = games.map { game in
+                        makeAction(for: game)
+                    }
+                    completion(actions)
+                }
+                catch
+                {
+                    Logger.main.error("Failed to fetch GBA games. \(error.localizedDescription, privacy: .public)")
+                    completion([])
+                }
+            }
+            
+            let deferredActions: UIDeferredMenuElement
+            if #available(iOS 15, *)
+            {
+                deferredActions = UIDeferredMenuElement.uncached(makeElements)
+            }
+            else
+            {
+                deferredActions = UIDeferredMenuElement(makeElements)
+            }
+            
+            let noneAction = makeAction(for: nil)
+            let noneMenu = UIMenu(options: .displayInline, children: [noneAction])
+            
+            actions = [noneMenu, deferredActions]
+        }
+        else
+        {
+            // BIOS is required for GBA slot emulation.
+            
+            let importBIOSAction = UIAction(title: NSLocalizedString("Import BIOS Files", comment: ""), image: UIImage(symbolNameIfAvailable: "square.and.arrow.down.on.square")) { _ in
+                self.performSegue(withIdentifier: "showDSSettings", sender: nil)
+            }
+            let importBIOSMenu = UIMenu(title: NSLocalizedString("This feature requires Nintendo DS BIOS files.", comment: ""), options: .displayInline, children: [importBIOSAction])
+            
+            actions = [importBIOSMenu]
+        }
+        
+        let menu = UIMenu(title: NSLocalizedString("Insert GBA Game", comment: ""), image: UIImage(symbolNameIfAvailable: "arrow.down.to.line.compact"), children: actions)
+        return menu
+    }
+}
+
+private extension GameCollectionViewController
+{
     @objc func textFieldTextDidChange(_ textField: UITextField)
     {
         let text = textField.text ?? ""
