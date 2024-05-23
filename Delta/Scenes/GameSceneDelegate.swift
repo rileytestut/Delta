@@ -20,7 +20,11 @@ extension UIApplication
 
 class GameScene: UIWindowScene
 {
-    fileprivate(set) var game: GameProtocol?
+    fileprivate(set) var game: Game? {
+        didSet {
+            self.title = self.game?.name
+        }
+    }
 }
 
 class GameSceneDelegate: UIResponder, UIWindowSceneDelegate
