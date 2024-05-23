@@ -578,6 +578,10 @@ private extension GameCollectionViewController
 {
     func actions(for game: Game) -> [UIMenuElement]
     {
+        let openNewWindowAction = UIAction(title: NSLocalizedString("Open in New Window", comment: ""), image: UIImage(symbolNameIfAvailable: "square.grid.2x2")) { [unowned self] action in
+            self.openInNewWindow(game)
+        }
+        
         let renameAction = UIAction(title: NSLocalizedString("Rename", comment: ""), image: UIImage(symbolNameIfAvailable: "pencil")) { [unowned self] action in
             self.rename(game)
         }
@@ -610,6 +614,9 @@ private extension GameCollectionViewController
             self.delete(game)
         }
         
+        let openMenu = UIMenu(title: "", options: .displayInline, children: [openNewWindowAction])
+        let openActions = UIApplication.shared.supportsMultipleScenes ? [openMenu] : []
+        
         let saveFileMenu = UIMenu(title: NSLocalizedString("Manage Save File", comment: ""), image: UIImage(symbolNameIfAvailable: "doc"), children: [importSaveFile, exportSaveFile])
         let savesMenu = UIMenu(title: "", options: .displayInline, children: [saveStatesAction, saveFileMenu])
         
@@ -618,9 +625,59 @@ private extension GameCollectionViewController
         case GameType.unknown:
             return [renameAction, changeArtworkAction, shareAction, deleteAction]
         case .ds where game.identifier == Game.melonDSBIOSIdentifier || game.identifier == Game.melonDSDSiBIOSIdentifier:
-            return [renameAction, changeArtworkAction, changeControllerSkinAction, saveStatesAction]
+            return openActions + [renameAction, changeArtworkAction, changeControllerSkinAction, saveStatesAction]
         default:
-            return [renameAction, changeArtworkAction, changeControllerSkinAction, shareAction, savesMenu, deleteAction]
+            return openActions + [renameAction, changeArtworkAction, changeControllerSkinAction, shareAction, savesMenu, deleteAction]
+        }
+    }
+    
+    func openInNewWindow(_ game: Game)
+    {
+        do
+        {
+            try self.validateLaunchingGame(game, ignoringErrors: [])
+            
+            let userActivity = NSUserActivity(game: game)
+            
+            if #available(iOS 17, *)
+            {
+                let request = UISceneSessionActivationRequest(role: .windowApplication, userActivity: userActivity)
+                UIApplication.shared.activateSceneSession(for: request) { error in
+                    Logger.main.error("Failed to open game \(game.name, privacy: .public) in new window. \(error.localizedDescription, privacy: .public)")
+                }
+            }
+            else
+            {
+                UIApplication.shared.requestSceneSessionActivation(nil, userActivity: userActivity, options: nil) { error in
+                    Logger.main.error("Failed to open game \(game.name, privacy: .public) in new window. \(error.localizedDescription, privacy: .public)")
+                }
+            }
+        }
+        catch let error as LaunchError
+        {
+            let alertController = UIAlertController(title: error.errorTitle, message: error.localizedDescription, preferredStyle: .alert)
+            
+            if error.recoveryActions.isEmpty
+            {
+                alertController.addAction(.ok)
+            }
+            else
+            {
+                alertController.addAction(.cancel)
+                
+                for action in error.recoveryActions
+                {
+                    alertController.addAction(action)
+                }
+            }
+            
+            self.present(alertController, animated: true, completion: nil)
+        }
+        catch
+        {
+            let alertController = UIAlertController(title: NSLocalizedString("Unable to Launch Game", comment: ""), message: error.localizedDescription, preferredStyle: .alert)
+            alertController.addAction(.ok)
+            self.present(alertController, animated: true, completion: nil)
         }
     }
     
