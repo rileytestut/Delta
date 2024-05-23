@@ -13,6 +13,7 @@ extension NSUserActivity
     static let playGameActivityType = "com.rileytestut.Delta.PlayGame"
     
     static let gameIDKey = "gameID"
+    static let systemIDKey = "systemID"
     
     convenience init(game: Game)
     {

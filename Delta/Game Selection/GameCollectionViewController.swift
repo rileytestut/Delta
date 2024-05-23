@@ -21,12 +21,59 @@ import SDWebImage
 
 extension GameCollectionViewController
 {
-    private enum LaunchError: Error
+    private enum LaunchError: LocalizedError
     {
         case alreadyRunning
         case downloadingGameSave
         case biosNotFound
-        case systemAlreadyRunning(Game)
+        case systemAlreadyRunning(Game?, UISceneSession)
+        
+        var errorTitle: String? {
+            switch self
+            {
+            case .alreadyRunning: return NSLocalizedString("Game Already Running", comment: "")
+            case .downloadingGameSave: return NSLocalizedString("Downloading Save File", comment: "")
+            case .biosNotFound: return NSLocalizedString("Missing Required DS Files", comment: "")
+            case .systemAlreadyRunning: return NSLocalizedString("System Already Running", comment: "")
+            }
+        }
+        
+        var errorDescription: String? {
+            switch self
+            {
+            case .alreadyRunning: return NSLocalizedString("Delta can only play one copy of a game at a time.", comment: "")
+            case .downloadingGameSave: return NSLocalizedString("Please wait until after this game's save file has been downloaded before playing to prevent losing save data.", comment: "")
+            case .biosNotFound: return NSLocalizedString("Please import the required files in Delta's settings to play DS games.", comment: "")
+            case .systemAlreadyRunning(let game, _):
+                var gameNamePhrase = ""
+                if let game
+                {
+                    gameNamePhrase = String(format: " (“%@”)", game.name)
+                }
+                
+                let message = String(format: NSLocalizedString("Delta can only play one game per system at a time.\n\nPlease quit the other game%@, or choose another game for a different system.", comment: ""), gameNamePhrase)
+                return message
+            }
+        }
+        
+        var recoveryActions: [UIAlertAction] {
+            switch self
+            {
+            case .systemAlreadyRunning(let game, let session):
+                let quitAction = UIAlertAction(title: NSLocalizedString("Quit Game", comment: ""), style: .destructive) { _ in
+                    UIApplication.shared.requestSceneSessionDestruction(session, options: nil) { error in
+                        Logger.main.error("Failed to quit scene session for game \(game?.name ?? "nil", privacy: .public). \(error.localizedDescription, privacy: .public)")
+                        UIApplication._discardedSessions.remove(session)
+                    }
+                    
+                    UIApplication._discardedSessions.insert(session)
+                }
+                
+                return [quitAction]
+                
+            default: return []
+            }
+        }
     }
 }
 
@@ -357,63 +404,70 @@ private extension GameCollectionViewController
                 let cell = self.collectionView.cellForItem(at: indexPath)
                 self.performSegue(withIdentifier: "unwindFromGames", sender: cell)
             }
-            catch LaunchError.alreadyRunning
+            catch let error as LaunchError
             {
-                let alertController = UIAlertController(title: NSLocalizedString("Game Paused", comment: ""), message: NSLocalizedString("Would you like to resume where you left off, or restart the game?", comment: ""), preferredStyle: .alert)
-                alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
-                alertController.addAction(UIAlertAction(title: NSLocalizedString("Resume", comment: ""), style: .default, handler: { (action) in
+                switch error
+                {
+                case .alreadyRunning:
+                    let alertController = UIAlertController(title: NSLocalizedString("Game Paused", comment: ""), message: NSLocalizedString("Would you like to resume where you left off, or restart the game?", comment: ""), preferredStyle: .alert)
+                    alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
+                    alertController.addAction(UIAlertAction(title: NSLocalizedString("Resume", comment: ""), style: .default, handler: { (action) in
+                        
+                        let fetchRequest = SaveState.rst_fetchRequest() as! NSFetchRequest<SaveState>
+                        fetchRequest.predicate = NSPredicate(format: "%K == %@ AND %K == %d", #keyPath(SaveState.game), game, #keyPath(SaveState.type), SaveStateType.auto.rawValue)
+                        fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(SaveState.creationDate), ascending: true)]
+                        
+                        do
+                        {
+                            let saveStates = try game.managedObjectContext?.fetch(fetchRequest)
+                            self.activeSaveState = saveStates?.last
+                        }
+                        catch
+                        {
+                            print(error)
+                        }
+                        
+                        // Disable videoManager to prevent flash of black
+                        self.activeEmulatorCore?.videoManager.isEnabled = false
+                        
+                        launchGame(ignoringErrors: [LaunchError.alreadyRunning])
+                        
+                        // The game hasn't changed, so the activeEmulatorCore is the same as before, so we need to enable videoManager it again
+                        self.activeEmulatorCore?.videoManager.isEnabled = true
+                    }))
+                    alertController.addAction(UIAlertAction(title: NSLocalizedString("Restart", comment: ""), style: .destructive, handler: { (action) in
+                        launchGame(ignoringErrors: [LaunchError.alreadyRunning])
+                    }))
+                    self.present(alertController, animated: true)
                     
-                    let fetchRequest = SaveState.rst_fetchRequest() as! NSFetchRequest<SaveState>
-                    fetchRequest.predicate = NSPredicate(format: "%K == %@ AND %K == %d", #keyPath(SaveState.game), game, #keyPath(SaveState.type), SaveStateType.auto.rawValue)
-                    fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(SaveState.creationDate), ascending: true)]
+                case .biosNotFound:
+                    let alertController = UIAlertController(title: NSLocalizedString("Missing Required DS Files", comment: ""), message: NSLocalizedString("Delta requires certain files to play Nintendo DS games. Please import them to launch this game.", comment: ""), preferredStyle: .alert)
+                    alertController.addAction(UIAlertAction(title: NSLocalizedString("Import Files", comment: ""), style: .default) { _ in
+                        self.performSegue(withIdentifier: "showDSSettings", sender: nil)
+                    })
+                    alertController.addAction(.cancel)
                     
-                    do
+                    self.present(alertController, animated: true, completion: nil)
+                    
+                case .downloadingGameSave, .systemAlreadyRunning:
+                    let alertController = UIAlertController(title: error.errorTitle, message: error.localizedDescription, preferredStyle: .alert)
+                    
+                    if error.recoveryActions.isEmpty
                     {
-                        let saveStates = try game.managedObjectContext?.fetch(fetchRequest)
-                        self.activeSaveState = saveStates?.last
+                        alertController.addAction(.ok)
                     }
-                    catch
+                    else
                     {
-                        print(error)
+                        alertController.addAction(.cancel)
+                        
+                        for action in error.recoveryActions
+                        {
+                            alertController.addAction(action)
+                        }
                     }
                     
-                    // Disable videoManager to prevent flash of black
-                    self.activeEmulatorCore?.videoManager.isEnabled = false
-                    
-                    launchGame(ignoringErrors: [LaunchError.alreadyRunning])
-                    
-                    // The game hasn't changed, so the activeEmulatorCore is the same as before, so we need to enable videoManager it again
-                    self.activeEmulatorCore?.videoManager.isEnabled = true
-                }))
-                alertController.addAction(UIAlertAction(title: NSLocalizedString("Restart", comment: ""), style: .destructive, handler: { (action) in
-                    launchGame(ignoringErrors: [LaunchError.alreadyRunning])
-                }))
-                self.present(alertController, animated: true)
-            }
-            catch LaunchError.downloadingGameSave
-            {
-                let alertController = UIAlertController(title: NSLocalizedString("Downloading Save File", comment: ""), message: NSLocalizedString("Please wait until after this game's save file has been downloaded before playing to prevent losing save data.", comment: ""), preferredStyle: .alert)
-                alertController.addAction(.ok)
-                self.present(alertController, animated: true, completion: nil)
-            }
-            catch LaunchError.biosNotFound
-            {
-                let alertController = UIAlertController(title: NSLocalizedString("Missing Required DS Files", comment: ""), message: NSLocalizedString("Delta requires certain files to play Nintendo DS games. Please import them to launch this game.", comment: ""), preferredStyle: .alert)
-                alertController.addAction(UIAlertAction(title: NSLocalizedString("Import Files", comment: ""), style: .default) { _ in
-                    self.performSegue(withIdentifier: "showDSSettings", sender: nil)
-                })
-                alertController.addAction(.cancel)
-                
-                self.present(alertController, animated: true, completion: nil)
-            }
-            catch LaunchError.systemAlreadyRunning(let game)
-            {
-                let message = String(format: NSLocalizedString("Delta can only play one game per system at a time.\n\nPlease quit the other game (“%@”), or choose another game for a different system.", comment: ""), game.name)
-                
-                let alertController = UIAlertController(title: NSLocalizedString("System Already Running", comment: ""), message: message, preferredStyle: .alert)
-                alertController.addAction(.ok)
-                
-                self.present(alertController, animated: true, completion: nil)
+                    self.present(alertController, animated: true, completion: nil)
+                }
             }
             catch
             {
@@ -443,23 +497,30 @@ private extension GameCollectionViewController
         
         if let scene = self.view.window?.windowScene
         {
-            for mainScene in UIApplication.shared.mainScenes ?? [] where mainScene != scene
+            for mainScene in UIApplication.shared.mainScenes where mainScene != scene
             {
                 guard let delegate = mainScene.delegate as? SceneDelegate else { continue }
                 
                 if let otherGame = delegate.game, otherGame.type == game.type
                 {
                     // Can't emulate multiple games from same system simultaneously.
-                    throw LaunchError.systemAlreadyRunning(otherGame)
+                    throw LaunchError.systemAlreadyRunning(otherGame, mainScene.session)
                 }
             }
             
-            for gameScene in UIApplication.shared.gameScenes ?? [] where gameScene != scene
+            for session in UIApplication.shared.gameSessions where session != scene.session
             {
-                if let otherGame = gameScene.game as? Game, otherGame.type == game.type
+                if let systemID = session.userInfo?[NSUserActivity.systemIDKey] as? String, systemID == game.type.rawValue
                 {
+                    var otherGame: Game?
+                    if let gameID = session.userInfo?[NSUserActivity.gameIDKey] as? String
+                    {
+                        let predicate = NSPredicate(format: "%K == %@", #keyPath(Game.identifier), gameID)
+                        otherGame = Game.instancesWithPredicate(predicate, inManagedObjectContext: DatabaseManager.shared.viewContext, type: Game.self).first
+                    }
+                    
                     // Can't emulate multiple games from same system simultaneously.
-                    throw LaunchError.systemAlreadyRunning(otherGame)
+                    throw LaunchError.systemAlreadyRunning(otherGame, session)
                 }
             }
         }

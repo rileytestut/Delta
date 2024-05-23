@@ -12,9 +12,12 @@ import DeltaCore
 
 extension UIApplication
 {
-    var gameScenes: Set<GameScene>? {
-        let scenes = UIApplication.shared.connectedScenes.compactMap({ $0 as? GameScene })
-        return Set(scenes)
+    // Hack to work around iPadOS bug (as of 17.4.1) where discarding backgrounded scenes doesn't update UIApplication.openSessions.
+    static var _discardedSessions = Set<UISceneSession>()
+    
+    var gameSessions: Set<UISceneSession> {
+        let sessions = UIApplication.shared.openSessions.lazy.filter { !UIApplication._discardedSessions.contains($0) }.filter { $0.userInfo?[NSUserActivity.gameIDKey] != nil }
+        return Set(sessions)
     }
 }
 
@@ -73,6 +76,7 @@ class GameSceneDelegate: UIResponder, UIWindowSceneDelegate
                     launchViewController?.deepLinkGame = game
                     
                     gameScene.game = game
+                    session.userInfo?[NSUserActivity.systemIDKey] = game.type.rawValue
                 }
                 else
                 {
