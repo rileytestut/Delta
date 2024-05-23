@@ -121,15 +121,32 @@ extension SaveStatesViewController
         
         self.navigationController?.navigationBar.barStyle = .blackTranslucent
         self.navigationController?.toolbar.barStyle = .blackTranslucent
+    }
+    
+    override func viewIsAppearing(_ animated: Bool) 
+    {
+        super.viewIsAppearing(animated)
         
         self.update()
-    }    
+    }
     
     override func viewWillDisappear(_ animated: Bool)
     {
         super.viewWillDisappear(animated)
         
         self.resetEmulatorCoreIfNeeded()
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: any UIViewControllerTransitionCoordinator) 
+    {
+        super.viewWillTransition(to: size, with: coordinator)
+        
+        coordinator.animate { context in
+            UIView.performWithoutAnimation {
+                self.update()
+                self.collectionView.reloadData()
+            }
+        }
     }
 
     override func didReceiveMemoryWarning()
@@ -239,12 +256,29 @@ private extension SaveStatesViewController
         }
         else
         {
-            let averageHorizontalInset = (collectionViewLayout.sectionInset.left + collectionViewLayout.sectionInset.right) / 2
-            let portraitScreenWidth = UIScreen.main.coordinateSpace.convert(UIScreen.main.bounds, to: UIScreen.main.fixedCoordinateSpace).width
+            //FIXME: Calculate actual values so resizing results in correct thumbnail size
+            let averageHorizontalInset = 20.0
+            
+            var portraitWindowWidth = UIScreen.main.coordinateSpace.convert(UIScreen.main.bounds, to: UIScreen.main.fixedCoordinateSpace).width
+            
+            if let window = self.view.window
+            {
+                if window.bounds.height > window.bounds.width
+                {
+                    // Portrait window
+                    portraitWindowWidth = window.bounds.width
+                }
+                else
+                {
+                    // Landscape window
+                    portraitWindowWidth = window.bounds.height
+                }
+            }
             
             // Use dimensions that allow two cells to fill the screen horizontally with padding in portrait mode
             // We'll keep the same size for landscape orientation, which will allow more to fit
-            collectionViewLayout.itemWidth = floor((portraitScreenWidth - (averageHorizontalInset * 3)) / 2)
+            let value = (portraitWindowWidth - (averageHorizontalInset * 3)) / 2
+            collectionViewLayout.itemWidth = floor(value)
         }
         
         // Manually update prototype cell properties
