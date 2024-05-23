@@ -40,6 +40,8 @@ class ExternalDisplayScene: UIWindowScene
 class ExternalDisplaySceneDelegate: UIResponder, UIWindowSceneDelegate
 {
     var window: UIWindow?
+    
+    private weak var scene: ExternalDisplayScene?
         
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions)
     {
@@ -47,6 +49,7 @@ class ExternalDisplaySceneDelegate: UIResponder, UIWindowSceneDelegate
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let externalDisplayScene = scene as? ExternalDisplayScene else { return }
+        self.scene = externalDisplayScene
         
         // If we don't attach a window, iOS won't show the scene.
         if Settings.supportsExternalDisplays
@@ -54,6 +57,7 @@ class ExternalDisplaySceneDelegate: UIResponder, UIWindowSceneDelegate
             self.prepare(externalDisplayScene)
         }
         
+        NotificationCenter.default.addObserver(self, selector: #selector(ExternalDisplaySceneDelegate.settingsDidChange(with:)), name: .settingsDidChange, object: nil)
     }
     
     func sceneDidDisconnect(_ scene: UIScene)
@@ -100,5 +104,23 @@ private extension ExternalDisplaySceneDelegate
         self.window?.tintColor = .deltaPurple
         self.window?.rootViewController = scene.gameViewController
         self.window?.makeKeyAndVisible()
+    }
+    
+    @objc func settingsDidChange(with notification: Notification)
+    {
+        guard let settingsName = notification.userInfo?[Settings.NotificationUserInfoKey.name] as? Settings.Name, settingsName == .supportsExternalDisplays else { return }
+        guard let scene else { return }
+        
+        if Settings.supportsExternalDisplays
+        {
+            self.prepare(scene)
+        }
+        else
+        {
+            // Hide ourselves
+            self.window?.isHidden = true
+            self.window?.removeFromSuperview()
+            self.window = nil
+        }
     }
 }

@@ -1429,8 +1429,7 @@ private extension GameViewController
         }
         
         self.updateControllerSkin() // Reset TouchControllerSkin + GameViews
-        
-        self.gameView?.isAirPlaying = false
+        self.updateGameViews() // Ensure we re-enable GameView and hide AirPlay message.
     }
 }
 
@@ -1632,6 +1631,21 @@ private extension GameViewController
             self.updateExternalDisplay()
             
         case .pauseWhileInactive: self.automaticallyPausesWhileInactive = Settings.pauseWhileInactive
+        case .supportsExternalDisplays:
+            // May return nil if Settings.supportsExternalDisplays is false
+            // guard let externalDisplayScene = UIApplication.shared.externalDisplayScene else { break }
+            
+            guard let scene = UIApplication.shared.connectedScenes.compactMap({ $0 as? ExternalDisplayScene }).first(where: { $0.session.role == .windowExternalDisplay }) else { break }
+            
+            if Settings.supportsExternalDisplays /*, scene.hasKeyboardFocus */ // Connect all scenes, not just one with keyboard focus.
+            {
+                self.connectExternalDisplay(for: scene)
+            }
+            else
+            {
+                self.disconnectExternalDisplay(for: scene)
+            }
+            
             
         default: break
         }
@@ -1809,7 +1823,10 @@ private extension GameViewController
     
     @objc func sceneDidDisconnect(with notification: Notification)
     {
-        guard let scene = notification.object as? ExternalDisplayScene, Settings.supportsExternalDisplays else { return }
+        // Always allow disconnecting external displays.
+        // guard Settings.supportsExternalDisplays else { return }
+        
+        guard let scene = notification.object as? ExternalDisplayScene else { return }
         self.disconnectExternalDisplay(for: scene)
     }
 }
