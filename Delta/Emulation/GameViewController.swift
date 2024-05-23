@@ -251,6 +251,7 @@ class GameViewController: DeltaCore.GameViewController
         
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.sceneWillConnect(with:)), name: UIScene.willConnectNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.sceneDidDisconnect(with:)), name: UIScene.didDisconnectNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.sceneKeyboardFocusDidChange(with:)), name: UIScene.keyboardFocusDidChangeNotification, object: nil)
         
         self.automaticallyPausesWhileInactive = Settings.pauseWhileInactive
     }
@@ -428,6 +429,12 @@ extension GameViewController
         else
         {
             self.view.window?.windowScene?.userActivity = nil
+        }
+        
+        if let scene = UIApplication.shared.externalDisplayScene, Settings.supportsExternalDisplays
+        {
+            // We have priority, so replace whatever is currently on external display.
+            self.connectExternalDisplay(for: scene)
         }
     }
     
@@ -1350,9 +1357,12 @@ private extension GameViewController
 {
     func connectExternalDisplay(for scene: ExternalDisplayScene)
     {
-        // We need to receive gameViewController(_:didUpdateGameViews) callback.
-        scene.gameViewController.delegate = self
+        // hasKeyboardFocus is false when enabling AirPlay via Control Center, so can't rely on that.
+        // guard let windowScene = self.view.window?.windowScene, windowScene.hasKeyboardFocus else { return }
         
+        // We need to receive gameViewController(_:didUpdateGameViews:) callback.
+        scene.gameViewController.delegate = self
+                
         self.updateControllerSkin()
         
         // Implicitly called from updateControllerSkin()
@@ -1363,7 +1373,7 @@ private extension GameViewController
     
     func updateExternalDisplay()
     {
-        guard let scene = UIApplication.shared.externalDisplayScene else { return }
+        guard let scene = UIApplication.shared.externalDisplayScene, scene.gameViewController.delegate === self else { return }
         
         if scene.game?.fileURL != self.game?.fileURL
         {
@@ -1411,17 +1421,26 @@ private extension GameViewController
     
     func updateExternalDisplayGameViews()
     {
-        guard let scene = UIApplication.shared.externalDisplayScene, let emulatorCore = self.emulatorCore else { return }
+        guard let scene = UIApplication.shared.externalDisplayScene, let emulatorCore = self.emulatorCore, scene.gameViewController.delegate === self else { return }
         
         for gameView in scene.gameViewController.gameViews
         {
             emulatorCore.add(gameView)
+            gameView.exclusiveVideoManager = emulatorCore.videoManager
+            
+            // GameView must layout subviews after resetting EAGLContext before it can render frames.
+            // Fixes external display screen sometimes not updating when switching back to paused game.
+            gameView.setNeedsLayout()
+            gameView.layoutIfNeeded()
         }
     }
     
     func disconnectExternalDisplay(for scene: ExternalDisplayScene)
     {
-        scene.gameViewController.delegate = nil
+        if scene.gameViewController.delegate === self
+        {
+            scene.gameViewController.delegate = nil
+        }
         
         for gameView in scene.gameViewController.gameViews
         {
@@ -1828,6 +1847,21 @@ private extension GameViewController
         
         guard let scene = notification.object as? ExternalDisplayScene else { return }
         self.disconnectExternalDisplay(for: scene)
+    }
+    
+    @objc func sceneKeyboardFocusDidChange(with notification: Notification)
+    {
+        guard let scene = notification.object as? UIWindowScene, scene == self.view.window?.windowScene else { return }
+        guard let externalDisplayScene = UIApplication.shared.externalDisplayScene else { return }
+        
+        if scene.hasKeyboardFocus
+        {
+            self.connectExternalDisplay(for: externalDisplayScene)
+        }
+        else
+        {
+            // DON'T disconnect, only connect when active (so it stays connected to last active scene)
+        }
     }
 }
 
