@@ -47,10 +47,24 @@ class GameSceneDelegate: UIResponder, UIWindowSceneDelegate
             }
             
             DispatchQueue.main.async {
-                guard let userActivity = session.stateRestorationActivity ?? connectionOptions.userActivities.first,
-                      let gameID = userActivity.userInfo?[NSUserActivity.gameIDKey] as? String,
-                      userActivity.activityType == NSUserActivity.playGameActivityType
-                else { return }
+                let gameID: String
+                
+                if let userActivity = session.stateRestorationActivity ?? connectionOptions.userActivities.first, userActivity.activityType == NSUserActivity.playGameActivityType,
+                   let activityGameID = userActivity.userInfo?[NSUserActivity.gameIDKey] as? String
+                {
+                    gameID = activityGameID
+                }
+                else if let previousGameID = session.userInfo?[NSUserActivity.gameIDKey] as? String
+                {
+                    gameID = previousGameID
+                }
+                else
+                {
+                    return
+                }
+                
+                // Persist gameID for state restoration.
+                session.userInfo?[NSUserActivity.gameIDKey] = gameID
                 
                 let predicate = NSPredicate(format: "%K == %@", #keyPath(Game.identifier), gameID)
                 if let game = Game.instancesWithPredicate(predicate, inManagedObjectContext: DatabaseManager.shared.viewContext, type: Game.self).first
