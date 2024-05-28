@@ -498,6 +498,7 @@ private extension GameCollectionViewController
         
         if let scene = self.view.window?.windowScene
         {
+            // Check connectedScenes, not openSessions, because a disconnected scene restarts from home screen (so it's not an issue).
             for mainScene in UIApplication.shared.mainScenes where mainScene != scene
             {
                 guard let delegate = mainScene.delegate as? SceneDelegate else { continue }
