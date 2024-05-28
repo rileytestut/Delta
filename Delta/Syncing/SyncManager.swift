@@ -121,7 +121,8 @@ extension SyncManager
 {
     func start(service: Service?, completionHandler: @escaping (Result<Void, Swift.Error>) -> Void)
     {
-        guard let service = service else { return completionHandler(.success) }
+        //FIXME: Properly handle concurrent calls to start().
+        guard let service = service, self.coordinator == nil else { return completionHandler(.success) }
         
         let coordinator = SyncCoordinator(service: service.service, persistentContainer: DatabaseManager.shared)
         
