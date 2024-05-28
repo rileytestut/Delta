@@ -25,6 +25,11 @@ extension UIDevice
         return mtlDevice.supportsFeatureSet(.iOS_GPUFamily4_v1) // iOS GPU Family 4 = A11 GPU
     }
     
+    var hasA15ProcessorOrBetter: Bool {
+        guard let mtlDevice = UIDevice.mtlDevice else { return false }
+        return mtlDevice.supportsFamily(.apple8) // Apple 8 = A15/A16/M2 GPU
+    }
+    
     var supportsJIT: Bool {
         guard #available(iOS 14.0, *) else { return false }
         
