@@ -164,10 +164,15 @@ class GameViewController: DeltaCore.GameViewController
     private var _isLoadingSaveState = false
     private var isLoadingDeepLinkSaveState = false
     
-    private var fastForwardSwipeGestureRecognizer: UISwipeGestureRecognizer!
-    private var keyboardControllerFastForwardSwipeGestureRecognizer: UISwipeGestureRecognizer!
+    // Gestures
     private var isMenuButtonHeldDown = false
     private var ignoreNextMenuInput = false
+    private var fastForwardSwipeGestureRecognizer: UISwipeGestureRecognizer!
+    private var quickLoadGestureRecognizer: UILongPressGestureRecognizer!
+    private var quickSaveGestureRecognizer: UITapGestureRecognizer!
+    private var keyboardControllerFastForwardSwipeGestureRecognizer: UISwipeGestureRecognizer!
+    private var keyboardControllerQuickLoadGestureRecognizer: UILongPressGestureRecognizer!
+    private var keyboardControllerQuickSaveGestureRecognizer: UITapGestureRecognizer!
         
     // Sustain Buttons
     private var isSelectingSustainedButtons = false
@@ -406,6 +411,17 @@ extension GameViewController
         self.keyboardControllerFastForwardSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(GameViewController.handleSwipeGesture(_:)))
         self.keyboardControllerFastForwardSwipeGestureRecognizer.delegate = self
         self.keyboardControllerFastForwardSwipeGestureRecognizer.direction = [.left, .right]
+        
+        self.quickLoadGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(GameViewController.handleQuickLoadGesture(_:)))
+        self.quickLoadGestureRecognizer.delegate = self
+        self.quickLoadGestureRecognizer.numberOfTapsRequired = 1
+        self.view.addGestureRecognizer(self.quickLoadGestureRecognizer)
+        
+        self.quickSaveGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(GameViewController.handleQuickSaveGesture(_:)))
+        self.quickSaveGestureRecognizer.delegate = self
+        self.quickSaveGestureRecognizer.numberOfTapsRequired = 2
+        self.quickSaveGestureRecognizer.require(toFail: self.quickLoadGestureRecognizer)
+        self.view.addGestureRecognizer(self.quickSaveGestureRecognizer)
         
         // Auto Layout
         self.sustainButtonsContentView.leadingAnchor.constraint(equalTo: self.gameView.leadingAnchor).isActive = true
@@ -1212,7 +1228,7 @@ private extension GameViewController
 /// Action Inputs
 extension GameViewController
 {
-    func performQuickSaveAction()
+    @objc func performQuickSaveAction()
     {
         guard let game = self.game as? Game else { return }
         
@@ -1246,7 +1262,7 @@ extension GameViewController
         }
     }
     
-    func performQuickLoadAction()
+    @objc func performQuickLoadAction()
     {
         guard let game = self.game as? Game else { return }
         
@@ -1544,7 +1560,8 @@ extension GameViewController
     override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool
     {
         guard super.gestureRecognizer(gestureRecognizer, shouldReceive: touch) else { return false }
-        guard gestureRecognizer == self.fastForwardSwipeGestureRecognizer || gestureRecognizer == self.keyboardControllerFastForwardSwipeGestureRecognizer else { return true }
+        guard gestureRecognizer == self.fastForwardSwipeGestureRecognizer || gestureRecognizer == self.keyboardControllerFastForwardSwipeGestureRecognizer
+                || gestureRecognizer == self.quickSaveGestureRecognizer || gestureRecognizer == self.quickLoadGestureRecognizer else { return true }
         
         let shouldBegin = self.isMenuButtonHeldDown
         return shouldBegin
@@ -1558,6 +1575,22 @@ extension GameViewController
         self.performFastForwardAction(activate: !isFastForwarding)
         
         self.ignoreNextMenuInput = true
+    }
+    
+    @objc private func handleQuickSaveGesture(_ gestureRecognizer: UITapGestureRecognizer)
+    {
+        self.performQuickSaveAction()
+        self.ignoreNextMenuInput = true
+    }
+    
+    @objc private func handleQuickLoadGesture(_ gestureRecognizer: UILongPressGestureRecognizer)
+    {
+        self.performQuickLoadAction()
+        self.ignoreNextMenuInput = true
+        
+        // Cancel gesture to prevent additional callbacks
+        gestureRecognizer.isEnabled = false
+        gestureRecognizer.isEnabled = true
     }
 }
 
