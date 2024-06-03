@@ -14,7 +14,7 @@ extension URL
     {
         switch action
         {
-        case .launchGame(let identifier):
+        case .launchGame(let identifier, _):
             let deepLinkURL = URL(string: "delta://\(action.type.rawValue)/\(identifier)")!
             self = deepLinkURL
         }
@@ -29,7 +29,7 @@ extension UIApplicationShortcutItem
         
         switch action
         {
-        case .launchGame(let identifier): userInfo = [DeepLink.Key.identifier.rawValue: identifier as NSString]
+        case .launchGame(let identifier, _): userInfo = [DeepLink.Key.identifier.rawValue: identifier as NSString]
         }
         
         self.init(type: action.type.rawValue, localizedTitle: localizedTitle, localizedSubtitle: nil, icon: nil, userInfo: userInfo)
@@ -40,7 +40,7 @@ extension DeepLink
 {
     enum Action
     {
-        case launchGame(identifier: String)
+        case launchGame(identifier: String, userActivity: NSUserActivity?)
         
         var type: ActionType {
             switch self
@@ -59,6 +59,7 @@ extension DeepLink
     {
         case identifier
         case game
+        case saveState
     }
 }
 
@@ -66,6 +67,7 @@ enum DeepLink
 {
     case url(URL)
     case shortcut(UIApplicationShortcutItem)
+    case handoff(NSUserActivity)
     
     var actionType: ActionType? {
         switch self
@@ -79,6 +81,9 @@ enum DeepLink
         case .shortcut(let shortcut):
             let type = ActionType(rawValue: shortcut.type)
             return type
+            
+        case .handoff(let userActivity):
+            return .launchGame
         }
     }
     
@@ -89,11 +94,15 @@ enum DeepLink
         {
         case (.url(let url), .launchGame):
             let identifier = url.lastPathComponent
-            return .launchGame(identifier: identifier)
+            return .launchGame(identifier: identifier, userActivity: nil)
             
         case (.shortcut(let shortcut), .launchGame):
             guard let identifier = shortcut.userInfo?[Key.identifier.rawValue] as? String else { return nil }
-            return .launchGame(identifier: identifier)
+            return .launchGame(identifier: identifier, userActivity: nil)
+            
+        case (.handoff(let userActivity), .launchGame):
+            guard let identifier = userActivity.userInfo?[NSUserActivity.gameIDKey] as? String else { return nil }
+            return .launchGame(identifier: identifier, userActivity: userActivity)
         }
     }
 }

@@ -129,7 +129,7 @@ extension Settings
             let identifiers = newValue.map { $0.identifier }
             UserDefaults.standard.gameShortcutIdentifiers = identifiers
             
-            let shortcuts = newValue.map { UIApplicationShortcutItem(localizedTitle: $0.name, action: .launchGame(identifier: $0.identifier)) }
+            let shortcuts = newValue.map { UIApplicationShortcutItem(localizedTitle: $0.name, action: .launchGame(identifier: $0.identifier, userActivity: nil)) }
             
             DispatchQueue.main.async {
                 UIApplication.shared.shortcutItems = shortcuts

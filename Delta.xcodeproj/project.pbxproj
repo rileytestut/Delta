@@ -233,6 +233,7 @@
 		D5D7C20A29E61FA600663793 /* OptionToggleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D7C20929E61FA600663793 /* OptionToggleView.swift */; };
 		D5D7C20C29E624CB00663793 /* DisplayInlineKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D7C20B29E624CB00663793 /* DisplayInlineKey.swift */; };
 		D5DF06E029F326E6009E577C /* AirPlaySkins.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DF06DE29F326E6009E577C /* AirPlaySkins.swift */; };
+		D5EB601B2C0E6190007C543C /* Stream+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5EB601A2C0E6190007C543C /* Stream+Conveniences.swift */; };
 		D5F82FB82981D3AC00B229AF /* LegacySearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F82FB72981D3AC00B229AF /* LegacySearchBar.swift */; };
 /* End PBXBuildFile section */
 
@@ -512,6 +513,7 @@
 		D5D7C20929E61FA600663793 /* OptionToggleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionToggleView.swift; sourceTree = "<group>"; };
 		D5D7C20B29E624CB00663793 /* DisplayInlineKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayInlineKey.swift; sourceTree = "<group>"; };
 		D5DF06DE29F326E6009E577C /* AirPlaySkins.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AirPlaySkins.swift; sourceTree = "<group>"; };
+		D5EB601A2C0E6190007C543C /* Stream+Conveniences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Stream+Conveniences.swift"; sourceTree = "<group>"; };
 		D5F82FB72981D3AC00B229AF /* LegacySearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacySearchBar.swift; sourceTree = "<group>"; };
 		DC866E433B3BA9AE18ABA1EC /* libPods-Delta.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Delta.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -586,6 +588,7 @@
 				D5D39E782AF2D624004BE3F7 /* GameView+AirPlay.swift */,
 				D55917D72B51CF7D007B7DC0 /* ProcessInfo+visionOS.swift */,
 				D54E46CF2BED714F00780713 /* NSUserActivity+Delta.swift */,
+				D5EB601A2C0E6190007C543C /* Stream+Conveniences.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1598,6 +1601,7 @@
 				BF6BF3131EB7E47F008E83CD /* ImportOption.swift in Sources */,
 				BFEE943D23F2180200CDA07D /* Delta4ToDelta5.xcmappingmodel in Sources */,
 				BF31878B1D489AAA00BD020D /* CheatValidator.swift in Sources */,
+				D5EB601B2C0E6190007C543C /* Stream+Conveniences.swift in Sources */,
 				D560BD8629EDC45600289847 /* ExternalDisplaySceneDelegate.swift in Sources */,
 				BFFC46201D59823500AF2CC6 /* InitialGamesStoryboardSegue.swift in Sources */,
 				D5CDCCF02A859E5500E22131 /* UserDefaults+Delta.swift in Sources */,

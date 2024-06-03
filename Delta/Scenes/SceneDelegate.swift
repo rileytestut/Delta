@@ -116,6 +116,22 @@ extension SceneDelegate
         self.handle(.shortcut(shortcutItem))
         completionHandler(true)
     }
+    
+    func scene(_ scene: UIScene, willContinueUserActivityWithType userActivityType: String)
+    {
+        Logger.main.info("Preparing to continue handoff user activity.")
+    }
+
+    func scene(_ scene: UIScene, continue userActivity: NSUserActivity)
+    {
+        Logger.main.info("Continuing handoff user activity...")
+        self.handle(.handoff(userActivity))
+    }
+    
+    func scene(_ scene: UIScene, didFailToContinueUserActivityWithType userActivityType: String, error: any Error)
+    {
+        Logger.main.error("Failed to continue game via Handoff. \(error.localizedDescription, privacy: .public)")
+    }
 }
 
 @available(iOS 13, *)
@@ -143,7 +159,7 @@ private extension SceneDelegate
             
             switch deepLink
             {
-            case .shortcut:
+            case .shortcut, .handoff:
                 _ = self.deepLinkController.handle(deepLink)
                 
             case .url(let url):

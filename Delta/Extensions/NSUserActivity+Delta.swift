@@ -14,10 +14,17 @@ extension NSUserActivity
     
     static let gameIDKey = "gameID"
     static let systemIDKey = "systemID"
+    static let hasSaveStateKey = "hasSaveState"
     
     convenience init(game: Game)
     {
         self.init(activityType: NSUserActivity.playGameActivityType)
-        self.userInfo = [NSUserActivity.gameIDKey: game.identifier]
+        
+        self.title = game.name
+        self.requiredUserInfoKeys = [NSUserActivity.gameIDKey, NSUserActivity.systemIDKey]
+        self.userInfo = [
+            NSUserActivity.gameIDKey: game.identifier,
+            NSUserActivity.systemIDKey: game.type.rawValue,
+        ]
     }
 }

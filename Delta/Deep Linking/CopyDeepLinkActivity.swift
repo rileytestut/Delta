@@ -49,7 +49,7 @@ class CopyDeepLinkActivity: UIActivity
     {
         guard let game = activityItems.first(where: { $0 is Game }) as? Game else { return }
         
-        self.deepLink = URL(action: .launchGame(identifier: game.identifier))
+        self.deepLink = URL(action: .launchGame(identifier: game.identifier, userActivity: nil))
     }
     
     override func perform()

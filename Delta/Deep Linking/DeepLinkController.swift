@@ -8,9 +8,12 @@
 
 import UIKit
 
+import DeltaCore
+
 extension Notification.Name
 {
     static let deepLinkControllerLaunchGame = Notification.Name("deepLinkControllerLaunchGame")
+    static let deepLinkControllerLoadSaveState = Notification.Name("deepLinkControllerLoadSaveState")
 }
 
 extension UIViewController
@@ -58,14 +61,14 @@ extension DeepLinkController
         
         switch action
         {
-        case .launchGame(let identifier): return self.launchGame(withIdentifier: identifier)
+        case .launchGame(let identifier, let userActivity): return self.launchGame(withIdentifier: identifier, userActivity: userActivity)
         }
     }
 }
 
 private extension DeepLinkController
 {
-    func launchGame(withIdentifier identifier: String) -> Bool
+    func launchGame(withIdentifier identifier: String, userActivity: NSUserActivity?) -> Bool
     {
         guard let topViewController = self.topViewController, topViewController.allowsDeepLinkingDismissal else { return false }
         
@@ -77,7 +80,42 @@ private extension DeepLinkController
         {
             guard let game = try DatabaseManager.shared.viewContext.fetch(fetchRequest).first else { return false }
             
-            NotificationCenter.default.post(name: .deepLinkControllerLaunchGame, object: self, userInfo: [DeepLink.Key.game: game])
+            var userInfo: [DeepLink.Key: Any] = [.game: game]
+            
+            if let userActivity, userActivity.activityType == NSUserActivity.playGameActivityType//,
+               //let hasSaveState = userActivity.userInfo?[NSUserActivity.hasSaveStateKey] as? Bool, hasSaveState
+            {
+                let temporaryURL = FileManager.default.uniqueTemporaryURL()
+                
+                let placeholderSaveState = DeltaCore.SaveState(fileURL: temporaryURL, gameType: game.type)
+                userInfo[.saveState] = placeholderSaveState
+                
+                Task<Void, Never> { [userInfo] in
+                    do
+                    {
+                        let (inputStream, outputStream) = try await userActivity.continuationStreams()
+                        inputStream.open()
+                        outputStream.open()
+                        
+                        let data: Data = try await inputStream.receive()
+                        
+                        
+                        Logger.main.error("Read \(data.count) bytes from Handoff!")
+                        
+                        try data.write(to: temporaryURL, options: .atomic)
+                        
+                        NotificationCenter.default.post(name: .deepLinkControllerLoadSaveState, object: self, userInfo: userInfo)
+                        
+                    }
+                    catch
+                    {
+                        Logger.main.error("Failed to retrieve streams for Handoff. \(error.localizedDescription, privacy: .public)")
+//                        NotificationCenter.default.post(name: .deepLinkControllerLoadSaveState, object: self, userInfo: userInfo)
+                    }
+                }
+            }
+            
+            NotificationCenter.default.post(name: .deepLinkControllerLaunchGame, object: self, userInfo: userInfo)
         }
         catch
         {

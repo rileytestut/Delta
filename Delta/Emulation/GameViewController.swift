@@ -162,6 +162,7 @@ class GameViewController: DeltaCore.GameViewController
     }
     
     private var _isLoadingSaveState = false
+    private var isLoadingDeepLinkSaveState = false
     
     private var fastForwardSwipeGestureRecognizer: UISwipeGestureRecognizer!
     private var isMenuButtonHeldDown = false
@@ -240,7 +241,9 @@ class GameViewController: DeltaCore.GameViewController
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.didEnterBackground(with:)), name: UIApplication.didEnterBackgroundNotification, object: UIApplication.shared)
         
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.settingsDidChange(with:)), name: Settings.didChangeNotification, object: nil)
+        
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.deepLinkControllerLaunchGame(with:)), name: .deepLinkControllerLaunchGame, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.deepLinkControllerLoadSaveState(with:)), name: .deepLinkControllerLoadSaveState, object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.didActivateGyro(with:)), name: GBA.didActivateGyroNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.didDeactivateGyro(with:)), name: GBA.didDeactivateGyroNotification, object: nil)
@@ -424,10 +427,19 @@ extension GameViewController
         if let game = self.game as? Game
         {
             let userActivity = NSUserActivity(game: game)
+            userActivity.delegate = self
+            userActivity.isEligibleForHandoff = true
+            userActivity.supportsContinuationStreams = true
+            userActivity.becomeCurrent()
             self.view.window?.windowScene?.userActivity = userActivity
         }
         else
         {
+            if let userActivity = self.view.window?.windowScene?.userActivity, userActivity.activityType == NSUserActivity.playGameActivityType
+            {
+                userActivity.resignCurrent()
+            }
+            
             self.view.window?.windowScene?.userActivity = nil
         }
         
@@ -1491,6 +1503,7 @@ extension GameViewController: GameViewControllerDelegate
     func gameViewControllerShouldResumeEmulation(_ gameViewController: DeltaCore.GameViewController) -> Bool
     {
         guard gameViewController == self else { return false }
+        guard !self.isLoadingDeepLinkSaveState else { return false }
         
         var result = false
         
@@ -1592,6 +1605,55 @@ private extension GameViewController
     }
 }
 
+extension GameViewController: NSUserActivityDelegate
+{
+    func userActivity(_ userActivity: NSUserActivity, didReceive inputStream: InputStream, outputStream: OutputStream) 
+    {
+        Logger.main.debug("Opening streams for user activity")
+        
+        inputStream.open()
+        outputStream.open()
+        
+        let isRunning = (self.emulatorCore?.state == .running)
+        if isRunning
+        {
+            self.pauseEmulation()
+        }
+        
+        let temporaryURL = FileManager.default.uniqueTemporaryURL()
+        self.emulatorCore?.saveSaveState(to: temporaryURL)
+        
+        Task<Void, Never> { [inputStream, outputStream] in
+            do
+            {
+                defer {
+                    try? FileManager.default.removeItem(at: temporaryURL)
+                }
+                
+                let data = try Data(contentsOf: temporaryURL)
+                try await outputStream.send(data)
+                
+                self.emulatorCore?.stop()
+                self.game = nil
+                
+                self.performSegue(withIdentifier: "showGamesViewController", sender: nil)
+            }
+            catch
+            {
+                Logger.main.error("Failed to send save state for Handoff. \(error.localizedDescription, privacy: .public)")
+                
+                if isRunning
+                {
+                    self.resumeEmulation()
+                }
+            }
+            
+            inputStream.close()
+            outputStream.close()
+        }
+    }
+}
+
 //MARK: - Notifications -
 private extension GameViewController
 {
@@ -1677,7 +1739,19 @@ private extension GameViewController
         let previousGame = self.game
         self.game = game
         
-        if let pausedSaveState = self.pausedSaveState, game == (previousGame as? Game)
+        if let saveState = notification.userInfo?[DeepLink.Key.saveState] as? SaveStateProtocol
+        {
+            // Included save state with deep link, so load it when emulator core is started.
+            // Note: Will be automatically deleted when loaded, so make a copy if it's important.
+            _deepLinkResumingSaveState = saveState
+            
+            if !FileManager.default.fileExists(atPath: saveState.fileURL.path)
+            {
+                // Save State is not yet loaded, so delay resuming emulation until it is.
+                self.isLoadingDeepLinkSaveState = true
+            }
+        }
+        else if let pausedSaveState = self.pausedSaveState, game == (previousGame as? Game)
         {
             // Launching current game via deep link, so we store a copy of the paused save state to resume when emulator core is started.
             
@@ -1709,6 +1783,14 @@ private extension GameViewController
         }
         
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    @objc func deepLinkControllerLoadSaveState(with notification: Notification)
+    {
+        guard let game = notification.userInfo?[DeepLink.Key.game] as? Game, let saveState = notification.userInfo?[DeepLink.Key.saveState] as? SaveStateProtocol else { return }
+        
+        self.isLoadingDeepLinkSaveState = false
+        self.resumeEmulation()
     }
     
     @objc func didActivateGyro(with notification: Notification)
