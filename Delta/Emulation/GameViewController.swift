@@ -165,6 +165,7 @@ class GameViewController: DeltaCore.GameViewController
     private var isLoadingDeepLinkSaveState = false
     
     private var fastForwardSwipeGestureRecognizer: UISwipeGestureRecognizer!
+    private var keyboardControllerFastForwardSwipeGestureRecognizer: UISwipeGestureRecognizer!
     private var isMenuButtonHeldDown = false
     private var ignoreNextMenuInput = false
         
@@ -255,6 +256,9 @@ class GameViewController: DeltaCore.GameViewController
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.sceneWillConnect(with:)), name: UIScene.willConnectNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.sceneDidDisconnect(with:)), name: UIScene.didDisconnectNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.sceneKeyboardFocusDidChange(with:)), name: UIScene.keyboardFocusDidChangeNotification, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.keyboardDidShow(with:)), name: UIResponder.keyboardDidShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.keyboardDidChangeFrame(with:)), name: UIResponder.keyboardDidChangeFrameNotification, object: nil)
         
         self.automaticallyPausesWhileInactive = Settings.pauseWhileInactive
     }
@@ -398,6 +402,10 @@ extension GameViewController
         self.fastForwardSwipeGestureRecognizer.delegate = self
         self.fastForwardSwipeGestureRecognizer.direction = [.left, .right]
         self.view.addGestureRecognizer(self.fastForwardSwipeGestureRecognizer)
+        
+        self.keyboardControllerFastForwardSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(GameViewController.handleSwipeGesture(_:)))
+        self.keyboardControllerFastForwardSwipeGestureRecognizer.delegate = self
+        self.keyboardControllerFastForwardSwipeGestureRecognizer.direction = [.left, .right]
         
         // Auto Layout
         self.sustainButtonsContentView.leadingAnchor.constraint(equalTo: self.gameView.leadingAnchor).isActive = true
@@ -1536,7 +1544,7 @@ extension GameViewController
     override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool
     {
         guard super.gestureRecognizer(gestureRecognizer, shouldReceive: touch) else { return false }
-        guard gestureRecognizer == self.fastForwardSwipeGestureRecognizer else { return true }
+        guard gestureRecognizer == self.fastForwardSwipeGestureRecognizer || gestureRecognizer == self.keyboardControllerFastForwardSwipeGestureRecognizer else { return true }
         
         let shouldBegin = self.isMenuButtonHeldDown
         return shouldBegin
@@ -1944,6 +1952,19 @@ private extension GameViewController
         {
             // DON'T disconnect, only connect when active (so it stays connected to last active scene)
         }
+    }
+    
+    @objc func keyboardDidShow(with notification: Notification)
+    {
+        guard let inputView = self.controllerView.inputView else { return }
+        
+        // Using keyboard game controller, so add gesture recognizer to keyboard.
+        inputView.addGestureRecognizer(self.keyboardControllerFastForwardSwipeGestureRecognizer)
+    }
+    
+    @objc func keyboardDidChangeFrame(with notification: Notification)
+    {
+        self.keyboardDidShow(with: notification)
     }
 }
 
