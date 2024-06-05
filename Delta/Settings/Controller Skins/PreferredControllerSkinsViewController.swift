@@ -17,6 +17,21 @@ extension PreferredControllerSkinsViewController
         case portrait
         case landscape
     }
+    
+    private enum Variant
+    {
+        case standard
+        case airPlay
+        case splitView
+        
+        static var supportedVariants: [Variant] {
+            switch UIDevice.current.userInterfaceIdiom
+            {
+            case .pad: return [.standard, .airPlay, .splitView]
+            default: return [.standard, .airPlay]
+            }
+        }
+    }
 }
 
 class PreferredControllerSkinsViewController: UITableViewController
@@ -29,6 +44,8 @@ class PreferredControllerSkinsViewController: UITableViewController
             self.system = system
         }
     }
+    
+    private var variant: Variant = .standard
     
     @IBOutlet private var portraitImageView: UIImageView!
     @IBOutlet private var landscapeImageView: UIImageView!
@@ -71,8 +88,7 @@ extension PreferredControllerSkinsViewController
         
         if self.view.bounds.size != self._previousBoundsSize
         {
-            self.updateControllerSkins()
-            self.tableView.reloadData()
+            self.update()
         }
     }
     
@@ -84,13 +100,13 @@ extension PreferredControllerSkinsViewController
         controllerSkinsViewController.delegate = self
         controllerSkinsViewController.system = self.system
         
-        var traits = DeltaCore.ControllerSkin.Traits.defaults(for: window)
+        let traits: DeltaCore.ControllerSkin.Traits
         
         let section = Section(rawValue: indexPath.section)!
         switch section
         {
-        case .portrait: traits.orientation = .portrait
-        case .landscape: traits.orientation = .landscape
+        case .portrait: traits = self.makeTraits(orientation: .portrait, in: window)
+        case .landscape: traits = self.makeTraits(orientation: .landscape, in: window)
         }
         
         controllerSkinsViewController.traits = traits
@@ -152,6 +168,13 @@ extension PreferredControllerSkinsViewController
 
 private extension PreferredControllerSkinsViewController
 {
+    func update()
+    {
+        self.updateControllerSkins()
+        
+        self.tableView.reloadData()
+    }
+    
     func updateControllerSkins()
     {
         guard let window = self.view.window else { return }
@@ -235,7 +258,32 @@ private extension PreferredControllerSkinsViewController
     {
         var traits = DeltaCore.ControllerSkin.Traits.defaults(for: window)
         traits.orientation = orientation
+        
+        switch self.variant
+        {
+        case .standard: 
+            traits.displayType = .standard //TODO: Use edgeToEdge for iphone when appropriate
+            
+        case .airPlay:
+            traits.displayType = .standard
+            traits.device = .tv
+            
+        case .splitView:
+            traits.displayType = .splitView
+        }
+        
         return traits
+    }
+}
+
+private extension PreferredControllerSkinsViewController
+{
+    @IBAction func changeCurrentVariant(_ sender: UISegmentedControl)
+    {
+        let variant = Variant.supportedVariants[sender.selectedSegmentIndex]
+        self.variant = variant
+        
+        self.update()
     }
 }
 

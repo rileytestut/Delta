@@ -1418,10 +1418,10 @@ private extension GameViewController
         
         var controllerSkin: ControllerSkinProtocol?
         
-        if let game = self.game, let traits = scene.gameViewController.controllerView.controllerSkinTraits
+        if let game = self.game, let system = System(gameType: game.type), let traits = scene.gameViewController.controllerView.controllerSkinTraits
         {
-            if ExperimentalFeatures.shared.airPlaySkins.isEnabled,
-               let preferredControllerSkin = ExperimentalFeatures.shared.airPlaySkins.preferredAirPlayControllerSkin(for: game.type), preferredControllerSkin.supports(traits)
+            //TODO: Support per-game AirPlay skins
+            if let preferredControllerSkin = Settings.preferredControllerSkin(for: system, traits: traits), preferredControllerSkin.supports(traits)
             {
                 // Use preferredControllerSkin directly.
                 controllerSkin = preferredControllerSkin

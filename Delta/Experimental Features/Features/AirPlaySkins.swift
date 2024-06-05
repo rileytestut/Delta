@@ -13,14 +13,14 @@ import DeltaCore
 
 extension Feature where Options == AirPlaySkinsOptions
 {
-    func preferredAirPlayControllerSkin(for gameType: GameType) -> ControllerSkin?
-    {
-        guard let identifier = self[gameType] else { return nil }
-        
-        let predicate = NSPredicate(format: "%K == %@", #keyPath(ControllerSkin.identifier), identifier)
-        let controllerSkin = ControllerSkin.instancesWithPredicate(predicate, inManagedObjectContext: DatabaseManager.shared.viewContext, type: ControllerSkin.self).first
-        return controllerSkin
-    }
+//    func preferredAirPlayControllerSkin(for game: Game, traits: DeltaCore.ControllerSkin.Traits) -> ControllerSkin?
+//    {
+//        guard let identifier = self[gameType] else { return nil }
+//        
+//        let predicate = NSPredicate(format: "%K == %@", #keyPath(ControllerSkin.identifier), identifier)
+//        let controllerSkin = ControllerSkin.instancesWithPredicate(predicate, inManagedObjectContext: DatabaseManager.shared.viewContext, type: ControllerSkin.self).first
+//        return controllerSkin
+//    }
 }
 
 struct AirPlaySkinsOptions

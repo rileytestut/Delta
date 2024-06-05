@@ -1006,7 +1006,7 @@
             </objects>
             <point key="canvasLocation" x="2513" y="-244"/>
         </scene>
-        <!--Game Boy Advance-->
+        <!--Preferred Controller Skins View Controller-->
         <scene sceneID="pkL-Te-puh">
             <objects>
                 <tableViewController storyboardIdentifier="preferredControllerSkins" id="56e-ul-z6v" customClass="PreferredControllerSkinsViewController" customModule="Delta" customModuleProvider="target" sceneMemberID="viewController">
@@ -1067,7 +1067,20 @@
                             <outlet property="delegate" destination="56e-ul-z6v" id="08A-GG-8bs"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Game Boy Advance" id="2GJ-l7-DgY">
+                    <navigationItem key="navigationItem" id="2GJ-l7-DgY">
+                        <nil key="title"/>
+                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="FuI-rT-eft">
+                            <rect key="frame" x="66.5" y="6" width="242" height="32"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <segments>
+                                <segment title="Standard"/>
+                                <segment title="AirPlay"/>
+                                <segment title="Split View"/>
+                            </segments>
+                            <connections>
+                                <action selector="changeCurrentVariant:" destination="56e-ul-z6v" eventType="primaryActionTriggered" id="TdW-Ig-63C"/>
+                            </connections>
+                        </segmentedControl>
                         <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="3iE-lg-bkA">
                             <connections>
                                 <segue destination="eMT-K0-PiM" kind="unwind" unwindAction="unwindToGameCollectionViewController:" id="fFx-zM-kfa"/>

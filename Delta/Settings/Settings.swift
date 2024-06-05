@@ -428,7 +428,22 @@ private extension Settings
         case .splitView: displayType = "splitview"
         }
         
-        let key = systemName + "-" + orientation + "-" + displayType + "-controller"
+        var deviceType: String?
+        switch traits.device
+        {
+        case .tv: deviceType = "tv"
+        case .ipad, .iphone: deviceType = nil
+        }
+        
+        var key = systemName + "-" + orientation + "-" + displayType
+        
+        if let deviceType
+        {
+            // For backwards compatibility, only append device type if it's not nil.
+            key += "-" + deviceType
+        }
+        
+        key += "-controller"
         return key
     }
 }
