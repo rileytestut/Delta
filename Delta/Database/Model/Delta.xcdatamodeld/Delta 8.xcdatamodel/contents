@@ -129,6 +129,7 @@
     </entity>
     <entity name="SaveState" representedClassName="SaveState" versionHashModifier="quick" syncable="YES">
         <attribute name="coreIdentifier" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="coreVersion" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="creationDate" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="filename" attributeType="String" syncable="YES">
             <userInfo>

@@ -16,6 +16,8 @@ public class _SaveState: NSManagedObject
 
     @NSManaged public var coreIdentifier: String?
 
+    @NSManaged public var coreVersion: String?
+
     @NSManaged public var creationDate: Date
 
     @NSManaged public var filename: String

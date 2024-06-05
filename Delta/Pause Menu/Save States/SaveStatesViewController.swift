@@ -8,8 +8,10 @@
 
 import UIKit
 import CoreData
+import MobileCoreServices
 
 import DeltaCore
+import MelonDSDeltaCore
 import Roxas
 
 protocol SaveStatesViewControllerDelegate: class
@@ -32,6 +34,34 @@ extension SaveStatesViewController
         case quick
         case general
         case locked
+    }
+    
+    enum Sorting: String, CaseIterable
+    {
+        case name
+        case date
+        
+        public var localizedName: String {
+            switch self
+            {
+            case .name: return NSLocalizedString("Name", comment: "")
+            case .date: return NSLocalizedString("Date", comment: "")
+            }
+        }
+    }
+    
+    enum Filter: String, CaseIterable
+    {
+        case compatible
+        case incompatible
+        
+        public var localizedName: String {
+            switch self
+            {
+            case .compatible: return NSLocalizedString("Compatible", comment: "")
+            case .incompatible: return NSLocalizedString("Incompatible", comment: "")
+            }
+        }
     }
 }
 
@@ -58,6 +88,20 @@ class SaveStatesViewController: UICollectionViewController
             }
         }
     }
+    
+    private var preferredSorting: Sorting = UserDefaults.standard.preferredSaveStatesSorting {
+        didSet {
+            UserDefaults.standard.preferredSaveStatesSorting = self.preferredSorting
+        }
+    }
+    
+    private var prefersDescendingSorting: Bool = UserDefaults.standard.prefersDescendingSaveStatesSorting {
+        didSet {
+            UserDefaults.standard.prefersDescendingSaveStatesSorting = self.prefersDescendingSorting
+        }
+    }
+    
+    private var filter: Filter = .compatible
         
     private var vibrancyView: UIVisualEffectView!
     private var placeholderView: RSTPlaceholderView!
@@ -66,13 +110,19 @@ class SaveStatesViewController: UICollectionViewController
     private var prototypeCellWidthConstraint: NSLayoutConstraint!
     private var prototypeHeader = SaveStatesCollectionHeaderView()
     
+    private var incompatibleSaveStatesCount: Int = 0
+    private var incompatibleLabel: UILabel!
+    private var incompatibleButton: UIButton!
+    
     private weak var _previewTransitionViewController: PreviewGameViewController?
+    private weak var _importingSaveState: SaveState?
+    private var _exportedSaveStateURL: URL?
     
     private let dataSource: RSTFetchedResultsCollectionViewPrefetchingDataSource<SaveState, UIImage>
     
     private var emulatorCoreSaveState: SaveStateProtocol?
     
-    @IBOutlet private var sortButton: UIButton!
+    @IBOutlet private var optionsButton: UIBarButtonItem!
     
     required init?(coder aDecoder: NSCoder)
     {
@@ -97,11 +147,11 @@ extension SaveStatesViewController
         {
         case .saving:
             self.title = NSLocalizedString("Save State", comment: "")
-            self.placeholderView.detailTextLabel.text = NSLocalizedString("You can create a new save state by pressing the + button in the top right.", comment: "")
+            self.placeholderView.detailTextLabel.text = NSLocalizedString("Create a new save state by pressing the + button in the top right.", comment: "")
             
         case .loading:
             self.title = NSLocalizedString("Load State", comment: "")
-            self.placeholderView.detailTextLabel.text = NSLocalizedString("You can create a new save state by pressing the Save State option in the pause menu.", comment: "")
+            self.placeholderView.detailTextLabel.text = NSLocalizedString("Create a new save state by pressing the Save State option in the pause menu.", comment: "")
             self.navigationItem.rightBarButtonItems?.removeFirst()
         }
         
@@ -110,17 +160,22 @@ extension SaveStatesViewController
         
         self.prepareEmulatorCoreSaveState()
         
-        if #available(iOS 13, *) {}
-        else
-        {
-            self.registerForPreviewing(with: self, sourceView: self.collectionView!)
-            
-            let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(SaveStatesViewController.handleLongPressGesture(_:)))
-            self.collectionView?.addGestureRecognizer(longPressGestureRecognizer)
-        }
-        
         self.navigationController?.navigationBar.barStyle = .blackTranslucent
         self.navigationController?.toolbar.barStyle = .blackTranslucent
+    }
+    
+    override func viewWillAppear(_ animated: Bool) 
+    {
+        super.viewWillAppear(animated)
+        
+        let predicate = self.makePredicate(filter: .incompatible)
+        let saveStates = SaveState.instancesWithPredicate(predicate, inManagedObjectContext: DatabaseManager.shared.viewContext, type: SaveState.self)
+        self.incompatibleSaveStatesCount = saveStates.count
+        
+        if #available(iOS 15, *)
+        {
+            self.prepareOptionsMenu()
+        }
     }
     
     override func viewIsAppearing(_ animated: Bool) 
@@ -128,6 +183,22 @@ extension SaveStatesViewController
         super.viewIsAppearing(animated)
         
         self.update()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) 
+    {
+        super.viewDidAppear(animated)
+        
+        if let core = Delta.core(for: self.game.type), core == MelonDS.core, self.incompatibleSaveStatesCount > 0, !UserDefaults.standard.showedIncompatibleDSSaveStatesAlert
+        {
+            let alertController = UIAlertController(title: NSLocalizedString("Incompatible Save States", comment: ""),
+                                                    message: NSLocalizedString("This version of Delta is not compatible with previous Nintendo DS save states.\n\nYou can find previous save states by pressing “View Incompatible Save States” in the options menu.", comment: ""),
+                                                    preferredStyle: .alert)
+            alertController.addAction(.ok)
+            self.present(alertController, animated: true)
+            
+            UserDefaults.standard.showedIncompatibleDSSaveStatesAlert = true
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool)
@@ -165,12 +236,39 @@ private extension SaveStatesViewController
         
         self.placeholderView = RSTPlaceholderView(frame: CGRect(x: 0, y: 0, width: self.vibrancyView.bounds.width, height: self.vibrancyView.bounds.height))
         self.placeholderView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        self.placeholderView.stackView.distribution = .fill
         self.placeholderView.textLabel.text = NSLocalizedString("No Save States", comment: "")
         self.placeholderView.textLabel.textColor = UIColor.white
         self.placeholderView.detailTextLabel.textColor = UIColor.white
+        
+        self.incompatibleLabel = UILabel()
+        self.incompatibleLabel.isHidden = true
+        self.incompatibleLabel.font = self.placeholderView.detailTextLabel.font
+        self.incompatibleLabel.textColor = .white
+        self.incompatibleLabel.numberOfLines = 0
+        self.incompatibleLabel.text = NSLocalizedString("You have save states that are incompatible with this version of Delta.", comment: "")
+        self.placeholderView.stackView.addArrangedSubview(self.incompatibleLabel)
+        self.placeholderView.stackView.setCustomSpacing(30, after: self.placeholderView.detailTextLabel)
         self.vibrancyView.contentView.addSubview(self.placeholderView)
         
-        self.dataSource.placeholderView = self.vibrancyView
+        self.incompatibleButton = UIButton(type: .system, primaryAction: UIAction(title: NSLocalizedString("View Incompatible Save States", comment: "")) { [weak self] _ in
+            self?.showIncompatibleSaveStates()
+        })
+        self.incompatibleButton.isHidden = true
+        self.incompatibleButton.translatesAutoresizingMaskIntoConstraints = false
+        self.incompatibleButton.titleLabel?.font = UIFont.preferredFont(forTextStyle: .headline)
+        self.incompatibleButton.tintColor = .deltaPurple
+        
+        // Add button outside vibrancy view to ensure it retains tint color.
+        let placeholderView = UIView()
+        placeholderView.addSubview(self.vibrancyView, pinningEdgesWith: .zero)
+        placeholderView.addSubview(incompatibleButton)
+        self.dataSource.placeholderView = placeholderView
+        
+        NSLayoutConstraint.activate([
+            self.incompatibleButton.centerXAnchor.constraint(equalTo: placeholderView.centerXAnchor),
+            self.incompatibleButton.topAnchor.constraint(equalTo: self.incompatibleLabel.bottomAnchor, constant: 15)
+        ])
         
         self.dataSource.cellConfigurationHandler = { [unowned self] (cell, item, indexPath) in
             self.configure(cell as! GridCollectionViewCell, for: indexPath)
@@ -201,6 +299,85 @@ private extension SaveStatesViewController
             cell.isImageViewVibrancyEnabled = false
         }
     }
+    
+    @available(iOS 15, *)
+    func prepareOptionsMenu()
+    {
+        let sortActions = UIDeferredMenuElement.uncached { [weak self] completion in
+            guard let self else { return completion([]) }
+            
+            let actions = Sorting.allCases.map { sorting in
+                let state: UIMenuElement.State = (sorting == self.preferredSorting) ? .on : .off
+                
+                let icon: UIImage?
+                if state == .on
+                {
+                    // Only show chevron for active sorting.
+                    icon = self.prefersDescendingSorting ? UIImage(symbolNameIfAvailable: "chevron.down") : UIImage(symbolNameIfAvailable: "chevron.up")
+                }
+                else
+                {
+                    icon = nil
+                }
+                                
+                let action = UIAction(title: sorting.localizedName, image: icon, state: state) { action in
+                    self.preferredSorting = sorting
+                    
+                    if state == .on
+                    {
+                        // Previously enabled, so toggle sorting direction.
+                        self.prefersDescendingSorting.toggle()
+                    }
+                    else
+                    {
+                        // New, so reset sorting direction to ascending.
+                        self.prefersDescendingSorting = false
+                    }
+                                        
+                    UIView.transition(with: self.collectionView, duration: 0.4, options: .transitionCrossDissolve, animations: {
+                        self.updateDataSource()
+                    }, completion: nil)
+                }
+                
+                return action
+            }
+            
+            completion(actions)
+        }
+        
+        let filterActions = UIDeferredMenuElement.uncached { [weak self] completion in
+            guard let self else { return completion([]) }
+            
+            let action: UIAction
+            switch self.filter
+            {
+            case .compatible:
+                action = UIAction(title: NSLocalizedString("View Incompatible Save States", comment: ""), image: UIImage(systemName: "x.circle")) { _ in
+                    self.showIncompatibleSaveStates()
+                }
+                
+            case .incompatible:
+                action = UIAction(title: NSLocalizedString("View Compatible Save States", comment: ""), image: UIImage(systemName: "checkmark.circle")) { _ in
+                    self.showCompatibleSaveStates()
+                }
+            }
+            
+            completion([action])
+        }
+        
+        let sortMenu = UIMenu(title: NSLocalizedString("Sort by…", comment: ""), options: [.singleSelection, .displayInline], children: [sortActions])
+        var allMenus = [sortMenu]
+        
+        if self.incompatibleSaveStatesCount > 0
+        {
+            // There is at least one incompatible save state, so show the filter menu.
+            let filterMenu = UIMenu(title: "", options: [.singleSelection, .displayInline], children: [filterActions])
+            allMenus.append(filterMenu)
+        }
+        
+        let optionsMenu = UIMenu(children: allMenus)
+        self.optionsButton.menu = optionsMenu
+    }
 }
 
 private extension SaveStatesViewController
@@ -210,18 +387,54 @@ private extension SaveStatesViewController
     {
         let fetchRequest: NSFetchRequest<SaveState> = SaveState.fetchRequest()
         fetchRequest.returnsObjectsAsFaults = false
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(SaveState.type), ascending: true), NSSortDescriptor(key: #keyPath(SaveState.creationDate), ascending: Settings.sortSaveStatesByOldestFirst)]
         
+        var sortDescriptors = [NSSortDescriptor(key: #keyPath(SaveState.type), ascending: true)]
+        switch self.preferredSorting
+        {
+        case .name:
+            sortDescriptors += [NSSortDescriptor(key: #keyPath(SaveState.name), ascending: !self.prefersDescendingSorting),
+                                NSSortDescriptor(key: #keyPath(SaveState.creationDate), ascending: true)]
+        case .date:
+            sortDescriptors += [NSSortDescriptor(key: #keyPath(SaveState.creationDate), ascending: !self.prefersDescendingSorting),
+                                NSSortDescriptor(key: #keyPath(SaveState.name), ascending: true)]
+        }
+        fetchRequest.sortDescriptors = sortDescriptors
+        
+        let predicate = self.makePredicate(filter: self.filter)
+        fetchRequest.predicate = predicate
+        
+        self.dataSource.fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DatabaseManager.shared.viewContext, sectionNameKeyPath: #keyPath(SaveState.type), cacheName: nil)
+    }
+    
+    func makePredicate(filter: Filter) -> NSPredicate
+    {
         if let system = System(gameType: self.game.type)
         {
-            fetchRequest.predicate = NSPredicate(format: "%K == %@ AND %K == %@", #keyPath(SaveState.game), self.game, #keyPath(SaveState.coreIdentifier), system.deltaCore.identifier)
+            let predicate = NSPredicate(format: "%K == %@ AND %K == %@", #keyPath(SaveState.game), self.game, #keyPath(SaveState.coreIdentifier), system.deltaCore.identifier)
+            
+            if let version = system.deltaCore.version
+            {
+                let filterPredicate: NSPredicate
+                switch filter
+                {
+                case .compatible: filterPredicate = NSPredicate(format: "%K == %@", #keyPath(SaveState.coreVersion), version)
+                case .incompatible: filterPredicate = NSPredicate(format: "%K == nil OR %K != %@", #keyPath(SaveState.coreVersion), #keyPath(SaveState.coreVersion), version)
+                }
+                
+                let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate, filterPredicate])
+                return compoundPredicate
+            }
+            else
+            {
+                // DeltaCore has no version, so fall back to showing all save states.
+                return predicate
+            }
         }
         else
         {
-            fetchRequest.predicate = NSPredicate(format: "%K == %@", #keyPath(SaveState.game), self.game)
+            let predicate = NSPredicate(format: "%K == %@", #keyPath(SaveState.game), self.game)
+            return predicate
         }
-        
-        self.dataSource.fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DatabaseManager.shared.viewContext, sectionNameKeyPath: #keyPath(SaveState.type), cacheName: nil)
     }
     
     func update()
@@ -235,6 +448,7 @@ private extension SaveStatesViewController
             
             self.placeholderView.textLabel.textColor = UIColor.gray
             self.placeholderView.detailTextLabel.textColor = UIColor.gray
+            self.incompatibleLabel.textColor = .gray
             
         case .translucent:
             self.view.backgroundColor = nil
@@ -243,10 +457,29 @@ private extension SaveStatesViewController
             
             self.placeholderView.textLabel.textColor = UIColor.white
             self.placeholderView.detailTextLabel.textColor = UIColor.white
+            self.incompatibleLabel.textColor = .white
         }
         
-        self.sortButton.transform = CGAffineTransform.identity.rotated(by: Settings.sortSaveStatesByOldestFirst ? 0 : .pi)
-        
+        if self.incompatibleSaveStatesCount > 0 && self.filter == .compatible
+        {
+            if self.incompatibleSaveStatesCount == 1
+            {
+                self.incompatibleLabel.text = NSLocalizedString("You have 1 save state that is incompatible with this version of Delta.", comment: "")
+            }
+            else
+            {
+                self.incompatibleLabel.text = String(format: NSLocalizedString("You have %@ save states that are incompatible with this version of Delta.", comment: ""), NSNumber(value: self.incompatibleSaveStatesCount))
+            }
+            
+            self.incompatibleLabel.isHidden = false
+            self.incompatibleButton.isHidden = false
+        }
+        else
+        {
+            self.incompatibleLabel.isHidden = true
+            self.incompatibleButton.isHidden = true
+        }
+                
         let collectionViewLayout = self.collectionViewLayout as! GridCollectionViewLayout
         
         if self.traitCollection.horizontalSizeClass == .regular
@@ -343,22 +576,6 @@ private extension SaveStatesViewController
         }
     }
     
-    //MARK: - Gestures -
-    
-    @objc func handleLongPressGesture(_ gestureRecognizer: UILongPressGestureRecognizer)
-    {
-        guard gestureRecognizer.state == .began else { return }
-        
-        guard let indexPath = self.collectionView?.indexPathForItem(at: gestureRecognizer.location(in: self.collectionView)) else { return }
-        
-        let saveState = self.dataSource.item(at: indexPath)
-        
-        guard let actions = self.actionsForSaveState(saveState) else { return }
-        
-        let alertController = UIAlertController(actions: actions)
-        self.present(alertController, animated: true, completion: nil)
-    }
-    
     //MARK: - Save States -
     
     @IBAction func addSaveState()
@@ -403,7 +620,7 @@ private extension SaveStatesViewController
     func deleteSaveState(_ saveState: SaveState)
     {
         let confirmationAlertController = UIAlertController(title: NSLocalizedString("Delete Save State?", comment: ""), message: NSLocalizedString("Are you sure you want to delete this save state? This cannot be undone.", comment: ""), preferredStyle: .alert)
-        confirmationAlertController.addAction(UIAlertAction(title: NSLocalizedString("Delete", comment: ""), style: .default, handler: { action in
+        confirmationAlertController.addAction(UIAlertAction(title: NSLocalizedString("Delete", comment: ""), style: .destructive, handler: { action in
             
             DatabaseManager.shared.performBackgroundTask { (context) in
                 let temporarySaveState = context.object(with: saveState.objectID)
@@ -507,23 +724,111 @@ private extension SaveStatesViewController
         }
     }
     
-    @IBAction func changeSortOrder(_ sender: UIButton)
+    func importSaveState(_ saveState: SaveState)
     {
-        Settings.sortSaveStatesByOldestFirst.toggle()
+        self._importingSaveState = saveState
+        
+        let importController = ImportController(documentTypes: [kUTTypeItem as String])
+        importController.delegate = self
+        self.present(importController, animated: true, completion: nil)
+    }
+    
+    func importSaveState(_ saveState: SaveState, from fileURL: URL, error: Error?)
+    {
+        do
+        {
+            if let error = error
+            {
+                throw error
+            }
             
-        UIView.transition(with: self.collectionView, duration: 0.4, options: .transitionCrossDissolve, animations: {
-            self.updateDataSource()
-        }, completion: nil)
-        
-        UIView.animate(withDuration: 0.4) {
-            self.update()
+            try FileManager.default.copyItem(at: fileURL, to: saveState.fileURL, shouldReplace: true)
+            SyncManager.shared.recordController?.updateRecord(for: saveState)
         }
+        catch
+        {
+            let alertController = UIAlertController(title: NSLocalizedString("Unable to Import Save State", comment: ""), error: error)
+            self.present(alertController, animated: true, completion: nil)
+        }
+    }
+    
+    func exportSaveState(_ saveState: SaveState)
+    {
+        do
+        {
+            let sanitizedFilename = saveState.localizedName.components(separatedBy: .urlFilenameAllowed.inverted).joined()
+            
+            let temporaryURL = FileManager.default.temporaryDirectory.appendingPathComponent(sanitizedFilename).appendingPathExtension("svs")
+            try FileManager.default.copyItem(at: saveState.fileURL, to: temporaryURL, shouldReplace: true)
+            
+            self._exportedSaveStateURL = temporaryURL
+            
+            let documentPicker = UIDocumentPickerViewController(urls: [temporaryURL], in: .exportToService)
+            documentPicker.delegate = self
+            self.present(documentPicker, animated: true, completion: nil)
+        }
+        catch
+        {
+            let alertController = UIAlertController(title: NSLocalizedString("Unable to Export Save State", comment: ""), error: error)
+            self.present(alertController, animated: true, completion: nil)
+        }
+    }
+    
+    func markSaveStateAsCompatible(_ saveState: SaveState)
+    {
+        // Can only mark save states as compatible if the DeltaCore has an explicit version.
+        guard let deltaCore = Delta.core(for: self.game.type), let version = deltaCore.version else { return }
         
-        let toastView = RSTToastView()
-        toastView.textLabel.text = Settings.sortSaveStatesByOldestFirst ? NSLocalizedString("Oldest First", comment: "") : NSLocalizedString("Newest First", comment: "")
-        toastView.presentationEdge = .top
-        toastView.tintColor = UIColor.deltaPurple
-        toastView.show(in: self.view, duration: 2.0)
+        let backgroundContext = DatabaseManager.shared.newBackgroundContext()
+        backgroundContext.performAndWait() {
+            let temporarySaveState = backgroundContext.object(with: saveState.objectID) as! SaveState
+            temporarySaveState.coreVersion = version
+            
+            if temporarySaveState.type == .auto
+            {
+                // Move auto save states to "general" to avoid ending up with more than 2 auto save states.
+                temporarySaveState.type = .general
+            }
+            
+            backgroundContext.saveWithErrorLogging()
+            
+            DispatchQueue.main.async {
+                self.update()
+            }
+        }
+    }
+    
+    func markSaveStateAsIncompatible(_ saveState: SaveState)
+    {
+        let backgroundContext = DatabaseManager.shared.newBackgroundContext()
+        backgroundContext.performAndWait() {
+            let temporarySaveState = backgroundContext.object(with: saveState.objectID) as! SaveState
+            temporarySaveState.coreVersion = nil
+            
+            if temporarySaveState.type == .auto
+            {
+                // Move auto save states to "general" to avoid ending up with more than 2 auto save states.
+                temporarySaveState.type = .general
+            }
+            
+            backgroundContext.saveWithErrorLogging()
+        }
+    }
+    
+    func showCompatibleSaveStates()
+    {
+        UIView.transition(with: self.collectionView, duration: 0.4, options: .transitionCrossDissolve) {
+            self.filter = .compatible
+            self.updateDataSource()
+        }
+    }
+    
+    func showIncompatibleSaveStates()
+    {
+        UIView.transition(with: self.collectionView, duration: 0.4, options: .transitionCrossDissolve) {
+            self.filter = .incompatible
+            self.updateDataSource()
+        }
     }
     
     //MARK: - Convenience Methods -
@@ -537,47 +842,55 @@ private extension SaveStatesViewController
         return section
     }
     
-    func actionsForSaveState(_ saveState: SaveState) -> [Action]?
+    func actionsForSaveState(_ saveState: SaveState) -> [UIMenuElement]?
     {
-        guard saveState.type != .auto else { return nil }
-        
-        let isPreviewAvailable: Bool
-        
-        if #available(iOS 13, *)
+        if self.filter != .incompatible
         {
-            isPreviewAvailable = true
+            // Don't show actions for auto save states (unless they're incompatible).
+            guard saveState.type != .auto else { return nil }
+        }
+        
+        var actions = [UIMenuElement]()
+        
+        let previewAction: UIAction
+        if saveState.game?.previewSaveState != saveState
+        {
+            previewAction = UIAction(title: NSLocalizedString("Set as Preview Save State", comment: ""), image: UIImage(symbolNameIfAvailable: "eye.fill")) { [unowned self] action in
+                self.updatePreviewSaveState(saveState)
+            }
         }
         else
         {
-            isPreviewAvailable = (self.traitCollection.forceTouchCapability == .available)
+            previewAction = UIAction(title: NSLocalizedString("Remove as Preview Save State", comment: ""), image: UIImage(symbolNameIfAvailable: "eye.slash.fill")) { [unowned self] action in
+                self.updatePreviewSaveState(nil)
+            }
         }
         
-        var actions = [Action]()
+        let previewMenu = UIMenu(options: .displayInline, children: [previewAction])
         
-        if isPreviewAvailable
+        let markCompatibleAction = UIAction(title: NSLocalizedString("Mark as Compatible", comment: ""), image: UIImage(symbolNameIfAvailable: "checkmark.circle")) { [unowned self] _ in
+            self.markSaveStateAsCompatible(saveState)
+        }
+        
+        let markIncompatibleAction = UIAction(title: NSLocalizedString("Mark as Incompatible", comment: ""), image: UIImage(symbolNameIfAvailable: "x.circle")) { [unowned self] _ in
+            self.markSaveStateAsIncompatible(saveState)
+        }
+        
+        let compatibilityMenu = UIMenu(options: .displayInline, children: [markCompatibleAction])
+        let incompatibilityMenu = UIMenu(options: .displayInline, children: [markIncompatibleAction])
+        
+        
+        switch self.filter
         {
-            if saveState.game?.previewSaveState != saveState
-            {
-                let previewAction = Action(title: NSLocalizedString("Set as Preview Save State", comment: ""), style: .default, image: UIImage(symbolNameIfAvailable: "eye.fill"), action: { [unowned self] action in
-                    self.updatePreviewSaveState(saveState)
-                })
-                actions.append(previewAction)
-            }
-            else
-            {
-                let previewAction = Action(title: NSLocalizedString("Remove as Preview Save State", comment: ""), style: .default, image: UIImage(symbolNameIfAvailable: "eye.slash.fill"), action: { [unowned self] action in
-                    self.updatePreviewSaveState(nil)
-                })
-                actions.append(previewAction)
-            }
+        case .compatible: 
+            actions.append(previewMenu)
+            actions.append(incompatibilityMenu)
+        case .incompatible: actions.append(compatibilityMenu)
         }
         
-        let cancelAction = Action(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, action: nil)
-        actions.append(cancelAction)
-        
-        let renameAction = Action(title: NSLocalizedString("Rename", comment: ""), style: .default, image: UIImage(symbolNameIfAvailable: "pencil.and.ellipsis.rectangle"), action: { [unowned self] action in
+        let renameAction = UIAction(title: NSLocalizedString("Rename", comment: ""), image: UIImage(symbolNameIfAvailable: "pencil")) { [unowned self] action in
             self.renameSaveState(saveState)
-        })
+        }
         actions.append(renameAction)
         
         switch saveState.type
@@ -585,22 +898,35 @@ private extension SaveStatesViewController
         case .auto: break
         case .quick: break
         case .general:
-            let lockAction = Action(title: NSLocalizedString("Lock", comment: ""), style: .default, image: UIImage(symbolNameIfAvailable: "lock.fill"), action: { [unowned self] action in
+            let lockAction = UIAction(title: NSLocalizedString("Lock", comment: ""), image: UIImage(symbolNameIfAvailable: "lock.fill")) { [unowned self] action in
                 self.lockSaveState(saveState)
-            })
+            }
             actions.append(lockAction)
             
         case .locked:
-            let unlockAction = Action(title: NSLocalizedString("Unlock", comment: ""), style: .default, image: UIImage(symbolNameIfAvailable: "lock.open.fill"), action: { [unowned self] action in
+            let unlockAction = UIAction(title: NSLocalizedString("Unlock", comment: ""), image: UIImage(symbolNameIfAvailable: "lock.open.fill")) { [unowned self] action in
                 self.unlockSaveState(saveState)
-            })
+            }
             actions.append(unlockAction)
         }
         
-        let deleteAction = Action(title: NSLocalizedString("Delete", comment: ""), style: .destructive, image: UIImage(symbolNameIfAvailable: "trash"), action: { [unowned self] action in
+        let importAction = UIAction(title: NSLocalizedString("Import", comment: ""), image: UIImage(symbolNameIfAvailable: "square.and.arrow.down")) { [unowned self] action in
+            self.importSaveState(saveState)
+        }
+        
+        let exportAction = UIAction(title: NSLocalizedString("Export", comment: ""), image: UIImage(symbolNameIfAvailable: "square.and.arrow.up")) { [unowned self] action in
+            self.exportSaveState(saveState)
+        }
+        
+        let manageMenu = UIMenu(options: .displayInline, children: [importAction, exportAction])
+        actions.append(manageMenu)
+        
+        let deleteAction = UIAction(title: NSLocalizedString("Delete", comment: ""), image: UIImage(symbolNameIfAvailable: "trash"), attributes: .destructive) { [unowned self] action in
             self.deleteSaveState(saveState)
-        })
-        actions.append(deleteAction)
+        }
+        
+        let deleteMenu = UIMenu(options: .displayInline, children: [deleteAction])
+        actions.append(deleteMenu)
         
         return actions
     }
@@ -709,10 +1035,6 @@ extension SaveStatesViewController: UIViewControllerPreviewingDelegate
         gameViewController.game = self.game
         gameViewController.previewSaveState = saveState
         gameViewController.previewImage = previewImage
-        
-        let actions = self.actionsForSaveState(saveState)?.previewActions ?? []
-        gameViewController.overridePreviewActionItems = actions
-        
         return gameViewController
     }
     
@@ -758,29 +1080,39 @@ extension SaveStatesViewController
     {
         let saveState = self.dataSource.item(at: indexPath)
         
-        switch self.mode
+        switch self.filter
         {
-        case .saving:
+        case .incompatible:
+            let alertController = UIAlertController(title: NSLocalizedString("Incompatible Save State", comment: ""), message: NSLocalizedString("This save state is incompatible with this version of Delta.", comment: ""), preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .cancel, handler: nil))
+            self.present(alertController, animated: true, completion: nil)
             
-            let section = self.correctedSectionForSectionIndex(indexPath.section)
-            switch section
+        case .compatible:
+            
+            switch self.mode
             {
-            case .auto: break
-            case .quick, .general:
-                let backgroundContext = DatabaseManager.shared.newBackgroundContext()
-                backgroundContext.performAndWait() {
-                    let temporarySaveState = backgroundContext.object(with: saveState.objectID) as! SaveState
-                    self.updateSaveState(temporarySaveState)
+            case .saving:
+                
+                let section = self.correctedSectionForSectionIndex(indexPath.section)
+                switch section
+                {
+                case .auto: break
+                case .quick, .general:
+                    let backgroundContext = DatabaseManager.shared.newBackgroundContext()
+                    backgroundContext.performAndWait() {
+                        let temporarySaveState = backgroundContext.object(with: saveState.objectID) as! SaveState
+                        self.updateSaveState(temporarySaveState)
+                    }
+                    
+                case .locked:
+                    let alertController = UIAlertController(title: NSLocalizedString("Cannot Modify Locked Save State", comment: ""), message: NSLocalizedString("This save state must first be unlocked before it can be modified.", comment: ""), preferredStyle: .alert)
+                    alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .cancel, handler: nil))
+                    self.present(alertController, animated: true, completion: nil)
+                    
                 }
                 
-            case .locked:
-                let alertController = UIAlertController(title: NSLocalizedString("Cannot Modify Locked Save State", comment: ""), message: NSLocalizedString("This save state must first be unlocked before it can be modified.", comment: ""), preferredStyle: .alert)
-                alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .cancel, handler: nil))
-                self.present(alertController, animated: true, completion: nil)
-                
+            case .loading: self.loadSaveState(saveState)
             }
-            
-        case .loading: self.loadSaveState(saveState)
         }
     }
 }
@@ -814,14 +1146,14 @@ extension SaveStatesViewController
         guard let actions = self.actionsForSaveState(saveState) else { return nil }
         
         return UIContextMenuConfiguration(identifier: indexPath as NSIndexPath, previewProvider: { [weak self] in
-            guard let self = self, Settings.isPreviewsEnabled else { return nil }
+            guard let self = self, Settings.isPreviewsEnabled, self.filter != .incompatible else { return nil }
             
             let previewGameViewController = self.makePreviewGameViewController(for: saveState)
             self._previewTransitionViewController = previewGameViewController
             
             return previewGameViewController
         }) { suggestedActions in
-            return UIMenu(title: saveState.localizedName, children: actions.menuActions)
+            return UIMenu(title: saveState.localizedName, children: actions)
         }
     }
     
@@ -847,4 +1179,64 @@ extension SaveStatesViewController
         self._previewTransitionViewController = nil
         return self.collectionView(collectionView, previewForHighlightingContextMenuWithConfiguration: configuration)
     }
+}
+
+//MARK: - <ImportControllerDelegate> -
+extension SaveStatesViewController: ImportControllerDelegate
+{
+    func importController(_ importController: ImportController, didImportItemsAt urls: Set<URL>, errors: [Error])
+    {
+        if let saveState = self._importingSaveState, let fileURL = urls.first
+        {
+            self.importSaveState(saveState, from: fileURL, error: errors.first)
+        }
+        
+        self._importingSaveState = nil
+    }
+    
+    func importControllerDidCancel(_ importController: ImportController)
+    {
+        self.presentedViewController?.dismiss(animated: true, completion: nil)
+    }
+}
+
+//MARK: - <UIDocumentPickerDelegate> -
+extension SaveStatesViewController: UIDocumentPickerDelegate
+{
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL])
+    {
+        if let saveStateURL = self._exportedSaveStateURL
+        {
+            try? FileManager.default.removeItem(at: saveStateURL)
+        }
+        
+        self._exportedSaveStateURL = nil
+    }
+    
+    func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController)
+    {
+        if let saveStateURL = self._exportedSaveStateURL
+        {
+            try? FileManager.default.removeItem(at: saveStateURL)
+        }
+        
+        self._exportedSaveStateURL = nil
+    }
+}
+
+private extension UserDefaults
+{
+    @NSManaged var showedIncompatibleDSSaveStatesAlert: Bool
+    @NSManaged var prefersDescendingSaveStatesSorting: Bool
+    
+    @nonobjc var preferredSaveStatesSorting: SaveStatesViewController.Sorting {
+        get {
+            let sorting = _preferredSaveStatesSorting.flatMap { SaveStatesViewController.Sorting(rawValue: $0) } ?? .date
+            return sorting
+        }
+        set {
+            _preferredSaveStatesSorting = newValue.rawValue
+        }
+    }
+    @NSManaged @objc(preferredSaveStatesSorting) private var _preferredSaveStatesSorting: String?
 }

@@ -3,7 +3,7 @@
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -170,21 +170,12 @@
                                     <action selector="addSaveState" destination="OOk-k7-INg" id="xY2-94-EOr"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem style="plain" id="has-I3-HDZ">
-                                <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="y2a-9f-EFz">
-                                    <rect key="frame" x="287.5" y="13" width="30" height="30"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <state key="normal" title="▼"/>
-                                    <connections>
-                                        <action selector="changeSortOrder:" destination="OOk-k7-INg" eventType="primaryActionTriggered" id="qQn-uw-SN1"/>
-                                    </connections>
-                                </button>
-                            </barButtonItem>
+                            <barButtonItem title="Options" image="ellipsis.circle" catalog="system" id="FlO-FB-hpP"/>
                         </rightBarButtonItems>
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
                     <connections>
-                        <outlet property="sortButton" destination="y2a-9f-EFz" id="Zbo-Q0-bVL"/>
+                        <outlet property="optionsButton" destination="FlO-FB-hpP" id="jwb-Sl-sCZ"/>
                     </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cL5-DH-K3b" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -403,6 +394,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="ellipsis.circle" catalog="system" width="128" height="123"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

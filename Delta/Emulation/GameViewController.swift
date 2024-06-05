@@ -1044,6 +1044,7 @@ extension GameViewController: SaveStatesViewControllerDelegate
         
         saveState.modifiedDate = Date()
         saveState.coreIdentifier = self.emulatorCore?.deltaCore.identifier
+        saveState.coreVersion = self.emulatorCore?.deltaCore.version
         
         if ExperimentalFeatures.shared.toastNotifications.stateSaveEnabled,
            saveState.type != .auto
