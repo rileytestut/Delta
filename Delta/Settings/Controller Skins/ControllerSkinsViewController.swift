@@ -141,6 +141,7 @@ private extension ControllerSkinsViewController
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Reset Controller Skin to Default", comment: ""), style: .destructive, handler: { (action) in
             self.delegate?.controllerSkinsViewControllerDidResetControllerSkin(self)
         }))
+        alertController.popoverPresentationController?.barButtonItem = sender
         self.present(alertController, animated: true, completion: nil)
     }
     
