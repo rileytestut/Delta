@@ -756,6 +756,9 @@ private extension GameViewController
         self.emulatorCore?.stop()
         self.game = nil
         
+        // Make sure split view controller doesn't accidentally re-appear.
+        self.controllerView.resignFirstResponder()
+        
         if self.isGameScene
         {
             guard let session = self.view.window?.windowScene?.session else { return }
