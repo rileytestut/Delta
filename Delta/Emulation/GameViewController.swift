@@ -737,6 +737,39 @@ extension GameViewController
     }
 }
 
+//MARK: - Emulation -
+private extension GameViewController
+{
+    func quitEmulation()
+    {
+        if let presentedViewController = self.presentedViewController
+        {
+            presentedViewController.dismiss(animated: true) {
+                self.quitEmulation()
+            }
+            
+            return
+        }
+        
+        self.updateAutoSaveState()
+        
+        self.emulatorCore?.stop()
+        self.game = nil
+        
+        if self.isGameScene
+        {
+            guard let session = self.view.window?.windowScene?.session else { return }
+            UIApplication.shared.requestSceneSessionDestruction(session, options: nil) { error in
+                Logger.main.error("Failed to close game window. \(error.localizedDescription, privacy: .public)")
+            }
+        }
+        else
+        {
+            self.performSegue(withIdentifier: "showGamesViewController", sender: nil)
+        }
+    }
+}
+
 //MARK: - Controllers -
 private extension GameViewController
 {
@@ -1736,10 +1769,7 @@ extension GameViewController: NSUserActivityDelegate
                 let data = try Data(contentsOf: temporaryURL)
                 try await outputStream.send(data)
                 
-                self.emulatorCore?.stop()
-                self.game = nil
-                
-                self.performSegue(withIdentifier: "showGamesViewController", sender: nil)
+                self.quitEmulation()
             }
             catch
             {
@@ -2033,8 +2063,7 @@ private extension GameViewController
                 guard emulatorCore.state == .stopped else { return }
                 
                 DispatchQueue.main.async {
-                    self.game = nil
-                    self.performSegue(withIdentifier: "showGamesViewController", sender: nil)
+                    self.quitEmulation()
                 }
                 
                 token?.invalidate()
