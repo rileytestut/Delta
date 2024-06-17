@@ -34,11 +34,11 @@ extension OutputStream
         while !data.isEmpty
         {
             let size = data.count
-            data.withUnsafeBytes { bytes in
-                let writtenBytes = self.write(bytes, maxLength: size)
-                data.replaceSubrange(0 ..< writtenBytes, with: Data())
+            try data.withUnsafeBytes { (bytes: UnsafeRawBufferPointer) in
+                let writtenBytes = self.write(bytes.baseAddress!, maxLength: size)
+                guard writtenBytes >= 0 else { throw CocoaError(.fileReadUnknown) }
                 
-                Logger.main.debug("Wrote \(writtenBytes) bytes to stream.")
+                data.replaceSubrange(0 ..< writtenBytes, with: Data())
             }
         }
     }
@@ -53,13 +53,12 @@ extension InputStream
         while data.count < expectedSize
         {
             var chunkData = Data(count: 1024) // 1KB
-            let size = chunkData.withUnsafeMutableBytes { mutableBytes in
-                self.read(mutableBytes, maxLength: min(expectedSize, 1024))
+            let size = chunkData.withUnsafeMutableBytes { (mutableBytes: UnsafeMutableRawBufferPointer) in
+                self.read(mutableBytes.baseAddress!, maxLength: min(expectedSize, 1024))
             }
-                        
-            data += chunkData[0 ..< size]
             
-            Logger.main.debug("Read \(data.count) of \(expectedSize) bytes from stream.")
+            guard size > 0 else { throw CocoaError(.xpcConnectionInterrupted) }
+            data += chunkData[0 ..< size]
         }
         
         return data

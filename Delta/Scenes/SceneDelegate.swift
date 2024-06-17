@@ -41,7 +41,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate
         return self.launchViewController.gameViewController.game as? Game
     }
     
-    private let deepLinkController = DeepLinkController()
+    private lazy var deepLinkController = DeepLinkController(window: self.window)
     private var launchViewController: LaunchViewController!
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions)
@@ -119,18 +119,39 @@ extension SceneDelegate
     
     func scene(_ scene: UIScene, willContinueUserActivityWithType userActivityType: String)
     {
-        Logger.main.info("Preparing to continue handoff user activity.")
     }
 
     func scene(_ scene: UIScene, continue userActivity: NSUserActivity)
     {
-        Logger.main.info("Continuing handoff user activity...")
-        self.handle(.handoff(userActivity))
+        guard let gameID = userActivity.userInfo?[NSUserActivity.gameIDKey] as? String, userActivity.activityType == NSUserActivity.playGameActivityType else { return }
+        
+        do
+        {
+            let fetchRequest = Game.fetchRequest()
+            fetchRequest.predicate = NSPredicate(format: "%K == %@", #keyPath(Game.identifier), gameID)
+            
+            let count = try DatabaseManager.shared.viewContext.count(for: fetchRequest)
+            guard count > 0 else { throw DeepLink.Error.gameNotFound(gameID) }
+            
+            self.handle(.handoff(userActivity))
+        }
+        catch
+        {
+            Logger.main.error("Failed to load game for Handoff. \(error.localizedDescription, privacy: .public)")
+            
+            let alertController = UIAlertController(title: NSLocalizedString("Handoff Failed", comment: ""), error: error)
+            self.present(alertController)
+        }
     }
     
     func scene(_ scene: UIScene, didFailToContinueUserActivityWithType userActivityType: String, error: any Error)
     {
+        guard userActivityType == NSUserActivity.playGameActivityType else { return }
+        
         Logger.main.error("Failed to continue game via Handoff. \(error.localizedDescription, privacy: .public)")
+        
+        let alertController = UIAlertController(title: NSLocalizedString("Handoff Failed", comment: ""), error: error)
+        self.present(alertController)
     }
 }
 

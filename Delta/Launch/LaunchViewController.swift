@@ -46,13 +46,6 @@ class LaunchViewController: RSTLaunchViewController
         return self.gameViewController?.supportedInterfaceOrientations ?? super.supportedInterfaceOrientations
     }
     
-    required init?(coder aDecoder: NSCoder)
-    {
-        super.init(coder: aDecoder)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(LaunchViewController.deepLinkControllerLaunchGame(with:)), name: .deepLinkControllerLaunchGame, object: nil)
-    }
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?)
     {
         guard segue.identifier == "embedGameViewController" else { return }
@@ -134,13 +127,20 @@ extension LaunchViewController
             self.setNeedsUpdateOfHomeIndicatorAutoHidden()
         }
         
-        if let game = self.deepLinkGame
+        if let deepLinkGame, deepLinkGame != (self.gameViewController.game as? Game)
         {
-            self.gameViewController.game = game
+            // Set GameViewController's game to deepLinkGame only if it's a different game.
+            self.gameViewController.game = deepLinkGame
+        }
+        
+        if self.gameViewController.game != nil
+        {
+            // self.deepLinkGame may be nil, but if gameViewController.game isn't then show it anyway.
             
             UIView.transition(with: self.view, duration: 0.3, options: [.transitionCrossDissolve], animations: {
                 showGameViewController()
             }) { (finished) in
+                self.gameViewController.viewDidAppear(true)
                 self.gameViewController.startEmulation()
             }
         }
@@ -151,17 +151,5 @@ extension LaunchViewController
                 showGameViewController()
             })
         }
-    }
-}
-
-private extension LaunchViewController
-{
-    @objc func deepLinkControllerLaunchGame(with notification: Notification)
-    {
-        guard !self.presentedGameViewController else { return }
-        
-        guard let game = notification.userInfo?[DeepLink.Key.game] as? Game else { return }
-        
-        self.deepLinkGame = game
     }
 }

@@ -29,7 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
 {
     var window: UIWindow?
     
-    private let deepLinkController = DeepLinkController()
+    private let deepLinkController = DeepLinkController(window: nil)
     private var appLaunchDeepLink: DeepLink?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool

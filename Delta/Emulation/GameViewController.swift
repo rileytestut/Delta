@@ -162,7 +162,10 @@ class GameViewController: DeltaCore.GameViewController
     }
     
     private var _isLoadingSaveState = false
-    private var isLoadingDeepLinkSaveState = false
+    
+    // Handoff
+    private var isContinuingHandoff = false
+    private var handoffPlaceholderView: RSTPlaceholderView!
     
     // Gestures
     private var isMenuButtonHeldDown = false
@@ -248,8 +251,8 @@ class GameViewController: DeltaCore.GameViewController
         
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.settingsDidChange(with:)), name: Settings.didChangeNotification, object: nil)
         
+        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.deepLinkControllerWillLaunchGame(with:)), name: .deepLinkControllerWillLaunchGame, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.deepLinkControllerLaunchGame(with:)), name: .deepLinkControllerLaunchGame, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.deepLinkControllerLoadSaveState(with:)), name: .deepLinkControllerLoadSaveState, object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.didActivateGyro(with:)), name: GBA.didActivateGyroNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.didDeactivateGyro(with:)), name: GBA.didDeactivateGyroNotification, object: nil)
@@ -374,6 +377,7 @@ extension GameViewController
         
         self.controllerView.translucentControllerSkinOpacity = Settings.translucentControllerSkinOpacity
         
+        // Sustain Button
         self.sustainButtonsContentView = UIView(frame: CGRect(x: 0, y: 0, width: self.gameView.bounds.width, height: self.gameView.bounds.height))
         self.sustainButtonsContentView.translatesAutoresizingMaskIntoConstraints = false
         self.sustainButtonsContentView.isHidden = true
@@ -402,6 +406,21 @@ extension GameViewController
         self.sustainButtonsBackgroundView.alpha = 0.0
         vibrancyView.contentView.addSubview(self.sustainButtonsBackgroundView)
         
+        // Handoff
+        self.handoffPlaceholderView = RSTPlaceholderView(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height))
+        self.handoffPlaceholderView.translatesAutoresizingMaskIntoConstraints = false
+        self.handoffPlaceholderView.isHidden = true
+        self.handoffPlaceholderView.textLabel.isHidden = true
+        self.handoffPlaceholderView.detailTextLabel.font = UIFont.preferredFont(forTextStyle: .body)
+        self.handoffPlaceholderView.detailTextLabel.text = NSLocalizedString("Resuming…", comment: "")
+        self.handoffPlaceholderView.detailTextLabel.numberOfLines = 1
+        self.handoffPlaceholderView.detailTextLabel.minimumScaleFactor = 0.5
+        self.handoffPlaceholderView.detailTextLabel.adjustsFontSizeToFitWidth = true
+        self.handoffPlaceholderView.activityIndicatorView.isHidden = false
+        self.handoffPlaceholderView.activityIndicatorView.startAnimating()
+        self.handoffPlaceholderView.activityIndicatorView.color = .white
+        self.view.insertSubview(self.handoffPlaceholderView, aboveSubview: self.gameView)
+        
         // Gestures
         self.fastForwardSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(GameViewController.handleSwipeGesture(_:)))
         self.fastForwardSwipeGestureRecognizer.delegate = self
@@ -424,10 +443,17 @@ extension GameViewController
         self.view.addGestureRecognizer(self.quickSaveGestureRecognizer)
         
         // Auto Layout
-        self.sustainButtonsContentView.leadingAnchor.constraint(equalTo: self.gameView.leadingAnchor).isActive = true
-        self.sustainButtonsContentView.trailingAnchor.constraint(equalTo: self.gameView.trailingAnchor).isActive = true
-        self.sustainButtonsContentView.topAnchor.constraint(equalTo: self.gameView.topAnchor).isActive = true
-        self.sustainButtonsContentView.bottomAnchor.constraint(equalTo: self.gameView.bottomAnchor).isActive = true
+        NSLayoutConstraint.activate([
+            self.sustainButtonsContentView.leadingAnchor.constraint(equalTo: self.gameView.leadingAnchor),
+            self.sustainButtonsContentView.trailingAnchor.constraint(equalTo: self.gameView.trailingAnchor),
+            self.sustainButtonsContentView.topAnchor.constraint(equalTo: self.gameView.topAnchor),
+            self.sustainButtonsContentView.bottomAnchor.constraint(equalTo: self.gameView.bottomAnchor),
+            
+            self.handoffPlaceholderView.leadingAnchor.constraint(equalTo: self.gameView.leadingAnchor),
+            self.handoffPlaceholderView.trailingAnchor.constraint(equalTo: self.gameView.trailingAnchor),
+            self.handoffPlaceholderView.topAnchor.constraint(equalTo: self.gameView.topAnchor),
+            self.handoffPlaceholderView.bottomAnchor.constraint(equalTo: self.gameView.bottomAnchor),
+        ])
         
         self.updateControllers()
     }
@@ -454,6 +480,8 @@ extension GameViewController
             userActivity.delegate = self
             userActivity.isEligibleForHandoff = true
             userActivity.supportsContinuationStreams = true
+            userActivity.userInfo?[NSUserActivity.isSaveStateAvailable] = true // Allow transferring save states via handoff
+            userActivity.requiredUserInfoKeys?.insert(NSUserActivity.isSaveStateAvailable)
             userActivity.becomeCurrent()
             self.view.window?.windowScene?.userActivity = userActivity
         }
@@ -840,7 +868,16 @@ private extension GameViewController
     
     func updateGameViews()
     {
-        if UIApplication.shared.isExternalDisplayConnected
+        if self.isContinuingHandoff
+        {
+            // Continuing from handoff which may take a while, so hide all views.
+            for gameView in self.gameViews
+            {
+                gameView.isEnabled = false
+                gameView.isHidden = true
+            }
+        }
+        else if UIApplication.shared.isExternalDisplayConnected
         {
             // AirPlaying, hide all (non-touch) screens.
             
@@ -1528,7 +1565,7 @@ extension GameViewController: GameViewControllerDelegate
     func gameViewControllerShouldResumeEmulation(_ gameViewController: DeltaCore.GameViewController) -> Bool
     {
         guard gameViewController == self else { return false }
-        guard !self.isLoadingDeepLinkSaveState else { return false }
+        guard !self.isContinuingHandoff else { return false }
         
         var result = false
         
@@ -1647,12 +1684,36 @@ private extension GameViewController
     }
 }
 
+//MARK: - Handoff -
 extension GameViewController: NSUserActivityDelegate
 {
-    func userActivity(_ userActivity: NSUserActivity, didReceive inputStream: InputStream, outputStream: OutputStream) 
+    func prepareForHandoff()
     {
-        Logger.main.debug("Opening streams for user activity")
+        guard !self.isContinuingHandoff else { return }
+        self.isContinuingHandoff = true
         
+        self.updateGameViews()
+        
+        self.handoffPlaceholderView.alpha = 1.0
+        self.handoffPlaceholderView.isHidden = false
+    }
+    
+    func finishHandoff()
+    {
+        guard self.isContinuingHandoff else { return }
+        self.isContinuingHandoff = false
+        
+        self.updateGameViews()
+        
+        UIView.animate(withDuration: 0.4) {
+            self.handoffPlaceholderView.alpha = 0.0
+        } completion: { _ in
+            self.handoffPlaceholderView.isHidden = true
+        }
+    }
+    
+    func userActivity(_ userActivity: NSUserActivity, didReceive inputStream: InputStream, outputStream: OutputStream)
+    {
         inputStream.open()
         outputStream.open()
         
@@ -1665,7 +1726,7 @@ extension GameViewController: NSUserActivityDelegate
         let temporaryURL = FileManager.default.uniqueTemporaryURL()
         self.emulatorCore?.saveSaveState(to: temporaryURL)
         
-        Task<Void, Never> { [inputStream, outputStream] in
+        Task<Void, Never> {
             do
             {
                 defer {
@@ -1774,23 +1835,40 @@ private extension GameViewController
         }
     }
     
+    @objc func deepLinkControllerWillLaunchGame(with notification: Notification)
+    {
+        guard let game = notification.userInfo?[DeepLink.Key.game] as? Game, let scene = notification.userInfo?[DeepLink.Key.scene] as? UIScene, scene == self.view.window?.windowScene else { return }
+        
+        // Game won't start until we call finishHandoff()
+        self.game = game
+        self.prepareForHandoff()
+        
+        self.returnToGameViewController()
+    }
+    
     @objc func deepLinkControllerLaunchGame(with notification: Notification)
     {
-        guard let game = notification.userInfo?[DeepLink.Key.game] as? Game else { return }
+        guard let game = notification.userInfo?[DeepLink.Key.game] as? Game, let scene = notification.userInfo?[DeepLink.Key.scene] as? UIScene, scene == self.view.window?.windowScene else { return }
         
         let previousGame = self.game
         self.game = game
         
-        if let saveState = notification.userInfo?[DeepLink.Key.saveState] as? SaveStateProtocol
+        if self.isContinuingHandoff
         {
-            // Included save state with deep link, so load it when emulator core is started.
-            // Note: Will be automatically deleted when loaded, so make a copy if it's important.
-            _deepLinkResumingSaveState = saveState
+            let error = notification.userInfo?[DeepLink.Key.error] as? Error
+            self.finishHandoff()
             
-            if !FileManager.default.fileExists(atPath: saveState.fileURL.path)
+            if let saveState = notification.userInfo?[DeepLink.Key.saveState] as? SaveStateProtocol
             {
-                // Save State is not yet loaded, so delay resuming emulation until it is.
-                self.isLoadingDeepLinkSaveState = true
+                // Included save state with deep link, so load it when emulator core is started.
+                // Note: Will be automatically deleted when loaded, so make a copy if it's important.
+                _deepLinkResumingSaveState = saveState
+            }
+            
+            if let error
+            {
+                let toastView = RSTToastView(text: NSLocalizedString("Handoff Failed", comment: ""), detailText: error.localizedDescription)
+                self.show(toastView)
             }
         }
         else if let pausedSaveState = self.pausedSaveState, game == (previousGame as? Game)
@@ -1806,10 +1884,17 @@ private extension GameViewController
             }
             catch
             {
-                print(error)
+                Logger.main.error("Failed to resume save state after deep link. \(error.localizedDescription, privacy: .public)")
             }
         }
-        
+                
+        self.returnToGameViewController() {
+            self.resumeEmulation()
+        }
+    }
+    
+    func returnToGameViewController(completion: (() -> Void)? = nil)
+    {
         if let pauseViewController = self.pauseViewController
         {
             let segue = UIStoryboardSegue(identifier: "unwindFromPauseMenu", source: pauseViewController, destination: self)
@@ -1824,15 +1909,14 @@ private extension GameViewController
             self.unwindFromGamesViewController(with: segue)
         }
         
-        self.dismiss(animated: true, completion: nil)
-    }
-    
-    @objc func deepLinkControllerLoadSaveState(with notification: Notification)
-    {
-        guard let game = notification.userInfo?[DeepLink.Key.game] as? Game, let saveState = notification.userInfo?[DeepLink.Key.saveState] as? SaveStateProtocol else { return }
-        
-        self.isLoadingDeepLinkSaveState = false
-        self.resumeEmulation()
+        if let presentedViewController = self.presentedViewController
+        {
+            presentedViewController.dismiss(animated: true, completion: completion)
+        }
+        else
+        {
+            completion?()
+        }
     }
     
     @objc func didActivateGyro(with notification: Notification)

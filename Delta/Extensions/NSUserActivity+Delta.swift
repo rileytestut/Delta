@@ -14,7 +14,7 @@ extension NSUserActivity
     
     static let gameIDKey = "gameID"
     static let systemIDKey = "systemID"
-    static let hasSaveStateKey = "hasSaveState"
+    static let isSaveStateAvailable = "isSaveStateAvailable"
     
     convenience init(game: Game)
     {

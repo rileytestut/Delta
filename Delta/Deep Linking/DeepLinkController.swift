@@ -10,10 +10,12 @@ import UIKit
 
 import DeltaCore
 
+import Roxas
+
 extension Notification.Name
 {
+    static let deepLinkControllerWillLaunchGame = Notification.Name("deepLinkControllerWillLaunchGame")
     static let deepLinkControllerLaunchGame = Notification.Name("deepLinkControllerLaunchGame")
-    static let deepLinkControllerLoadSaveState = Notification.Name("deepLinkControllerLoadSaveState")
 }
 
 extension UIViewController
@@ -25,17 +27,11 @@ extension UIViewController
 
 struct DeepLinkController
 {
-    private var window: UIWindow? {
-        if #available(iOS 13, *)
-        {
-            guard let delegate = UIApplication.shared.connectedScenes.lazy.compactMap({ $0.delegate as? UIWindowSceneDelegate }).first, let window = delegate.window else { return nil }
-            return window
-        }
-        else
-        {
-            guard let delegate = UIApplication.shared.delegate, let window = delegate.window else { return nil }
-            return window
-        }
+    let window: UIWindow?
+    
+    init(window: UIWindow?)
+    {
+        self.window = window
     }
     
     private var topViewController: UIViewController? {
@@ -81,16 +77,21 @@ private extension DeepLinkController
             guard let game = try DatabaseManager.shared.viewContext.fetch(fetchRequest).first else { return false }
             
             var userInfo: [DeepLink.Key: Any] = [.game: game]
-            
-            if let userActivity, userActivity.activityType == NSUserActivity.playGameActivityType//,
-               //let hasSaveState = userActivity.userInfo?[NSUserActivity.hasSaveStateKey] as? Bool, hasSaveState
+            if let windowScene = self.window?.windowScene
             {
-                let temporaryURL = FileManager.default.uniqueTemporaryURL()
+                userInfo[.scene] = windowScene
+            }
+            
+            if let userActivity, userActivity.activityType == NSUserActivity.playGameActivityType,
+               let isSaveStateAvailable = userActivity.userInfo?[NSUserActivity.isSaveStateAvailable] as? Bool, isSaveStateAvailable
+            {
+                NotificationCenter.default.post(name: .deepLinkControllerWillLaunchGame, object: self, userInfo: userInfo)
                 
-                let placeholderSaveState = DeltaCore.SaveState(fileURL: temporaryURL, gameType: game.type)
-                userInfo[.saveState] = placeholderSaveState
+                let gameType = game.type
                 
                 Task<Void, Never> { [userInfo] in
+                    var userInfo = userInfo
+                    
                     do
                     {
                         let (inputStream, outputStream) = try await userActivity.continuationStreams()
@@ -99,23 +100,27 @@ private extension DeepLinkController
                         
                         let data: Data = try await inputStream.receive()
                         
-                        
-                        Logger.main.error("Read \(data.count) bytes from Handoff!")
-                        
+                        let temporaryURL = FileManager.default.uniqueTemporaryURL()
                         try data.write(to: temporaryURL, options: .atomic)
                         
-                        NotificationCenter.default.post(name: .deepLinkControllerLoadSaveState, object: self, userInfo: userInfo)
-                        
+                        let saveState = DeltaCore.SaveState(fileURL: temporaryURL, gameType: gameType)
+                        userInfo[.saveState] = saveState
                     }
                     catch
                     {
                         Logger.main.error("Failed to retrieve streams for Handoff. \(error.localizedDescription, privacy: .public)")
-//                        NotificationCenter.default.post(name: .deepLinkControllerLoadSaveState, object: self, userInfo: userInfo)
+                        userInfo[.error] = error
+                    }
+                    
+                    await MainActor.run { [userInfo] in
+                        NotificationCenter.default.post(name: .deepLinkControllerLaunchGame, object: self, userInfo: userInfo)
                     }
                 }
             }
-            
-            NotificationCenter.default.post(name: .deepLinkControllerLaunchGame, object: self, userInfo: userInfo)
+            else
+            {
+                NotificationCenter.default.post(name: .deepLinkControllerLaunchGame, object: self, userInfo: userInfo)
+            }
         }
         catch
         {

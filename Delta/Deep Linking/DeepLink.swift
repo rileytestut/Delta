@@ -58,8 +58,23 @@ extension DeepLink
     enum Key: String
     {
         case identifier
+        case scene
         case game
         case saveState
+        case error
+    }
+    
+    enum Error: LocalizedError
+    {
+        case gameNotFound(String)
+        
+        var errorDescription: String? {
+            switch self
+            {
+            case .gameNotFound:
+                return NSLocalizedString("This game does not exist in your game library.", comment: "")
+            }
+        }
     }
 }
 
