@@ -1765,6 +1765,12 @@ extension GameViewController: NSUserActivityDelegate
         Task<Void, Never> {
             do
             {
+                if #available(iOS 16, *)
+                {
+                    // Wait for save state to flush to disk (necessary for N64).
+                    try await Task.sleep(for: .seconds(0.5))
+                }
+
                 defer {
                     try? FileManager.default.removeItem(at: temporaryURL)
                 }
