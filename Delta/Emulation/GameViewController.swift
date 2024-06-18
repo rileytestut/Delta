@@ -474,26 +474,7 @@ extension GameViewController
             self.showJITEnabledAlert()
         }
         
-        if let game = self.game as? Game
-        {
-            let userActivity = NSUserActivity(game: game)
-            userActivity.delegate = self
-            userActivity.isEligibleForHandoff = true
-            userActivity.supportsContinuationStreams = true
-            userActivity.userInfo?[NSUserActivity.isSaveStateAvailable] = true // Allow transferring save states via handoff
-            userActivity.requiredUserInfoKeys?.insert(NSUserActivity.isSaveStateAvailable)
-            userActivity.becomeCurrent()
-            self.view.window?.windowScene?.userActivity = userActivity
-        }
-        else
-        {
-            if let userActivity = self.view.window?.windowScene?.userActivity, userActivity.activityType == NSUserActivity.playGameActivityType
-            {
-                userActivity.resignCurrent()
-            }
-            
-            self.view.window?.windowScene?.userActivity = nil
-        }
+        self.startGameActivity()
         
         if let scene = UIApplication.shared.externalDisplayScene, Settings.supportsExternalDisplays
         {
@@ -519,6 +500,8 @@ extension GameViewController
     override func prepare(for segue: UIStoryboardSegue, sender: Any?)
     {
         guard let identifier = segue.identifier else { return }
+        
+        self.pauseGameActivity()
         
         switch identifier
         {
@@ -659,6 +642,8 @@ extension GameViewController
                 }
             }
             
+            self.startGameActivity()
+            
         case "unwindToGames":
             if self.isGameScene
             {
@@ -770,6 +755,8 @@ private extension GameViewController
         {
             self.performSegue(withIdentifier: "showGamesViewController", sender: nil)
         }
+        
+        self.stopGameActivity()
     }
 }
 
@@ -906,7 +893,7 @@ private extension GameViewController
     {
         if self.isContinuingHandoff
         {
-            // Continuing from handoff which may take a while, so hide all views.
+            // Continuing from Handoff which may take a while, so hide all views.
             for gameView in self.gameViews
             {
                 gameView.isEnabled = false
@@ -1748,6 +1735,46 @@ extension GameViewController: NSUserActivityDelegate
         }
     }
     
+    func startGameActivity()
+    {
+        if let userActivity = self.view.window?.windowScene?.userActivity, userActivity.activityType == NSUserActivity.playGameActivityType,
+           let gameID = userActivity.userInfo?[NSUserActivity.gameIDKey] as? String, let game = self.game as? Game, game.identifier == gameID
+        {
+            // There is an existing activity for this game, so make it the current activity.
+            userActivity.becomeCurrent()
+        }
+        else if let game = self.game as? Game
+        {
+            // No existing activity, or activity is different type, so create new activity.
+            
+            let userActivity = NSUserActivity(game: game)
+            userActivity.delegate = self
+            userActivity.isEligibleForHandoff = true
+            userActivity.supportsContinuationStreams = true
+            userActivity.userInfo?[NSUserActivity.isSaveStateAvailable] = true // Allow transferring save states via Handoff
+            userActivity.requiredUserInfoKeys?.insert(NSUserActivity.isSaveStateAvailable)
+            userActivity.becomeCurrent()
+            self.view.window?.windowScene?.userActivity = userActivity
+        }
+        else
+        {
+            // No game, so stop current activity instead.
+            self.stopGameActivity()
+        }
+    }
+    
+    func pauseGameActivity()
+    {
+        guard let userActivity = self.view.window?.windowScene?.userActivity, userActivity.activityType == NSUserActivity.playGameActivityType else { return }
+        userActivity.resignCurrent()
+    }
+    
+    func stopGameActivity()
+    {
+        self.pauseGameActivity()
+        self.view.window?.windowScene?.userActivity = nil
+    }
+    
     func userActivity(_ userActivity: NSUserActivity, didReceive inputStream: InputStream, outputStream: OutputStream)
     {
         inputStream.open()
@@ -2103,6 +2130,11 @@ private extension GameViewController
         if scene.hasKeyboardFocus
         {
             self.connectExternalDisplay(for: externalDisplayScene)
+            
+            if self.presentedViewController == nil
+            {
+                self.startGameActivity()
+            }
         }
         else
         {
