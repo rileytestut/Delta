@@ -76,11 +76,7 @@ class PreviewGameViewController: DeltaCore.GameViewController
     
     deinit
     {
-        // Explicitly stop emulatorCore _before_ we remove ourselves as observer
-        // so we can wait until stopped before restoring save files (again).
-        self.emulatorCore?.stop()
         
-        self.emulatorCore?.removeObserver(self, forKeyPath: #keyPath(EmulatorCore.state), context: &kvoContext)
     }
 }
 
@@ -127,12 +123,33 @@ extension PreviewGameViewController
     {
         super.viewDidDisappear(animated)
         
+        func reset()
+        {
+            // Assign game to nil to ensure we deallocate emulatorCore + audio/video managers.
+            // Otherwise, we may crash when opening N64 games in new window due to race condition.
+            // Also dispatch to main queue because we update self.preferredContentSize.
+            DispatchQueue.main.async {
+                self.game = nil
+            }
+        }
+        
         // Already stopped = we've already restored save files and removed directory.
         if self.emulatorCore?.state != .stopped
         {
             // Pre-emptively restore save files in case something goes wrong while stopping emulation.
             // This also ensures if the core is never stopped (for some reason), saves are still restored.
             self.restoreSaveFiles(removeCopyDirectory: false)
+            
+            self.emulatorCoreQueue.async {
+                // Explicitly stop emulatorCore _before_ we remove ourselves as observer
+                // so we can wait until stopped before restoring save files (again).
+                self.emulatorCore?.stop()
+                reset()
+            }
+        }
+        else
+        {
+            reset()
         }
     }
     
