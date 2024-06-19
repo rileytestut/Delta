@@ -113,7 +113,7 @@ extension SaveState: Syncable
     }
     
     public var syncableKeys: Set<AnyKeyPath> {
-        return [\SaveState.creationDate, \SaveState.filename, \SaveState.modifiedDate, \SaveState.name, \SaveState.type, \SaveState.coreIdentifier]
+        return [\SaveState.creationDate, \SaveState.filename, \SaveState.modifiedDate, \SaveState.name, \SaveState.type, \SaveState.coreIdentifier, \SaveState.coreVersion]
     }
     
     public var syncableFiles: Set<File> {
