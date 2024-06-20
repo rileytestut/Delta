@@ -75,6 +75,16 @@ class PauseViewController: UIViewController, PauseInfoProviding
         if let gridMenuViewController = self.navigationController?.topViewController as? GridMenuViewController
         {
             gridMenuViewController.closeButton.title = self.closeButtonTitle
+            
+            if UIApplication.shared.supportsMultipleScenes
+            {
+                let openNewMainWindowAction = UIAction(title: NSLocalizedString("Open New Window", comment: ""), image: UIImage(systemName: "macwindow.badge.plus")) { [weak self] _ in
+                    self?.openNewMainWindow()
+                }
+                
+                let menu = UIMenu(children: [openNewMainWindowAction])
+                gridMenuViewController.closeButton.menu = menu
+            }
         }
     }
     
@@ -270,5 +280,25 @@ private extension PauseViewController
         ])
         
         return menu
+    }
+    
+    func openNewMainWindow()
+    {
+        let options = UIScene.ActivationRequestOptions()
+        options.requestingScene = self.view.window?.windowScene
+        
+        if #available(iOS 17, *)
+        {
+            let request = UISceneSessionActivationRequest(role: .windowApplication, options: options)
+            UIApplication.shared.activateSceneSession(for: request) { error in
+                Logger.main.error("Failed to open new main window. \(error.localizedDescription, privacy: .public)")
+            }
+        }
+        else
+        {
+            UIApplication.shared.requestSceneSessionActivation(nil, userActivity: nil, options: options) { error in
+                Logger.main.error("Failed to open new main window. \(error.localizedDescription, privacy: .public)")
+            }
+        }
     }
 }
