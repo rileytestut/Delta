@@ -276,6 +276,12 @@ extension Settings
     
     static func preferredControllerSkin(for system: System, traits: DeltaCore.ControllerSkin.Traits) -> ControllerSkin?
     {
+        if !ExperimentalFeatures.shared.airPlaySkins.isEnabled
+        {
+            // AirPlay skins are not supported if the feature is disabled.
+            guard traits.device != .tv else { return nil }
+        }
+        
         guard let userDefaultsKey = self.preferredControllerSkinKey(for: system, traits: traits) else { return nil }
         
         let identifier = UserDefaults.standard.string(forKey: userDefaultsKey)

@@ -21,14 +21,37 @@ extension PreferredControllerSkinsViewController
     private enum Variant
     {
         case standard
-        case airPlay
         case splitView
+        case airPlay
         
         static var supportedVariants: [Variant] {
-            switch UIDevice.current.userInterfaceIdiom
+            var supportedVariants: [Variant] = [.standard]
+            
+            if UIDevice.current.userInterfaceIdiom == .pad
             {
-            case .pad: return [.standard, .airPlay, .splitView]
-            default: return [.standard, .airPlay]
+                supportedVariants.append(.splitView)
+            }
+            
+            if ExperimentalFeatures.shared.airPlaySkins.isEnabled
+            {
+                supportedVariants.append(.airPlay)
+            }
+            
+            return supportedVariants
+        }
+        
+        var localizedName: String {
+            switch self
+            {
+            case .standard:
+                switch UIDevice.current.userInterfaceIdiom
+                {
+                case .pad: return NSLocalizedString("Full Screen", comment: "")
+                default: return NSLocalizedString("Standard", comment: "")
+                }
+                
+            case .splitView: return NSLocalizedString("Split View", comment: "")
+            case .airPlay: return NSLocalizedString("AirPlay", comment: "")
             }
         }
     }
@@ -49,10 +72,15 @@ class PreferredControllerSkinsViewController: UITableViewController
     
     @IBOutlet private var portraitImageView: UIImageView!
     @IBOutlet private var landscapeImageView: UIImageView!
+    @IBOutlet private var variantSegmentedControl: UISegmentedControl!
     
     private var _previousBoundsSize: CGSize?
     private var portraitControllerSkin: ControllerSkin?
     private var landscapeControllerSkin: ControllerSkin?
+    private var portraitTraits: DeltaCore.ControllerSkin.Traits?
+    private var landscapeTraits: DeltaCore.ControllerSkin.Traits?
+    
+    private var loadingTask: Task<Void, Never>?
 }
 
 extension PreferredControllerSkinsViewController
@@ -67,6 +95,21 @@ extension PreferredControllerSkinsViewController
         {
             // Hide Done button since we are not root view controller.
             self.navigationItem.rightBarButtonItem = nil
+        }
+        
+        self.variantSegmentedControl.removeAllSegments()
+        for (index, variant) in zip(0..., Variant.supportedVariants)
+        {
+            self.variantSegmentedControl.insertSegment(withTitle: variant.localizedName, at: index, animated: false)
+        }
+        
+        if self.variantSegmentedControl.numberOfSegments < 2
+        {
+            self.variantSegmentedControl.isHidden = true
+        }
+        else
+        {
+            self.variantSegmentedControl.selectedSegmentIndex = 0
         }
     }
     
@@ -170,14 +213,16 @@ private extension PreferredControllerSkinsViewController
 {
     func update()
     {
-        self.updateControllerSkins()
-        
         self.tableView.reloadData()
+        
+        self.updateControllerSkins()
     }
     
     func updateControllerSkins()
     {
         guard let window = self.view.window else { return }
+        
+        self.loadingTask?.cancel()
         
         self._previousBoundsSize = self.view.bounds.size
                 
@@ -203,54 +248,61 @@ private extension PreferredControllerSkinsViewController
             landscapeControllerSkin = Settings.preferredControllerSkin(for: self.system, traits: landscapeTraits)
         }
         
-        if portraitControllerSkin != self.portraitControllerSkin
+        if portraitControllerSkin != self.portraitControllerSkin || portraitTraits != self.portraitTraits
         {
             self.portraitImageView.image = nil
             self.portraitImageView.isIndicatingActivity = true
-            
-            self.portraitControllerSkin = portraitControllerSkin
         }
         
-        if landscapeControllerSkin != self.landscapeControllerSkin
+        if landscapeControllerSkin != self.landscapeControllerSkin || landscapeTraits != self.landscapeTraits
         {
             self.landscapeImageView.image = nil
             self.landscapeImageView.isIndicatingActivity = true
-            
-            self.landscapeControllerSkin = landscapeControllerSkin
         }
         
-        DatabaseManager.shared.performBackgroundTask { (context) in
+        self.portraitControllerSkin = portraitControllerSkin
+        self.landscapeControllerSkin = landscapeControllerSkin
+        
+        self.portraitTraits = portraitTraits
+        self.landscapeTraits = landscapeTraits
+        
+        self.loadingTask = Task<Void, Never> {
+            let (portraitImage, landscapeImage) = await withCheckedContinuation { continuation in
+                DatabaseManager.shared.performBackgroundTask { context in
+                    let portraitImage: UIImage?
+                    let landscapeImage: UIImage?
+                    
+                    if let portraitControllerSkin = self.portraitControllerSkin
+                    {
+                        let skin = context.object(with: portraitControllerSkin.objectID) as! ControllerSkin
+                        portraitImage = skin.image(for: portraitTraits, preferredSize: UIScreen.main.defaultControllerSkinSize)
+                    }
+                    else
+                    {
+                        portraitImage = nil
+                    }
+                    
+                    if let landscapeControllerSkin = self.landscapeControllerSkin
+                    {
+                        let skin = context.object(with: landscapeControllerSkin.objectID) as! ControllerSkin
+                        landscapeImage = skin.image(for: landscapeTraits, preferredSize: UIScreen.main.defaultControllerSkinSize)
+                    }
+                    else
+                    {
+                        landscapeImage = nil
+                    }
+                    
+                    continuation.resume(returning: (portraitImage, landscapeImage))
+                }
+            }
             
-            let portraitImage: UIImage?
-            let landscapeImage: UIImage?
+            guard !Task.isCancelled else { return }
             
-            if let portraitControllerSkin = self.portraitControllerSkin
-            {
-                let skin = context.object(with: portraitControllerSkin.objectID) as! ControllerSkin
-                portraitImage = skin.image(for: portraitTraits, preferredSize: UIScreen.main.defaultControllerSkinSize)
-            }
-            else
-            {
-                portraitImage = nil
-            }
+            self.portraitImageView.isIndicatingActivity = false
+            self.portraitImageView.image = portraitImage
             
-            if let landscapeControllerSkin = self.landscapeControllerSkin
-            {
-                let skin = context.object(with: landscapeControllerSkin.objectID) as! ControllerSkin
-                landscapeImage = skin.image(for: landscapeTraits, preferredSize: UIScreen.main.defaultControllerSkinSize)
-            }
-            else
-            {
-                landscapeImage = nil
-            }
-            
-            DispatchQueue.main.async {
-                self.portraitImageView.isIndicatingActivity = false
-                self.portraitImageView.image = portraitImage
-                
-                self.landscapeImageView.isIndicatingActivity = false
-                self.landscapeImageView.image = landscapeImage
-            }
+            self.landscapeImageView.isIndicatingActivity = false
+            self.landscapeImageView.image = landscapeImage
         }
     }
     
@@ -261,8 +313,12 @@ private extension PreferredControllerSkinsViewController
         
         switch self.variant
         {
-        case .standard: 
-            traits.displayType = .standard //TODO: Use edgeToEdge for iphone when appropriate
+        case .standard where UIDevice.current.userInterfaceIdiom == .pad:
+            traits.displayType = .standard
+            
+        case .standard:
+            // Use defaults for iPhone
+            break
             
         case .airPlay:
             traits.displayType = .standard

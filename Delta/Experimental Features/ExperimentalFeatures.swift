@@ -13,8 +13,7 @@ struct ExperimentalFeatures: FeatureContainer
     static let shared = ExperimentalFeatures()
     
     @Feature(name: "AirPlay Skins",
-             description: "Customize the appearance of games when AirPlaying to your TV.",
-             options: AirPlaySkinsOptions())
+             description: "Customize the appearance of games when AirPlaying to your TV.")
     var airPlaySkins
     
     @Feature(name: "Variable Fast Forward",
@@ -49,6 +48,11 @@ struct ExperimentalFeatures: FeatureContainer
              description: "Change the app icon.",
              options: AlternateAppIconOptions())
     var alternateAppIcons
+    
+    @Feature(name: "Skin Debugging",
+             description: "Enable features useful for mapping controller skins.",
+             options: SkinDebuggingOptions())
+    var skinDebugging
     
     private init()
     {

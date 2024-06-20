@@ -232,7 +232,6 @@
 		D5D7C20829E616CF00663793 /* FeatureContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D7C20729E616CF00663793 /* FeatureContainer.swift */; };
 		D5D7C20A29E61FA600663793 /* OptionToggleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D7C20929E61FA600663793 /* OptionToggleView.swift */; };
 		D5D7C20C29E624CB00663793 /* DisplayInlineKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D7C20B29E624CB00663793 /* DisplayInlineKey.swift */; };
-		D5DF06E029F326E6009E577C /* AirPlaySkins.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DF06DE29F326E6009E577C /* AirPlaySkins.swift */; };
 		D5EB601B2C0E6190007C543C /* Stream+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5EB601A2C0E6190007C543C /* Stream+Conveniences.swift */; };
 		D5F82FB82981D3AC00B229AF /* LegacySearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F82FB72981D3AC00B229AF /* LegacySearchBar.swift */; };
 /* End PBXBuildFile section */
@@ -512,7 +511,6 @@
 		D5D7C20729E616CF00663793 /* FeatureContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureContainer.swift; sourceTree = "<group>"; };
 		D5D7C20929E61FA600663793 /* OptionToggleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionToggleView.swift; sourceTree = "<group>"; };
 		D5D7C20B29E624CB00663793 /* DisplayInlineKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayInlineKey.swift; sourceTree = "<group>"; };
-		D5DF06DE29F326E6009E577C /* AirPlaySkins.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AirPlaySkins.swift; sourceTree = "<group>"; };
 		D5EB601A2C0E6190007C543C /* Stream+Conveniences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Stream+Conveniences.swift"; sourceTree = "<group>"; };
 		D5F82FB72981D3AC00B229AF /* LegacySearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacySearchBar.swift; sourceTree = "<group>"; };
 		DC866E433B3BA9AE18ABA1EC /* libPods-Delta.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Delta.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1149,7 +1147,6 @@
 			isa = PBXGroup;
 			children = (
 				D5A9C01C29DE058C00A8D610 /* VariableFastForward.swift */,
-				D5DF06DE29F326E6009E577C /* AirPlaySkins.swift */,
 				ACF7E30C29F73D03000FE071 /* GameScreenshots.swift */,
 				AC1C990F29F8B8C30020E6E4 /* ToastNotificationOptions.swift */,
 				D5147EC72A817B4A00D6CD64 /* ReviewSaveStatesOptions.swift */,
@@ -1612,7 +1609,6 @@
 				BF5942951E09BD1A0051894B /* NSManagedObjectContext+Conveniences.swift in Sources */,
 				BFC3628021ADE2BA00EF2BE6 /* UIAlertController+Error.swift in Sources */,
 				BF353FF91C5D870B00C1184C /* MenuItem.swift in Sources */,
-				D5DF06E029F326E6009E577C /* AirPlaySkins.swift in Sources */,
 				D5D797E6298D946200738869 /* Contributor.swift in Sources */,
 				D5ADD12229F33FBF00CE0560 /* Features.swift in Sources */,
 				BFDB3418219E4B1700595A62 /* SyncStatusViewController.swift in Sources */,

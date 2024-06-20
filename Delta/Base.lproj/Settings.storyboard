@@ -1070,11 +1070,10 @@
                     <navigationItem key="navigationItem" id="2GJ-l7-DgY">
                         <nil key="title"/>
                         <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="FuI-rT-eft">
-                            <rect key="frame" x="66.5" y="6" width="242" height="32"/>
+                            <rect key="frame" x="66.5" y="5.5" width="242" height="33"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <segments>
-                                <segment title="Standard"/>
-                                <segment title="AirPlay"/>
+                                <segment title="Full Screen"/>
                                 <segment title="Split View"/>
                             </segments>
                             <connections>
@@ -1090,6 +1089,7 @@
                     <connections>
                         <outlet property="landscapeImageView" destination="XY1-es-oZe" id="d6S-ez-jh2"/>
                         <outlet property="portraitImageView" destination="5r7-OQ-i7w" id="C5r-uX-SlN"/>
+                        <outlet property="variantSegmentedControl" destination="FuI-rT-eft" id="NdA-He-Opu"/>
                         <segue destination="pG9-hI-tRE" kind="show" identifier="showControllerSkins" id="kiq-86-5B7"/>
                     </connections>
                 </tableViewController>
