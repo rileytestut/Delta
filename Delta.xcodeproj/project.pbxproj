@@ -201,6 +201,7 @@
 		D586497229774ABD0081477E /* CheatBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586497129774ABD0081477E /* CheatBase.swift */; };
 		D5864978297756CE0081477E /* CheatBaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5864977297756CE0081477E /* CheatBaseView.swift */; };
 		D59B50B72C06666A00FDC53A /* Delta7ToDelta8.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = D59B50B62C06666A00FDC53A /* Delta7ToDelta8.xcmappingmodel */; };
+		D5A287252C23A1AC009883C3 /* SkinDebugging.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A287242C23A1AC009883C3 /* SkinDebugging.swift */; };
 		D5A817B329DF6C6C00904AFE /* ExperimentalFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A817B229DF6C6C00904AFE /* ExperimentalFeatures.swift */; };
 		D5A98CE2284EF14B00E023E5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A98CE1284EF14B00E023E5 /* SceneDelegate.swift */; };
 		D5A9C00329DDED6D00A8D610 /* ExperimentalFeaturesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A9C00229DDED6D00A8D610 /* ExperimentalFeaturesView.swift */; };
@@ -486,6 +487,7 @@
 		D5A137442A7D814000AB1372 /* RepairDatabaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepairDatabaseViewController.swift; sourceTree = "<group>"; };
 		D5A1375A2A7D8F2600AB1372 /* ReviewSaveStatesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewSaveStatesViewController.swift; sourceTree = "<group>"; };
 		D5A137662A7DB37200AB1372 /* GamePickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamePickerViewController.swift; sourceTree = "<group>"; };
+		D5A287242C23A1AC009883C3 /* SkinDebugging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkinDebugging.swift; sourceTree = "<group>"; };
 		D5A817AF29DF4E6E00904AFE /* CustomTintColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTintColor.swift; sourceTree = "<group>"; };
 		D5A817B229DF6C6C00904AFE /* ExperimentalFeatures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExperimentalFeatures.swift; sourceTree = "<group>"; };
 		D5A98CE1284EF14B00E023E5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -1151,6 +1153,7 @@
 				AC1C990F29F8B8C30020E6E4 /* ToastNotificationOptions.swift */,
 				D5147EC72A817B4A00D6CD64 /* ReviewSaveStatesOptions.swift */,
 				AC1AE3092A69BD3A00956EB9 /* AlternateAppIcons.swift */,
+				D5A287242C23A1AC009883C3 /* SkinDebugging.swift */,
 			);
 			path = Features;
 			sourceTree = "<group>";
@@ -1688,6 +1691,7 @@
 				BF6866171DCAC8B900BF2D06 /* ControllerSkin+Configuring.swift in Sources */,
 				BF713C0822499ED4004A1A2B /* PreviousHarmony.xcdatamodeld in Sources */,
 				BF59427D1E09BC830051894B /* ControllerSkin.swift in Sources */,
+				D5A287252C23A1AC009883C3 /* SkinDebugging.swift in Sources */,
 				D56F7ABC2B05988700490ACB /* AttributedHeaderFooterView.swift in Sources */,
 				BFAB9F7D219A43380080EC7D /* SyncManager.swift in Sources */,
 				BFCEA67E1D56FF640061A534 /* UIViewControllerContextTransitioning+Conveniences.swift in Sources */,

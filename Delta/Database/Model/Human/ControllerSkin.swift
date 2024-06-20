@@ -47,6 +47,12 @@ public class ControllerSkin: _ControllerSkin
     }
     
     public var isDebugModeEnabled: Bool {
+        if ExperimentalFeatures.shared.skinDebugging.isEnabled && ExperimentalFeatures.shared.skinDebugging.showHitTargets
+        {
+            return true
+        }
+        
+        // Fall back to skin if showHitTargets is not explicitly enabled.
         return self.controllerSkin?.isDebugModeEnabled ?? false
     }
     
@@ -84,7 +90,18 @@ extension ControllerSkin: ControllerSkinProtocol
     
     public func items(for traits: DeltaCore.ControllerSkin.Traits) -> [DeltaCore.ControllerSkin.Item]?
     {
-        return self.controllerSkin?.items(for: traits)
+        guard var items = self.controllerSkin?.items(for: traits) else { return nil }
+        
+        if ExperimentalFeatures.shared.skinDebugging.isEnabled && ExperimentalFeatures.shared.skinDebugging.ignoreExtendedEdges
+        {
+            items = items.map { item in
+                var item = item
+                item.extendedFrame = item.frame
+                return item
+            }
+        }
+        
+        return items
     }
     
     public func isTranslucent(for traits: DeltaCore.ControllerSkin.Traits) -> Bool?
