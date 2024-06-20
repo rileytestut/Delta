@@ -170,12 +170,8 @@ class GameViewController: DeltaCore.GameViewController
     // Gestures
     private var isMenuButtonHeldDown = false
     private var ignoreNextMenuInput = false
-    private var fastForwardSwipeGestureRecognizer: UISwipeGestureRecognizer!
-    private var quickLoadGestureRecognizer: UILongPressGestureRecognizer!
-    private var quickSaveGestureRecognizer: UITapGestureRecognizer!
-    private var keyboardControllerFastForwardSwipeGestureRecognizer: UISwipeGestureRecognizer!
-    private var keyboardControllerQuickLoadGestureRecognizer: UILongPressGestureRecognizer!
-    private var keyboardControllerQuickSaveGestureRecognizer: UITapGestureRecognizer!
+    private lazy var menuButtonGestureRecognizers = self.makeMenuButtonGestureRecognizers()
+    private lazy var menuButtonKeyboardGestureRecognizers = self.makeMenuButtonGestureRecognizers()
         
     // Sustain Buttons
     private var isSelectingSustainedButtons = false
@@ -422,25 +418,10 @@ extension GameViewController
         self.view.insertSubview(self.handoffPlaceholderView, aboveSubview: self.gameView)
         
         // Gestures
-        self.fastForwardSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(GameViewController.handleSwipeGesture(_:)))
-        self.fastForwardSwipeGestureRecognizer.delegate = self
-        self.fastForwardSwipeGestureRecognizer.direction = [.left, .right]
-        self.view.addGestureRecognizer(self.fastForwardSwipeGestureRecognizer)
-        
-        self.keyboardControllerFastForwardSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(GameViewController.handleSwipeGesture(_:)))
-        self.keyboardControllerFastForwardSwipeGestureRecognizer.delegate = self
-        self.keyboardControllerFastForwardSwipeGestureRecognizer.direction = [.left, .right]
-        
-        self.quickLoadGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(GameViewController.handleQuickLoadGesture(_:)))
-        self.quickLoadGestureRecognizer.delegate = self
-        self.quickLoadGestureRecognizer.numberOfTapsRequired = 1
-        self.view.addGestureRecognizer(self.quickLoadGestureRecognizer)
-        
-        self.quickSaveGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(GameViewController.handleQuickSaveGesture(_:)))
-        self.quickSaveGestureRecognizer.delegate = self
-        self.quickSaveGestureRecognizer.numberOfTapsRequired = 2
-        self.quickSaveGestureRecognizer.require(toFail: self.quickLoadGestureRecognizer)
-        self.view.addGestureRecognizer(self.quickSaveGestureRecognizer)
+        for gestureRecognizer in self.menuButtonGestureRecognizers
+        {
+            self.view.addGestureRecognizer(gestureRecognizer)
+        }
         
         // Auto Layout
         NSLayoutConstraint.activate([
@@ -1614,15 +1595,37 @@ extension GameViewController: GameViewControllerDelegate
     }
 }
 
-//MARK: - UIGestureRecognizerDelegate -
-/// UIGestureRecognizerDelegate
+//MARK: - Gestures -
+/// Gestures
 extension GameViewController
 {
+    private func makeMenuButtonGestureRecognizers() -> Set<UIGestureRecognizer>
+    {
+        var gestureRecognizers = Set<UIGestureRecognizer>()
+        
+        let fastForwardSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(GameViewController.handleSwipeGesture(_:)))
+        fastForwardSwipeGestureRecognizer.delegate = self
+        fastForwardSwipeGestureRecognizer.direction = [.left, .right]
+        gestureRecognizers.insert(fastForwardSwipeGestureRecognizer)
+        
+        let quickLoadGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(GameViewController.handleQuickLoadGesture(_:)))
+        quickLoadGestureRecognizer.delegate = self
+        quickLoadGestureRecognizer.numberOfTapsRequired = 0
+        gestureRecognizers.insert(quickLoadGestureRecognizer)
+        
+        let quickSaveGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(GameViewController.handleQuickSaveGesture(_:)))
+        quickSaveGestureRecognizer.delegate = self
+        quickSaveGestureRecognizer.numberOfTapsRequired = 2
+        quickSaveGestureRecognizer.require(toFail: quickLoadGestureRecognizer)
+        gestureRecognizers.insert(quickSaveGestureRecognizer)
+        
+        return gestureRecognizers
+    }
+    
     override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool
     {
         guard super.gestureRecognizer(gestureRecognizer, shouldReceive: touch) else { return false }
-        guard gestureRecognizer == self.fastForwardSwipeGestureRecognizer || gestureRecognizer == self.keyboardControllerFastForwardSwipeGestureRecognizer
-                || gestureRecognizer == self.quickSaveGestureRecognizer || gestureRecognizer == self.quickLoadGestureRecognizer else { return true }
+        guard self.menuButtonGestureRecognizers.contains(gestureRecognizer) || self.menuButtonKeyboardGestureRecognizers.contains(gestureRecognizer) else { return false }
         
         let shouldBegin = self.isMenuButtonHeldDown
         return shouldBegin
@@ -2146,8 +2149,11 @@ private extension GameViewController
     {
         guard let inputView = self.controllerView.inputView else { return }
         
-        // Using keyboard game controller, so add gesture recognizer to keyboard.
-        inputView.addGestureRecognizer(self.keyboardControllerFastForwardSwipeGestureRecognizer)
+        // Using keyboard game controller, so add gesture recognizers to keyboard.
+        for gestureRecognizer in self.menuButtonKeyboardGestureRecognizers
+        {
+            inputView.addGestureRecognizer(gestureRecognizer)
+        }
     }
     
     @objc func keyboardDidChangeFrame(with notification: Notification)
