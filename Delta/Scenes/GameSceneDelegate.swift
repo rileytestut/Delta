@@ -12,11 +12,8 @@ import DeltaCore
 
 extension UIApplication
 {
-    // Hack to work around iPadOS bug (as of 17.4.1) where discarding backgrounded scenes doesn't update UIApplication.openSessions.
-    static var _discardedSessions = Set<UISceneSession>()
-    
     var gameSessions: Set<UISceneSession> {
-        let sessions = UIApplication.shared.openSessions.lazy.filter { !UIApplication._discardedSessions.contains($0) }.filter { $0.userInfo?[NSUserActivity.gameIDKey] != nil }
+        let sessions = self.openSessions.lazy.filter { !UISceneSession._discardedSessions.contains($0) }.filter { $0.userInfo?[NSUserActivity.gameIDKey] != nil }
         return Set(sessions)
     }
 }

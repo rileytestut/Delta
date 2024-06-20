@@ -61,24 +61,8 @@ extension GameCollectionViewController
             {
             case .systemAlreadyRunning(let game, let session):
                 let quitAction = UIAlertAction(title: NSLocalizedString("Quit Game", comment: ""), style: .destructive) { _ in
-                    UIApplication.shared.requestSceneSessionDestruction(session, options: nil) { error in
-                        Logger.main.error("Failed to quit scene session for game \(game?.name ?? "nil", privacy: .public). \(error.localizedDescription, privacy: .public)")
-                        
-                        let nsError = error as NSError
-                        if nsError.domain == "SBApplicationSupportService" && nsError.code == 2 && session.scene == nil
-                        {
-                            // "No scene handles found for provided persistence IDs"
-                            // Can be a false positive, so assume success if scene == nil.
-                        }
-                        else
-                        {
-                            UIApplication._discardedSessions.remove(session)
-                        }
-                    }
-                    
-                    UIApplication._discardedSessions.insert(session)
+                    session.quit()
                 }
-                
                 return [quitAction]
                 
             default: return []

@@ -14,7 +14,7 @@ import Harmony
 extension UIApplication
 {
     var mainScenes: Set<UIScene> {
-        let scenes = UIApplication.shared.connectedScenes.lazy.filter { !UIApplication._discardedSessions.contains($0.session) }.filter { $0.delegate is SceneDelegate }
+        let scenes = self.connectedScenes.lazy.filter { !UISceneSession._discardedSessions.contains($0.session) }.filter { $0.delegate is SceneDelegate }
         return Set(scenes)
     }
 }
