@@ -28,6 +28,7 @@ private extension SettingsViewController
         case hapticFeedback
         case syncing
         case hapticTouch
+        case gestures
         case cores
         case advanced
         case patreon
@@ -83,6 +84,7 @@ class SettingsViewController: UITableViewController
     @IBOutlet private var buttonHapticFeedbackEnabledSwitch: UISwitch!
     @IBOutlet private var thumbstickHapticFeedbackEnabledSwitch: UISwitch!
     @IBOutlet private var previewsEnabledSwitch: UISwitch!
+    @IBOutlet private var quickGesturesSwitch: UISwitch!
     
     @IBOutlet private var versionLabel: UILabel!
     
@@ -211,6 +213,7 @@ private extension SettingsViewController
         self.buttonHapticFeedbackEnabledSwitch.isOn = Settings.isButtonHapticFeedbackEnabled
         self.thumbstickHapticFeedbackEnabledSwitch.isOn = Settings.isThumbstickHapticFeedbackEnabled
         self.previewsEnabledSwitch.isOn = Settings.isPreviewsEnabled
+        self.quickGesturesSwitch.isOn = Settings.isQuickGesturesEnabled
         
         self.tableView.reloadData()
     }
@@ -309,6 +312,11 @@ private extension SettingsViewController
     @IBAction func toggleSupportExternalDisplays(_ sender: UISwitch)
     {
         Settings.supportsExternalDisplays = sender.isOn
+    }
+    
+    @IBAction func toggleQuickGesturesEnabled(_ sender: UISwitch)
+    {
+        Settings.isQuickGesturesEnabled = sender.isOn
     }
     
     func openTwitter(username: String)
@@ -504,7 +512,7 @@ extension SettingsViewController
             let preferredCore = Settings.preferredCore(for: .ds)
             cell.detailTextLabel?.text = preferredCore?.metadata?.name.value ?? preferredCore?.name ?? NSLocalizedString("Unknown", comment: "")
             
-        case .controllerOpacity, .gameAudio, .stageManager, .hapticFeedback, .hapticTouch, .advanced, .patreon, .credits, .support: break
+        case .controllerOpacity, .gameAudio, .stageManager, .hapticFeedback, .hapticTouch, .gestures, .advanced, .patreon, .credits, .support: break
         }
 
         return cell
@@ -520,7 +528,7 @@ extension SettingsViewController
         case .controllers: self.performSegue(withIdentifier: Segue.controllers.rawValue, sender: cell)
         case .controllerSkins: self.performSegue(withIdentifier: Segue.controllerSkins.rawValue, sender: cell)
         case .cores: self.performSegue(withIdentifier: Segue.dsSettings.rawValue, sender: cell)
-        case .controllerOpacity, .gameAudio, .stageManager, .hapticFeedback, .hapticTouch, .syncing: break
+        case .controllerOpacity, .gameAudio, .stageManager, .hapticFeedback, .hapticTouch, .gestures, .syncing: break
         case .advanced:
             let row = AdvancedRow(rawValue: indexPath.row)!
             switch row

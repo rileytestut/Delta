@@ -33,6 +33,7 @@ extension Settings.Name
     static let respectSilentMode: Settings.Name = "respectSilentMode"
     static let pauseWhileInactive: Settings.Name = "pauseWhileInactive"
     static let supportsExternalDisplays: Settings.Name = "supportsExternalDisplays"
+    static let isQuickGesturesEnabled: Settings.Name = "isQuickGesturesEnabled"
 }
 
 extension Settings
@@ -65,6 +66,7 @@ struct Settings
                         #keyPath(UserDefaults.respectSilentMode): true,
                         #keyPath(UserDefaults.pauseWhileInactive): true,
                         #keyPath(UserDefaults.supportsExternalDisplays): true,
+                        #keyPath(UserDefaults.isQuickGesturesEnabled): true,
                         Settings.preferredCoreSettingsKey(for: .ds): MelonDS.core.identifier] as [String : Any]
         
         #if !BETA
@@ -251,6 +253,17 @@ extension Settings
         set {
             UserDefaults.standard.supportsExternalDisplays = newValue
             NotificationCenter.default.post(name: Settings.didChangeNotification, object: nil, userInfo: [NotificationUserInfoKey.name: Name.supportsExternalDisplays])
+        }
+    }
+    
+    static var isQuickGesturesEnabled: Bool {
+        get {
+            let isQuickGesturesEnabled = UserDefaults.standard.isQuickGesturesEnabled
+            return isQuickGesturesEnabled
+        }
+        set {
+            UserDefaults.standard.isQuickGesturesEnabled = newValue
+            NotificationCenter.default.post(name: Settings.didChangeNotification, object: nil, userInfo: [NotificationUserInfoKey.name: Name.isQuickGesturesEnabled])
         }
     }
     
@@ -477,4 +490,6 @@ private extension UserDefaults
     
     @NSManaged var pauseWhileInactive: Bool
     @NSManaged var supportsExternalDisplays: Bool
+    
+    @NSManaged var isQuickGesturesEnabled: Bool
 }

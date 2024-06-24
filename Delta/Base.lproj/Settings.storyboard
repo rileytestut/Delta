@@ -542,6 +542,46 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
+                            <tableViewSection headerTitle="Gestures" id="BoE-ds-6Mb">
+                                <string key="footerTitle">Perform gestures while holding the menu button to activate quick actions.
+
+Fast Forward: Swipe horizontally
+Hold Button: Press controller input
+Quick Save: Double-tap
+Quick Load: Long-press</string>
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="SwitchCell" id="kfm-Bg-De9" customClass="SwitchTableViewCell">
+                                        <rect key="frame" x="16" y="1810" width="343" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="kfm-Bg-De9" id="hid-pQ-pOH">
+                                            <rect key="frame" x="0.0" y="0.0" width="343" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Menu Button Gestures" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xqO-bP-GZu">
+                                                    <rect key="frame" x="16" y="11.5" width="254" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6LN-kh-Afv">
+                                                    <rect key="frame" x="278" y="6.5" width="51" height="31"/>
+                                                    <color key="onTintColor" name="Purple"/>
+                                                    <connections>
+                                                        <action selector="toggleQuickGesturesEnabled:" destination="eHi-aO-uGS" eventType="primaryActionTriggered" id="iTa-jt-oHJ"/>
+                                                    </connections>
+                                                </switch>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="6LN-kh-Afv" firstAttribute="leading" secondItem="xqO-bP-GZu" secondAttribute="trailing" constant="8" symbolic="YES" id="LpM-vZ-gXo"/>
+                                                <constraint firstItem="xqO-bP-GZu" firstAttribute="leading" secondItem="hid-pQ-pOH" secondAttribute="leadingMargin" id="V0w-qZ-Zpn"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="6LN-kh-Afv" secondAttribute="trailing" id="kmF-Xf-8Xb"/>
+                                                <constraint firstItem="6LN-kh-Afv" firstAttribute="centerY" secondItem="hid-pQ-pOH" secondAttribute="centerY" id="stl-Ll-6sq"/>
+                                                <constraint firstItem="xqO-bP-GZu" firstAttribute="centerY" secondItem="hid-pQ-pOH" secondAttribute="centerY" id="t4z-lX-UlN"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
                             <tableViewSection headerTitle="Core Settings" footerTitle="Manage settings for individual emulation cores." id="1eN-id-M8c">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell" textLabel="zeg-kj-CMN" detailTextLabel="CFd-fn-r0t" style="IBUITableViewCellStyleValue1" id="lxX-Hz-sXl">
@@ -847,6 +887,7 @@
                         <outlet property="exportLogActivityIndicatorView" destination="x5w-dE-ucW" id="u5a-K3-2ag"/>
                         <outlet property="pauseWhileInactiveSwitch" destination="eeQ-UP-b2W" id="Gde-DL-tO2"/>
                         <outlet property="previewsEnabledSwitch" destination="OJE-9e-9i3" id="Ndg-eN-PPs"/>
+                        <outlet property="quickGesturesSwitch" destination="6LN-kh-Afv" id="1Vu-6Q-793"/>
                         <outlet property="respectSilentModeSwitch" destination="mlO-iy-zU2" id="TDT-cx-kCf"/>
                         <outlet property="supportExternalDisplaysSwitch" destination="qO4-fq-zR6" id="pXb-kK-Jm5"/>
                         <outlet property="syncingServiceLabel" destination="kLY-5g-v8n" id="zzx-qM-q1g"/>

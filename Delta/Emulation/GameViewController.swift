@@ -1626,10 +1626,15 @@ extension GameViewController
     override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool
     {
         guard super.gestureRecognizer(gestureRecognizer, shouldReceive: touch) else { return false }
-        guard self.menuButtonGestureRecognizers.contains(gestureRecognizer) || self.menuButtonKeyboardGestureRecognizers.contains(gestureRecognizer) else { return false }
         
-        let shouldBegin = self.isMenuButtonHeldDown
-        return shouldBegin
+        if self.menuButtonGestureRecognizers.contains(gestureRecognizer) || self.menuButtonKeyboardGestureRecognizers.contains(gestureRecognizer)
+        {
+            let shouldBegin = self.isMenuButtonHeldDown && Settings.isQuickGesturesEnabled
+            return shouldBegin
+        }
+        
+        // Default to true, as if this method wasn't overridden.
+        return true
     }
     
     @objc private func handleSwipeGesture(_ gestureRecognizer: UISwipeGestureRecognizer)
