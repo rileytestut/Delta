@@ -590,7 +590,7 @@ private extension GameCollectionViewController
             self.changeArtwork(for: game)
         }
         
-        let changeControllerSkinAction = UIAction(title: NSLocalizedString("Change Controller Skin", comment: ""), image: UIImage(symbolNameIfAvailable: "gamecontroller")) { [unowned self] _ in
+        let changeControllerSkinAction = UIAction(title: NSLocalizedString("Change Game Skin", comment: ""), image: UIImage(symbolNameIfAvailable: "gamecontroller")) { [unowned self] _ in
             self.changePreferredControllerSkin(for: game)
         }
         
