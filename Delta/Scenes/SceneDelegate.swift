@@ -50,6 +50,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         
+        // Become default scene handler for Handoff/other deep links.
+        scene.activationConditions.prefersToActivateForTargetContentIdentifierPredicate = NSPredicate(value: true)
+        
         self.window?.tintColor = .deltaPurple
         
         if let context = connectionOptions.urlContexts.first

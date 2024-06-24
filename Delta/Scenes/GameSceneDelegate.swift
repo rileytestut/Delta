@@ -38,6 +38,10 @@ class GameSceneDelegate: UIResponder, UIWindowSceneDelegate
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let gameScene = scene as? GameScene else { return }
         
+        // Disable handling Handoff for dedicated game scenes.
+        // Also results in new main scene creation (if needed) when launching from home screen.
+        gameScene.activationConditions.canActivateForTargetContentIdentifierPredicate = NSPredicate(value: false)
+        
         self.window?.tintColor = .deltaPurple
         
         DatabaseManager.shared.start { error in
