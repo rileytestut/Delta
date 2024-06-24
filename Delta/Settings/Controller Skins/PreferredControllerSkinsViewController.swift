@@ -107,22 +107,25 @@ extension PreferredControllerSkinsViewController
             // Hide Done button since we are not root view controller.
             self.navigationItem.rightBarButtonItem = nil
         }
+        
+        self.variantSegmentedControl.removeAllSegments()
     }
     
     override func viewIsAppearing(_ animated: Bool)
     {
         super.viewIsAppearing(animated)
         
-        self.variantSegmentedControl.removeAllSegments()
-        
-        guard let scene = self.view.window?.windowScene, Variant.supportedVariants.count > 1 else { return }
-        
-        for (index, variant) in zip(0..., Variant.supportedVariants)
+        if let scene = self.view.window?.windowScene, Variant.supportedVariants.count > 1, self.variantSegmentedControl.numberOfSegments == 0
         {
-            self.variantSegmentedControl.insertSegment(withTitle: variant.localizedName(for: scene), at: index, animated: false)
+            // Only update segmented control on initial appearance when it has no segments.
+            
+            for (index, variant) in zip(0..., Variant.supportedVariants)
+            {
+                self.variantSegmentedControl.insertSegment(withTitle: variant.localizedName(for: scene), at: index, animated: false)
+            }
+            
+            self.variantSegmentedControl.selectedSegmentIndex = 0
         }
-        
-        self.variantSegmentedControl.selectedSegmentIndex = 0
     }
     
     override func viewDidDisappear(_ animated: Bool)
