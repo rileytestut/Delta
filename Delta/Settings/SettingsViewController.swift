@@ -24,10 +24,11 @@ private extension SettingsViewController
         case controllerSkins
         case controllerOpacity
         case gameAudio
-        case stageManager
+        case airPlay
         case hapticFeedback
         case syncing
         case hapticTouch
+        case multitasking
         case gestures
         case cores
         case advanced
@@ -43,6 +44,13 @@ private extension SettingsViewController
         case dsSettings = "dsSettingsSegue"
     }
 
+    enum AirPlayRow: Int, CaseIterable
+    {
+        case displayFullScreen
+        case topScreenOnly
+        case layoutHorizontally
+    }
+    
     enum SyncingRow: Int, CaseIterable
     {
         case service
@@ -81,6 +89,8 @@ class SettingsViewController: UITableViewController
     @IBOutlet private var respectSilentModeSwitch: UISwitch!
     @IBOutlet private var pauseWhileInactiveSwitch: UISwitch!
     @IBOutlet private var supportExternalDisplaysSwitch: UISwitch!
+    @IBOutlet private var topScreenOnlySwitch: UISwitch!
+    @IBOutlet private var layoutScreensHorizontallySwitch: UISwitch!
     @IBOutlet private var buttonHapticFeedbackEnabledSwitch: UISwitch!
     @IBOutlet private var thumbstickHapticFeedbackEnabledSwitch: UISwitch!
     @IBOutlet private var previewsEnabledSwitch: UISwitch!
@@ -196,7 +206,10 @@ private extension SettingsViewController
         
         self.respectSilentModeSwitch.isOn = Settings.respectSilentMode
         self.pauseWhileInactiveSwitch.isOn = Settings.pauseWhileInactive
+        
         self.supportExternalDisplaysSwitch.isOn = Settings.supportsExternalDisplays
+        self.topScreenOnlySwitch.isOn = Settings.features.dsAirPlay.topScreenOnly
+        self.layoutScreensHorizontallySwitch.isOn = (Settings.features.dsAirPlay.layoutAxis == .horizontal)
         
         self.syncingServiceLabel.text = Settings.syncingService?.localizedName
         
@@ -228,7 +241,7 @@ private extension SettingsViewController
     {
         switch section
         {
-        case .stageManager where !UIApplication.shared.supportsMultipleScenes: return true
+        case .multitasking where !UIApplication.shared.supportsMultipleScenes: return true
         case .hapticFeedback where !UIDevice.current.isVibrationSupported: return true
             
         case .advanced:
@@ -312,6 +325,58 @@ private extension SettingsViewController
     @IBAction func toggleSupportExternalDisplays(_ sender: UISwitch)
     {
         Settings.supportsExternalDisplays = sender.isOn
+        
+        self.tableView.performBatchUpdates({
+            let topScreenOnlyIndexPath = IndexPath(row: AirPlayRow.topScreenOnly.rawValue, section: Section.airPlay.rawValue)
+            let layoutHorizontallyIndexPath = IndexPath(row: AirPlayRow.layoutHorizontally.rawValue, section: Section.airPlay.rawValue)
+            if sender.isOn
+            {
+                self.tableView.insertRows(at: [topScreenOnlyIndexPath], with: .top)
+                
+                if !Settings.features.dsAirPlay.topScreenOnly
+                {
+                    self.tableView.insertRows(at: [layoutHorizontallyIndexPath], with: .top)
+                }
+            }
+            else
+            {
+                self.tableView.deleteRows(at: [topScreenOnlyIndexPath], with: .top)
+                
+                if !Settings.features.dsAirPlay.topScreenOnly
+                {
+                    self.tableView.deleteRows(at: [layoutHorizontallyIndexPath], with: .top)
+                }
+            }
+            
+        }) { _ in
+            self.tableView.reloadSections([Section.airPlay.rawValue], with: .none)
+        }
+    }
+    
+    @IBAction func toggleTopScreenOnly(_ sender: UISwitch)
+    {
+        Settings.features.dsAirPlay.topScreenOnly = sender.isOn
+        
+        self.tableView.performBatchUpdates({
+            let layoutHorizontallyIndexPath = IndexPath(row: AirPlayRow.layoutHorizontally.rawValue, section: Section.airPlay.rawValue)
+            if sender.isOn
+            {
+                self.tableView.deleteRows(at: [layoutHorizontallyIndexPath], with: .top)
+            }
+            else
+            {
+                self.tableView.insertRows(at: [layoutHorizontallyIndexPath], with: .top)
+            }
+        }) { _ in
+            self.tableView.reloadSections([Section.airPlay.rawValue], with: .none)
+        }
+    }
+    
+    @IBAction func toggleLayoutHorizontally(_ sender: UISwitch)
+    {
+        Settings.features.dsAirPlay.layoutAxis = sender.isOn ? .horizontal : .vertical
+        
+        self.tableView.reloadSections([Section.airPlay.rawValue], with: .none)
     }
     
     @IBAction func toggleQuickGesturesEnabled(_ sender: UISwitch)
@@ -456,6 +521,26 @@ extension SettingsViewController
         {
         case .controllers: return 4
         case .controllerSkins: return System.registeredSystems.count
+        case .airPlay:
+            var numberOfRows = 1
+            
+            if Settings.supportsExternalDisplays
+            {
+                // Show additional options if primary setting is enabled.
+                numberOfRows += 1
+                
+                if Settings.features.dsAirPlay.topScreenOnly
+                {
+                    // Layout axis is irrelevant if only AirPlaying top screen.
+                }
+                else
+                {
+                    numberOfRows += 1
+                }
+            }
+            
+            return numberOfRows
+            
         case .syncing: return SyncManager.shared.coordinator?.account == nil ? 1 : super.tableView(tableView, numberOfRowsInSection: sectionIndex)
         #if !BETA
         case .advanced: return 1
@@ -496,7 +581,7 @@ extension SettingsViewController
             
         case .controllerSkins:
             cell.textLabel?.text = System.registeredSystems[indexPath.row].localizedName
-                        
+            
         case .syncing:
             switch SyncingRow.allCases[indexPath.row]
             {
@@ -512,7 +597,7 @@ extension SettingsViewController
             let preferredCore = Settings.preferredCore(for: .ds)
             cell.detailTextLabel?.text = preferredCore?.metadata?.name.value ?? preferredCore?.name ?? NSLocalizedString("Unknown", comment: "")
             
-        case .controllerOpacity, .gameAudio, .stageManager, .hapticFeedback, .hapticTouch, .gestures, .advanced, .patreon, .credits, .support: break
+        case .controllerOpacity, .gameAudio, .airPlay, .hapticFeedback, .hapticTouch, .multitasking, .gestures, .advanced, .patreon, .credits, .support: break
         }
 
         return cell
@@ -528,7 +613,7 @@ extension SettingsViewController
         case .controllers: self.performSegue(withIdentifier: Segue.controllers.rawValue, sender: cell)
         case .controllerSkins: self.performSegue(withIdentifier: Segue.controllerSkins.rawValue, sender: cell)
         case .cores: self.performSegue(withIdentifier: Segue.dsSettings.rawValue, sender: cell)
-        case .controllerOpacity, .gameAudio, .stageManager, .hapticFeedback, .hapticTouch, .gestures, .syncing: break
+        case .controllerOpacity, .gameAudio, .airPlay, .hapticFeedback, .hapticTouch, .multitasking, .gestures, .syncing: break
         case .advanced:
             let row = AdvancedRow(rawValue: indexPath.row)!
             switch row
@@ -663,6 +748,7 @@ extension SettingsViewController
         
         switch section
         {
+        case .airPlay where self.view.traitCollection.userInterfaceIdiom == .pad: return NSLocalizedString("AirPlay / External Displays", comment: "")
         case .hapticTouch where self.view.traitCollection.forceTouchCapability == .available: return NSLocalizedString("3D Touch", comment: "")
         default: return super.tableView(tableView, titleForHeaderInSection: section.rawValue)
         }
@@ -706,6 +792,15 @@ extension SettingsViewController
         case .advanced: return nil
         #endif
         case .controllerSkins: return nil
+        case .airPlay:
+            switch (Settings.supportsExternalDisplays, Settings.features.dsAirPlay.topScreenOnly, Settings.features.dsAirPlay.layoutAxis)
+            {
+            case (false, _, _): return NSLocalizedString("Games will not take over the entire display when AirPlaying.", comment: "")
+            case (true, true, _): return NSLocalizedString("When AirPlaying DS games, only the top screen will appear on the external display.", comment: "")
+            case (true, false, .vertical): return NSLocalizedString("When AirPlaying DS games, both screens will be stacked vertically on the external display.", comment: "")
+            case (true, false, .horizontal): return NSLocalizedString("When AirPlaying DS games, both screens will be placed side-by-side on the external display.", comment: "")
+            }
+            
         default: return super.tableView(tableView, titleForFooterInSection: section.rawValue)
         }
     }
