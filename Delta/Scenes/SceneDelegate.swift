@@ -120,28 +120,11 @@ extension SceneDelegate
     func scene(_ scene: UIScene, willContinueUserActivityWithType userActivityType: String)
     {
     }
-
+    
     func scene(_ scene: UIScene, continue userActivity: NSUserActivity)
     {
-        guard let gameID = userActivity.userInfo?[NSUserActivity.gameIDKey] as? String, userActivity.activityType == NSUserActivity.playGameActivityType else { return }
-        
-        do
-        {
-            let fetchRequest = Game.fetchRequest()
-            fetchRequest.predicate = NSPredicate(format: "%K == %@", #keyPath(Game.identifier), gameID)
-            
-            let count = try DatabaseManager.shared.viewContext.count(for: fetchRequest)
-            guard count > 0 else { throw DeepLink.Error.gameNotFound(gameID) }
-            
-            self.handle(.handoff(userActivity))
-        }
-        catch
-        {
-            Logger.main.error("Failed to load game for Handoff. \(error.localizedDescription, privacy: .public)")
-            
-            let alertController = UIAlertController(title: NSLocalizedString("Handoff Failed", comment: ""), error: error)
-            self.present(alertController)
-        }
+        guard userActivity.activityType == NSUserActivity.playGameActivityType else { return }
+        self.handle(.handoff(userActivity))
     }
     
     func scene(_ scene: UIScene, didFailToContinueUserActivityWithType userActivityType: String, error: any Error)
@@ -180,9 +163,31 @@ private extension SceneDelegate
             
             switch deepLink
             {
-            case .shortcut, .handoff:
-                _ = self.deepLinkController.handle(deepLink)
+            case .shortcut: _ = self.deepLinkController.handle(deepLink)
+            case .handoff(let userActivity) where userActivity.activityType == NSUserActivity.playGameActivityType:
+                do
+                {
+                    guard let gameID = userActivity.userInfo?[NSUserActivity.gameIDKey] as? String else {
+                        throw CocoaError(.fileNoSuchFile, userInfo: [NSLocalizedFailureReasonErrorKey: NSLocalizedString("The game's identifier is missing.", comment: "")])
+                    }
+                    
+                    let fetchRequest = Game.fetchRequest()
+                    fetchRequest.predicate = NSPredicate(format: "%K == %@", #keyPath(Game.identifier), gameID)
+                    
+                    let count = try DatabaseManager.shared.viewContext.count(for: fetchRequest)
+                    guard count > 0 else { throw DeepLink.Error.gameNotFound(gameID) }
+                    
+                    _ = self.deepLinkController.handle(deepLink)
+                }
+                catch
+                {
+                    Logger.main.error("Failed to load game for Handoff. \(error.localizedDescription, privacy: .public)")
+                    
+                    let alertController = UIAlertController(title: NSLocalizedString("Handoff Failed", comment: ""), error: error)
+                    self.present(alertController)
+                }
                 
+            case .handoff: _ = self.deepLinkController.handle(deepLink)
             case .url(let url):
                 if url.isFileURL
                 {
