@@ -8,8 +8,8 @@
 
 import UIKit
 
-// Suuuuuuper hacky, but I really want to access UIWindowScene.isStageManagerEnabled without making it public.
-@testable import DeltaCore
+// Access UIWindowScene.isStageManagerEnabled
+@_spi(Internal) import DeltaCore
 
 extension PreferredControllerSkinsViewController
 {
