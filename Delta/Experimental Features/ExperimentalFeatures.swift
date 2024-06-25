@@ -59,3 +59,25 @@ struct ExperimentalFeatures: FeatureContainer
         self.prepareFeatures()
     }
 }
+
+extension ExperimentalFeatures
+{
+    static var isExperimentalFeaturesAvailable: Bool {
+        #if BETA
+        // Experimental features are always available in BETA version.
+        return true
+        #else
+        
+        // Experimental features are only available for signed-in "beta access" patrons in public version.
+        if let patreonAccount = DatabaseManager.shared.patreonAccount(), patreonAccount.hasBetaAccess
+        {
+            return true
+        }
+        else
+        {
+            return false
+        }
+        
+        #endif
+    }
+}

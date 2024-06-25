@@ -63,6 +63,12 @@ private extension SettingsViewController
         case experimentalFeatures
     }
     
+    enum PatreonRow: Int, CaseIterable
+    {
+        case joinPatreon
+        case connectAccount
+    }
+    
     enum CreditsRow: Int, CaseIterable
     {
         case riley
@@ -247,11 +253,8 @@ private extension SettingsViewController
         case .advanced:
             guard #unavailable(iOS 15) else { return false }
             
-            #if BETA
-            return false
-            #else
-            return true
-            #endif
+            // OSLogStore is not available on iOS 14, so section is only visible if experimental features is visible.
+            return !ExperimentalFeatures.isExperimentalFeaturesAvailable
             
         case .hapticTouch:
             if #available(iOS 13, *)
@@ -475,6 +478,92 @@ private extension SettingsViewController
             await self.exportLogActivityIndicatorView.stopAnimating()
         }
     }
+    
+    func joinPatreonCampaign()
+    {
+        let patreonDeepLink = URL(string: "altstore://patreon")!
+        let patreonURL = URL(string: "https://www.patreon.com/rileyshane")!
+        
+        let patreonAccount = DatabaseManager.shared.patreonAccount()
+        
+        // Prefer opening Patreon page in AltStore if it's installed.
+        // But only if we're not already a patron, otherwise open webpage directly.
+        if UIApplication.shared.canOpenURL(patreonDeepLink), patreonAccount?.isPatron != true
+        {
+            UIApplication.shared.open(patreonDeepLink, options: [:]) { (success) in
+                guard !success else { return }
+                
+                UIApplication.shared.open(patreonURL)
+            }
+        }
+        else
+        {
+            UIApplication.shared.open(patreonURL)
+        }
+    }
+    
+    func authenticatePatreonAccount()
+    {
+        PatreonAPI.shared.authenticate(presentingViewController: self) { (result) in
+            do
+            {
+                let account = try result.get()
+                try account.managedObjectContext?.save()
+                
+                DispatchQueue.main.async {
+                    self.update()
+                }
+            }
+            catch is CancellationError
+            {
+                // Ignore
+            }
+            catch
+            {
+                DispatchQueue.main.async {
+                    let alertController = UIAlertController(title: NSLocalizedString("Unable to Authenticate with Patreon", comment: ""), error: error)
+                    self.present(alertController, animated: true)
+                }
+            }
+        }
+    }
+    
+    func signOutPatreonAccount()
+    {
+        func signOut()
+        {
+            PatreonAPI.shared.signOut { (result) in
+                do
+                {
+                    try result.get()
+                    
+                    DispatchQueue.main.async {
+                        self.update()
+                    }
+                }
+                catch
+                {
+                    DispatchQueue.main.async {
+                        let alertController = UIAlertController(title: NSLocalizedString("Unable to Sign Out of Patreon", comment: ""), error: error)
+                        self.present(alertController, animated: true)
+                    }
+                }
+            }
+        }
+        
+        let alertController = UIAlertController(title: NSLocalizedString("Are you sure you want to unlink your Patreon account?", comment: ""),
+                                                message: NSLocalizedString("You will no longer be able to access patron-exclusive features.", comment: ""),
+                                                preferredStyle: .actionSheet)
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Unlink Patreon Account", comment: ""), style: .destructive) { _ in signOut() })
+        alertController.addAction(.cancel)
+        
+        let indexPath = IndexPath(item: PatreonRow.connectAccount.rawValue, section: Section.patreon.rawValue)
+        let frame = self.tableView.rectForRow(at: indexPath)
+        alertController.popoverPresentationController?.sourceRect = frame
+        alertController.popoverPresentationController?.sourceView = self.tableView
+        
+        self.present(alertController, animated: true, completion: nil)
+    }
 }
 
 private extension SettingsViewController
@@ -542,9 +631,21 @@ extension SettingsViewController
             return numberOfRows
             
         case .syncing: return SyncManager.shared.coordinator?.account == nil ? 1 : super.tableView(tableView, numberOfRowsInSection: sectionIndex)
-        #if !BETA
-        case .advanced: return 1
-        #endif
+        case .advanced:
+            if isSectionHidden(section)
+            {
+                // Possibly hidden on iOS 14.
+                return 0
+            }
+            else if ExperimentalFeatures.isExperimentalFeaturesAvailable
+            {
+                return super.tableView(tableView, numberOfRowsInSection: sectionIndex)
+            }
+            else
+            {
+                return 1
+            }
+            
         default:
             if isSectionHidden(section)
             {
@@ -597,7 +698,38 @@ extension SettingsViewController
             let preferredCore = Settings.preferredCore(for: .ds)
             cell.detailTextLabel?.text = preferredCore?.metadata?.name.value ?? preferredCore?.name ?? NSLocalizedString("Unknown", comment: "")
             
-        case .controllerOpacity, .gameAudio, .airPlay, .hapticFeedback, .hapticTouch, .multitasking, .gestures, .advanced, .patreon, .credits, .support: break
+        case .patreon:
+            let row = PatreonRow(rawValue: indexPath.row)!
+            switch row
+            {
+            case .joinPatreon:
+                if let patreonAccount = DatabaseManager.shared.patreonAccount(), patreonAccount.isPatron
+                {
+                    cell.textLabel?.text = NSLocalizedString("View Patreon", comment: "")
+                }
+                else
+                {
+                    cell.textLabel?.text = NSLocalizedString("Join our Patreon", comment: "")
+                }
+                
+            case .connectAccount:
+                var content = cell.defaultContentConfiguration()
+                content.textProperties.color = .deltaPurple
+                
+                if let patreonAccount = DatabaseManager.shared.patreonAccount()
+                {
+                    let text = String(format: NSLocalizedString("Unlink %@", comment: ""), patreonAccount.name)
+                    content.text = text
+                }
+                else
+                {
+                    content.text = NSLocalizedString("Connect Account…", comment: "")
+                }
+                
+                cell.contentConfiguration = content
+            }
+            
+        case .controllerOpacity, .gameAudio, .airPlay, .hapticFeedback, .hapticTouch, .multitasking, .gestures, .advanced, .credits, .support: break
         }
 
         return cell
@@ -626,22 +758,19 @@ extension SettingsViewController
             }
 
         case .patreon:
-            let patreonDeepLink = URL(string: "altstore://patreon")!
-            let patreonURL = URL(string: "https://www.patreon.com/rileyshane")!
-            
-            if UIApplication.shared.canOpenURL(patreonDeepLink)
+            let row = PatreonRow(rawValue: indexPath.row)!
+            switch row
             {
-                // AltStore is installed, so open Patreon page in AltStore.
-                
-                UIApplication.shared.open(patreonDeepLink, options: [:]) { (success) in
-                    guard !success else { return }
-                    
-                    UIApplication.shared.open(patreonURL)
+            case .joinPatreon: self.joinPatreonCampaign()
+            case .connectAccount:
+                if let _ = DatabaseManager.shared.patreonAccount()
+                {
+                    self.signOutPatreonAccount()
                 }
-            }
-            else
-            {
-                UIApplication.shared.open(patreonURL)
+                else
+                {
+                    self.authenticatePatreonAccount()
+                }
             }
             
             tableView.deselectRow(at: indexPath, animated: true)
@@ -788,9 +917,16 @@ extension SettingsViewController
         
         switch section
         {
-        #if !BETA
-        case .advanced: return nil
-        #endif
+        case .advanced:
+            if ExperimentalFeatures.isExperimentalFeaturesAvailable
+            {
+                return super.tableView(tableView, titleForFooterInSection: section.rawValue)
+            }
+            else
+            {
+                return nil
+            }
+            
         case .controllerSkins: return nil
         case .airPlay:
             switch (Settings.supportsExternalDisplays, Settings.features.dsAirPlay.topScreenOnly, Settings.features.dsAirPlay.layoutAxis)
