@@ -44,11 +44,6 @@ struct ExperimentalFeatures: FeatureContainer
              description: "Repair invalid relationships in Delta's game database on next app launch.")
     var repairDatabase
     
-    @Feature(name: "Alternate App Icon",
-             description: "Change the app icon.",
-             options: AlternateAppIconOptions())
-    var alternateAppIcons
-    
     @Feature(name: "Skin Debugging",
              description: "Enable features useful for mapping controller skins.",
              options: SkinDebuggingOptions())
