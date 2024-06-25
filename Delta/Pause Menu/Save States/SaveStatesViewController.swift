@@ -172,10 +172,7 @@ extension SaveStatesViewController
         let saveStates = SaveState.instancesWithPredicate(predicate, inManagedObjectContext: DatabaseManager.shared.viewContext, type: SaveState.self)
         self.incompatibleSaveStatesCount = saveStates.count
         
-        if #available(iOS 15, *)
-        {
-            self.prepareOptionsMenu()
-        }
+        self.prepareOptionsMenu()
     }
     
     override func viewIsAppearing(_ animated: Bool) 
@@ -300,10 +297,9 @@ private extension SaveStatesViewController
         }
     }
     
-    @available(iOS 15, *)
     func prepareOptionsMenu()
     {
-        let sortActions = UIDeferredMenuElement.uncached { [weak self] completion in
+        let sortActionsProvider: (([UIMenuElement]) -> Void) -> Void = { [weak self] completion in
             guard let self else { return completion([]) }
             
             let actions = Sorting.allCases.map { sorting in
@@ -319,7 +315,7 @@ private extension SaveStatesViewController
                 {
                     icon = nil
                 }
-                                
+                
                 let action = UIAction(title: sorting.localizedName, image: icon, state: state) { action in
                     self.preferredSorting = sorting
                     
@@ -333,7 +329,7 @@ private extension SaveStatesViewController
                         // New, so reset sorting direction to ascending.
                         self.prefersDescendingSorting = false
                     }
-                                        
+                    
                     UIView.transition(with: self.collectionView, duration: 0.4, options: .transitionCrossDissolve, animations: {
                         self.updateDataSource()
                     }, completion: nil)
@@ -345,7 +341,7 @@ private extension SaveStatesViewController
             completion(actions)
         }
         
-        let filterActions = UIDeferredMenuElement.uncached { [weak self] completion in
+        let filterActionsProvider: (([UIMenuElement]) -> Void) -> Void = { [weak self] completion in
             guard let self else { return completion([]) }
             
             let action: UIAction
@@ -365,13 +361,30 @@ private extension SaveStatesViewController
             completion([action])
         }
         
-        let sortMenu = UIMenu(title: NSLocalizedString("Sort by…", comment: ""), options: [.singleSelection, .displayInline], children: [sortActions])
+        let sortActions: UIDeferredMenuElement
+        let filterActions: UIDeferredMenuElement
+        let menuOptions: UIMenu.Options
+        
+        if #available(iOS 15, *)
+        {
+            sortActions = UIDeferredMenuElement.uncached(sortActionsProvider)
+            filterActions = UIDeferredMenuElement.uncached(filterActionsProvider)
+            menuOptions = [.singleSelection, .displayInline]
+        }
+        else
+        {
+            sortActions = UIDeferredMenuElement(sortActionsProvider)
+            filterActions = UIDeferredMenuElement(filterActionsProvider)
+            menuOptions = [.displayInline]
+        }
+        
+        let sortMenu = UIMenu(title: NSLocalizedString("Sort by…", comment: ""), options: menuOptions, children: [sortActions])
         var allMenus = [sortMenu]
         
         if self.incompatibleSaveStatesCount > 0
         {
             // There is at least one incompatible save state, so show the filter menu.
-            let filterMenu = UIMenu(title: "", options: [.singleSelection, .displayInline], children: [filterActions])
+            let filterMenu = UIMenu(title: "", options: menuOptions, children: [filterActions])
             allMenus.append(filterMenu)
         }
         
