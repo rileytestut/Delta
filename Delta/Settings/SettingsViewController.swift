@@ -23,6 +23,7 @@ private extension SettingsViewController
         case controllers
         case controllerSkins
         case controllerOpacity
+        case display
         case gameAudio
         case airPlay
         case hapticFeedback
@@ -41,6 +42,7 @@ private extension SettingsViewController
     {
         case controllers = "controllersSegue"
         case controllerSkins = "controllerSkinsSegue"
+        case altAppIcons = "altAppIconsSegue"
         case dsSettings = "dsSettingsSegue"
     }
 
@@ -198,7 +200,7 @@ class SettingsViewController: UITableViewController
             let system = System.registeredSystems[indexPath.row]
             preferredControllerSkinsViewController.system = system
             
-        case Segue.dsSettings: break
+        case Segue.dsSettings, Segue.altAppIcons: break
         }
     }
 }
@@ -729,7 +731,7 @@ extension SettingsViewController
                 cell.contentConfiguration = content
             }
             
-        case .controllerOpacity, .gameAudio, .airPlay, .hapticFeedback, .hapticTouch, .multitasking, .gestures, .advanced, .credits, .support: break
+        case .controllerOpacity, .display, .gameAudio, .airPlay, .hapticFeedback, .hapticTouch, .multitasking, .gestures, .advanced, .credits, .support: break
         }
 
         return cell
@@ -744,6 +746,7 @@ extension SettingsViewController
         {
         case .controllers: self.performSegue(withIdentifier: Segue.controllers.rawValue, sender: cell)
         case .controllerSkins: self.performSegue(withIdentifier: Segue.controllerSkins.rawValue, sender: cell)
+        case .display: self.performSegue(withIdentifier: Segue.altAppIcons.rawValue, sender: cell)
         case .cores: self.performSegue(withIdentifier: Segue.dsSettings.rawValue, sender: cell)
         case .controllerOpacity, .gameAudio, .airPlay, .hapticFeedback, .hapticTouch, .multitasking, .gestures, .syncing: break
         case .advanced:

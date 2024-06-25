@@ -219,6 +219,12 @@
 		D5AE76BF2C2B54050086471B /* PatreonAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5AE76BE2C2B54050086471B /* PatreonAccount.swift */; };
 		D5AE76C22C2B59240086471B /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = D5AE76C12C2B59240086471B /* KeychainAccess */; };
 		D5AE76C42C2B59360086471B /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5AE76C32C2B59360086471B /* Keychain.swift */; };
+		D5AE76C62C2B7F3D0086471B /* Icons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5AE76C52C2B7F3D0086471B /* Icons.xcassets */; };
+		D5AE76C82C2B808F0086471B /* AltAppIconsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5AE76C72C2B808F0086471B /* AltAppIconsViewController.swift */; };
+		D5AE76CA2C2B809C0086471B /* Icons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5AE76C52C2B7F3D0086471B /* Icons.xcassets */; };
+		D5AE76CB2C2B81000086471B /* OSLog+Delta.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CDCCC32A85765900E22131 /* OSLog+Delta.swift */; };
+		D5AE76CD2C2B81870086471B /* AltIcons.plist in Resources */ = {isa = PBXBuildFile; fileRef = D5AE76CC2C2B81870086471B /* AltIcons.plist */; };
+		D5AE76CE2C2B81870086471B /* AltIcons.plist in Resources */ = {isa = PBXBuildFile; fileRef = D5AE76CC2C2B81870086471B /* AltIcons.plist */; };
 		D5AE78832BEAAD6100ED25DC /* GameSceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5AE78822BEAAD6100ED25DC /* GameSceneDelegate.swift */; };
 		D5B4235C2BD9C24000093054 /* RoundedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B4235B2BD9C24000093054 /* RoundedImageView.swift */; };
 		D5C45FEF2BE992A80009DBB0 /* AltKit in Frameworks */ = {isa = PBXBuildFile; productRef = D5C45FEE2BE992A80009DBB0 /* AltKit */; };
@@ -520,6 +526,9 @@
 		D5AE76BC2C2B53FC0086471B /* _PatreonAccount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = _PatreonAccount.swift; sourceTree = "<group>"; };
 		D5AE76BE2C2B54050086471B /* PatreonAccount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PatreonAccount.swift; sourceTree = "<group>"; };
 		D5AE76C32C2B59360086471B /* Keychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
+		D5AE76C52C2B7F3D0086471B /* Icons.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Icons.xcassets; sourceTree = "<group>"; };
+		D5AE76C72C2B808F0086471B /* AltAppIconsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AltAppIconsViewController.swift; sourceTree = "<group>"; };
+		D5AE76CC2C2B81870086471B /* AltIcons.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = AltIcons.plist; sourceTree = "<group>"; };
 		D5AE78822BEAAD6100ED25DC /* GameSceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSceneDelegate.swift; sourceTree = "<group>"; };
 		D5B4235B2BD9C24000093054 /* RoundedImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedImageView.swift; sourceTree = "<group>"; };
 		D5CDCCC32A85765900E22131 /* OSLog+Delta.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OSLog+Delta.swift"; sourceTree = "<group>"; };
@@ -826,12 +835,13 @@
 			path = "Import Options";
 			sourceTree = "<group>";
 		};
-		BF71CF851FE8FFF1001F1613 /* App Icon Shortcuts */ = {
+		BF71CF851FE8FFF1001F1613 /* App Icon */ = {
 			isa = PBXGroup;
 			children = (
+				D5AE76C72C2B808F0086471B /* AltAppIconsViewController.swift */,
 				BF71CF861FE90006001F1613 /* AppIconShortcutsViewController.swift */,
 			);
-			path = "App Icon Shortcuts";
+			path = "App Icon";
 			sourceTree = "<group>";
 		};
 		BF71CF881FE90471001F1613 /* Table View */ = {
@@ -937,7 +947,7 @@
 				BF5E7F431B9A650B00AE44F8 /* SettingsViewController.swift */,
 				BFB3645723245A6000CD0EB1 /* LicensesViewController.swift */,
 				BFE9907E24451DE6006409A7 /* Cores */,
-				BF71CF851FE8FFF1001F1613 /* App Icon Shortcuts */,
+				BF71CF851FE8FFF1001F1613 /* App Icon */,
 				BF11734E1DA32CEC00047DF8 /* Controllers */,
 				BF1DAD5B1D9F574900E752A7 /* Controller Skins */,
 				BF48F74C219A16C100BC2FC1 /* Syncing */,
@@ -994,6 +1004,8 @@
 			isa = PBXGroup;
 			children = (
 				BF6BB2451BB73FE800CCF94A /* Assets.xcassets */,
+				D5AE76C52C2B7F3D0086471B /* Icons.xcassets */,
+				D5AE76CC2C2B81870086471B /* AltIcons.plist */,
 				BF02D5D91DDEBB3000A5E131 /* openvgdb.sqlite */,
 				D5D797E7298DC9E200738869 /* cheatbase.zip */,
 				D53415A6298C78BC00FD67B1 /* Contributors.plist */,
@@ -1447,6 +1459,8 @@
 			files = (
 				D5D797E9298DCC7300738869 /* cheatbase.zip in Resources */,
 				BFFA71E21AAC406100EE9DD1 /* Main.storyboard in Resources */,
+				D5AE76C62C2B7F3D0086471B /* Icons.xcassets in Resources */,
+				D5AE76CD2C2B81870086471B /* AltIcons.plist in Resources */,
 				BF6BF3211EB82362008E83CD /* GamesDatabase.storyboard in Resources */,
 				BFAB9F88219A4B670080EC7D /* GoogleService-Info.plist in Resources */,
 				BF3540001C5DA3C500C1184C /* PausePresentationControllerContentView.xib in Resources */,
@@ -1465,6 +1479,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D5AE76CA2C2B809C0086471B /* Icons.xcassets in Resources */,
+				D5AE76CE2C2B81870086471B /* AltIcons.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1617,6 +1633,7 @@
 			files = (
 				BFB3645823245A6000CD0EB1 /* LicensesViewController.swift in Sources */,
 				BFC6F7B81F435BC500221B96 /* Input+Display.swift in Sources */,
+				D5AE76C82C2B808F0086471B /* AltAppIconsViewController.swift in Sources */,
 				BF59426A1E09BBD00051894B /* GridCollectionViewCell.swift in Sources */,
 				BF6BF3181EB82111008E83CD /* iTunesImportOption.swift in Sources */,
 				BF647A6A22FB8FCE0061D76D /* Bundle+SwizzleBundleID.swift in Sources */,
@@ -1788,6 +1805,7 @@
 			files = (
 				D539104029E88BC40006B350 /* ContentView.swift in Sources */,
 				D57D795629F300E100BB2CF8 /* CustomTintColor.swift in Sources */,
+				D5AE76CB2C2B81000086471B /* OSLog+Delta.swift in Sources */,
 				D57D795F29F315F700BB2CF8 /* FeatureDetailView.swift in Sources */,
 				D51CB7A629EDC15900B59678 /* ExperimentalFeatures.swift in Sources */,
 				D57D796029F315F700BB2CF8 /* ExperimentalFeaturesView.swift in Sources */,
