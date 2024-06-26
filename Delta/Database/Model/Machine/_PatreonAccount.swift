@@ -18,6 +18,8 @@ public class _PatreonAccount: NSManagedObject
 
     @NSManaged public var hasBetaAccess: Bool
 
+    @NSManaged public var hasPastBetaAccess: Bool
+
     @NSManaged public var identifier: String
 
     @NSManaged public var isPatron: Bool

@@ -17,6 +17,7 @@ extension PatreonAPI
         var full_name: String?
         var patron_status: String?
         var currently_entitled_amount_cents: Int32 // In campaign's currency
+        var campaign_lifetime_support_cents: Int32 // In campaign's currency
     }
     
     struct PatronRelationships: Decodable
@@ -42,7 +43,8 @@ extension PatreonAPI
     {
         public var name: String?
         public var identifier: String
-        public var pledgeAmount: Decimal?
+        public var pledgeAmount: Decimal
+        public var lifetimePledgeAmount: Decimal
         public var status: Status = .unknown
         
         // Relationships
@@ -55,6 +57,7 @@ extension PatreonAPI
             self.name = response.attributes.full_name
             self.identifier = response.id
             self.pledgeAmount = Decimal(response.attributes.currently_entitled_amount_cents) / 100
+            self.lifetimePledgeAmount = Decimal(response.attributes.campaign_lifetime_support_cents) / 100
             
             guard let included, let relationships = response.relationships else { return }
             

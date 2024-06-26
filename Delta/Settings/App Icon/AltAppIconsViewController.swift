@@ -42,12 +42,14 @@ extension AltAppIconsViewController
     {
         case modern
         case classic
+        case patrons
         
         var localizedName: String {
             switch self
             {
             case .modern: return NSLocalizedString("Modern", comment: "")
             case .classic: return NSLocalizedString("Classic", comment: "")
+            case .patrons: return NSLocalizedString("Patrons", comment: "")
             }
         }
     }
@@ -60,6 +62,22 @@ class AltAppIconsViewController: UICollectionViewController
     private var iconsBySection = [Section: [AltIcon]]()
     
     private var headerRegistration: UICollectionView.SupplementaryRegistration<UICollectionViewListCell>!
+    private var footerRegistration: UICollectionView.SupplementaryRegistration<UICollectionViewListCell>!
+    
+    private var isPatronIconsUnlocked: Bool {
+        #if BETA
+        return true
+        #else
+        if let patreonAccount = DatabaseManager.shared.patreonAccount(), patreonAccount.hasPastBetaAccess
+        {
+            return true
+        }
+        else
+        {
+            return false
+        }
+        #endif
+    }
         
     override func viewDidLoad()
     {
@@ -98,6 +116,32 @@ class AltAppIconsViewController: UICollectionViewController
             configuration.text = section.localizedName
             headerView.contentConfiguration = configuration
         }
+        
+        self.footerRegistration = UICollectionView.SupplementaryRegistration<UICollectionViewListCell>(elementKind: UICollectionView.elementKindSectionFooter) { (footerView, elementKind, indexPath) in
+            var configuration = UIListContentConfiguration.groupedFooter()
+            
+            let section = Section.allCases[indexPath.section]
+            switch section
+            {
+            case .patrons:
+                #if BETA
+                configuration.text = NSLocalizedString("Thank you for joining our Patreon!", comment: "")
+                #else
+                if self.isPatronIconsUnlocked
+                {
+                    configuration.text = NSLocalizedString("Thank you for joining our Patreon! These icons will remain available even after your subscription ends.", comment: "")
+                }
+                else
+                {
+                    configuration.text = NSLocalizedString("These icons are available as a thank you to anyone who has ever joined one of our Patreon tiers.\n\nThey will remain available even after your subscription ends.", comment: "")
+                }
+                #endif
+                
+            case .classic, .modern: break
+            }
+                        
+            footerView.contentConfiguration = configuration
+        }
     }
 }
 
@@ -105,12 +149,23 @@ private extension AltAppIconsViewController
 {
     func makeLayout() -> UICollectionViewCompositionalLayout
     {
-        var configuration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
-        configuration.showsSeparators = true
-        configuration.backgroundColor = .clear
-        configuration.headerMode = .supplementary
-                
-        let layout = UICollectionViewCompositionalLayout.list(using: configuration)
+        let layout = UICollectionViewCompositionalLayout { (sectionIndex, layoutEnvironment) -> NSCollectionLayoutSection? in
+            var configuration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
+            configuration.showsSeparators = true
+            configuration.backgroundColor = .clear
+            configuration.headerMode = .supplementary
+            
+            let section = Section.allCases[sectionIndex]
+            switch section
+            {
+            case .patrons: configuration.footerMode = .supplementary
+            case .modern, .classic: break
+            }
+            
+            let layoutSection = NSCollectionLayoutSection.list(using: configuration, layoutEnvironment: layoutEnvironment)
+            return layoutSection
+        }
+        
         return layout
     }
     
@@ -122,8 +177,9 @@ private extension AltAppIconsViewController
         }
         
         let dataSource = RSTCompositeCollectionViewDataSource(dataSources: dataSources)
-        dataSource.cellConfigurationHandler = { cell, icon, indexPath in
+        dataSource.cellConfigurationHandler = { [weak self] cell, icon, indexPath in
             let cell = cell as! UICollectionViewListCell
+            let section = Section.allCases[indexPath.section]
             
             let imageWidth = 44.0
             let font = UIFont(descriptor: UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body), size: 0.0)
@@ -137,6 +193,18 @@ private extension AltAppIconsViewController
             config.image = image
             config.imageProperties.maximumSize = CGSize(width: imageWidth, height: imageWidth)
             config.imageProperties.cornerRadius = imageWidth / 5.0 // Copied from AppIconImageView
+            
+            if section == .patrons
+            {
+                if self?.isPatronIconsUnlocked == true
+                {
+                    config.textProperties.color = .label
+                }
+                else
+                {
+                    config.textProperties.color = .secondaryLabel
+                }
+            }
             
             cell.contentConfiguration = config
 
@@ -160,12 +228,28 @@ extension AltAppIconsViewController
 {
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView
     {
-        let headerView = self.collectionView.dequeueConfiguredReusableSupplementary(using: self.headerRegistration, for: indexPath)
-        return headerView
+        switch kind
+        {
+        case UICollectionView.elementKindSectionHeader:
+            let headerView = self.collectionView.dequeueConfiguredReusableSupplementary(using: self.headerRegistration, for: indexPath)
+            return headerView
+            
+        case UICollectionView.elementKindSectionFooter:
+            let footerView = self.collectionView.dequeueConfiguredReusableSupplementary(using: self.footerRegistration, for: indexPath)
+            return footerView
+            
+        default: return UICollectionReusableView()
+        }        
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
     {
+        let section = Section.allCases[indexPath.section]
+        if section == .patrons
+        {
+            guard self.isPatronIconsUnlocked else { return }
+        }
+        
         let icon = self.dataSource.item(at: indexPath)
         guard UIApplication.shared.alternateIconName != icon.imageName else { return }
         
@@ -189,6 +273,17 @@ extension AltAppIconsViewController
             {
                 NotificationCenter.default.post(name: UIApplication.didChangeAppIconNotification, object: icon)
             }
+        }
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool 
+    {
+        let section = Section.allCases[indexPath.section]
+        switch section
+        {
+        case .modern, .classic: return true
+        case .patrons where self.isPatronIconsUnlocked: return true
+        case .patrons: return false
         }
     }
 }

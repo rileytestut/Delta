@@ -124,7 +124,7 @@ public extension PatreonAPI
                                  URLQueryItem(name: "fields[tier]", value: "title,amount_cents"),
                                  URLQueryItem(name: "fields[benefit]", value: "title"),
                                  URLQueryItem(name: "fields[campaign]", value: "url"),
-                                 URLQueryItem(name: "fields[member]", value: "full_name,patron_status,currently_entitled_amount_cents")]
+                                 URLQueryItem(name: "fields[member]", value: "full_name,patron_status,currently_entitled_amount_cents,campaign_lifetime_support_cents")]
         
         let requestURL = components.url(relativeTo: self.baseURL)!
         let request = URLRequest(url: requestURL)
