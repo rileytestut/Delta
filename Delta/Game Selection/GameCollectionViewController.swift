@@ -59,7 +59,7 @@ extension GameCollectionViewController
         var recoveryActions: [UIAlertAction] {
             switch self
             {
-            case .systemAlreadyRunning(let game, let session):
+            case .systemAlreadyRunning(_, let session):
                 let quitAction = UIAlertAction(title: NSLocalizedString("Quit Game", comment: ""), style: .destructive) { _ in
                     session.quit()
                 }
