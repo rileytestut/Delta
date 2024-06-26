@@ -192,6 +192,7 @@
 		D55C469129E7631000EA6DE9 /* AnyOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55C469029E7631000EA6DE9 /* AnyOption.swift */; };
 		D560BD8629EDC45600289847 /* ExternalDisplaySceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D560BD8529EDC45600289847 /* ExternalDisplaySceneDelegate.swift */; };
 		D56F7ABC2B05988700490ACB /* AttributedHeaderFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56F7ABB2B05988700490ACB /* AttributedHeaderFooterView.swift */; };
+		D577D6022C2BAA2F00395125 /* AltAppIconsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5AE76C72C2B808F0086471B /* AltAppIconsViewController.swift */; };
 		D57D795629F300E100BB2CF8 /* CustomTintColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A817AF29DF4E6E00904AFE /* CustomTintColor.swift */; };
 		D57D795F29F315F700BB2CF8 /* FeatureDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54A4BB229E4D27E004C7D57 /* FeatureDetailView.swift */; };
 		D57D796029F315F700BB2CF8 /* ExperimentalFeaturesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A9C00229DDED6D00A8D610 /* ExperimentalFeaturesView.swift */; };
@@ -1799,6 +1800,7 @@
 				D57D795629F300E100BB2CF8 /* CustomTintColor.swift in Sources */,
 				D5AE76CB2C2B81000086471B /* OSLog+Delta.swift in Sources */,
 				D57D795F29F315F700BB2CF8 /* FeatureDetailView.swift in Sources */,
+				D577D6022C2BAA2F00395125 /* AltAppIconsViewController.swift in Sources */,
 				D51CB7A629EDC15900B59678 /* ExperimentalFeatures.swift in Sources */,
 				D57D796029F315F700BB2CF8 /* ExperimentalFeaturesView.swift in Sources */,
 			);
