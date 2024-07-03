@@ -953,12 +953,15 @@ private extension SaveStatesViewController
         let compatibilityMenu = UIMenu(options: .displayInline, children: [markCompatibleAction])
         let incompatibilityMenu = UIMenu(options: .displayInline, children: [markIncompatibleAction])
         
-        
         switch self.filter
         {
         case .compatible: 
             actions.append(previewMenu)
+            
+            #if BETA
             actions.append(incompatibilityMenu)
+            #endif
+            
         case .incompatible: actions.append(compatibilityMenu)
         }
         
