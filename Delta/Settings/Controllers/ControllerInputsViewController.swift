@@ -258,7 +258,7 @@ private extension ControllerInputsViewController
                 image = #imageLiteral(resourceName: "FastForward")
                 text = NSLocalizedString("Fast Forward", comment: "")
                 
-            case .toggleFastForward: continue
+            case .toggleFastForward, .reverseScreens: continue
             }
             
             let item = MenuItem(text: text, image: image) { [unowned self] (item) in

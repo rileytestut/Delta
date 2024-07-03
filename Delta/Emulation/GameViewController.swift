@@ -304,6 +304,7 @@ class GameViewController: DeltaCore.GameViewController
             case .quickSave: self.performQuickSaveAction()
             case .quickLoad: self.performQuickLoadAction()
             case .fastForward: self.performFastForwardAction(activate: true)
+            case .reverseScreens: self.performReverseScreensAction()
             case .toggleFastForward:
                 let isFastForwarding = (emulatorCore.rate != emulatorCore.deltaCore.supportedRates.lowerBound)
                 self.performFastForwardAction(activate: !isFastForwarding)
@@ -355,6 +356,7 @@ class GameViewController: DeltaCore.GameViewController
             case .quickLoad: break
             case .fastForward: self.performFastForwardAction(activate: false)
             case .toggleFastForward: break
+            case .reverseScreens: break
             }
         }
     }
@@ -921,11 +923,36 @@ private extension GameViewController
         {
             // Not AirPlaying, show all screens.
             
-            for gameView in self.gameViews
+            if let traits = self.controllerView.controllerSkinTraits,
+               let supportedTraits = self.controllerView.controllerSkin?.supportedTraits(for: traits),
+               let screens = self.controllerView.controllerSkin?.screens(for: supportedTraits),
+               ExperimentalFeatures.shared.reverseScreens.isEnabled
             {
-                gameView.isEnabled = true
-                gameView.isHidden = false
-                gameView.isAirPlaying = false
+                for (screen, gameView) in zip(screens, self.gameViews)
+                {
+                    gameView.isAirPlaying = false
+                    
+                    if let outputFrame = screen.outputFrame, outputFrame.isEmpty
+                    {
+                        // Frame is empty, so always disable it,
+                        gameView.isEnabled = false
+                        gameView.isHidden = true
+                    }
+                    else
+                    {
+                        gameView.isEnabled = true
+                        gameView.isHidden = false
+                    }
+                }
+            }
+            else
+            {
+                for gameView in self.gameViews
+                {
+                    gameView.isEnabled = true
+                    gameView.isHidden = false
+                    gameView.isAirPlaying = false
+                }
             }
         }
     }
@@ -1429,6 +1456,14 @@ extension GameViewController
         }
         
         self.pauseViewController?.screenshotItem?.isSelected = false
+    }
+    
+    func performReverseScreensAction()
+    {
+        guard let controllerSkin = self.controllerView.controllerSkin as? ControllerSkin else { return }
+        controllerSkin.isReversingScreens.toggle()
+        
+        self.updateControllerSkin()
     }
 }
 

@@ -56,6 +56,9 @@ public class ControllerSkin: _ControllerSkin
         return self.controllerSkin?.isDebugModeEnabled ?? false
     }
     
+    // Transient, not persisted to Core Data.
+    public var isReversingScreens: Bool = false
+    
     private lazy var controllerSkin: DeltaCore.ControllerSkin? = {
         let controllerSkin = self.isStandard ? DeltaCore.ControllerSkin.standardControllerSkin(for: self.gameType) : DeltaCore.ControllerSkin(fileURL: self.fileURL)
         return controllerSkin
@@ -101,6 +104,44 @@ extension ControllerSkin: ControllerSkinProtocol
             }
         }
         
+        if ExperimentalFeatures.shared.reverseScreens.isEnabled, self.isReversingScreens, let screens = self.controllerSkin?.screens(for: traits), let reversedScreens = self.screens(for: traits)
+        {
+            //TODO: Handle touch screen inputs that only partially cover touch screen.
+            
+            items = items.map { item in
+                var item = item
+                guard item.kind == .touchScreen else { return item }
+                
+                // Find the original screen this input is paired with.
+                let touchScreen = screens.first(where: { screen in
+                    guard screen.placement == item.placement else { return false }
+                    guard let outputFrame = screen.outputFrame else { return false }
+                    return outputFrame == item.frame || outputFrame.intersects(item.frame) // Compare exact match in case outputFrame is empty rectangle.
+                })
+                
+                // Find original screen in reversedScreens and use its new adjusted values.
+                if let touchScreen, let movedTouchScreen = reversedScreens.first(where: { $0.id == touchScreen.id })
+                {
+                    if let outputFrame = movedTouchScreen.outputFrame
+                    {
+                        // Set properties to match other screen.
+                        item.frame = outputFrame
+                        item.extendedFrame = outputFrame
+                        item.placement = movedTouchScreen.placement
+                    }
+                    else
+                    {
+                        // Assume this is using app placement.
+                        item.frame = CGRect(x: 0, y: 0, width: 1.0, height: 1.0)
+                        item.extendedFrame = item.frame
+                        item.placement = .app
+                    }
+                }
+                
+                return item
+            }
+        }
+        
         return items
     }
     
@@ -111,7 +152,25 @@ extension ControllerSkin: ControllerSkinProtocol
     
     public func screens(for traits: DeltaCore.ControllerSkin.Traits) -> [DeltaCore.ControllerSkin.Screen]?
     {
-        return self.controllerSkin?.screens(for: traits)
+        guard var screens = self.controllerSkin?.screens(for: traits) else { return nil }
+        
+        if ExperimentalFeatures.shared.reverseScreens.isEnabled, self.isReversingScreens
+        {
+            // Reverse order of ids and inputFrames, but leave other properties in same order.
+            // This effectively switches out inputFrames without changing the actual screen placements.
+            
+            let reversedInputFramesAndIDs = Array(screens.lazy.map { ($0.inputFrame, $0.id) }.reversed())
+            screens = zip(0..., screens).map { (index, screen) in
+                let (inputFrame, id) = reversedInputFramesAndIDs[index]
+                
+                var screen = screen
+                screen.inputFrame = inputFrame
+                screen.id = id
+                return screen
+            }
+        }
+        
+        return screens
     }
     
     public func aspectRatio(for traits: DeltaCore.ControllerSkin.Traits) -> CGSize?
@@ -121,7 +180,18 @@ extension ControllerSkin: ControllerSkinProtocol
     
     public func contentSize(for traits: DeltaCore.ControllerSkin.Traits) -> CGSize?
     {
-        return self.controllerSkin?.contentSize(for: traits)
+        if let contentSize = self.controllerSkin?.contentSize(for: traits)
+        {
+            return contentSize
+        }
+        
+        if ExperimentalFeatures.shared.reverseScreens.isEnabled, self.isReversingScreens, let screen = self.screens(for: traits)?.first(where: { $0.placement == .app }), screen.outputFrame == nil
+        {
+            // Dynamic screen, so return inputFrame as contentSize to ensure touch screen matches frame.
+            return screen.inputFrame?.size
+        }
+        
+        return nil
     }
 }
 

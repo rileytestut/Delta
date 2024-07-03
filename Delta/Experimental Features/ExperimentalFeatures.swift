@@ -49,6 +49,10 @@ struct ExperimentalFeatures: FeatureContainer
              options: SkinDebuggingOptions())
     var skinDebugging
     
+    @Feature(name: "Reverse Controller Skin Screens",
+             description: "Dynamically reverse the order of screen inputFrames in controller skins. Can be used to “flip” between DS screens.")
+    var reverseScreens
+    
     private init()
     {
         self.prepareFeatures()
