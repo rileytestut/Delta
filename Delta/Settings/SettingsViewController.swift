@@ -25,12 +25,12 @@ private extension SettingsViewController
         case controllerOpacity
         case display
         case gameAudio
-        case airPlay
+        case multitasking
         case hapticFeedback
         case syncing
-        case hapticTouch
-        case multitasking
         case gestures
+        case airPlay
+        case hapticTouch
         case cores
         case advanced
         case patreon
@@ -558,7 +558,7 @@ private extension SettingsViewController
         }
         
         let alertController = UIAlertController(title: NSLocalizedString("Are you sure you want to unlink your Patreon account?", comment: ""),
-                                                message: NSLocalizedString("You will no longer be able to access patron-exclusive features.", comment: ""),
+                                                message: NSLocalizedString("You will no longer be able to access Patreon-exclusive features.", comment: ""),
                                                 preferredStyle: .actionSheet)
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Unlink Patreon Account", comment: ""), style: .destructive) { _ in signOut() })
         alertController.addAction(.cancel)
@@ -735,7 +735,7 @@ extension SettingsViewController
                 cell.contentConfiguration = content
             }
             
-        case .controllerOpacity, .display, .gameAudio, .airPlay, .hapticFeedback, .hapticTouch, .multitasking, .gestures, .advanced, .credits, .support: break
+        case .controllerOpacity, .display, .gameAudio, .multitasking, .hapticFeedback, .gestures, .airPlay, .hapticTouch, .advanced, .credits, .support: break
         }
 
         return cell
@@ -752,7 +752,7 @@ extension SettingsViewController
         case .controllerSkins: self.performSegue(withIdentifier: Segue.controllerSkins.rawValue, sender: cell)
         case .display: self.performSegue(withIdentifier: Segue.altAppIcons.rawValue, sender: cell)
         case .cores: self.performSegue(withIdentifier: Segue.dsSettings.rawValue, sender: cell)
-        case .controllerOpacity, .gameAudio, .airPlay, .hapticFeedback, .hapticTouch, .multitasking, .gestures, .syncing: break
+        case .controllerOpacity, .gameAudio, .multitasking, .hapticFeedback, .gestures, .airPlay, .hapticTouch, .syncing: break
         case .advanced:
             let row = AdvancedRow(rawValue: indexPath.row)!
             switch row
@@ -838,6 +838,14 @@ extension SettingsViewController
     primary:
         switch Section(rawValue: indexPath.section)!
         {
+        case .airPlay:
+            let row = AirPlayRow(rawValue: indexPath.row)!
+            switch row
+            {
+            case .topScreenOnly, .layoutHorizontally: return UITableView.automaticDimension
+            case .displayFullScreen: break primary
+            }
+            
         case .advanced:
             let row = AdvancedRow(rawValue: indexPath.row)!
             switch row
