@@ -30,10 +30,22 @@ extension SaveStatesViewController
     
     enum Section: Int
     {
+        case info // No content, just a header
         case auto
         case quick
         case general
         case locked
+        
+        var localizedName: String {
+            switch self
+            {
+            case .info: return NSLocalizedString("Info", comment: "")
+            case .auto: return NSLocalizedString("Auto Save", comment: "")
+            case .quick: return NSLocalizedString("Quick Save", comment: "")
+            case .general: return NSLocalizedString("General", comment: "")
+            case .locked: return NSLocalizedString("Locked", comment: "")
+            }
+        }
     }
     
     enum Sorting: String, CaseIterable
@@ -107,8 +119,9 @@ class SaveStatesViewController: UICollectionViewController
     private var placeholderView: RSTPlaceholderView!
     
     private var prototypeCell = GridCollectionViewCell()
-    private var prototypeCellWidthConstraint: NSLayoutConstraint!
     private var prototypeHeader = SaveStatesCollectionHeaderView()
+    private var prototypeCellWidthConstraint: NSLayoutConstraint!
+    private var prototypeHeaderWidthConstraint: NSLayoutConstraint!
     
     private var incompatibleSaveStatesCount: Int = 0
     private var incompatibleLabel: UILabel!
@@ -118,7 +131,9 @@ class SaveStatesViewController: UICollectionViewController
     private weak var _importingSaveState: SaveState?
     private var _exportedSaveStateURL: URL?
     
-    private let dataSource: RSTFetchedResultsCollectionViewPrefetchingDataSource<SaveState, UIImage>
+    private let dataSource: RSTCompositeCollectionViewPrefetchingDataSource<SaveState, UIImage>
+    private let infoDataSource: RSTDynamicCollectionViewPrefetchingDataSource<SaveState, UIImage>
+    private let fetchedDataSource: RSTFetchedResultsCollectionViewPrefetchingDataSource<SaveState, UIImage>
     
     private var emulatorCoreSaveState: SaveStateProtocol?
     
@@ -126,7 +141,12 @@ class SaveStatesViewController: UICollectionViewController
     
     required init?(coder aDecoder: NSCoder)
     {
-        self.dataSource = RSTFetchedResultsCollectionViewPrefetchingDataSource<SaveState, UIImage>(fetchedResultsController: NSFetchedResultsController())
+        let fetchedDataSource = RSTFetchedResultsCollectionViewPrefetchingDataSource<SaveState, UIImage>(fetchedResultsController: NSFetchedResultsController())
+        let infoDataSource = RSTDynamicCollectionViewPrefetchingDataSource<SaveState, UIImage>()
+        
+        self.dataSource = RSTCompositeCollectionViewPrefetchingDataSource<SaveState, UIImage>(dataSources: [infoDataSource, fetchedDataSource])
+        self.infoDataSource = infoDataSource
+        self.fetchedDataSource = fetchedDataSource
         
         super.init(coder: aDecoder)
         
@@ -157,6 +177,9 @@ extension SaveStatesViewController
         
         self.prototypeCellWidthConstraint = self.prototypeCell.contentView.widthAnchor.constraint(equalToConstant: 0)
         self.prototypeCellWidthConstraint.isActive = true
+        
+        self.prototypeHeaderWidthConstraint = self.prototypeHeader.widthAnchor.constraint(equalToConstant: 0)
+        self.prototypeHeaderWidthConstraint.isActive = true
         
         self.prepareEmulatorCoreSaveState()
         
@@ -266,6 +289,16 @@ private extension SaveStatesViewController
             self.incompatibleButton.centerXAnchor.constraint(equalTo: placeholderView.centerXAnchor),
             self.incompatibleButton.topAnchor.constraint(equalTo: self.incompatibleLabel.bottomAnchor, constant: 15)
         ])
+        
+        self.infoDataSource.numberOfSectionsHandler = { [weak self] in
+            // Info section is only visible when viewing incompatible save states.
+            switch self?.filter
+            {
+            case .incompatible: return 1
+            case .compatible, nil: return 0
+            }
+        }
+        self.infoDataSource.numberOfItemsHandler = { _ in 0 }
         
         self.dataSource.cellConfigurationHandler = { [unowned self] (cell, item, indexPath) in
             self.configure(cell as! GridCollectionViewCell, for: indexPath)
@@ -416,7 +449,7 @@ private extension SaveStatesViewController
         let predicate = self.makePredicate(filter: self.filter)
         fetchRequest.predicate = predicate
         
-        self.dataSource.fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DatabaseManager.shared.viewContext, sectionNameKeyPath: #keyPath(SaveState.type), cacheName: nil)
+        self.fetchedDataSource.fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DatabaseManager.shared.viewContext, sectionNameKeyPath: #keyPath(SaveState.type), cacheName: nil)
     }
     
     func makePredicate(filter: Filter) -> NSPredicate
@@ -529,6 +562,7 @@ private extension SaveStatesViewController
         
         // Manually update prototype cell properties
         self.prototypeCellWidthConstraint.constant = collectionViewLayout.itemWidth
+        self.prototypeHeaderWidthConstraint.constant = self.collectionView.bounds.width - (self.collectionView.contentInset.left + self.collectionView.contentInset.right)
     }
     
     //MARK: - Configure Views -
@@ -564,28 +598,38 @@ private extension SaveStatesViewController
     func configure(_ headerView: SaveStatesCollectionHeaderView, forSection section: Int)
     {
         let section = self.correctedSectionForSectionIndex(section)
-        
-        let title: String
-        
         switch section
         {
-        case .auto: title = NSLocalizedString("Auto Save", comment: "")
-        case .quick: title = NSLocalizedString("Quick Save", comment: "")
-        case .general: title = NSLocalizedString("General", comment: "")
-        case .locked: title = NSLocalizedString("Locked", comment: "")
-        }
-        
-        headerView.textLabel.text = title
-        
-        switch self.theme
-        {
-        case .opaque:
-            headerView.textLabel.textColor = UIColor.lightGray
-            headerView.isTextLabelVibrancyEnabled = false
+        case .info:
+            let attributedText = NSMutableAttributedString(string: NSLocalizedString("These save states are incompatible with this version of Delta. You can export them to continue playing in Delta Legacy.", comment: ""), attributes: [.font: UIFont.preferredFont(forTextStyle: .body), .foregroundColor: UIColor.lightGray])
+            attributedText.mutableString.append("\n\n")
             
-        case .translucent:
-            headerView.textLabel.textColor = UIColor.white
-            headerView.isTextLabelVibrancyEnabled = true
+            let learnMoreLink = NSAttributedString(string: NSLocalizedString("Learn More…", comment: ""), attributes: [.link: URL(string: "https://deltaemulator.com/legacy")!,
+                                                                                                                       .font: UIFont.preferredFont(forTextStyle: .body)])
+            attributedText.append(learnMoreLink)
+            
+            let paragraphStyle = NSMutableParagraphStyle()
+            paragraphStyle.lineBreakMode = .byWordWrapping
+            paragraphStyle.alignment = .center
+            attributedText.addAttribute(.paragraphStyle, value: paragraphStyle, range: NSMakeRange(0, attributedText.length))
+            
+            headerView.textView.attributedText = attributedText
+            headerView.textView.tintColor = .deltaPurple
+            headerView.isTextVibrancyEnabled = false
+            
+        case .auto, .quick, .general, .locked:
+            headerView.textView.text = section.localizedName
+            
+            switch self.theme
+            {
+            case .opaque:
+                headerView.textView.textColor = UIColor.lightGray
+                headerView.isTextVibrancyEnabled = false
+                
+            case .translucent:
+                headerView.textView.textColor = UIColor.white
+                headerView.isTextVibrancyEnabled = true
+            }
         }
     }
     
@@ -846,10 +890,27 @@ private extension SaveStatesViewController
     
     //MARK: - Convenience Methods -
     
-    func correctedSectionForSectionIndex(_ section: Int) -> Section
+    func correctedSectionForSectionIndex(_ index: Int) -> Section
     {
-        let sectionInfo = self.dataSource.fetchedResultsController.sections![section]
-        let sectionIndex = Int(sectionInfo.name)!
+        var index = index
+        
+        switch self.filter
+        {
+        case .compatible:
+            // .info section is hidden, so no need to adjust index.
+            break
+            
+        case .incompatible where index == 0:
+            // Index 0 is always .info when viewing incompatible save states.
+            return .info
+            
+        case .incompatible:
+            // Account for extra empty .info section.
+            index -= 1
+        }
+
+        let sectionInfo = self.fetchedDataSource.fetchedResultsController.sections![index]
+        let sectionIndex = Int(sectionInfo.name)! + 1 // Add 1 to account for empty .info section
         
         let section = Section(rawValue: sectionIndex)!
         return section
@@ -1109,7 +1170,7 @@ extension SaveStatesViewController
                 let section = self.correctedSectionForSectionIndex(indexPath.section)
                 switch section
                 {
-                case .auto: break
+                case .auto, .info: break
                 case .quick, .general:
                     let backgroundContext = DatabaseManager.shared.newBackgroundContext()
                     backgroundContext.performAndWait() {
