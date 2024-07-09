@@ -1,23 +1,23 @@
 {
   "images" : [
     {
+      "filename" : "BoxArt.png",
       "idiom" : "universal",
-      "filename" : "boxart-100.png",
       "scale" : "1x"
     },
     {
+      "filename" : "BoxArt@2x.png",
       "idiom" : "universal",
-      "filename" : "boxart-200.png",
       "scale" : "2x"
     },
     {
+      "filename" : "BoxArt@3x.png",
       "idiom" : "universal",
-      "filename" : "boxart-300.png",
       "scale" : "3x"
     }
   ],
   "info" : {
-    "version" : 1,
-    "author" : "xcode"
+    "author" : "xcode",
+    "version" : 1
   }
 }
