@@ -6,7 +6,7 @@
 	<array>
 		<dict>
 			<key>name</key>
-			<string>Broken</string>
+			<string>Delta</string>
 			<key>imageName</key>
 			<string>AppIcon</string>
 		</dict>
@@ -15,9 +15,15 @@
 	<array>
 		<dict>
 			<key>name</key>
+			<string>Broken</string>
+			<key>imageName</key>
+			<string>BrokenIcon</string>
+		</dict>
+		<dict>
+			<key>name</key>
 			<string>Original</string>
 			<key>imageName</key>
-			<string>Original</string>
+			<string>OriginalIcon</string>
 		</dict>
 	</array>
 </dict>
