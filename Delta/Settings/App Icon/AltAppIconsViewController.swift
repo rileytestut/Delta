@@ -21,11 +21,15 @@ private final class AltIcon: Decodable
     
     var name: String
     var imageName: String
+    var credit: String?
+    var url: URL?
     
     private enum CodingKeys: String, CodingKey
     {
         case name
         case imageName
+        case credit
+        case url
     }
     
     required init(from decoder: Decoder) throws
@@ -33,6 +37,12 @@ private final class AltIcon: Decodable
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.name = try container.decode(String.self, forKey: .name)
         self.imageName = try container.decode(String.self, forKey: .imageName)
+        self.credit = try container.decodeIfPresent(String.self, forKey: .credit)
+        
+        if let link = try container.decodeIfPresent(String.self, forKey: .url)
+        {
+            self.url = URL(string: link)
+        }
     }
 }
 
@@ -181,18 +191,25 @@ private extension AltAppIconsViewController
             let cell = cell as! UICollectionViewListCell
             let section = Section.allCases[indexPath.section]
             
-            let imageWidth = 44.0
-            let font = UIFont(descriptor: UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body), size: 0.0)
+            let imageWidth = 60.0
             
-            var config = cell.defaultContentConfiguration()
+            var config = UIListContentConfiguration.subtitleCell()
             config.text = icon.name
-            config.textProperties.font = font
+            config.textProperties.font = .preferredFont(forTextStyle: .body)
             config.textProperties.color = .label
             
             let image = UIImage(named: icon.imageName, in: Bundle(for: AltAppIconsViewController.self), with: nil)
             config.image = image
             config.imageProperties.maximumSize = CGSize(width: imageWidth, height: imageWidth)
             config.imageProperties.cornerRadius = imageWidth / 5.0 // Copied from AppIconImageView
+            
+            config.secondaryText = icon.credit
+            config.secondaryTextProperties.font = .preferredFont(forTextStyle: .footnote)
+            config.secondaryTextProperties.color = .secondaryLabel
+            config.textToSecondaryTextVerticalPadding = 4.0
+            
+            config.directionalLayoutMargins.top += 8
+            config.directionalLayoutMargins.bottom += 8
             
             if section == .patrons
             {
@@ -207,15 +224,22 @@ private extension AltAppIconsViewController
             }
             
             cell.contentConfiguration = config
+            
+            var accessories: [UICellAccessory] = []
 
             if UIApplication.shared.alternateIconName == icon.imageName || (UIApplication.shared.alternateIconName == nil && icon.imageName == AltIcon.defaultIconName)
             {
-                cell.accessories = [.checkmark()]
+                accessories.append(.checkmark())
             }
-            else
+            
+            if let url = icon.url, #available(iOS 15.4, *)
             {
-                cell.accessories = []
+                accessories.append(.detail(actionHandler: {
+                    UIApplication.shared.open(url)
+                }))
             }
+            
+            cell.accessories = accessories
             
             cell.backgroundConfiguration = .listGroupedCell()
         }

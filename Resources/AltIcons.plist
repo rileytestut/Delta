@@ -26,5 +26,38 @@
 			<string>OriginalIcon</string>
 		</dict>
 	</array>
+	<key>patrons</key>
+	<array>
+		<dict>
+			<key>name</key>
+			<string>Halogenide</string>
+			<key>imageName</key>
+			<string>Halogenide</string>
+			<key>credit</key>
+			<string>Sebastiaan de With (Halide)</string>
+			<key>url</key>
+			<string>https://halide.cam</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Ketchup</string>
+			<key>imageName</key>
+			<string>KetchupIcon</string>
+			<key>credit</key>
+			<string>Ben McCarthy</string>
+			<key>url</key>
+			<string>https://benricemccarthy.com/</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Microchip</string>
+			<key>imageName</key>
+			<string>MicrochipIcon</string>
+			<key>credit</key>
+			<string>Sean Fletcher</string>
+			<key>url</key>
+			<string>https://www.threads.net/@seanfletchr</string>
+		</dict>
+	</array>
 </dict>
 </plist>
