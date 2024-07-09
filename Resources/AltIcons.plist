@@ -10,6 +10,18 @@
 			<key>imageName</key>
 			<string>AppIcon</string>
 		</dict>
+		<dict>
+			<key>name</key>
+			<string>Photo Editor</string>
+			<key>imageName</key>
+			<string>DeltaRed</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>GBA4iOS</string>
+			<key>imageName</key>
+			<string>GBA4iOS</string>
+		</dict>
 	</array>
 	<key>classic</key>
 	<array>
@@ -28,6 +40,12 @@
 	</array>
 	<key>patrons</key>
 	<array>
+		<dict>
+			<key>name</key>
+			<string>Delta Gold</string>
+			<key>imageName</key>
+			<string>DeltaGold</string>
+		</dict>
 		<dict>
 			<key>name</key>
 			<string>Halogenide</string>
