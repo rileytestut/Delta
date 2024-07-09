@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13528" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="dkK-ii-Bx4">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="dkK-ii-Bx4">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13526"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
-        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -24,20 +20,20 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Delta" translatesAutoresizingMaskIntoConstraints="NO" id="plh-tL-LY0">
-                                <rect key="frame" x="94" y="250" width="187.5" height="167"/>
+                                <rect key="frame" x="47" y="193" width="281" height="281"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" secondItem="plh-tL-LY0" secondAttribute="height" multiplier="64:57" id="8qM-L2-ASa"/>
+                                    <constraint firstAttribute="width" secondItem="plh-tL-LY0" secondAttribute="height" id="8qM-L2-ASa"/>
                                 </constraints>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="0.14728124936421713" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="plh-tL-LY0" firstAttribute="width" relation="lessThanOrEqual" secondItem="8Uu-wz-ps8" secondAttribute="width" multiplier="0.5" id="8j9-39-Y2s"/>
+                            <constraint firstItem="plh-tL-LY0" firstAttribute="width" relation="lessThanOrEqual" secondItem="8Uu-wz-ps8" secondAttribute="width" multiplier="0.75" id="8j9-39-Y2s"/>
                             <constraint firstItem="plh-tL-LY0" firstAttribute="centerY" secondItem="8Uu-wz-ps8" secondAttribute="centerY" id="COW-Co-NFK"/>
-                            <constraint firstItem="plh-tL-LY0" firstAttribute="height" secondItem="8Uu-wz-ps8" secondAttribute="height" multiplier="0.5" priority="900" id="G3L-7B-xVc"/>
-                            <constraint firstItem="plh-tL-LY0" firstAttribute="width" secondItem="8Uu-wz-ps8" secondAttribute="width" multiplier="0.5" priority="950" id="n3i-kS-7eQ"/>
+                            <constraint firstItem="plh-tL-LY0" firstAttribute="height" secondItem="8Uu-wz-ps8" secondAttribute="height" multiplier="0.75" priority="900" id="G3L-7B-xVc"/>
+                            <constraint firstItem="plh-tL-LY0" firstAttribute="width" secondItem="8Uu-wz-ps8" secondAttribute="width" multiplier="0.75" priority="950" id="n3i-kS-7eQ"/>
                             <constraint firstItem="plh-tL-LY0" firstAttribute="centerX" secondItem="8Uu-wz-ps8" secondAttribute="centerX" id="sp5-Kf-N7G"/>
-                            <constraint firstItem="plh-tL-LY0" firstAttribute="height" relation="lessThanOrEqual" secondItem="8Uu-wz-ps8" secondAttribute="height" multiplier="0.5" id="ubN-Qh-I5H"/>
+                            <constraint firstItem="plh-tL-LY0" firstAttribute="height" relation="lessThanOrEqual" secondItem="8Uu-wz-ps8" secondAttribute="height" multiplier="0.75" id="ubN-Qh-I5H"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -47,6 +43,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Delta" width="1342" height="1196"/>
+        <image name="Delta" width="1024" height="1024"/>
     </resources>
 </document>
