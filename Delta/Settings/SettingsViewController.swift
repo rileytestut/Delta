@@ -67,8 +67,8 @@ private extension SettingsViewController
     
     enum PatreonRow: Int, CaseIterable
     {
-        case connectAccount
         case joinPatreon
+        case connectAccount
     }
     
     enum CreditsRow: Int, CaseIterable
@@ -652,12 +652,6 @@ extension SettingsViewController
                 return 1
             }
             
-        #if APP_STORE || LEGACY
-        case .patreon:
-            // Don't link out to Patreon for APP_STORE or LEGACY builds.
-            return 1
-        #endif
-            
         default:
             if isSectionHidden(section)
             {
@@ -714,6 +708,16 @@ extension SettingsViewController
             let row = PatreonRow(rawValue: indexPath.row)!
             switch row
             {
+            case .joinPatreon:
+                if let patreonAccount = DatabaseManager.shared.patreonAccount(), patreonAccount.isPatron
+                {
+                    cell.textLabel?.text = NSLocalizedString("View Patreon", comment: "")
+                }
+                else
+                {
+                    cell.textLabel?.text = NSLocalizedString("Join our Patreon", comment: "")
+                }
+                
             case .connectAccount:
                 var content = cell.defaultContentConfiguration()
                 content.textProperties.color = .deltaPurple
@@ -729,16 +733,6 @@ extension SettingsViewController
                 }
                 
                 cell.contentConfiguration = content
-                
-            case .joinPatreon:
-                if let patreonAccount = DatabaseManager.shared.patreonAccount(), patreonAccount.isPatron
-                {
-                    cell.textLabel?.text = NSLocalizedString("View Patreon", comment: "")
-                }
-                else
-                {
-                    cell.textLabel?.text = NSLocalizedString("Join our Patreon", comment: "")
-                }
             }
             
         case .controllerOpacity, .display, .gameAudio, .multitasking, .hapticFeedback, .gestures, .airPlay, .hapticTouch, .advanced, .credits, .support: break
