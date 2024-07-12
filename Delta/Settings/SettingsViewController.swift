@@ -262,6 +262,10 @@ private extension SettingsViewController
             // OSLogStore is not available on iOS 14, so section is only visible if experimental features is visible.
             return !ExperimentalFeatures.isExperimentalFeaturesAvailable
             
+        #if APP_STORE || LEGACY
+        case .patreon: return true
+        #endif
+            
         case .hapticTouch:
             if #available(iOS 13, *)
             {
@@ -635,12 +639,6 @@ extension SettingsViewController
             }
             
             return numberOfRows
-            
-        #if APP_STORE || LEGACY
-        case .patreon: 
-            // Hide "Connect Account" option from APP_STORE and LEGACY builds.
-            return 1
-        #endif
             
         case .syncing where !isSectionHidden(section): return SyncManager.shared.coordinator?.account == nil ? 1 : super.tableView(tableView, numberOfRowsInSection: sectionIndex)
         case .advanced where !isSectionHidden(section):
