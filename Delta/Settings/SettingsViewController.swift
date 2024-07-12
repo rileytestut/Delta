@@ -636,14 +636,15 @@ extension SettingsViewController
             
             return numberOfRows
             
-        case .syncing: return SyncManager.shared.coordinator?.account == nil ? 1 : super.tableView(tableView, numberOfRowsInSection: sectionIndex)
-        case .advanced:
-            if isSectionHidden(section)
-            {
-                // Possibly hidden on iOS 14.
-                return 0
-            }
-            else if ExperimentalFeatures.isExperimentalFeaturesAvailable
+        #if APP_STORE || LEGACY
+        case .patreon: 
+            // Hide "Connect Account" option from APP_STORE and LEGACY builds.
+            return 1
+        #endif
+            
+        case .syncing where !isSectionHidden(section): return SyncManager.shared.coordinator?.account == nil ? 1 : super.tableView(tableView, numberOfRowsInSection: sectionIndex)
+        case .advanced where !isSectionHidden(section):
+            if ExperimentalFeatures.isExperimentalFeaturesAvailable
             {
                 return super.tableView(tableView, numberOfRowsInSection: sectionIndex)
             }

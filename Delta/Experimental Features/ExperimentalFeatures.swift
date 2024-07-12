@@ -65,6 +65,9 @@ extension ExperimentalFeatures
         #if BETA
         // Experimental features are always available in BETA version.
         return true
+        #elseif APP_STORE || LEGACY
+        // Experimental features are NEVER available in APP_STORE and LEGACY versions.
+        return false
         #else
         
         // Experimental features are only available for signed-in "beta access" patrons in public version.
