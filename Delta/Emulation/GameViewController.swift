@@ -290,7 +290,7 @@ class GameViewController: DeltaCore.GameViewController
                 self.inputsToSustain[AnyInput(input)] = value
             }
         }
-        else if let standardInput = StandardGameControllerInput(input: input), standardInput == .menu
+        else if let standardInput = StandardGameControllerInput(input: input), standardInput == .menu, input.type == .controller(.controllerSkin)
         {
             self.isMenuButtonHeldDown = true
             
@@ -341,7 +341,7 @@ class GameViewController: DeltaCore.GameViewController
                 self.inputsToSustain[AnyInput(input)] = nil
             }
         }
-        else if let standardInput = StandardGameControllerInput(input: input), standardInput == .menu
+        else if let standardInput = StandardGameControllerInput(input: input), standardInput == .menu, input.type == .controller(.controllerSkin)
         {
             self.isMenuButtonHeldDown = false
             
