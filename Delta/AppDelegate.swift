@@ -12,6 +12,8 @@ import DeltaCore
 import Harmony
 import AltKit
 
+import ShowTouches
+
 private extension CFNotificationName
 {
     static let altstoreRequestAppState: CFNotificationName = CFNotificationName("com.altstore.RequestAppState.com.rileytestut.Delta" as CFString)
@@ -38,6 +40,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         
         self.registerCores()
         self.configureAppearance()
+        self.updateSettings()
         
         // Controllers
         ExternalGameControllerManager.shared.startMonitoring()
@@ -50,8 +53,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         CFNotificationCenterAddObserver(center, nil, ReceivedApplicationState, CFNotificationName.altstoreRequestAppState.rawValue, nil, .deliverImmediately)
         
         NotificationCenter.default.addObserver(self, selector: #selector(AppDelegate.databaseManagerDidStart(_:)), name: DatabaseManager.didStartNotification, object: DatabaseManager.shared)
+        NotificationCenter.default.addObserver(self, selector: #selector(AppDelegate.settingsDidChange(_:)), name: Settings.didChangeNotification, object: nil)
         
-
         // Deep Links
         if let shortcut = launchOptions?[.shortcutItem] as? UIApplicationShortcutItem
         {
@@ -155,6 +158,20 @@ private extension AppDelegate
     {
         self.window?.tintColor = UIColor.deltaPurple
     }
+    
+    func updateSettings()
+    {
+        if ExperimentalFeatures.shared.showTouches.isEnabled
+        {
+            let config = ShowTouchesConfig(touchColor: .deltaPurple)
+            UIWindow.configure(config)
+            UIWindow.showTouches(true)
+        }
+        else
+        {
+            UIWindow.showTouches(false)
+        }
+    }
 }
 
 extension AppDelegate
@@ -246,6 +263,12 @@ private extension AppDelegate
         DispatchQueue.main.async {
             self.deepLinkController.handle(deepLink)
         }
+    }
+    
+    @objc func settingsDidChange(_ notification: Notification)
+    {
+        guard let settingsName = notification.userInfo?[Settings.NotificationUserInfoKey.name] as? Settings.Name, settingsName == ExperimentalFeatures.shared.showTouches.settingsKey else { return }
+        self.updateSettings()
     }
     
     func receivedApplicationStateRequest()

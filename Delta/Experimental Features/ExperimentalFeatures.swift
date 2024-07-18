@@ -53,6 +53,10 @@ struct ExperimentalFeatures: FeatureContainer
              description: "Dynamically reverse the order of screen inputFrames in controller skins. Can be used to “flip” between DS screens.")
     var reverseScreens
     
+    @Feature(name: "Show Touches",
+             description: "Visually show touches. Useful for screen recordings and tutorials.")
+    var showTouches
+    
     private init()
     {
         self.prepareFeatures()

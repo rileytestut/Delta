@@ -29,6 +29,15 @@
         }
       },
       {
+        "package": "ShowTouches",
+        "repositoryURL": "https://github.com/Cyberbeni/ShowTouches.git",
+        "state": {
+          "branch": "master",
+          "revision": "1c32407861e20ee2b046e1119c36e9d6385b4ab0",
+          "version": null
+        }
+      },
+      {
         "package": "ZIPFoundation",
         "repositoryURL": "https://github.com/weichsel/ZIPFoundation.git",
         "state": {
