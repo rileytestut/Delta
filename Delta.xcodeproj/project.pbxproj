@@ -186,7 +186,6 @@
 		D54E46D02BED714F00780713 /* NSUserActivity+Delta.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54E46CF2BED714F00780713 /* NSUserActivity+Delta.swift */; };
 		D54F710229E89DCB009C069A /* SettingsUserInfoKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54F710129E89DCB009C069A /* SettingsUserInfoKey.swift */; };
 		D54F710429E89DFC009C069A /* NotificationName+Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54F710329E89DFC009C069A /* NotificationName+Settings.swift */; };
-		D55917D82B51CF7D007B7DC0 /* ProcessInfo+visionOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55917D72B51CF7D007B7DC0 /* ProcessInfo+visionOS.swift */; };
 		D55917DA2B51D097007B7DC0 /* LocalDeviceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55917D92B51D097007B7DC0 /* LocalDeviceController.swift */; };
 		D55C468F29E761C000EA6DE9 /* AnyFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55C468E29E761C000EA6DE9 /* AnyFeature.swift */; };
 		D55C469129E7631000EA6DE9 /* AnyOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55C469029E7631000EA6DE9 /* AnyOption.swift */; };
@@ -487,7 +486,6 @@
 		D54F710129E89DCB009C069A /* SettingsUserInfoKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsUserInfoKey.swift; sourceTree = "<group>"; };
 		D54F710329E89DFC009C069A /* NotificationName+Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationName+Settings.swift"; sourceTree = "<group>"; };
 		D554C3822A58D89700E93359 /* Delta 7.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Delta 7.xcdatamodel"; sourceTree = "<group>"; };
-		D55917D72B51CF7D007B7DC0 /* ProcessInfo+visionOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProcessInfo+visionOS.swift"; sourceTree = "<group>"; };
 		D55917D92B51D097007B7DC0 /* LocalDeviceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDeviceController.swift; sourceTree = "<group>"; };
 		D55C468E29E761C000EA6DE9 /* AnyFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyFeature.swift; sourceTree = "<group>"; };
 		D55C469029E7631000EA6DE9 /* AnyOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyOption.swift; sourceTree = "<group>"; };
@@ -620,7 +618,6 @@
 				D5CDCCC32A85765900E22131 /* OSLog+Delta.swift */,
 				D5CDCCEA2A8593FC00E22131 /* UserDefaults+Delta.swift */,
 				D5D39E782AF2D624004BE3F7 /* GameView+AirPlay.swift */,
-				D55917D72B51CF7D007B7DC0 /* ProcessInfo+visionOS.swift */,
 				D54E46CF2BED714F00780713 /* NSUserActivity+Delta.swift */,
 				D5EB601A2C0E6190007C543C /* Stream+Conveniences.swift */,
 				D5F702FC2C24CE5300DCD271 /* UISceneSession+Delta.swift */,
@@ -1640,7 +1637,6 @@
 				BF59427C1E09BC830051894B /* Cheat.swift in Sources */,
 				BFBAB2E31EB685A2004E0B0E /* DeltaCoreProtocol+Delta.swift in Sources */,
 				D5CDCCF22A859E7500E22131 /* RepairDatabaseViewController.swift in Sources */,
-				D55917D82B51CF7D007B7DC0 /* ProcessInfo+visionOS.swift in Sources */,
 				BF3540081C5DAFAD00C1184C /* PauseTransitionCoordinator.swift in Sources */,
 				D5AE76D12C2BA5B70086471B /* Delta8ToDelta9.xcmappingmodel in Sources */,
 				BF525EEA1FF6CD12004AA849 /* DeepLink.swift in Sources */,

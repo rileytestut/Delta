@@ -112,7 +112,19 @@ private extension ControllerSkinsViewController
         
         let fetchRequest: NSFetchRequest<ControllerSkin> = ControllerSkin.fetchRequest()
         
-        if traits.device == .iphone && traits.displayType == .edgeToEdge
+        if traits.device == .ipad
+        {
+            let edgeToEdgeFallbackConfiguration: ControllerSkinConfigurations = (traits.orientation == .landscape) ? .iphoneEdgeToEdgeLandscape : .iphoneEdgeToEdgePortrait
+            let standardFallbackConfiguration: ControllerSkinConfigurations = (traits.orientation == .landscape) ? .iphoneStandardLandscape : .iphoneStandardPortrait
+            
+            // Allow selecting skins that support iPhone as well (both standard and edgeToEdge)
+            fetchRequest.predicate = NSPredicate(format: "%K == %@ AND ((%K & %d) != 0 OR (%K & %d) != 0)",
+                                                 #keyPath(ControllerSkin.gameType), system.gameType.rawValue,
+                                                 #keyPath(ControllerSkin.supportedConfigurations), configuration.rawValue,
+                                                 #keyPath(ControllerSkin.supportedConfigurations), edgeToEdgeFallbackConfiguration.rawValue,
+                                                 #keyPath(ControllerSkin.supportedConfigurations), standardFallbackConfiguration.rawValue)
+        }
+        else if traits.device == .iphone && traits.displayType == .edgeToEdge
         {
             let fallbackConfiguration: ControllerSkinConfigurations = (traits.orientation == .landscape) ? .iphoneStandardLandscape : .iphoneStandardPortrait
             
