@@ -311,13 +311,14 @@ extension Settings
             {
                 fetchRequest.predicate = NSPredicate(format: "%K == %@ AND %K == %@", #keyPath(ControllerSkin.gameType), system.gameType.rawValue, #keyPath(ControllerSkin.identifier), identifier)
                 
-                if let controllerSkin = try DatabaseManager.shared.viewContext.fetch(fetchRequest).first
+                if let controllerSkin = try DatabaseManager.shared.viewContext.fetch(fetchRequest).first, let _ = controllerSkin.supportedTraits(for: traits)
                 {
+                    // Check if there are supported traits, which includes fallback traits for X <-> non-X devices (as well as iPad -> iPhone).
                     return controllerSkin
                 }
             }
             
-            // Controller skin doesn't exist, so fall back to standard controller skin
+            // Controller skin doesn't exist (or doesn't support traits) so fall back to standard controller skin
             
             fetchRequest.predicate = NSPredicate(format: "%K == %@ AND %K == YES", #keyPath(ControllerSkin.gameType), system.gameType.rawValue, #keyPath(ControllerSkin.isStandard))
             
@@ -358,7 +359,7 @@ extension Settings
         
         if let controllerSkin = preferredControllerSkin, let _ = controllerSkin.supportedTraits(for: traits)
         {
-            // Check if there are supported traits, which includes fallback traits for X <-> non-X devices.
+            // Check if there are supported traits, which includes fallback traits for X <-> non-X devices (as well as iPad -> iPhone).
             return controllerSkin
         }
         
