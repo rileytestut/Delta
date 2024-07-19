@@ -145,8 +145,6 @@
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
 	<string>$(MARKETING_VERSION)</string>
-	<key>DLTAVersion</key>
-	<string>1.6</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -180,6 +178,8 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>DLTAVersion</key>
+	<string>1.6</string>
 	<key>GCSupportedGameControllers</key>
 	<array>
 		<dict>
@@ -188,6 +188,8 @@
 		</dict>
 	</array>
 	<key>GCSupportsControllerUserInteraction</key>
+	<true/>
+	<key>GCSupportsGameMode</key>
 	<true/>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
@@ -209,6 +211,10 @@
 	<string>Delta uses your microphone to emulate the Nintendo DS microphone.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Press "OK" to allow Delta to use images from your Photo Library as game artwork.</string>
+	<key>NSUserActivityTypes</key>
+	<array>
+		<string>com.rileytestut.Delta.PlayGame</string>
+	</array>
 	<key>OSLogPreferences</key>
 	<dict>
 		<key>com.rileytestut.Harmony</key>
@@ -246,14 +252,14 @@
 				<dict>
 					<key>UILaunchStoryboardName</key>
 					<string>LaunchScreen</string>
+					<key>UISceneClassName</key>
+					<string>$(PRODUCT_MODULE_NAME).GameScene</string>
 					<key>UISceneConfigurationName</key>
 					<string>Game</string>
 					<key>UISceneDelegateClassName</key>
 					<string>$(PRODUCT_MODULE_NAME).GameSceneDelegate</string>
 					<key>UISceneStoryboardFile</key>
 					<string>Main</string>
-					<key>UISceneClassName</key>
-					<string>$(PRODUCT_MODULE_NAME).GameScene</string>
 				</dict>
 			</array>
 			<key>UIWindowSceneSessionRoleExternalDisplay</key>
@@ -299,8 +305,6 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UISupportsDocumentBrowser</key>
-	<true/>
-	<key>GCSupportsGameMode</key>
 	<true/>
 	<key>UTExportedTypeDeclarations</key>
 	<array>
@@ -476,10 +480,6 @@
 				</array>
 			</dict>
 		</dict>
-	</array>
-	<key>NSUserActivityTypes</key>
-	<array>
-		<string>com.rileytestut.Delta.PlayGame</string>
 	</array>
 </dict>
 </plist>
