@@ -219,6 +219,22 @@ extension ControllerSkinsViewController
         
         return height
     }
+    
+    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String?
+    {
+        let indexPath = IndexPath(row: 0, section: section)
+        let controllerSkin = self.dataSource.item(at: indexPath)
+        
+        if self.traits.device == .ipad && !controllerSkin.supports(self.traits)
+        {
+            // On iPad but viewing an incompatible skin, so assume it's an iPhone skin.
+            return NSLocalizedString("Designed for iPhone", comment: "")
+        }
+        else
+        {
+            return nil
+        }
+    }
 }
 
 extension ControllerSkinsViewController: ImportControllerDelegate
