@@ -1,6 +1,0 @@
-module DSDeltaCore {
-  umbrella header "DSDeltaCore-umbrella.h"
-
-  export *
-  module * { export * }
-}

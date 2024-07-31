@@ -17,8 +17,11 @@ import MelonDSDeltaCore
 
 import Systems
 
-// Legacy Cores
-import struct DSDeltaCore.DS
+extension Delta
+{
+    // Legacy Cores
+    static let desmumeCoreID = "com.rileytestut.DSDeltaCore"
+}
 
 @dynamicMemberLookup
 struct DeltaCoreMetadata
@@ -87,11 +90,6 @@ extension DeltaCoreProtocol
     var metadata: DeltaCoreMetadata? {
         switch self
         {
-        case DS.core:
-            return DeltaCoreMetadata([.name: .init(value: NSLocalizedString("DeSmuME (Legacy)", comment: ""), url: URL(string: "http://desmume.org")),
-                                      .developer: .init(value: NSLocalizedString("DeSmuME team", comment: ""), url: URL(string: "https://wiki.desmume.org/index.php?title=DeSmuME:About")),
-                                      .source: .init(value: NSLocalizedString("GitHub", comment: ""), url: URL(string: "https://github.com/TASVideos/desmume"))])
-            
         case MelonDS.core:
             return DeltaCoreMetadata([.name: .init(value: NSLocalizedString("melonDS", comment: ""), url: URL(string: "http://melonds.kuribo64.net")),
                                       .developer: .init(value: NSLocalizedString("Arisotura", comment: ""), url: URL(string: "https://twitter.com/Arisotura")),
