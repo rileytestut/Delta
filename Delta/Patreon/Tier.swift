@@ -43,9 +43,7 @@ extension PatreonAPI
             let amount = Decimal(response.attributes.amount_cents) / 100
             self.amount = amount
             
-            guard let included, let benefitIDs = response.relationships?.benefits?.data.map(\.id) else { return }
-            
-            let benefits = benefitIDs.compactMap { included.benefits[$0] }.map(Benefit.init(response:))
+            let benefits = response.relationships?.benefits?.data.map(Benefit.init(response:))
             self.benefits = benefits
         }
     }
