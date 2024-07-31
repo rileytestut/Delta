@@ -14,8 +14,6 @@ import CryptoKit
 import DeltaCore
 import MelonDSDeltaCore
 
-import struct DSDeltaCore.DS
-
 import Roxas
 
 private extension MelonDSCoreSettingsViewController
@@ -26,7 +24,6 @@ private extension MelonDSCoreSettingsViewController
         case performance
         case dsBIOS
         case dsiBIOS
-        case changeCore
     }
     
     @available(iOS 13, *)
@@ -165,17 +162,8 @@ private extension MelonDSCoreSettingsViewController
             // AltJIT not currently supported with melonDS 0.9.5.
             return true
             
-        case .dsBIOS where Settings.preferredCore(for: .ds) == DS.core:
-            // Using DeSmuME core, which doesn't require BIOS.
-            return true
-        
-        case .dsiBIOS where Settings.preferredCore(for: .ds) == DS.core || !isBeta:
-            // Using DeSmuME core, which doesn't require BIOS,
-            // or using public Delta version, which doesn't support DSi (yet).
-            return true
-            
-        case .changeCore where !isBeta:
-            // Using public Delta version, which only supports melonDS core.
+        case .dsiBIOS where !isBeta:
+            // Using public Delta version, which doesn't support DSi (yet).
             return true
             
         default: return false
@@ -232,41 +220,6 @@ private extension MelonDSCoreSettingsViewController
         }
         
         self.present(documentPicker, animated: true, completion: nil)
-    }
-    
-    func changeCore()
-    {
-        let preferredStyle: UIAlertController.Style = (self.traitCollection.horizontalSizeClass == .compact) ? .actionSheet : .alert
-        let alertController = UIAlertController(title: NSLocalizedString("Change Emulator Core", comment: ""), message: NSLocalizedString("Save states are not compatible between different emulator cores. Make sure to use in-game saves in order to keep using your save data.\n\nYour existing save states will not be deleted and will be available whenever you switch cores again.", comment: ""), preferredStyle: preferredStyle)
-        
-        var desmumeActionTitle = DS.core.metadata?.name.value ?? DS.core.name
-        var melonDSActionTitle = MelonDS.core.metadata?.name.value ?? MelonDS.core.name
-        
-        if Settings.preferredCore(for: .ds) == DS.core
-        {
-            desmumeActionTitle += " ✓"
-        }
-        else
-        {
-            melonDSActionTitle += " ✓"
-        }
-        
-        alertController.addAction(UIAlertAction(title: desmumeActionTitle, style: .default, handler: { (action) in
-            Settings.setPreferredCore(DS.core, for: .ds)
-            self.tableView.reloadData()
-        }))
-        
-        alertController.addAction(UIAlertAction(title: melonDSActionTitle, style: .default, handler: { (action) in
-            Settings.setPreferredCore(MelonDS.core, for: .ds)
-            self.tableView.reloadData()
-        }))
-        alertController.addAction(.cancel)
-        self.present(alertController, animated: true, completion: nil)
-        
-        if let indexPath = self.tableView.indexPathForSelectedRow
-        {
-            self.tableView.deselectRow(at: indexPath, animated: true)
-        }
     }
     
     @IBAction func toggleAltJITEnabled(_ sender: UISwitch)
@@ -370,8 +323,6 @@ extension MelonDSCoreSettingsViewController
             }
             
             cell.selectionStyle = .default
-            
-        case .changeCore: break
         }
         
         return cell
@@ -395,9 +346,6 @@ extension MelonDSCoreSettingsViewController
         case .dsiBIOS:
             let bios = DSiBIOS.allCases[indexPath.row]
             self.locate(bios)
-            
-        case .changeCore:
-            self.changeCore()
             
         case .performance: break
         }

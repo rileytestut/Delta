@@ -16,9 +16,6 @@ import N64DeltaCore
 import MelonDSDeltaCore
 import Systems
 
-// Legacy Cores
-import struct DSDeltaCore.DS
-
 enum System: CaseIterable
 {
     case nes
@@ -35,7 +32,7 @@ enum System: CaseIterable
     }
     
     static var allCores: [DeltaCoreProtocol] {
-        return [NES.core, SNES.core, N64.core, GBC.core, GBA.core, DS.core, MelonDS.core, GPGX.core]
+        return [NES.core, SNES.core, N64.core, GBC.core, GBA.core, MelonDS.core, GPGX.core]
     }
 }
 

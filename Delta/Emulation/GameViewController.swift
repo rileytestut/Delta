@@ -14,8 +14,6 @@ import GBADeltaCore
 import MelonDSDeltaCore
 import Systems
 
-import struct DSDeltaCore.DS
-
 import Roxas
 import AltKit
 
@@ -446,14 +444,7 @@ extension GameViewController
     {
         super.viewDidAppear(animated)
         
-        if self.emulatorCore?.deltaCore == DS.core, UserDefaults.standard.desmumeDeprecatedAlertCount < 3
-        {
-            let toastView = RSTToastView(text: NSLocalizedString("DeSmuME Core Deprecated", comment: ""), detailText: NSLocalizedString("Switch to the melonDS core in Settings for latest improvements.", comment: ""))
-            self.show(toastView, duration: 5.0)
-            
-            UserDefaults.standard.desmumeDeprecatedAlertCount += 1
-        }
-        else if self.emulatorCore?.deltaCore == MelonDS.core, ProcessInfo.processInfo.isJITAvailable
+        if self.emulatorCore?.deltaCore == MelonDS.core, ProcessInfo.processInfo.isJITAvailable
         {
             self.showJITEnabledAlert()
         }
@@ -560,10 +551,6 @@ extension GameViewController
             
             switch self.game?.type
             {
-            case .ds? where self.emulatorCore?.deltaCore == DS.core:
-                // Cheats are not supported by DeSmuME core.
-                pauseViewController.cheatCodesItem = nil
-                
             case .genesis?:
                 // GPGX core does not support cheats yet.
                 pauseViewController.cheatCodesItem = nil
