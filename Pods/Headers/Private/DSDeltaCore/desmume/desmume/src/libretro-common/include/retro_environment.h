@@ -1,1 +1,0 @@
-../../../../../../../../../Cores/DSDeltaCore/desmume/desmume/src/libretro-common/include/retro_environment.h
