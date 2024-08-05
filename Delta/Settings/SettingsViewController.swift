@@ -122,6 +122,7 @@ class SettingsViewController: UITableViewController
         super.init(coder: aDecoder)
         
         NotificationCenter.default.addObserver(self, selector: #selector(SettingsViewController.settingsDidChange(with:)), name: Settings.didChangeNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(SettingsViewController.experimentalSettingsDidChange(with:)), name: Settings.didChangeNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(SettingsViewController.externalGameControllerDidConnect(_:)), name: .externalGameControllerDidConnect, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(SettingsViewController.externalGameControllerDidDisconnect(_:)), name: .externalGameControllerDidDisconnect, object: nil)
     }
@@ -594,7 +595,7 @@ private extension SettingsViewController
             {
                 self.tableView.selectRow(at: selectedIndexPath, animated: true, scrollPosition: .none)
             }
-            
+
         case .localControllerPlayerIndex, .preferredControllerSkin, .translucentControllerSkinOpacity, .respectSilentMode, .isButtonHapticFeedbackEnabled, .isThumbstickHapticFeedbackEnabled, .isAltJITEnabled: break
         default: break
         }
@@ -1028,5 +1029,69 @@ extension SettingsViewController: MFMailComposeViewControllerDelegate
         }
         
         controller.dismiss(animated: true, completion: nil)
+    }
+}
+
+// MARK: - ExperimentalFeatures.quickSaveStack
+
+private extension SettingsViewController {
+
+    @objc func experimentalSettingsDidChange(with notification: Notification) {
+        guard let settingsName = notification.userInfo?[Settings.NotificationUserInfoKey.name] as? Settings.Name else { return }
+        guard let settingsValue = notification.userInfo?[Settings.NotificationUserInfoKey.value] else { return }
+
+        switch settingsName
+        {
+        case ExperimentalFeatures.shared.quickSaveStack.settingsKey:
+            guard let isOn = settingsValue as? Bool else {
+                return
+            }
+            if !isOn {
+                // reset to 1. If it the feature was off and was turned on, there
+                // is only one save state, by definition, so 
+                deleteQuickSaveStack(count: 1)
+            }
+            break
+        case ExperimentalFeatures.shared.quickSaveStack.$size.settingsKey:
+            guard let newSize = settingsValue as? QuickSaveStatesOptions.Size else {
+                return
+            }
+            deleteQuickSaveStack(count: newSize.rawValue)
+            break
+
+        default: break
+        }
+    }
+
+    /// Deletes quick save database entries until there are no more than `count` remaining.
+    private func deleteQuickSaveStack(count:Int) {
+        let backgroundContext = DatabaseManager.shared.newBackgroundContext()
+        backgroundContext.performAndWait {
+            do {
+                let games = try Game.fetchRequest().execute()
+                for game in games {
+                    let fetchRequest = SaveState.fetchRequest(for: game, type: .quick)
+                    do {
+                        let quickSaveStates = try fetchRequest.execute()
+                        // quick saves are ordered earliest to latest. The top of the stack
+                        // is the end. Delete the first ones so the most recently related
+                        // ones remain.
+                        let toDelete = max(0, quickSaveStates.count - count)
+                        for i in 0..<toDelete {
+                            DatabaseManager.shared.performBackgroundTask { (context) in
+                                let temporarySaveState = context.object(with: quickSaveStates[i].objectID)
+                                context.delete(temporarySaveState)
+                                context.saveWithErrorLogging()
+                            }
+                        }
+                    }
+                    catch {
+                        print(error)
+                    }
+                }
+            } catch {
+                print(error)
+            }
+        }
     }
 }

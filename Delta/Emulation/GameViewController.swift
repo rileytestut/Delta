@@ -1310,17 +1310,33 @@ extension GameViewController
             
             do
             {
-                if let quickSaveState = try fetchRequest.execute().first
-                {
-                    self.update(quickSaveState)
-                }
-                else
-                {
+                if ExperimentalFeatures.shared.quickSaveStack.isEnabled {
+                    let quickSaveStates = try fetchRequest.execute()
+                    if let saveState = quickSaveStates.first, quickSaveStates.count >= ExperimentalFeatures.shared.quickSaveStack.size.rawValue {
+                        DatabaseManager.shared.performBackgroundTask { (context) in
+                            let temporarySaveState = context.object(with: saveState.objectID)
+                            context.delete(temporarySaveState)
+                            context.saveWithErrorLogging()
+                        }
+                    }
                     let saveState = SaveState(context: backgroundContext)
                     saveState.type = .quick
                     saveState.game = game
                     
                     self.update(saveState)
+                } else {
+                    if let quickSaveState = try fetchRequest.execute().first
+                    {
+                        self.update(quickSaveState)
+                    }
+                    else
+                    {
+                        let saveState = SaveState(context: backgroundContext)
+                        saveState.type = .quick
+                        saveState.game = game
+
+                        self.update(saveState)
+                    }
                 }
             }
             catch
@@ -1340,7 +1356,7 @@ extension GameViewController
         
         do
         {
-            if let quickSaveState = try DatabaseManager.shared.viewContext.fetch(fetchRequest).first
+            if let quickSaveState = try DatabaseManager.shared.viewContext.fetch(fetchRequest).last
             {
                 self.load(quickSaveState)
             }
