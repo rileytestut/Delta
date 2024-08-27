@@ -30,7 +30,7 @@ class GridCollectionViewCell: UICollectionViewCell
         didSet {
             if self.isTextLabelVibrancyEnabled
             {
-                self.vibrancyView.contentView.addSubview(self.textLabel)
+                self.labelVibrancyView.contentView.addSubview(self.textLabel)
             }
             else
             {
@@ -45,7 +45,8 @@ class GridCollectionViewCell: UICollectionViewCell
         }
     }
     
-    private var vibrancyView = UIVisualEffectView(effect: UIVibrancyEffect(blurEffect: UIBlurEffect(style: .dark)))
+    private let vibrancyView = UIVisualEffectView(effect: UIVibrancyEffect(blurEffect: UIBlurEffect(style: .dark)))
+    private let labelVibrancyView = UIVisualEffectView(effect: UIVibrancyEffect(blurEffect: UIBlurEffect(style: .dark)))
     
     private var imageViewWidthConstraint: NSLayoutConstraint!
     private var imageViewHeightConstraint: NSLayoutConstraint!
@@ -81,6 +82,10 @@ class GridCollectionViewCell: UICollectionViewCell
         self.vibrancyView.contentView.translatesAutoresizingMaskIntoConstraints = false
         self.contentView.addSubview(self.vibrancyView)
         
+        self.labelVibrancyView.translatesAutoresizingMaskIntoConstraints = false
+        self.labelVibrancyView.contentView.translatesAutoresizingMaskIntoConstraints = false
+        self.contentView.addSubview(self.labelVibrancyView)
+        
         self.imageView.contentMode = .scaleAspectFit
         #if os(tvOS)
             self.imageView.adjustsImageWhenAncestorFocused = true
@@ -105,6 +110,16 @@ class GridCollectionViewCell: UICollectionViewCell
         self.vibrancyView.contentView.bottomAnchor.constraint(equalTo: self.vibrancyView.bottomAnchor).isActive = true
         self.vibrancyView.contentView.leadingAnchor.constraint(equalTo: self.vibrancyView.leadingAnchor).isActive = true
         self.vibrancyView.contentView.trailingAnchor.constraint(equalTo: self.vibrancyView.trailingAnchor).isActive = true
+        
+        self.labelVibrancyView.topAnchor.constraint(equalTo: self.contentView.topAnchor).isActive = true
+        self.labelVibrancyView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor).isActive = true
+        self.labelVibrancyView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor).isActive = true
+        self.labelVibrancyView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor).isActive = true
+        
+        self.labelVibrancyView.contentView.topAnchor.constraint(equalTo: self.labelVibrancyView.topAnchor).isActive = true
+        self.labelVibrancyView.contentView.bottomAnchor.constraint(equalTo: self.labelVibrancyView.bottomAnchor).isActive = true
+        self.labelVibrancyView.contentView.leadingAnchor.constraint(equalTo: self.labelVibrancyView.leadingAnchor).isActive = true
+        self.labelVibrancyView.contentView.trailingAnchor.constraint(equalTo: self.labelVibrancyView.trailingAnchor).isActive = true
         
         // Image View
         self.imageView.translatesAutoresizingMaskIntoConstraints = false

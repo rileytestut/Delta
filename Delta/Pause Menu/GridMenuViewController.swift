@@ -97,7 +97,6 @@ private extension GridMenuViewController
         
         cell.maximumImageSize = CGSize(width: 60, height: 60)
         
-        cell.imageView.image = pauseItem.image
         cell.imageView.contentMode = .center
         cell.imageView.layer.borderWidth = 2
         cell.imageView.layer.borderColor = self.view.tintColor.cgColor
@@ -108,11 +107,14 @@ private extension GridMenuViewController
         
         if pauseItem.isSelected
         {
+            cell.imageView.image = pauseItem.image?.withRenderingMode(.alwaysTemplate)
             cell.imageView.tintColor = UIColor.black
             cell.imageView.backgroundColor = self.view.tintColor
         }
         else
         {
+            
+            cell.imageView.image = pauseItem.image
             cell.imageView.tintColor = self.view.tintColor
             cell.imageView.backgroundColor = UIColor.clear
         }
