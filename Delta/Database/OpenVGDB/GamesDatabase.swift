@@ -9,6 +9,9 @@
 import Foundation
 import SQLite
 
+// Prefer SQLite's Expression over iOS 18's new Foundation.Expression
+private typealias Expression = SQLite.Expression
+
 private extension UserDefaults
 {
     @NSManaged var previousGamesDatabaseVersion: Int
