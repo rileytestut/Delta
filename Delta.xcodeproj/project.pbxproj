@@ -145,7 +145,6 @@
 		BFD097211D3A01B8005A44C2 /* SaveStatesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3540041C5DA70400C1184C /* SaveStatesViewController.swift */; };
 		BFD1EF402336BD8800D197CF /* UIDevice+Processor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD1EF3F2336BD8800D197CF /* UIDevice+Processor.swift */; };
 		BFDB3418219E4B1700595A62 /* SyncStatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDB3417219E4B1700595A62 /* SyncStatusViewController.swift */; };
-		BFDCA1E6244EBAA900B8FBDB /* liblibDeSmuME.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BFDCA1E5244EBAA900B8FBDB /* liblibDeSmuME.a */; };
 		BFDCA1E9244F7E1000B8FBDB /* Delta5ToDelta6.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = BFDCA1E8244F7E1000B8FBDB /* Delta5ToDelta6.xcmappingmodel */; };
 		BFDD04F11D5E2C27002D450E /* GameCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDD04F01D5E2C27002D450E /* GameCollectionViewController.swift */; };
 		BFE022A01F5B57FF0052D888 /* PopoverMenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE0229F1F5B577D0052D888 /* PopoverMenuButton.swift */; };
@@ -558,7 +557,6 @@
 				BF69FBAA23E399AA0051BEEA /* CoreMotion.framework in Frameworks */,
 				BF69FBA223E375A20051BEEA /* libVBA-M.a in Frameworks */,
 				BFFDF04623E3D3A600931B96 /* libMupen64Plus.a in Frameworks */,
-				BFDCA1E6244EBAA900B8FBDB /* liblibDeSmuME.a in Frameworks */,
 				D5AE76C22C2B59240086471B /* KeychainAccess in Frameworks */,
 				D5D7C1FA29E60EDE00663793 /* libDeltaFeatures.a in Frameworks */,
 				BFCADF1E25D22FE2008D78FB /* Systems.framework in Frameworks */,
