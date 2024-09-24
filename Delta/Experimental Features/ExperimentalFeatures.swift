@@ -57,6 +57,11 @@ struct ExperimentalFeatures: FeatureContainer
              description: "Visually show touches. Useful for screen recordings and tutorials.")
     var showTouches
     
+    @Feature(name: "Quick Save Stack",
+             description: "Maintain multiple quick saves in a stack.",
+             options: QuickSaveStatesOptions())
+    var quickSaveStack
+
     private init()
     {
         self.prepareFeatures()

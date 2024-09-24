@@ -253,6 +253,7 @@
 		D5EB601B2C0E6190007C543C /* Stream+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5EB601A2C0E6190007C543C /* Stream+Conveniences.swift */; };
 		D5F702FD2C24CE5300DCD271 /* UISceneSession+Delta.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F702FC2C24CE5300DCD271 /* UISceneSession+Delta.swift */; };
 		D5F82FB82981D3AC00B229AF /* LegacySearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F82FB72981D3AC00B229AF /* LegacySearchBar.swift */; };
+		DC1486CE2C604B130001E81C /* QuickSaveStackOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC1486CD2C604B130001E81C /* QuickSaveStackOptions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -546,6 +547,7 @@
 		D5EB601A2C0E6190007C543C /* Stream+Conveniences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Stream+Conveniences.swift"; sourceTree = "<group>"; };
 		D5F702FC2C24CE5300DCD271 /* UISceneSession+Delta.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UISceneSession+Delta.swift"; sourceTree = "<group>"; };
 		D5F82FB72981D3AC00B229AF /* LegacySearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacySearchBar.swift; sourceTree = "<group>"; };
+		DC1486CD2C604B130001E81C /* QuickSaveStackOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickSaveStackOptions.swift; sourceTree = "<group>"; };
 		DC866E433B3BA9AE18ABA1EC /* libPods-Delta.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Delta.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -1193,6 +1195,8 @@
 				AC1C990F29F8B8C30020E6E4 /* ToastNotificationOptions.swift */,
 				D5147EC72A817B4A00D6CD64 /* ReviewSaveStatesOptions.swift */,
 				D5A287242C23A1AC009883C3 /* SkinDebugging.swift */,
+				AC1AE3092A69BD3A00956EB9 /* AlternateAppIcons.swift */,
+				DC1486CD2C604B130001E81C /* QuickSaveStackOptions.swift */,
 			);
 			path = Features;
 			sourceTree = "<group>";
@@ -1693,6 +1697,7 @@
 				BF34FA111CF1899D006624C7 /* CheatTextView.swift in Sources */,
 				D524F4A5273DEBB400D500B2 /* ServerManager+Delta.swift in Sources */,
 				D5AAF27729884F8600F21ACF /* CheatDevice.swift in Sources */,
+				DC1486CE2C604B130001E81C /* QuickSaveStackOptions.swift in Sources */,
 				BF1F45AD21AF57BA00EF9895 /* HarmonyMetadataKey+Keys.swift in Sources */,
 				BFD1EF402336BD8800D197CF /* UIDevice+Processor.swift in Sources */,
 				BF71CF871FE90006001F1613 /* AppIconShortcutsViewController.swift in Sources */,
