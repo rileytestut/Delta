@@ -2094,6 +2094,11 @@ private extension GameViewController
         
         guard let emulatorCore, !emulatorCore.isWirelessMultiplayerActive else { return }
         emulatorCore.isWirelessMultiplayerActive = true
+        
+        DispatchQueue.main.async {
+            let toastView = RSTToastView(text: NSLocalizedString("Connecting to Nintendo WFC…", comment: ""), detailText: NSLocalizedString("Some features will be disabled while playing online.", comment: ""))
+            self.show(toastView, duration: 5.0)
+        }
     }
     
     @objc func didDisconnectFromOnline(with notification: Notification)
@@ -2102,6 +2107,11 @@ private extension GameViewController
         
         guard let emulatorCore, emulatorCore.isWirelessMultiplayerActive else { return }
         emulatorCore.isWirelessMultiplayerActive = false
+        
+        DispatchQueue.main.async {
+            let toastView = RSTToastView(text: NSLocalizedString("Disconnected from Nintendo WFC", comment: ""), detailText: nil)
+            self.show(toastView)
+        }
     }
     
     @objc func didEnableJIT(with notification: Notification)
