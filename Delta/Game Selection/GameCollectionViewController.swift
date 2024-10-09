@@ -1357,6 +1357,28 @@ extension GameCollectionViewController
     override func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration?
     {
         let game = self.dataSource.item(at: indexPath)
+        
+        do
+        {
+            try self.validateLaunchingGame(game, ignoringErrors: [LaunchError.alreadyRunning])
+        }
+        catch LaunchError.systemAlreadyRunning(let activeGame?, _) where activeGame == game
+        {
+            // Selected game is currently running in background/another window, so don't show context menu.
+            Logger.main.info("Game \(activeGame.identifier, privacy: .public) is currently running, hiding context menu.")
+            return nil
+        }
+        catch LaunchError.multiplayerSessionActive(let emulatorCore) where (emulatorCore?.game as? Game) == game
+        {
+            // Selected game has active multiplayer session, so don't show context menu.
+            Logger.main.info("Game \(game.identifier, privacy: .public) has active multiplayer session, hiding context menu.")
+            return nil
+        }
+        catch
+        {
+            Logger.main.info("Error trying to preview game: \(error.localizedDescription, privacy: .public)")
+        }
+        
         let actions = self.actions(for: game)
         
         let cell = self.collectionView.cellForItem(at: indexPath)
