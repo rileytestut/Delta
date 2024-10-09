@@ -2121,6 +2121,8 @@ private extension GameViewController
     
     @objc func emulationDidQuit(with notification: Notification)
     {
+        guard let emulatorCore = notification.object as? EmulatorCore, emulatorCore == self.emulatorCore else { return }
+        
         DispatchQueue.main.async {
             guard self.presentedViewController == nil else { return }
             

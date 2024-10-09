@@ -578,6 +578,7 @@ private extension GamesViewController
     
     @objc func emulationDidQuit(_ notification: Notification)
     {
+        guard let emulatorCore = notification.object as? EmulatorCore, emulatorCore == self.activeEmulatorCore else { return }
         self.quitEmulation()
     }
     
