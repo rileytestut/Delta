@@ -560,6 +560,14 @@ extension GameViewController
             default: break
             }
             
+            if let emulatorCore, emulatorCore.isWirelessMultiplayerActive
+            {
+                pauseViewController.saveStateItem = nil
+                pauseViewController.loadStateItem = nil
+                pauseViewController.cheatCodesItem = nil
+                pauseViewController.fastForwardItem = nil
+            }
+            
             self.pauseViewController = pauseViewController
             
         default: break
@@ -1007,7 +1015,7 @@ extension GameViewController: SaveStatesViewControllerDelegate
         // Ensures game is non-nil and also a Game subclass
         guard let game = self.game as? Game else { return }
         
-        guard let emulatorCore = self.emulatorCore, emulatorCore.state != .stopped else { return }
+        guard let emulatorCore = self.emulatorCore, emulatorCore.state != .stopped, !emulatorCore.isWirelessMultiplayerActive else { return }
         
         // If pausedSaveState exists and has already been saved, don't update auto save state
         // This prevents us from filling our auto save state slots with the same save state
@@ -1289,7 +1297,7 @@ extension GameViewController
 {
     @objc func performQuickSaveAction()
     {
-        guard let game = self.game as? Game else { return }
+        guard let game = self.game as? Game, let emulatorCore, !emulatorCore.isWirelessMultiplayerActive else { return }
         
         let backgroundContext = DatabaseManager.shared.newBackgroundContext()
         backgroundContext.performAndWait {
@@ -1323,7 +1331,7 @@ extension GameViewController
     
     @objc func performQuickLoadAction()
     {
-        guard let game = self.game as? Game else { return }
+        guard let game = self.game as? Game, let emulatorCore, !emulatorCore.isWirelessMultiplayerActive else { return }
         
         let fetchRequest = SaveState.fetchRequest(for: game, type: .quick)
         
@@ -1342,7 +1350,7 @@ extension GameViewController
     
     func performFastForwardAction(activate: Bool)
     {
-        guard let emulatorCore = self.emulatorCore else { return }
+        guard let emulatorCore = self.emulatorCore, !emulatorCore.isWirelessMultiplayerActive else { return }
         
         if activate
         {
