@@ -2,8 +2,8 @@ CLANG_CXX_LANGUAGE_STANDARD = c++17
 CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = NO
 CONFIGURATION_BUILD_DIR = ${PODS_CONFIGURATION_BUILD_DIR}/MelonDSDeltaCore
 GCC_OPTIMIZATION_LEVEL = fast
-GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1 STATIC_LIBRARY=1 MELONDS_VERSION=\"0.9.5\"
-HEADER_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/Headers/Private" "${PODS_ROOT}/Headers/Private/MelonDSDeltaCore" "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/MelonDSDeltaCore" "${PODS_CONFIGURATION_BUILD_DIR}" "$(PODS_ROOT)/Headers/Private/MelonDSDeltaCore/melonDS/src"
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1 STATIC_LIBRARY=1 _NETINET_TCP_VAR_H_ MELONDS_VERSION=\"0.9.5\"
+HEADER_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/Headers/Private" "${PODS_ROOT}/Headers/Private/MelonDSDeltaCore" "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/MelonDSDeltaCore" "${PODS_CONFIGURATION_BUILD_DIR}" "$(PODS_ROOT)/Headers/Private/MelonDSDeltaCore/melonDS/src" "$(PODS_ROOT)/Headers/Private/MelonDSDeltaCore/melonDS/src/frontend/libslirp"
 OTHER_CFLAGS = $(inherited) -fmodule-map-file="${PODS_CONFIGURATION_BUILD_DIR}/DeltaCore/DeltaCore.modulemap" -fmodule-map-file="${PODS_CONFIGURATION_BUILD_DIR}/ZIPFoundation/ZIPFoundation.modulemap"
 OTHER_SWIFT_FLAGS = $(inherited) -D COCOAPODS -Xcc -fmodule-map-file="${PODS_CONFIGURATION_BUILD_DIR}/DeltaCore/DeltaCore.modulemap" -Xcc -fmodule-map-file="${PODS_CONFIGURATION_BUILD_DIR}/ZIPFoundation/ZIPFoundation.modulemap" -suppress-warnings -import-underlying-module -Xcc -fmodule-map-file="${SRCROOT}/${MODULEMAP_FILE}"
 PODS_BUILD_DIR = ${BUILD_DIR}
@@ -15,5 +15,5 @@ PODS_XCFRAMEWORKS_BUILD_DIR = $(PODS_CONFIGURATION_BUILD_DIR)/XCFrameworkInterme
 PRODUCT_BUNDLE_IDENTIFIER = org.cocoapods.${PRODUCT_NAME:rfc1034identifier}
 SKIP_INSTALL = YES
 SWIFT_INCLUDE_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/DeltaCore" "${PODS_CONFIGURATION_BUILD_DIR}/ZIPFoundation"
-USER_HEADER_SEARCH_PATHS = "${PODS_CONFIGURATION_BUILD_DIR}/DeltaCore/Swift Compatibility Header" "$(PODS_ROOT)/Headers/Private/MelonDSDeltaCore/melonDS/src/teakra/include"
+USER_HEADER_SEARCH_PATHS = "${PODS_CONFIGURATION_BUILD_DIR}/DeltaCore/Swift Compatibility Header" "$(PODS_ROOT)/Headers/Private/MelonDSDeltaCore/melonDS/src/teakra/include" "$(PODS_ROOT)/Headers/Private/MelonDSDeltaCore/melonDS/src/frontend"
 USE_RECURSIVE_SCRIPT_INPUTS_IN_SCRIPT_PHASES = YES
