@@ -172,8 +172,11 @@ extension GamesViewController
             self.updateSections(animated: false)
         }
         
-        DispatchQueue.global().async {
-            self.activeEmulatorCore?.stop()
+        if let activeEmulatorCore, !activeEmulatorCore.isWirelessMultiplayerActive
+        {
+            DispatchQueue.global().async {
+                activeEmulatorCore.stop()
+            }
         }
         
         self.sync()

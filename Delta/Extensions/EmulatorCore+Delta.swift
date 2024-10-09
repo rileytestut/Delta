@@ -1,5 +1,5 @@
 //
-//  EmulatorCore+Cheats.swift
+//  EmulatorCore+Delta.swift
 //  Delta
 //
 //  Created by Riley Testut on 8/11/16.
@@ -7,6 +7,17 @@
 //
 
 import DeltaCore
+import ObjectiveC
+
+private var _isWirelessMultiplayerActive: UInt8 = 0
+
+extension EmulatorCore
+{
+    var isWirelessMultiplayerActive: Bool {
+        get { objc_getAssociatedObject(self, &_isWirelessMultiplayerActive) as? Bool ?? false }
+        set { objc_setAssociatedObject(self, &_isWirelessMultiplayerActive, newValue as NSNumber, objc_AssociationPolicy.OBJC_ASSOCIATION_COPY) }
+    }
+}
 
 extension EmulatorCore
 {
