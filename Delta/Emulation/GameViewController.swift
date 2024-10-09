@@ -250,6 +250,8 @@ class GameViewController: DeltaCore.GameViewController
         
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.didActivateGyro(with:)), name: GBA.didActivateGyroNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.didDeactivateGyro(with:)), name: GBA.didDeactivateGyroNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.didConnectOnline(with:)), name: MelonDS.didConnectToWFCNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.didDisconnectFromOnline(with:)), name: MelonDS.didDisconnectFromWFCNotification, object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.emulationDidQuit(with:)), name: EmulatorCore.emulationDidQuitNotification, object: nil)
         
@@ -1589,6 +1591,19 @@ extension GameViewController: GameViewControllerDelegate
         }
     }
     
+    func gameViewControllerShouldPauseEmulation(_ gameViewController: DeltaCore.GameViewController) -> Bool
+    {
+        guard gameViewController == self else { return true }
+        
+        if let emulatorCore, emulatorCore.isWirelessMultiplayerActive
+        {
+            // Disable pausing game when wireless multiplayer is active.
+            return false
+        }
+        
+        return true
+    }
+    
     func gameViewControllerShouldResumeEmulation(_ gameViewController: DeltaCore.GameViewController) -> Bool
     {
         guard gameViewController == self else { return false }
@@ -2063,6 +2078,22 @@ private extension GameViewController
                 self.parent?.setNeedsUpdateOfSupportedInterfaceOrientations() // LaunchViewController
             }
         }
+    }
+    
+    @objc func didConnectOnline(with notification: Notification)
+    {
+        guard let bridge = notification.object as? EmulatorBridging, bridge.gameURL == self.game?.fileURL else { return }
+        
+        guard let emulatorCore, !emulatorCore.isWirelessMultiplayerActive else { return }
+        emulatorCore.isWirelessMultiplayerActive = true
+    }
+    
+    @objc func didDisconnectFromOnline(with notification: Notification)
+    {
+        guard let bridge = notification.object as? EmulatorBridging, bridge.gameURL == self.game?.fileURL else { return }
+        
+        guard let emulatorCore, emulatorCore.isWirelessMultiplayerActive else { return }
+        emulatorCore.isWirelessMultiplayerActive = false
     }
     
     @objc func didEnableJIT(with notification: Notification)

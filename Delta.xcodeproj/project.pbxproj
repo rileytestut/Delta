@@ -45,7 +45,7 @@
 		BF107EC41BF413F000E0C32C /* GamesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF107EC31BF413F000E0C32C /* GamesViewController.swift */; };
 		BF1173501DA32CF600047DF8 /* ControllersSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF11734F1DA32CF600047DF8 /* ControllersSettingsViewController.swift */; };
 		BF13A7561D5D29B0000BB055 /* PreviewGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF13A7551D5D29B0000BB055 /* PreviewGameViewController.swift */; };
-		BF13A7581D5D2FD9000BB055 /* EmulatorCore+Cheats.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF13A7571D5D2FD9000BB055 /* EmulatorCore+Cheats.swift */; };
+		BF13A7581D5D2FD9000BB055 /* EmulatorCore+Delta.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF13A7571D5D2FD9000BB055 /* EmulatorCore+Delta.swift */; };
 		BF15AF841F54B43B009B6AAB /* ActionInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF15AF831F54B43B009B6AAB /* ActionInput.swift */; };
 		BF18B61F1E2985F900F70067 /* UIAlertController+Importing.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF18B61E1E2985F900F70067 /* UIAlertController+Importing.swift */; };
 		BF1DAD5D1D9F576000E752A7 /* PreferredControllerSkinsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1DAD5C1D9F576000E752A7 /* PreferredControllerSkinsViewController.swift */; };
@@ -316,7 +316,7 @@
 		BF107EC31BF413F000E0C32C /* GamesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GamesViewController.swift; sourceTree = "<group>"; };
 		BF11734F1DA32CF600047DF8 /* ControllersSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControllersSettingsViewController.swift; sourceTree = "<group>"; };
 		BF13A7551D5D29B0000BB055 /* PreviewGameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewGameViewController.swift; sourceTree = "<group>"; };
-		BF13A7571D5D2FD9000BB055 /* EmulatorCore+Cheats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EmulatorCore+Cheats.swift"; sourceTree = "<group>"; };
+		BF13A7571D5D2FD9000BB055 /* EmulatorCore+Delta.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EmulatorCore+Delta.swift"; sourceTree = "<group>"; };
 		BF15AF831F54B43B009B6AAB /* ActionInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionInput.swift; sourceTree = "<group>"; };
 		BF18B61E1E2985F900F70067 /* UIAlertController+Importing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIAlertController+Importing.swift"; sourceTree = "<group>"; };
 		BF1DAD5C1D9F576000E752A7 /* PreferredControllerSkinsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferredControllerSkinsViewController.swift; sourceTree = "<group>"; };
@@ -597,7 +597,7 @@
 				BF797A2C1C2D339F00F1A000 /* UILabel+FontSize.swift */,
 				BF7AE8091C2E8C7600B1B5BC /* UIColor+Delta.swift */,
 				BFCEA67D1D56FF640061A534 /* UIViewControllerContextTransitioning+Conveniences.swift */,
-				BF13A7571D5D2FD9000BB055 /* EmulatorCore+Cheats.swift */,
+				BF13A7571D5D2FD9000BB055 /* EmulatorCore+Delta.swift */,
 				BF6866161DCAC8B900BF2D06 /* ControllerSkin+Configuring.swift */,
 				BF59428F1E09BD1A0051894B /* NSFetchedResultsController+Conveniences.h */,
 				BF5942901E09BD1A0051894B /* NSFetchedResultsController+Conveniences.m */,
@@ -1654,7 +1654,7 @@
 				BFC1F2CC22F9515F00606A45 /* CopyDeepLinkActivity.swift in Sources */,
 				BF5942801E09BC830051894B /* SaveState.swift in Sources */,
 				BF59428E1E09BCFB0051894B /* ImportController.swift in Sources */,
-				BF13A7581D5D2FD9000BB055 /* EmulatorCore+Cheats.swift in Sources */,
+				BF13A7581D5D2FD9000BB055 /* EmulatorCore+Delta.swift in Sources */,
 				BF48F74E219A16DA00BC2FC1 /* SyncingServicesViewController.swift in Sources */,
 				D5A9C01D29DE058C00A8D610 /* VariableFastForward.swift in Sources */,
 				BFE593CA21F3F8B7003412A6 /* GameSave.swift in Sources */,
