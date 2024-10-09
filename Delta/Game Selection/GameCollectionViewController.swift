@@ -27,6 +27,7 @@ extension GameCollectionViewController
         case downloadingGameSave
         case biosNotFound
         case systemAlreadyRunning(Game?, UISceneSession)
+        case multiplayerSessionActive(EmulatorCore?)
         
         var errorTitle: String? {
             switch self
@@ -35,6 +36,7 @@ extension GameCollectionViewController
             case .downloadingGameSave: return NSLocalizedString("Downloading Save File", comment: "")
             case .biosNotFound: return NSLocalizedString("Missing Required DS Files", comment: "")
             case .systemAlreadyRunning: return NSLocalizedString("System Already Running", comment: "")
+            case .multiplayerSessionActive: return NSLocalizedString("Active Multiplayer Game", comment: "")
             }
         }
         
@@ -53,6 +55,21 @@ extension GameCollectionViewController
                 
                 let message = String(format: NSLocalizedString("Delta can only play one game per system at a time.\n\nPlease quit the other game%@, or choose another game for a different system.", comment: ""), gameNamePhrase)
                 return message
+                
+            case .multiplayerSessionActive(let emulatorCore):
+                let gameName: String
+                if let game = emulatorCore?.game as? Game
+                {
+                    gameName = game.name
+                }
+                else
+                {
+                    gameName = NSLocalizedString("a game", comment: "")
+                }
+                
+                let message = String(format: NSLocalizedString("You are currently playing %@ online. Please quit this game before playing another one.", comment: ""), gameName)
+                return message
+                
             }
         }
         
@@ -62,6 +79,13 @@ extension GameCollectionViewController
             case .systemAlreadyRunning(_, let session):
                 let quitAction = UIAlertAction(title: NSLocalizedString("Quit Game", comment: ""), style: .destructive) { _ in
                     session.quit()
+                }
+                return [quitAction]
+                
+            case .multiplayerSessionActive(let emulatorCore):
+                let quitAction = UIAlertAction(title: NSLocalizedString("Quit Game", comment: ""), style: .destructive) { _ in
+                    emulatorCore?.stop()
+                    NotificationCenter.default.post(name: EmulatorCore.emulationDidQuitNotification, object: emulatorCore, userInfo: nil)
                 }
                 return [quitAction]
                 
@@ -443,13 +467,13 @@ private extension GameCollectionViewController
                         // Disable videoManager to prevent flash of black
                         self.activeEmulatorCore?.videoManager.isEnabled = false
                         
-                        launchGame(ignoringErrors: [LaunchError.alreadyRunning])
+                        launchGame(ignoringErrors: [LaunchError.alreadyRunning, LaunchError.multiplayerSessionActive(nil)])
                         
                         // The game hasn't changed, so the activeEmulatorCore is the same as before, so we need to enable videoManager it again
                         self.activeEmulatorCore?.videoManager.isEnabled = true
                     }))
                     alertController.addAction(UIAlertAction(title: NSLocalizedString("Restart", comment: ""), style: .destructive, handler: { (action) in
-                        launchGame(ignoringErrors: [LaunchError.alreadyRunning])
+                        launchGame(ignoringErrors: [LaunchError.alreadyRunning, LaunchError.multiplayerSessionActive(nil)])
                     }))
                     self.present(alertController, animated: true)
                     
@@ -462,7 +486,7 @@ private extension GameCollectionViewController
                     
                     self.present(alertController, animated: true, completion: nil)
                     
-                case .downloadingGameSave, .systemAlreadyRunning:
+                case .downloadingGameSave, .systemAlreadyRunning, .multiplayerSessionActive:
                     let alertController = UIAlertController(title: error.errorTitle, message: error.localizedDescription, preferredStyle: .alert)
                     
                     if error.recoveryActions.isEmpty
@@ -512,6 +536,21 @@ private extension GameCollectionViewController
         
         if let scene = self.view.window?.windowScene
         {
+            // Check if current scene is running with active wireless multiplayer.
+            // If so, ask user to explicitly quit game to prevent accidentally stopping multiplayer session.
+            
+            if let activeEmulatorCore, activeEmulatorCore.isWirelessMultiplayerActive
+            {
+                if !ignoredErrors.contains(where: {
+                    $0.domain == (LaunchError.alreadyRunning as NSError).domain &&
+                    $0.code == (LaunchError.multiplayerSessionActive(nil) as NSError).code
+                })
+                {
+                    // Current scene has emulator core running in background with active multiplayer session.
+                    throw LaunchError.multiplayerSessionActive(activeEmulatorCore)
+                }
+            }
+            
             // Check connectedScenes, not openSessions, because a disconnected scene restarts from home screen (so it's not an issue).
             for mainScene in UIApplication.shared.mainScenes where mainScene != scene
             {
