@@ -102,6 +102,7 @@ class GameCollectionViewController: UICollectionViewController
     weak var activeEmulatorCore: EmulatorCore?
     
     private var activeSaveState: SaveStateProtocol?
+    private var isResumingGame: Bool = false
     
     private let prototypeCell = GridCollectionViewCell()
     
@@ -211,8 +212,16 @@ extension GameCollectionViewController
             let indexPath = self.collectionView!.indexPath(for: cell)!
             let game = self.dataSource.item(at: indexPath)
             
-            destinationViewController.game = game
-            
+            if let activeEmulatorCore, activeEmulatorCore.isWirelessMultiplayerActive, self.isResumingGame
+            {
+                // We don't pause emulator cores with active multiplayer, so do nothing to "resume".
+            }
+            else
+            {
+                // Otherwise, reset emulation and optionally load self.activeSaveState below to "resume".
+                destinationViewController.game = game
+            }
+
             if let emulatorBridge = destinationViewController.emulatorCore?.deltaCore.emulatorBridge as? MelonDSEmulatorBridge
             {
                 //TODO: Update this to work with multiple processes by retrieving emulatorBridge directly from emulatorCore.
@@ -230,7 +239,7 @@ extension GameCollectionViewController
                 emulatorBridge.gbaGameURL = game.secondaryGame?.fileURL
             }
             
-            if let saveState = self.activeSaveState
+            if let saveState = self.activeSaveState /* && self.isResumingGame */ // activeSaveState can be non-nil even when not resuming game.
             {
                 // Must be synchronous or else there will be a flash of black
                 destinationViewController.emulatorCore?.start()
@@ -253,6 +262,7 @@ extension GameCollectionViewController
             }
             
             self.activeSaveState = nil
+            self.isResumingGame = false
             
             if _performingPreviewTransition
             {
@@ -383,6 +393,8 @@ private extension GameCollectionViewController
     //MARK: - Emulation
     func launchGame(at indexPath: IndexPath, clearScreen: Bool, ignoreAlreadyRunningError: Bool = false)
     {
+        self.isResumingGame = false
+        
         func launchGame(ignoringErrors ignoredErrors: [Error])
         {
             let game = self.dataSource.item(at: indexPath)
@@ -401,25 +413,31 @@ private extension GameCollectionViewController
             }
             catch let error as LaunchError
             {
+                self.isResumingGame = false
+                
                 switch error
                 {
                 case .alreadyRunning:
                     let alertController = UIAlertController(title: NSLocalizedString("Game Paused", comment: ""), message: NSLocalizedString("Would you like to resume where you left off, or restart the game?", comment: ""), preferredStyle: .alert)
                     alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
                     alertController.addAction(UIAlertAction(title: NSLocalizedString("Resume", comment: ""), style: .default, handler: { (action) in
+                        self.isResumingGame = true
                         
-                        let fetchRequest = SaveState.rst_fetchRequest() as! NSFetchRequest<SaveState>
-                        fetchRequest.predicate = NSPredicate(format: "%K == %@ AND %K == %d", #keyPath(SaveState.game), game, #keyPath(SaveState.type), SaveStateType.auto.rawValue)
-                        fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(SaveState.creationDate), ascending: true)]
-                        
-                        do
+                        if let activeEmulatorCore = self.activeEmulatorCore, !activeEmulatorCore.isWirelessMultiplayerActive
                         {
-                            let saveStates = try game.managedObjectContext?.fetch(fetchRequest)
-                            self.activeSaveState = saveStates?.last
-                        }
-                        catch
-                        {
-                            print(error)
+                            let fetchRequest = SaveState.rst_fetchRequest() as! NSFetchRequest<SaveState>
+                            fetchRequest.predicate = NSPredicate(format: "%K == %@ AND %K == %d", #keyPath(SaveState.game), game, #keyPath(SaveState.type), SaveStateType.auto.rawValue)
+                            fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(SaveState.creationDate), ascending: true)]
+                            
+                            do
+                            {
+                                let saveStates = try game.managedObjectContext?.fetch(fetchRequest)
+                                self.activeSaveState = saveStates?.last
+                            }
+                            catch
+                            {
+                                print(error)
+                            }
                         }
                         
                         // Disable videoManager to prevent flash of black
@@ -466,6 +484,8 @@ private extension GameCollectionViewController
             }
             catch
             {
+                self.isResumingGame = false
+                
                 let alertController = UIAlertController(title: NSLocalizedString("Unable to Launch Game", comment: ""), error: error)
                 self.present(alertController, animated: true, completion: nil)
             }
