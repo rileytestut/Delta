@@ -69,6 +69,7 @@ struct Settings
                         #keyPath(UserDefaults.pauseWhileInactive): true,
                         #keyPath(UserDefaults.supportsExternalDisplays): true,
                         #keyPath(UserDefaults.isQuickGesturesEnabled): true,
+                        ExperimentalFeatures.shared.openGLES3.settingsKey.rawValue: true,
                         Settings.preferredCoreSettingsKey(for: .ds): MelonDS.core.identifier] as [String : Any]
         
         #if !BETA

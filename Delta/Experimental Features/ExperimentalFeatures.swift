@@ -57,6 +57,10 @@ struct ExperimentalFeatures: FeatureContainer
              description: "Visually show touches. Useful for screen recordings and tutorials.")
     var showTouches
     
+    @Feature(name: "OpenGL ES 3.0",
+             description: "Render Nintendo 64 games with OpenGL ES 3.0. May fix visual issues.")
+    var openGLES3
+    
     private init()
     {
         self.prepareFeatures()
