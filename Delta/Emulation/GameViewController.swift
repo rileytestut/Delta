@@ -11,6 +11,7 @@ import Photos
 
 import DeltaCore
 import GBADeltaCore
+import N64DeltaCore
 import MelonDSDeltaCore
 import Systems
 
@@ -1638,6 +1639,14 @@ extension GameViewController: GameViewControllerDelegate
         {
             self.updateExternalDisplayGameViews()
         }
+    }
+    
+    func gameViewController(_ gameViewController: DeltaCore.GameViewController, optionsFor game: GameProtocol) -> [EmulatorCore.Option: Any]
+    {
+        guard game.type == .n64 else { return [:] }
+        
+        // Explicitly request OpenGL ES 2.0 if ExperimentalFeatures.openGLES3 is disabled.
+        return [.openGLES2: !ExperimentalFeatures.shared.openGLES3.isEnabled]
     }
 }
 
