@@ -61,6 +61,10 @@ struct ExperimentalFeatures: FeatureContainer
              description: "Render Nintendo 64 games with OpenGL ES 3.0. May fix visual issues.")
     var openGLES3
     
+    @Feature(name: "Metal Renderer",
+             description: "Use Metal to render games instead of OpenGL ES. Does not apply to N64 games.")
+    var metal
+    
     private init()
     {
         self.prepareFeatures()
