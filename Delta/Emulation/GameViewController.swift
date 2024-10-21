@@ -1643,10 +1643,24 @@ extension GameViewController: GameViewControllerDelegate
     
     func gameViewController(_ gameViewController: DeltaCore.GameViewController, optionsFor game: GameProtocol) -> [EmulatorCore.Option: Any]
     {
-        guard game.type == .n64 else { return [:] }
-        
-        // Explicitly request OpenGL ES 2.0 if ExperimentalFeatures.openGLES3 is disabled.
-        return [.openGLES2: !ExperimentalFeatures.shared.openGLES3.isEnabled]
+        if game.type == .n64
+        {
+            // Explicitly request OpenGL ES 2.0 if ExperimentalFeatures.openGLES3 is disabled.
+            return [.openGLES2: !ExperimentalFeatures.shared.openGLES3.isEnabled]
+        }
+        else
+        {
+            var options: [EmulatorCore.Option: Any] = [.metal: ExperimentalFeatures.shared.metal.isEnabled]
+            
+            if #available(iOS 18, macOS 15, *), ProcessInfo.processInfo.isiOSAppOnMac
+            {
+                // macOS 15 Sequoia no longer supports rendering bitmap CIImages with OpenGL ES,
+                // so always render with Metal.
+                options[.metal] = true
+            }
+            
+            return options
+        }
     }
 }
 
