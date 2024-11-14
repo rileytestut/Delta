@@ -267,12 +267,12 @@ private extension SettingsViewController
             guard #unavailable(iOS 15) else { return false }
             
             // OSLogStore is not available on iOS 14, so section is only visible if experimental features is visible.
-            return !ExperimentalFeatures.isExperimentalFeaturesAvailable
+            return !PurchaseManager.shared.isExperimentalFeaturesAvailable
             
         #if LEGACY
         case .patreon: return true
         #elseif APP_STORE
-        case .patreon: return !ExternalPurchaseManager.shared.supportsExternalPurchases
+        case .patreon: return !PurchaseManager.shared.supportsExternalPurchases
         #endif
             
         case .hapticTouch:
@@ -682,7 +682,7 @@ extension SettingsViewController
             
         case .syncing where !isSectionHidden(section): return SyncManager.shared.coordinator?.account == nil ? 1 : super.tableView(tableView, numberOfRowsInSection: sectionIndex)
         case .advanced where !isSectionHidden(section):
-            if ExperimentalFeatures.isExperimentalFeaturesAvailable
+            if PurchaseManager.shared.isExperimentalFeaturesAvailable
             {
                 return super.tableView(tableView, numberOfRowsInSection: sectionIndex)
             }
@@ -969,7 +969,7 @@ extension SettingsViewController
         case .patreon:
             guard #available(iOS 15, *), let footerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: AttributedHeaderFooterView.reuseIdentifier) as? AttributedHeaderFooterView else { break }
             
-            if #available(iOS 17.5, *), ExternalPurchaseManager.shared.supportsExternalPurchases
+            if #available(iOS 17.5, *), PurchaseManager.shared.supportsExternalPurchases
             {
                 var attributedText = AttributedString(localized: "Buy for $3 at altstore.io/patreon")
                 attributedText.font = UIFont.systemFont(ofSize: 17.0)
@@ -1010,7 +1010,7 @@ extension SettingsViewController
         switch section
         {
         case .advanced:
-            if ExperimentalFeatures.isExperimentalFeaturesAvailable
+            if PurchaseManager.shared.isExperimentalFeaturesAvailable
             {
                 return super.tableView(tableView, titleForFooterInSection: section.rawValue)
             }

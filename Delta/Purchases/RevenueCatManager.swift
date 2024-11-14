@@ -51,6 +51,7 @@ class RevenueCatManager
     
     private(set) var customerInfo: CustomerInfo? {
         didSet {
+            PurchaseManager.shared.update()
             NotificationCenter.default.post(name: RevenueCatManager.didUpdateCustomerInfoNotification, object: self.customerInfo)
         }
     }
