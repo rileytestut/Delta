@@ -12,6 +12,7 @@ extension OSLog.Category
 {
     static let main = "Main"
     static let database = "Database"
+    static let purchases = "Purchases"
 }
 
 extension Logger
@@ -20,6 +21,7 @@ extension Logger
     
     static let main = Logger(subsystem: deltaSubsystem, category: OSLog.Category.main)
     static let database = Logger(subsystem: deltaSubsystem, category: OSLog.Category.database)
+    static let purchases = Logger(subsystem: deltaSubsystem, category: OSLog.Category.purchases)
 }
 
 @available(iOS 15, *)
