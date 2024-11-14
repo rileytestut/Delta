@@ -2628,7 +2628,13 @@ Delta uses OpenVGDB to provide automatic artwork for imported games.</string>
                             <outlet property="delegate" destination="4DO-Ey-uDN" id="0cu-hC-GJh"/>
                         </connections>
                     </collectionView>
-                    <navigationItem key="navigationItem" title="Friend Zone Patrons" largeTitleDisplayMode="always" id="kcs-Gu-L9Y"/>
+                    <navigationItem key="navigationItem" title="Friend Zone Patrons" largeTitleDisplayMode="always" id="kcs-Gu-L9Y">
+                        <barButtonItem key="rightBarButtonItem" title="Item" image="pencil" catalog="system" id="6I6-F5-bt8">
+                            <connections>
+                                <action selector="editPatronName:" destination="4DO-Ey-uDN" id="9te-ZE-msM"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QGe-T0-3mp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -2636,6 +2642,7 @@ Delta uses OpenVGDB to provide automatic artwork for imported games.</string>
         </scene>
     </scenes>
     <resources>
+        <image name="pencil" catalog="system" width="128" height="113"/>
         <namedColor name="Purple">
             <color red="0.54509803921568623" green="0.15686274509803921" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
