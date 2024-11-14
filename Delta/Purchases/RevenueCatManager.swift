@@ -18,6 +18,12 @@ extension RevenueCatManager
 {
     static let didUpdateCustomerInfoNotification = Notification.Name("DLTADidUpdateCustomerInfoNotification")
     
+    struct User: Decodable
+    {
+        var id: String
+        var name: String?
+    }
+    
     struct Entitlement: RawRepresentable, Codable, Hashable
     {
         static let betaAccess = Entitlement(rawValue: "beta-access")
@@ -26,14 +32,7 @@ extension RevenueCatManager
         
         let rawValue: String
     }
-    
-    private struct ProductID: RawRepresentable, Codable, Hashable
-    {
-        static let friendZoneMonthly = ProductID(rawValue: "delta_friendzone_1299_month")
         
-        let rawValue: String
-    }
-    
     enum Error: LocalizedError
     {
         case unknownProduct
@@ -44,6 +43,62 @@ extension RevenueCatManager
             case .unknownProduct: return NSLocalizedString("There is no product with the requested ID.", comment: "")
             }
         }
+    }
+}
+
+@available(iOS 17.5, *)
+private extension RevenueCatManager
+{
+    static let projectID = "bcb273c1"
+    static let apiKeyV1 = "sk_CnWLjZPMhUXNCsYCniuCbEGxrmjby"
+    static let apiKeyV2 = "sk_DNGXQqVGzSAneClgROmffzVjXNBLQ"
+    
+    struct ProductID: RawRepresentable, Codable, Hashable
+    {
+        static let friendZoneMonthly = ProductID(rawValue: "delta_friendzone_1299_month")
+        
+        let rawValue: String
+    }
+    
+    struct Subscriber: Decodable
+    {
+        struct Attribute: Codable
+        {
+            struct Key: RawRepresentable, Codable, Hashable, CodingKeyRepresentable
+            {
+                // RevenueCat Reserved
+                static let email = Key(rawValue: "$email")
+                static let name = Key(rawValue: "$displayName")
+                
+                let rawValue: String
+            }
+            
+            var value: String
+            var updated_at_ms: Int64?
+        }
+        
+        var first_seen: Date
+        var subscriber_attributes: [Attribute.Key: Attribute]?
+    }
+    
+    struct GetSubscriberResponse: Decodable
+    {
+        var request_date: Date // ISO 8601
+        var request_date_ms: UInt64 // Unix timestamp
+        
+        var subscriber: Subscriber
+    }
+    
+    private struct FetchCustomersResponse: Decodable
+    {
+        struct Customer: Decodable
+        {
+            var id: String
+        }
+        
+        var items: [Customer]
+        
+        var next_page: String?
     }
 }
 
@@ -84,6 +139,8 @@ class RevenueCatManager
         let hasPastBetaAccess = customerInfo.allPurchasedProductIdentifiers.contains(RevenueCatManager.ProductID.friendZoneMonthly.rawValue)
         return hasPastBetaAccess
     }
+    
+    private let baseURL = URL(string: "https://api.revenuecat.com")!
     
     private init()
     {
@@ -173,6 +230,113 @@ extension RevenueCatManager
         {
             Logger.purchases.error("Failed to restore purchases. \(error.localizedDescription, privacy: .public)")
             throw error
+        }
+    }
+}
+
+@available(iOS 17.5, *)
+extension RevenueCatManager
+{
+    @discardableResult
+    func fetchFriendZoneUsers() async throws -> [User]
+    {
+        let apiURL = URL(string: "https://api.revenuecat.com/v2/projects/\(RevenueCatManager.projectID)/customers?limit=1000")!
+        
+        var userIDs: Set<String> = []
+        
+        func fetchPatrons(url: URL) async throws
+        {
+            var request = URLRequest(url: url)
+            request.setValue("Bearer \(RevenueCatManager.apiKeyV2)", forHTTPHeaderField: "Authorization")
+            
+            let response = try await self.send(request, expecting: FetchCustomersResponse.self)
+            
+            let ids = response.items.map(\.id)
+            userIDs.formUnion(ids)
+            
+            if let nextPage = response.next_page, let nextURL = URL(string: nextPage)
+            {
+                try await fetchPatrons(url: nextURL)
+            }
+        }
+        
+        try await fetchPatrons(url: apiURL)
+        
+        // Fetch customer info for each userID.
+        let users = try await withThrowingTaskGroup(of: User.self) { taskGroup in
+            for userID in userIDs
+            {
+                _ = taskGroup.addTaskUnlessCancelled {
+                    try await self.fetchUser(id: userID)
+                }
+            }
+            
+            var users: [User] = []
+            
+            for try await user in taskGroup
+            {
+                users.append(user)
+            }
+            
+            return users
+        }
+        
+        return users
+    }
+    
+    @discardableResult
+    func fetchUser(id: String) async throws -> User
+    {
+        // Creates user if they don't already exist.
+        let apiURL = URL(string: "https://api.revenuecat.com/v1/subscribers/\(id)")!
+        
+        var request = URLRequest(url: apiURL)
+        request.setValue("Bearer \(RevenueCatManager.apiKeyV1)", forHTTPHeaderField: "Authorization")
+        
+        let response = try await self.send(request, expecting: GetSubscriberResponse.self, dateStrategy: .iso8601)
+        let name = response.subscriber.subscriber_attributes?[.name]?.value
+        
+        let user = User(id: id, name: name)
+        return user
+    }
+}
+
+@available(iOS 17.5, *)
+private extension RevenueCatManager
+{
+    @available(iOS 17.5, *)
+    func send<T: Decodable>(_ request: URLRequest, expecting: T.Type, dateStrategy: JSONDecoder.DateDecodingStrategy = .millisecondsSince1970) async throws -> T
+    {
+        guard let url = request.url else { throw URLError(.badURL) }
+        
+        while true
+        {
+            let (data, urlResponse) = try await URLSession.shared.data(for: request)
+            guard let httpResponse = urlResponse as? HTTPURLResponse else { throw URLError(.badServerResponse, userInfo: [NSURLErrorKey: url, NSURLErrorFailingURLErrorKey: url]) }
+            
+            if httpResponse.statusCode == 429
+            {
+                // Rate Limit Exceeded
+                // https://www.revenuecat.com/docs/api-v2/rate-limit
+                
+                if let retryAfterSeconds = httpResponse.value(forHTTPHeaderField: "Retry-After"), let seconds = Double(retryAfterSeconds), seconds < 60
+                {
+                    try await Task.sleep(for: .seconds(seconds))
+                    continue
+                }
+                else
+                {
+                    throw URLError(.resourceUnavailable, userInfo: [NSURLErrorKey: url, NSURLErrorFailingURLErrorKey: url])
+                }
+            }
+            
+            guard httpResponse.statusCode == 200 || httpResponse.statusCode == 201 else { throw URLError(.badServerResponse, userInfo: [NSURLErrorKey: url, NSURLErrorFailingURLErrorKey: url]) }
+            
+            let decoder = JSONDecoder()
+            decoder.dateDecodingStrategy = dateStrategy
+            
+            let response = try decoder.decode(T.self, from: data)
+            return response
         }
     }
 }
