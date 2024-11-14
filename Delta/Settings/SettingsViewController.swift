@@ -79,6 +79,7 @@ private extension SettingsViewController
         case caroline
         case grant
         case litRitt
+        case friendZonePatrons
         case contributors
         case softwareLicenses
     }
@@ -831,7 +832,7 @@ extension SettingsViewController
                 guard #available(iOS 14, *) else { return }
                 self.showContributors()
                 
-            case .softwareLicenses: break
+            case .friendZonePatrons, .softwareLicenses: break
             }
             
         case .support:

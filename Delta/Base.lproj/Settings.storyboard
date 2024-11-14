@@ -20,7 +20,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="separatorColor" systemColor="separatorColor"/>
                         <label key="tableFooterView" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Delta 0.6.0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Str-BY-agW">
-                            <rect key="frame" x="0.0" y="3155.5" width="375" height="44"/>
+                            <rect key="frame" x="0.0" y="3199.5" width="375" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -927,8 +927,34 @@ Menu + Long-Press: Quick Load</string>
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell" textLabel="g59-8E-zW7" style="IBUITableViewCellStyleDefault" id="hkv-lx-68h">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="DetailCell" textLabel="11H-p1-WYj" detailTextLabel="kwO-jq-LNT" style="IBUITableViewCellStyleValue1" id="67c-Xo-UkZ">
                                         <rect key="frame" x="16" y="2877.5" width="343" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="67c-Xo-UkZ" id="dNZ-wd-39n">
+                                            <rect key="frame" x="0.0" y="0.0" width="316.5" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Friend Zone Patrons" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="11H-p1-WYj">
+                                                    <rect key="frame" x="16" y="12" width="154" height="20.5"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="💜" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="kwO-jq-LNT">
+                                                    <rect key="frame" x="285.5" y="12" width="23" height="20.5"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" systemColor="secondaryLabelColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="4DO-Ey-uDN" kind="show" identifier="friendZonePatronsSegue" id="42Z-rc-2VT"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell" textLabel="g59-8E-zW7" style="IBUITableViewCellStyleDefault" id="hkv-lx-68h">
+                                        <rect key="frame" x="16" y="2921.5" width="343" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hkv-lx-68h" id="bNT-kB-3cI">
                                             <rect key="frame" x="0.0" y="0.0" width="316.5" height="44"/>
@@ -944,7 +970,7 @@ Menu + Long-Press: Quick Load</string>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell" textLabel="2K3-IL-94S" style="IBUITableViewCellStyleDefault" id="j7p-ZK-mHq">
-                                        <rect key="frame" x="16" y="2921.5" width="343" height="44"/>
+                                        <rect key="frame" x="16" y="2965.5" width="343" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="j7p-ZK-mHq" id="BqT-yP-OpS">
                                             <rect key="frame" x="0.0" y="0.0" width="316.5" height="44"/>
@@ -967,7 +993,7 @@ Menu + Long-Press: Quick Load</string>
                             <tableViewSection headerTitle="Support" id="EXh-f2-RH0">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell" textLabel="mLw-eP-4gt" style="IBUITableViewCellStyleDefault" id="5JY-bE-ydi">
-                                        <rect key="frame" x="16" y="3049.5" width="343" height="44"/>
+                                        <rect key="frame" x="16" y="3093.5" width="343" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5JY-bE-ydi" id="PrW-ow-LaM">
                                             <rect key="frame" x="0.0" y="0.0" width="316.5" height="44"/>
@@ -983,7 +1009,7 @@ Menu + Long-Press: Quick Load</string>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell" textLabel="9v6-NL-xiw" style="IBUITableViewCellStyleDefault" id="KuI-g9-UlV">
-                                        <rect key="frame" x="16" y="3093.5" width="343" height="44"/>
+                                        <rect key="frame" x="16" y="3137.5" width="343" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KuI-g9-UlV" id="i8j-lL-Hwf">
                                             <rect key="frame" x="0.0" y="0.0" width="316.5" height="44"/>
@@ -2207,7 +2233,7 @@ Delta uses OpenVGDB to provide automatic artwork for imported games.</string>
             <objects>
                 <tableViewController storyboardIdentifier="dsSettingsViewController" title="DS Settings" id="OwL-4c-EEA" customClass="MelonDSCoreSettingsViewController" customModule="Delta" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="insetGrouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="ops-m1-tlV">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="1250"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="989"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <sections>
                             <tableViewSection headerTitle="Core Info" footerTitle="" id="ozc-x3-LhT">
@@ -2548,12 +2574,65 @@ Delta uses OpenVGDB to provide automatic artwork for imported games.</string>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
-                    <size key="freeformSize" width="375" height="1250"/>
+                    <size key="freeformSize" width="375" height="989"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Sor-YZ-h3B" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="fCP-Vh-l72" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="2513" y="2830"/>
+            <point key="canvasLocation" x="2513" y="2733"/>
+        </scene>
+        <!--Friend Zone Patrons-->
+        <scene sceneID="vxf-6s-Sqp">
+            <objects>
+                <collectionViewController id="4DO-Ey-uDN" customClass="PatreonViewController" customModule="Delta" customModuleProvider="target" sceneMemberID="viewController">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" id="DK6-vp-wGV">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="groupTableViewBackgroundColor"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="20" id="XQE-gC-OmQ">
+                            <size key="itemSize" width="157" height="20"/>
+                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="20" minY="8" maxX="20" maxY="0.0"/>
+                        </collectionViewFlowLayout>
+                        <cells>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Cell" id="mqY-Rp-jLe" customClass="PatronCollectionViewCell" customModule="Delta" customModuleProvider="target">
+                                <rect key="frame" x="20" y="8" width="157" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                    <rect key="frame" x="0.0" y="0.0" width="157" height="20"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Caroline Moore" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.25" translatesAutoresizingMaskIntoConstraints="NO" id="ywo-nv-GyW">
+                                            <rect key="frame" x="0.0" y="0.0" width="157" height="20"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                            <color key="textColor" systemColor="secondaryLabelColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </view>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="ywo-nv-GyW" secondAttribute="trailing" id="E7l-IH-2ug"/>
+                                    <constraint firstAttribute="bottom" secondItem="ywo-nv-GyW" secondAttribute="bottom" id="NZm-VB-Nd2"/>
+                                    <constraint firstItem="ywo-nv-GyW" firstAttribute="leading" secondItem="mqY-Rp-jLe" secondAttribute="leading" id="Par-uS-Nyz"/>
+                                    <constraint firstItem="ywo-nv-GyW" firstAttribute="top" secondItem="mqY-Rp-jLe" secondAttribute="top" id="pfl-Ff-Lli"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="textLabel" destination="ywo-nv-GyW" id="APB-Xe-cfd"/>
+                                </connections>
+                            </collectionViewCell>
+                        </cells>
+                        <connections>
+                            <outlet property="dataSource" destination="4DO-Ey-uDN" id="5og-4z-Pcl"/>
+                            <outlet property="delegate" destination="4DO-Ey-uDN" id="0cu-hC-GJh"/>
+                        </connections>
+                    </collectionView>
+                    <navigationItem key="navigationItem" title="Friend Zone Patrons" largeTitleDisplayMode="always" id="kcs-Gu-L9Y"/>
+                </collectionViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="QGe-T0-3mp" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2513" y="3567"/>
         </scene>
     </scenes>
     <resources>
