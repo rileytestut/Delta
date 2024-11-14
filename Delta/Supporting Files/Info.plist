@@ -231,6 +231,18 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>SKExternalPurchaseLink</key>
+	<dict>
+		<key>us</key>
+		<string>https://altstore.io/patreon</string>
+	</dict>
+	<key>SKExternalPurchaseMultiLink</key>
+	<dict>
+		<key>us</key>
+		<array>
+			<string>https://altstore.io/patreon</string>
+		</array>
+	</dict>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

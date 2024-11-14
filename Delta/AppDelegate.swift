@@ -63,6 +63,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate
             // false = we handled the deep link, so no need to call delegate method separately.
             return false
         }
+        
+        Task<Void, Never> {
+            await ExternalPurchaseManager.shared.prepare()
+        }
                 
         return true
     }

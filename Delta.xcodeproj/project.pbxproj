@@ -177,6 +177,7 @@
 		D51CB7A629EDC15900B59678 /* ExperimentalFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = D51CB7A529EDC15900B59678 /* ExperimentalFeatures.swift */; };
 		D524F4A3273DE9C000D500B2 /* ProcessInfo+JIT.swift in Sources */ = {isa = PBXBuildFile; fileRef = D524F4A2273DE9C000D500B2 /* ProcessInfo+JIT.swift */; };
 		D524F4A5273DEBB400D500B2 /* ServerManager+Delta.swift in Sources */ = {isa = PBXBuildFile; fileRef = D524F4A4273DEBB400D500B2 /* ServerManager+Delta.swift */; };
+		D52CB8C82CE2B7C800B04458 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D52CB8C72CE2B7C800B04458 /* StoreKit.framework */; };
 		D53415A5298C782A00FD67B1 /* ContributorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53415A4298C782A00FD67B1 /* ContributorsView.swift */; };
 		D53415A7298C78BC00FD67B1 /* Contributors.plist in Resources */ = {isa = PBXBuildFile; fileRef = D53415A6298C78BC00FD67B1 /* Contributors.plist */; };
 		D539103229E88B6C0006B350 /* DeltaPreviews.h in Headers */ = {isa = PBXBuildFile; fileRef = D539103129E88B6C0006B350 /* DeltaPreviews.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -191,6 +192,7 @@
 		D560BD8629EDC45600289847 /* ExternalDisplaySceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D560BD8529EDC45600289847 /* ExternalDisplaySceneDelegate.swift */; };
 		D56F7ABC2B05988700490ACB /* AttributedHeaderFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56F7ABB2B05988700490ACB /* AttributedHeaderFooterView.swift */; };
 		D577D6022C2BAA2F00395125 /* AltAppIconsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5AE76C72C2B808F0086471B /* AltAppIconsViewController.swift */; };
+		D5795A1B2CD2D22900C1D7E9 /* ExternalPurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5795A1A2CD2D22200C1D7E9 /* ExternalPurchaseManager.swift */; };
 		D57D795629F300E100BB2CF8 /* CustomTintColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A817AF29DF4E6E00904AFE /* CustomTintColor.swift */; };
 		D57D795F29F315F700BB2CF8 /* FeatureDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54A4BB229E4D27E004C7D57 /* FeatureDetailView.swift */; };
 		D57D796029F315F700BB2CF8 /* ExperimentalFeaturesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A9C00229DDED6D00A8D610 /* ExperimentalFeaturesView.swift */; };
@@ -475,6 +477,7 @@
 		D51CB7A529EDC15900B59678 /* ExperimentalFeatures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExperimentalFeatures.swift; sourceTree = "<group>"; };
 		D524F4A2273DE9C000D500B2 /* ProcessInfo+JIT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProcessInfo+JIT.swift"; sourceTree = "<group>"; };
 		D524F4A4273DEBB400D500B2 /* ServerManager+Delta.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ServerManager+Delta.swift"; sourceTree = "<group>"; };
+		D52CB8C72CE2B7C800B04458 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		D532B8BC29E5EDAD009EE27C /* OptionalProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalProtocol.swift; sourceTree = "<group>"; };
 		D53415A4298C782A00FD67B1 /* ContributorsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContributorsView.swift; sourceTree = "<group>"; };
 		D53415A6298C78BC00FD67B1 /* Contributors.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Contributors.plist; sourceTree = "<group>"; };
@@ -491,6 +494,8 @@
 		D55C469029E7631000EA6DE9 /* AnyOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyOption.swift; sourceTree = "<group>"; };
 		D560BD8529EDC45600289847 /* ExternalDisplaySceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExternalDisplaySceneDelegate.swift; sourceTree = "<group>"; };
 		D56F7ABB2B05988700490ACB /* AttributedHeaderFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributedHeaderFooterView.swift; sourceTree = "<group>"; };
+		D5795A1A2CD2D22200C1D7E9 /* ExternalPurchaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExternalPurchaseManager.swift; sourceTree = "<group>"; };
+		D58013E82CC992560055F11C /* Delta.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Delta.entitlements; sourceTree = "<group>"; };
 		D586496F297734280081477E /* CheatMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheatMetadata.swift; sourceTree = "<group>"; };
 		D586497129774ABD0081477E /* CheatBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheatBase.swift; sourceTree = "<group>"; };
 		D5864977297756CE0081477E /* CheatBaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheatBaseView.swift; sourceTree = "<group>"; };
@@ -557,6 +562,7 @@
 			files = (
 				D5FB042C2C5AF40A008329DD /* libresolv.tbd in Frameworks */,
 				BF69FBA823E396860051BEEA /* libz.tbd in Frameworks */,
+				D52CB8C82CE2B7C800B04458 /* StoreKit.framework in Frameworks */,
 				BF69FBAA23E399AA0051BEEA /* CoreMotion.framework in Frameworks */,
 				BF69FBA223E375A20051BEEA /* libVBA-M.a in Frameworks */,
 				BFFDF04623E3D3A600931B96 /* libMupen64Plus.a in Frameworks */,
@@ -898,6 +904,7 @@
 		BF9F4FCD1AAD7B25004C9500 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D52CB8C72CE2B7C800B04458 /* StoreKit.framework */,
 				D5FB042B2C5AF40A008329DD /* libresolv.tbd */,
 				BF6E70C225D22F7600E41CD1 /* Systems.framework */,
 				BFDCA1E5244EBAA900B8FBDB /* liblibDeSmuME.a */,
@@ -1061,6 +1068,7 @@
 		BFFA71D91AAC406100EE9DD1 /* Delta */ = {
 			isa = PBXGroup;
 			children = (
+				D58013E82CC992560055F11C /* Delta.entitlements */,
 				BFFA71DC1AAC406100EE9DD1 /* AppDelegate.swift */,
 				BFFA71E01AAC406100EE9DD1 /* Main.storyboard */,
 				D502F82129EF05F800ACCDA1 /* Scenes */,
@@ -1075,6 +1083,7 @@
 				BF930FFB1EB6D6EC00E8DBA0 /* Systems */,
 				BF525EE61FF5F355004AA849 /* Deep Linking */,
 				D57D795C29F30B1400BB2CF8 /* Experimental Features */,
+				D504F5B92CE55C8100AD3760 /* Purchases */,
 				D5AE76AD2C2B52660086471B /* Patreon */,
 				BF5942571E09BB5D0051894B /* Components */,
 				BF696B7E1D9B2AE6009639E0 /* Theming */,
@@ -1133,6 +1142,14 @@
 				D560BD8529EDC45600289847 /* ExternalDisplaySceneDelegate.swift */,
 			);
 			path = Scenes;
+			sourceTree = "<group>";
+		};
+		D504F5B92CE55C8100AD3760 /* Purchases */ = {
+			isa = PBXGroup;
+			children = (
+				D5795A1A2CD2D22200C1D7E9 /* ExternalPurchaseManager.swift */,
+			);
+			path = Purchases;
 			sourceTree = "<group>";
 		};
 		D517F6BB29E737F5000D14D0 /* Types */ = {
@@ -1688,6 +1705,7 @@
 				BF525EE81FF5F370004AA849 /* DeepLinkController.swift in Sources */,
 				BF59426B1E09BBD00051894B /* GridCollectionViewLayout.swift in Sources */,
 				BF6424851F5CBDC900D6AB44 /* UIView+ParentViewController.swift in Sources */,
+				D5795A1B2CD2D22900C1D7E9 /* ExternalPurchaseManager.swift in Sources */,
 				BF04E6FF1DB8625C000F35D3 /* ControllerSkinsViewController.swift in Sources */,
 				D5AE76B62C2B52820086471B /* Patron.swift in Sources */,
 				D53415A5298C782A00FD67B1 /* ContributorsView.swift in Sources */,
@@ -2040,6 +2058,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_MODULES_AUTOLINK = NO;
+				CODE_SIGN_ENTITLEMENTS = Delta/Delta.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
@@ -2121,6 +2140,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_MODULES_AUTOLINK = NO;
+				CODE_SIGN_ENTITLEMENTS = Delta/Delta.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;

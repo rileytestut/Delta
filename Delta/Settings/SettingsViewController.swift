@@ -10,6 +10,7 @@ import UIKit
 import SafariServices
 import QuickLook
 import MessageUI
+import StoreKit
 
 import DeltaCore
 import Harmony
@@ -67,8 +68,8 @@ private extension SettingsViewController
     
     enum PatreonRow: Int, CaseIterable
     {
-        case joinPatreon
         case connectAccount
+        case joinPatreon
     }
     
     enum CreditsRow: Int, CaseIterable
@@ -262,8 +263,10 @@ private extension SettingsViewController
             // OSLogStore is not available on iOS 14, so section is only visible if experimental features is visible.
             return !ExperimentalFeatures.isExperimentalFeaturesAvailable
             
-        #if APP_STORE || LEGACY
+        #if LEGACY
         case .patreon: return true
+        #elseif APP_STORE
+        case .patreon: return !ExternalPurchaseManager.shared.supportsExternalPurchases
         #endif
             
         case .hapticTouch:
@@ -574,6 +577,32 @@ private extension SettingsViewController
         
         self.present(alertController, animated: true, completion: nil)
     }
+    
+    @available(iOS 17.5, *)
+    func openExternalPurchaseLink()
+    {
+        Task<Void, Never> {
+            do
+            {
+                self.navigationItem.rightBarButtonItem?.isIndicatingActivity = true
+                                
+                try await ExternalPurchaseLink.open()
+                
+                // Keep activity indicator visible for at least 1 second.
+                try await Task.sleep(for: .seconds(1.0))
+                self.navigationItem.rightBarButtonItem?.isIndicatingActivity = false
+            }
+            catch
+            {
+                Logger.main.error("Failed to open external purchase link. \(error.localizedDescription, privacy: .public)")
+                
+                let toastView = RSTToastView(text: NSLocalizedString("Unable to open external purchase link.", comment: ""), detailText: error.localizedDescription)
+                toastView.show(in: self.navigationController?.view ?? self.view, duration: 5.0)
+                
+                self.navigationItem.rightBarButtonItem?.isIndicatingActivity = false
+            }
+        }
+    }
 }
 
 private extension SettingsViewController
@@ -650,6 +679,14 @@ extension SettingsViewController
             {
                 return 1
             }
+            
+        case .patreon where !isSectionHidden(section):
+            #if APP_STORE
+            // App Store builds never show the Join Patreon row.
+            return 1
+            #else
+            return super.tableView(tableView, numberOfRowsInSection: sectionIndex)
+            #endif
             
         default:
             if isSectionHidden(section)
@@ -728,7 +765,7 @@ extension SettingsViewController
                 }
                 else
                 {
-                    content.text = NSLocalizedString("Connect Account…", comment: "")
+                    content.text = NSLocalizedString("Connect Patreon Account…", comment: "")
                 }
                 
                 cell.contentConfiguration = content
@@ -918,6 +955,36 @@ extension SettingsViewController
                         
             return footerView
             
+        case .patreon:
+            guard #available(iOS 15, *), let footerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: AttributedHeaderFooterView.reuseIdentifier) as? AttributedHeaderFooterView else { break }
+            
+            if #available(iOS 17.5, *), ExternalPurchaseManager.shared.supportsExternalPurchases
+            {
+                var attributedText = AttributedString(localized: "Buy for $3 at altstore.io/patreon")
+                attributedText.font = UIFont.systemFont(ofSize: 17.0)
+                attributedText.link = URL(string: "https://altstore.io/patreon")
+                
+                let imageAttachment = NSTextAttachment()
+                imageAttachment.image = UIImage(named: "LinkOut")?.withRenderingMode(.alwaysTemplate)
+                
+                var symbolText = AttributedString(NSAttributedString(attachment: imageAttachment))
+                symbolText.foregroundColor = .deltaPurple
+                
+                attributedText += " "
+                attributedText += symbolText
+                
+                footerView.attributedText = attributedText
+                footerView.urlHandler = { [weak self] _ in
+                    self?.openExternalPurchaseLink()
+                }
+            }
+            else
+            {
+                footerView.attributedText = AttributedString(localized: "Support future development and receive early access to new features by becoming a patron.")
+            }
+            
+            return footerView
+            
         default: break
         }
         
@@ -977,6 +1044,7 @@ extension SettingsViewController
         switch section
         {
         case .controllerSkins: return UITableView.automaticDimension
+        case .patreon: return UITableView.automaticDimension
         default: return super.tableView(tableView, heightForFooterInSection: section.rawValue)
         }
     }
@@ -989,6 +1057,7 @@ extension SettingsViewController
         switch section
         {
         case .controllerSkins: return 30
+        case .patreon: return 30
         default: return UITableView.automaticDimension
         }
     }
