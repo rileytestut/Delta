@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import StoreKit
 
 import Roxas
 
@@ -114,25 +115,37 @@ private extension PatreonViewController
         headerView.layoutMargins = self.view.layoutMargins
         headerView.tintColor = .deltaPurple
         
-        var donateText = AttributedString(localized: "Become Friend Zone Patron")
-        donateText.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
-        
-        var priceText = AttributedString(localized: "$12.99 / month")
-        priceText.font = UIFont.systemFont(ofSize: 14, weight: .regular)
-        
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.alignment = .center
-        paragraphStyle.lineSpacing = 1.2
-        
-        let container = AttributeContainer([.paragraphStyle: paragraphStyle]) // Necessary to silence "NSParagraphStyle not Sendable" warning
-        var attributedText = donateText + "\n" + priceText
-        attributedText = attributedText.mergingAttributes(container, mergePolicy: .keepNew)
-        
-        headerView.supportButton.titleLabel?.numberOfLines = 0
-        headerView.supportButton.setAttributedTitle(NSAttributedString(attributedText), for: .normal)
-        
-        headerView.supportButton.addTarget(self, action: #selector(PatreonViewController.becomeFriendZonePatron), for: .primaryActionTriggered)
         headerView.restorePurchaseButton.addTarget(self, action: #selector(PatreonViewController.restorePurchase), for: .primaryActionTriggered)
+        
+        if RevenueCatManager.shared.hasBetaAccess
+        {
+            headerView.supportButton.setTitle(String(localized: "Manage Subscription"), for: .normal)
+            
+            headerView.supportButton.removeTarget(self, action: #selector(PatreonViewController.becomeFriendZonePatron), for: .primaryActionTriggered)
+            headerView.supportButton.addTarget(self, action: #selector(PatreonViewController.manageSubscription), for: .primaryActionTriggered)
+        }
+        else
+        {
+            var donateText = AttributedString(localized: "Become Friend Zone Patron")
+            donateText.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
+            
+            var priceText = AttributedString(localized: "$12.99 / month")
+            priceText.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+            
+            let paragraphStyle = NSMutableParagraphStyle()
+            paragraphStyle.alignment = .center
+            paragraphStyle.lineSpacing = 1.2
+            
+            let container = AttributeContainer([.paragraphStyle: paragraphStyle]) // Necessary to silence "NSParagraphStyle not Sendable" warning
+            var attributedText = donateText + "\n" + priceText
+            attributedText = attributedText.mergingAttributes(container, mergePolicy: .keepNew)
+            
+            headerView.supportButton.titleLabel?.numberOfLines = 0
+            headerView.supportButton.setAttributedTitle(NSAttributedString(attributedText), for: .normal)
+            
+            headerView.supportButton.removeTarget(self, action: #selector(PatreonViewController.manageSubscription), for: .primaryActionTriggered)
+            headerView.supportButton.addTarget(self, action: #selector(PatreonViewController.becomeFriendZonePatron), for: .primaryActionTriggered)
+        }
     }
 }
 
@@ -163,6 +176,8 @@ private extension PatreonViewController
             {
                 try await RevenueCatManager.shared.purchaseFriendZoneSubscription()
                 
+                self.update()
+                
                 // Ask for user's name if purchase is successful.
                 self.editPatronName(nil)
             }
@@ -173,6 +188,23 @@ private extension PatreonViewController
             catch
             {
                 let alertController = UIAlertController(title: NSLocalizedString("Unable to Purchase Friend Zone Subscription", comment: ""), error: error)
+                self.present(alertController, animated: true)
+            }
+        }
+    }
+    
+    @objc func manageSubscription()
+    {
+        guard let windowScene = self.view.window?.windowScene else { return }
+        
+        Task<Void, Never> {
+            do
+            {
+                try await AppStore.showManageSubscriptions(in: windowScene, subscriptionGroupID: PurchaseManager.friendZoneSubscriptionGroupID)
+            }
+            catch
+            {
+                let alertController = UIAlertController(title: String(localized: "Unable to Manage Subscription"), error: error)
                 self.present(alertController, animated: true)
             }
         }
