@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionReusableView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" reuseIdentifier="AboutHeader" id="xq2-Pl-zaG" customClass="AboutPatreonHeaderView" customModule="Delta" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="450"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <subviews>
+                <stackView opaque="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" axis="vertical" distribution="equalSpacing" spacing="25" translatesAutoresizingMaskIntoConstraints="NO" id="XiA-Jf-XMp">
+                    <rect key="frame" x="16" y="2" width="343" height="440"/>
+                    <subviews>
+                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="5Ol-zN-wYv">
+                            <rect key="frame" x="0.0" y="0.0" width="343" height="215"/>
+                            <subviews>
+                                <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="PVC-ok-VO0">
+                                    <rect key="frame" x="0.0" y="0.0" width="343" height="55"/>
+                                    <subviews>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Riley" translatesAutoresizingMaskIntoConstraints="NO" id="7Qz-HN-996">
+                                            <rect key="frame" x="0.0" y="0.0" width="55" height="55"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="55" id="Vsd-ud-GJJ"/>
+                                                <constraint firstAttribute="width" secondItem="7Qz-HN-996" secondAttribute="height" id="zRa-yk-HRu"/>
+                                            </constraints>
+                                        </imageView>
+                                        <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="qVU-Xl-461">
+                                            <rect key="frame" x="65" y="7.5" width="213" height="40.5"/>
+                                            <subviews>
+                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="KiK-cL-AkF">
+                                                    <rect key="frame" x="0.0" y="0.0" width="100.5" height="40.5"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Riley Testut" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Nrc-bG-vHF">
+                                                            <rect key="frame" x="0.0" y="0.0" width="100.5" height="21.5"/>
+                                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                                            <color key="textColor" systemColor="secondaryLabelColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Developer" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zeg-bc-rzK">
+                                                            <rect key="frame" x="0.0" y="23.5" width="100.5" height="17"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                            <color key="textColor" systemColor="secondaryLabelColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                </stackView>
+                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="oeC-V8-LBc">
+                                                    <rect key="frame" x="127" y="0.0" width="86" height="40.5"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Shane Gill" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="8Yl-hZ-tmS">
+                                                            <rect key="frame" x="0.0" y="0.0" width="86" height="21.5"/>
+                                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                                            <color key="textColor" systemColor="secondaryLabelColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Operations" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ihU-uM-YGb">
+                                                            <rect key="frame" x="0.0" y="23.5" width="86" height="17"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                            <color key="textColor" systemColor="secondaryLabelColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                </stackView>
+                                            </subviews>
+                                        </stackView>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Shane" translatesAutoresizingMaskIntoConstraints="NO" id="pT5-ji-gDW">
+                                            <rect key="frame" x="288" y="0.0" width="55" height="55"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" secondItem="pT5-ji-gDW" secondAttribute="height" id="QDC-lW-EZE"/>
+                                                <constraint firstAttribute="width" constant="55" id="feS-E3-MOj"/>
+                                                <constraint firstAttribute="width" secondItem="pT5-ji-gDW" secondAttribute="height" id="wKK-Hr-fjT"/>
+                                            </constraints>
+                                        </imageView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="55" id="N8k-BT-74w"/>
+                                    </constraints>
+                                </stackView>
+                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FeG-e5-LJl">
+                                    <rect key="frame" x="0.0" y="65" width="343" height="150"/>
+                                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                    <string key="text">Thank you to all of our Friend Zone patrons who support us directly, we couldn't do this without y'all 💜
+
+Become a Friend Zone patron today to add your name to this page and receive early access to new features.</string>
+                                    <color key="textColor" systemColor="labelColor"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                </textView>
+                            </subviews>
+                        </stackView>
+                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="QS9-vO-bj8">
+                            <rect key="frame" x="0.0" y="365" width="343" height="75"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yEi-L6-kQ8">
+                                    <rect key="frame" x="0.0" y="0.0" width="343" height="39"/>
+                                    <color key="backgroundColor" name="Purple"/>
+                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="19"/>
+                                    <inset key="contentEdgeInsets" minX="0.0" minY="8" maxX="0.0" maxY="8"/>
+                                    <state key="normal" title="Donate for $12.99 / month">
+                                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </state>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6QE-Lh-Xka">
+                                    <rect key="frame" x="95" y="43" width="153.5" height="32"/>
+                                    <state key="normal" title="Button"/>
+                                    <buttonConfiguration key="configuration" style="plain" title="Restore Purchase">
+                                        <fontDescription key="titleFontDescription" type="boldSystem" pointSize="15"/>
+                                    </buttonConfiguration>
+                                </button>
+                            </subviews>
+                            <constraints>
+                                <constraint firstItem="yEi-L6-kQ8" firstAttribute="width" secondItem="QS9-vO-bj8" secondAttribute="width" id="gbK-WB-3Ko"/>
+                            </constraints>
+                        </stackView>
+                    </subviews>
+                </stackView>
+            </subviews>
+            <constraints>
+                <constraint firstAttribute="trailingMargin" secondItem="XiA-Jf-XMp" secondAttribute="trailing" id="5Am-7b-Fwq"/>
+                <constraint firstItem="XiA-Jf-XMp" firstAttribute="leading" secondItem="xq2-Pl-zaG" secondAttribute="leadingMargin" id="IRk-tt-CTc"/>
+                <constraint firstAttribute="bottom" secondItem="XiA-Jf-XMp" secondAttribute="bottom" constant="8" id="dcS-XA-ZLZ"/>
+                <constraint firstItem="XiA-Jf-XMp" firstAttribute="top" secondItem="xq2-Pl-zaG" secondAttribute="top" constant="2" id="j8p-JX-Dcz"/>
+            </constraints>
+            <connections>
+                <outlet property="restorePurchaseButton" destination="6QE-Lh-Xka" id="zMS-EW-nKc"/>
+                <outlet property="rileyImageView" destination="7Qz-HN-996" id="OJA-VM-qRM"/>
+                <outlet property="rileyLabel" destination="Nrc-bG-vHF" id="w9B-Bj-bam"/>
+                <outlet property="shaneImageView" destination="pT5-ji-gDW" id="Bae-VB-2zM"/>
+                <outlet property="shaneLabel" destination="8Yl-hZ-tmS" id="CkD-zF-eXN"/>
+                <outlet property="supportButton" destination="yEi-L6-kQ8" id="Dzo-vd-SnD"/>
+                <outlet property="textView" destination="FeG-e5-LJl" id="K0M-lF-I6u"/>
+            </connections>
+            <point key="canvasLocation" x="138" y="138"/>
+        </collectionReusableView>
+    </objects>
+    <resources>
+        <image name="Riley" width="512" height="512"/>
+        <image name="Shane" width="512" height="512"/>
+        <namedColor name="Purple">
+            <color red="0.54509803921568623" green="0.15686274509803921" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="secondaryLabelColor">
+            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
