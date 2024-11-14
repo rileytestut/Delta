@@ -66,6 +66,11 @@ class RevenueCatManager
         return entitlements
     }
     
+    var displayName: String? {
+        let displayName = Keychain.shared.revenueCatDisplayName
+        return displayName
+    }
+    
     var hasBetaAccess: Bool {
         guard let entitlement = self.entitlements[.betaAccess] else { return false }
         
@@ -115,6 +120,14 @@ class RevenueCatManager
             // Just fetch customer info.
             self.customerInfo = try await Purchases.shared.customerInfo(fetchPolicy: .cachedOrFetched)
         }
+    }
+    
+    func setDisplayName(_ name: String) async throws
+    {
+        Keychain.shared.revenueCatDisplayName = name
+        Purchases.shared.attribution.setDisplayName(name)
+        
+        _ = try await Purchases.shared.syncAttributesAndOfferingsIfNeeded()        
     }
 }
 

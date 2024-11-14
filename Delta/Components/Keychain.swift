@@ -57,11 +57,14 @@ public class Keychain
     @KeychainItem(key: "patreonAccountID")
     public var patreonAccountID: String?
     
+    @KeychainItem(key: "revenueCatDisplayName")
+    public var revenueCatDisplayName: String?
+    
     private init()
     {
     }
     
-    public func reset()
+    public func resetPatreon()
     {
         self.patreonAccessToken = nil
         self.patreonRefreshToken = nil

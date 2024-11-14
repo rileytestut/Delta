@@ -27,6 +27,7 @@ class PatreonViewController: UICollectionViewController
     private lazy var patronsDataSource = self.makePatronsDataSource()
     
     private var prototypeAboutHeader: AboutPatreonHeaderView!
+    private weak var confirmEditNameAction: UIAlertAction?
         
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
@@ -103,6 +104,8 @@ private extension PatreonViewController
     
     func update()
     {
+        self.navigationItem.rightBarButtonItem?.isHidden = !RevenueCatManager.shared.hasBetaAccess
+        
         self.collectionView.reloadData()
     }
     
@@ -159,6 +162,9 @@ private extension PatreonViewController
             do
             {
                 try await RevenueCatManager.shared.purchaseFriendZoneSubscription()
+                
+                // Ask for user's name if purchase is successful.
+                self.editPatronName(nil)
             }
             catch is CancellationError
             {
@@ -189,6 +195,58 @@ private extension PatreonViewController
                 self.present(alertController, animated: true)
             }
         }
+    }
+    
+    @IBAction func editPatronName(_ sender: UIBarButtonItem?)
+    {
+        let alertTitle = (sender == nil) ? String(localized: "Thanks For Supporting Us!") : String(localized: "Edit Name")
+        
+        let alertController = UIAlertController(title: alertTitle, message: String(localized: "Please enter your full name so we can credit you on this page."), preferredStyle: .alert)
+        alertController.addTextField { [weak self] textField in
+            textField.textContentType = .name
+            textField.autocapitalizationType = .words
+            textField.autocorrectionType = .no
+            textField.placeholder = String(localized: "Full Name")
+            textField.returnKeyType = .done
+            textField.enablesReturnKeyAutomatically = true
+            textField.addTarget(self, action: #selector(PatreonViewController.editNameTextFieldChanged(_:)), for: .editingChanged)
+            
+            if let displayName = RevenueCatManager.shared.displayName
+            {
+                textField.text = displayName
+            }
+        }
+        
+        let cancelTitle = (RevenueCatManager.shared.displayName == nil) ? String(localized: "Maybe Later") : String(localized: "Cancel")
+        let cancelAction = UIAlertAction(title: cancelTitle, style: .cancel)
+        
+        let editAction = UIAlertAction(title: String(localized: "Confirm"), style: .default) { [weak alertController] _ in
+            guard let textField = alertController?.textFields?.first, let displayName = textField.text, !displayName.isEmpty else { return }
+            
+            Task<Void, Never> {
+                do
+                {
+                    try await RevenueCatManager.shared.setDisplayName(displayName)
+                }
+                catch
+                {
+                    let alertController = UIAlertController(title: String(localized: "Unable to Update Display Name"), error: error)
+                    self.present(alertController, animated: true)
+                }
+            }
+        }
+        self.confirmEditNameAction = editAction
+        
+        alertController.addAction(cancelAction)
+        alertController.addAction(editAction)
+        
+        self.present(alertController, animated: true)
+    }
+    
+    @objc func editNameTextFieldChanged(_ sender: UITextField)
+    {
+        let text = sender.text ?? ""
+        self.confirmEditNameAction?.isEnabled = !text.isEmpty
     }
 }
 
