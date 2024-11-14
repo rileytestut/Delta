@@ -17,20 +17,30 @@ extension PatreonAPI
     // }
     
     typealias BenefitResponse = AnyItemResponse
+    
+    public struct BenefitID: RawRepresentable, Decodable, Hashable
+    {
+        static let betaAccess = BenefitID(rawValue: "1186336")
+        static let credits = BenefitID(rawValue: "1186340")
+        
+        public let rawValue: String
+        
+        public init(rawValue: String)
+        {
+            self.rawValue = rawValue
+        }
+    }
 }
 
 extension PatreonAPI
 {
     public struct Benefit: Hashable
     {
-        static let betaAccessID = "1186336"
-        static let creditsID = "1186340"
-        
-        public var identifier: String
+        public var identifier: BenefitID
         
         internal init(response: BenefitResponse)
         {
-            self.identifier = response.id
+            self.identifier = BenefitID(rawValue: response.id)
         }
     }
 }

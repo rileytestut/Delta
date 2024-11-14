@@ -177,6 +177,49 @@ public extension PatreonAPI
         }
     }
     
+    func fetchPatrons(completion: @escaping (Result<[Patron], Swift.Error>) -> Void)
+    {
+        var components = URLComponents(string: "/api/oauth2/v2/campaigns/\(PatreonAPI.altstoreCampaignID)/members")!
+        components.queryItems = [URLQueryItem(name: "include", value: "currently_entitled_tiers,currently_entitled_tiers.benefits"),
+                                 URLQueryItem(name: "fields[tier]", value: "title,amount_cents"),
+                                 URLQueryItem(name: "fields[member]", value: "full_name,patron_status,currently_entitled_amount_cents,campaign_lifetime_support_cents"),
+                                 URLQueryItem(name: "page[size]", value: "1000")]
+        
+        let requestURL = components.url(relativeTo: self.baseURL)!
+        
+        var allPatrons = [Patron]()
+        
+        func fetchPatrons(url: URL)
+        {
+            let request = URLRequest(url: url)
+            
+            self.send(request, authorizationType: .creator) { (result: Result<FriendZonePatronsResponse, Swift.Error>) in
+                switch result
+                {
+                case .failure(let error): completion(.failure(error))
+                case .success(let patronsResponse):
+                    let patrons = patronsResponse.data.map { (response) -> Patron in
+                        let patron = Patron(response: response, including: patronsResponse.included)
+                        return patron
+                    }.filter { $0.benefits.contains(where: { $0.identifier == .credits }) }
+                    
+                    allPatrons.append(contentsOf: patrons)
+                    
+                    if let nextURL = patronsResponse.links?["next"]
+                    {
+                        fetchPatrons(url: nextURL)
+                    }
+                    else
+                    {
+                        completion(.success(allPatrons))
+                    }
+                }
+            }
+        }
+        
+        fetchPatrons(url: requestURL)
+    }
+    
     func signOut(completion: @escaping (Result<Void, Swift.Error>) -> Void)
     {
         DatabaseManager.shared.performBackgroundTask { (context) in
