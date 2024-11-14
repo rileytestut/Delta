@@ -8,6 +8,11 @@
 
 import RevenueCat
 
+private extension UserDefaults
+{
+    @NSManaged var revenueCatPurchasesSyncDate: Date?
+}
+
 @available(iOS 17.5, *)
 extension RevenueCatManager
 {
@@ -99,7 +104,17 @@ class RevenueCatManager
             }
         }
         
-        self.customerInfo = try await Purchases.shared.customerInfo(fetchPolicy: .cachedOrFetched)
+        if UserDefaults.standard.revenueCatPurchasesSyncDate == nil
+        {
+            // Initial launch, so sync all purchases.
+            self.customerInfo = try await Purchases.shared.syncPurchases()
+            UserDefaults.standard.revenueCatPurchasesSyncDate = .now
+        }
+        else
+        {
+            // Just fetch customer info.
+            self.customerInfo = try await Purchases.shared.customerInfo(fetchPolicy: .cachedOrFetched)
+        }
     }
 }
 
