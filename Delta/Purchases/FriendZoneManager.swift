@@ -87,7 +87,11 @@ private extension FriendZoneManager
         }
         
         let context = DatabaseManager.shared.newBackgroundContext()
-        let allPatrons = try await self.fetchPatreonPatrons(in: context)
+        
+        async let patreonPatrons = self.fetchPatreonPatrons(in: context)
+        async let revenueCatPatrons = self.fetchRevenueCatPatrons(in: context)
+        
+        let allPatrons = try await revenueCatPatrons + patreonPatrons
         
         try await context.perform {
             let patronIDs = allPatrons.map(\.identifier)
@@ -127,6 +131,25 @@ private extension FriendZoneManager
                     }
                 }
             }
+        }
+    }
+    
+    func fetchRevenueCatPatrons(in context: NSManagedObjectContext) async throws -> [ManagedPatron]
+    {
+        do
+        {
+            let users = try await RevenueCatManager.shared.fetchFriendZoneUsers()
+            
+            let managedPatrons = await context.perform {
+                return users.compactMap { ManagedPatron(name: $0.name, identifier: $0.id, isPatreonPatron: false, context: context) }
+            }
+            
+            return managedPatrons
+        }
+        catch
+        {
+            Logger.main.error("Failed to update RevenueCat Friend Zone patrons. \(error.localizedDescription, privacy: .public)")
+            throw error
         }
     }
 }
