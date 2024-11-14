@@ -31,7 +31,7 @@ public class PatreonAccount: _PatreonAccount
             let isActivePatron = (altstorePledge.status == .active)
             self.isPatron = isActivePatron
             
-            let hasBetaAccess = altstorePledge.benefits.contains(where: { $0.identifier == PatreonAPI.Benefit.betaAccessID })
+            let hasBetaAccess = altstorePledge.benefits.contains(where: { $0.identifier == .betaAccess })
             self.hasBetaAccess = hasBetaAccess
             
             // Beta access tier is $3 in campaign currency.

@@ -11,4 +11,7 @@ import Foundation
 extension UserDefaults
 {
     @NSManaged var shouldRepairDatabase: Bool
+    
+    @NSManaged var patronsRefreshID: String?
+    @NSManaged var shouldFetchFriendZonePatrons: Bool
 }

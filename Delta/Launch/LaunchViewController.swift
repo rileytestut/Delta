@@ -120,6 +120,11 @@ extension LaunchViewController
         
         PatreonAPI.shared.refreshPatreonAccount()
         
+        if #available(iOS 17.5, *)
+        {
+            FriendZoneManager.shared.updatePatronsIfNeeded()
+        }
+        
         func showGameViewController()
         {
             self.view.bringSubviewToFront(self.gameViewContainerView)
