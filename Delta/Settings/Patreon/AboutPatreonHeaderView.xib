@@ -96,11 +96,14 @@ Become a Friend Zone patron today to add your name to this page and receive earl
                             </subviews>
                         </stackView>
                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="QS9-vO-bj8">
-                            <rect key="frame" x="0.0" y="365" width="343" height="75"/>
+                            <rect key="frame" x="0.0" y="349" width="343" height="91"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yEi-L6-kQ8">
-                                    <rect key="frame" x="0.0" y="0.0" width="343" height="39"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="343" height="55"/>
                                     <color key="backgroundColor" name="Purple"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="55" id="0wq-co-xdm"/>
+                                    </constraints>
                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="19"/>
                                     <inset key="contentEdgeInsets" minX="0.0" minY="8" maxX="0.0" maxY="8"/>
                                     <state key="normal" title="Donate for $12.99 / month">
@@ -108,7 +111,7 @@ Become a Friend Zone patron today to add your name to this page and receive earl
                                     </state>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6QE-Lh-Xka">
-                                    <rect key="frame" x="95" y="43" width="153.5" height="32"/>
+                                    <rect key="frame" x="95" y="59" width="153.5" height="32"/>
                                     <state key="normal" title="Button"/>
                                     <buttonConfiguration key="configuration" style="plain" title="Restore Purchase">
                                         <fontDescription key="titleFontDescription" type="boldSystem" pointSize="15"/>

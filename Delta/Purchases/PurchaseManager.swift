@@ -9,6 +9,11 @@
 import Foundation
 import StoreKit
 
+extension PurchaseManager
+{
+    static let friendZoneSubscriptionGroupID = "21579960"
+}
+
 class PurchaseManager
 {
     static let shared = PurchaseManager()
