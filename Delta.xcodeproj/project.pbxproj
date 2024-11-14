@@ -177,7 +177,9 @@
 		D51CB7A629EDC15900B59678 /* ExperimentalFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = D51CB7A529EDC15900B59678 /* ExperimentalFeatures.swift */; };
 		D524F4A3273DE9C000D500B2 /* ProcessInfo+JIT.swift in Sources */ = {isa = PBXBuildFile; fileRef = D524F4A2273DE9C000D500B2 /* ProcessInfo+JIT.swift */; };
 		D524F4A5273DEBB400D500B2 /* ServerManager+Delta.swift in Sources */ = {isa = PBXBuildFile; fileRef = D524F4A4273DEBB400D500B2 /* ServerManager+Delta.swift */; };
+		D52CB8C62CE2B7B600B04458 /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = D52CB8C52CE2B7B600B04458 /* RevenueCat */; };
 		D52CB8C82CE2B7C800B04458 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D52CB8C72CE2B7C800B04458 /* StoreKit.framework */; };
+		D52CB8CA2CE2B85E00B04458 /* RevenueCatManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52CB8C92CE2B85800B04458 /* RevenueCatManager.swift */; };
 		D53415A5298C782A00FD67B1 /* ContributorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53415A4298C782A00FD67B1 /* ContributorsView.swift */; };
 		D53415A7298C78BC00FD67B1 /* Contributors.plist in Resources */ = {isa = PBXBuildFile; fileRef = D53415A6298C78BC00FD67B1 /* Contributors.plist */; };
 		D539103229E88B6C0006B350 /* DeltaPreviews.h in Headers */ = {isa = PBXBuildFile; fileRef = D539103129E88B6C0006B350 /* DeltaPreviews.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -484,6 +486,7 @@
 		D524F4A2273DE9C000D500B2 /* ProcessInfo+JIT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProcessInfo+JIT.swift"; sourceTree = "<group>"; };
 		D524F4A4273DEBB400D500B2 /* ServerManager+Delta.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ServerManager+Delta.swift"; sourceTree = "<group>"; };
 		D52CB8C72CE2B7C800B04458 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		D52CB8C92CE2B85800B04458 /* RevenueCatManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevenueCatManager.swift; sourceTree = "<group>"; };
 		D532B8BC29E5EDAD009EE27C /* OptionalProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalProtocol.swift; sourceTree = "<group>"; };
 		D53415A4298C782A00FD67B1 /* ContributorsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContributorsView.swift; sourceTree = "<group>"; };
 		D53415A6298C78BC00FD67B1 /* Contributors.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Contributors.plist; sourceTree = "<group>"; };
@@ -574,6 +577,7 @@
 			files = (
 				D5FB042C2C5AF40A008329DD /* libresolv.tbd in Frameworks */,
 				BF69FBA823E396860051BEEA /* libz.tbd in Frameworks */,
+				D52CB8C62CE2B7B600B04458 /* RevenueCat in Frameworks */,
 				D52CB8C82CE2B7C800B04458 /* StoreKit.framework in Frameworks */,
 				BF69FBAA23E399AA0051BEEA /* CoreMotion.framework in Frameworks */,
 				BF69FBA223E375A20051BEEA /* libVBA-M.a in Frameworks */,
@@ -1163,6 +1167,7 @@
 			isa = PBXGroup;
 			children = (
 				D5795A1A2CD2D22200C1D7E9 /* ExternalPurchaseManager.swift */,
+				D52CB8C92CE2B85800B04458 /* RevenueCatManager.swift */,
 				D5AA0F152CE3F65E0015D134 /* FriendZoneManager.swift */,
 			);
 			path = Purchases;
@@ -1384,6 +1389,7 @@
 				D5C45FEE2BE992A80009DBB0 /* AltKit */,
 				D5AE76C12C2B59240086471B /* KeychainAccess */,
 				D5E76AAC2BE199890078C0C5 /* ShowTouches */,
+				D52CB8C52CE2B7B600B04458 /* RevenueCat */,
 			);
 			productName = Delta;
 			productReference = BFFA71D71AAC406100EE9DD1 /* Delta.app */;
@@ -1479,6 +1485,7 @@
 				D5C45FED2BE992A80009DBB0 /* XCRemoteSwiftPackageReference "AltKit" */,
 				D5AE76C02C2B59240086471B /* XCRemoteSwiftPackageReference "KeychainAccess" */,
 				D5E76AAB2BE199890078C0C5 /* XCRemoteSwiftPackageReference "ShowTouches" */,
+				D52CB8C42CE2B7B600B04458 /* XCRemoteSwiftPackageReference "purchases-ios-spm" */,
 			);
 			productRefGroup = BFFA71D81AAC406100EE9DD1 /* Products */;
 			projectDirPath = "";
@@ -1712,6 +1719,7 @@
 				D560BD8629EDC45600289847 /* ExternalDisplaySceneDelegate.swift in Sources */,
 				BFFC46201D59823500AF2CC6 /* InitialGamesStoryboardSegue.swift in Sources */,
 				D5AA0F102CE3F3CC0015D134 /* PatreonComponents.swift in Sources */,
+				D52CB8CA2CE2B85E00B04458 /* RevenueCatManager.swift in Sources */,
 				D5CDCCF02A859E5500E22131 /* UserDefaults+Delta.swift in Sources */,
 				BF15AF841F54B43B009B6AAB /* ActionInput.swift in Sources */,
 				D5D78AE529F9BC3700E064F0 /* DSAirPlay.swift in Sources */,
@@ -2405,6 +2413,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		D52CB8C42CE2B7B600B04458 /* XCRemoteSwiftPackageReference "purchases-ios-spm" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RevenueCat/purchases-ios-spm.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.8.0;
+			};
+		};
 		D5AE76C02C2B59240086471B /* XCRemoteSwiftPackageReference "KeychainAccess" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kishikawakatsumi/KeychainAccess.git";
@@ -2432,6 +2448,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		D52CB8C52CE2B7B600B04458 /* RevenueCat */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D52CB8C42CE2B7B600B04458 /* XCRemoteSwiftPackageReference "purchases-ios-spm" */;
+			productName = RevenueCat;
+		};
 		D5AE76C12C2B59240086471B /* KeychainAccess */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = D5AE76C02C2B59240086471B /* XCRemoteSwiftPackageReference "KeychainAccess" */;

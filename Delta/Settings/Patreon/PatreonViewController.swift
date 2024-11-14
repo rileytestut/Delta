@@ -152,6 +152,44 @@ private extension PatreonViewController
             self.collectionView.reloadData()
         }
     }
+    
+    @objc func becomeFriendZonePatron()
+    {
+        Task<Void, Never> {
+            do
+            {
+                try await RevenueCatManager.shared.purchaseFriendZoneSubscription()
+            }
+            catch is CancellationError
+            {
+                // Ignore
+            }
+            catch
+            {
+                let alertController = UIAlertController(title: NSLocalizedString("Unable to Purchase Friend Zone Subscription", comment: ""), error: error)
+                self.present(alertController, animated: true)
+            }
+        }
+    }
+    
+    @objc func restorePurchase()
+    {
+        Task<Void, Never> {
+            do
+            {
+                try await RevenueCatManager.shared.requestRestorePurchases()
+            }
+            catch is CancellationError
+            {
+                // Ignore
+            }
+            catch
+            {
+                let alertController = UIAlertController(title: NSLocalizedString("Unable to Restore Purchase", comment: ""), error: error)
+                self.present(alertController, animated: true)
+            }
+        }
+    }
 }
 
 @available(iOS 17.5, *)
