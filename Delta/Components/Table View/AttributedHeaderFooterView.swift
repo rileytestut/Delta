@@ -33,6 +33,8 @@ final class AttributedHeaderFooterView: UITableViewHeaderFooterView
         }
     }
     
+    var urlHandler: ((URL) -> Void)?
+    
     private let textView: UITextView
     
     override init(reuseIdentifier: String?)
@@ -68,8 +70,15 @@ final class AttributedHeaderFooterView: UITableViewHeaderFooterView
 @available(iOS 15, *)
 extension AttributedHeaderFooterView: UITextViewDelegate
 {
-    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool
+    func textView(_ textView: UITextView, shouldInteractWith url: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool
     {
+        if let urlHandler
+        {
+            // Specified custom handler, so return false and perform urlHandler instead.
+            urlHandler(url)
+            return false
+        }
+        
         return true
     }
 }
