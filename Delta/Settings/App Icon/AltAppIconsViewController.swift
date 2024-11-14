@@ -73,21 +73,6 @@ class AltAppIconsViewController: UICollectionViewController
     
     private var headerRegistration: UICollectionView.SupplementaryRegistration<UICollectionViewListCell>!
     private var footerRegistration: UICollectionView.SupplementaryRegistration<UICollectionViewListCell>!
-    
-    private var isPatronIconsUnlocked: Bool {
-        #if BETA
-        return true
-        #else
-        if let patreonAccount = DatabaseManager.shared.patreonAccount(), patreonAccount.hasPastBetaAccess
-        {
-            return true
-        }
-        else
-        {
-            return false
-        }
-        #endif
-    }
         
     override func viewDidLoad()
     {
@@ -137,13 +122,13 @@ class AltAppIconsViewController: UICollectionViewController
                 #if BETA
                 configuration.text = NSLocalizedString("Thank you for joining our Patreon!", comment: "")
                 #else
-                if self.isPatronIconsUnlocked
+                if PurchaseManager.shared.isPatronIconsAvailable
                 {
-                    configuration.text = NSLocalizedString("Thank you for joining our Patreon! These icons will remain available even after your subscription ends.", comment: "")
+                    configuration.text = NSLocalizedString("Thank you for supporting us! These icons will remain available even after your subscription ends.", comment: "")
                 }
                 else
                 {
-                    configuration.text = NSLocalizedString("These icons are available as a thank you to anyone who has ever joined one of our Patreon tiers.\n\nThey will remain available even after your subscription ends.", comment: "")
+                    configuration.text = NSLocalizedString("These icons are available as a thank you to anyone who has ever donated to us.\n\nThey will remain available even after your subscription ends.", comment: "")
                 }
                 #endif
                 
@@ -213,7 +198,7 @@ private extension AltAppIconsViewController
             
             if section == .patrons
             {
-                if self?.isPatronIconsUnlocked == true
+                if PurchaseManager.shared.isPatronIconsAvailable
                 {
                     config.textProperties.color = .label
                 }
@@ -271,7 +256,7 @@ extension AltAppIconsViewController
         let section = Section.allCases[indexPath.section]
         if section == .patrons
         {
-            guard self.isPatronIconsUnlocked else { return }
+            guard PurchaseManager.shared.isPatronIconsAvailable else { return }
         }
         
         let icon = self.dataSource.item(at: indexPath)
@@ -306,7 +291,7 @@ extension AltAppIconsViewController
         switch section
         {
         case .modern, .classic: return true
-        case .patrons where self.isPatronIconsUnlocked: return true
+        case .patrons where PurchaseManager.shared.isPatronIconsAvailable: return true
         case .patrons: return false
         }
     }

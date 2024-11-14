@@ -231,8 +231,6 @@ public extension PatreonAPI
                 let accounts = try context.fetch(fetchRequest)
                 accounts.forEach(context.delete(_:))
                 
-                self.disableExperimentalFeatures()
-                
                 try context.save()
                 
                 Keychain.shared.patreonAccessToken = nil
@@ -240,6 +238,10 @@ public extension PatreonAPI
                 Keychain.shared.patreonAccountID = nil
                 
                 completion(.success(()))
+                
+                Task<Void, Never> {
+                    await PurchaseManager.shared.update()
+                }
             }
             catch
             {
@@ -256,12 +258,11 @@ public extension PatreonAPI
             do
             {
                 let account = try result.get()
-                if !account.hasBetaAccess
-                {
-                    self.disableExperimentalFeatures()
-                }
-                
                 try account.managedObjectContext?.save()
+                
+                Task<Void, Never> {
+                    await PurchaseManager.shared.update()
+                }
             }
             catch
             {
@@ -386,25 +387,6 @@ private extension PatreonAPI
         }
         
         task.resume()
-    }
-    
-    func disableExperimentalFeatures()
-    {
-        // Do nothing for BETA builds because experimental features are always available.
-        
-        #if !BETA
-        
-        // Disable all Experimental Features if no longer an active patron.
-        // Dispatch to main queue because some observers expect changes to happen on main thread.
-        
-        DispatchQueue.main.async {
-            for feature in ExperimentalFeatures.shared.allFeatures
-            {
-                feature.isEnabled = false
-            }
-        }
-        
-        #endif
     }
 }
 

@@ -123,17 +123,6 @@ extension LaunchViewController
         if #available(iOS 17.5, *)
         {
             FriendZoneManager.shared.updatePatronsIfNeeded()
-            
-            Task<Void, Never> {
-                do
-                {
-                    try await RevenueCatManager.shared.start()
-                }
-                catch
-                {
-                    Logger.purchases.error("Failed to refresh RevenueCat customer info at launch. \(error.localizedDescription, privacy: .public)")
-                }
-            }
         }
         
         func showGameViewController()

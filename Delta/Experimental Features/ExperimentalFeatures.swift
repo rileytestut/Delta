@@ -70,28 +70,3 @@ struct ExperimentalFeatures: FeatureContainer
         self.prepareFeatures()
     }
 }
-
-extension ExperimentalFeatures
-{
-    static var isExperimentalFeaturesAvailable: Bool {
-        #if BETA
-        // Experimental features are always available in BETA version.
-        return true
-        #elseif APP_STORE || LEGACY
-        // Experimental features are NEVER available in APP_STORE and LEGACY versions.
-        return false
-        #else
-        
-        // Experimental features are only available for signed-in "beta access" patrons in public version.
-        if let patreonAccount = DatabaseManager.shared.patreonAccount(), patreonAccount.hasBetaAccess
-        {
-            return true
-        }
-        else
-        {
-            return false
-        }
-        
-        #endif
-    }
-}

@@ -65,7 +65,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         }
         
         Task<Void, Never> {
-            await ExternalPurchaseManager.shared.prepare()
+            await PurchaseManager.shared.prepare()
         }
                 
         return true
