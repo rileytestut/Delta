@@ -18,21 +18,25 @@ class PurchaseManager
 {
     static let shared = PurchaseManager()
     
-    private(set) var supportsExternalPurchases: Bool = false
+    var supportsExternalPurchases: Bool {
+        guard !UserDefaults.standard.isExternalPurchaseLinkDisabled else { return false }
+        return _supportsExternalPurchases
+    }
+    private var _supportsExternalPurchases: Bool = false
     
     private init()
     {
     }
     
+    @available(iOS 17.5, *) // iOS 17.5 is earliest version that supports reporting purchases via Apple's External Purchase Server API.
     func prepare() async
     {
         do
         {
-            // iOS 17.5 is earliest version that supports reporting purchases via Apple's External Purchase Server API.
-            guard #available(iOS 17.5, *), AppStore.canMakePayments else { return }
+            guard AppStore.canMakePayments else { return }
             
             let canOpenPurchaseLink = await ExternalPurchaseLink.canOpen
-            self.supportsExternalPurchases = canOpenPurchaseLink
+            self._supportsExternalPurchases = canOpenPurchaseLink
             
             try await RevenueCatManager.shared.start()
         }
@@ -114,9 +118,4 @@ extension PurchaseManager
 
         #endif
     }
-}
-
-private extension PurchaseManager
-{
-    
 }

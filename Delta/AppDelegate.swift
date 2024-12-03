@@ -64,8 +64,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate
             return false
         }
         
-        Task<Void, Never> {
-            await PurchaseManager.shared.prepare()
+        if #available(iOS 17.5, *)
+        {
+            Task<Void, Never> {
+                await PurchaseManager.shared.prepare()
+            }
         }
                 
         return true
