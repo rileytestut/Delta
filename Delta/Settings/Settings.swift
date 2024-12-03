@@ -58,7 +58,7 @@ struct Settings
     {
         let isPhone = (UIDevice.current.userInterfaceIdiom == .phone)
         
-        let defaults = [#keyPath(UserDefaults.translucentControllerSkinOpacity): 0.7,
+        var defaults = [#keyPath(UserDefaults.translucentControllerSkinOpacity): 0.7,
                         #keyPath(UserDefaults.gameShortcutsMode): GameShortcutsMode.recent.rawValue,
                         #keyPath(UserDefaults.isButtonHapticFeedbackEnabled): true,
                         #keyPath(UserDefaults.isThumbstickHapticFeedbackEnabled): true,
@@ -69,10 +69,13 @@ struct Settings
                         #keyPath(UserDefaults.pauseWhileInactive): true,
                         #keyPath(UserDefaults.supportsExternalDisplays): true,
                         #keyPath(UserDefaults.isQuickGesturesEnabled): true,
-                        ExperimentalFeatures.shared.openGLES3.settingsKey.rawValue: true,
                         Settings.preferredCoreSettingsKey(for: .ds): MelonDS.core.identifier] as [String : Any]
         
-        #if !BETA
+        #if BETA
+        
+        defaults[ExperimentalFeatures.shared.openGLES3.settingsKey.rawValue] = true
+        
+        #else
         // Manually set MelonDS as preferred DS core in case DeSmuME is cached from a previous version.
         UserDefaults.standard.set(MelonDS.core.identifier, forKey: Settings.preferredCoreSettingsKey(for: .ds))
         
