@@ -6,6 +6,7 @@
 //  Copyright © 2024 Riley Testut. All rights reserved.
 //
 
+import StoreKit
 import RevenueCat
 
 private extension UserDefaults
@@ -176,6 +177,20 @@ class RevenueCatManager
         {
             // Just fetch customer info.
             self.customerInfo = try await Purchases.shared.customerInfo(fetchPolicy: .cachedOrFetched)
+        }
+        
+        Task<Void, Never> {
+            for await purchaseIntent in PurchaseIntent.intents
+            {
+                do
+                {
+                    try await self.purchaseFriendZoneSubscription()
+                }
+                catch
+                {
+                    Logger.purchases.error("Failed to continue purchase \(purchaseIntent.product.id) in-app. \(error.localizedDescription, privacy: .public)")
+                }
+            }
         }
     }
     
