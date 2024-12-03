@@ -88,6 +88,7 @@ private extension SettingsViewController
     {
         case contactUs
         case privacyPolicy
+        case termsOfUse
     }
 }
 
@@ -875,6 +876,10 @@ extension SettingsViewController
                 
             case .privacyPolicy:
                 let safariURL = URL(string: "https://altstore.io/privacy")!
+                UIApplication.shared.open(safariURL, options: [:])
+                
+            case .termsOfUse:
+                let safariURL = URL(string: "https://altstore.io/terms")!
                 UIApplication.shared.open(safariURL, options: [:])
             }
         }
