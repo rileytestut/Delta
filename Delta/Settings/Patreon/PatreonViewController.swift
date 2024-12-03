@@ -126,10 +126,10 @@ private extension PatreonViewController
         }
         else
         {
-            var donateText = AttributedString(localized: "Become Friend Zone Patron")
+            var donateText = AttributedString(localized: "Become “Friend Zone Patron”")
             donateText.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
             
-            var priceText = AttributedString(localized: "$12.99 / month")
+            var priceText = AttributedString(localized: "$12.99 per month, billed monthly")
             priceText.font = UIFont.systemFont(ofSize: 14, weight: .regular)
             
             let paragraphStyle = NSMutableParagraphStyle()
