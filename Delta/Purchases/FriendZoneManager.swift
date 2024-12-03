@@ -26,6 +26,8 @@ extension FriendZoneManager
         var version: Int
         var accessToken: String
         var refreshID: String
+        
+        var disableExternalPurchaseLink: Bool?
     }
 }
 
@@ -80,6 +82,9 @@ private extension FriendZoneManager
                 
         let response = try JSONDecoder().decode(Response.self, from: data)
         Keychain.shared.patreonCreatorAccessToken = response.accessToken
+        
+        let disableExternalPurchaseLink = response.disableExternalPurchaseLink ?? false
+        UserDefaults.standard.isExternalPurchaseLinkDisabled = disableExternalPurchaseLink
         
         let previousRefreshID = UserDefaults.standard.patronsRefreshID
         guard response.refreshID != previousRefreshID && UserDefaults.standard.shouldFetchFriendZonePatrons else {

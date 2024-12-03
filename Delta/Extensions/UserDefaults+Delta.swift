@@ -14,4 +14,6 @@ extension UserDefaults
     
     @NSManaged var patronsRefreshID: String?
     @NSManaged var shouldFetchFriendZonePatrons: Bool
+    
+    @NSManaged var isExternalPurchaseLinkDisabled: Bool
 }
