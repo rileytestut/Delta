@@ -928,6 +928,10 @@ extension SettingsViewController
                 guard #unavailable(iOS 14) else { break primary }
                 return 0.0
                 
+            case .friendZonePatrons:
+                guard !PurchaseManager.shared.supportsExternalPurchases else { break primary }
+                return 0.0
+                
             default: break
             }
             
