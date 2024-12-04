@@ -18,6 +18,7 @@ enum PatreonAPIError: LocalizedError
     case unknown
     case notAuthenticated
     case invalidAccessToken
+    case rateLimitExceeded
     
     var failureReason: String? {
         switch self
@@ -25,6 +26,7 @@ enum PatreonAPIError: LocalizedError
         case .unknown: return NSLocalizedString("An unknown error occurred.", comment: "")
         case .notAuthenticated: return NSLocalizedString("No connected Patreon account.", comment: "")
         case .invalidAccessToken: return NSLocalizedString("Invalid access token.", comment: "")
+        case .rateLimitExceeded: return NSLocalizedString("The Patreon API rate limit has been exceeded.", comment: "")
         }
     }
 }
@@ -353,40 +355,78 @@ private extension PatreonAPI
             request.setValue("Bearer " + accessToken, forHTTPHeaderField: "Authorization")
         }
         
-        let task = self.session.dataTask(with: request) { (data, response, error) in
-            do
-            {
-                guard let data else { throw error ?? URLError(.badServerResponse) }
-                                
-                if let response = response as? HTTPURLResponse, response.statusCode == 401
+        func send(retryDelay: TimeInterval = 1.0, completion: @escaping (Result<ResponseType, Swift.Error>) -> Void)
+        {
+            let task = self.session.dataTask(with: request) { (data, response, error) in
+                do
                 {
-                    switch authorizationType
+                    guard let data else { throw error! }
+                    
+                    if let response = response as? HTTPURLResponse
                     {
-                    case .creator: completion(.failure(PatreonAPIError.invalidAccessToken))
-                    case .none: completion(.failure(PatreonAPIError.notAuthenticated))
-                    case .user:
-                        self.refreshAccessToken() { (result) in
-                            switch result
+                        switch response.statusCode
+                        {
+                        case 401:
+                            // Unauthorized
+                            switch authorizationType
                             {
-                            case .failure(let error): completion(.failure(error))
-                            case .success: self.send(request, authorizationType: authorizationType, completion: completion)
+                            case .creator: completion(.failure(PatreonAPIError.invalidAccessToken))
+                            case .none: completion(.failure(PatreonAPIError.notAuthenticated))
+                            case .user:
+                                self.refreshAccessToken() { (result) in
+                                    switch result
+                                    {
+                                    case .failure(let error): completion(.failure(error))
+                                    case .success: self.send(request, authorizationType: authorizationType, completion: completion)
+                                    }
+                                }
                             }
+                            
+                            return
+                            
+                        case 429:
+                            // Rate Limited
+                            let rateLimitDelay: TimeInterval
+                            if let delayString = response.value(forHTTPHeaderField: "Retry-After"), let delay = TimeInterval(delayString)
+                            {
+                                rateLimitDelay = delay
+                            }
+                            else
+                            {
+                                rateLimitDelay = retryDelay
+                            }
+                            
+                            guard rateLimitDelay <= 60 else {
+                                // Assume request failed.
+                                return completion(.failure(PatreonAPIError.rateLimitExceeded))
+                            }
+                            
+                            Logger.main.error("Patreon API rate limit exceeded. Retrying request after delay: \(rateLimitDelay)")
+                            
+                            DispatchQueue.global().asyncAfter(deadline: .now() + Double(rateLimitDelay)) {
+                                // Double previous delay, in case Patreon API doesn't return Retry-After header.
+                                send(retryDelay: rateLimitDelay * 2, completion: completion)
+                            }
+                            
+                            return
+                            
+                        default: break
                         }
                     }
                     
-                    return
+                    let response = try JSONDecoder().decode(ResponseType.self, from: data)
+                    completion(.success(response))
                 }
-                
-                let response = try JSONDecoder().decode(ResponseType.self, from: data)
-                completion(.success(response))
+                catch let error
+                {
+                    completion(.failure(error))
+                }
             }
-            catch let error
-            {
-                completion(.failure(error))
-            }
+            
+            task.resume()
         }
         
-        task.resume()
+        send(completion: completion)
     }
 }
 
