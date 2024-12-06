@@ -258,6 +258,8 @@
 		D5D7C20829E616CF00663793 /* FeatureContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D7C20729E616CF00663793 /* FeatureContainer.swift */; };
 		D5D7C20A29E61FA600663793 /* OptionToggleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D7C20929E61FA600663793 /* OptionToggleView.swift */; };
 		D5D7C20C29E624CB00663793 /* DisplayInlineKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D7C20B29E624CB00663793 /* DisplayInlineKey.swift */; };
+		D5E12AEB2D01157F000C7531 /* String+Profanity.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E12AEA2D011579000C7531 /* String+Profanity.swift */; };
+		D5E12AED2D011640000C7531 /* Profanity.txt in Resources */ = {isa = PBXBuildFile; fileRef = D5E12AEC2D01163A000C7531 /* Profanity.txt */; };
 		D5E76AAD2BE199890078C0C5 /* ShowTouches in Frameworks */ = {isa = PBXBuildFile; productRef = D5E76AAC2BE199890078C0C5 /* ShowTouches */; };
 		D5EB601B2C0E6190007C543C /* Stream+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5EB601A2C0E6190007C543C /* Stream+Conveniences.swift */; };
 		D5F702FD2C24CE5300DCD271 /* UISceneSession+Delta.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F702FC2C24CE5300DCD271 /* UISceneSession+Delta.swift */; };
@@ -562,6 +564,8 @@
 		D5D7C20729E616CF00663793 /* FeatureContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureContainer.swift; sourceTree = "<group>"; };
 		D5D7C20929E61FA600663793 /* OptionToggleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionToggleView.swift; sourceTree = "<group>"; };
 		D5D7C20B29E624CB00663793 /* DisplayInlineKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayInlineKey.swift; sourceTree = "<group>"; };
+		D5E12AEA2D011579000C7531 /* String+Profanity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Profanity.swift"; sourceTree = "<group>"; };
+		D5E12AEC2D01163A000C7531 /* Profanity.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Profanity.txt; sourceTree = "<group>"; };
 		D5E4F8622C2A5864008E8316 /* Delta 9.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Delta 9.xcdatamodel"; sourceTree = "<group>"; };
 		D5EB601A2C0E6190007C543C /* Stream+Conveniences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Stream+Conveniences.swift"; sourceTree = "<group>"; };
 		D5F702FC2C24CE5300DCD271 /* UISceneSession+Delta.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UISceneSession+Delta.swift"; sourceTree = "<group>"; };
@@ -644,6 +648,7 @@
 				D54E46CF2BED714F00780713 /* NSUserActivity+Delta.swift */,
 				D5EB601A2C0E6190007C543C /* Stream+Conveniences.swift */,
 				D5F702FC2C24CE5300DCD271 /* UISceneSession+Delta.swift */,
+				D5E12AEA2D011579000C7531 /* String+Profanity.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1032,6 +1037,7 @@
 				BF02D5D91DDEBB3000A5E131 /* openvgdb.sqlite */,
 				D5D797E7298DC9E200738869 /* cheatbase.zip */,
 				D53415A6298C78BC00FD67B1 /* Contributors.plist */,
+				D5E12AEC2D01163A000C7531 /* Profanity.txt */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -1511,6 +1517,7 @@
 				D5AA0F1A2CE404E90015D134 /* AboutPatreonHeaderView.xib in Resources */,
 				D5AE76CD2C2B81870086471B /* AltIcons.plist in Resources */,
 				BF6BF3211EB82362008E83CD /* GamesDatabase.storyboard in Resources */,
+				D5E12AED2D011640000C7531 /* Profanity.txt in Resources */,
 				BFAB9F88219A4B670080EC7D /* GoogleService-Info.plist in Resources */,
 				BF3540001C5DA3C500C1184C /* PausePresentationControllerContentView.xib in Resources */,
 				BF5E7F461B9A652600AE44F8 /* Settings.storyboard in Resources */,
@@ -1795,6 +1802,7 @@
 				D5A98CE2284EF14B00E023E5 /* SceneDelegate.swift in Sources */,
 				BFE56E1923EB7BE00014FECD /* UIImage+SymbolFallback.swift in Sources */,
 				AC1C992729F9F1CF0020E6E4 /* GameViewController+ExperimentalToasts.swift in Sources */,
+				D5E12AEB2D01157F000C7531 /* String+Profanity.swift in Sources */,
 				D5AE76B82C2B52820086471B /* Tier.swift in Sources */,
 				BF6EE5E91F7C5F860051AD6C /* _GameControllerInputMapping.swift in Sources */,
 				BF5942871E09BC8B0051894B /* _ControllerSkin.swift in Sources */,
