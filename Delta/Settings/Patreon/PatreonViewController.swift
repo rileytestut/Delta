@@ -19,6 +19,13 @@ extension PatreonViewController
         case about
         case patrons
     }
+    
+    private struct NaughtyWordError: LocalizedError
+    {
+        var errorDescription: String? {
+            NSLocalizedString("This name is not allowed.", comment: "")
+        }
+    }
 }
 
 @available(iOS 17.5, *)
@@ -258,6 +265,8 @@ private extension PatreonViewController
             Task<Void, Never> {
                 do
                 {
+                    guard !displayName.containsProfanity else { throw NaughtyWordError() }
+                    
                     try await RevenueCatManager.shared.setDisplayName(displayName)
                 }
                 catch
