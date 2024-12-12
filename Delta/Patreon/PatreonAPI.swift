@@ -9,9 +9,7 @@
 import Foundation
 import AuthenticationServices
 import CoreData
-
-private let clientID = "ZMx0EGUWe4TVWYXNZZwK_fbIK5jHFVWoUf1Qb-sqNXmT-YzAGwDPxxq7ak3_W5Q2"
-private let clientSecret = "1hktsZB89QyN69cB4R0tu55R4TCPQGXxvebYUUh7Y-5TLSnRswuxs6OUjdJ74IJt"
+import OSLog
 
 enum PatreonAPIError: LocalizedError
 {
@@ -44,6 +42,12 @@ extension PatreonAPI
         case user
         case creator
     }
+    
+    private struct Tokens: Decodable
+    {
+        var clientID: String
+        var clientSecret: String
+    }
 }
 
 public class PatreonAPI: NSObject
@@ -60,8 +64,34 @@ public class PatreonAPI: NSObject
     private let session = URLSession(configuration: .ephemeral)
     private let baseURL = URL(string: "https://www.patreon.com/")!
     
+    private let clientID: String
+    private let clientSecret: String
+    
     private override init()
     {
+        let fileURL = Bundle.main.url(forResource: "PatreonAPI", withExtension: "plist")!
+        
+        do
+        {
+            let data = try Data(contentsOf: fileURL)
+            
+            let tokens = try PropertyListDecoder().decode(Tokens.self, from: data)
+            self.clientID = tokens.clientID
+            self.clientSecret = tokens.clientSecret
+            
+            if self.clientID.isEmpty || self.clientSecret.isEmpty
+            {
+                Logger.main.error("PatreonAPI.plist is missing clientID and/or clientSecret. Please provide your own API keys to use Patreon functionality.")
+            }
+        }
+        catch
+        {
+            Logger.main.error("Failed to load PatreonAPI tokens. \(error.localizedDescription, privacy: .public)")
+            
+            self.clientID = ""
+            self.clientSecret = ""
+        }
+        
         super.init()
     }
 }
@@ -72,7 +102,7 @@ public extension PatreonAPI
     {
         var components = URLComponents(string: "/oauth2/authorize")!
         components.queryItems = [URLQueryItem(name: "response_type", value: "code"),
-                                 URLQueryItem(name: "client_id", value: clientID),
+                                 URLQueryItem(name: "client_id", value: self.clientID),
                                  URLQueryItem(name: "redirect_uri", value: "https://rileytestut.com/patreon/altstore")]
         
         let requestURL = components.url(relativeTo: self.baseURL)!
@@ -281,7 +311,7 @@ private extension PatreonAPI
         let encodedRedirectURI = ("https://rileytestut.com/patreon/altstore" as NSString).addingPercentEncoding(withAllowedCharacters: .alphanumerics)!
         let encodedOauthCode = (oauthCode as NSString).addingPercentEncoding(withAllowedCharacters: .alphanumerics)!
         
-        let body = "code=\(encodedOauthCode)&grant_type=authorization_code&client_id=\(clientID)&client_secret=\(clientSecret)&redirect_uri=\(encodedRedirectURI)"
+        let body = "code=\(encodedOauthCode)&grant_type=authorization_code&client_id=\(self.clientID)&client_secret=\(self.clientSecret)&redirect_uri=\(encodedRedirectURI)"
         
         let requestURL = URL(string: "/api/oauth2/token", relativeTo: self.baseURL)!
         
@@ -312,8 +342,8 @@ private extension PatreonAPI
         var components = URLComponents(string: "/api/oauth2/token")!
         components.queryItems = [URLQueryItem(name: "grant_type", value: "refresh_token"),
                                  URLQueryItem(name: "refresh_token", value: refreshToken),
-                                 URLQueryItem(name: "client_id", value: clientID),
-                                 URLQueryItem(name: "client_secret", value: clientSecret)]
+                                 URLQueryItem(name: "client_id", value: self.clientID),
+                                 URLQueryItem(name: "client_secret", value: self.clientSecret)]
         
         let requestURL = components.url(relativeTo: self.baseURL)!
         
