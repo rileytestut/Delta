@@ -36,6 +36,8 @@ class PatreonViewController: UICollectionViewController
     
     private var prototypeAboutHeader: AboutPatreonHeaderView!
     private weak var confirmEditNameAction: UIAlertAction?
+    
+    private var isUpdatingRevenueCatPatrons: Bool = false
         
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
@@ -256,7 +258,7 @@ private extension PatreonViewController
             }
         }
         
-        let cancelTitle = (RevenueCatManager.shared.displayName == nil) ? String(localized: "Maybe Later") : String(localized: "Cancel")
+        let cancelTitle = (sender == nil) ? String(localized: "Maybe Later") : String(localized: "Cancel")
         let cancelAction = UIAlertAction(title: cancelTitle, style: .cancel)
         
         let editAction = UIAlertAction(title: String(localized: "Confirm"), style: .default) { [weak alertController] _ in
@@ -268,6 +270,18 @@ private extension PatreonViewController
                     guard !displayName.containsProfanity else { throw NaughtyWordError() }
                     
                     try await RevenueCatManager.shared.setDisplayName(displayName)
+                    
+                    self.isUpdatingRevenueCatPatrons = true
+                    self.collectionView.reloadData()
+                    
+                    defer {
+                        self.isUpdatingRevenueCatPatrons = false
+                        
+                        // Automatically reloads data due to didUpdatePatronsNotification.
+                        // self.collectionView.reloadData()
+                    }
+                    
+                    try await FriendZoneManager.shared.updateRevenueCatPatrons()
                 }
                 catch
                 {
@@ -322,6 +336,10 @@ extension PatreonViewController
                 
                 switch FriendZoneManager.shared.updatePatronsResult
                 {
+                case _ where self.isUpdatingRevenueCatPatrons:
+                    // Always show activity indicator when updating just RevenueCat patrons.
+                    footerView.button.isIndicatingActivity = true
+                    
                 case .none: footerView.button.isIndicatingActivity = true
                 case .success?: footerView.button.isHidden = true
                 case .failure?:

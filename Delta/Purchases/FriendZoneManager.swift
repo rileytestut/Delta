@@ -64,6 +64,18 @@ extension FriendZoneManager
             NotificationCenter.default.post(name: FriendZoneManager.didUpdatePatronsNotification, object: self)
         }
     }
+    
+    func updateRevenueCatPatrons() async throws
+    {
+        let context = DatabaseManager.shared.newBackgroundContext()
+        _ = try await self.fetchRevenueCatPatrons(in: context)
+        
+        try await context.perform(schedule: .enqueued) {
+            try context.save()
+        }
+        
+        NotificationCenter.default.post(name: FriendZoneManager.didUpdatePatronsNotification, object: self)
+    }
 }
 
 @available(iOS 17.5, *)
