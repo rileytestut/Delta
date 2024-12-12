@@ -35,9 +35,12 @@ class PatreonViewController: UICollectionViewController
     private lazy var patronsDataSource = self.makePatronsDataSource()
     
     private var prototypeAboutHeader: AboutPatreonHeaderView!
-    private weak var confirmEditNameAction: UIAlertAction?
+    private weak var confirmEditAction: UIAlertAction?
     
     private var isUpdatingRevenueCatPatrons: Bool = false
+    
+    @IBOutlet private var editNameButton: UIBarButtonItem!
+    @IBOutlet private var editEmailButton: UIBarButtonItem!
         
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
@@ -114,7 +117,23 @@ private extension PatreonViewController
     
     func update()
     {
-        self.navigationItem.rightBarButtonItem?.isHidden = !RevenueCatManager.shared.hasBetaAccess
+        if let entitlement = RevenueCatManager.shared.entitlements[.discord], entitlement.isActive
+        {
+            self.editEmailButton.isHidden = false
+        }
+        else
+        {
+            self.editEmailButton.isHidden = true
+        }
+        
+        if let entitlement = RevenueCatManager.shared.entitlements[.credits], entitlement.isActive
+        {
+            self.editNameButton.isHidden = false
+        }
+        else
+        {
+            self.editNameButton.isHidden = true
+        }
         
         self.collectionView.reloadData()
     }
@@ -183,7 +202,7 @@ private extension PatreonViewController
                 switch subscription
                 {
                 case .earlyAdopter: break
-                case .communityMember: break
+                case .communityMember: self.editPatronEmail(nil)
                 case .friendZone: self.editPatronName(nil)
                 }
             }
@@ -247,7 +266,7 @@ private extension PatreonViewController
             textField.placeholder = String(localized: "Full Name")
             textField.returnKeyType = .done
             textField.enablesReturnKeyAutomatically = true
-            textField.addTarget(self, action: #selector(PatreonViewController.editNameTextFieldChanged(_:)), for: .editingChanged)
+            textField.addTarget(self, action: #selector(PatreonViewController.editTextFieldChanged(_:)), for: .editingChanged)
             
             if let displayName = RevenueCatManager.shared.displayName
             {
@@ -287,7 +306,7 @@ private extension PatreonViewController
                 }
             }
         }
-        self.confirmEditNameAction = editAction
+        self.confirmEditAction = editAction
         
         alertController.addAction(cancelAction)
         alertController.addAction(editAction)
@@ -295,10 +314,64 @@ private extension PatreonViewController
         self.present(alertController, animated: true)
     }
     
-    @objc func editNameTextFieldChanged(_ sender: UITextField)
+    @IBAction func editPatronEmail(_ sender: UIBarButtonItem?)
+    {
+        let alertTitle = (sender == nil) ? String(localized: "Thanks For Supporting Us!") : String(localized: "Edit Email")
+        
+        let alertController = UIAlertController(title: alertTitle, message: String(localized: "Please enter your email so we can send you an invitation to our Discord server."), preferredStyle: .alert)
+        alertController.addTextField { [weak self] textField in
+            textField.textContentType = .emailAddress
+            textField.autocapitalizationType = .none
+            textField.autocorrectionType = .no
+            textField.placeholder = String(localized: "me@example.com")
+            textField.returnKeyType = .done
+            textField.enablesReturnKeyAutomatically = true
+            textField.addTarget(self, action: #selector(PatreonViewController.editTextFieldChanged(_:)), for: .editingChanged)
+            
+            if let emailAddress = RevenueCatManager.shared.emailAddress
+            {
+                textField.text = emailAddress
+            }
+        }
+        
+        let cancelTitle = (sender == nil) ? String(localized: "Maybe Later") : String(localized: "Cancel")
+        let cancelAction = UIAlertAction(title: cancelTitle, style: .cancel)
+        
+        let editAction = UIAlertAction(title: String(localized: "Confirm"), style: .default) { [weak alertController] _ in
+            guard let textField = alertController?.textFields?.first, let emailAddress = textField.text, !emailAddress.isEmpty else { return }
+            
+            Task<Void, Never> {
+                do
+                {
+                    try await RevenueCatManager.shared.setEmailAddress(emailAddress)
+                    
+                    let alertController = UIAlertController(title: NSLocalizedString("Discord Invite Link", comment: ""), message: "https://discord.gg/QqmM3gPtbA", preferredStyle: .alert)
+                    alertController.addAction(UIAlertAction(title: NSLocalizedString("Copy to Clipboard", comment: ""), style: .default) { _ in
+                        UIPasteboard.general.url = URL(string: "https://discord.gg/QqmM3gPtbA")
+                    })
+                    alertController.addAction(.cancel)
+                    
+                    self.present(alertController, animated: true)
+                }
+                catch
+                {
+                    let alertController = UIAlertController(title: String(localized: "Unable to Update Email"), error: error)
+                    self.present(alertController, animated: true)
+                }
+            }
+        }
+        self.confirmEditAction = editAction
+        
+        alertController.addAction(cancelAction)
+        alertController.addAction(editAction)
+        
+        self.present(alertController, animated: true)
+    }
+    
+    @objc func editTextFieldChanged(_ sender: UITextField)
     {
         let text = sender.text ?? ""
-        self.confirmEditNameAction?.isEnabled = !text.isEmpty
+        self.confirmEditAction?.isEnabled = !text.isEmpty
     }
 }
 
