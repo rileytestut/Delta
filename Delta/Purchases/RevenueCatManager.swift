@@ -45,6 +45,31 @@ extension RevenueCatManager
             }
         }
     }
+    
+    enum Subscription
+    {
+        case earlyAdopter
+        case communityMember
+        case friendZone
+        
+        var title: String {
+            switch self
+            {
+            case .earlyAdopter: return String(localized: "Early Adopter")
+            case .communityMember: return String(localized: "Community Member")
+            case .friendZone: return String(localized: "Friend Zone")
+            }
+        }
+        
+        fileprivate var productID: ProductID {
+            switch self
+            {
+            case .earlyAdopter: return .earlyAdopterMonthly
+            case .communityMember: return .communityMemberMonthly
+            case .friendZone: return .friendZoneMonthly
+            }
+        }
+    }
 }
 
 @available(iOS 17.5, *)
@@ -56,7 +81,9 @@ private extension RevenueCatManager
     
     struct ProductID: RawRepresentable, Codable, Hashable
     {
-        static let friendZoneMonthly = ProductID(rawValue: "delta_friendzone_1299_month")
+        static let earlyAdopterMonthly = ProductID(rawValue: "delta_earlyadopter_1000_month")
+        static let communityMemberMonthly = ProductID(rawValue: "delta_communitymember_1500_month")
+        static let friendZoneMonthly = ProductID(rawValue: "delta_friendzone_3000_month")
         
         let rawValue: String
     }
@@ -135,9 +162,9 @@ class RevenueCatManager
     }
     
     var hasPastBetaAccess: Bool {
-        guard let customerInfo else { return false }
+        let entitlement = self.entitlements[.betaAccess]
         
-        let hasPastBetaAccess = customerInfo.allPurchasedProductIdentifiers.contains(RevenueCatManager.ProductID.friendZoneMonthly.rawValue)
+        let hasPastBetaAccess = (entitlement != nil)
         return hasPastBetaAccess
     }
     
@@ -184,7 +211,14 @@ class RevenueCatManager
             {
                 do
                 {
-                    try await self.purchaseFriendZoneSubscription()
+                    let productID = ProductID(rawValue: purchaseIntent.product.id)
+                    switch productID
+                    {
+                    case .earlyAdopterMonthly: try await self.purchase(.earlyAdopter)
+                    case .communityMemberMonthly: try await self.purchase(.communityMember)
+                    case .friendZoneMonthly: try await self.purchase(.friendZone)
+                    default: break
+                    }
                 }
                 catch
                 {
@@ -206,12 +240,12 @@ class RevenueCatManager
 @available(iOS 17.5, *)
 extension RevenueCatManager
 {
-    func purchaseFriendZoneSubscription() async throws
+    func purchase(_ subscription: Subscription) async throws
     {
         do
         {
             let products = await withCheckedContinuation { (continuation: CheckedContinuation<[StoreProduct], Never>) in
-                Purchases.shared.getProducts([ProductID.friendZoneMonthly.rawValue]) { products in
+                Purchases.shared.getProducts([subscription.productID.rawValue]) { products in
                     continuation.resume(returning: products)
                 }
             }
@@ -225,11 +259,11 @@ extension RevenueCatManager
             
             self.customerInfo = customerInfo
             
-            Logger.purchases.info("Successfully purchased monthly Friend Zone subscription!")
+            Logger.purchases.info("Successfully purchased \(subscription.title, privacy: .public) subscription!")
         }
         catch
         {
-            Logger.purchases.error("Failed to purchase Friend Zone subscription. \(error.localizedDescription, privacy: .public)")
+            Logger.purchases.error("Failed to purchase \(subscription.title, privacy: .public) subscription. \(error.localizedDescription, privacy: .public)")
             throw error
         }
     }

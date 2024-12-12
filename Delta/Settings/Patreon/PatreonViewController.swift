@@ -130,30 +130,15 @@ private extension PatreonViewController
         {
             headerView.supportButton.setTitle(String(localized: "Manage Subscription"), for: .normal)
             
-            headerView.supportButton.removeTarget(self, action: #selector(PatreonViewController.becomeFriendZonePatron), for: .primaryActionTriggered)
+            headerView.supportButton.removeTarget(self, action: #selector(PatreonViewController.becomePatron), for: .primaryActionTriggered)
             headerView.supportButton.addTarget(self, action: #selector(PatreonViewController.manageSubscription), for: .primaryActionTriggered)
         }
         else
         {
-            var donateText = AttributedString(localized: "Become “Friend Zone Patron”")
-            donateText.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
-            
-            var priceText = AttributedString(localized: "$12.99 per month, billed monthly")
-            priceText.font = UIFont.systemFont(ofSize: 14, weight: .regular)
-            
-            let paragraphStyle = NSMutableParagraphStyle()
-            paragraphStyle.alignment = .center
-            paragraphStyle.lineSpacing = 1.2
-            
-            let container = AttributeContainer([.paragraphStyle: paragraphStyle]) // Necessary to silence "NSParagraphStyle not Sendable" warning
-            var attributedText = donateText + "\n" + priceText
-            attributedText = attributedText.mergingAttributes(container, mergePolicy: .keepNew)
-            
-            headerView.supportButton.titleLabel?.numberOfLines = 0
-            headerView.supportButton.setAttributedTitle(NSAttributedString(attributedText), for: .normal)
+            headerView.supportButton.setTitle(String(localized: "Become a “Patron” Today"), for: .normal)
             
             headerView.supportButton.removeTarget(self, action: #selector(PatreonViewController.manageSubscription), for: .primaryActionTriggered)
-            headerView.supportButton.addTarget(self, action: #selector(PatreonViewController.becomeFriendZonePatron), for: .primaryActionTriggered)
+            headerView.supportButton.addTarget(self, action: #selector(PatreonViewController.becomePatron), for: .primaryActionTriggered)
         }
     }
 }
@@ -178,17 +163,29 @@ private extension PatreonViewController
         }
     }
     
-    @objc func becomeFriendZonePatron()
+    @objc func becomePatron()
     {
         Task<Void, Never> {
             do
             {
-                try await RevenueCatManager.shared.purchaseFriendZoneSubscription()
+                let subscription = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<RevenueCatManager.Subscription, Error>) in
+                    let viewController = PatreonTiersViewController { [weak self] result in
+                        continuation.resume(with: result)
+                        self?.dismiss(animated: true)
+                    }
+                    
+                    let navigationController = UINavigationController(rootViewController: viewController)
+                    self.present(navigationController, animated: true)
+                }
                 
                 self.update()
                 
-                // Ask for user's name if purchase is successful.
-                self.editPatronName(nil)
+                switch subscription
+                {
+                case .earlyAdopter: break
+                case .communityMember: break
+                case .friendZone: self.editPatronName(nil)
+                }
             }
             catch is CancellationError
             {
@@ -196,7 +193,7 @@ private extension PatreonViewController
             }
             catch
             {
-                let alertController = UIAlertController(title: NSLocalizedString("Unable to Purchase Friend Zone Subscription", comment: ""), error: error)
+                let alertController = UIAlertController(title: NSLocalizedString("Unable to Purchase Subscription", comment: ""), error: error)
                 self.present(alertController, animated: true)
             }
         }
