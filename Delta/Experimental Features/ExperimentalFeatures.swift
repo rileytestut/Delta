@@ -65,6 +65,10 @@ struct ExperimentalFeatures: FeatureContainer
              description: "Use Metal to render games instead of OpenGL ES. Does not apply to N64 games.")
     var metal
     
+    @Feature(name: "Online Multiplayer (DS)",
+             description: "Play Nintendo WFC-compatible DS games online with friends.")
+    var dsOnlineMultiplayer
+    
     private init()
     {
         self.prepareFeatures()
