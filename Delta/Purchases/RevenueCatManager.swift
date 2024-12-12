@@ -154,6 +154,11 @@ class RevenueCatManager
         return displayName
     }
     
+    var emailAddress: String? {
+        let emailAddress = Keychain.shared.revenueCatEmailAddress
+        return emailAddress
+    }
+    
     var hasBetaAccess: Bool {
         guard let entitlement = self.entitlements[.betaAccess] else { return false }
         
@@ -234,6 +239,14 @@ class RevenueCatManager
         Purchases.shared.attribution.setDisplayName(name)
         
         _ = try await Purchases.shared.syncAttributesAndOfferingsIfNeeded()        
+    }
+    
+    func setEmailAddress(_ emailAddress: String) async throws
+    {
+        Keychain.shared.revenueCatEmailAddress = emailAddress
+        Purchases.shared.attribution.setEmail(emailAddress)
+        
+        _ = try await Purchases.shared.syncAttributesAndOfferingsIfNeeded()
     }
 }
 

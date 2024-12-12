@@ -60,6 +60,9 @@ public class Keychain
     @KeychainItem(key: "revenueCatDisplayName")
     public var revenueCatDisplayName: String?
     
+    @KeychainItem(key: "revenueCatEmailAddress")
+    public var revenueCatEmailAddress: String?
+    
     private init()
     {
     }
