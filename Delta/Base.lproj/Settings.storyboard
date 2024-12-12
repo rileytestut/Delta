@@ -16,11 +16,11 @@
             <objects>
                 <tableViewController title="Settings" id="eHi-aO-uGS" customClass="SettingsViewController" customModule="Delta" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="insetGrouped" separatorStyle="default" rowHeight="44" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="hRw-wV-lch">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="3300"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="3400"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="separatorColor" systemColor="separatorColor"/>
                         <label key="tableFooterView" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Delta 0.6.0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Str-BY-agW">
-                            <rect key="frame" x="0.0" y="3199.5" width="375" height="44"/>
+                            <rect key="frame" x="0.0" y="3243.5" width="375" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -1024,6 +1024,22 @@ Menu + Long-Press: Quick Load</string>
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell" textLabel="ggi-Bt-bY5" style="IBUITableViewCellStyleDefault" id="Azw-Av-Bkc">
+                                        <rect key="frame" x="16" y="3181.5" width="343" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Azw-Av-Bkc" id="HT9-DH-U1U">
+                                            <rect key="frame" x="0.0" y="0.0" width="316.5" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Terms of Use" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ggi-Bt-bY5">
+                                                    <rect key="frame" x="16" y="0.0" width="292.5" height="44"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                         </sections>
@@ -1039,7 +1055,7 @@ Menu + Long-Press: Quick Load</string>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
-                    <size key="freeformSize" width="375" height="3300"/>
+                    <size key="freeformSize" width="375" height="3400"/>
                     <connections>
                         <outlet property="buttonHapticFeedbackEnabledSwitch" destination="g7m-wj-ueP" id="nOj-sc-foi"/>
                         <outlet property="controllerOpacityLabel" destination="zaz-yD-CYG" id="eUW-u9-xxx"/>
