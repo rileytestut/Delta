@@ -53,6 +53,7 @@ extension AltAppIconsViewController
         case modern
         case classic
         case patrons
+        case patronsButtonPack
         
         var localizedName: String {
             switch self
@@ -60,6 +61,7 @@ extension AltAppIconsViewController
             case .modern: return NSLocalizedString("Modern", comment: "")
             case .classic: return NSLocalizedString("Classic", comment: "")
             case .patrons: return NSLocalizedString("Patrons", comment: "")
+            case .patronsButtonPack: return NSLocalizedString("Patrons - Button Pack", comment: "")
             }
         }
     }
@@ -137,7 +139,7 @@ class AltAppIconsViewController: UICollectionViewController
             let section = Section.allCases[indexPath.section]
             switch section
             {
-            case .patrons:
+            case .patronsButtonPack:
                 #if BETA
                 configuration.text = NSLocalizedString("Thank you for joining our Patreon!", comment: "")
                 #else
@@ -147,11 +149,11 @@ class AltAppIconsViewController: UICollectionViewController
                 }
                 else
                 {
-                    configuration.text = NSLocalizedString("These icons are available as a thank you to anyone who has ever donated to us.\n\nThey will remain available even after your subscription ends.", comment: "")
+                    configuration.text = NSLocalizedString("These icons are available as a thank you to all our patrons who have ever donated to us.\n\nThey will remain available even after your subscription ends.", comment: "")
                 }
                 #endif
                 
-            case .classic, .modern: break
+            case .classic, .modern, .patrons: break
             }
                         
             footerView.contentConfiguration = configuration
@@ -186,8 +188,8 @@ private extension AltAppIconsViewController
             let section = Section.allCases[sectionIndex]
             switch section
             {
-            case .patrons: configuration.footerMode = .supplementary
-            case .modern, .classic: break
+            case .patronsButtonPack: configuration.footerMode = .supplementary
+            case .modern, .classic, .patrons: break
             }
             
             let layoutSection = NSCollectionLayoutSection.list(using: configuration, layoutEnvironment: layoutEnvironment)
@@ -384,8 +386,7 @@ extension AltAppIconsViewController
         switch section
         {
         case .modern, .classic: return true
-        case .patrons where PurchaseManager.shared.isPatronIconsAvailable: return true
-        case .patrons: return false
+        case .patrons, .patronsButtonPack: return PurchaseManager.shared.isPatronIconsAvailable
         }
     }
 }
