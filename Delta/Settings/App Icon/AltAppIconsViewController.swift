@@ -171,7 +171,10 @@ class AltAppIconsViewController: UICollectionViewController
     {
         super.traitCollectionDidChange(previousTraitCollection)
         
-        self.resetIconStyle()
+        if previousTraitCollection?.userInterfaceStyle != self.traitCollection.userInterfaceStyle
+        {
+            self.resetIconStyle()
+        }
     }
 }
 
