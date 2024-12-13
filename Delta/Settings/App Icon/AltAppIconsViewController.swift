@@ -63,6 +63,12 @@ extension AltAppIconsViewController
             }
         }
     }
+    
+    private enum IconStyle: Int, CaseIterable
+    {
+        case light
+        case dark
+    }
 }
 
 class AltAppIconsViewController: UICollectionViewController
@@ -73,6 +79,11 @@ class AltAppIconsViewController: UICollectionViewController
     
     private var headerRegistration: UICollectionView.SupplementaryRegistration<UICollectionViewListCell>!
     private var footerRegistration: UICollectionView.SupplementaryRegistration<UICollectionViewListCell>!
+    
+    private var overrideStyle: UIUserInterfaceStyle?
+    private var iconStyleSegmentedControl: UISegmentedControl!
+    
+    private let iconCache = NSCache<AltIcon, UIImage>()
         
     override func viewDidLoad()
     {
@@ -84,6 +95,14 @@ class AltAppIconsViewController: UICollectionViewController
         self.collectionView.collectionViewLayout = collectionViewLayout
         
         self.collectionView.backgroundColor = .systemGroupedBackground
+        
+        let segmentedControl = UISegmentedControl(items: [NSLocalizedString("Light", comment: ""), NSLocalizedString("Dark", comment: "")])
+        segmentedControl.selectedSegmentIndex = 0
+        segmentedControl.sizeToFit()
+        segmentedControl.frame.size.width += 88
+        segmentedControl.addTarget(self, action: #selector(AltAppIconsViewController.changeIconStyle(_:)), for: .valueChanged)
+        self.navigationItem.titleView = segmentedControl
+        self.iconStyleSegmentedControl = segmentedControl
         
         do
         {
@@ -138,6 +157,20 @@ class AltAppIconsViewController: UICollectionViewController
             footerView.contentConfiguration = configuration
         }
     }
+    
+    override func viewIsAppearing(_ animated: Bool)
+    {
+        super.viewIsAppearing(animated)
+        
+        self.resetIconStyle()
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?)
+    {
+        super.traitCollectionDidChange(previousTraitCollection)
+        
+        self.resetIconStyle()
+    }
 }
 
 private extension AltAppIconsViewController
@@ -173,6 +206,8 @@ private extension AltAppIconsViewController
         
         let dataSource = RSTCompositeCollectionViewDataSource(dataSources: dataSources)
         dataSource.cellConfigurationHandler = { [weak self] cell, icon, indexPath in
+            guard let self else { return }
+            
             let cell = cell as! UICollectionViewListCell
             let section = Section.allCases[indexPath.section]
             
@@ -183,8 +218,33 @@ private extension AltAppIconsViewController
             config.textProperties.font = .preferredFont(forTextStyle: .body)
             config.textProperties.color = .label
             
-            let image = UIImage(named: icon.imageName, in: Bundle(for: AltAppIconsViewController.self), with: nil)
-            config.image = image
+            let appIcon: UIImage?
+            
+            if let image = self.iconCache.object(forKey: icon)
+            {
+                appIcon = image
+            }
+            else
+            {
+                var traitCollection = self.traitCollection
+                if let overrideStyle = self.overrideStyle
+                {
+                    let overrideTraits = UITraitCollection(userInterfaceStyle: overrideStyle)
+                    traitCollection = UITraitCollection(traitsFrom: [traitCollection, overrideTraits])
+                }
+                
+                var image = UIImage(named: icon.imageName, in: Bundle(for: AltAppIconsViewController.self), compatibleWith: traitCollection)
+                image = image?.resizing(to: CGSize(width: 180, height: 180))
+                
+                if let image
+                {
+                    self.iconCache.setObject(image, forKey: icon)
+                }
+                
+                appIcon = image
+            }
+            
+            config.image = appIcon
             config.imageProperties.maximumSize = CGSize(width: imageWidth, height: imageWidth)
             config.imageProperties.cornerRadius = imageWidth / 5.0 // Copied from AppIconImageView
             
@@ -230,6 +290,39 @@ private extension AltAppIconsViewController
         }
         
         return dataSource
+    }
+}
+
+private extension AltAppIconsViewController
+{
+    @objc
+    func changeIconStyle(_ sender: UISegmentedControl)
+    {
+        guard let style = IconStyle(rawValue: sender.selectedSegmentIndex) else { return }
+        
+        switch style
+        {
+        case .light: self.overrideStyle = .light
+        case .dark: self.overrideStyle = .dark
+        }
+        
+        self.iconCache.removeAllObjects()
+        self.collectionView.reloadData()
+    }
+    
+    func resetIconStyle()
+    {
+        self.overrideStyle = nil
+        
+        switch self.traitCollection.userInterfaceStyle
+        {
+        case .dark: self.iconStyleSegmentedControl.selectedSegmentIndex = IconStyle.dark.rawValue
+        case .light, .unspecified: fallthrough
+        @unknown default: self.iconStyleSegmentedControl.selectedSegmentIndex = IconStyle.light.rawValue
+        }
+        
+        self.iconCache.removeAllObjects()
+        self.collectionView.reloadData()
     }
 }
 
