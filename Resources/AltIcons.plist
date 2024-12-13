@@ -77,5 +77,108 @@
 			<string>https://www.threads.net/@seanfletchr</string>
 		</dict>
 	</array>
+	<key>patronsButtonPack</key>
+	<array>
+		<dict>
+			<key>name</key>
+			<string>NES</string>
+			<key>imageName</key>
+			<string>NESIcon</string>
+			<key>credit</key>
+			<string>Louie Mantia</string>
+			<key>url</key>
+			<string>https://lmnt.me</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>SNES</string>
+			<key>imageName</key>
+			<string>SNESIcon</string>
+			<key>credit</key>
+			<string>Louie Mantia</string>
+			<key>url</key>
+			<string>https://lmnt.me</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>N64</string>
+			<key>imageName</key>
+			<string>N64Icon</string>
+			<key>credit</key>
+			<string>Louie Mantia</string>
+			<key>url</key>
+			<string>https://lmnt.me</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>GBC</string>
+			<key>imageName</key>
+			<string>GBCIcon</string>
+			<key>credit</key>
+			<string>Louie Mantia</string>
+			<key>url</key>
+			<string>https://lmnt.me</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>GBC (Dandelion)</string>
+			<key>imageName</key>
+			<string>GBCIcon_Dandelion</string>
+			<key>credit</key>
+			<string>Louie Mantia</string>
+			<key>url</key>
+			<string>https://lmnt.me</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>GBC (Berry)</string>
+			<key>imageName</key>
+			<string>GBCIcon_Berry</string>
+			<key>credit</key>
+			<string>Louie Mantia</string>
+			<key>url</key>
+			<string>https://lmnt.me</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>GBC (Teal)</string>
+			<key>imageName</key>
+			<string>GBCIcon_Teal</string>
+			<key>credit</key>
+			<string>Louie Mantia</string>
+			<key>url</key>
+			<string>https://lmnt.me</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>GBC (Kiwi)</string>
+			<key>imageName</key>
+			<string>GBCIcon_Kiwi</string>
+			<key>credit</key>
+			<string>Louie Mantia</string>
+			<key>url</key>
+			<string>https://lmnt.me</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Game Boy</string>
+			<key>imageName</key>
+			<string>GBIcon</string>
+			<key>credit</key>
+			<string>Louie Mantia</string>
+			<key>url</key>
+			<string>https://lmnt.me</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>GBA</string>
+			<key>imageName</key>
+			<string>GBAIcon</string>
+			<key>credit</key>
+			<string>Louie Mantia</string>
+			<key>url</key>
+			<string>https://lmnt.me</string>
+		</dict>
+	</array>
 </dict>
 </plist>
