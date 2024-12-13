@@ -358,7 +358,17 @@ extension AltAppIconsViewController
         }
         
         let icon = self.dataSource.item(at: indexPath)
-        guard UIApplication.shared.alternateIconName != icon.imageName else { return }
+        guard UIApplication.shared.alternateIconName != icon.imageName else {
+            // User tapped icon they're already using, so show reboot alert just in case that's the reason.
+            
+            let alertController = UIAlertController(title: NSLocalizedString("Icon Already Selected", comment: ""),
+                                                    message: NSLocalizedString("You may need to reboot your device in order for the app icon to update.", comment: ""),
+                                                    preferredStyle: .alert)
+            alertController.addAction(.ok)
+            self.present(alertController, animated: true)
+            
+            return
+        }
         
         // Deselect previous icon + select new icon
         collectionView.reloadData()
