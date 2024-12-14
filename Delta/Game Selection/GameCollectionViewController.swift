@@ -231,10 +231,22 @@ extension GameCollectionViewController
 
         case "unwindFromGames":
             let destinationViewController = segue.destination as! GameViewController
-            let cell = sender as! UICollectionViewCell
             
-            let indexPath = self.collectionView!.indexPath(for: cell)!
-            let game = self.dataSource.item(at: indexPath)
+            let game: Game
+            if let cell = sender as? UICollectionViewCell, let indexPath = self.collectionView?.indexPath(for: cell)
+            {
+                game = self.dataSource.item(at: indexPath)
+            }
+            else if let tempGame = sender as? Game
+            {
+                game = tempGame
+            }
+            else
+            {
+                self.activeSaveState = nil
+                self.isResumingGame = false
+                return
+            }
             
             if let activeEmulatorCore, activeEmulatorCore.isWirelessMultiplayerActive, self.isResumingGame
             {
@@ -300,6 +312,71 @@ extension GameCollectionViewController
     
     @IBAction private func unwindToGameCollectionViewController(_ segue: UIStoryboardSegue)
     {
+    }
+}
+
+extension GameCollectionViewController
+{
+    func resume(_ game: Game)
+    {
+        // All copied from self.launchGame(). We should probably refactor into common method, but too risky given time constraints.
+        
+        self.isResumingGame = true
+        
+        if let activeEmulatorCore = self.activeEmulatorCore, !activeEmulatorCore.isWirelessMultiplayerActive
+        {
+            let fetchRequest = SaveState.rst_fetchRequest() as! NSFetchRequest<SaveState>
+            fetchRequest.predicate = NSPredicate(format: "%K == %@ AND %K == %d", #keyPath(SaveState.game), game, #keyPath(SaveState.type), SaveStateType.auto.rawValue)
+            fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(SaveState.creationDate), ascending: true)]
+            
+            do
+            {
+                let saveStates = try game.managedObjectContext?.fetch(fetchRequest)
+                self.activeSaveState = saveStates?.last
+            }
+            catch
+            {
+                print(error)
+            }
+        }
+        
+        // Disable videoManager to prevent flash of black
+        self.activeEmulatorCore?.videoManager.isEnabled = false
+        
+        do
+        {
+            try self.validateLaunchingGame(game, ignoringErrors: [LaunchError.alreadyRunning, LaunchError.multiplayerSessionActive(nil)])
+            
+            // Clear screen
+            self.activeEmulatorCore?.gameViews.forEach { $0.inputImage = nil }
+            
+            self.performSegue(withIdentifier: "unwindFromGames", sender: game)
+        }
+        catch
+        {
+            self.isResumingGame = false
+            
+            let alertController = UIAlertController(title: NSLocalizedString("Unable to Launch Game", comment: ""), message: error.localizedDescription, preferredStyle: .alert)
+            
+            if error.recoveryActions.isEmpty
+            {
+                alertController.addAction(.ok)
+            }
+            else
+            {
+                alertController.addAction(.cancel)
+                
+                for action in error.recoveryActions
+                {
+                    alertController.addAction(action)
+                }
+            }
+            
+            self.present(alertController, animated: true, completion: nil)
+        }
+        
+        // The game hasn't changed, so the activeEmulatorCore is the same as before, so we need to enable videoManager it again
+        self.activeEmulatorCore?.videoManager.isEnabled = true
     }
 }
 
@@ -436,7 +513,7 @@ private extension GameCollectionViewController
                 let cell = self.collectionView.cellForItem(at: indexPath)
                 self.performSegue(withIdentifier: "unwindFromGames", sender: cell)
             }
-            catch let error as LaunchError
+            catch
             {
                 self.isResumingGame = false
                 
@@ -446,6 +523,8 @@ private extension GameCollectionViewController
                     let alertController = UIAlertController(title: NSLocalizedString("Game Paused", comment: ""), message: NSLocalizedString("Would you like to resume where you left off, or restart the game?", comment: ""), preferredStyle: .alert)
                     alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
                     alertController.addAction(UIAlertAction(title: NSLocalizedString("Resume", comment: ""), style: .default, handler: { (action) in
+                        // This logic has been copied into self.resume()
+                        
                         self.isResumingGame = true
                         
                         if let activeEmulatorCore = self.activeEmulatorCore, !activeEmulatorCore.isWirelessMultiplayerActive
@@ -507,13 +586,6 @@ private extension GameCollectionViewController
                     self.present(alertController, animated: true, completion: nil)
                 }
             }
-            catch
-            {
-                self.isResumingGame = false
-                
-                let alertController = UIAlertController(title: NSLocalizedString("Unable to Launch Game", comment: ""), error: error)
-                self.present(alertController, animated: true, completion: nil)
-            }
         }
         
         if ignoreAlreadyRunningError
@@ -526,7 +598,7 @@ private extension GameCollectionViewController
         }
     }
     
-    func validateLaunchingGame(_ game: Game, ignoringErrors ignoredErrors: [Error]) throws
+    private func validateLaunchingGame(_ game: Game, ignoringErrors ignoredErrors: [Error]) throws(LaunchError)
     {
         let ignoredErrors = ignoredErrors.map { $0 as NSError }
         
