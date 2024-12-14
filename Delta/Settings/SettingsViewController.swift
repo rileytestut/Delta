@@ -23,6 +23,7 @@ private extension SettingsViewController
     {
         case controllers
         case controllerSkins
+        case patreon
         case controllerOpacity
         case display
         case gameAudio
@@ -34,7 +35,6 @@ private extension SettingsViewController
         case hapticTouch
         case cores
         case advanced
-        case patreon
         case credits
         case support
     }
