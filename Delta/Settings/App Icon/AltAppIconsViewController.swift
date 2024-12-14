@@ -83,7 +83,7 @@ class AltAppIconsViewController: UICollectionViewController
     private var footerRegistration: UICollectionView.SupplementaryRegistration<UICollectionViewListCell>!
     
     private var overrideStyle: UIUserInterfaceStyle?
-    private var iconStyleSegmentedControl: UISegmentedControl!
+    private var iconStyleSegmentedControl: UISegmentedControl?
     
     private let iconCache = NSCache<AltIcon, UIImage>()
         
@@ -98,13 +98,18 @@ class AltAppIconsViewController: UICollectionViewController
         
         self.collectionView.backgroundColor = .systemGroupedBackground
         
-        let segmentedControl = UISegmentedControl(items: [NSLocalizedString("Light", comment: ""), NSLocalizedString("Dark", comment: "")])
-        segmentedControl.selectedSegmentIndex = 0
-        segmentedControl.sizeToFit()
-        segmentedControl.frame.size.width += 88
-        segmentedControl.addTarget(self, action: #selector(AltAppIconsViewController.changeIconStyle(_:)), for: .valueChanged)
-        self.navigationItem.titleView = segmentedControl
-        self.iconStyleSegmentedControl = segmentedControl
+        if #available(iOS 18, *)
+        {
+            // Only show light/dark toggle on iOS 18+
+            
+            let segmentedControl = UISegmentedControl(items: [NSLocalizedString("Light", comment: ""), NSLocalizedString("Dark", comment: "")])
+            segmentedControl.selectedSegmentIndex = 0
+            segmentedControl.sizeToFit()
+            segmentedControl.frame.size.width += 80
+            segmentedControl.addTarget(self, action: #selector(AltAppIconsViewController.changeIconStyle(_:)), for: .valueChanged)
+            self.navigationItem.titleView = segmentedControl
+            self.iconStyleSegmentedControl = segmentedControl
+        }
         
         do
         {
@@ -241,9 +246,19 @@ private extension AltAppIconsViewController
             else
             {
                 var traitCollection = self.traitCollection
-                if let overrideStyle = self.overrideStyle
+                
+                if #available(iOS 18, *)
                 {
-                    let overrideTraits = UITraitCollection(userInterfaceStyle: overrideStyle)
+                    if let overrideStyle = self.overrideStyle
+                    {
+                        let overrideTraits = UITraitCollection(userInterfaceStyle: overrideStyle)
+                        traitCollection = UITraitCollection(traitsFrom: [traitCollection, overrideTraits])
+                    }
+                }
+                else
+                {
+                    // Always show light mode icons on pre-iOS 18.
+                    let overrideTraits = UITraitCollection(userInterfaceStyle: .light)
                     traitCollection = UITraitCollection(traitsFrom: [traitCollection, overrideTraits])
                 }
                 
@@ -330,9 +345,9 @@ private extension AltAppIconsViewController
         
         switch self.traitCollection.userInterfaceStyle
         {
-        case .dark: self.iconStyleSegmentedControl.selectedSegmentIndex = IconStyle.dark.rawValue
+        case .dark: self.iconStyleSegmentedControl?.selectedSegmentIndex = IconStyle.dark.rawValue
         case .light, .unspecified: fallthrough
-        @unknown default: self.iconStyleSegmentedControl.selectedSegmentIndex = IconStyle.light.rawValue
+        @unknown default: self.iconStyleSegmentedControl?.selectedSegmentIndex = IconStyle.light.rawValue
         }
         
         self.iconCache.removeAllObjects()
