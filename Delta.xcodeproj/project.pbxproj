@@ -186,6 +186,7 @@
 		D534515E2D0A31D200B800CE /* PatreonTiersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D534515C2D0A313E00B800CE /* PatreonTiersViewController.swift */; };
 		D539103229E88B6C0006B350 /* DeltaPreviews.h in Headers */ = {isa = PBXBuildFile; fileRef = D539103129E88B6C0006B350 /* DeltaPreviews.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D539104029E88BC40006B350 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D539103F29E88BC40006B350 /* ContentView.swift */; };
+		D54529CE2D0CF41B00E6EBDD /* OnlineMultiplayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54529CD2D0CF41100E6EBDD /* OnlineMultiplayer.swift */; };
 		D54A4BB329E4D27E004C7D57 /* FeatureDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54A4BB229E4D27E004C7D57 /* FeatureDetailView.swift */; };
 		D54E46D02BED714F00780713 /* NSUserActivity+Delta.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54E46CF2BED714F00780713 /* NSUserActivity+Delta.swift */; };
 		D54F710229E89DCB009C069A /* SettingsUserInfoKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54F710129E89DCB009C069A /* SettingsUserInfoKey.swift */; };
@@ -501,6 +502,7 @@
 		D539102F29E88B6B0006B350 /* DeltaPreviews.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DeltaPreviews.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D539103129E88B6C0006B350 /* DeltaPreviews.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DeltaPreviews.h; sourceTree = "<group>"; };
 		D539103F29E88BC40006B350 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		D54529CD2D0CF41100E6EBDD /* OnlineMultiplayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnlineMultiplayer.swift; sourceTree = "<group>"; };
 		D54A4BB229E4D27E004C7D57 /* FeatureDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureDetailView.swift; sourceTree = "<group>"; };
 		D54E46CF2BED714F00780713 /* NSUserActivity+Delta.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSUserActivity+Delta.swift"; sourceTree = "<group>"; };
 		D54F710129E89DCB009C069A /* SettingsUserInfoKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsUserInfoKey.swift; sourceTree = "<group>"; };
@@ -1250,6 +1252,7 @@
 				AC1C990F29F8B8C30020E6E4 /* ToastNotificationOptions.swift */,
 				D5147EC72A817B4A00D6CD64 /* ReviewSaveStatesOptions.swift */,
 				D5A287242C23A1AC009883C3 /* SkinDebugging.swift */,
+				D54529CD2D0CF41100E6EBDD /* OnlineMultiplayer.swift */,
 			);
 			path = Features;
 			sourceTree = "<group>";
@@ -1869,6 +1872,7 @@
 				D59B50B72C06666A00FDC53A /* Delta7ToDelta8.xcmappingmodel in Sources */,
 				BF7AE8081C2E858400B1B5BC /* GridMenuViewController.swift in Sources */,
 				BF6BF31A1EB82146008E83CD /* ClipboardImportOption.swift in Sources */,
+				D54529CE2D0CF41B00E6EBDD /* OnlineMultiplayer.swift in Sources */,
 				BF59427F1E09BC830051894B /* GameCollection.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
