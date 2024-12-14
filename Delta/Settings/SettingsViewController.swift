@@ -978,8 +978,14 @@ extension SettingsViewController
         case .patreon:
             guard #available(iOS 15, *), let footerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: AttributedHeaderFooterView.reuseIdentifier) as? AttributedHeaderFooterView else { break }
             
-            if #available(iOS 17.5, *), PurchaseManager.shared.supportsExternalPurchases
+            if let patreonAccount = DatabaseManager.shared.patreonAccount(), patreonAccount.hasBetaAccess
             {
+                footerView.attributedText = AttributedString(localized: "You can now access patron-exclusive app icons and Experimental Features.")
+            }
+            else if #available(iOS 17.5, *), PurchaseManager.shared.supportsExternalPurchases
+            {
+                // Supports external purchases, but not an active patron, so show external purchase link.
+                
                 var attributedText = AttributedString(localized: "Buy for $3 at altstore.io/patreon")
                 attributedText.font = UIFont.systemFont(ofSize: 17.0)
                 attributedText.link = URL(string: "https://altstore.io/patreon")
@@ -1000,7 +1006,9 @@ extension SettingsViewController
             }
             else
             {
+                #if !APP_STORE
                 footerView.attributedText = AttributedString(localized: "Support future development and receive early access to new features by becoming a patron.")
+                #endif
             }
             
             return footerView
