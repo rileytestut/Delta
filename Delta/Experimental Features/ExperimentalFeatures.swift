@@ -66,7 +66,8 @@ struct ExperimentalFeatures: FeatureContainer
     var metal
     
     @Feature(name: "Online Multiplayer (DS)",
-             description: "Play Nintendo WFC-compatible DS games online with friends.")
+             description: "Play Nintendo WFC-compatible DS games online with friends.",
+             options: OnlineMultiplayerOptions())
     var dsOnlineMultiplayer
     
     private init()
