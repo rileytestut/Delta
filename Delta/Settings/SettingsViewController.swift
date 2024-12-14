@@ -528,10 +528,20 @@ private extension SettingsViewController
             do
             {
                 let account = try result.get()
-                try account.managedObjectContext?.save()
+                let showThankYouAlert = account.hasBetaAccess
                 
+                try account.managedObjectContext?.save()
+                                
                 DispatchQueue.main.async {
                     self.update()
+                    
+                    if showThankYouAlert
+                    {
+                        let alertController = UIAlertController(title: NSLocalizedString("Thanks for Supporting Us!", comment: ""),
+                                                                message: NSLocalizedString("You can now access patron-exclusive features like alternate app icons and Experimental Features.", comment: ""), preferredStyle: .alert)
+                        alertController.addAction(.ok)
+                        self.present(alertController, animated: true)
+                    }
                 }
             }
             catch is CancellationError
