@@ -33,6 +33,11 @@ class GamesViewController: UIViewController
             {
                 NotificationCenter.default.addObserver(self, selector: #selector(GamesViewController.managedObjectContextDidChange(with:)), name: .NSManagedObjectContextObjectsDidChange, object: game.managedObjectContext)
             }
+            
+            if #available(iOS 16, *)
+            {
+                self.resumeButton?.isHidden = (self.activeEmulatorCore?.game == nil)
+            }
         }
     }
     
@@ -59,6 +64,7 @@ class GamesViewController: UIViewController
     }
     private var syncingProgressObservation: NSKeyValueObservation?
     
+    private var resumeButton: UIBarButtonItem?
     @IBOutlet private var importButton: UIBarButtonItem!
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
@@ -114,6 +120,15 @@ extension GamesViewController
         
         self.pageControl.centerXAnchor.constraint(equalTo: (self.navigationController?.toolbar.centerXAnchor)!, constant: 0).isActive = true
         self.pageControl.centerYAnchor.constraint(equalTo: (self.navigationController?.toolbar.centerYAnchor)!, constant: 0).isActive = true
+        
+        if #available(iOS 16, *)
+        {
+            let resumeButton = UIBarButtonItem(title: NSLocalizedString("Resume", comment: ""), style: .done, target: self, action: #selector(GamesViewController.resumeGame))
+            resumeButton.isHidden = true
+            self.resumeButton = resumeButton
+            
+            self.setToolbarItems([.flexibleSpace(), resumeButton], animated: false)
+        }
         
         if let navigationController = self.navigationController
         {
@@ -388,6 +403,17 @@ private extension GamesViewController
     {
         let faqURL = URL(string: "https://faq.deltaemulator.com/getting-started/importing-games")!
         UIApplication.shared.open(faqURL)
+    }
+    
+    @objc func resumeGame()
+    {
+        guard
+            let gameCollectionViewController = self.pageViewController.viewControllers?.first as? GameCollectionViewController,
+            let activeEmulatorCore = gameCollectionViewController.activeEmulatorCore,
+            let game = activeEmulatorCore.game as? Game
+        else { return }
+        
+        gameCollectionViewController.resume(game)
     }
 }
 
