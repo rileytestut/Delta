@@ -26,7 +26,7 @@ private extension RevenueCatManager.Subscription
         case .earlyAdopter:
             return [
                 String(localized: "Early access to new features"),
-                String(localized: "Exclusive icons designed by community members")
+                String(localized: "Exclusive icons from our favorite indie designers")
             ]
             
         case .communityMember:
