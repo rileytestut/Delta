@@ -270,7 +270,7 @@ private extension SettingsViewController
             // OSLogStore is not available on iOS 14, so section is only visible if experimental features is visible.
             return !PurchaseManager.shared.isExperimentalFeaturesAvailable
             
-        #if LEGACY
+        #if LEGACY || BETA
         case .patreon: return true
         #elseif APP_STORE
         case .patreon: return !PurchaseManager.shared.supportsExternalPurchases
