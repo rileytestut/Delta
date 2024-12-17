@@ -74,6 +74,7 @@ struct Settings
         #if BETA
         
         defaults[ExperimentalFeatures.shared.openGLES3.settingsKey.rawValue] = true
+        defaults[ExperimentalFeatures.shared.dsOnlineMultiplayer.settingsKey.rawValue] = true
         
         #else
         // Manually set MelonDS as preferred DS core in case DeSmuME is cached from a previous version.
