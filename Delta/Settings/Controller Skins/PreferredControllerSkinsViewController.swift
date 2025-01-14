@@ -22,11 +22,12 @@ extension PreferredControllerSkinsViewController
     private enum Variant
     {
         case standard
+        case controller
         case splitView
         case airPlay
         
         static var supportedVariants: [Variant] {
-            var supportedVariants: [Variant] = [.standard]
+            var supportedVariants: [Variant] = [.standard, .controller]
             
             if UIDevice.current.userInterfaceIdiom == .pad
             {
@@ -51,6 +52,8 @@ extension PreferredControllerSkinsViewController
                 case .pad: return NSLocalizedString("Full Screen", comment: "")
                 default: return NSLocalizedString("Standard", comment: "")
                 }
+                
+            case .controller: return NSLocalizedString("Controller", comment: "")
                 
             case .splitView:
                 if #available(iOS 16, *), scene.isStageManagerEnabled
@@ -147,6 +150,27 @@ extension PreferredControllerSkinsViewController
         if self.view.bounds.size != self._previousBoundsSize
         {
             self.update()
+        }
+    }
+    
+    override func didMove(toParent parent: UIViewController?)
+    {
+        super.didMove(toParent: parent)
+        
+        if let parent, !(parent is UINavigationController)
+        {
+            // When embedded in SwiftUI NavigationStack, we're nested inside extra parent view controller.
+            // So we update our parent's navigationItem which is then picked up by NavigationStack.
+            
+            if let titleView = self.navigationItem.titleView
+            {
+                parent.navigationItem.titleView = titleView
+            }
+            
+            if let items = self.navigationItem.rightBarButtonItems, !items.isEmpty
+            {
+                parent.navigationItem.rightBarButtonItems = items
+            }
         }
     }
     
@@ -247,20 +271,22 @@ private extension PreferredControllerSkinsViewController
         var portraitControllerSkin: ControllerSkin?
         var landscapeControllerSkin: ControllerSkin?
         
+        let isExternalControllerSkin = (self.variant == .controller)
+        
         if let game = self.game
         {
-            portraitControllerSkin = Settings.preferredControllerSkin(for: game, traits: portraitTraits)
-            landscapeControllerSkin = Settings.preferredControllerSkin(for: game, traits: landscapeTraits)
+            portraitControllerSkin = Settings.preferredControllerSkin(for: game, traits: portraitTraits, forExternalController: isExternalControllerSkin)
+            landscapeControllerSkin = Settings.preferredControllerSkin(for: game, traits: landscapeTraits, forExternalController: isExternalControllerSkin)
         }
         
         if portraitControllerSkin == nil
         {
-            portraitControllerSkin = Settings.preferredControllerSkin(for: self.system, traits: portraitTraits)
+            portraitControllerSkin = Settings.preferredControllerSkin(for: self.system, traits: portraitTraits, forExternalController: isExternalControllerSkin)
         }
         
         if landscapeControllerSkin == nil
         {
-            landscapeControllerSkin = Settings.preferredControllerSkin(for: self.system, traits: landscapeTraits)
+            landscapeControllerSkin = Settings.preferredControllerSkin(for: self.system, traits: landscapeTraits, forExternalController: isExternalControllerSkin)
         }
         
         if portraitControllerSkin != self.portraitControllerSkin || portraitTraits != self.portraitTraits
@@ -335,6 +361,18 @@ private extension PreferredControllerSkinsViewController
             // Use defaults for iPhone
             break
             
+        case .controller:
+            // Use defaults for `controller`
+            
+            if traits.displayType == .splitView
+            {
+                // ..unless displayType is splitView, because we don't currently
+                // support external controller skins when in split view.
+                traits.displayType = .edgeToEdge
+            }
+            
+            break
+            
         case .airPlay:
             traits.displayType = .standard
             traits.device = .tv
@@ -362,13 +400,15 @@ extension PreferredControllerSkinsViewController: ControllerSkinsViewControllerD
 {
     func controllerSkinsViewController(_ controllerSkinsViewController: ControllerSkinsViewController, didChooseControllerSkin controllerSkin: ControllerSkin)
     {
+        let isExternalControllerSkin = (self.variant == .controller)
+        
         if let game = self.game
         {
-            Settings.setPreferredControllerSkin(controllerSkin, for: game, traits: controllerSkinsViewController.traits)
+            Settings.setPreferredControllerSkin(controllerSkin, for: game, traits: controllerSkinsViewController.traits, forExternalController: isExternalControllerSkin)
         }
         else
         {
-            Settings.setPreferredControllerSkin(controllerSkin, for: self.system, traits: controllerSkinsViewController.traits)
+            Settings.setPreferredControllerSkin(controllerSkin, for: self.system, traits: controllerSkinsViewController.traits, forExternalController: isExternalControllerSkin)
         }
         
         _ = self.navigationController?.popViewController(animated: true)
@@ -376,13 +416,15 @@ extension PreferredControllerSkinsViewController: ControllerSkinsViewControllerD
     
     func controllerSkinsViewControllerDidResetControllerSkin(_ controllerSkinsViewController: ControllerSkinsViewController)
     {
+        let isExternalControllerSkin = (self.variant == .controller)
+        
         if let game = self.game
         {
-            Settings.setPreferredControllerSkin(nil, for: game, traits: controllerSkinsViewController.traits)
+            Settings.setPreferredControllerSkin(nil, for: game, traits: controllerSkinsViewController.traits, forExternalController: isExternalControllerSkin)
         }
         else
         {
-            Settings.setPreferredControllerSkin(nil, for: self.system, traits: controllerSkinsViewController.traits)
+            Settings.setPreferredControllerSkin(nil, for: self.system, traits: controllerSkinsViewController.traits, forExternalController: isExternalControllerSkin)
         }
         
         _ = self.navigationController?.popViewController(animated: true)

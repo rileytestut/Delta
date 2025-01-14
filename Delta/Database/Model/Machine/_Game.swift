@@ -34,9 +34,17 @@ public class _Game: NSManagedObject
 
     @NSManaged public var gameSave: GameSave?
 
+    @NSManaged public var preferredExternalControllerLandscapeSkin: ControllerSkin?
+
+    @NSManaged public var preferredExternalControllerPortraitSkin: ControllerSkin?
+
     @NSManaged public var preferredLandscapeSkin: ControllerSkin?
 
     @NSManaged public var preferredPortraitSkin: ControllerSkin?
+
+    @NSManaged public var preferredSplitViewLandscapeSkin: ControllerSkin?
+
+    @NSManaged public var preferredSplitViewPortraitSkin: ControllerSkin?
 
     @NSManaged public var previewSaveState: SaveState?
 

@@ -28,9 +28,17 @@ public class _ControllerSkin: NSManagedObject
 
     // MARK: - Relationships
 
+    @NSManaged public var preferredExternalControllerLandscapeSkinByGames: Set<Game>
+
+    @NSManaged public var preferredExternalControllerPortraitSkinByGames: Set<Game>
+
     @NSManaged public var preferredLandscapeSkinByGames: Set<Game>
 
     @NSManaged public var preferredPortraitSkinByGames: Set<Game>
+
+    @NSManaged public var preferredSplitViewLandscapeSkinByGames: Set<Game>
+
+    @NSManaged public var preferredSplitViewPortraitSkinByGames: Set<Game>
 
 }
 

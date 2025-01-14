@@ -294,7 +294,7 @@ extension Settings
         NotificationCenter.default.post(name: Settings.didChangeNotification, object: nil, userInfo: [NotificationUserInfoKey.name: key, NotificationUserInfoKey.core: core])
     }
     
-    static func preferredControllerSkin(for system: System, traits: DeltaCore.ControllerSkin.Traits) -> ControllerSkin?
+    static func preferredControllerSkin(for system: System, traits: DeltaCore.ControllerSkin.Traits, forExternalController isForExternalController: Bool) -> ControllerSkin?
     {
         if !ExperimentalFeatures.shared.airPlaySkins.isEnabled
         {
@@ -302,7 +302,7 @@ extension Settings
             guard traits.device != .tv else { return nil }
         }
         
-        guard let userDefaultsKey = self.preferredControllerSkinKey(for: system, traits: traits) else { return nil }
+        guard let userDefaultsKey = self.preferredControllerSkinKey(for: system, traits: traits, forExternalController: isForExternalController) else { return nil }
         
         let identifier = UserDefaults.standard.string(forKey: userDefaultsKey)
         
@@ -323,14 +323,24 @@ extension Settings
                 }
             }
             
-            // Controller skin doesn't exist (or doesn't support traits) so fall back to standard controller skin
-            
-            fetchRequest.predicate = NSPredicate(format: "%K == %@ AND %K == YES", #keyPath(ControllerSkin.gameType), system.gameType.rawValue, #keyPath(ControllerSkin.isStandard))
-            
-            if let controllerSkin = try DatabaseManager.shared.viewContext.fetch(fetchRequest).first
+            if isForExternalController
             {
-                Settings.setPreferredControllerSkin(controllerSkin, for: system, traits: traits)
-                return controllerSkin
+                // It's valid (and common) to return a nil skin when external controllers are connected.
+                // Reset default external controller skin back to nil.
+                Settings.setPreferredControllerSkin(nil, for: system, traits: traits, forExternalController: true)
+                return nil
+            }
+            else
+            {
+                // Controller skin doesn't exist (or doesn't support traits) so fall back to standard controller skin
+                
+                fetchRequest.predicate = NSPredicate(format: "%K == %@ AND %K == YES", #keyPath(ControllerSkin.gameType), system.gameType.rawValue, #keyPath(ControllerSkin.isStandard))
+                
+                if let controllerSkin = try DatabaseManager.shared.viewContext.fetch(fetchRequest).first
+                {
+                    Settings.setPreferredControllerSkin(controllerSkin, for: system, traits: traits, forExternalController: false)
+                    return controllerSkin
+                }
             }
         }
         catch
@@ -341,9 +351,9 @@ extension Settings
         return nil
     }
     
-    static func setPreferredControllerSkin(_ controllerSkin: ControllerSkin?, for system: System, traits: DeltaCore.ControllerSkin.Traits)
+    static func setPreferredControllerSkin(_ controllerSkin: ControllerSkin?, for system: System, traits: DeltaCore.ControllerSkin.Traits, forExternalController isForExternalController: Bool)
     {
-        guard let userDefaultKey = self.preferredControllerSkinKey(for: system, traits: traits) else { return }
+        guard let userDefaultKey = self.preferredControllerSkinKey(for: system, traits: traits, forExternalController: isForExternalController) else { return }
         
         guard UserDefaults.standard.string(forKey: userDefaultKey) != controllerSkin?.identifier else { return }
         
@@ -352,14 +362,29 @@ extension Settings
         NotificationCenter.default.post(name: Settings.didChangeNotification, object: controllerSkin, userInfo: [NotificationUserInfoKey.name: Name.preferredControllerSkin, NotificationUserInfoKey.system: system, NotificationUserInfoKey.traits: traits])
     }
     
-    static func preferredControllerSkin(for game: Game, traits: DeltaCore.ControllerSkin.Traits) -> ControllerSkin?
+    static func preferredControllerSkin(for game: Game, traits: DeltaCore.ControllerSkin.Traits, forExternalController isForExternalController: Bool) -> ControllerSkin?
     {
         let preferredControllerSkin: ControllerSkin?
         
-        switch traits.orientation
+        switch (traits.orientation, traits.displayType, isForExternalController)
         {
-        case .portrait: preferredControllerSkin = game.preferredPortraitSkin
-        case .landscape: preferredControllerSkin = game.preferredLandscapeSkin
+        // Split View (no external controller)
+        case (.portrait, .splitView, false): preferredControllerSkin = game.preferredSplitViewPortraitSkin
+        case (.landscape, .splitView, false): preferredControllerSkin = game.preferredSplitViewLandscapeSkin
+            
+        // Split View (external controller)
+        // We currently don't support using an external controller skin when in split view,
+        // so fall back to the system's preferred skin (in case we add support later).
+        case (.portrait, .splitView, true): preferredControllerSkin = nil
+        case (.landscape, .splitView, true): preferredControllerSkin = nil
+        
+        // Standard
+        case (.portrait, _, false): preferredControllerSkin = game.preferredPortraitSkin
+        case (.landscape, _, false): preferredControllerSkin = game.preferredLandscapeSkin
+            
+        // External Controller
+        case (.portrait, _, true): preferredControllerSkin = game.preferredExternalControllerPortraitSkin
+        case (.landscape, _, true): preferredControllerSkin = game.preferredExternalControllerLandscapeSkin
         }
         
         if let controllerSkin = preferredControllerSkin, let _ = controllerSkin.supportedTraits(for: traits)
@@ -371,14 +396,14 @@ extension Settings
         if let system = System(gameType: game.type)
         {
             // Fall back to using preferred controller skin for the system.
-            let controllerSkin = Settings.preferredControllerSkin(for: system, traits: traits)
+            let controllerSkin = Settings.preferredControllerSkin(for: system, traits: traits, forExternalController: isForExternalController)
             return controllerSkin
         }
                 
         return nil
     }
     
-    static func setPreferredControllerSkin(_ controllerSkin: ControllerSkin?, for game: Game, traits: DeltaCore.ControllerSkin.Traits)
+    static func setPreferredControllerSkin(_ controllerSkin: ControllerSkin?, for game: Game, traits: DeltaCore.ControllerSkin.Traits, forExternalController isForExternalController: Bool)
     {
         let context = DatabaseManager.shared.newBackgroundContext()
         context.performAndWait {
@@ -394,10 +419,24 @@ extension Settings
                 skin = nil
             }            
             
-            switch traits.orientation
+            switch (traits.orientation, traits.displayType, isForExternalController)
             {
-            case .portrait: game.preferredPortraitSkin = skin
-            case .landscape: game.preferredLandscapeSkin = skin
+            // Split View (no external controller)
+            case (.portrait, .splitView, false): game.preferredSplitViewPortraitSkin = skin
+            case (.landscape, .splitView, false): game.preferredSplitViewLandscapeSkin = skin
+                
+            // Split View (external controller)
+            // Currently, there is no way to assign a split view skin to use when an external controller is connected.
+            case (.portrait, .splitView, true): break
+            case (.landscape, .splitView, true): break
+                
+            // External Controller
+            case (.portrait, _, true): game.preferredExternalControllerPortraitSkin = skin
+            case (.landscape, _, true): game.preferredExternalControllerLandscapeSkin = skin
+            
+            // Standard
+            case (.portrait, _, false): game.preferredPortraitSkin = skin
+            case (.landscape, _, false): game.preferredLandscapeSkin = skin
             }
             
             context.saveWithErrorLogging()
@@ -423,7 +462,7 @@ extension Settings
 
 private extension Settings
 {
-    static func preferredControllerSkinKey(for system: System, traits: DeltaCore.ControllerSkin.Traits) -> String?
+    static func preferredControllerSkinKey(for system: System, traits: DeltaCore.ControllerSkin.Traits, forExternalController isForExternalController: Bool) -> String?
     {
         let systemName: String
         
@@ -468,6 +507,12 @@ private extension Settings
         {
             // For backwards compatibility, only append device type if it's not nil.
             key += "-" + deviceType
+        }
+        
+        if isForExternalController
+        {
+            // For backwards compatibility, only append `externalcontroller` if externalController is true.
+            key += "-externalcontroller"
         }
         
         key += "-controller"

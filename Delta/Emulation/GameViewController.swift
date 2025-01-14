@@ -747,8 +747,8 @@ private extension GameViewController
 {
     @objc func updateControllers()
     {
-        let isExternalGameControllerConnected = ExternalGameControllerManager.shared.connectedControllers.contains(where: { $0.playerIndex != nil })
-        if !isExternalGameControllerConnected && Settings.localControllerPlayerIndex == nil
+        let firstActiveController = ExternalGameControllerManager.shared.connectedControllers.first(where: { $0.playerIndex != nil })
+        if firstActiveController == nil && Settings.localControllerPlayerIndex == nil
         {
             Settings.localControllerPlayerIndex = 0
         }
@@ -761,10 +761,18 @@ private extension GameViewController
         }
         else
         {
-            if let game = self.game,
+            if let game = self.game as? Game,
                let traits = self.controllerView.controllerSkinTraits,
-               let controllerSkin = DeltaCore.ControllerSkin.standardControllerSkin(for: game.type),
-               controllerSkin.hasTouchScreen(for: traits)
+               let firstActiveController,
+               let _ = Settings.preferredControllerSkin(for: game, traits: traits, forExternalController: true)
+            {
+                self.controllerView.isHidden = false
+                self.controllerView.playerIndex = firstActiveController.playerIndex // Give Controller View same playerIndex as first active connected controller if using external controller skin
+            }
+            else if let game = self.game,
+                    let traits = self.controllerView.controllerSkinTraits,
+                    let controllerSkin = DeltaCore.ControllerSkin.standardControllerSkin(for: game.type),
+                    controllerSkin.hasTouchScreen(for: traits)
             {
                 self.controllerView.isHidden = false
                 self.controllerView.playerIndex = 0
@@ -838,11 +846,19 @@ private extension GameViewController
         guard let game = self.game as? Game, let window = self.view.window else { return }
         
         let traits = DeltaCore.ControllerSkin.Traits.defaults(for: window)
+        let isExternalControllerConnected = ExternalGameControllerManager.shared.connectedControllers.contains(where: { $0.playerIndex != nil })
         
         if Settings.localControllerPlayerIndex != nil
         {
-            let controllerSkin = Settings.preferredControllerSkin(for: game, traits: traits)
+            // If there is both a local player and a connected controller with a controller skin, we prioritize local player's skin.
+            // Even if the skin doesn't exist, we'll fall back to standard skin for local player.
+            let controllerSkin = Settings.preferredControllerSkin(for: game, traits: traits, forExternalController: false) // Explicitly load non-external controller skin.
             self.controllerView.controllerSkin = controllerSkin
+        }
+        else if isExternalControllerConnected, let externalControllerSkin = Settings.preferredControllerSkin(for: game, traits: traits, forExternalController: true)
+        {
+            // No local player, but user has selected an external controller skin, so show that instead.
+            self.controllerView.controllerSkin = externalControllerSkin
         }
         else if let controllerSkin = DeltaCore.ControllerSkin.standardControllerSkin(for: game.type), controllerSkin.hasTouchScreen(for: traits)
         {
@@ -853,7 +869,7 @@ private extension GameViewController
                 // Only show touch screen if external display is connected.
                 touchControllerSkin.screenPredicate = { $0.isTouchScreen }
             }
-                        
+            
             if self.view.bounds.width > self.view.bounds.height
             {
                 touchControllerSkin.screenLayoutAxis = .horizontal
@@ -864,6 +880,10 @@ private extension GameViewController
             }
             
             self.controllerView.controllerSkin = touchControllerSkin
+        }
+        else
+        {
+            self.controllerView.controllerSkin = nil
         }
         
         self.updateExternalDisplay()
@@ -1497,7 +1517,7 @@ private extension GameViewController
         if let game = self.game, let system = System(gameType: game.type), let traits = scene.gameViewController.controllerView.controllerSkinTraits
         {
             //TODO: Support per-game AirPlay skins
-            if let preferredControllerSkin = Settings.preferredControllerSkin(for: system, traits: traits), preferredControllerSkin.supports(traits)
+            if let preferredControllerSkin = Settings.preferredControllerSkin(for: system, traits: traits, forExternalController: false), preferredControllerSkin.supports(traits)
             {
                 // Use preferredControllerSkin directly.
                 controllerSkin = preferredControllerSkin

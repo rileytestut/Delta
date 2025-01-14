@@ -34,8 +34,12 @@
                 <entry key="attributeValueScalarType" value="ControllerSkinConfigurations"/>
             </userInfo>
         </attribute>
+        <relationship name="preferredExternalControllerLandscapeSkinByGames" toMany="YES" deletionRule="Nullify" destinationEntity="Game" inverseName="preferredExternalControllerLandscapeSkin" inverseEntity="Game" syncable="YES"/>
+        <relationship name="preferredExternalControllerPortraitSkinByGames" toMany="YES" deletionRule="Nullify" destinationEntity="Game" inverseName="preferredExternalControllerPortraitSkin" inverseEntity="Game" syncable="YES"/>
         <relationship name="preferredLandscapeSkinByGames" toMany="YES" deletionRule="Nullify" destinationEntity="Game" inverseName="preferredLandscapeSkin" inverseEntity="Game" syncable="YES"/>
         <relationship name="preferredPortraitSkinByGames" toMany="YES" deletionRule="Nullify" destinationEntity="Game" inverseName="preferredPortraitSkin" inverseEntity="Game" syncable="YES"/>
+        <relationship name="preferredSplitViewLandscapeSkinByGames" toMany="YES" deletionRule="Nullify" destinationEntity="Game" inverseName="preferredSplitViewLandscapeSkin" inverseEntity="Game" syncable="YES"/>
+        <relationship name="preferredSplitViewPortraitSkinByGames" toMany="YES" deletionRule="Nullify" destinationEntity="Game" inverseName="preferredSplitViewPortraitSkin" inverseEntity="Game" syncable="YES"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="identifier"/>
@@ -65,8 +69,12 @@
         <relationship name="cheats" toMany="YES" deletionRule="Cascade" destinationEntity="Cheat" inverseName="game" inverseEntity="Cheat" syncable="YES"/>
         <relationship name="gameCollection" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="GameCollection" inverseName="games" inverseEntity="GameCollection" syncable="YES"/>
         <relationship name="gameSave" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="GameSave" inverseName="game" inverseEntity="GameSave" syncable="YES"/>
+        <relationship name="preferredExternalControllerLandscapeSkin" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControllerSkin" inverseName="preferredExternalControllerLandscapeSkinByGames" inverseEntity="ControllerSkin" syncable="YES"/>
+        <relationship name="preferredExternalControllerPortraitSkin" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControllerSkin" inverseName="preferredExternalControllerPortraitSkinByGames" inverseEntity="ControllerSkin" syncable="YES"/>
         <relationship name="preferredLandscapeSkin" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControllerSkin" inverseName="preferredLandscapeSkinByGames" inverseEntity="ControllerSkin" syncable="YES"/>
         <relationship name="preferredPortraitSkin" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControllerSkin" inverseName="preferredPortraitSkinByGames" inverseEntity="ControllerSkin" syncable="YES"/>
+        <relationship name="preferredSplitViewLandscapeSkin" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControllerSkin" inverseName="preferredSplitViewLandscapeSkinByGames" inverseEntity="ControllerSkin" syncable="YES"/>
+        <relationship name="preferredSplitViewPortraitSkin" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControllerSkin" inverseName="preferredSplitViewPortraitSkinByGames" inverseEntity="ControllerSkin" syncable="YES"/>
         <relationship name="previewSaveState" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SaveState" inverseName="previewGame" inverseEntity="SaveState" syncable="YES"/>
         <relationship name="primaryGames" toMany="YES" deletionRule="Nullify" destinationEntity="Game" inverseName="secondaryGame" inverseEntity="Game" syncable="YES"/>
         <relationship name="saveStates" toMany="YES" deletionRule="Cascade" destinationEntity="SaveState" inverseName="game" inverseEntity="SaveState" syncable="YES"/>
