@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>SUPPORT_TIMEOUT</key>
+	<integer>10</integer>
+	<key>ASK_TIMEOUT</key>
+	<integer>30</integer>
+	<key>FEEDBACK_TIMEOUT</key>
+	<integer>10</integer>
+	<key>LU_BASE_URL</key>
+	<string>https://api.lulabs.ai</string>
+	<key>LU_API_KEY</key>
+	<string>jf1WowS9D73ExyfJupFca8xaWmXGM7S05wb9O69J</string>
+</dict>
+</plist>

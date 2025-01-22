@@ -70,6 +70,16 @@ struct ExperimentalFeatures: FeatureContainer
              options: OnlineMultiplayerOptions())
     var dsOnlineMultiplayer
     
+    @Feature(name: "Play With Lu",
+                 description: """
+                 Ask Lu questions about your games to receive helpful tips, strategies, and interesting facts tailored to the games you're playing. Lu learns from your questions and preferences to provide personalized advice. We do not collect personal information, but we do collect data to maintain and improve our experience. See our Privacy Statement and Terms of Service below for more information.
+                 
+                 https://lulabs.ai/privacy
+                 https://lulabs.ai/terms
+                 """,
+                 options: PlayWithLuOptions())
+        var playWithLu
+    
     private init()
     {
         self.prepareFeatures()
