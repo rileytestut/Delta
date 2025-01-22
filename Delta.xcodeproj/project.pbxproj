@@ -498,6 +498,7 @@
 		D51CB7A529EDC15900B59678 /* ExperimentalFeatures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExperimentalFeatures.swift; sourceTree = "<group>"; };
 		D524F4A2273DE9C000D500B2 /* ProcessInfo+JIT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProcessInfo+JIT.swift"; sourceTree = "<group>"; };
 		D524F4A4273DEBB400D500B2 /* ServerManager+Delta.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ServerManager+Delta.swift"; sourceTree = "<group>"; };
+		D52CB8C72CE2B7C800B04458 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		D52CB8C92CE2B85800B04458 /* RevenueCatManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevenueCatManager.swift; sourceTree = "<group>"; };
 		D532B8BC29E5EDAD009EE27C /* OptionalProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalProtocol.swift; sourceTree = "<group>"; };
 		D53415A4298C782A00FD67B1 /* ContributorsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContributorsView.swift; sourceTree = "<group>"; };
@@ -597,6 +598,7 @@
 				D5FB042C2C5AF40A008329DD /* libresolv.tbd in Frameworks */,
 				BF69FBA823E396860051BEEA /* libz.tbd in Frameworks */,
 				D52CB8C62CE2B7B600B04458 /* RevenueCat in Frameworks */,
+				D52CB8C82CE2B7C800B04458 /* StoreKit.framework in Frameworks */,
 				BF69FBAA23E399AA0051BEEA /* CoreMotion.framework in Frameworks */,
 				BF69FBA223E375A20051BEEA /* libVBA-M.a in Frameworks */,
 				BFFDF04623E3D3A600931B96 /* libMupen64Plus.a in Frameworks */,
@@ -942,6 +944,7 @@
 		BF9F4FCD1AAD7B25004C9500 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D52CB8C72CE2B7C800B04458 /* StoreKit.framework */,
 				D5FB042B2C5AF40A008329DD /* libresolv.tbd */,
 				BF6E70C225D22F7600E41CD1 /* Systems.framework */,
 				BFDCA1E5244EBAA900B8FBDB /* liblibDeSmuME.a */,
@@ -1482,6 +1485,7 @@
 					BFFA71D61AAC406100EE9DD1 = {
 						CreatedOnToolsVersion = 6.3;
 						LastSwiftMigration = 1020;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.iCloud = {
 								enabled = 0;
@@ -2135,10 +2139,10 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_MODULES_AUTOLINK = NO;
 				CODE_SIGN_ENTITLEMENTS = Delta/Delta.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 128;
-				DEVELOPMENT_TEAM = 2YUST4JW5T;
+				DEVELOPMENT_TEAM = 6XVY5G3U44;
 				INFOPLIST_FILE = "Delta/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2193,7 +2197,7 @@
 					"\"AuthenticationServices\"",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" -DDEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = com.rileytestut.Delta.fikri;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rileytestut.Delta;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				STRIP_INSTALLED_PRODUCT = YES;
