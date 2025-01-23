@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftUI
 import SafariServices
 import MobileCoreServices
 import CryptoKit
@@ -22,6 +23,7 @@ private extension MelonDSCoreSettingsViewController
     {
         case general
         case performance
+        case online
         case dsBIOS
         case dsiBIOS
     }
@@ -162,12 +164,20 @@ private extension MelonDSCoreSettingsViewController
             // AltJIT not currently supported with melonDS 0.9.5.
             return true
             
+        case .online:
+            if #unavailable(iOS 15)
+            {
+                return true
+            }
+            
         case .dsiBIOS where !isBeta:
             // Using public Delta version, which doesn't support DSi (yet).
             return true
             
-        default: return false
+        default: break
         }
+        
+        return false
     }
 }
 
@@ -288,6 +298,32 @@ extension MelonDSCoreSettingsViewController
             let cell = cell as! SwitchTableViewCell
             cell.switchView.isOn = Settings.isAltJITEnabled
             
+        case .online:
+            guard #available(iOS 15, *) else { break }
+            
+            if let preferredServer = Settings.preferredWFCServer
+            {
+                if let knownServer = WFCServer.knownServers.first(where: { $0.dns == preferredServer })
+                {
+                    // Server matches known server, so display its name instead.
+                    cell.detailTextLabel?.text = knownServer.name
+                }
+                else
+                {
+                    cell.detailTextLabel?.text = preferredServer
+                }
+                
+                cell.detailTextLabel?.textColor = .gray
+            }
+            else
+            {
+                cell.accessoryType = .disclosureIndicator
+                cell.detailTextLabel?.text = NSLocalizedString("Choose", comment: "")
+                cell.detailTextLabel?.textColor = .deltaPurple
+            }
+            
+            cell.selectionStyle = .default
+            
         case .dsBIOS:
             let bios = DSBIOS.allCases[indexPath.row]
             
@@ -338,6 +374,11 @@ extension MelonDSCoreSettingsViewController
             
             let key = filteredKeys[indexPath.row]
             self.openMetadataURL(for: key)
+            
+        case .online:
+            guard #available(iOS 15, *) else { break }
+            let hostingController = WFCServersView.makeViewController()
+            self.navigationController?.pushViewController(hostingController, animated: true)
             
         case .dsBIOS:
             let bios = DSBIOS.allCases[indexPath.row]

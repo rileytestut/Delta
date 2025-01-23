@@ -2249,7 +2249,7 @@ Delta uses OpenVGDB to provide automatic artwork for imported games.</string>
             <objects>
                 <tableViewController storyboardIdentifier="dsSettingsViewController" title="DS Settings" id="OwL-4c-EEA" customClass="MelonDSCoreSettingsViewController" customModule="Delta" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="insetGrouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="ops-m1-tlV">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="989"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="1098"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <sections>
                             <tableViewSection headerTitle="Core Info" footerTitle="" id="ozc-x3-LhT">
@@ -2408,10 +2408,37 @@ Delta uses OpenVGDB to provide automatic artwork for imported games.</string>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
+                            <tableViewSection headerTitle="Online Multiplayer" footerTitle="Choose the 3rd-party Nintendo WFC server Delta should use for online features." id="Ome-Q4-QC6">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="gray" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell" textLabel="IUQ-wd-dcu" detailTextLabel="PAs-H9-nzq" style="IBUITableViewCellStyleValue1" id="LkH-Gy-4le">
+                                        <rect key="frame" x="16" y="478.5" width="343" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="LkH-Gy-4le" id="Yg0-oq-rku">
+                                            <rect key="frame" x="0.0" y="0.0" width="316.5" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="WFC Server" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="IUQ-wd-dcu">
+                                                    <rect key="frame" x="16" y="12" width="91" height="20.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Wiimmfi" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="PAs-H9-nzq">
+                                                    <rect key="frame" x="246.5" y="12" width="62" height="20.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" systemColor="secondaryLabelColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
                             <tableViewSection headerTitle="DS BIOS Files" footerTitle="" id="ObZ-cl-5sV">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="gray" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell" textLabel="Bfp-iA-wWE" detailTextLabel="Xpe-sd-GRy" style="IBUITableViewCellStyleValue1" id="ian-1X-SOi">
-                                        <rect key="frame" x="16" y="478.5" width="343" height="44"/>
+                                        <rect key="frame" x="16" y="614" width="343" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ian-1X-SOi" id="nE9-5Y-G2k">
                                             <rect key="frame" x="0.0" y="0.0" width="316.5" height="44"/>
@@ -2434,7 +2461,7 @@ Delta uses OpenVGDB to provide automatic artwork for imported games.</string>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="gray" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell" textLabel="fgD-y0-55T" detailTextLabel="b8s-cx-IgW" style="IBUITableViewCellStyleValue1" id="dwT-0T-gFD">
-                                        <rect key="frame" x="16" y="522.5" width="343" height="44"/>
+                                        <rect key="frame" x="16" y="658" width="343" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dwT-0T-gFD" id="KEg-18-WYZ">
                                             <rect key="frame" x="0.0" y="0.0" width="316.5" height="44"/>
@@ -2457,7 +2484,7 @@ Delta uses OpenVGDB to provide automatic artwork for imported games.</string>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="gray" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell" textLabel="SIu-zD-qfE" detailTextLabel="CW8-h0-YST" style="IBUITableViewCellStyleValue1" id="Tll-tX-97T">
-                                        <rect key="frame" x="16" y="566.5" width="343" height="44"/>
+                                        <rect key="frame" x="16" y="702" width="343" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Tll-tX-97T" id="4ca-AM-jBE">
                                             <rect key="frame" x="0.0" y="0.0" width="316.5" height="44"/>
@@ -2484,7 +2511,7 @@ Delta uses OpenVGDB to provide automatic artwork for imported games.</string>
                             <tableViewSection headerTitle="DSi BIOS Files" footerTitle="" id="SAz-hG-O4G">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="gray" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell" textLabel="QKd-rm-101" detailTextLabel="pJb-OR-TGs" style="IBUITableViewCellStyleValue1" id="jwN-8n-xgM">
-                                        <rect key="frame" x="16" y="678" width="343" height="44"/>
+                                        <rect key="frame" x="16" y="813.5" width="343" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jwN-8n-xgM" id="b29-V1-qt3">
                                             <rect key="frame" x="0.0" y="0.0" width="316.5" height="44"/>
@@ -2507,7 +2534,7 @@ Delta uses OpenVGDB to provide automatic artwork for imported games.</string>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="gray" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell" textLabel="6OX-32-izR" detailTextLabel="2bc-8r-epB" style="IBUITableViewCellStyleValue1" id="3ka-mn-QqR">
-                                        <rect key="frame" x="16" y="722" width="343" height="44"/>
+                                        <rect key="frame" x="16" y="857.5" width="343" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3ka-mn-QqR" id="4ya-QS-s5w">
                                             <rect key="frame" x="0.0" y="0.0" width="316.5" height="44"/>
@@ -2530,7 +2557,7 @@ Delta uses OpenVGDB to provide automatic artwork for imported games.</string>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="gray" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell" textLabel="Czu-qN-Luq" detailTextLabel="eVw-7r-BEf" style="IBUITableViewCellStyleValue1" id="4FF-9a-jq2">
-                                        <rect key="frame" x="16" y="766" width="343" height="44"/>
+                                        <rect key="frame" x="16" y="901.5" width="343" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="4FF-9a-jq2" id="emb-d3-TgY">
                                             <rect key="frame" x="0.0" y="0.0" width="316.5" height="44"/>
@@ -2553,7 +2580,7 @@ Delta uses OpenVGDB to provide automatic artwork for imported games.</string>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="gray" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell" textLabel="VWi-nu-uMv" detailTextLabel="8JD-uT-eoA" style="IBUITableViewCellStyleValue1" id="we3-0h-uKq">
-                                        <rect key="frame" x="16" y="810" width="343" height="44"/>
+                                        <rect key="frame" x="16" y="945.5" width="343" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="we3-0h-uKq" id="cG1-a2-Nez">
                                             <rect key="frame" x="0.0" y="0.0" width="316.5" height="44"/>
@@ -2590,12 +2617,12 @@ Delta uses OpenVGDB to provide automatic artwork for imported games.</string>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
-                    <size key="freeformSize" width="375" height="989"/>
+                    <size key="freeformSize" width="375" height="1098"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Sor-YZ-h3B" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="fCP-Vh-l72" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="2513" y="2733"/>
+            <point key="canvasLocation" x="2513" y="2762"/>
         </scene>
         <!--Friend Zone Patrons-->
         <scene sceneID="vxf-6s-Sqp">
@@ -2665,7 +2692,7 @@ Delta uses OpenVGDB to provide automatic artwork for imported games.</string>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QGe-T0-3mp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2513" y="3567"/>
+            <point key="canvasLocation" x="2513" y="3663"/>
         </scene>
     </scenes>
     <resources>

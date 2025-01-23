@@ -34,6 +34,8 @@ extension Settings.Name
     static let pauseWhileInactive: Settings.Name = "pauseWhileInactive"
     static let supportsExternalDisplays: Settings.Name = "supportsExternalDisplays"
     static let isQuickGesturesEnabled: Settings.Name = "isQuickGesturesEnabled"
+    static let preferredWFCServer: Settings.Name = "preferredWFCServer"
+    static let customWFCServer: Settings.Name = "customWFCServer"
 }
 
 extension Settings
@@ -271,6 +273,22 @@ extension Settings
         set {
             UserDefaults.standard.isQuickGesturesEnabled = newValue
             NotificationCenter.default.post(name: Settings.didChangeNotification, object: nil, userInfo: [NotificationUserInfoKey.name: Name.isQuickGesturesEnabled])
+        }
+    }
+    
+    static var preferredWFCServer: String? {
+        get { UserDefaults.standard.preferredWFCServer }
+        set {
+            UserDefaults.standard.preferredWFCServer = newValue
+            NotificationCenter.default.post(name: Settings.didChangeNotification, object: nil, userInfo: [NotificationUserInfoKey.name: Name.preferredWFCServer])
+        }
+    }
+    
+    static var customWFCServer: String? {
+        get { UserDefaults.standard.customWFCServer }
+        set {
+            UserDefaults.standard.customWFCServer = newValue
+            NotificationCenter.default.post(name: Settings.didChangeNotification, object: nil, userInfo: [NotificationUserInfoKey.name: Name.customWFCServer])
         }
     }
     
@@ -545,4 +563,7 @@ private extension UserDefaults
     @NSManaged var supportsExternalDisplays: Bool
     
     @NSManaged var isQuickGesturesEnabled: Bool
+    
+    @NSManaged var preferredWFCServer: String?
+    @NSManaged var customWFCServer: String?
 }

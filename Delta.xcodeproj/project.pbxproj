@@ -191,6 +191,8 @@
 		D54E46D02BED714F00780713 /* NSUserActivity+Delta.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54E46CF2BED714F00780713 /* NSUserActivity+Delta.swift */; };
 		D54F710229E89DCB009C069A /* SettingsUserInfoKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54F710129E89DCB009C069A /* SettingsUserInfoKey.swift */; };
 		D54F710429E89DFC009C069A /* NotificationName+Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54F710329E89DFC009C069A /* NotificationName+Settings.swift */; };
+		D552DE3A2D39C5A500E737BE /* WFCServersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D552DE392D39C5A500E737BE /* WFCServersView.swift */; };
+		D552DE3D2D39DB2A00E737BE /* WFCServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D552DE3C2D39DB2700E737BE /* WFCServer.swift */; };
 		D55917DA2B51D097007B7DC0 /* LocalDeviceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55917D92B51D097007B7DC0 /* LocalDeviceController.swift */; };
 		D55C468F29E761C000EA6DE9 /* AnyFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55C468E29E761C000EA6DE9 /* AnyFeature.swift */; };
 		D55C469129E7631000EA6DE9 /* AnyOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55C469029E7631000EA6DE9 /* AnyOption.swift */; };
@@ -507,6 +509,8 @@
 		D54E46CF2BED714F00780713 /* NSUserActivity+Delta.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSUserActivity+Delta.swift"; sourceTree = "<group>"; };
 		D54F710129E89DCB009C069A /* SettingsUserInfoKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsUserInfoKey.swift; sourceTree = "<group>"; };
 		D54F710329E89DFC009C069A /* NotificationName+Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationName+Settings.swift"; sourceTree = "<group>"; };
+		D552DE392D39C5A500E737BE /* WFCServersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WFCServersView.swift; sourceTree = "<group>"; };
+		D552DE3C2D39DB2700E737BE /* WFCServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WFCServer.swift; sourceTree = "<group>"; };
 		D554C3822A58D89700E93359 /* Delta 7.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Delta 7.xcdatamodel"; sourceTree = "<group>"; };
 		D55917D92B51D097007B7DC0 /* LocalDeviceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDeviceController.swift; sourceTree = "<group>"; };
 		D55C468E29E761C000EA6DE9 /* AnyFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyFeature.swift; sourceTree = "<group>"; };
@@ -1035,6 +1039,8 @@
 			children = (
 				BFE9907F24451E15006409A7 /* MelonDSCoreSettingsViewController.swift */,
 				BF00BEA525B758AA00C8607D /* SystemBIOS.swift */,
+				D552DE392D39C5A500E737BE /* WFCServersView.swift */,
+				D552DE3C2D39DB2700E737BE /* WFCServer.swift */,
 			);
 			path = Cores;
 			sourceTree = "<group>";
@@ -1731,6 +1737,7 @@
 				BF59428E1E09BCFB0051894B /* ImportController.swift in Sources */,
 				BF13A7581D5D2FD9000BB055 /* EmulatorCore+Delta.swift in Sources */,
 				BF48F74E219A16DA00BC2FC1 /* SyncingServicesViewController.swift in Sources */,
+				D552DE3A2D39C5A500E737BE /* WFCServersView.swift in Sources */,
 				D5A9C01D29DE058C00A8D610 /* VariableFastForward.swift in Sources */,
 				BFE593CA21F3F8B7003412A6 /* GameSave.swift in Sources */,
 				BF63A1B521A4B76E00EE8F61 /* RecordVersionsViewController.swift in Sources */,
@@ -1746,6 +1753,7 @@
 				D52CB8CA2CE2B85E00B04458 /* RevenueCatManager.swift in Sources */,
 				D5CDCCF02A859E5500E22131 /* UserDefaults+Delta.swift in Sources */,
 				BF15AF841F54B43B009B6AAB /* ActionInput.swift in Sources */,
+				D552DE3D2D39DB2A00E737BE /* WFCServer.swift in Sources */,
 				D5D78AE529F9BC3700E064F0 /* DSAirPlay.swift in Sources */,
 				BF4828841F9027B600028B97 /* Delta.xcdatamodeld in Sources */,
 				D5F702FD2C24CE5300DCD271 /* UISceneSession+Delta.swift in Sources */,
