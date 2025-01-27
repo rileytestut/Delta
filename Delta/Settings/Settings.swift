@@ -71,6 +71,7 @@ struct Settings
                         #keyPath(UserDefaults.pauseWhileInactive): true,
                         #keyPath(UserDefaults.supportsExternalDisplays): true,
                         #keyPath(UserDefaults.isQuickGesturesEnabled): true,
+                        #keyPath(UserDefaults.preferredWFCServer): "167.235.229.36", // Default to Wiimmfi
                         Settings.preferredCoreSettingsKey(for: .ds): MelonDS.core.identifier] as [String : Any]
         
         #if BETA
