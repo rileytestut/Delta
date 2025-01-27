@@ -274,6 +274,7 @@ extension GameCollectionViewController
                 emulatorBridge.isJITEnabled = ProcessInfo.processInfo.isJITAvailable
                 emulatorBridge.isWFCEnabled = ExperimentalFeatures.shared.dsOnlineMultiplayer.isEnabled
                 emulatorBridge.gbaGameURL = game.secondaryGame?.fileURL
+                emulatorBridge.wfcDNS = Settings.preferredWFCServer
             }
             
             if let saveState = self.activeSaveState /* && self.isResumingGame */ // activeSaveState can be non-nil even when not resuming game.
