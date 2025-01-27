@@ -15,6 +15,8 @@ import Harmony
 
 public extension Game
 {
+    typealias Setting = __GameSetting
+    
     static let melonDSBIOSIdentifier = "com.rileytestut.MelonDSDeltaCore.BIOS"
     static let melonDSDSiBIOSIdentifier = "com.rileytestut.MelonDSDeltaCore.DSiBIOS"
 }
@@ -78,6 +80,25 @@ public class Game: _Game, GameProtocol
             self.setPrimitiveValue(artworkURL, forKey: #keyPath(Game.artworkURL))
             
             self.didChangeValue(forKey: #keyPath(Game.artworkURL))
+        }
+    }
+    
+    var settings: [Setting: Any] {
+        get {
+            guard let gameSettings = self.gameSettings as? [String: Any] else { return [:] }
+            
+            let settings = gameSettings.map { (Setting(rawValue: $0), $1) }.reduce(into: [:]) { $0[$1.0] = $1.1 }
+            return settings
+        }
+        set {
+            if newValue.isEmpty
+            {
+                self.gameSettings = nil
+            }
+            else
+            {
+                self.gameSettings = newValue as NSDictionary
+            }
         }
     }
 }

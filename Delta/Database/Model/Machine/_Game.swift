@@ -18,6 +18,8 @@ public class _Game: NSManagedObject
 
     @NSManaged public var filename: String
 
+    @NSManaged public var gameSettings: NSDictionary?
+
     @NSManaged public var identifier: String
 
     @NSManaged public var name: String
