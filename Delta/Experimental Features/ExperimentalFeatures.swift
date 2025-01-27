@@ -76,6 +76,10 @@ struct ExperimentalFeatures: FeatureContainer
                  
                  https://lulabs.ai/privacy
                  https://lulabs.ai/terms
+                 
+                 If you have any questions about Lu, feel free to ask us in our Discord Server!
+                 
+                 https://discord.gg/XvSysJpQrn
                  """,
                  options: PlayWithLuOptions())
         var playWithLu
