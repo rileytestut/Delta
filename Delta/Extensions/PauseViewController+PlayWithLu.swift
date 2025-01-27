@@ -212,7 +212,7 @@ extension PauseViewController {
     private func showLuWelcomeMessage(for game: Game) {
         let welcomeAlert = UIAlertController(
             title: NSLocalizedString("Welcome to playing with Lu!", comment: ""),
-            message: NSLocalizedString("Lu is your gaming companion. Ask anything about your games!", comment: ""),
+            message: NSLocalizedString("Lu is your gaming companion. Ask anything about your games! \n\n We and our service providers may record your chat with us. By using this chat, you agree to our Terms of Service and Privacy Policy. \n \n https://lulabs.ai/terms \n https://lulabs.ai/privacy", comment: ""),
             preferredStyle: .alert
         )
         
