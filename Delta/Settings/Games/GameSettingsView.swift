@@ -55,6 +55,7 @@ struct GameSettingsView: View
                     }
 
                     Toggle("OpenGL ES 3.0", isOn: binding)
+                        .toggleStyle(SwitchToggleStyle(tint: Color("Purple")))
                 } header: {
                     Text("Graphics")
                 } footer: {
