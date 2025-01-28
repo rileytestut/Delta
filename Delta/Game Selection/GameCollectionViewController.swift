@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftUI
 import MobileCoreServices
 import AVFoundation
 import RegexBuilder
@@ -731,6 +732,10 @@ private extension GameCollectionViewController
             self.share(game)
         }
         
+        let settingsAction = UIAction(title: NSLocalizedString("Game Settings", comment: ""), image: UIImage(symbolNameIfAvailable: "gear")) { [unowned self] _ in
+            self.showSettings(for: game)
+        }
+        
         let saveStatesAction = UIAction(title: NSLocalizedString("View Save States", comment: ""), image: UIImage(symbolNameIfAvailable: "doc.on.doc")) { [unowned self] action in
             self.viewSaveStates(for: game)
         }
@@ -753,21 +758,23 @@ private extension GameCollectionViewController
         let saveFileMenu = UIMenu(title: NSLocalizedString("Manage Save File", comment: ""), image: UIImage(symbolNameIfAvailable: "doc"), children: [importSaveFile, exportSaveFile])
         let savesMenu = UIMenu(title: "", options: .displayInline, children: [saveStatesAction, saveFileMenu])
         
+        let settingsMenu = UIMenu(title: "", options: .displayInline, children: [settingsAction])
+        
         switch game.type
         {
         case GameType.unknown:
-            return [renameAction, changeArtworkAction, shareAction, deleteAction]
+            return [renameAction, shareAction, settingsMenu, deleteAction]
             
         case .ds where game.identifier == Game.melonDSBIOSIdentifier || game.identifier == Game.melonDSDSiBIOSIdentifier:
-            return openActions + [renameAction, changeArtworkAction, changeControllerSkinAction, saveStatesAction]
+            return openActions + [renameAction, changeArtworkAction, settingsMenu, saveStatesAction]
             
         case .ds:
             let insertGBAGameMenu = self.insertGBAGameMenu(for: game)
             let insertGBAGameSection = UIMenu(title: "", image: nil, options: .displayInline, children: [insertGBAGameMenu])
-            return openActions + [renameAction, changeArtworkAction, changeControllerSkinAction, shareAction, savesMenu, insertGBAGameSection, deleteAction]
+            return openActions + [renameAction, changeArtworkAction, shareAction, settingsMenu, savesMenu, insertGBAGameSection, deleteAction]
             
         default:
-            return openActions + [renameAction, changeArtworkAction, changeControllerSkinAction, shareAction, savesMenu, deleteAction]
+            return openActions + [renameAction, changeArtworkAction, shareAction, settingsMenu, savesMenu, deleteAction]
         }
     }
     
@@ -1149,6 +1156,16 @@ private extension GameCollectionViewController
     func changePreferredControllerSkin(for game: Game)
     {
         self.performSegue(withIdentifier: "preferredControllerSkins", sender: game)
+    }
+    
+    func showSettings(for game: Game)
+    {
+        let gameSettingsView = GameSettingsView(game: game)
+        
+        let hostingController = UIHostingController(rootView: NavigationView { gameSettingsView }
+            .edgesIgnoringSafeArea(.top)
+            .edgesIgnoringSafeArea(.bottom))
+        self.present(hostingController, animated: true)
     }
     
     func insertGBAGameMenu(for game: Game) -> UIMenu

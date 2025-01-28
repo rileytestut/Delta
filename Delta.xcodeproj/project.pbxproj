@@ -169,6 +169,7 @@
 		BFFDF03F23E3C28A00931B96 /* libGambatte.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BFFDF03D23E3C0F000931B96 /* libGambatte.a */; };
 		BFFDF04623E3D3A600931B96 /* libMupen64Plus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BFFDF04523E3D3A600931B96 /* libMupen64Plus.a */; };
 		D5011C48281B6E8B00A0760B /* CharacterSet+Filename.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5011C47281B6E8B00A0760B /* CharacterSet+Filename.swift */; };
+		D50CA1572D419E7100F54920 /* GameSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50CA1562D419E7100F54920 /* GameSettingsView.swift */; };
 		D510BC752A5CA9F500450CC0 /* Delta6ToDelta7.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = D510BC742A5CA9F500450CC0 /* Delta6ToDelta7.xcmappingmodel */; };
 		D5147EC82A817B4A00D6CD64 /* ReviewSaveStatesOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5147EC72A817B4A00D6CD64 /* ReviewSaveStatesOptions.swift */; };
 		D517F6BA29E730DA000D14D0 /* SettingsName.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A9C01929DDFBDD00A8D610 /* SettingsName.swift */; };
@@ -178,6 +179,7 @@
 		D524F4A3273DE9C000D500B2 /* ProcessInfo+JIT.swift in Sources */ = {isa = PBXBuildFile; fileRef = D524F4A2273DE9C000D500B2 /* ProcessInfo+JIT.swift */; };
 		D524F4A5273DEBB400D500B2 /* ServerManager+Delta.swift in Sources */ = {isa = PBXBuildFile; fileRef = D524F4A4273DEBB400D500B2 /* ServerManager+Delta.swift */; };
 		D5265A7E2D4845C90002C6CE /* GameSetting.m in Sources */ = {isa = PBXBuildFile; fileRef = D5265A7D2D4845C90002C6CE /* GameSetting.m */; };
+		D5265A802D4848A00002C6CE /* PreferredControllerSkinsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5265A7F2D48489C0002C6CE /* PreferredControllerSkinsView.swift */; };
 		D52CB8C62CE2B7B600B04458 /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = D52CB8C52CE2B7B600B04458 /* RevenueCat */; };
 		D52CB8C82CE2B7C800B04458 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D52CB8C72CE2B7C800B04458 /* StoreKit.framework */; };
 		D52CB8CA2CE2B85E00B04458 /* RevenueCatManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52CB8C92CE2B85800B04458 /* RevenueCatManager.swift */; };
@@ -490,6 +492,7 @@
 		BFFDF04523E3D3A600931B96 /* libMupen64Plus.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libMupen64Plus.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C786AF1D2DDB6223BE2063CC /* Pods-Delta.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Delta.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Delta/Pods-Delta.debug.xcconfig"; sourceTree = "<group>"; };
 		D5011C47281B6E8B00A0760B /* CharacterSet+Filename.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CharacterSet+Filename.swift"; sourceTree = "<group>"; };
+		D50CA1562D419E7100F54920 /* GameSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSettingsView.swift; sourceTree = "<group>"; };
 		D510BC742A5CA9F500450CC0 /* Delta6ToDelta7.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = Delta6ToDelta7.xcmappingmodel; sourceTree = "<group>"; };
 		D5147EC72A817B4A00D6CD64 /* ReviewSaveStatesOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewSaveStatesOptions.swift; sourceTree = "<group>"; };
 		D517F6BD29E7535F000D14D0 /* Collection+Optionals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+Optionals.swift"; sourceTree = "<group>"; };
@@ -498,6 +501,7 @@
 		D524F4A4273DEBB400D500B2 /* ServerManager+Delta.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ServerManager+Delta.swift"; sourceTree = "<group>"; };
 		D5265A7C2D4843450002C6CE /* GameSetting.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameSetting.h; sourceTree = "<group>"; };
 		D5265A7D2D4845C90002C6CE /* GameSetting.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GameSetting.m; sourceTree = "<group>"; };
+		D5265A7F2D48489C0002C6CE /* PreferredControllerSkinsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferredControllerSkinsView.swift; sourceTree = "<group>"; };
 		D52CB8C72CE2B7C800B04458 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		D52CB8C92CE2B85800B04458 /* RevenueCatManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevenueCatManager.swift; sourceTree = "<group>"; };
 		D532B8BC29E5EDAD009EE27C /* OptionalProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalProtocol.swift; sourceTree = "<group>"; };
@@ -1001,6 +1005,7 @@
 				D5D78AE329F9BC0200E064F0 /* Features */,
 				D5A9BFFF29DDECF500A8D610 /* Experimental Features */,
 				D5AA0F0C2CE3F3820015D134 /* Patreon */,
+				D50CA1552D419E4B00F54920 /* Games */,
 				D5D797E4298D944C00738869 /* Contributors */,
 			);
 			path = Settings;
@@ -1201,6 +1206,15 @@
 				D5AA0F152CE3F65E0015D134 /* FriendZoneManager.swift */,
 			);
 			path = Purchases;
+			sourceTree = "<group>";
+		};
+		D50CA1552D419E4B00F54920 /* Games */ = {
+			isa = PBXGroup;
+			children = (
+				D50CA1562D419E7100F54920 /* GameSettingsView.swift */,
+				D5265A7F2D48489C0002C6CE /* PreferredControllerSkinsView.swift */,
+			);
+			path = Games;
 			sourceTree = "<group>";
 		};
 		D517F6BB29E737F5000D14D0 /* Types */ = {
@@ -1790,6 +1804,7 @@
 				BF1F45AD21AF57BA00EF9895 /* HarmonyMetadataKey+Keys.swift in Sources */,
 				BFD1EF402336BD8800D197CF /* UIDevice+Processor.swift in Sources */,
 				BF71CF871FE90006001F1613 /* AppIconShortcutsViewController.swift in Sources */,
+				D5265A802D4848A00002C6CE /* PreferredControllerSkinsView.swift in Sources */,
 				BF1DAD5D1D9F576000E752A7 /* PreferredControllerSkinsViewController.swift in Sources */,
 				BFE022A01F5B57FF0052D888 /* PopoverMenuButton.swift in Sources */,
 				BF6BF31C1EB821A0008E83CD /* GamesDatabaseImportOption.swift in Sources */,
@@ -1799,6 +1814,7 @@
 				D5864970297734280081477E /* CheatMetadata.swift in Sources */,
 				D5AA0F162CE3F6600015D134 /* FriendZoneManager.swift in Sources */,
 				BF8DDD241F4F6C880088A21B /* InputCalloutView.swift in Sources */,
+				D50CA1572D419E7100F54920 /* GameSettingsView.swift in Sources */,
 				D5AE76B92C2B52820086471B /* PatreonAPI.swift in Sources */,
 				BF5942701E09BC5D0051894B /* GamesDatabase.swift in Sources */,
 				BF34FA071CF0F510006624C7 /* EditCheatViewController.swift in Sources */,
