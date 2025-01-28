@@ -208,7 +208,7 @@ extension PreferredControllerSkinsViewController
             switch section
             {
             case .portrait: isResetButtonVisible = !(self.portraitControllerSkin?.isStandard ?? false)
-            case .landscape: isResetButtonVisible = !(self.portraitControllerSkin?.isStandard ?? false)
+            case .landscape: isResetButtonVisible = !(self.landscapeControllerSkin?.isStandard ?? false)
             }
         }
         
