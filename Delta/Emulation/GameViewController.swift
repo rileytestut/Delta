@@ -306,6 +306,7 @@ class GameViewController: DeltaCore.GameViewController
             case .quickLoad: self.performQuickLoadAction()
             case .fastForward: self.performFastForwardAction(activate: true)
             case .reverseScreens: self.performReverseScreensAction()
+            case .screenshot: self.performScreenshotAction()
             case .toggleFastForward:
                 let isFastForwarding = (emulatorCore.rate != emulatorCore.deltaCore.supportedRates.lowerBound)
                 self.performFastForwardAction(activate: !isFastForwarding)
@@ -358,6 +359,7 @@ class GameViewController: DeltaCore.GameViewController
             case .fastForward: self.performFastForwardAction(activate: false)
             case .toggleFastForward: break
             case .reverseScreens: break
+            case .screenshot: break
             }
         }
     }

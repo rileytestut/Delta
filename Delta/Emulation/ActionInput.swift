@@ -20,6 +20,7 @@ enum ActionInput: String
     case fastForward
     case toggleFastForward
     case reverseScreens
+    case screenshot
 }
 
 extension ActionInput: Input
