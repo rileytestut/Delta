@@ -1663,10 +1663,16 @@ extension GameViewController: GameViewControllerDelegate
     
     func gameViewController(_ gameViewController: DeltaCore.GameViewController, optionsFor game: GameProtocol) -> [EmulatorCore.Option: Any]
     {
-        if game.type == .n64
+        if let game = game as? Game, game.type == .n64
         {
-            // Explicitly request OpenGL ES 2.0 if ExperimentalFeatures.openGLES3 is disabled.
-            return [.openGLES2: !ExperimentalFeatures.shared.openGLES3.isEnabled]
+            if let useOpenGLES2 = game.settings[.openGLES2] as? Bool, useOpenGLES2
+            {
+                return [.openGLES2: true]
+            }
+            else
+            {
+                return [:]
+            }
         }
         else
         {

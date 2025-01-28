@@ -41,6 +41,26 @@ struct GameSettingsView: View
             } footer: {
                 Text("Choose a controller skin that should always be used for this game.")
             }
+            
+            let system = System(gameType: game.type)
+            
+            if system == .n64
+            {
+                Section {
+                    let binding = Binding {
+                        let isUsingOpenGLES2 = game.settings[.openGLES2] as? Bool ?? false
+                        return !isUsingOpenGLES2
+                    } set: { isUsingOpenGLES3 in
+                        game.settings[.openGLES2] = !isUsingOpenGLES3
+                    }
+
+                    Toggle("OpenGL ES 3.0", isOn: binding)
+                } header: {
+                    Text("Graphics")
+                } footer: {
+                    Text("Use OpenGL ES 3.0 to render this game. You may need to disable this for certain games.")
+                }
+            }
         }
         .accentColor(Color("Purple"))
         .environment(\.managedObjectContext, self.context)

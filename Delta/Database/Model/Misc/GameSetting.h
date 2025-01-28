@@ -9,3 +9,4 @@
 @import Foundation;
 
 typedef NSString *GameSetting NS_REFINED_FOR_SWIFT NS_TYPED_EXTENSIBLE_ENUM;
+FOUNDATION_EXPORT GameSetting const GameSettingOpenGLES2;
