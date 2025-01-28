@@ -61,9 +61,20 @@ struct GameSettingsView: View
                     Text("Use OpenGL ES 3.0 to render this game. You may need to disable this for certain games.")
                 }
             }
+            
+            if system == .ds
+            {
+                Section {
+                    GamePickerView(game: game)
+                        .environment(\.managedObjectContext, self.context)
+                } header: {
+                    Text("Dual Slot")
+                } footer: {
+                    Text("Choose a GBA game to emulate inserting it into the Nintendo DS dual slot.")
+                }
+            }
         }
         .accentColor(Color("Purple"))
-        .environment(\.managedObjectContext, self.context)
         .navigationTitle(game.name)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -76,6 +87,39 @@ struct GameSettingsView: View
         .onDisappear {
             // Save any pending changes to disk.
             self.context.saveWithErrorLogging()
+        }
+    }
+}
+
+// Separate type so we can provide temporary NSManagedObjectContext in environment.
+private struct GamePickerView: View
+{
+    @ObservedObject
+    var game: Game
+    
+    @FetchRequest(
+        sortDescriptors: [NSSortDescriptor(keyPath: \Game.name, ascending: true)],
+        predicate: NSPredicate(format: "%K == %@", #keyPath(Game.type), GameType.gba.rawValue)
+    )
+    private var gbaGames: FetchedResults<Game>
+    
+    var body: some View {
+        let title: LocalizedStringKey = (game.secondaryGame != nil) ? "GBA Game" : "Insert GBA Game"
+        let picker = Picker(title, selection: $game.secondaryGame) {
+            Text("None").tag(Optional<Game>.none)
+            
+            ForEach(gbaGames, id: \.objectID) { game in
+                Text(game.name).tag(game)
+            }
+        }
+        
+        if #available(iOS 16, *)
+        {
+            picker.pickerStyle(.navigationLink)
+        }
+        else
+        {
+            picker
         }
     }
 }
