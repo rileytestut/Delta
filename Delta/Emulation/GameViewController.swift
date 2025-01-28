@@ -1404,9 +1404,22 @@ extension GameViewController
     
     func performScreenshotAction()
     {
-        guard let snapshot = self.emulatorCore?.videoManager.snapshot() else { return }
-
-        let imageScale = ExperimentalFeatures.shared.gameScreenshots.size?.rawValue ?? 1.0
+        guard let emulatorCore, let snapshot = emulatorCore.videoManager.snapshot() else { return }
+        
+        let minEdge = min(emulatorCore.videoManager.videoFormat.dimensions.width, emulatorCore.videoManager.videoFormat.dimensions.height)
+        
+        let imageScale: Double
+        if minEdge >= 720
+        {
+            // Screenshot is already at or above 720p, so no need to scale it.
+            imageScale = 1
+        }
+        else
+        {
+            // Determine integer scaling to ensure we reach 720p.
+            imageScale = (720.0 / minEdge).rounded(.up)
+        }
+        
         let imageSize = CGSize(width: snapshot.size.width * imageScale, height: snapshot.size.height * imageScale)
         
         let screenshotData: Data
@@ -1427,53 +1440,23 @@ extension GameViewController
             }
         }
         
-        if ExperimentalFeatures.shared.gameScreenshots.saveToPhotos
-        {
-            PHPhotoLibrary.runIfAuthorized
-            {
-                PHPhotoLibrary.saveImageData(screenshotData)
-            }
-        }
-        
-        if ExperimentalFeatures.shared.gameScreenshots.saveToFiles
-        {
-            let screenshotsDirectory = FileManager.default.documentsDirectory.appendingPathComponent("Screenshots")
-            
+        Task<Void, Never>(priority: .userInitiated) {
             do
             {
-                try FileManager.default.createDirectory(at: screenshotsDirectory, withIntermediateDirectories: true, attributes: nil)
+                try await PHPhotoLibrary.requestAuthorizationIfNeeded()
+                try await PHPhotoLibrary.shared().saveScreenshotData(screenshotData)
+                
+                let toastView = RSTToastView(text: NSLocalizedString("Saved screenshot to Photos", comment: ""), detailText: nil)
+                self.show(toastView)
             }
             catch
             {
-                print(error)
+                let toastView = RSTToastView(text: NSLocalizedString("Unable to Save Screenshot", comment: ""), detailText: error.localizedDescription)
+                self.show(toastView)
             }
             
-            let date = Date()
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyy-MM-dd_HH-mm-ss"
-            
-            let fileName: URL
-            if let game = self.game as? Game
-            {
-                let filename = game.name + "_" + dateFormatter.string(from: date) + ".png"
-                fileName = screenshotsDirectory.appendingPathComponent(filename)
-            }
-            else
-            {
-                fileName = screenshotsDirectory.appendingPathComponent(dateFormatter.string(from: date) + ".png")
-            }
-            
-            do
-            {
-                try screenshotData.write(to: fileName)
-            }
-            catch
-            {
-                print(error)
-            }
+            self.pauseViewController?.screenshotItem?.isSelected = false
         }
-        
-        self.pauseViewController?.screenshotItem?.isSelected = false
     }
     
     func performReverseScreensAction()
