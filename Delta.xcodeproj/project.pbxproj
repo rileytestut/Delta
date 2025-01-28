@@ -36,7 +36,6 @@
 		87343D7B985519A5890A61C6 /* libPods-DeltaPreviews.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E3E5A45AB20C8A87754453B /* libPods-DeltaPreviews.a */; };
 		AC1C991029F8B8C30020E6E4 /* ToastNotificationOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC1C990F29F8B8C30020E6E4 /* ToastNotificationOptions.swift */; };
 		AC1C992729F9F1CF0020E6E4 /* GameViewController+ExperimentalToasts.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC1C992629F9F1CF0020E6E4 /* GameViewController+ExperimentalToasts.swift */; };
-		ACF7E30D29F73D03000FE071 /* GameScreenshots.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACF7E30C29F73D03000FE071 /* GameScreenshots.swift */; };
 		ACF7E30F29F743A3000FE071 /* PHPhotoLibrary+Screenshots.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACF7E30E29F743A3000FE071 /* PHPhotoLibrary+Screenshots.swift */; };
 		BF00BEA625B758AA00C8607D /* SystemBIOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF00BEA525B758AA00C8607D /* SystemBIOS.swift */; };
 		BF02D5DA1DDEBB3000A5E131 /* openvgdb.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = BF02D5D91DDEBB3000A5E131 /* openvgdb.sqlite */; };
@@ -326,7 +325,6 @@
 		A19FF50F55441BC2B2248241 /* Pods-Delta.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Delta.release.xcconfig"; path = "Pods/Target Support Files/Pods-Delta/Pods-Delta.release.xcconfig"; sourceTree = "<group>"; };
 		AC1C990F29F8B8C30020E6E4 /* ToastNotificationOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastNotificationOptions.swift; sourceTree = "<group>"; };
 		AC1C992629F9F1CF0020E6E4 /* GameViewController+ExperimentalToasts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameViewController+ExperimentalToasts.swift"; sourceTree = "<group>"; };
-		ACF7E30C29F73D03000FE071 /* GameScreenshots.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScreenshots.swift; sourceTree = "<group>"; };
 		ACF7E30E29F743A3000FE071 /* PHPhotoLibrary+Screenshots.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PHPhotoLibrary+Screenshots.swift"; sourceTree = "<group>"; };
 		BF00BEA525B758AA00C8607D /* SystemBIOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemBIOS.swift; sourceTree = "<group>"; };
 		BF02D5D91DDEBB3000A5E131 /* openvgdb.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = openvgdb.sqlite; sourceTree = "<group>"; };
@@ -1273,7 +1271,6 @@
 			isa = PBXGroup;
 			children = (
 				D5A9C01C29DE058C00A8D610 /* VariableFastForward.swift */,
-				ACF7E30C29F73D03000FE071 /* GameScreenshots.swift */,
 				AC1C990F29F8B8C30020E6E4 /* ToastNotificationOptions.swift */,
 				D5147EC72A817B4A00D6CD64 /* ReviewSaveStatesOptions.swift */,
 				D5A287242C23A1AC009883C3 /* SkinDebugging.swift */,
@@ -1840,7 +1837,6 @@
 				D5A9C00329DDED6D00A8D610 /* ExperimentalFeaturesView.swift in Sources */,
 				BF1F45BF21AF676F00EF9895 /* Box.swift in Sources */,
 				BF7AE80A1C2E8C7600B1B5BC /* UIColor+Delta.swift in Sources */,
-				ACF7E30D29F73D03000FE071 /* GameScreenshots.swift in Sources */,
 				ACF7E30F29F743A3000FE071 /* PHPhotoLibrary+Screenshots.swift in Sources */,
 				BF797A2D1C2D339F00F1A000 /* UILabel+FontSize.swift in Sources */,
 				D5AA0F0E2CE3F39F0015D134 /* PatreonViewController.swift in Sources */,
