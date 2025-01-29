@@ -31,7 +31,7 @@ class ControllerInputsViewController: UIViewController
     private lazy var managedObjectContext: NSManagedObjectContext = DatabaseManager.shared.newBackgroundContext()
     private var inputMappings = [System: GameControllerInputMapping]()
     
-    private let supportedActionInputs: [ActionInput] = [.quickSave, .quickLoad, .fastForward]
+    private let supportedActionInputs: [ActionInput] = [.quickSave, .quickLoad, .fastForward, .screenshot]
     
     private var gameViewController: DeltaCore.GameViewController!
     private var actionsMenuViewController: GridMenuViewController!
@@ -258,6 +258,10 @@ private extension ControllerInputsViewController
                 image = #imageLiteral(resourceName: "FastForward")
                 text = NSLocalizedString("Fast Forward", comment: "")
                 
+            case .screenshot:
+                image = #imageLiteral(resourceName: "Screenshot")
+                text = NSLocalizedString("Screenshot", comment: "")
+                
             case .toggleFastForward, .reverseScreens: continue
             }
             
@@ -268,6 +272,17 @@ private extension ControllerInputsViewController
             
             items.append(item)
         }
+        
+        self.actionsMenuViewController.loadViewIfNeeded()
+        
+        let collectionViewLayout = self.actionsMenuViewController.collectionViewLayout as! GridCollectionViewLayout
+        collectionViewLayout.minimumLineSpacing = 10
+        collectionViewLayout.sectionInset.left += 10
+        collectionViewLayout.sectionInset.right += 10
+        collectionViewLayout.usesEqualHorizontalSpacingDistributionForSingleRow = true
+        
+        // Assign actionsMenuViewController's itemWidth so it can adjust layout correctly.
+        self.actionsMenuViewController.itemWidth = 70 // BARELY fits 4 icons inside DS skin.
         
         self.actionsMenuViewController.items = items
         self.actionsMenuViewController.isVibrancyEnabled = false

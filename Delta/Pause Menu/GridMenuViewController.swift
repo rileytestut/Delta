@@ -18,6 +18,21 @@ class GridMenuViewController: UICollectionViewController
     
     var isVibrancyEnabled = true
     
+    var itemWidth: Double {
+        get {
+            let layout = self.collectionViewLayout as! GridCollectionViewLayout
+            return layout.itemWidth
+        }
+        set {
+            let layout = self.collectionViewLayout as! GridCollectionViewLayout
+            layout.itemWidth = newValue
+            
+            self.prototypeCellWidthConstraint.constant = newValue
+            
+            self.collectionViewLayout.invalidateLayout()
+        }
+    }
+    
     @IBOutlet private(set) var closeButton: UIBarButtonItem!
     
     override var preferredContentSize: CGSize {
@@ -26,6 +41,8 @@ class GridMenuViewController: UICollectionViewController
     }
     
     private let dataSource = RSTArrayCollectionViewDataSource<MenuItem>(items: [])
+    
+    private var prototypeCellWidthConstraint: NSLayoutConstraint!
     
     private var prototypeCell = GridCollectionViewCell()
     private var previousIndexPath: IndexPath? = nil
@@ -72,7 +89,8 @@ extension GridMenuViewController
         collectionViewLayout.usesEqualHorizontalSpacingDistributionForSingleRow = true
         
         // Manually update prototype cell properties
-        self.prototypeCell.contentView.widthAnchor.constraint(equalToConstant: collectionViewLayout.itemWidth).isActive = true
+        self.prototypeCellWidthConstraint = self.prototypeCell.contentView.widthAnchor.constraint(equalToConstant: collectionViewLayout.itemWidth)
+        self.prototypeCellWidthConstraint.isActive = true
     }
     
     override func viewDidAppear(_ animated: Bool)

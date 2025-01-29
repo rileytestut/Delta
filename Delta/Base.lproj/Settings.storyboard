@@ -1101,7 +1101,7 @@ Menu + Long-Press: Quick Load</string>
                                 </connections>
                             </containerView>
                             <containerView opaque="NO" contentMode="scaleToFill" placeholderIntrinsicWidth="375" placeholderIntrinsicHeight="200" translatesAutoresizingMaskIntoConstraints="NO" id="KkE-ji-6Y8" userLabel="GridMenuViewController">
-                                <rect key="frame" x="0.0" y="233.5" width="375" height="200"/>
+                                <rect key="frame" x="20" y="233.5" width="335" height="200"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="200" id="MWA-T4-ROi"/>
                                 </constraints>
@@ -1115,11 +1115,11 @@ Menu + Long-Press: Quick Load</string>
                         <constraints>
                             <constraint firstItem="KkE-ji-6Y8" firstAttribute="centerY" secondItem="cPg-qa-ERT" secondAttribute="centerY" placeholder="YES" id="4wi-cL-aCQ"/>
                             <constraint firstAttribute="bottom" secondItem="6Wl-el-X30" secondAttribute="bottom" id="Bmp-yB-Yf1"/>
-                            <constraint firstAttribute="trailing" secondItem="KkE-ji-6Y8" secondAttribute="trailing" id="Jeb-8K-VYw"/>
+                            <constraint firstAttribute="trailing" secondItem="KkE-ji-6Y8" secondAttribute="trailing" constant="20" symbolic="YES" id="Jeb-8K-VYw"/>
                             <constraint firstItem="6Wl-el-X30" firstAttribute="top" secondItem="cPg-qa-ERT" secondAttribute="top" id="TD2-bx-DJC"/>
                             <constraint firstAttribute="trailing" secondItem="6Wl-el-X30" secondAttribute="trailing" id="Xph-DL-tBk"/>
                             <constraint firstItem="6Wl-el-X30" firstAttribute="leading" secondItem="cPg-qa-ERT" secondAttribute="leading" id="gcd-77-5wR"/>
-                            <constraint firstItem="KkE-ji-6Y8" firstAttribute="leading" secondItem="cPg-qa-ERT" secondAttribute="leading" id="z7N-Cn-hGs"/>
+                            <constraint firstItem="KkE-ji-6Y8" firstAttribute="leading" secondItem="cPg-qa-ERT" secondAttribute="leading" constant="20" symbolic="YES" id="z7N-Cn-hGs"/>
                         </constraints>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="4p8-OB-LsR" appends="YES" id="4k4-Oj-XtP"/>
