@@ -175,6 +175,7 @@
 		D517F6BE29E7535F000D14D0 /* Collection+Optionals.swift in Sources */ = {isa = PBXBuildFile; fileRef = D517F6BD29E7535F000D14D0 /* Collection+Optionals.swift */; };
 		D51CB7A129EDC01400B59678 /* libDeltaFeatures.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D5D7C1F129E60DFF00663793 /* libDeltaFeatures.a */; };
 		D51CB7A629EDC15900B59678 /* ExperimentalFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = D51CB7A529EDC15900B59678 /* ExperimentalFeatures.swift */; };
+		D51D8EC82D49CA26002649C2 /* Delta10ToDelta11.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = D51D8EC72D49CA26002649C2 /* Delta10ToDelta11.xcmappingmodel */; };
 		D524F4A3273DE9C000D500B2 /* ProcessInfo+JIT.swift in Sources */ = {isa = PBXBuildFile; fileRef = D524F4A2273DE9C000D500B2 /* ProcessInfo+JIT.swift */; };
 		D524F4A5273DEBB400D500B2 /* ServerManager+Delta.swift in Sources */ = {isa = PBXBuildFile; fileRef = D524F4A4273DEBB400D500B2 /* ServerManager+Delta.swift */; };
 		D5265A7E2D4845C90002C6CE /* GameSetting.m in Sources */ = {isa = PBXBuildFile; fileRef = D5265A7D2D4845C90002C6CE /* GameSetting.m */; };
@@ -492,6 +493,8 @@
 		D5147EC72A817B4A00D6CD64 /* ReviewSaveStatesOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewSaveStatesOptions.swift; sourceTree = "<group>"; };
 		D517F6BD29E7535F000D14D0 /* Collection+Optionals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+Optionals.swift"; sourceTree = "<group>"; };
 		D51CB7A529EDC15900B59678 /* ExperimentalFeatures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExperimentalFeatures.swift; sourceTree = "<group>"; };
+		D51D8EC62D49C998002649C2 /* Delta 11.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Delta 11.xcdatamodel"; sourceTree = "<group>"; };
+		D51D8EC72D49CA26002649C2 /* Delta10ToDelta11.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = Delta10ToDelta11.xcmappingmodel; sourceTree = "<group>"; };
 		D524F4A2273DE9C000D500B2 /* ProcessInfo+JIT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProcessInfo+JIT.swift"; sourceTree = "<group>"; };
 		D524F4A4273DEBB400D500B2 /* ServerManager+Delta.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ServerManager+Delta.swift"; sourceTree = "<group>"; };
 		D5265A7C2D4843450002C6CE /* GameSetting.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameSetting.h; sourceTree = "<group>"; };
@@ -1077,6 +1080,7 @@
 				D59B50B62C06666A00FDC53A /* Delta7ToDelta8.xcmappingmodel */,
 				D5AE76D02C2BA5B70086471B /* Delta8ToDelta9.xcmappingmodel */,
 				D5D45CF42D0CDDF600BADDF5 /* Delta9ToDelta10.xcmappingmodel */,
+				D51D8EC72D49CA26002649C2 /* Delta10ToDelta11.xcmappingmodel */,
 				BFEF24F11F7DD4BE00454C62 /* Policies */,
 			);
 			path = Migrations;
@@ -1803,6 +1807,7 @@
 				BFE022A01F5B57FF0052D888 /* PopoverMenuButton.swift in Sources */,
 				BF6BF31C1EB821A0008E83CD /* GamesDatabaseImportOption.swift in Sources */,
 				D5AA0F142CE3F5040015D134 /* _ManagedPatron.swift in Sources */,
+				D51D8EC82D49CA26002649C2 /* Delta10ToDelta11.xcmappingmodel in Sources */,
 				BFFA4C091E8A24D600D87934 /* GameTableViewCell.swift in Sources */,
 				BFFC46231D5984A000AF2CC6 /* LaunchViewController.swift in Sources */,
 				D5864970297734280081477E /* CheatMetadata.swift in Sources */,
@@ -2523,6 +2528,7 @@
 		BF4828811F9027B600028B97 /* Delta.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				D51D8EC62D49C998002649C2 /* Delta 11.xcdatamodel */,
 				D5D45CF32D0CDCB700BADDF5 /* Delta 10.xcdatamodel */,
 				D5E4F8622C2A5864008E8316 /* Delta 9.xcdatamodel */,
 				D59B50B52C0665C800FDC53A /* Delta 8.xcdatamodel */,
@@ -2534,7 +2540,7 @@
 				BF4828821F9027B600028B97 /* Delta 2.xcdatamodel */,
 				BF4828831F9027B600028B97 /* Delta.xcdatamodel */,
 			);
-			currentVersion = D5D45CF32D0CDCB700BADDF5 /* Delta 10.xcdatamodel */;
+			currentVersion = D51D8EC62D49C998002649C2 /* Delta 11.xcdatamodel */;
 			path = Delta.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
