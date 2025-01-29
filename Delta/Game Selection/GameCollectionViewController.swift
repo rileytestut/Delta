@@ -791,7 +791,7 @@ private extension GameCollectionViewController
                 }
             }
         }
-        catch let error as LaunchError
+        catch let error
         {
             let alertController = UIAlertController(title: error.errorTitle, message: error.localizedDescription, preferredStyle: .alert)
             
@@ -809,12 +809,6 @@ private extension GameCollectionViewController
                 }
             }
             
-            self.present(alertController, animated: true, completion: nil)
-        }
-        catch
-        {
-            let alertController = UIAlertController(title: NSLocalizedString("Unable to Launch Game", comment: ""), message: error.localizedDescription, preferredStyle: .alert)
-            alertController.addAction(.ok)
             self.present(alertController, animated: true, completion: nil)
         }
     }
