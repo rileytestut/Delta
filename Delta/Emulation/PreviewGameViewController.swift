@@ -93,6 +93,8 @@ extension PreviewGameViewController
         
         // Temporarily prevent emulatorCore from updating gameView to prevent flicker of black, or other visual glitches
         self.emulatorCore?.remove(self.gameView)
+        
+        self.emulatorCore?.audioManager.respectsSilentMode = Settings.respectSilentMode
     }
     
     override func viewWillAppear(_ animated: Bool)
