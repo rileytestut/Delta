@@ -1160,6 +1160,20 @@ private extension GameCollectionViewController
         let hostingController = UIHostingController(rootView: NavigationView { gameSettingsView }
             .edgesIgnoringSafeArea(.top)
             .edgesIgnoringSafeArea(.bottom))
+        
+        if self.view.traitCollection.userInterfaceIdiom == .pad
+        {
+            // Large screen, so use formSheet presentation (which is automatically sized + centered).
+            hostingController.modalPresentationStyle = .formSheet
+        }
+        else if #available(iOS 15, *), let sheetController = hostingController.sheetPresentationController
+        {
+            // Smaller screen, so present as sheet from the bottom of screen.
+            sheetController.detents = [.medium(), .large()]
+            sheetController.selectedDetentIdentifier = .medium
+            sheetController.prefersScrollingExpandsWhenScrolledToEdge = false
+        }
+        
         self.present(hostingController, animated: true)
     }
 }
