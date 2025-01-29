@@ -724,10 +724,6 @@ private extension GameCollectionViewController
             self.changeArtwork(for: game)
         }
         
-        let changeControllerSkinAction = UIAction(title: NSLocalizedString("Change Game Skin", comment: ""), image: UIImage(symbolNameIfAvailable: "gamecontroller")) { [unowned self] _ in
-            self.changePreferredControllerSkin(for: game)
-        }
-        
         let shareAction = UIAction(title: NSLocalizedString("Share", comment: ""), image: UIImage(symbolNameIfAvailable: "square.and.arrow.up")) { [unowned self] action in
             self.share(game)
         }
@@ -1146,11 +1142,6 @@ private extension GameCollectionViewController
             let alertController = UIAlertController(title: NSLocalizedString("Failed to Export Save File", comment: ""), error: error)
             self.present(alertController, animated: true, completion: nil)
         }
-    }
-    
-    func changePreferredControllerSkin(for game: Game)
-    {
-        self.performSegue(withIdentifier: "preferredControllerSkins", sender: game)
     }
     
     func showSettings(for game: Game)
