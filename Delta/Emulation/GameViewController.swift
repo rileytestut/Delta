@@ -2128,6 +2128,7 @@ private extension GameViewController
         
         guard let emulatorCore, !emulatorCore.isWirelessMultiplayerActive else { return }
         emulatorCore.isWirelessMultiplayerActive = true
+        emulatorCore.rate = 1.0 // Disable FF in case it is currently enabled.
         
         DispatchQueue.main.async {
             let toastView = RSTToastView(text: NSLocalizedString("Connecting to Nintendo WFC…", comment: ""), detailText: NSLocalizedString("Some features will be disabled while playing online.", comment: ""))
