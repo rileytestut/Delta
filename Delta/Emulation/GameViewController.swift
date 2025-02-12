@@ -161,6 +161,7 @@ class GameViewController: DeltaCore.GameViewController
     }
     
     private var _isLoadingSaveState = false
+    private var _onlineConnectionDate: Date?
     
     // Handoff
     private var isContinuingHandoff = false
@@ -1745,11 +1746,13 @@ extension GameViewController
 
 private extension GameViewController
 {
-    func show(_ toastView: RSTToastView, duration: TimeInterval = 3.0)
+    func show(_ toastView: RSTToastView, in superview: UIView? = nil, duration: TimeInterval = 3.0)
     {
+        let superview = superview ?? self.view!
+        
         toastView.textLabel.textAlignment = .center
         toastView.presentationEdge = .top
-        toastView.show(in: self.view, duration: duration)
+        toastView.show(in: superview, duration: duration)
     }
     
     func showJITEnabledAlert()
@@ -2132,7 +2135,8 @@ private extension GameViewController
         
         DispatchQueue.main.async {
             let toastView = RSTToastView(text: NSLocalizedString("Connecting to Nintendo WFC…", comment: ""), detailText: NSLocalizedString("Some features will be disabled while playing online.", comment: ""))
-            self.show(toastView, duration: 5.0)
+            self.show(toastView, in: self.view.window, duration: 5.0) // Show in window to fix not receiving touches 🤷‍♂️
+            self._onlineConnectionDate = Date()
         }
     }
     
@@ -2145,7 +2149,24 @@ private extension GameViewController
         
         DispatchQueue.main.async {
             let toastView = RSTToastView(text: NSLocalizedString("Disconnected from Nintendo WFC", comment: ""), detailText: nil)
-            self.show(toastView)
+            var duration = 3.0
+            
+            if let onlineConnectionDate = self._onlineConnectionDate, Date().timeIntervalSince(onlineConnectionDate) < 30
+            {
+                // If we're disconnecting within 30 seconds of connecting, show troubleshooting message.
+                toastView.detailTextLabel.text = NSLocalizedString("⚠️ Tap to view our Troubleshooting Guide.", comment: "")
+                
+                let action = UIAction { _ in
+                    let troubleshootingGuideURL = URL(string: "https://faq.deltaemulator.com/using-delta/online-multiplayer")!
+                    UIApplication.shared.open(troubleshootingGuideURL, options: [:])
+                }
+                toastView.addAction(action, for: .touchUpInside)
+                
+                duration = 5.0
+            }
+            
+            self.show(toastView, in: self.view.window, duration: duration) // Show in window to fix not receiving touches 🤷‍♂️
+            self._onlineConnectionDate = nil
         }
     }
     
