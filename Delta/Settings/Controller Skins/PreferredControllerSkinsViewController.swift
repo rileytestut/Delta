@@ -197,10 +197,18 @@ extension PreferredControllerSkinsViewController
         
         if let game = self.game
         {
-            switch section
+            switch (section, self.variant)
             {
-            case .portrait: isResetButtonVisible = (game.preferredPortraitSkin != nil)
-            case .landscape: isResetButtonVisible = (game.preferredLandscapeSkin != nil)
+            case (.portrait, .standard): isResetButtonVisible = (game.preferredPortraitSkin != nil)
+            case (.landscape, .standard): isResetButtonVisible = (game.preferredLandscapeSkin != nil)
+                
+            case (.portrait, .controller): isResetButtonVisible = (game.preferredExternalControllerPortraitSkin != nil)
+            case (.landscape, .controller): isResetButtonVisible = (game.preferredExternalControllerLandscapeSkin != nil)
+                
+            case (.portrait, .splitView): isResetButtonVisible = (game.preferredSplitViewPortraitSkin != nil)
+            case (.landscape, .splitView): isResetButtonVisible = (game.preferredSplitViewLandscapeSkin != nil)
+                
+            case (.portrait, .airPlay), (.landscape, .airPlay): isResetButtonVisible = false //TODO: Support per-game AirPlay skins
             }
         }
         else
