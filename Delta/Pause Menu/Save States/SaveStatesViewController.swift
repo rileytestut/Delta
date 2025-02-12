@@ -600,11 +600,18 @@ private extension SaveStatesViewController
         case .translucent:
             cell.isTextLabelVibrancyEnabled = true
             cell.isImageViewVibrancyEnabled = true
-        }        
+        }
         
-        let deltaCore = Delta.core(for: self.game.type)!
-        
-        let dimensions = deltaCore.videoFormat.dimensions
+        let dimensions: CGSize
+        if let deltaCore = Delta.core(for: self.game.type)
+        {
+            dimensions = deltaCore.videoFormat.dimensions
+        }
+        else
+        {
+            dimensions = CGSize(width: 1, height: 1)
+        }
+                
         cell.maximumImageSize = CGSize(width: self.prototypeCellWidthConstraint.constant, height: (self.prototypeCellWidthConstraint.constant / dimensions.width) * dimensions.height)
         
         cell.textLabel.font = UIFont.preferredFont(forTextStyle: .subheadline)
