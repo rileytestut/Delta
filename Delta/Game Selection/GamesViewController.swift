@@ -173,6 +173,8 @@ extension GamesViewController
             self.importController.barButtonItem = self.importButton
         }
         
+        self.navigationItem.leftBarButtonItem?.accessibilityLabel = NSLocalizedString("Settings", comment: "")
+        
         self.prepareSearchController()
         
         self.updateTheme()
