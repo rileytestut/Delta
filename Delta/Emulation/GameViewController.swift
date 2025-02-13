@@ -1796,6 +1796,53 @@ private extension GameViewController
             }
         }
     }
+    
+    @available(iOS 15, *)
+    func chooseWFCServer()
+    {
+        let viewController = WFCServersView.makeViewController()
+        
+        let navigationController = UINavigationController(rootViewController: viewController)
+        navigationController.isModalInPresentation = true
+        
+        func finish()
+        {
+            if let preferredWFCServer = Settings.preferredWFCServer
+            {
+                let alertController = UIAlertController(title: NSLocalizedString("Restart Required", comment: ""), message: NSLocalizedString("Please restart this game to apply your changes.", comment: ""), preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: NSLocalizedString("Restart", comment: ""), style: .destructive) { _ in
+                    if let emulatorBridge = self.emulatorCore?.deltaCore.emulatorBridge as? MelonDSEmulatorBridge
+                    {
+                        emulatorBridge.wfcDNS = preferredWFCServer
+                    }
+                    
+                    self.emulatorCore?.stop()
+                    self.emulatorCore?.start()
+                    
+                    navigationController.dismiss(animated: true)
+                })
+                alertController.addAction(UIAlertAction(title: NSLocalizedString("Later", comment: ""), style: .cancel) { _ in
+                    self.emulatorCore?.resume()
+                    navigationController.dismiss(animated: true)
+                })
+                
+                viewController.present(alertController, animated: true)
+            }
+            else
+            {
+                // No changes, so just resume + dismiss navigationController.
+                self.emulatorCore?.resume()
+                navigationController.dismiss(animated: true)
+            }
+        }
+        
+        let doneButton = UIBarButtonItem(systemItem: .done, primaryAction: UIAction { _ in
+            finish()
+        })
+        viewController.navigationItem.rightBarButtonItem = doneButton
+        
+        self.present(navigationController, animated: true)
+    }
 }
 
 //MARK: - Handoff -
@@ -2130,6 +2177,29 @@ private extension GameViewController
         guard let bridge = notification.object as? EmulatorBridging, bridge.gameURL == self.game?.fileURL, ExperimentalFeatures.shared.dsOnlineMultiplayer.isEnabled else { return }
         
         guard let emulatorCore, !emulatorCore.isWirelessMultiplayerActive else { return }
+        
+        if Settings.preferredWFCServer == nil && !UserDefaults.standard.didShowChooseWFCServerAlert, #available(iOS 15, *)
+        {
+            // Ask user to choose preferred WFC server before connecting online.
+            
+            DispatchQueue.main.async {
+                emulatorCore.pause()
+                
+                let alertController = UIAlertController(title: NSLocalizedString("Choose WFC Server", comment: ""), message: NSLocalizedString("You must choose a 3rd-party WFC server to use Nintendo DS online features.", comment: ""), preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: NSLocalizedString("Later", comment: ""), style: .cancel) { _ in
+                    emulatorCore.resume()
+                })
+                alertController.addAction(UIAlertAction(title: NSLocalizedString("Choose Server", comment: ""), style: .default) { _ in
+                    self.chooseWFCServer()
+                })
+                
+                self.present(alertController, animated: true)
+                UserDefaults.standard.didShowChooseWFCServerAlert = true
+            }
+            
+            return
+        }
+        
         emulatorCore.isWirelessMultiplayerActive = true
         emulatorCore.rate = 1.0 // Disable FF in case it is currently enabled.
         
@@ -2311,4 +2381,6 @@ private extension UserDefaults
     @NSManaged var desmumeDeprecatedAlertCount: Int
     
     @NSManaged var jitEnabledAlertCount: Int
+    
+    @NSManaged var didShowChooseWFCServerAlert: Bool
 }

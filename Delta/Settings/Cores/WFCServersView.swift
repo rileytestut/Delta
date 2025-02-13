@@ -33,7 +33,7 @@ struct WFCServersView: View
     @StateObject
     private var viewModel = ViewModel()
     
-    private var localizedTitle: String { String(localized: "Choose Server", comment: "") }
+    private var localizedTitle: String { String(localized: "Choose WFC Server", comment: "") }
     
     var body: some View {
         List {
