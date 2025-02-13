@@ -475,6 +475,17 @@ extension GameViewController
         }, completion: nil)        
     }
     
+    override func viewDidLayoutSubviews()
+    {
+        super.viewDidLayoutSubviews()
+        
+        if let sustainButtonsBackgroundView
+        {
+            // Fixes Hold Button description laying out vertically after orientation change.
+            sustainButtonsBackgroundView.detailTextLabel.preferredMaxLayoutWidth = sustainButtonsBackgroundView.bounds.width
+        }
+    }
+    
     // MARK: - Segues
     /// KVO
     
