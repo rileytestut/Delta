@@ -2392,6 +2392,9 @@ private extension UserDefaults
     @NSManaged var desmumeDeprecatedAlertCount: Int
     
     @NSManaged var jitEnabledAlertCount: Int
-    
+}
+
+extension UserDefaults
+{
     @NSManaged var didShowChooseWFCServerAlert: Bool
 }

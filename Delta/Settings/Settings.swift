@@ -467,6 +467,17 @@ extension Settings
             NotificationCenter.default.post(name: Settings.didChangeNotification, object: controllerSkin, userInfo: [NotificationUserInfoKey.name: Name.preferredControllerSkin, NotificationUserInfoKey.system: system, NotificationUserInfoKey.traits: traits])
         }
     }
+    
+    static func resetWFCConfiguration()
+    {
+        Settings.preferredWFCServer = nil
+        Settings.customWFCServer = nil
+        
+        UserDefaults.standard.removeObject(forKey: MelonDS.wfcIDUserDefaultsKey)
+        UserDefaults.standard.removeObject(forKey: MelonDS.wfcFlagsUserDefaultsKey)
+        
+        UserDefaults.standard.didShowChooseWFCServerAlert = false
+    }
 }
 
 extension Settings
