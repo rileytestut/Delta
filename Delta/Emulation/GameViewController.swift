@@ -535,6 +535,11 @@ extension GameViewController
             pauseViewController.cheatsViewControllerDelegate = self
             pauseViewController.closeButtonTitle = self.isGameScene ? NSLocalizedString("Close", comment: "") : NSLocalizedString("Main Menu", comment: "")
             
+            if let traits = self.controllerView.controllerSkinTraits, let menuInsets = self.controllerView.controllerSkin?.menuInsets(for: traits)
+            {
+                pauseViewController.menuInsets = menuInsets
+            }
+                        
             pauseViewController.fastForwardItem?.isSelected = (self.emulatorCore?.rate != self.emulatorCore?.deltaCore.supportedRates.lowerBound)
             pauseViewController.fastForwardItem?.action = { [unowned self] item in
                 self.performFastForwardAction(activate: item.isSelected)
@@ -901,6 +906,18 @@ private extension GameViewController
         }
         
         self.updateExternalDisplay()
+        
+        if let pauseViewController
+        {
+            if let traits = self.controllerView.controllerSkinTraits, let menuInsets = self.controllerView.controllerSkin?.menuInsets(for: traits)
+            {
+                pauseViewController.menuInsets = menuInsets
+            }
+            else
+            {
+                pauseViewController.menuInsets = .zero
+            }
+        }
         
         self.view.setNeedsLayout()
     }
