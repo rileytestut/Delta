@@ -38,9 +38,14 @@ struct WFCServersView: View
     var body: some View {
         List {
             Section {
+            } header: {
+                Text("Troubleshooting Tips")
             } footer: {
-                Text("You can only connect to other players on the same server as you.") + Text("\n\n") +
-                Text("Devices on the same Wi-Fi network may not be able to connect to each other.")
+                VStack(alignment: .leading) {
+                    Text("• You can only connect to players on the same server")
+                    Text("• Devices on the same Wi-Fi network may not be able to connect to each other\n")
+                    Text("For more help, check out our [Troubleshooting Guide](https://faq.deltaemulator.com/using-delta/online-multiplayer)")
+                }
             }
             
             Section("Popular") {
