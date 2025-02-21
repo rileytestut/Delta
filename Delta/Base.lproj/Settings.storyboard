@@ -1300,13 +1300,10 @@ Menu + Long-Press: Quick Load</string>
                                 <action selector="changeCurrentVariant:" destination="56e-ul-z6v" eventType="primaryActionTriggered" id="TdW-Ig-63C"/>
                             </connections>
                         </segmentedControl>
-                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="3iE-lg-bkA">
-                            <connections>
-                                <segue destination="eMT-K0-PiM" kind="unwind" unwindAction="unwindToGameCollectionViewController:" id="fFx-zM-kfa"/>
-                            </connections>
-                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Filter" image="ellipsis.circle" catalog="system" id="epN-iR-ZX6"/>
                     </navigationItem>
                     <connections>
+                        <outlet property="filterButton" destination="epN-iR-ZX6" id="eNL-Tc-CRm"/>
                         <outlet property="landscapeImageView" destination="XY1-es-oZe" id="d6S-ez-jh2"/>
                         <outlet property="portraitImageView" destination="5r7-OQ-i7w" id="C5r-uX-SlN"/>
                         <outlet property="variantSegmentedControl" destination="FuI-rT-eft" id="NdA-He-Opu"/>
@@ -1314,7 +1311,6 @@ Menu + Long-Press: Quick Load</string>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Nx1-Ly-oRu" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="eMT-K0-PiM" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="2513" y="466"/>
         </scene>
@@ -2713,6 +2709,7 @@ Delta uses OpenVGDB to provide automatic artwork for imported games.</string>
         </scene>
     </scenes>
     <resources>
+        <image name="ellipsis.circle" catalog="system" width="128" height="123"/>
         <image name="envelope" catalog="system" width="128" height="85"/>
         <image name="person" catalog="system" width="128" height="121"/>
         <namedColor name="Purple">
