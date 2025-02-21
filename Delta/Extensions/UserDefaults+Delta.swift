@@ -16,4 +16,6 @@ extension UserDefaults
     @NSManaged var shouldFetchFriendZonePatrons: Bool
     
     @NSManaged var isExternalPurchaseLinkDisabled: Bool
+    
+    @NSManaged var didShowWhatsNew: Bool
 }

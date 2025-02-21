@@ -199,6 +199,17 @@ extension GamesViewController
         self.sync()
     }
     
+    override func viewDidAppear(_ animated: Bool)
+    {
+        super.viewDidAppear(animated)
+        
+        if !UserDefaults.standard.didShowWhatsNew
+        {
+            self.performSegue(withIdentifier: "showWhatsNew", sender: nil)
+            UserDefaults.standard.didShowWhatsNew = true
+        }
+    }
+    
     override func didReceiveMemoryWarning()
     {
         super.didReceiveMemoryWarning()
