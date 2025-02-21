@@ -32,7 +32,3 @@ struct PlayWithLuOptions {
             description: "Lu can save your previous questions and responses to provide context-aware advice and follow-up suggestions for each game.")
     var rememberConversations: Bool = false
 }
-
-extension Notification.Name {
-    static let settingsDidChange = Notification.Name("Settings.didChangeNotification")
-}
