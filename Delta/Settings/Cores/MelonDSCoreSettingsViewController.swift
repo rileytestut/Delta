@@ -313,7 +313,7 @@ extension MelonDSCoreSettingsViewController
             
             if let preferredServer = Settings.preferredWFCServer
             {
-                if let knownServer = WFCServer.knownServers.first(where: { $0.dns == preferredServer })
+                if let servers = UserDefaults.standard.wfcServers, let knownServer = servers.first(where: { $0.dns == preferredServer })
                 {
                     // Server matches known server, so display its name instead.
                     cell.detailTextLabel?.text = knownServer.name
@@ -398,7 +398,7 @@ extension MelonDSCoreSettingsViewController
                 let alertController = UIAlertController(title: String(localized: "Are you sure you want to reset your WFC configuration?"), message: String(localized: "You may need to re-register any friend codes you've added."), preferredStyle: .actionSheet)
                 alertController.addAction(.cancel)
                 alertController.addAction(UIAlertAction(title: String(localized: "Reset WFC Configuration"), style: .destructive) { [weak self] _ in
-                    Settings.resetWFCConfiguration()
+                    WFCManager.shared.resetWFCConfiguration()
                     self?.tableView.reloadData()
                 })
                 alertController.popoverPresentationController?.sourceView = self.tableView

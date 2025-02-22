@@ -8,6 +8,8 @@
 
 import SwiftUI
 
+import MelonDSDeltaCore
+
 @available(iOS 15, *)
 extension WFCServersView
 {
@@ -19,10 +21,40 @@ extension WFCServersView
         @Published
         var preferredDNS: String?
         
+        @Published
+        var knownServers: [WFCServer]?
+        
         init()
         {
             self.customDNS = Settings.customWFCServer ?? ""
             self.preferredDNS = Settings.preferredWFCServer
+            
+            self.setKnownServers(UserDefaults.standard.wfcServers)
+        }
+        
+        func setKnownServers(_ knownServers: [WFCServer]?)
+        {
+            if var knownServers
+            {
+                if
+                    FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.bios7URL.path) ||
+                        FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.bios9URL.path) ||
+                        FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.firmwareURL.path)
+                {
+                    // User is using BIOS files, so make Wiimmfi the 2nd option.
+                    if let wiimmfi = knownServers.first(where: { $0.dns == "167.235.229.36" }), knownServers.count > 1
+                    {
+                        knownServers.removeFirst()
+                        knownServers.insert(wiimmfi, at: 1)
+                    }
+                }
+                
+                self.knownServers = knownServers
+            }
+            else
+            {
+                self.knownServers = nil
+            }
         }
     }
 }
@@ -48,12 +80,15 @@ struct WFCServersView: View
                 }
             }
             
-            Section("Popular") {
-                ForEach(WFCServer.knownServers) { server in
-                    Button {
-                        viewModel.preferredDNS = server.dns
-                    } label: {
-                        knownServerRow(for: server)
+            if let knownServers = viewModel.knownServers
+            {
+                Section("Popular") {
+                    ForEach(knownServers) { server in
+                        Button {
+                            viewModel.preferredDNS = server.dns
+                        } label: {
+                            knownServerRow(for: server)
+                        }
                     }
                 }
             }
@@ -73,6 +108,12 @@ struct WFCServersView: View
         }
         .onChange(of: viewModel.preferredDNS) { newValue in
             Settings.preferredWFCServer = newValue
+        }
+        .task(priority: .medium) {
+            if let knownServers = try? await WFCManager.shared.updateKnownWFCServers().value
+            {
+                viewModel.setKnownServers(knownServers)
+            }
         }
     }
     
@@ -100,10 +141,13 @@ struct WFCServersView: View
                         .foregroundColor(.accentColor)
                 }
                 
-                Button {
-                    UIApplication.shared.open(server.url, completionHandler: nil)
-                } label: {
-                    Image(systemName: "info.circle")
+                if let url = server.url
+                {
+                    Button {
+                        UIApplication.shared.open(url, completionHandler: nil)
+                    } label: {
+                        Image(systemName: "info.circle")
+                    }
                 }
             }
         }

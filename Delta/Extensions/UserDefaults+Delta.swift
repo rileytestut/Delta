@@ -17,5 +17,7 @@ extension UserDefaults
     
     @NSManaged var isExternalPurchaseLinkDisabled: Bool
     
+    @NSManaged var didShowChooseWFCServerAlert: Bool
+    
     @NSManaged var didShowWhatsNew: Bool
 }

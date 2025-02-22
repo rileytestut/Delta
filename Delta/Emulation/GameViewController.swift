@@ -2410,8 +2410,3 @@ private extension UserDefaults
     
     @NSManaged var jitEnabledAlertCount: Int
 }
-
-extension UserDefaults
-{
-    @NSManaged var didShowChooseWFCServerAlert: Bool
-}

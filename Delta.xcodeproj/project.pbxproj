@@ -211,6 +211,7 @@
 		D5864978297756CE0081477E /* CheatBaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5864977297756CE0081477E /* CheatBaseView.swift */; };
 		D59B50B72C06666A00FDC53A /* Delta7ToDelta8.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = D59B50B62C06666A00FDC53A /* Delta7ToDelta8.xcmappingmodel */; };
 		D5A287252C23A1AC009883C3 /* SkinDebugging.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A287242C23A1AC009883C3 /* SkinDebugging.swift */; };
+		D5A2CAC02D69660800FBA4E4 /* WFCManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A2CABF2D69660800FBA4E4 /* WFCManager.swift */; };
 		D5A817B329DF6C6C00904AFE /* ExperimentalFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A817B229DF6C6C00904AFE /* ExperimentalFeatures.swift */; };
 		D5A98CE2284EF14B00E023E5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A98CE1284EF14B00E023E5 /* SceneDelegate.swift */; };
 		D5A9C00329DDED6D00A8D610 /* ExperimentalFeaturesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A9C00229DDED6D00A8D610 /* ExperimentalFeaturesView.swift */; };
@@ -541,6 +542,7 @@
 		D5A1375A2A7D8F2600AB1372 /* ReviewSaveStatesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewSaveStatesViewController.swift; sourceTree = "<group>"; };
 		D5A137662A7DB37200AB1372 /* GamePickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamePickerViewController.swift; sourceTree = "<group>"; };
 		D5A287242C23A1AC009883C3 /* SkinDebugging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkinDebugging.swift; sourceTree = "<group>"; };
+		D5A2CABF2D69660800FBA4E4 /* WFCManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WFCManager.swift; sourceTree = "<group>"; };
 		D5A817AF29DF4E6E00904AFE /* CustomTintColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTintColor.swift; sourceTree = "<group>"; };
 		D5A817B229DF6C6C00904AFE /* ExperimentalFeatures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExperimentalFeatures.swift; sourceTree = "<group>"; };
 		D5A98CE1284EF14B00E023E5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -1010,6 +1012,7 @@
 				D5A9BFFF29DDECF500A8D610 /* Experimental Features */,
 				D5AA0F0C2CE3F3820015D134 /* Patreon */,
 				D50CA1552D419E4B00F54920 /* Games */,
+				D5A2CABC2D6962FA00FBA4E4 /* WFC */,
 				D5D797E4298D944C00738869 /* Contributors */,
 			);
 			path = Settings;
@@ -1287,6 +1290,14 @@
 				D54529CD2D0CF41100E6EBDD /* OnlineMultiplayer.swift */,
 			);
 			path = Features;
+			sourceTree = "<group>";
+		};
+		D5A2CABC2D6962FA00FBA4E4 /* WFC */ = {
+			isa = PBXGroup;
+			children = (
+				D5A2CABF2D69660800FBA4E4 /* WFCManager.swift */,
+			);
+			path = WFC;
 			sourceTree = "<group>";
 		};
 		D5A9BFFF29DDECF500A8D610 /* Experimental Features */ = {
@@ -1823,6 +1834,7 @@
 				BFFC46231D5984A000AF2CC6 /* LaunchViewController.swift in Sources */,
 				D5864970297734280081477E /* CheatMetadata.swift in Sources */,
 				D5AA0F162CE3F6600015D134 /* FriendZoneManager.swift in Sources */,
+				D5A2CAC02D69660800FBA4E4 /* WFCManager.swift in Sources */,
 				BF8DDD241F4F6C880088A21B /* InputCalloutView.swift in Sources */,
 				D50CA1572D419E7100F54920 /* GameSettingsView.swift in Sources */,
 				D5AE76B92C2B52820086471B /* PatreonAPI.swift in Sources */,
