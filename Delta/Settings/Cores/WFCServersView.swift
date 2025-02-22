@@ -22,6 +22,9 @@ extension WFCServersView
         var preferredDNS: String?
         
         @Published
+        var isAskingForConfirmation: Bool = false
+        
+        @Published
         var knownServers: [WFCServer]?
         
         init()
@@ -107,7 +110,17 @@ struct WFCServersView: View
             viewModel.preferredDNS = newValue
         }
         .onChange(of: viewModel.preferredDNS) { newValue in
-            Settings.preferredWFCServer = newValue
+            guard newValue != Settings.preferredWFCServer else { return }
+            
+            if Settings.preferredWFCServer != nil && UserDefaults.standard.object(forKey: MelonDS.wfcIDUserDefaultsKey) != nil
+            {
+                // User has previously chosen server and successfully connected at least once, so ask for confirmation before changing.
+                viewModel.isAskingForConfirmation = true
+            }
+            else
+            {
+                Settings.preferredWFCServer = newValue
+            }
         }
         .task(priority: .medium) {
             if let knownServers = try? await WFCManager.shared.updateKnownWFCServers().value
@@ -115,6 +128,22 @@ struct WFCServersView: View
                 viewModel.setKnownServers(knownServers)
             }
         }
+        .alert("Are you sure you want to change WFC servers?",
+               isPresented: $viewModel.isAskingForConfirmation,
+               presenting: viewModel.preferredDNS,
+               actions: { preferredDNS in
+            
+            Button("Change Server", role: .destructive) {
+                // Reset configuration, then assign Settings.preferredWFCServer to new server
+                WFCManager.shared.resetWFCConfiguration()
+                Settings.preferredWFCServer = preferredDNS
+            }
+            
+            Button("Cancel", role: .cancel) {
+                // Revert viewModel to previous server
+                viewModel.preferredDNS = Settings.preferredWFCServer
+            }
+        }, message: { _ in Text("You may need to re-register any friend codes you've added.") })
     }
     
     @ViewBuilder
