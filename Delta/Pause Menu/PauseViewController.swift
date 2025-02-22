@@ -19,7 +19,7 @@ class PauseViewController: UIViewController, PauseInfoProviding
     }
     
     var pauseItems: [MenuItem] {
-        return [self.saveStateItem, self.loadStateItem, self.cheatCodesItem, self.fastForwardItem, self.sustainButtonsItem, self.screenshotItem].compactMap { $0 }
+        return [self.saveStateItem, self.loadStateItem, self.cheatCodesItem, self.fastForwardItem, self.sustainButtonsItem, self.screenshotItem, self.askLuItem].compactMap { $0 }
     }
     
     var closeButtonTitle: String = NSLocalizedString("Main Menu", comment: "")
@@ -31,6 +31,7 @@ class PauseViewController: UIViewController, PauseInfoProviding
     var fastForwardItem: MenuItem?
     var sustainButtonsItem: MenuItem?
     var screenshotItem: MenuItem?
+    var askLuItem: MenuItem?
     
     /// PauseInfoProviding
     var pauseText: String?
@@ -209,6 +210,10 @@ private extension PauseViewController
         {
             let menu = self.makeFastForwardMenu(for: emulatorCore.game)
             self.fastForwardItem?.menu = menu
+        }
+        // Add Lu menu item if enabled
+        if ExperimentalFeatures.shared.Lu.isEnabled {
+            self.askLuItem = self.configureLuMenuItem()
         }
     }
     

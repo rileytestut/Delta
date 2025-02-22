@@ -167,6 +167,9 @@
 		BFFDF03723E3BB2600931B96 /* libSnes9x.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BFFDF03623E3BB2600931B96 /* libSnes9x.a */; };
 		BFFDF03F23E3C28A00931B96 /* libGambatte.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BFFDF03D23E3C0F000931B96 /* libGambatte.a */; };
 		BFFDF04623E3D3A600931B96 /* libMupen64Plus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BFFDF04523E3D3A600931B96 /* libMupen64Plus.a */; };
+		C6F24AD72D64B452002F939F /* Lu.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F24AD62D64B452002F939F /* Lu.swift */; };
+		C6F24AD92D64B550002F939F /* PauseViewController+Lu.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F24AD82D64B550002F939F /* PauseViewController+Lu.swift */; };
+		C6F24ADB2D64B5A0002F939F /* Lu-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C6F24ADA2D64B5A0002F939F /* Lu-Info.plist */; };
 		D5011C48281B6E8B00A0760B /* CharacterSet+Filename.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5011C47281B6E8B00A0760B /* CharacterSet+Filename.swift */; };
 		D50CA1572D419E7100F54920 /* GameSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50CA1562D419E7100F54920 /* GameSettingsView.swift */; };
 		D510BC752A5CA9F500450CC0 /* Delta6ToDelta7.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = D510BC742A5CA9F500450CC0 /* Delta6ToDelta7.xcmappingmodel */; };
@@ -486,6 +489,9 @@
 		BFFDF03623E3BB2600931B96 /* libSnes9x.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libSnes9x.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFFDF03D23E3C0F000931B96 /* libGambatte.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libGambatte.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFFDF04523E3D3A600931B96 /* libMupen64Plus.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libMupen64Plus.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		C6F24AD62D64B452002F939F /* Lu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lu.swift; sourceTree = "<group>"; };
+		C6F24AD82D64B550002F939F /* PauseViewController+Lu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PauseViewController+Lu.swift"; sourceTree = "<group>"; };
+		C6F24ADA2D64B5A0002F939F /* Lu-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Lu-Info.plist"; sourceTree = "<group>"; };
 		C786AF1D2DDB6223BE2063CC /* Pods-Delta.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Delta.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Delta/Pods-Delta.debug.xcconfig"; sourceTree = "<group>"; };
 		D5011C47281B6E8B00A0760B /* CharacterSet+Filename.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CharacterSet+Filename.swift"; sourceTree = "<group>"; };
 		D50CA1562D419E7100F54920 /* GameSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSettingsView.swift; sourceTree = "<group>"; };
@@ -669,6 +675,7 @@
 				D5EB601A2C0E6190007C543C /* Stream+Conveniences.swift */,
 				D5F702FC2C24CE5300DCD271 /* UISceneSession+Delta.swift */,
 				D5E12AEA2D011579000C7531 /* String+Profanity.swift */,
+				C6F24AD82D64B550002F939F /* PauseViewController+Lu.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1153,6 +1160,7 @@
 				BF27CC861BC9E3C600A20D89 /* Delta.entitlements */,
 				BFFA71DB1AAC406100EE9DD1 /* Info.plist */,
 				BFAB9F87219A4B670080EC7D /* GoogleService-Info.plist */,
+				C6F24ADA2D64B5A0002F939F /* Lu-Info.plist */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
@@ -1276,6 +1284,7 @@
 				D5147EC72A817B4A00D6CD64 /* ReviewSaveStatesOptions.swift */,
 				D5A287242C23A1AC009883C3 /* SkinDebugging.swift */,
 				D54529CD2D0CF41100E6EBDD /* OnlineMultiplayer.swift */,
+				C6F24AD62D64B452002F939F /* Lu.swift */,
 			);
 			path = Features;
 			sourceTree = "<group>";
@@ -1561,6 +1570,7 @@
 				BF5E7F461B9A652600AE44F8 /* Settings.storyboard in Resources */,
 				BF02D5DA1DDEBB3000A5E131 /* openvgdb.sqlite in Resources */,
 				D53415A7298C78BC00FD67B1 /* Contributors.plist in Resources */,
+				C6F24ADB2D64B5A0002F939F /* Lu-Info.plist in Resources */,
 				BF71CF8A1FE904B1001F1613 /* GameTableViewCell.xib in Resources */,
 				BFFC46461D59861000AF2CC6 /* LaunchScreen.storyboard in Resources */,
 				BF1F45AB21AF4B5800EF9895 /* SyncResultsViewController.storyboard in Resources */,
@@ -1756,6 +1766,7 @@
 				BF48F74E219A16DA00BC2FC1 /* SyncingServicesViewController.swift in Sources */,
 				D552DE3A2D39C5A500E737BE /* WFCServersView.swift in Sources */,
 				D5A9C01D29DE058C00A8D610 /* VariableFastForward.swift in Sources */,
+				C6F24AD92D64B550002F939F /* PauseViewController+Lu.swift in Sources */,
 				BFE593CA21F3F8B7003412A6 /* GameSave.swift in Sources */,
 				BF63A1B521A4B76E00EE8F61 /* RecordVersionsViewController.swift in Sources */,
 				BF6424831F5B8F3F00D6AB44 /* ListMenuViewController.swift in Sources */,
@@ -1863,6 +1874,7 @@
 				D54A4BB329E4D27E004C7D57 /* FeatureDetailView.swift in Sources */,
 				BF3540021C5DA3D500C1184C /* PauseStoryboardSegue.swift in Sources */,
 				BF107EC41BF413F000E0C32C /* GamesViewController.swift in Sources */,
+				C6F24AD72D64B452002F939F /* Lu.swift in Sources */,
 				BF3D6C512202865F0083E05A /* Delta2ToDelta3.xcmappingmodel in Sources */,
 				BF59426F1E09BC5D0051894B /* DatabaseManager.swift in Sources */,
 				D5CDCCEF2A859E5300E22131 /* OSLog+Delta.swift in Sources */,
