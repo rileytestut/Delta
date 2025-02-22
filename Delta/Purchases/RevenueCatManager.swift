@@ -192,6 +192,8 @@ class RevenueCatManager
         guard !self.isStarted else { return }
         self.isStarted = true
         
+        #if APP_STORE
+        
         Task<Void, Never> {
             for await customerInfo in Purchases.shared.customerInfoStream
             {
@@ -231,6 +233,8 @@ class RevenueCatManager
                 }
             }
         }
+        
+        #endif
     }
     
     func setDisplayName(_ name: String) async throws
