@@ -52,7 +52,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="importButton" destination="FeA-O5-xd2" id="A44-3S-Okz"/>
-                        <segue destination="htE-Bn-kea" kind="presentation" identifier="showWhatsNew" id="Gds-Yh-cTP"/>
+                        <segue destination="htE-Bn-kea" kind="presentation" identifier="showWhatsNew" modalPresentationStyle="formSheet" id="Gds-Yh-cTP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JYx-xE-nis" userLabel="First Responder" sceneMemberID="firstResponder"/>
