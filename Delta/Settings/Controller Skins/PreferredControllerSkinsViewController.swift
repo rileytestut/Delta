@@ -11,6 +11,25 @@ import UIKit
 // Access UIWindowScene.isStageManagerEnabled
 @_spi(Internal) import DeltaCore
 
+private extension UIImage
+{
+    static var gameController: UIImage? {
+        UIImage(systemName: "gamecontroller")
+    }
+    
+    static var noGameController: UIImage? {
+        if #available(iOS 16, *)
+        {
+            // Custom SF Symbols only supported on iOS 16+
+            UIImage(named: "gamecontroller.slash")
+        }
+        else
+        {
+            UIImage(named: "hand.point.up.left")
+        }
+    }
+}
+
 extension PreferredControllerSkinsViewController
 {
     private enum Section: Int
@@ -113,6 +132,8 @@ extension PreferredControllerSkinsViewController
         {
             self.navigationItem.titleView = nil
         }
+        
+        self.update()
     }
     
     override func viewIsAppearing(_ animated: Bool)
@@ -274,6 +295,8 @@ private extension PreferredControllerSkinsViewController
 {
     func update()
     {
+        self.filterButton.image = self.isExternalControllerSkin ? .gameController : .noGameController
+        
         switch self.variant
         {
         case .standard: self.navigationItem.rightBarButtonItem = self.filterButton
@@ -403,11 +426,11 @@ private extension PreferredControllerSkinsViewController
         let actionsProvider: (([UIMenuElement]) -> Void) -> Void = { [weak self] completion in
             guard let self else { return completion([]) }
             
-            let noControllerAction = UIAction(title: NSLocalizedString("Touch", comment: ""), image: UIImage(systemName: "hand.point.up.left"), state: self.isExternalControllerSkin ? .off : .on) { _ in
+            let noControllerAction = UIAction(title: NSLocalizedString("No Game Controller", comment: ""), image: .noGameController, state: self.isExternalControllerSkin ? .off : .on) { _ in
                 self.changeFilter(isExternalControllerSkin: false)
             }
             
-            let connectedControllerAction = UIAction(title: NSLocalizedString("Game Controller", comment: ""), image: UIImage(systemName: "gamecontroller"), state: self.isExternalControllerSkin ? .on : .off) { _ in
+            let connectedControllerAction = UIAction(title: NSLocalizedString("Game Controller", comment: ""), image: .gameController, state: self.isExternalControllerSkin ? .on : .off) { _ in
                 self.changeFilter(isExternalControllerSkin: true)
             }
             
