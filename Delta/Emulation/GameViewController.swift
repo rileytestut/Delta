@@ -161,6 +161,7 @@ class GameViewController: DeltaCore.GameViewController
     }
     
     private var _isLoadingSaveState = false
+    private var _onlineConnectionDate: Date?
     
     // Handoff
     private var isContinuingHandoff = false
@@ -474,6 +475,17 @@ extension GameViewController
         }, completion: nil)        
     }
     
+    override func viewDidLayoutSubviews()
+    {
+        super.viewDidLayoutSubviews()
+        
+        if let sustainButtonsBackgroundView
+        {
+            // Fixes Hold Button description laying out vertically after orientation change.
+            sustainButtonsBackgroundView.detailTextLabel.preferredMaxLayoutWidth = sustainButtonsBackgroundView.bounds.width
+        }
+    }
+    
     // MARK: - Segues
     /// KVO
     
@@ -523,6 +535,11 @@ extension GameViewController
             pauseViewController.cheatsViewControllerDelegate = self
             pauseViewController.closeButtonTitle = self.isGameScene ? NSLocalizedString("Close", comment: "") : NSLocalizedString("Main Menu", comment: "")
             
+            if let traits = self.controllerView.controllerSkinTraits, let menuInsets = self.controllerView.controllerSkin?.menuInsets(for: traits)
+            {
+                pauseViewController.menuInsets = menuInsets
+            }
+                        
             pauseViewController.fastForwardItem?.isSelected = (self.emulatorCore?.rate != self.emulatorCore?.deltaCore.supportedRates.lowerBound)
             pauseViewController.fastForwardItem?.action = { [unowned self] item in
                 self.performFastForwardAction(activate: item.isSelected)
@@ -889,6 +906,18 @@ private extension GameViewController
         }
         
         self.updateExternalDisplay()
+        
+        if let pauseViewController
+        {
+            if let traits = self.controllerView.controllerSkinTraits, let menuInsets = self.controllerView.controllerSkin?.menuInsets(for: traits)
+            {
+                pauseViewController.menuInsets = menuInsets
+            }
+            else
+            {
+                pauseViewController.menuInsets = .zero
+            }
+        }
         
         self.view.setNeedsLayout()
     }
@@ -1745,11 +1774,13 @@ extension GameViewController
 
 private extension GameViewController
 {
-    func show(_ toastView: RSTToastView, duration: TimeInterval = 3.0)
+    func show(_ toastView: RSTToastView, in superview: UIView? = nil, duration: TimeInterval = 3.0)
     {
+        let superview = superview ?? self.view!
+        
         toastView.textLabel.textAlignment = .center
         toastView.presentationEdge = .top
-        toastView.show(in: self.view, duration: duration)
+        toastView.show(in: superview, duration: duration)
     }
     
     func showJITEnabledAlert()
@@ -1792,6 +1823,53 @@ private extension GameViewController
                 presentToastView()
             }
         }
+    }
+    
+    @available(iOS 15, *)
+    func chooseWFCServer()
+    {
+        let viewController = WFCServersView.makeViewController()
+        
+        let navigationController = UINavigationController(rootViewController: viewController)
+        navigationController.isModalInPresentation = true
+        
+        func finish()
+        {
+            if let preferredWFCServer = Settings.preferredWFCServer
+            {
+                let alertController = UIAlertController(title: NSLocalizedString("Restart Required", comment: ""), message: NSLocalizedString("Please restart this game to apply your changes.", comment: ""), preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: NSLocalizedString("Restart", comment: ""), style: .destructive) { _ in
+                    if let emulatorBridge = self.emulatorCore?.deltaCore.emulatorBridge as? MelonDSEmulatorBridge
+                    {
+                        emulatorBridge.wfcDNS = preferredWFCServer
+                    }
+                    
+                    self.emulatorCore?.stop()
+                    self.emulatorCore?.start()
+                    
+                    navigationController.dismiss(animated: true)
+                })
+                alertController.addAction(UIAlertAction(title: NSLocalizedString("Later", comment: ""), style: .cancel) { _ in
+                    self.emulatorCore?.resume()
+                    navigationController.dismiss(animated: true)
+                })
+                
+                viewController.present(alertController, animated: true)
+            }
+            else
+            {
+                // No changes, so just resume + dismiss navigationController.
+                self.emulatorCore?.resume()
+                navigationController.dismiss(animated: true)
+            }
+        }
+        
+        let doneButton = UIBarButtonItem(systemItem: .done, primaryAction: UIAction { _ in
+            finish()
+        })
+        viewController.navigationItem.rightBarButtonItem = doneButton
+        
+        self.present(navigationController, animated: true)
     }
 }
 
@@ -2127,11 +2205,36 @@ private extension GameViewController
         guard let bridge = notification.object as? EmulatorBridging, bridge.gameURL == self.game?.fileURL, ExperimentalFeatures.shared.dsOnlineMultiplayer.isEnabled else { return }
         
         guard let emulatorCore, !emulatorCore.isWirelessMultiplayerActive else { return }
+        
+        if Settings.preferredWFCServer == nil && !UserDefaults.standard.didShowChooseWFCServerAlert, #available(iOS 15, *)
+        {
+            // Ask user to choose preferred WFC server before connecting online.
+            
+            DispatchQueue.main.async {
+                emulatorCore.pause()
+                
+                let alertController = UIAlertController(title: NSLocalizedString("Choose WFC Server", comment: ""), message: NSLocalizedString("You must choose a 3rd-party WFC server to use Nintendo DS online features.", comment: ""), preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: NSLocalizedString("Later", comment: ""), style: .cancel) { _ in
+                    emulatorCore.resume()
+                })
+                alertController.addAction(UIAlertAction(title: NSLocalizedString("Choose Server", comment: ""), style: .default) { _ in
+                    self.chooseWFCServer()
+                })
+                
+                self.present(alertController, animated: true)
+                UserDefaults.standard.didShowChooseWFCServerAlert = true
+            }
+            
+            return
+        }
+        
         emulatorCore.isWirelessMultiplayerActive = true
+        emulatorCore.rate = 1.0 // Disable FF in case it is currently enabled.
         
         DispatchQueue.main.async {
             let toastView = RSTToastView(text: NSLocalizedString("Connecting to Nintendo WFC…", comment: ""), detailText: NSLocalizedString("Some features will be disabled while playing online.", comment: ""))
-            self.show(toastView, duration: 5.0)
+            self.show(toastView, in: self.view.window, duration: 5.0) // Show in window to fix not receiving touches 🤷‍♂️
+            self._onlineConnectionDate = Date()
         }
     }
     
@@ -2144,7 +2247,24 @@ private extension GameViewController
         
         DispatchQueue.main.async {
             let toastView = RSTToastView(text: NSLocalizedString("Disconnected from Nintendo WFC", comment: ""), detailText: nil)
-            self.show(toastView)
+            var duration = 3.0
+            
+            if let onlineConnectionDate = self._onlineConnectionDate, Date().timeIntervalSince(onlineConnectionDate) < 30
+            {
+                // If we're disconnecting within 30 seconds of connecting, show troubleshooting message.
+                toastView.detailTextLabel.text = NSLocalizedString("⚠️ Tap to view our Troubleshooting Guide.", comment: "")
+                
+                let action = UIAction { _ in
+                    let troubleshootingGuideURL = URL(string: "https://faq.deltaemulator.com/using-delta/online-multiplayer")!
+                    UIApplication.shared.open(troubleshootingGuideURL, options: [:])
+                }
+                toastView.addAction(action, for: .touchUpInside)
+                
+                duration = 5.0
+            }
+            
+            self.show(toastView, in: self.view.window, duration: duration) // Show in window to fix not receiving touches 🤷‍♂️
+            self._onlineConnectionDate = nil
         }
     }
     

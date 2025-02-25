@@ -472,14 +472,30 @@ private extension SaveStatesViewController
             }
             else
             {
-                // DeltaCore has no version, so fall back to showing all save states.
-                return predicate
+                switch filter
+                {
+                case .compatible:
+                    // DeltaCore has no version, so fall back to showing all save states.
+                    return predicate
+                    
+                case .incompatible:
+                    // DeltaCore has no version, so there can't be any incompatible save states.
+                    return NSPredicate(value: false)
+                }
             }
         }
         else
         {
-            let predicate = NSPredicate(format: "%K == %@", #keyPath(SaveState.game), self.game)
-            return predicate
+            switch filter
+            {
+            case .compatible:
+                let predicate = NSPredicate(format: "%K == %@", #keyPath(SaveState.game), self.game)
+                return predicate
+                
+            case .incompatible:
+                // Don't show any incompatible save states for unrecognized systems.
+                return NSPredicate(value: false)
+            }
         }
     }
     
@@ -584,11 +600,18 @@ private extension SaveStatesViewController
         case .translucent:
             cell.isTextLabelVibrancyEnabled = true
             cell.isImageViewVibrancyEnabled = true
-        }        
+        }
         
-        let deltaCore = Delta.core(for: self.game.type)!
-        
-        let dimensions = deltaCore.videoFormat.dimensions
+        let dimensions: CGSize
+        if let deltaCore = Delta.core(for: self.game.type)
+        {
+            dimensions = deltaCore.videoFormat.dimensions
+        }
+        else
+        {
+            dimensions = CGSize(width: 1, height: 1)
+        }
+                
         cell.maximumImageSize = CGSize(width: self.prototypeCellWidthConstraint.constant, height: (self.prototypeCellWidthConstraint.constant / dimensions.width) * dimensions.height)
         
         cell.textLabel.font = UIFont.preferredFont(forTextStyle: .subheadline)

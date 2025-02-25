@@ -71,12 +71,19 @@ extension PauseStoryboardSegue: UIViewControllerAnimatedTransitioning
         let presentedView = transitionContext.view(forKey: .to)!
         let presentedViewController = transitionContext.viewController(forKey: .to)!
         
+        // Layout pause icon + game name initially without animation.
+        transitionContext.containerView.layoutIfNeeded()
+        
         presentedView.frame = transitionContext.finalFrame(for: presentedViewController)
         presentedView.frame.origin.y = transitionContext.containerView.bounds.height
         transitionContext.containerView.addSubview(presentedView)
         
-        self.animator.addAnimations { [unowned self] in
-            presentedView.frame = self.presentationController.frameOfPresentedViewInContainerView
+        // Layout presented view initially without animation.
+        presentedView.layoutIfNeeded()
+        
+        self.animator.addAnimations {
+            // Layout again to animate presentedView to correct frame.
+            transitionContext.containerView.layoutIfNeeded()
         }
         
         self.animator.addCompletion { position in

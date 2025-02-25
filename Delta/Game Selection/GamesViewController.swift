@@ -173,6 +173,8 @@ extension GamesViewController
             self.importController.barButtonItem = self.importButton
         }
         
+        self.navigationItem.leftBarButtonItem?.accessibilityLabel = NSLocalizedString("Settings", comment: "")
+        
         self.prepareSearchController()
         
         self.updateTheme()
@@ -195,6 +197,17 @@ extension GamesViewController
         }
         
         self.sync()
+    }
+    
+    override func viewDidAppear(_ animated: Bool)
+    {
+        super.viewDidAppear(animated)
+        
+        if !UserDefaults.standard.didShowWhatsNew
+        {
+            self.performSegue(withIdentifier: "showWhatsNew", sender: nil)
+            UserDefaults.standard.didShowWhatsNew = true
+        }
     }
     
     override func didReceiveMemoryWarning()

@@ -125,6 +125,8 @@ extension LaunchViewController
             FriendZoneManager.shared.updatePatronsIfNeeded()
         }
         
+        WFCManager.shared.updateKnownWFCServers()
+        
         func showGameViewController()
         {
             self.view.bringSubviewToFront(self.gameViewContainerView)

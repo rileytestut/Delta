@@ -171,10 +171,7 @@ class PausePresentationController: UIPresentationController
         self.presentedView?.setNeedsLayout()
         self.presentedView?.layoutIfNeeded()
         
-        if self.presentingViewController.transitionCoordinator == nil
-        {
-            self.presentedView?.frame = self.frameOfPresentedViewInContainerView
-        }
+        self.presentedView?.frame = self.frameOfPresentedViewInContainerView
         
         // Unhide pauseIconImageView so its height is involved with layout calculations
         self.pauseIconImageView.isHidden = false

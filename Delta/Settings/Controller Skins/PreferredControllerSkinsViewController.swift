@@ -22,12 +22,11 @@ extension PreferredControllerSkinsViewController
     private enum Variant
     {
         case standard
-        case controller
         case splitView
         case airPlay
         
         static var supportedVariants: [Variant] {
-            var supportedVariants: [Variant] = [.standard, .controller]
+            var supportedVariants: [Variant] = [.standard]
             
             if UIDevice.current.userInterfaceIdiom == .pad
             {
@@ -52,8 +51,6 @@ extension PreferredControllerSkinsViewController
                 case .pad: return NSLocalizedString("Full Screen", comment: "")
                 default: return NSLocalizedString("Standard", comment: "")
                 }
-                
-            case .controller: return NSLocalizedString("Controller", comment: "")
                 
             case .splitView:
                 if #available(iOS 16, *), scene.isStageManagerEnabled
@@ -83,10 +80,13 @@ class PreferredControllerSkinsViewController: UITableViewController
     }
     
     private var variant: Variant = .standard
+    private var isExternalControllerSkin: Bool = false
     
     @IBOutlet private var portraitImageView: UIImageView!
     @IBOutlet private var landscapeImageView: UIImageView!
     @IBOutlet private var variantSegmentedControl: UISegmentedControl!
+    
+    @IBOutlet private var filterButton: UIBarButtonItem!
     
     private var _previousBoundsSize: CGSize?
     private var portraitControllerSkin: ControllerSkin?
@@ -105,13 +105,14 @@ extension PreferredControllerSkinsViewController
         
         self.title = self.game?.name ?? self.system.localizedShortName
         
-        if self.navigationController?.viewControllers.first != self
-        {
-            // Hide Done button since we are not root view controller.
-            self.navigationItem.rightBarButtonItem = nil
-        }
-        
         self.variantSegmentedControl.removeAllSegments()
+        
+        self.prepareFilterMenu()
+        
+        if Variant.supportedVariants.count == 1
+        {
+            self.navigationItem.titleView = nil
+        }
     }
     
     override func viewIsAppearing(_ animated: Bool)
@@ -197,18 +198,39 @@ extension PreferredControllerSkinsViewController
         
         if let game = self.game
         {
-            switch section
+            switch (section, self.variant, self.isExternalControllerSkin)
             {
-            case .portrait: isResetButtonVisible = (game.preferredPortraitSkin != nil)
-            case .landscape: isResetButtonVisible = (game.preferredLandscapeSkin != nil)
+            case (.portrait, .standard, false): isResetButtonVisible = (game.preferredPortraitSkin != nil)
+            case (.landscape, .standard, false): isResetButtonVisible = (game.preferredLandscapeSkin != nil)
+                
+            case (.portrait, .standard, true): isResetButtonVisible = (game.preferredExternalControllerPortraitSkin != nil)
+            case (.landscape, .standard, true): isResetButtonVisible = (game.preferredExternalControllerLandscapeSkin != nil)
+                
+            case (.portrait, .splitView, _): isResetButtonVisible = (game.preferredSplitViewPortraitSkin != nil)
+            case (.landscape, .splitView, _): isResetButtonVisible = (game.preferredSplitViewLandscapeSkin != nil)
+                
+            case (.portrait, .airPlay, _), (.landscape, .airPlay, _): isResetButtonVisible = false //TODO: Support per-game AirPlay skins
             }
         }
         else
         {
-            switch section
+            if self.isExternalControllerSkin
             {
-            case .portrait: isResetButtonVisible = !(self.portraitControllerSkin?.isStandard ?? false)
-            case .landscape: isResetButtonVisible = !(self.landscapeControllerSkin?.isStandard ?? false)
+                // Show reset button if controller skin is non-nil.
+                switch section
+                {
+                case .portrait: isResetButtonVisible = (self.portraitControllerSkin != nil)
+                case .landscape: isResetButtonVisible = (self.landscapeControllerSkin != nil)
+                }
+            }
+            else
+            {
+                // Show reset button if controller skin is not a standard skin.
+                switch section
+                {
+                case .portrait: isResetButtonVisible = !(self.portraitControllerSkin?.isStandard ?? false)
+                case .landscape: isResetButtonVisible = !(self.landscapeControllerSkin?.isStandard ?? false)
+                }
             }
         }
         
@@ -252,6 +274,12 @@ private extension PreferredControllerSkinsViewController
 {
     func update()
     {
+        switch self.variant
+        {
+        case .standard: self.navigationItem.rightBarButtonItem = self.filterButton
+        case .airPlay, .splitView: self.navigationItem.rightBarButtonItem = nil // External controller skins not (yet) supported for AirPlay and Split View.
+        }
+        
         self.tableView.reloadData()
         
         self.updateControllerSkins()
@@ -270,23 +298,21 @@ private extension PreferredControllerSkinsViewController
         
         var portraitControllerSkin: ControllerSkin?
         var landscapeControllerSkin: ControllerSkin?
-        
-        let isExternalControllerSkin = (self.variant == .controller)
-        
+                
         if let game = self.game
         {
-            portraitControllerSkin = Settings.preferredControllerSkin(for: game, traits: portraitTraits, forExternalController: isExternalControllerSkin)
-            landscapeControllerSkin = Settings.preferredControllerSkin(for: game, traits: landscapeTraits, forExternalController: isExternalControllerSkin)
+            portraitControllerSkin = Settings.preferredControllerSkin(for: game, traits: portraitTraits, forExternalController: self.isExternalControllerSkin)
+            landscapeControllerSkin = Settings.preferredControllerSkin(for: game, traits: landscapeTraits, forExternalController: self.isExternalControllerSkin)
         }
         
         if portraitControllerSkin == nil
         {
-            portraitControllerSkin = Settings.preferredControllerSkin(for: self.system, traits: portraitTraits, forExternalController: isExternalControllerSkin)
+            portraitControllerSkin = Settings.preferredControllerSkin(for: self.system, traits: portraitTraits, forExternalController: self.isExternalControllerSkin)
         }
         
         if landscapeControllerSkin == nil
         {
-            landscapeControllerSkin = Settings.preferredControllerSkin(for: self.system, traits: landscapeTraits, forExternalController: isExternalControllerSkin)
+            landscapeControllerSkin = Settings.preferredControllerSkin(for: self.system, traits: landscapeTraits, forExternalController: self.isExternalControllerSkin)
         }
         
         if portraitControllerSkin != self.portraitControllerSkin || portraitTraits != self.portraitTraits
@@ -361,18 +387,6 @@ private extension PreferredControllerSkinsViewController
             // Use defaults for iPhone
             break
             
-        case .controller:
-            // Use defaults for `controller`
-            
-            if traits.displayType == .splitView
-            {
-                // ..unless displayType is splitView, because we don't currently
-                // support external controller skins when in split view.
-                traits.displayType = .edgeToEdge
-            }
-            
-            break
-            
         case .airPlay:
             traits.displayType = .standard
             traits.device = .tv
@@ -383,6 +397,32 @@ private extension PreferredControllerSkinsViewController
         
         return traits
     }
+    
+    func prepareFilterMenu()
+    {
+        let actionsProvider: (([UIMenuElement]) -> Void) -> Void = { [weak self] completion in
+            guard let self else { return completion([]) }
+            
+            let noControllerAction = UIAction(title: NSLocalizedString("Touch", comment: ""), image: UIImage(systemName: "hand.point.up.left"), state: self.isExternalControllerSkin ? .off : .on) { _ in
+                self.changeFilter(isExternalControllerSkin: false)
+            }
+            
+            let connectedControllerAction = UIAction(title: NSLocalizedString("Game Controller", comment: ""), image: UIImage(systemName: "gamecontroller"), state: self.isExternalControllerSkin ? .on : .off) { _ in
+                self.changeFilter(isExternalControllerSkin: true)
+            }
+            
+            completion([noControllerAction, connectedControllerAction])
+        }
+        
+        let actions: UIDeferredMenuElement = if #available(iOS 15, *) {
+            UIDeferredMenuElement.uncached(actionsProvider)
+        } else {
+            UIDeferredMenuElement(actionsProvider)
+        }
+
+        let filterMenu = UIMenu(children: [actions])
+        self.filterButton.menu = filterMenu
+    }
 }
 
 private extension PreferredControllerSkinsViewController
@@ -392,6 +432,16 @@ private extension PreferredControllerSkinsViewController
         let variant = Variant.supportedVariants[sender.selectedSegmentIndex]
         self.variant = variant
         
+        // Always reset to non-external controller skin when changing variants.
+        self.isExternalControllerSkin = false
+        
+        self.update()
+    }
+    
+    func changeFilter(isExternalControllerSkin: Bool)
+    {
+        self.isExternalControllerSkin = isExternalControllerSkin
+        
         self.update()
     }
 }
@@ -400,15 +450,13 @@ extension PreferredControllerSkinsViewController: ControllerSkinsViewControllerD
 {
     func controllerSkinsViewController(_ controllerSkinsViewController: ControllerSkinsViewController, didChooseControllerSkin controllerSkin: ControllerSkin)
     {
-        let isExternalControllerSkin = (self.variant == .controller)
-        
         if let game = self.game
         {
-            Settings.setPreferredControllerSkin(controllerSkin, for: game, traits: controllerSkinsViewController.traits, forExternalController: isExternalControllerSkin)
+            Settings.setPreferredControllerSkin(controllerSkin, for: game, traits: controllerSkinsViewController.traits, forExternalController: self.isExternalControllerSkin)
         }
         else
         {
-            Settings.setPreferredControllerSkin(controllerSkin, for: self.system, traits: controllerSkinsViewController.traits, forExternalController: isExternalControllerSkin)
+            Settings.setPreferredControllerSkin(controllerSkin, for: self.system, traits: controllerSkinsViewController.traits, forExternalController: self.isExternalControllerSkin)
         }
         
         _ = self.navigationController?.popViewController(animated: true)
@@ -416,15 +464,13 @@ extension PreferredControllerSkinsViewController: ControllerSkinsViewControllerD
     
     func controllerSkinsViewControllerDidResetControllerSkin(_ controllerSkinsViewController: ControllerSkinsViewController)
     {
-        let isExternalControllerSkin = (self.variant == .controller)
-        
         if let game = self.game
         {
-            Settings.setPreferredControllerSkin(nil, for: game, traits: controllerSkinsViewController.traits, forExternalController: isExternalControllerSkin)
+            Settings.setPreferredControllerSkin(nil, for: game, traits: controllerSkinsViewController.traits, forExternalController: self.isExternalControllerSkin)
         }
         else
         {
-            Settings.setPreferredControllerSkin(nil, for: self.system, traits: controllerSkinsViewController.traits, forExternalController: isExternalControllerSkin)
+            Settings.setPreferredControllerSkin(nil, for: self.system, traits: controllerSkinsViewController.traits, forExternalController: self.isExternalControllerSkin)
         }
         
         _ = self.navigationController?.popViewController(animated: true)

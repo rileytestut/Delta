@@ -28,6 +28,12 @@ private extension MelonDSCoreSettingsViewController
         case dsiBIOS
     }
     
+    enum OnlineRow: Int
+    {
+        case server
+        case reset
+    }
+    
     @available(iOS 13, *)
     enum BIOSError: LocalizedError
     {
@@ -258,6 +264,10 @@ extension MelonDSCoreSettingsViewController
             let validKeys = DeltaCoreMetadata.Key.allCases.filter { core.metadata?[$0] != nil }
             return validKeys.count
             
+        case .online where Settings.preferredWFCServer == nil:
+            // We haven't chosen a WFC server yet, so hide "Reset WFC Configuration" setting.
+            return 1
+            
         default: break
         }
         
@@ -303,7 +313,7 @@ extension MelonDSCoreSettingsViewController
             
             if let preferredServer = Settings.preferredWFCServer
             {
-                if let knownServer = WFCServer.knownServers.first(where: { $0.dns == preferredServer })
+                if let servers = UserDefaults.standard.wfcServers, let knownServer = servers.first(where: { $0.dns == preferredServer })
                 {
                     // Server matches known server, so display its name instead.
                     cell.detailTextLabel?.text = knownServer.name
@@ -377,9 +387,27 @@ extension MelonDSCoreSettingsViewController
             
         case .online:
             guard #available(iOS 15, *) else { break }
-            let hostingController = WFCServersView.makeViewController()
-            self.navigationController?.pushViewController(hostingController, animated: true)
             
+            switch OnlineRow(rawValue: indexPath.item)!
+            {
+            case .server:
+                let hostingController = WFCServersView.makeViewController()
+                self.navigationController?.pushViewController(hostingController, animated: true)
+                
+            case .reset:
+                let alertController = UIAlertController(title: String(localized: "Are you sure you want to reset your WFC configuration?"), message: String(localized: "You may need to re-register any friend codes you've added."), preferredStyle: .actionSheet)
+                alertController.addAction(.cancel)
+                alertController.addAction(UIAlertAction(title: String(localized: "Reset WFC Configuration"), style: .destructive) { [weak self] _ in
+                    WFCManager.shared.resetWFCConfiguration()
+                    self?.tableView.reloadData()
+                })
+                alertController.popoverPresentationController?.sourceView = self.tableView
+                alertController.popoverPresentationController?.sourceRect = self.tableView.rectForRow(at: indexPath)
+                self.present(alertController, animated: true)
+                
+                self.tableView.deselectRow(at: indexPath, animated: true)
+            }
+                        
         case .dsBIOS:
             let bios = DSBIOS.allCases[indexPath.row]
             self.locate(bios)
@@ -412,6 +440,7 @@ extension MelonDSCoreSettingsViewController
         switch section
         {
         case _ where isSectionHidden(section): return nil
+        case .online where Settings.preferredWFCServer != nil: return nil
         case .dsBIOS, .dsiBIOS:
             guard #available(iOS 15, *) else { break }
             return nil

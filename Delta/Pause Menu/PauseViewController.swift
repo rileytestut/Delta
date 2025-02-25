@@ -24,6 +24,17 @@ class PauseViewController: UIViewController, PauseInfoProviding
     
     var closeButtonTitle: String = NSLocalizedString("Main Menu", comment: "")
     
+    var menuInsets: UIEdgeInsets? {
+        didSet {
+            // Do NOT update insets until view is loaded, or else the presentation animation may be incorrect.
+            guard self.isViewLoaded else { return }
+            
+            self.updateSafeAreaInsets()
+            self.presentationController?.containerView?.setNeedsLayout()
+            self.presentationController?.containerView?.layoutIfNeeded()
+        }
+    }
+    
     /// Pause Items
     var saveStateItem: MenuItem?
     var loadStateItem: MenuItem?
@@ -55,6 +66,9 @@ class PauseViewController: UIViewController, PauseInfoProviding
             if preferredContentSize.height > 0
             {
                 preferredContentSize.height += self.pauseNavigationController.navigationBar.bounds.height
+                
+                // Add additionalSafeAreaInsets.bottom (not menuInsets.bottom) because they've already taken existing safe area into account.
+                preferredContentSize.height += self.additionalSafeAreaInsets.bottom
             }
             
             return preferredContentSize
@@ -94,6 +108,10 @@ class PauseViewController: UIViewController, PauseInfoProviding
         super.viewDidLayoutSubviews()
         
         self.updateSafeAreaInsets()
+        
+        // Ensure we update safe area inset calculations immediately (yes we need both calls).
+        self.pauseNavigationController.view.setNeedsLayout()
+        self.pauseNavigationController.view.layoutIfNeeded()
     }
 }
 
@@ -219,15 +237,32 @@ private extension PauseViewController
     
     func updateSafeAreaInsets()
     {
-        if self.navigationController?.topViewController == self.navigationController?.viewControllers.first
+        func absoluteValue(for inset: Double, dimension: Double) -> Double
         {
-            self.additionalSafeAreaInsets.left = self.view.window?.safeAreaInsets.left ?? 0
-            self.additionalSafeAreaInsets.right = self.view.window?.safeAreaInsets.right ?? 0
+            // Convert relative insets into absolute insets.
+            guard inset > 0 && inset <= 1.0 else { return inset }
+            
+            let absoluteValue = inset * dimension
+            return absoluteValue
+        }
+        
+        if let menuInsets, let window = self.view.window
+        {
+            var absoluteMenuInsets = UIEdgeInsets.zero
+            absoluteMenuInsets.left = absoluteValue(for: menuInsets.left, dimension: self.view.bounds.width)
+            absoluteMenuInsets.right = absoluteValue(for: menuInsets.right, dimension: self.view.bounds.width)
+            absoluteMenuInsets.top = absoluteValue(for: menuInsets.top, dimension: self.view.bounds.height)
+            absoluteMenuInsets.bottom = absoluteValue(for: menuInsets.bottom, dimension: self.view.bounds.height)
+            
+            // Subtract default safe area insets from menuInsets for "additional" insets
+            self.additionalSafeAreaInsets.left = max(absoluteMenuInsets.left - window.safeAreaInsets.left, 0)
+            self.additionalSafeAreaInsets.right = max(absoluteMenuInsets.right - window.safeAreaInsets.right, 0)
+            self.additionalSafeAreaInsets.top = max(absoluteMenuInsets.top - window.safeAreaInsets.top, 0)
+            self.additionalSafeAreaInsets.bottom = max(absoluteMenuInsets.bottom - window.safeAreaInsets.bottom, 0)
         }
         else
         {
-            self.additionalSafeAreaInsets.left = 0
-            self.additionalSafeAreaInsets.right = 0
+            self.additionalSafeAreaInsets = .zero
         }
     }
     

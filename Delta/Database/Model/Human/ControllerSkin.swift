@@ -193,6 +193,11 @@ extension ControllerSkin: ControllerSkinProtocol
         
         return nil
     }
+    
+    public func menuInsets(for traits: DeltaCore.ControllerSkin.Traits) -> UIEdgeInsets?
+    {
+        return self.controllerSkin?.menuInsets(for: traits)
+    }
 }
 
 extension ControllerSkin: Syncable

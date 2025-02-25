@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>name</key>
+		<string>Online Multiplayer (DS)</string>
+		<key>caption</key>
+		<string>Play online-compatible Nintendo DS games with friends around the world.</string>
+		<key>icon</key>
+		<string>globe</string>
+		<key>isPatronExclusive</key>
+		<false/>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>OpenGL ES 3.0 (N64)</string>
+		<key>caption</key>
+		<string>Fixes various graphical issues such as black textures and more.</string>
+		<key>icon</key>
+		<string>paintbrush.fill</string>
+		<key>isPatronExclusive</key>
+		<false/>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>Game Screenshots</string>
+		<key>caption</key>
+		<string>Take high-quality screenshots right from the pause menu.</string>
+		<key>icon</key>
+		<string>camera.fill</string>
+		<key>isPatronExclusive</key>
+		<false/>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>AirPlay Skins</string>
+		<key>caption</key>
+		<string>Customize the appearance of games when AirPlaying to your TV.</string>
+		<key>icon</key>
+		<string>tv.fill</string>
+		<key>isPatronExclusive</key>
+		<true/>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>Custom Fast Forward Speed</string>
+		<key>caption</key>
+		<string>Choose your preferred Fast Forward speed from 2x all the way to 8x.</string>
+		<key>icon</key>
+		<string>forward.fill</string>
+		<key>isPatronExclusive</key>
+		<true/>
+	</dict>
+</array>
+</plist>

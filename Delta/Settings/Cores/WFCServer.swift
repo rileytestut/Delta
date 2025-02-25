@@ -8,24 +8,54 @@
 
 import Foundation
 
-@available(iOS 15, *)
-extension WFCServer
-{
-    static let knownServers: [WFCServer] = [
-        WFCServer(name: String(localized: "Wiimmfi"), dns: "167.235.229.36", url: URL(string: "http://wiimmfi.de/")!),
-        WFCServer(name: String(localized: "WiiLink WFC"), dns: "5.161.56.11", url: URL(string: "http://wfc.wiilink24.com/")!),
-        WFCServer(name: String(localized: "AltWFC"), dns: "172.104.88.237", url: URL(string: "https://github.com/barronwaffles/dwc_network_server_emulator/wiki")!)
-    ]
-}
-
-struct WFCServer
+struct WFCServer: Decodable
 {
     var name: String
     var dns: String
-    var url: URL
+    var url: URL?
 }
 
 extension WFCServer: Identifiable
 {
     var id: String { self.dns }
+}
+
+private extension WFCServer
+{
+    var dictionaryRepresentation: [String: Any] {
+        let dictionary: [String: Any?] = [
+            CodingKeys.name.stringValue: self.name,
+            CodingKeys.dns.stringValue: self.dns,
+            CodingKeys.url.stringValue: self.url?.absoluteString
+        ]
+        
+        return dictionary.compactMapValues { $0 }
+    }
+    
+    init?(dictionary: [String: Any])
+    {
+        guard let name = dictionary[CodingKeys.name.stringValue] as? String, let dns = dictionary[CodingKeys.dns.stringValue] as? String else { return nil }
+        self.name = name
+        self.dns = dns
+        
+        if let urlString = dictionary[CodingKeys.url.stringValue] as? String, let url = URL(string: urlString)
+        {
+            self.url = url
+        }
+    }
+}
+
+extension UserDefaults
+{
+    @nonobjc var wfcServers: [WFCServer]? {
+        get {
+            guard let servers = _wfcServers?.compactMap({ WFCServer(dictionary: $0) }) else { return nil }
+            return servers
+        }
+        set {
+            let temp = newValue?.map { $0.dictionaryRepresentation }
+            _wfcServers = temp
+        }
+    }
+    @NSManaged @objc(wfcServers) private var _wfcServers: [[String: Any]]?
 }

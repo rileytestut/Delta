@@ -120,6 +120,12 @@ class SettingsViewController: UITableViewController
     
     private var _exportedLogURL: URL?
     
+    private let errorLogDateFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd_HH-mm-ss"
+        return dateFormatter
+    }()
+    
     required init?(coder aDecoder: NSCoder)
     {
         super.init(coder: aDecoder)
@@ -478,7 +484,10 @@ private extension SettingsViewController
                 let outputDirectory = FileManager.default.uniqueTemporaryURL()
                 try FileManager.default.createDirectory(at: outputDirectory, withIntermediateDirectories: true)
                 
-                let outputURL = outputDirectory.appendingPathComponent("delta.log")
+                let dateString = self.errorLogDateFormatter.string(from: .now)
+                let filename = "Delta-\(dateString).log"
+                
+                let outputURL = outputDirectory.appendingPathComponent(filename)
                 try outputText.write(to: outputURL, atomically: true, encoding: .utf8)
                 
                 await MainActor.run {
