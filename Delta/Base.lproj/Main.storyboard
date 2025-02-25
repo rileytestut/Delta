@@ -210,10 +210,11 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="YJo-Qe-H1j" userLabel="Social Media Icons">
-                                    <rect key="frame" x="84" y="0.0" width="162" height="44"/>
+                                    <rect key="frame" x="54.5" y="0.0" width="221" height="44"/>
                                     <subviews>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YUi-SQ-ifk">
                                             <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
+                                            <accessibility key="accessibilityConfiguration" label="Mastodon"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" secondItem="YUi-SQ-ifk" secondAttribute="height" id="2hj-cU-I3L"/>
                                             </constraints>
@@ -228,6 +229,7 @@
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Rx-z2-R8D">
                                             <rect key="frame" x="59" y="0.0" width="44" height="44"/>
+                                            <accessibility key="accessibilityConfiguration" label="Threads"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" secondItem="3Rx-z2-R8D" secondAttribute="height" id="bwf-Lh-w69"/>
                                             </constraints>
@@ -242,6 +244,7 @@
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FNJ-LU-oYH">
                                             <rect key="frame" x="118" y="0.0" width="44" height="44"/>
+                                            <accessibility key="accessibilityConfiguration" label="Bluesky"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" secondItem="FNJ-LU-oYH" secondAttribute="height" id="IDF-Lm-lBo"/>
                                             </constraints>
@@ -254,8 +257,24 @@
                                                 <action selector="followOnBluesky" destination="htE-Bn-kea" eventType="primaryActionTriggered" id="Wpg-vO-ihQ"/>
                                             </connections>
                                         </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZUK-Gs-fr8">
+                                            <rect key="frame" x="177" y="0.0" width="44" height="44"/>
+                                            <accessibility key="accessibilityConfiguration" label="GitHub"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" secondItem="ZUK-Gs-fr8" secondAttribute="height" id="yIs-11-NjO"/>
+                                            </constraints>
+                                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                            <state key="normal" backgroundImage="Bluesky"/>
+                                            <buttonConfiguration key="configuration" style="plain" cornerStyle="large">
+                                                <backgroundConfiguration key="background" image="GitHubAppIcon"/>
+                                            </buttonConfiguration>
+                                            <connections>
+                                                <action selector="followOnGitHub" destination="htE-Bn-kea" eventType="primaryActionTriggered" id="jmy-y9-mwg"/>
+                                            </connections>
+                                        </button>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstItem="ZUK-Gs-fr8" firstAttribute="width" secondItem="ZUK-Gs-fr8" secondAttribute="height" id="3JD-Lm-Lmf"/>
                                         <constraint firstAttribute="height" constant="44" id="a5O-Zh-qnn"/>
                                     </constraints>
                                 </stackView>
@@ -548,6 +567,7 @@
     <resources>
         <image name="Bluesky" width="300" height="300"/>
         <image name="BlueskyAppIcon" width="512" height="512"/>
+        <image name="GitHubAppIcon" width="512" height="512"/>
         <image name="Mastodon" width="130" height="130"/>
         <image name="MastodonAppIcon" width="512" height="512"/>
         <image name="SettingsButton" width="22" height="22"/>

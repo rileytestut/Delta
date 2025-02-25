@@ -329,6 +329,12 @@ private extension WhatsNewViewController
         let url = URL(string: "https://bsky.app/profile/delta-emulator.bsky.social")!
         UIApplication.shared.open(url, options: [:])
     }
+    
+    @IBAction func followOnGitHub()
+    {
+        let url = URL(string: "https://github.com/rileytestut/delta")!
+        UIApplication.shared.open(url, options: [:])
+    }
 }
 
 extension WhatsNewViewController
