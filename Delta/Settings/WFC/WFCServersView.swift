@@ -144,7 +144,7 @@ struct WFCServersView: View
                 // Revert viewModel to previous server
                 viewModel.preferredDNS = Settings.preferredWFCServer
             }
-        }, message: { _ in Text("You may need to re-register any friend codes you've added.") })
+        }, message: { _ in Text("You may need to re-add any friend codes you’ve previously registered.") })
     }
     
     @ViewBuilder
