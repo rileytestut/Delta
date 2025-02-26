@@ -1063,8 +1063,6 @@
 			children = (
 				BFE9907F24451E15006409A7 /* MelonDSCoreSettingsViewController.swift */,
 				BF00BEA525B758AA00C8607D /* SystemBIOS.swift */,
-				D552DE392D39C5A500E737BE /* WFCServersView.swift */,
-				D552DE3C2D39DB2700E737BE /* WFCServer.swift */,
 			);
 			path = Cores;
 			sourceTree = "<group>";
@@ -1305,6 +1303,8 @@
 			isa = PBXGroup;
 			children = (
 				D5A2CABF2D69660800FBA4E4 /* WFCManager.swift */,
+				D552DE392D39C5A500E737BE /* WFCServersView.swift */,
+				D552DE3C2D39DB2700E737BE /* WFCServer.swift */,
 			);
 			path = WFC;
 			sourceTree = "<group>";

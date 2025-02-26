@@ -78,7 +78,8 @@ struct WFCServersView: View
             } footer: {
                 VStack(alignment: .leading) {
                     Text("• You can only connect to players on the same server")
-                    Text("• Devices on the same Wi-Fi network may not be able to connect to each other\n")
+                    Text("• Devices on the same Wi-Fi network may not be able to connect to each other")
+                    Text("• When using BIOS files, you may need to “Erase Nintendo WFC Configuration” in-game\n")
                     Text("For more help, check out our [Troubleshooting Guide](https://faq.deltaemulator.com/using-delta/online-multiplayer)")
                 }
             }
