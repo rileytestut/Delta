@@ -266,10 +266,12 @@ private extension WhatsNewViewController
             }
         ]
         
-        let carolineAction = UIAction { _ in
-            let url = URL(string: "https://threads.net/@carolinemoore")!
-            UIApplication.shared.open(url, options: [:])
-        }
+        let carolineActions = [
+            MenuAction(title: NSLocalizedString("Threads", comment: ""), subtitle: NSLocalizedString("@carolinemoore", comment: ""), image: UIImage(named: "Threads")) { _ in
+                let url = URL(string: "https://threads.net/@carolinemoore")!
+                UIApplication.shared.open(url, options: [:])
+            }
+        ]
         
         let followRileyMenu = UIMenu(children: rileyActions.map { $0.makeAction() })
         self.followRileyButton.menu = followRileyMenu
@@ -279,13 +281,16 @@ private extension WhatsNewViewController
         self.followShaneButton.menu = followShaneMenu
         self.followShaneButton.showsMenuAsPrimaryAction = true
         
-        self.followCarolineButton.addAction(carolineAction, for: .primaryActionTriggered)
+        let followCarolineMenu = UIMenu(children: carolineActions.map { $0.makeAction() })
+        self.followCarolineButton.menu = followCarolineMenu
+        self.followCarolineButton.showsMenuAsPrimaryAction = true
         
         if #available(iOS 16, *)
         {
             // Always show actions in order we've listed them.
             self.followRileyButton.preferredMenuElementOrder = .fixed
             self.followShaneButton.preferredMenuElementOrder = .fixed
+            self.followCarolineButton.preferredMenuElementOrder = .fixed
         }
     }
     
