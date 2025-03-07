@@ -74,11 +74,6 @@ private extension SettingsViewController
     
     enum CreditsRow: Int, CaseIterable
     {
-        case riley
-        case shane
-        case caroline
-        case grant
-        case litRitt
         case friendZonePatrons
         case contributors
         case softwareLicenses
@@ -861,15 +856,7 @@ extension SettingsViewController
             let row = CreditsRow(rawValue: indexPath.row)!
             switch row
             {
-            case .riley: self.openThreads(username: "rileytestut")
-            case .shane: self.openThreads(username: "shanegill.io")
-            case .caroline: self.openThreads(username: "carolinemoore")
-            case .grant: self.openThreads(username: "glinstagrant")
-            case .litRitt: self.openTwitter(username: "lit_ritt")
-            case .contributors:
-                guard #available(iOS 14, *) else { return }
-                self.showContributors()
-                
+            case .contributors: self.showContributors()
             case .friendZonePatrons, .softwareLicenses: break
             }
             
@@ -940,21 +927,6 @@ extension SettingsViewController
             let row = CreditsRow(rawValue: indexPath.row)!
             switch row
             {
-            case .grant:
-                // Hide row on iOS 14 and above
-                guard #available(iOS 14, *) else { break primary }
-                return 0.0
-                
-            case .litRitt:
-                // Hide row on iOS 14 and above
-                guard #available(iOS 14, *) else { break primary }
-                return 0.0
-                
-            case .contributors:
-                // Hide row on iOS 13 and below
-                guard #unavailable(iOS 14) else { break primary }
-                return 0.0
-                
             case .friendZonePatrons:
                 guard !PurchaseManager.shared.supportsExternalPurchases else { break primary }
                 return 0.0
