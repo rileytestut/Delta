@@ -39,6 +39,8 @@ class WhatsNewViewController: UICollectionViewController
     private lazy var dataSource = self.makeDataSource()
     
     private var footerView: FollowUsFooterView!
+    private var backgroundBlurView: UIView!
+    
     @IBOutlet private var headerView: UIView!
     
     @IBOutlet private var titleLabel: UILabel!
@@ -68,6 +70,9 @@ class WhatsNewViewController: UICollectionViewController
         self.headerView.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(self.headerView)
         
+        self.backgroundBlurView = UIVisualEffectView(effect: UIBlurEffect(style: .systemMaterial))
+        self.backgroundBlurView.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(self.backgroundBlurView)
         
         self.footerView = FollowUsFooterView()
         self.footerView.translatesAutoresizingMaskIntoConstraints = false
@@ -81,7 +86,12 @@ class WhatsNewViewController: UICollectionViewController
             
             self.footerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
             self.footerView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-            self.footerView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
+            self.footerView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+            
+            self.backgroundBlurView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+            self.backgroundBlurView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            self.backgroundBlurView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+            self.backgroundBlurView.heightAnchor.constraint(equalTo: self.footerView.heightAnchor)
         ])
         
         self.update()
@@ -104,11 +114,13 @@ class WhatsNewViewController: UICollectionViewController
         
         var contentInset = self.collectionView.contentInset
         contentInset.top = self.headerView.bounds.height
-        contentInset.bottom = self.footerView.bounds.height
+        contentInset.bottom = (self.footerView.bounds.height - self.view.safeAreaInsets.bottom)
         
-        let maximumContentHeight = self.view.bounds.height - (self.headerView.bounds.height + self.footerView.bounds.height + 15 + 8) //TODO: Verify these constants, based on intergroupSpacing.
-        if maximumContentHeight > self.collectionView.contentSize.height
+        let maximumContentHeight = self.view.bounds.height - (self.headerView.bounds.height + self.footerView.bounds.height)
+        if self.collectionView.contentSize.height <= maximumContentHeight
         {
+            self.collectionView.bounces = false
+            
             // Adjust insets to vertically center content in view
             let difference = maximumContentHeight - self.collectionView.contentSize.height
             let inset = difference / 2.0
@@ -117,11 +129,17 @@ class WhatsNewViewController: UICollectionViewController
             // Don't need to adjust bottom insets, just top to offset it into center.
             // self.collectionView.contentInset.bottom += inset
         }
-        
+        else
+        {
+            self.collectionView.bounces = true
+        }
+                
         if contentInset != _previousInsets
         {
             let isAtTop = self.collectionView.contentOffset.y.rounded() == -self.collectionView.contentInset.top.rounded()
             self.collectionView.contentInset = contentInset
+            self.collectionView.verticalScrollIndicatorInsets.top = contentInset.top
+            self.collectionView.verticalScrollIndicatorInsets.bottom = contentInset.bottom
             
             if isAtTop
             {
@@ -259,5 +277,25 @@ extension WhatsNewViewController
         }
         
         return headerView
+    }
+}
+
+extension WhatsNewViewController
+{
+    override func scrollViewDidScroll(_ scrollView: UIScrollView)
+    {
+        let viewport = scrollView.bounds.height - scrollView.contentInset.top - (scrollView.contentInset.bottom + self.view.safeAreaInsets.bottom)
+        
+        if scrollView.contentOffset.y.rounded() >= ((scrollView.contentSize.height - viewport) - scrollView.contentInset.top).rounded()
+        {
+            // At bottom of screen, so hide footer view background.
+            self.backgroundBlurView.isHidden = true
+            self.footerView.backgroundColor = .systemBackground
+        }
+        else
+        {
+            self.backgroundBlurView.isHidden = false
+            self.footerView.backgroundColor = nil
+        }
     }
 }
