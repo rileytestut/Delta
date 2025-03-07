@@ -14,7 +14,7 @@ import Roxas
 
 protocol ControllerSkinsViewControllerDelegate: AnyObject
 {
-    func controllerSkinsViewController(_ controllerSkinsViewController: ControllerSkinsViewController, didChooseControllerSkin controllerSkin: ControllerSkin)
+    func controllerSkinsViewController(_ controllerSkinsViewController: ControllerSkinsViewController, didChooseControllerSkin controllerSkin: ControllerSkin?)
     func controllerSkinsViewControllerDidResetControllerSkin(_ controllerSkinsViewController: ControllerSkinsViewController)
 }
 
@@ -35,14 +35,19 @@ class ControllerSkinsViewController: UITableViewController
     }
     
     var isResetButtonVisible: Bool = true
+    var supportsChoosingNone: Bool = false
     
-    private let dataSource: RSTFetchedResultsTableViewPrefetchingDataSource<ControllerSkin, UIImage>
+    private let dataSource: RSTCompositeTableViewPrefetchingDataSource<ControllerSkin, UIImage>
+    private let noneDataSource: RSTDynamicTableViewPrefetchingDataSource<ControllerSkin, UIImage>
+    private let skinsDataSource: RSTFetchedResultsTableViewPrefetchingDataSource<ControllerSkin, UIImage>
     
     @IBOutlet private var importControllerSkinButton: UIBarButtonItem!
     
     required init?(coder aDecoder: NSCoder)
     {
-        self.dataSource = RSTFetchedResultsTableViewPrefetchingDataSource<ControllerSkin, UIImage>(fetchedResultsController: NSFetchedResultsController())
+        self.noneDataSource = RSTDynamicTableViewPrefetchingDataSource<ControllerSkin, UIImage>()
+        self.skinsDataSource = RSTFetchedResultsTableViewPrefetchingDataSource<ControllerSkin, UIImage>(fetchedResultsController: NSFetchedResultsController())
+        self.dataSource = RSTCompositeTableViewPrefetchingDataSource(dataSources: [self.noneDataSource, self.skinsDataSource])
         
         super.init(coder: aDecoder)
         
@@ -80,14 +85,22 @@ private extension ControllerSkinsViewController
     func prepareDataSource()
     {
         self.dataSource.proxy = self
-        self.dataSource.cellConfigurationHandler = { (cell, item, indexPath) in
+        
+        self.noneDataSource.cellIdentifierHandler = { _ in "NoneCell" }
+        self.noneDataSource.numberOfSectionsHandler = { 1 }
+        self.noneDataSource.numberOfItemsHandler = { [weak self] _ in
+            guard let self else { return 0 }
+            return self.supportsChoosingNone ? 1 : 0
+        }
+        
+        self.skinsDataSource.cellConfigurationHandler = { (cell, item, indexPath) in
             let cell = cell as! ControllerSkinTableViewCell
             
             cell.controllerSkinImageView.image = nil
             cell.activityIndicatorView.startAnimating()
         }
         
-        self.dataSource.prefetchHandler = { [unowned self] (controllerSkin, indexPath, completionHandler) in
+        self.skinsDataSource.prefetchHandler = { [unowned self] (controllerSkin, indexPath, completionHandler) in
             let imageOperation = LoadControllerSkinImageOperation(controllerSkin: controllerSkin, traits: self.traits, size: UIScreen.main.defaultControllerSkinSize)
             imageOperation.resultHandler = { (image, error) in
                 completionHandler(image, error)
@@ -96,7 +109,7 @@ private extension ControllerSkinsViewController
             return imageOperation
         }
         
-        self.dataSource.prefetchCompletionHandler = { (cell, image, indexPath, error) in
+        self.skinsDataSource.prefetchCompletionHandler = { (cell, image, indexPath, error) in
             guard let image = image, let cell = cell as? ControllerSkinTableViewCell else { return }
             
             cell.controllerSkinImageView.image = image
@@ -143,7 +156,7 @@ private extension ControllerSkinsViewController
         
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(ControllerSkin.isStandard), ascending: false), NSSortDescriptor(key: #keyPath(ControllerSkin.name), ascending: true)]
         
-        self.dataSource.fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DatabaseManager.shared.viewContext, sectionNameKeyPath: #keyPath(ControllerSkin.name), cacheName: nil)
+        self.skinsDataSource.fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DatabaseManager.shared.viewContext, sectionNameKeyPath: #keyPath(ControllerSkin.name), cacheName: nil)
     }
     
     @IBAction func resetControllerSkin(_ sender: UIBarButtonItem)
@@ -169,12 +182,16 @@ extension ControllerSkinsViewController
 {
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String?
     {
+        guard section > 0 else { return nil }
+        
         let controllerSkin = self.dataSource.item(at: IndexPath(row: 0, section: section))
         return controllerSkin.name
     }
     
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool
     {
+        guard indexPath.section > 0 else { return false }
+        
         let controllerSkin = self.dataSource.item(at: indexPath)
         return !controllerSkin.isStandard
     }
@@ -203,12 +220,22 @@ extension ControllerSkinsViewController
 {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
     {
-        let controllerSkin = self.dataSource.item(at: indexPath)
-        self.delegate?.controllerSkinsViewController(self, didChooseControllerSkin: controllerSkin)
+        if indexPath.section == 0
+        {
+            // "None"
+            self.delegate?.controllerSkinsViewController(self, didChooseControllerSkin: nil)
+        }
+        else
+        {
+            let controllerSkin = self.dataSource.item(at: indexPath)
+            self.delegate?.controllerSkinsViewController(self, didChooseControllerSkin: controllerSkin)
+        }
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
     {
+        guard indexPath.section > 0 else { return 44 }
+        
         let controllerSkin = self.dataSource.item(at: indexPath)
         
         guard let traits = controllerSkin.supportedTraits(for: self.traits), let size = controllerSkin.aspectRatio(for: traits) else { return 150 }
@@ -222,6 +249,8 @@ extension ControllerSkinsViewController
     
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String?
     {
+        guard section > 0 else { return nil }
+        
         let indexPath = IndexPath(row: 0, section: section)
         let controllerSkin = self.dataSource.item(at: indexPath)
         

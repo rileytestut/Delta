@@ -260,6 +260,7 @@ extension PreferredControllerSkinsViewController
         }
         
         controllerSkinsViewController.isResetButtonVisible = isResetButtonVisible
+        controllerSkinsViewController.supportsChoosingNone = self.isExternalControllerSkin
     }
 }
 
