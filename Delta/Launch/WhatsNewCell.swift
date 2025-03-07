@@ -62,7 +62,7 @@ extension WhatsNewCollectionViewCell
             self.stackView.directionalLayoutMargins.top = 8
             self.stackView.directionalLayoutMargins.bottom = 8
             
-            self.stackView.overrideUserInterfaceStyle = .unspecified
+            self.contentView.overrideUserInterfaceStyle = .unspecified
         }
     }
 }
