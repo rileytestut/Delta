@@ -162,6 +162,7 @@
                     </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nvR-NU-TUA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="oZi-D4-eoU" userLabel="Exit" sceneMemberID="exit"/>
                 <view contentMode="scaleToFill" id="9a8-fs-Zm2" userLabel="Header View">
                     <rect key="frame" x="0.0" y="0.0" width="240" height="200"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -183,11 +184,20 @@
                                 </label>
                             </subviews>
                         </stackView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="close" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IfL-ce-xdc">
+                            <rect key="frame" x="186" y="28" width="30" height="30"/>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <connections>
+                                <segue destination="oZi-D4-eoU" kind="unwind" unwindAction="unwindToGameCollectionViewController:" id="JM6-wA-ZEk"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     <constraints>
                         <constraint firstItem="bDV-fM-drz" firstAttribute="centerX" secondItem="9a8-fs-Zm2" secondAttribute="centerX" id="6ip-8C-MsI"/>
                         <constraint firstItem="bDV-fM-drz" firstAttribute="top" secondItem="9a8-fs-Zm2" secondAttribute="top" constant="44" id="hGu-fL-Twp"/>
+                        <constraint firstItem="IfL-ce-xdc" firstAttribute="top" secondItem="9a8-fs-Zm2" secondAttribute="topMargin" constant="8" id="ozU-6E-dMa"/>
+                        <constraint firstAttribute="trailingMargin" secondItem="IfL-ce-xdc" secondAttribute="trailing" constant="8" id="s8A-Ln-Q9r"/>
                         <constraint firstAttribute="bottom" secondItem="bDV-fM-drz" secondAttribute="bottom" constant="30" id="uAk-BI-JXb"/>
                     </constraints>
                 </view>
