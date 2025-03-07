@@ -228,8 +228,9 @@ extension PreferredControllerSkinsViewController
             case (.portrait, .standard, false): isResetButtonVisible = (game.preferredPortraitSkin != nil)
             case (.landscape, .standard, false): isResetButtonVisible = (game.preferredLandscapeSkin != nil)
                 
-            case (.portrait, .standard, true): isResetButtonVisible = (game.preferredExternalControllerPortraitSkin != nil)
-            case (.landscape, .standard, true): isResetButtonVisible = (game.preferredExternalControllerLandscapeSkin != nil)
+            // Show reset button if external controller skin is non-nil OR we've explicitly set the game's external controller skin to nil.
+            case (.portrait, .standard, true): isResetButtonVisible = (game.preferredExternalControllerPortraitSkin != nil || (game.settings[.noExternalControllerSkin] as? Bool) == true)
+            case (.landscape, .standard, true): isResetButtonVisible = (game.preferredExternalControllerLandscapeSkin != nil || (game.settings[.noExternalControllerSkin] as? Bool) == true)
                 
             case (.portrait, .splitView, _): isResetButtonVisible = (game.preferredSplitViewPortraitSkin != nil)
             case (.landscape, .splitView, _): isResetButtonVisible = (game.preferredSplitViewLandscapeSkin != nil)
@@ -474,11 +475,11 @@ private extension PreferredControllerSkinsViewController
 
 extension PreferredControllerSkinsViewController: ControllerSkinsViewControllerDelegate
 {
-    func controllerSkinsViewController(_ controllerSkinsViewController: ControllerSkinsViewController, didChooseControllerSkin controllerSkin: ControllerSkin)
+    func controllerSkinsViewController(_ controllerSkinsViewController: ControllerSkinsViewController, didChooseControllerSkin controllerSkin: ControllerSkin?)
     {
         if let game = self.game
         {
-            Settings.setPreferredControllerSkin(controllerSkin, for: game, traits: controllerSkinsViewController.traits, forExternalController: self.isExternalControllerSkin)
+            Settings.setPreferredControllerSkin(.some(controllerSkin), for: game, traits: controllerSkinsViewController.traits, forExternalController: self.isExternalControllerSkin)
         }
         else
         {

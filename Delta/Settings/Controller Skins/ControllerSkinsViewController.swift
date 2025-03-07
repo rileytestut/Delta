@@ -87,6 +87,7 @@ private extension ControllerSkinsViewController
         self.dataSource.proxy = self
         
         self.noneDataSource.cellIdentifierHandler = { _ in "NoneCell" }
+        self.noneDataSource.cellConfigurationHandler = { (_,_,_) in }
         self.noneDataSource.numberOfSectionsHandler = { 1 }
         self.noneDataSource.numberOfItemsHandler = { [weak self] _ in
             guard let self else { return 0 }

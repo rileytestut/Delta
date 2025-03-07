@@ -409,6 +409,12 @@ extension Settings
             return controllerSkin
         }
         
+        if let hasNoExternalControllerSkin = game.settings[.noExternalControllerSkin] as? Bool, hasNoExternalControllerSkin, isForExternalController
+        {
+            // Game's external controller skin has been explicitly set to nil, so DON'T fall back to system's preferred skin.
+            return nil
+        }
+        
         if let system = System(gameType: game.type)
         {
             // Fall back to using preferred controller skin for the system.
@@ -419,21 +425,28 @@ extension Settings
         return nil
     }
     
-    static func setPreferredControllerSkin(_ controllerSkin: ControllerSkin?, for game: Game, traits: DeltaCore.ControllerSkin.Traits, forExternalController isForExternalController: Bool)
+    static func setPreferredControllerSkin(_ controllerSkin: Optional<ControllerSkin?>, for game: Game, traits: DeltaCore.ControllerSkin.Traits, forExternalController isForExternalController: Bool)
     {
         let context = DatabaseManager.shared.newBackgroundContext()
         context.performAndWait {
             let game = context.object(with: game.objectID) as! Game
-            
             let skin: ControllerSkin?
-            if let controllerSkin = controllerSkin, let contextSkin = context.object(with: controllerSkin.objectID) as? ControllerSkin
+            
+            switch controllerSkin
             {
-                skin = contextSkin
-            }
-            else
-            {
+            case .some(let controllerSkin?):
+                skin = context.object(with: controllerSkin.objectID) as? ControllerSkin
+                
+            case .some(nil):
+                // Explicitly assigning no skin.
                 skin = nil
-            }            
+                game.settings[.noExternalControllerSkin] = true
+                
+            case nil:
+                // Resetting skin to system default.
+                skin = nil
+                game.settings.removeValue(forKey: .noExternalControllerSkin)
+            }
             
             switch (traits.orientation, traits.displayType, isForExternalController)
             {
@@ -462,7 +475,13 @@ extension Settings
         
         if let system = System(gameType: game.type)
         {
-            NotificationCenter.default.post(name: Settings.didChangeNotification, object: controllerSkin, userInfo: [NotificationUserInfoKey.name: Name.preferredControllerSkin, NotificationUserInfoKey.system: system, NotificationUserInfoKey.traits: traits])
+            // Unwrap double-nested optional skin into single-level optional we can send with notification.
+            let skin: ControllerSkin? = switch controllerSkin {
+            case .some(let controllerSkin?): controllerSkin
+            case .some(nil), nil: nil
+            }
+            
+            NotificationCenter.default.post(name: Settings.didChangeNotification, object: skin, userInfo: [NotificationUserInfoKey.name: Name.preferredControllerSkin, NotificationUserInfoKey.system: system, NotificationUserInfoKey.traits: traits])
         }
     }
 }
