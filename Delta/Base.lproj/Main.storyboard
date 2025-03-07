@@ -154,11 +154,6 @@
                         </connections>
                     </collectionView>
                     <connections>
-                        <outlet property="followCarolineButton" destination="jVR-BY-poH" id="pSX-9v-lIe"/>
-                        <outlet property="followRileyButton" destination="Kdb-E1-tzy" id="zHD-G5-jFE"/>
-                        <outlet property="followShaneButton" destination="j9N-Kc-Chz" id="wdb-ed-OLi"/>
-                        <outlet property="followUsStackView" destination="IMh-3y-hLv" id="qMC-K0-Wbq"/>
-                        <outlet property="footerView" destination="yAf-Rv-wxt" id="RID-Xi-PWN"/>
                         <outlet property="headerView" destination="9a8-fs-Zm2" id="WS5-XI-685"/>
                         <outlet property="headerViewBottomSpacingLayoutConstraint" destination="uAk-BI-JXb" id="Sf5-lL-YjI"/>
                         <outlet property="headerViewTopSpacingLayoutConstraint" destination="hGu-fL-Twp" id="R1d-kL-Bpg"/>
@@ -194,156 +189,6 @@
                         <constraint firstItem="bDV-fM-drz" firstAttribute="centerX" secondItem="9a8-fs-Zm2" secondAttribute="centerX" id="6ip-8C-MsI"/>
                         <constraint firstItem="bDV-fM-drz" firstAttribute="top" secondItem="9a8-fs-Zm2" secondAttribute="top" constant="44" id="hGu-fL-Twp"/>
                         <constraint firstAttribute="bottom" secondItem="bDV-fM-drz" secondAttribute="bottom" constant="30" id="uAk-BI-JXb"/>
-                    </constraints>
-                </view>
-                <view contentMode="scaleToFill" id="yAf-Rv-wxt" userLabel="Footer View">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <subviews>
-                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="IMh-3y-hLv">
-                            <rect key="frame" x="22.5" y="15" width="330" height="105"/>
-                            <subviews>
-                                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="700" text="Follow for updates" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1TH-9S-QfO">
-                                    <rect key="frame" x="91.5" y="0.0" width="147" height="0.0"/>
-                                    <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                    <color key="textColor" systemColor="secondaryLabelColor"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                                <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="YJo-Qe-H1j" userLabel="Social Media Icons">
-                                    <rect key="frame" x="54.5" y="0.0" width="221" height="44"/>
-                                    <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YUi-SQ-ifk">
-                                            <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
-                                            <accessibility key="accessibilityConfiguration" label="Mastodon"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" secondItem="YUi-SQ-ifk" secondAttribute="height" id="2hj-cU-I3L"/>
-                                            </constraints>
-                                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                            <state key="normal" backgroundImage="Mastodon"/>
-                                            <buttonConfiguration key="configuration" style="plain" cornerStyle="large">
-                                                <backgroundConfiguration key="background" image="MastodonAppIcon"/>
-                                            </buttonConfiguration>
-                                            <connections>
-                                                <action selector="followOnMastodon" destination="htE-Bn-kea" eventType="primaryActionTriggered" id="Zlp-4i-WM2"/>
-                                            </connections>
-                                        </button>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Rx-z2-R8D">
-                                            <rect key="frame" x="59" y="0.0" width="44" height="44"/>
-                                            <accessibility key="accessibilityConfiguration" label="Threads"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" secondItem="3Rx-z2-R8D" secondAttribute="height" id="bwf-Lh-w69"/>
-                                            </constraints>
-                                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                            <state key="normal" backgroundImage="Threads"/>
-                                            <buttonConfiguration key="configuration" style="plain" cornerStyle="large">
-                                                <backgroundConfiguration key="background" image="ThreadsAppIcon"/>
-                                            </buttonConfiguration>
-                                            <connections>
-                                                <action selector="followOnThreads" destination="htE-Bn-kea" eventType="primaryActionTriggered" id="fht-fZ-qiC"/>
-                                            </connections>
-                                        </button>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FNJ-LU-oYH">
-                                            <rect key="frame" x="118" y="0.0" width="44" height="44"/>
-                                            <accessibility key="accessibilityConfiguration" label="Bluesky"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" secondItem="FNJ-LU-oYH" secondAttribute="height" id="IDF-Lm-lBo"/>
-                                            </constraints>
-                                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                            <state key="normal" backgroundImage="Bluesky"/>
-                                            <buttonConfiguration key="configuration" style="plain" cornerStyle="large">
-                                                <backgroundConfiguration key="background" image="BlueskyAppIcon"/>
-                                            </buttonConfiguration>
-                                            <connections>
-                                                <action selector="followOnBluesky" destination="htE-Bn-kea" eventType="primaryActionTriggered" id="Wpg-vO-ihQ"/>
-                                            </connections>
-                                        </button>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZUK-Gs-fr8">
-                                            <rect key="frame" x="177" y="0.0" width="44" height="44"/>
-                                            <accessibility key="accessibilityConfiguration" label="GitHub"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" secondItem="ZUK-Gs-fr8" secondAttribute="height" id="yIs-11-NjO"/>
-                                            </constraints>
-                                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                            <state key="normal" backgroundImage="Bluesky"/>
-                                            <buttonConfiguration key="configuration" style="plain" cornerStyle="large">
-                                                <backgroundConfiguration key="background" image="GitHubAppIcon"/>
-                                            </buttonConfiguration>
-                                            <connections>
-                                                <action selector="followOnGitHub" destination="htE-Bn-kea" eventType="primaryActionTriggered" id="jmy-y9-mwg"/>
-                                            </connections>
-                                        </button>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="ZUK-Gs-fr8" firstAttribute="width" secondItem="ZUK-Gs-fr8" secondAttribute="height" id="3JD-Lm-Lmf"/>
-                                        <constraint firstAttribute="height" constant="44" id="a5O-Zh-qnn"/>
-                                    </constraints>
-                                </stackView>
-                                <stackView opaque="NO" contentMode="scaleToFill" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="vaX-44-XaM" userLabel="Usernames">
-                                    <rect key="frame" x="0.0" y="59" width="330" height="46"/>
-                                    <subviews>
-                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="XbN-tN-rqm">
-                                            <rect key="frame" x="0.0" y="0.0" width="87" height="46"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DEVELOPER" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UCT-7B-Nxl">
-                                                    <rect key="frame" x="6" y="0.0" width="75" height="16"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                    <color key="textColor" systemColor="secondaryLabelColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kdb-E1-tzy">
-                                                    <rect key="frame" x="0.0" y="16" width="87" height="30"/>
-                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
-                                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                    <state key="normal" title="@rileytestut"/>
-                                                </button>
-                                            </subviews>
-                                        </stackView>
-                                        <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Uaj-rS-s04">
-                                            <rect key="frame" x="102" y="0.0" width="96" height="46"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="OPERATIONS" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QJF-W1-0Ms">
-                                                    <rect key="frame" x="7.5" y="0.0" width="81.5" height="16"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                    <color key="textColor" systemColor="secondaryLabelColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="j9N-Kc-Chz">
-                                                    <rect key="frame" x="0.0" y="16" width="96" height="30"/>
-                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
-                                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                    <state key="normal" title="@shanegill.io"/>
-                                                </button>
-                                            </subviews>
-                                        </stackView>
-                                        <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="9Ri-LC-wbT">
-                                            <rect key="frame" x="213" y="0.0" width="117" height="46"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DESIGNER" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UbY-6X-TUZ">
-                                                    <rect key="frame" x="26.5" y="0.0" width="64" height="16"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                    <color key="textColor" systemColor="secondaryLabelColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jVR-BY-poH">
-                                                    <rect key="frame" x="0.0" y="16" width="117" height="30"/>
-                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
-                                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                    <state key="normal" title="@carolinemoore"/>
-                                                </button>
-                                            </subviews>
-                                        </stackView>
-                                    </subviews>
-                                </stackView>
-                            </subviews>
-                        </stackView>
-                    </subviews>
-                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                    <constraints>
-                        <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="IMh-3y-hLv" secondAttribute="bottom" constant="-15" id="1OO-4X-HW4"/>
-                        <constraint firstItem="IMh-3y-hLv" firstAttribute="centerX" secondItem="yAf-Rv-wxt" secondAttribute="centerX" id="91j-VL-w2b"/>
-                        <constraint firstItem="IMh-3y-hLv" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="yAf-Rv-wxt" secondAttribute="leadingMargin" id="Aez-CV-Qn2"/>
-                        <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="IMh-3y-hLv" secondAttribute="trailing" id="teB-Fj-kgv"/>
-                        <constraint firstItem="IMh-3y-hLv" firstAttribute="top" secondItem="yAf-Rv-wxt" secondAttribute="top" constant="15" id="xoh-gF-gQw"/>
                     </constraints>
                 </view>
             </objects>
@@ -565,14 +410,7 @@
         <segue reference="Tey-6Z-UHp"/>
     </inferredMetricsTieBreakers>
     <resources>
-        <image name="Bluesky" width="300" height="300"/>
-        <image name="BlueskyAppIcon" width="512" height="512"/>
-        <image name="GitHubAppIcon" width="512" height="512"/>
-        <image name="Mastodon" width="130" height="130"/>
-        <image name="MastodonAppIcon" width="512" height="512"/>
         <image name="SettingsButton" width="22" height="22"/>
-        <image name="Threads" width="130" height="130"/>
-        <image name="ThreadsAppIcon" width="512" height="512"/>
         <image name="gamecontroller.fill" catalog="system" width="128" height="79"/>
         <namedColor name="Purple">
             <color red="0.54509803921568623" green="0.15686274509803921" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

@@ -248,6 +248,8 @@
 		D5AE78832BEAAD6100ED25DC /* GameSceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5AE78822BEAAD6100ED25DC /* GameSceneDelegate.swift */; };
 		D5B0F4E52D67F0660069F4DB /* WhatsNew.plist in Resources */ = {isa = PBXBuildFile; fileRef = D5B0F4E42D67F0660069F4DB /* WhatsNew.plist */; };
 		D5B4235C2BD9C24000093054 /* RoundedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B4235B2BD9C24000093054 /* RoundedImageView.swift */; };
+		D5B6F5D32D6FC0F50061C365 /* FollowUsFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B6F5D22D6FC0F00061C365 /* FollowUsFooterView.swift */; };
+		D5B6F5D52D6FC23E0061C365 /* FollowUsFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D5B6F5D42D6FC23E0061C365 /* FollowUsFooterView.xib */; };
 		D5BE1BD72D0B9CBE00D2142E /* PatreonAPI.plist in Resources */ = {isa = PBXBuildFile; fileRef = D5BE1BD62D0B9CBE00D2142E /* PatreonAPI.plist */; };
 		D5C45FEF2BE992A80009DBB0 /* AltKit in Frameworks */ = {isa = PBXBuildFile; productRef = D5C45FEE2BE992A80009DBB0 /* AltKit */; };
 		D5CDCCEE2A859DC200E22131 /* SyncValidationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CDCCEC2A859B2B00E22131 /* SyncValidationError.swift */; };
@@ -581,6 +583,8 @@
 		D5AE78822BEAAD6100ED25DC /* GameSceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSceneDelegate.swift; sourceTree = "<group>"; };
 		D5B0F4E42D67F0660069F4DB /* WhatsNew.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = WhatsNew.plist; sourceTree = "<group>"; };
 		D5B4235B2BD9C24000093054 /* RoundedImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedImageView.swift; sourceTree = "<group>"; };
+		D5B6F5D22D6FC0F00061C365 /* FollowUsFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowUsFooterView.swift; sourceTree = "<group>"; };
+		D5B6F5D42D6FC23E0061C365 /* FollowUsFooterView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FollowUsFooterView.xib; sourceTree = "<group>"; };
 		D5BE1BD62D0B9CBE00D2142E /* PatreonAPI.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = PatreonAPI.plist; sourceTree = "<group>"; };
 		D5CDCCC32A85765900E22131 /* OSLog+Delta.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OSLog+Delta.swift"; sourceTree = "<group>"; };
 		D5CDCCEA2A8593FC00E22131 /* UserDefaults+Delta.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Delta.swift"; sourceTree = "<group>"; };
@@ -765,6 +769,8 @@
 				BF4828871F90290F00028B97 /* Action.swift */,
 				BF1F45BE21AF676F00EF9895 /* Box.swift */,
 				D5AE76C32C2B59360086471B /* Keychain.swift */,
+				D5B6F5D22D6FC0F00061C365 /* FollowUsFooterView.swift */,
+				D5B6F5D42D6FC23E0061C365 /* FollowUsFooterView.xib */,
 				BFE0229C1F5B56840052D888 /* Popover Menu */,
 				BF5942671E09BBB70051894B /* Collection View */,
 				BF71CF881FE90471001F1613 /* Table View */,
@@ -1580,6 +1586,7 @@
 			files = (
 				D5D797E9298DCC7300738869 /* cheatbase.zip in Resources */,
 				BFFA71E21AAC406100EE9DD1 /* Main.storyboard in Resources */,
+				D5B6F5D52D6FC23E0061C365 /* FollowUsFooterView.xib in Resources */,
 				D5AE76C62C2B7F3D0086471B /* Icons.xcassets in Resources */,
 				D5AA0F1A2CE404E90015D134 /* AboutPatreonHeaderView.xib in Resources */,
 				D5AE76CD2C2B81870086471B /* AltIcons.plist in Resources */,
@@ -1839,6 +1846,7 @@
 				BF1DAD5D1D9F576000E752A7 /* PreferredControllerSkinsViewController.swift in Sources */,
 				BFE022A01F5B57FF0052D888 /* PopoverMenuButton.swift in Sources */,
 				BF6BF31C1EB821A0008E83CD /* GamesDatabaseImportOption.swift in Sources */,
+				D5B6F5D32D6FC0F50061C365 /* FollowUsFooterView.swift in Sources */,
 				D5AA0F142CE3F5040015D134 /* _ManagedPatron.swift in Sources */,
 				D51D8EC82D49CA26002649C2 /* Delta10ToDelta11.xcmappingmodel in Sources */,
 				BFFA4C091E8A24D600D87934 /* GameTableViewCell.swift in Sources */,

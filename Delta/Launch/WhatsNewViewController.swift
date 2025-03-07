@@ -38,22 +38,17 @@ class WhatsNewViewController: UICollectionViewController
 {
     private lazy var dataSource = self.makeDataSource()
     
+    private var footerView: FollowUsFooterView!
     @IBOutlet private var headerView: UIView!
-    @IBOutlet private var footerView: UIView!
     
     @IBOutlet private var titleLabel: UILabel!
     @IBOutlet private var titleStackView: UIStackView!
-    
-    @IBOutlet private var followRileyButton: UIButton!
-    @IBOutlet private var followShaneButton: UIButton!
-    @IBOutlet private var followCarolineButton: UIButton!
-    @IBOutlet private var followUsStackView: UIStackView!
     
     @IBOutlet private var headerViewTopSpacingLayoutConstraint: NSLayoutConstraint!
     @IBOutlet private var headerViewBottomSpacingLayoutConstraint: NSLayoutConstraint!
     
     private var _previousInsets: UIEdgeInsets?
-        
+    
     override func viewDidLoad()
     {
         super.viewDidLoad()
@@ -73,7 +68,10 @@ class WhatsNewViewController: UICollectionViewController
         self.headerView.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(self.headerView)
         
+        
+        self.footerView = FollowUsFooterView()
         self.footerView.translatesAutoresizingMaskIntoConstraints = false
+        self.footerView.textLabel.isHidden = true
         self.view.addSubview(self.footerView)
         
         NSLayoutConstraint.activate([
@@ -86,7 +84,6 @@ class WhatsNewViewController: UICollectionViewController
             self.footerView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
         ])
         
-        self.prepareFollowButtons()
         self.update()
     }
     
@@ -215,85 +212,6 @@ private extension WhatsNewViewController
         }
     }
     
-    func prepareFollowButtons()
-    {
-        struct MenuAction
-        {
-            var title: String
-            var subtitle: String
-            var image: UIImage?
-            var handler: UIActionHandler
-            
-            func makeAction() -> UIAction
-            {
-                if #available(iOS 15, *)
-                {
-                    return UIAction(title: self.title, subtitle: self.subtitle, image: self.image, handler: self.handler)
-                }
-                else
-                {
-                    return UIAction(title: self.title, image: self.image, handler: self.handler)
-                }
-            }
-        }
-        
-        let rileyActions = [
-            MenuAction(title: NSLocalizedString("Mastodon", comment: ""), subtitle: NSLocalizedString("@rileytestut@mastodon.social", comment: ""), image: UIImage(named: "Mastodon")) { _ in
-                let url = URL(string: "https://mastodon.social/@rileytestut")!
-                UIApplication.shared.open(url, options: [:])
-            },
-            
-            MenuAction(title: NSLocalizedString("Threads", comment: ""), subtitle: NSLocalizedString("@rileytestut", comment: ""), image: UIImage(named: "Threads")) { _ in
-                let url = URL(string: "https://www.threads.net/@rileytestut")!
-                UIApplication.shared.open(url, options: [:])
-            },
-            
-            MenuAction(title: NSLocalizedString("Bluesky", comment: ""), subtitle: NSLocalizedString("@riley.social", comment: ""), image: UIImage(named: "Bluesky")) { _ in
-                let url = URL(string: "https://bsky.app/profile/riley.social")!
-                UIApplication.shared.open(url, options: [:])
-            }
-        ]
-        
-        let shaneActions = [
-            MenuAction(title: NSLocalizedString("Threads", comment: ""), subtitle: NSLocalizedString("@shanegill.io", comment: ""), image: UIImage(named: "Threads")) { _ in
-                let url = URL(string: "https://www.threads.net/@shanegill.io")!
-                UIApplication.shared.open(url, options: [:])
-            },
-            
-            MenuAction(title: NSLocalizedString("Bluesky", comment: ""), subtitle: NSLocalizedString("@shanegillio.bsky.social", comment: ""), image: UIImage(named: "Bluesky")) { _ in
-                let url = URL(string: "https://bsky.app/profile/shanegillio.bsky.social")!
-                UIApplication.shared.open(url, options: [:])
-            }
-        ]
-        
-        let carolineActions = [
-            MenuAction(title: NSLocalizedString("Threads", comment: ""), subtitle: NSLocalizedString("@carolinemoore", comment: ""), image: UIImage(named: "Threads")) { _ in
-                let url = URL(string: "https://threads.net/@carolinemoore")!
-                UIApplication.shared.open(url, options: [:])
-            }
-        ]
-        
-        let followRileyMenu = UIMenu(children: rileyActions.map { $0.makeAction() })
-        self.followRileyButton.menu = followRileyMenu
-        self.followRileyButton.showsMenuAsPrimaryAction = true
-        
-        let followShaneMenu = UIMenu(children: shaneActions.map { $0.makeAction() })
-        self.followShaneButton.menu = followShaneMenu
-        self.followShaneButton.showsMenuAsPrimaryAction = true
-        
-        let followCarolineMenu = UIMenu(children: carolineActions.map { $0.makeAction() })
-        self.followCarolineButton.menu = followCarolineMenu
-        self.followCarolineButton.showsMenuAsPrimaryAction = true
-        
-        if #available(iOS 16, *)
-        {
-            // Always show actions in order we've listed them.
-            self.followRileyButton.preferredMenuElementOrder = .fixed
-            self.followShaneButton.preferredMenuElementOrder = .fixed
-            self.followCarolineButton.preferredMenuElementOrder = .fixed
-        }
-    }
-    
     func update()
     {
         if self.traitCollection.verticalSizeClass == .compact
@@ -302,7 +220,7 @@ private extension WhatsNewViewController
             self.titleStackView.alignment = .firstBaseline
             self.titleStackView.spacing = 15
             
-            self.followUsStackView.axis = .horizontal
+            self.footerView.stackView.axis = .horizontal
         }
         else
         {
@@ -310,35 +228,8 @@ private extension WhatsNewViewController
             self.titleStackView.alignment = .center
             self.titleStackView.spacing = 4
             
-            self.followUsStackView.axis = .vertical
+            self.footerView.stackView.axis = .vertical
         }
-    }
-}
-
-private extension WhatsNewViewController
-{
-    @IBAction func followOnMastodon()
-    {
-        let url = URL(string: "https://indieapps.space/@delta")!
-        UIApplication.shared.open(url, options: [:])
-    }
-    
-    @IBAction func followOnThreads()
-    {
-        let url = URL(string: "https://www.threads.net/@delta_emulator")!
-        UIApplication.shared.open(url, options: [:])
-    }
-    
-    @IBAction func followOnBluesky()
-    {
-        let url = URL(string: "https://bsky.app/profile/delta-emulator.bsky.social")!
-        UIApplication.shared.open(url, options: [:])
-    }
-    
-    @IBAction func followOnGitHub()
-    {
-        let url = URL(string: "https://github.com/rileytestut/delta")!
-        UIApplication.shared.open(url, options: [:])
     }
 }
 
