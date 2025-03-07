@@ -74,7 +74,7 @@ class WhatsNewViewController: UICollectionViewController
         self.backgroundBlurView.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(self.backgroundBlurView)
         
-        self.footerView = FollowUsFooterView()
+        self.footerView = FollowUsFooterView(prefersFullColorIcons: true)
         self.footerView.translatesAutoresizingMaskIntoConstraints = false
         self.footerView.textLabel.isHidden = true
         self.view.addSubview(self.footerView)

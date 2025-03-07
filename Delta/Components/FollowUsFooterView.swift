@@ -12,6 +12,8 @@ import Roxas
 
 class FollowUsFooterView: RSTNibView
 {
+    let prefersFullColorIcons: Bool
+    
     @IBOutlet var textLabel: UILabel!
     @IBOutlet var stackView: UIStackView!
     
@@ -27,8 +29,10 @@ class FollowUsFooterView: RSTNibView
     
     @IBOutlet private var iconsHeightConstraint: NSLayoutConstraint!
     
-    init()
+    init(prefersFullColorIcons: Bool)
     {
+        self.prefersFullColorIcons = prefersFullColorIcons
+        
         super.init(frame: .zero)
         
         self.prepareFollowButtons()
@@ -117,6 +121,28 @@ private extension FollowUsFooterView
             self.followRileyButton.preferredMenuElementOrder = .fixed
             self.followShaneButton.preferredMenuElementOrder = .fixed
             self.followCarolineButton.preferredMenuElementOrder = .fixed
+        }
+        
+        if !self.prefersFullColorIcons
+        {
+            self.iconsHeightConstraint.constant = 35
+            
+            self.mastodonButton.tintColor = .secondaryLabel
+            self.threadsButton.tintColor = .secondaryLabel
+            self.blueskyButton.tintColor = .secondaryLabel
+            self.githubButton.tintColor = .secondaryLabel
+            
+            if #available(iOS 15, *)
+            {
+                self.mastodonButton.configuration?.background.image = UIImage(named: "Mastodon")
+                self.threadsButton.configuration?.background.image = UIImage(named: "Threads")
+                self.blueskyButton.configuration?.background.image = UIImage(named: "Bluesky")
+                self.githubButton.configuration?.background.image = UIImage(named: "GitHub")
+            }
+        }
+        else
+        {
+            // Use values from nib
         }
         
         if #unavailable(iOS 15)

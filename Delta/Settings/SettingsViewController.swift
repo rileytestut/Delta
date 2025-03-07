@@ -112,6 +112,8 @@ class SettingsViewController: UITableViewController
     @IBOutlet private var syncingServiceLabel: UILabel!
     @IBOutlet private var exportLogActivityIndicatorView: UIActivityIndicatorView!
     
+    @IBOutlet private var followUsFooterView: FollowUsFooterView!
+    
     private var selectionFeedbackGenerator: UISelectionFeedbackGenerator?
     
     private var previousSelectedRowIndexPath: IndexPath?
@@ -169,6 +171,12 @@ class SettingsViewController: UITableViewController
         {
             self.tableView.register(AttributedHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: AttributedHeaderFooterView.reuseIdentifier)
         }
+        
+        self.followUsFooterView = FollowUsFooterView(prefersFullColorIcons: false)
+        self.followUsFooterView.stackView.spacing = 20
+        self.followUsFooterView.stackView.isLayoutMarginsRelativeArrangement = true
+        self.followUsFooterView.stackView.directionalLayoutMargins.top = 8
+        self.followUsFooterView.stackView.directionalLayoutMargins.bottom = 20
     }
     
     override func viewWillAppear(_ animated: Bool)
@@ -1032,6 +1040,9 @@ extension SettingsViewController
             
             return footerView
             
+        case .support:
+            return self.followUsFooterView
+            
         default: break
         }
         
@@ -1092,6 +1103,7 @@ extension SettingsViewController
         {
         case .controllerSkins: return UITableView.automaticDimension
         case .patreon: return UITableView.automaticDimension
+        case .support: return UITableView.automaticDimension
         default: return super.tableView(tableView, heightForFooterInSection: section.rawValue)
         }
     }
@@ -1105,6 +1117,7 @@ extension SettingsViewController
         {
         case .controllerSkins: return 30
         case .patreon: return 30
+        case .support: return 180
         default: return UITableView.automaticDimension
         }
     }
