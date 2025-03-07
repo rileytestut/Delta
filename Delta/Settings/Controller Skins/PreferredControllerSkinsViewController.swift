@@ -103,6 +103,10 @@ class PreferredControllerSkinsViewController: UITableViewController
     
     @IBOutlet private var portraitImageView: UIImageView!
     @IBOutlet private var landscapeImageView: UIImageView!
+    
+    @IBOutlet private var portraitPlaceholderLabel: UILabel!
+    @IBOutlet private var landscapePlaceholderLabel: UILabel!
+    
     @IBOutlet private var variantSegmentedControl: UISegmentedControl!
     
     @IBOutlet private var filterButton: UIBarButtonItem!
@@ -327,16 +331,14 @@ private extension PreferredControllerSkinsViewController
             portraitControllerSkin = Settings.preferredControllerSkin(for: game, traits: portraitTraits, forExternalController: self.isExternalControllerSkin)
             landscapeControllerSkin = Settings.preferredControllerSkin(for: game, traits: landscapeTraits, forExternalController: self.isExternalControllerSkin)
         }
-        
-        if portraitControllerSkin == nil
+        else
         {
             portraitControllerSkin = Settings.preferredControllerSkin(for: self.system, traits: portraitTraits, forExternalController: self.isExternalControllerSkin)
-        }
-        
-        if landscapeControllerSkin == nil
-        {
             landscapeControllerSkin = Settings.preferredControllerSkin(for: self.system, traits: landscapeTraits, forExternalController: self.isExternalControllerSkin)
         }
+        
+        self.portraitPlaceholderLabel.isHidden = (portraitControllerSkin != nil)
+        self.landscapePlaceholderLabel.isHidden = (landscapeControllerSkin != nil)
         
         if portraitControllerSkin != self.portraitControllerSkin || portraitTraits != self.portraitTraits
         {

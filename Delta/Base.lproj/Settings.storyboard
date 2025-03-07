@@ -1132,12 +1132,20 @@ Menu + Long-Press: Quick Load</string>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5r7-OQ-i7w">
                                                     <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                                 </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Controller Skin" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yJn-Ez-ya2">
+                                                    <rect key="frame" x="16" y="11.5" width="139" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" systemColor="secondaryLabelColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="5r7-OQ-i7w" firstAttribute="top" secondItem="KCG-fx-fax" secondAttribute="top" id="2uo-BN-g4M"/>
                                                 <constraint firstAttribute="trailing" secondItem="5r7-OQ-i7w" secondAttribute="trailing" id="AWh-tS-ECE"/>
+                                                <constraint firstItem="yJn-Ez-ya2" firstAttribute="centerY" secondItem="KCG-fx-fax" secondAttribute="centerY" id="Emh-Gr-0km"/>
                                                 <constraint firstItem="5r7-OQ-i7w" firstAttribute="leading" secondItem="KCG-fx-fax" secondAttribute="leading" id="WLG-Wh-Pq2"/>
                                                 <constraint firstAttribute="bottom" secondItem="5r7-OQ-i7w" secondAttribute="bottom" id="X0H-WI-dQX"/>
+                                                <constraint firstItem="yJn-Ez-ya2" firstAttribute="leading" secondItem="KCG-fx-fax" secondAttribute="leadingMargin" id="YFg-DY-3Ou"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -1155,10 +1163,18 @@ Menu + Long-Press: Quick Load</string>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="XY1-es-oZe">
                                                     <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                                 </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Controller Skin" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lT5-hl-WFR">
+                                                    <rect key="frame" x="16" y="11.5" width="139" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" systemColor="secondaryLabelColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstItem="lT5-hl-WFR" firstAttribute="centerY" secondItem="XwS-Kw-Fe6" secondAttribute="centerY" id="Ayx-D5-d91"/>
                                                 <constraint firstItem="XY1-es-oZe" firstAttribute="top" secondItem="XwS-Kw-Fe6" secondAttribute="top" id="BLb-gp-vUV"/>
                                                 <constraint firstAttribute="bottom" secondItem="XY1-es-oZe" secondAttribute="bottom" id="EmB-8V-hFE"/>
+                                                <constraint firstItem="lT5-hl-WFR" firstAttribute="leading" secondItem="XwS-Kw-Fe6" secondAttribute="leadingMargin" id="NQf-7M-PMY"/>
                                                 <constraint firstItem="XY1-es-oZe" firstAttribute="leading" secondItem="XwS-Kw-Fe6" secondAttribute="leading" id="ONa-4a-dnw"/>
                                                 <constraint firstAttribute="trailing" secondItem="XY1-es-oZe" secondAttribute="trailing" id="avH-RJ-zDf"/>
                                             </constraints>
@@ -1190,7 +1206,9 @@ Menu + Long-Press: Quick Load</string>
                     <connections>
                         <outlet property="filterButton" destination="epN-iR-ZX6" id="eNL-Tc-CRm"/>
                         <outlet property="landscapeImageView" destination="XY1-es-oZe" id="d6S-ez-jh2"/>
+                        <outlet property="landscapePlaceholderLabel" destination="lT5-hl-WFR" id="fHf-SQ-A6f"/>
                         <outlet property="portraitImageView" destination="5r7-OQ-i7w" id="C5r-uX-SlN"/>
+                        <outlet property="portraitPlaceholderLabel" destination="yJn-Ez-ya2" id="ShU-bU-rbz"/>
                         <outlet property="variantSegmentedControl" destination="FuI-rT-eft" id="NdA-He-Opu"/>
                         <segue destination="pG9-hI-tRE" kind="show" identifier="showControllerSkins" id="kiq-86-5B7"/>
                     </connections>
