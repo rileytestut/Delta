@@ -902,7 +902,9 @@ private extension GameViewController
         }
         else
         {
-            self.controllerView.controllerSkin = nil
+            // TODO: Add this back once we've adopted modern keyboard input handling.
+            // Until then, setting controllerSkin to nil breaks our legacy keyboard handling.
+            // self.controllerView.controllerSkin = nil
         }
         
         self.updateExternalDisplay()
