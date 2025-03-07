@@ -58,8 +58,6 @@ struct Settings
     
     static func registerDefaults()
     {
-        let isPhone = (UIDevice.current.userInterfaceIdiom == .phone)
-        
         var defaults = [#keyPath(UserDefaults.translucentControllerSkinOpacity): 0.7,
                         #keyPath(UserDefaults.gameShortcutsMode): GameShortcutsMode.recent.rawValue,
                         #keyPath(UserDefaults.isButtonHapticFeedbackEnabled): true,
@@ -67,7 +65,7 @@ struct Settings
                         #keyPath(UserDefaults.sortSaveStatesByOldestFirst): true,
                         #keyPath(UserDefaults.isPreviewsEnabled): true,
                         #keyPath(UserDefaults.isAltJITEnabled): false,
-                        #keyPath(UserDefaults.respectSilentMode): isPhone, // Default to `true` for iPhone, but `false` for other devices.
+                        #keyPath(UserDefaults.respectSilentMode): false,
                         #keyPath(UserDefaults.pauseWhileInactive): true,
                         #keyPath(UserDefaults.supportsExternalDisplays): true,
                         #keyPath(UserDefaults.isQuickGesturesEnabled): true,
