@@ -923,17 +923,6 @@ extension SettingsViewController
             default: break
             }
             
-        case .credits:
-            let row = CreditsRow(rawValue: indexPath.row)!
-            switch row
-            {
-            case .friendZonePatrons:
-                guard !PurchaseManager.shared.supportsExternalPurchases else { break primary }
-                return 0.0
-                
-            default: break
-            }
-            
         default: break
         }
         

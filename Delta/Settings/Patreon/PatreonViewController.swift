@@ -159,6 +159,10 @@ private extension PatreonViewController
             headerView.supportButton.removeTarget(self, action: #selector(PatreonViewController.manageSubscription), for: .primaryActionTriggered)
             headerView.supportButton.addTarget(self, action: #selector(PatreonViewController.becomePatron), for: .primaryActionTriggered)
         }
+        
+        #if !APP_STORE
+        headerView.restorePurchaseButton.isHidden = true
+        #endif
     }
 }
 
@@ -184,6 +188,8 @@ private extension PatreonViewController
     
     @objc func becomePatron()
     {
+        #if APP_STORE
+        
         Task<Void, Never> {
             do
             {
@@ -216,6 +222,13 @@ private extension PatreonViewController
                 self.present(alertController, animated: true)
             }
         }
+        
+        #else
+        
+        let patreonURL = URL(string: "https://www.patreon.com/rileyshane")!
+        UIApplication.shared.open(patreonURL, options: [:])
+        
+        #endif
     }
     
     @objc func manageSubscription()
