@@ -1440,15 +1440,15 @@ extension GameViewController
         let minEdge = min(emulatorCore.videoManager.videoFormat.dimensions.width, emulatorCore.videoManager.videoFormat.dimensions.height)
         
         let imageScale: Double
-        if minEdge >= 720
+        if minEdge >= 1080
         {
-            // Screenshot is already at or above 720p, so no need to scale it.
+            // Screenshot is already at or above 1080p, so no need to scale it.
             imageScale = 1
         }
         else
         {
-            // Determine integer scaling to ensure we reach 720p.
-            imageScale = (720.0 / minEdge).rounded(.up)
+            // Determine integer scaling to ensure we reach 1080p.
+            imageScale = (1080.0 / minEdge).rounded(.up)
         }
         
         let imageSize = CGSize(width: snapshot.size.width * imageScale, height: snapshot.size.height * imageScale)
