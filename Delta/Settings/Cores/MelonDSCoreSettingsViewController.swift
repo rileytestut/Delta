@@ -107,6 +107,8 @@ private extension MelonDSCoreSettingsViewController
 
 class MelonDSCoreSettingsViewController: UITableViewController
 {
+    var scrollToBIOS: Bool = false
+    
     private var importingBIOS: SystemBIOS?
     
     override func viewDidLoad()
@@ -144,6 +146,19 @@ class MelonDSCoreSettingsViewController: UITableViewController
                 DatabaseManager.shared.prepare(core, in: context)
                 context.saveWithErrorLogging()
             }
+        }
+    }
+    
+    override func viewDidAppear(_ animated: Bool)
+    {
+        super.viewDidAppear(animated)
+        
+        if self.scrollToBIOS
+        {
+            let indexPath = IndexPath(row: 0, section: Section.dsBIOS.rawValue)
+            self.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+            
+            self.scrollToBIOS = false
         }
     }
 }

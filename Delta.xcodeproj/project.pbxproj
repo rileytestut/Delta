@@ -182,7 +182,7 @@
 		D524F4A3273DE9C000D500B2 /* ProcessInfo+JIT.swift in Sources */ = {isa = PBXBuildFile; fileRef = D524F4A2273DE9C000D500B2 /* ProcessInfo+JIT.swift */; };
 		D524F4A5273DEBB400D500B2 /* ServerManager+Delta.swift in Sources */ = {isa = PBXBuildFile; fileRef = D524F4A4273DEBB400D500B2 /* ServerManager+Delta.swift */; };
 		D5265A7E2D4845C90002C6CE /* GameSetting.m in Sources */ = {isa = PBXBuildFile; fileRef = D5265A7D2D4845C90002C6CE /* GameSetting.m */; };
-		D5265A802D4848A00002C6CE /* PreferredControllerSkinsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5265A7F2D48489C0002C6CE /* PreferredControllerSkinsView.swift */; };
+		D5265A802D4848A00002C6CE /* GameSettingsWrapperViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5265A7F2D48489C0002C6CE /* GameSettingsWrapperViews.swift */; };
 		D52CB8C62CE2B7B600B04458 /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = D52CB8C52CE2B7B600B04458 /* RevenueCat */; };
 		D52CB8C82CE2B7C800B04458 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D52CB8C72CE2B7C800B04458 /* StoreKit.framework */; };
 		D52CB8CA2CE2B85E00B04458 /* RevenueCatManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52CB8C92CE2B85800B04458 /* RevenueCatManager.swift */; };
@@ -511,7 +511,7 @@
 		D524F4A4273DEBB400D500B2 /* ServerManager+Delta.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ServerManager+Delta.swift"; sourceTree = "<group>"; };
 		D5265A7C2D4843450002C6CE /* GameSetting.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameSetting.h; sourceTree = "<group>"; };
 		D5265A7D2D4845C90002C6CE /* GameSetting.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GameSetting.m; sourceTree = "<group>"; };
-		D5265A7F2D48489C0002C6CE /* PreferredControllerSkinsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferredControllerSkinsView.swift; sourceTree = "<group>"; };
+		D5265A7F2D48489C0002C6CE /* GameSettingsWrapperViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSettingsWrapperViews.swift; sourceTree = "<group>"; };
 		D52CB8C72CE2B7C800B04458 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		D52CB8C92CE2B85800B04458 /* RevenueCatManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevenueCatManager.swift; sourceTree = "<group>"; };
 		D532B8BC29E5EDAD009EE27C /* OptionalProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalProtocol.swift; sourceTree = "<group>"; };
@@ -1235,7 +1235,7 @@
 			isa = PBXGroup;
 			children = (
 				D50CA1562D419E7100F54920 /* GameSettingsView.swift */,
-				D5265A7F2D48489C0002C6CE /* PreferredControllerSkinsView.swift */,
+				D5265A7F2D48489C0002C6CE /* GameSettingsWrapperViews.swift */,
 			);
 			path = Games;
 			sourceTree = "<group>";
@@ -1842,7 +1842,7 @@
 				BF1F45AD21AF57BA00EF9895 /* HarmonyMetadataKey+Keys.swift in Sources */,
 				BFD1EF402336BD8800D197CF /* UIDevice+Processor.swift in Sources */,
 				BF71CF871FE90006001F1613 /* AppIconShortcutsViewController.swift in Sources */,
-				D5265A802D4848A00002C6CE /* PreferredControllerSkinsView.swift in Sources */,
+				D5265A802D4848A00002C6CE /* GameSettingsWrapperViews.swift in Sources */,
 				BF1DAD5D1D9F576000E752A7 /* PreferredControllerSkinsViewController.swift in Sources */,
 				BFE022A01F5B57FF0052D888 /* PopoverMenuButton.swift in Sources */,
 				BF6BF31C1EB821A0008E83CD /* GamesDatabaseImportOption.swift in Sources */,
