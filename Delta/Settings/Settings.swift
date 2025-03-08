@@ -91,6 +91,12 @@ struct Settings
             UserDefaults.standard.shouldRepairDatabase = true
             ExperimentalFeatures.shared.repairDatabase.isEnabled = false // Disable so we only repair database once.
         }
+        
+        if ExperimentalFeatures.shared.showWhatsNew.isEnabled
+        {
+            UserDefaults.standard.didShowWhatsNew = false
+            ExperimentalFeatures.shared.showWhatsNew.isEnabled = false // Disable so we only show What's New once.
+        }
     }
 }
 

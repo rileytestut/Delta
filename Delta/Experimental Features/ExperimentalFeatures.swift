@@ -78,6 +78,10 @@ struct ExperimentalFeatures: FeatureContainer
              options: PlayWithLuOptions())
     var Lu
     
+    @Feature(name: "Show What’s New",
+             description: "Enable this to show What’s New on next launch.")
+    var showWhatsNew
+    
     private init()
     {
         self.prepareFeatures()
