@@ -771,6 +771,11 @@ private extension GameViewController
         {
             Settings.localControllerPlayerIndex = 0
         }
+        else if let index = Settings.localControllerPlayerIndex, ExternalGameControllerManager.shared.connectedControllers.contains(where: { $0.playerIndex == index })
+        {
+            // There is an active controller with same player index as local controller, so disable local controller.
+            Settings.localControllerPlayerIndex = nil
+        }
         
         // If Settings.localControllerPlayerIndex is non-nil, show controller view.
         if let index = Settings.localControllerPlayerIndex
@@ -801,8 +806,6 @@ private extension GameViewController
                 self.controllerView.isHidden = true
                 self.controllerView.playerIndex = nil
             }
-
-            Settings.localControllerPlayerIndex = nil
         }
         
         self.view.setNeedsLayout()
