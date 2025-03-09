@@ -78,6 +78,11 @@ struct ExperimentalFeatures: FeatureContainer
              options: PlayWithLuOptions())
     var Lu
     
+    @Feature(name: "RetroAchievements",
+             description: "Log in with RetroAchievements to track your progress and achievements in games.",
+             options: RetroAchievementsOptions())
+    var retroAchievements
+    
     private init()
     {
         self.prepareFeatures()
