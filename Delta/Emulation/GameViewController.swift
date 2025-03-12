@@ -593,6 +593,15 @@ extension GameViewController
                 pauseViewController.fastForwardItem = nil
             }
             
+            if ExperimentalFeatures.shared.retroAchievements.isEnabled && ExperimentalFeatures.shared.retroAchievements.isHardcoreModeEnabled
+            {
+                // Saving save states is fine, just not loading them
+                // pauseViewController.saveStateItem = nil
+                
+                pauseViewController.loadStateItem = nil
+                pauseViewController.cheatCodesItem = nil
+            }
+            
             self.pauseViewController = pauseViewController
             
         default: break
@@ -1390,6 +1399,11 @@ extension GameViewController
     
     @objc func performQuickLoadAction()
     {
+        guard !ExperimentalFeatures.shared.retroAchievements.isEnabled || !ExperimentalFeatures.shared.retroAchievements.isHardcoreModeEnabled else {
+            // Disable loading save states when using RetroAchievements and Hardcore Mode
+            return
+        }
+        
         guard let game = self.game as? Game, let emulatorCore, !emulatorCore.isWirelessMultiplayerActive else { return }
         
         let fetchRequest = SaveState.fetchRequest(for: game, type: .quick)

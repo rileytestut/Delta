@@ -15,6 +15,9 @@ struct RetroAchievementsOptions
 {
     @Option(name: "Manage Account", detailView: { _ in AccountView() })
     var manageAccount: String = ""
+    
+    @Option(name: "Hardcore Mode", description: "Disables features that could provide an unfair advantage, such as cheats and save states.")
+    var isHardcoreModeEnabled: Bool = true
 }
 
 private extension AccountView

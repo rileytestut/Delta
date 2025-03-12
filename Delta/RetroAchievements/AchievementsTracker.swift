@@ -52,6 +52,11 @@ final class AchievementsTracker
             AchievementsManager.handleEvent(event: event, client: client)
         }
         
+        if ExperimentalFeatures.shared.retroAchievements.isHardcoreModeEnabled
+        {
+            rc_client_set_hardcore_enabled(self.client, 1)
+        }
+        
         self.userData = UnsafeMutablePointer<AchievementsManager.UserData>.allocate(capacity: 1)
         self.userData.initialize(to: AchievementsManager.UserData(tracker: self))
         rc_client_set_userdata(self.client, self.userData)
@@ -112,6 +117,12 @@ extension AchievementsTracker
         }
         
         userData.deallocate()
+        
+        if rc_client_is_processing_required(self.client) == 0
+        {
+            // Game has no achievements or leaderboard, so disable hardcore mode.
+            rc_client_set_hardcore_enabled(self.client, 0)
+        }
     }
     
     func reset()
