@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXAggregateTarget section */
@@ -194,6 +194,7 @@
 		D534515D2D0A314900B800CE /* PatreonTiersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D534515C2D0A313E00B800CE /* PatreonTiersViewController.swift */; };
 		D539103229E88B6C0006B350 /* DeltaPreviews.h in Headers */ = {isa = PBXBuildFile; fileRef = D539103129E88B6C0006B350 /* DeltaPreviews.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D539104029E88BC40006B350 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D539103F29E88BC40006B350 /* ContentView.swift */; };
+		D53EF0D42D78E23F005C948A /* AchievementsTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53EF0D32D78E23F005C948A /* AchievementsTracker.swift */; };
 		D54529CE2D0CF41B00E6EBDD /* OnlineMultiplayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54529CD2D0CF41100E6EBDD /* OnlineMultiplayer.swift */; };
 		D54A4BB329E4D27E004C7D57 /* FeatureDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54A4BB229E4D27E004C7D57 /* FeatureDetailView.swift */; };
 		D54E46D02BED714F00780713 /* NSUserActivity+Delta.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54E46CF2BED714F00780713 /* NSUserActivity+Delta.swift */; };
@@ -215,6 +216,7 @@
 		D5864970297734280081477E /* CheatMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586496F297734280081477E /* CheatMetadata.swift */; };
 		D586497229774ABD0081477E /* CheatBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586497129774ABD0081477E /* CheatBase.swift */; };
 		D5864978297756CE0081477E /* CheatBaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5864977297756CE0081477E /* CheatBaseView.swift */; };
+		D5974CD52D77C37500750CA8 /* Achievement.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5974CD42D77C37200750CA8 /* Achievement.swift */; };
 		D59B50B72C06666A00FDC53A /* Delta7ToDelta8.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = D59B50B62C06666A00FDC53A /* Delta7ToDelta8.xcmappingmodel */; };
 		D5A287252C23A1AC009883C3 /* SkinDebugging.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A287242C23A1AC009883C3 /* SkinDebugging.swift */; };
 		D5A2CAC02D69660800FBA4E4 /* WFCManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A2CABF2D69660800FBA4E4 /* WFCManager.swift */; };
@@ -526,6 +528,7 @@
 		D539102F29E88B6B0006B350 /* DeltaPreviews.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DeltaPreviews.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D539103129E88B6C0006B350 /* DeltaPreviews.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DeltaPreviews.h; sourceTree = "<group>"; };
 		D539103F29E88BC40006B350 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		D53EF0D32D78E23F005C948A /* AchievementsTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementsTracker.swift; sourceTree = "<group>"; };
 		D54529CD2D0CF41100E6EBDD /* OnlineMultiplayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnlineMultiplayer.swift; sourceTree = "<group>"; };
 		D54A4BB229E4D27E004C7D57 /* FeatureDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureDetailView.swift; sourceTree = "<group>"; };
 		D54E46CF2BED714F00780713 /* NSUserActivity+Delta.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSUserActivity+Delta.swift"; sourceTree = "<group>"; };
@@ -549,6 +552,7 @@
 		D58F39C529E0A473008B4100 /* Option.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Option.swift; sourceTree = "<group>"; };
 		D58F39C829E0A702008B4100 /* UserDefaults+OptionValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+OptionValues.swift"; sourceTree = "<group>"; };
 		D592D6FE29E48FFB008D218A /* OptionPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionPickerView.swift; sourceTree = "<group>"; };
+		D5974CD42D77C37200750CA8 /* Achievement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Achievement.swift; sourceTree = "<group>"; };
 		D59B50B52C0665C800FDC53A /* Delta 8.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Delta 8.xcdatamodel"; sourceTree = "<group>"; };
 		D59B50B62C06666A00FDC53A /* Delta7ToDelta8.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = Delta7ToDelta8.xcmappingmodel; sourceTree = "<group>"; };
 		D5A137442A7D814000AB1372 /* RepairDatabaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepairDatabaseViewController.swift; sourceTree = "<group>"; };
@@ -1240,6 +1244,8 @@
 			isa = PBXGroup;
 			children = (
 				D5087E862D76563400E77936 /* AchievementsManager.swift */,
+				D53EF0D32D78E23F005C948A /* AchievementsTracker.swift */,
+				D5974CD42D77C37200750CA8 /* Achievement.swift */,
 				D50996E82D7A536200BE069B /* AchievementsError.swift */,
 			);
 			path = RetroAchievements;
@@ -1913,6 +1919,7 @@
 				D5AE76BD2C2B53FC0086471B /* _PatreonAccount.swift in Sources */,
 				D56C36312D65471D00A8984D /* WhatsNewCell.swift in Sources */,
 				D524F4A3273DE9C000D500B2 /* ProcessInfo+JIT.swift in Sources */,
+				D5974CD52D77C37500750CA8 /* Achievement.swift in Sources */,
 				BFDCA1E9244F7E1000B8FBDB /* Delta5ToDelta6.xcmappingmodel in Sources */,
 				D5A817B329DF6C6C00904AFE /* ExperimentalFeatures.swift in Sources */,
 				BFD097211D3A01B8005A44C2 /* SaveStatesViewController.swift in Sources */,
@@ -1954,6 +1961,7 @@
 				BF6BF3271EB87EB8008E83CD /* PhotoLibraryImportOption.swift in Sources */,
 				BF5942661E09BBB10051894B /* LoadImageURLOperation.swift in Sources */,
 				D5AE78832BEAAD6100ED25DC /* GameSceneDelegate.swift in Sources */,
+				D53EF0D42D78E23F005C948A /* AchievementsTracker.swift in Sources */,
 				BF353FF21C5D7FB000C1184C /* PauseViewController.swift in Sources */,
 				BF00BEA625B758AA00C8607D /* SystemBIOS.swift in Sources */,
 				BF696B801D9B2B02009639E0 /* Theme.swift in Sources */,
@@ -2129,6 +2137,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
+					"RC_CLIENT_SUPPORTS_HASH=1",
 					"$(inherited)",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
@@ -2184,6 +2193,7 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = "RC_CLIENT_SUPPORTS_HASH=1";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;

@@ -10,6 +10,10 @@ import Foundation
 
 struct AchievementsError: CustomNSError
 {
+    // Use positive values for our own error codes
+    static let notAuthenticated: Int = 1
+    static let unsupportedSystem: Int = 2
+    
     static var errorDomain: String { "AchievementsError" }
     
     var errorCode: Int

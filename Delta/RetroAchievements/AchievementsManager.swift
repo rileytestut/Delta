@@ -21,10 +21,12 @@ extension AchievementsManager
     
     final class UserData
     {
+        weak var tracker: AchievementsTracker?
         var continuation: CheckedContinuation<Void, Error>?
         
-        init(continuation: CheckedContinuation<Void, Error>? = nil)
+        init(tracker: AchievementsTracker? = nil, continuation: CheckedContinuation<Void, Error>? = nil)
         {
+            self.tracker = tracker
             self.continuation = continuation
         }
     }
@@ -150,6 +152,23 @@ extension AchievementsManager
 
 extension AchievementsManager
 {
+    func makeTracker(for emulatorCore: EmulatorCore) throws -> AchievementsTracker
+    {
+        let tracker = try AchievementsTracker(emulatorCore: emulatorCore, authenticatedClient: self.authClient)
+        return tracker
+    }
+}
+
+extension AchievementsManager
+{
+    static func read(address: UInt32, buffer: UnsafeMutablePointer<UInt8>!, numberOfBytes: UInt32, client: OpaquePointer!) -> UInt32
+    {
+        guard let userData = rc_client_get_userdata(client)?.assumingMemoryBound(to: UserData.self).pointee, let achievementTracker = userData.tracker else { return 0 }
+        
+        let readBytes = achievementTracker.readBytes(at: Int(address), into: buffer, size: Int(numberOfBytes))
+        return UInt32(readBytes)
+    }
+    
     static func send(request: UnsafePointer<rc_api_request_t>!, callback: rc_client_server_callback_t!, callbackData: UnsafeMutableRawPointer?, client: OpaquePointer!)
     {
         guard let rawRequest = request?.pointee, let urlString = rawRequest.url else { return }
@@ -205,6 +224,22 @@ extension AchievementsManager
     {
         let log = String(cString: message)
         Logger.achievements.info("\(log, privacy: .public)")
+    }
+    
+    static func handleEvent(event: UnsafePointer<rc_client_event_t>!, client: OpaquePointer!)
+    {
+        guard let userData = rc_client_get_userdata(client)?.assumingMemoryBound(to: UserData.self).pointee, let tracker = userData.tracker else { return }
+        
+        Logger.achievements.info("Handling RA Event: \(event.pointee.type)")
+        
+        switch Int(event.pointee.type)
+        {
+        case RC_CLIENT_EVENT_ACHIEVEMENT_TRIGGERED:
+            let achievement = Achievement(achievement: event.pointee.achievement.pointee)
+            tracker.process(achievement)
+            
+        default: break
+        }
     }
 }
 
