@@ -13,6 +13,10 @@ import rcheevos
 
 extension AchievementsManager
 {
+    static let didFinishAuthenticatingNotification = Notification.Name("DLTADidFinishAuthenticatingNotification")
+    
+    static let resultUserInfoKey: String = "result"
+    
     struct Account
     {
         var username: String
@@ -128,6 +132,7 @@ extension AchievementsManager
             AchievementsManager.shared.account = account
             
             userData?.continuation?.resume()
+            NotificationCenter.default.post(name: AchievementsManager.didFinishAuthenticatingNotification, object: nil, userInfo: [AchievementsManager.resultUserInfoKey: Result<Account, AchievementsError>.success(account)])
         }
         else
         {
@@ -138,6 +143,7 @@ extension AchievementsManager
             
             let error = AchievementsError(errorCode: Int(result), message: errorMessage)
             userData?.continuation?.resume(throwing: error)
+            NotificationCenter.default.post(name: AchievementsManager.didFinishAuthenticatingNotification, object: nil, userInfo: [AchievementsManager.resultUserInfoKey: Result<Account, AchievementsError>.failure(error)])
         }
     }
     
