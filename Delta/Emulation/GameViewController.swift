@@ -161,7 +161,10 @@ class GameViewController: DeltaCore.GameViewController
     }
     
     private var _isLoadingSaveState = false
-    private var _onlineConnectionDate: Date?
+    
+    // Online Multiplayer
+    private var onlineConnectionDate: Date?
+    private var onlineBackgroundTaskID: UIBackgroundTaskIdentifier?
     
     // Handoff
     private var isContinuingHandoff = false
@@ -2000,6 +2003,15 @@ private extension GameViewController
     @objc func didEnterBackground(with notification: Notification)
     {
         self.updateAutoSaveState()
+        
+        if let emulatorCore, emulatorCore.isWirelessMultiplayerActive
+        {
+            self.onlineBackgroundTaskID = UIApplication.shared.beginBackgroundTask(withName: "Online Background Connection") { [weak self] in
+                guard let self, let taskID = self.onlineBackgroundTaskID else { return }
+                UIApplication.shared.endBackgroundTask(taskID)
+                self.onlineBackgroundTaskID = nil
+            }
+        }
     }
     
     @objc func managedObjectContextDidChange(with notification: Notification)
@@ -2239,7 +2251,7 @@ private extension GameViewController
         DispatchQueue.main.async {
             let toastView = RSTToastView(text: NSLocalizedString("Connecting to Nintendo WFC…", comment: ""), detailText: NSLocalizedString("Some features will be disabled while playing online.", comment: ""))
             self.show(toastView, in: self.view.window, duration: 5.0) // Show in window to fix not receiving touches 🤷‍♂️
-            self._onlineConnectionDate = Date()
+            self.onlineConnectionDate = Date()
         }
     }
     
@@ -2254,7 +2266,7 @@ private extension GameViewController
             let toastView = RSTToastView(text: NSLocalizedString("Disconnected from Nintendo WFC", comment: ""), detailText: nil)
             var duration = 3.0
             
-            if let onlineConnectionDate = self._onlineConnectionDate, Date().timeIntervalSince(onlineConnectionDate) < 30
+            if let onlineConnectionDate = self.onlineConnectionDate, Date().timeIntervalSince(onlineConnectionDate) < 30
             {
                 // If we're disconnecting within 30 seconds of connecting, show troubleshooting message.
                 toastView.detailTextLabel.text = NSLocalizedString("⚠️ Tap to view our Troubleshooting Guide.", comment: "")
@@ -2269,7 +2281,7 @@ private extension GameViewController
             }
             
             self.show(toastView, in: self.view.window, duration: duration) // Show in window to fix not receiving touches 🤷‍♂️
-            self._onlineConnectionDate = nil
+            self.onlineConnectionDate = nil
         }
     }
     
