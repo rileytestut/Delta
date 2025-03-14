@@ -106,7 +106,7 @@ private extension FriendZoneManager
         let context = DatabaseManager.shared.newBackgroundContext()
         
         async let patreonPatrons = self.fetchPatreonPatrons(in: context)
-        async let revenueCatPatrons = self.fetchRevenueCatPatrons(in: context)
+        async let revenueCatPatrons: [ManagedPatron] = [] //TODO: Re-enable fetching RevenueCat patrons once we can effectively fetch Friend Zone customers at scale.
         
         let allPatrons = try await revenueCatPatrons + patreonPatrons
         
