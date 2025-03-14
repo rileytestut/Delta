@@ -410,9 +410,9 @@ extension MelonDSCoreSettingsViewController
                 self.navigationController?.pushViewController(hostingController, animated: true)
                 
             case .reset:
-                let alertController = UIAlertController(title: String(localized: "Are you sure you want to reset your WFC configuration?"), message: String(localized: "You may need to re-register any friend codes you've added."), preferredStyle: .actionSheet)
+                let alertController = UIAlertController(title: String(localized: "Are you sure you want to reset your online settings?"), message: String(localized: "You may need to re-add any friend codes you’ve previously registered."), preferredStyle: .actionSheet)
                 alertController.addAction(.cancel)
-                alertController.addAction(UIAlertAction(title: String(localized: "Reset WFC Configuration"), style: .destructive) { [weak self] _ in
+                alertController.addAction(UIAlertAction(title: String(localized: "Reset Online Settings"), style: .destructive) { [weak self] _ in
                     WFCManager.shared.resetWFCConfiguration()
                     self?.tableView.reloadData()
                 })
