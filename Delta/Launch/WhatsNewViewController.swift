@@ -29,8 +29,23 @@ extension WhatsNewViewController
         var name: String
         var caption: String
         var icon: String
+        var fallbackIcon: String?
         
         var isPatronExclusive: Bool
+        
+        var image: UIImage? {
+            if let image = UIImage(systemName: self.icon)
+            {
+                return image
+            }
+            
+            if let fallbackIcon, let image = UIImage(systemName: fallbackIcon)
+            {
+                return image
+            }
+            
+            return nil
+        }
     }
 }
 

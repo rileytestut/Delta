@@ -42,7 +42,7 @@ extension WhatsNewCollectionViewCell
     {
         self.nameLabel.text = feature.name
         self.captionLabel.text = feature.caption
-        self.imageView.image = UIImage(systemName: feature.icon)
+        self.imageView.image = feature.image
         
         if feature.isPatronExclusive
         {
