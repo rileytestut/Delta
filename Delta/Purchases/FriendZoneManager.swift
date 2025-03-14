@@ -11,9 +11,9 @@ import Foundation
 private extension URL
 {
     #if STAGING
-    static let patreonInfo = URL(string: "https://f000.backblazeb2.com/file/altstore-staging/altstore/patreon.json")!
+    static let patreonInfo = URL(string: "https://f000.backblazeb2.com/file/deltaemulator-staging/delta/patreon.json")!
     #else
-    static let patreonInfo = URL(string: "https://cdn.altstore.io/file/altstore/altstore/patreon.json")!
+    static let patreonInfo = URL(string: "https://cdn.altstore.io/file/deltaemulator/delta/patreon.json")!
     #endif
 }
 
