@@ -72,7 +72,6 @@ struct Settings
                         Settings.preferredCoreSettingsKey(for: .ds): MelonDS.core.identifier] as [String : Any]
         
         #if BETA
-        defaults[ExperimentalFeatures.shared.openGLES3.settingsKey.rawValue] = true
         #else
         // Manually set MelonDS as preferred DS core in case DeSmuME is cached from a previous version.
         UserDefaults.standard.set(MelonDS.core.identifier, forKey: Settings.preferredCoreSettingsKey(for: .ds))
