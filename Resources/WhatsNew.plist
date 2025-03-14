@@ -34,17 +34,19 @@
 	</dict>
 	<dict>
 		<key>name</key>
-		<string>AirPlay Skins</string>
+		<string>RetroAchievements</string>
 		<key>caption</key>
-		<string>Customize the appearance of games when AirPlaying to your TV.</string>
+		<string>Connect a RetroAchievements account to track achievements in-game.</string>
 		<key>icon</key>
-		<string>tv.fill</string>
+		<string>trophy.fill</string>
+		<key>fallbackIcon</key>
+		<string>gamecontroller.fill</string>
 		<key>isPatronExclusive</key>
 		<true/>
 	</dict>
 	<dict>
 		<key>name</key>
-		<string>Custom Fast Forward Speed</string>
+		<string>Change Fast Forward Speed</string>
 		<key>caption</key>
 		<string>Choose your preferred Fast Forward speed from 2x all the way to 8x.</string>
 		<key>icon</key>
