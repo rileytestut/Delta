@@ -27,12 +27,17 @@ extension WFCServersView
         @Published
         var knownServers: [WFCServer]?
         
+        @Published
+        var isInitialSetup: Bool = false
+        
         init()
         {
             self.customDNS = Settings.customWFCServer ?? ""
             self.preferredDNS = Settings.preferredWFCServer
             
             self.setKnownServers(UserDefaults.standard.wfcServers)
+            
+            self.isInitialSetup = (Settings.preferredWFCServer == nil)
         }
         
         func setKnownServers(_ knownServers: [WFCServer]?)
@@ -113,7 +118,7 @@ struct WFCServersView: View
         .onChange(of: viewModel.preferredDNS) { newValue in
             guard newValue != Settings.preferredWFCServer else { return }
             
-            if Settings.preferredWFCServer != nil && UserDefaults.standard.object(forKey: MelonDS.wfcIDUserDefaultsKey) != nil
+            if !viewModel.isInitialSetup && UserDefaults.standard.object(forKey: MelonDS.wfcIDUserDefaultsKey) != nil
             {
                 // User has previously chosen server and successfully connected at least once, so ask for confirmation before changing.
                 viewModel.isAskingForConfirmation = true
@@ -138,6 +143,7 @@ struct WFCServersView: View
                 // Reset configuration, then assign Settings.preferredWFCServer to new server
                 WFCManager.shared.resetWFCConfiguration()
                 Settings.preferredWFCServer = preferredDNS
+                viewModel.isInitialSetup = true // Prevent confirmation alert from appearing again.
             }
             
             Button("Cancel", role: .cancel) {
