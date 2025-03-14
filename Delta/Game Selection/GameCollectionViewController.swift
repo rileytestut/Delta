@@ -273,7 +273,7 @@ extension GameCollectionViewController
                 }
                 
                 emulatorBridge.isJITEnabled = ProcessInfo.processInfo.isJITAvailable
-                emulatorBridge.isWFCEnabled = ExperimentalFeatures.shared.dsOnlineMultiplayer.isEnabled
+                emulatorBridge.isWFCEnabled = true
                 emulatorBridge.gbaGameURL = game.secondaryGame?.fileURL
                 emulatorBridge.wfcDNS = Settings.preferredWFCServer
             }

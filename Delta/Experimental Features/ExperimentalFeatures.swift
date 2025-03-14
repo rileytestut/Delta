@@ -60,11 +60,6 @@ struct ExperimentalFeatures: FeatureContainer
              description: "Use Metal to render games instead of OpenGL ES. Does not apply to N64 games.")
     var metal
     
-    @Feature(name: "Online Multiplayer (DS)",
-             description: "Play Nintendo WFC-compatible DS games online with friends.",
-             options: OnlineMultiplayerOptions())
-    var dsOnlineMultiplayer
-    
     @Feature(name: "Lu",
              description: """
              Ask Lu questions about your games to receive helpful tips, strategies, and interesting facts tailored to the games you're playing. Lu learns from your questions and preferences to provide personalized advice. We do not collect personal information, but we do collect data to maintain and improve our experience. See our Privacy Statement and Terms of Service below for more information.

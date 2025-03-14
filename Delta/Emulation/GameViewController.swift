@@ -2207,7 +2207,7 @@ private extension GameViewController
     
     @objc func didConnectOnline(with notification: Notification)
     {
-        guard let bridge = notification.object as? EmulatorBridging, bridge.gameURL == self.game?.fileURL, ExperimentalFeatures.shared.dsOnlineMultiplayer.isEnabled else { return }
+        guard let bridge = notification.object as? EmulatorBridging, bridge.gameURL == self.game?.fileURL else { return }
         
         guard let emulatorCore, !emulatorCore.isWirelessMultiplayerActive else { return }
         
@@ -2245,7 +2245,7 @@ private extension GameViewController
     
     @objc func didDisconnectFromOnline(with notification: Notification)
     {
-        guard let bridge = notification.object as? EmulatorBridging, bridge.gameURL == self.game?.fileURL, ExperimentalFeatures.shared.dsOnlineMultiplayer.isEnabled else { return }
+        guard let bridge = notification.object as? EmulatorBridging, bridge.gameURL == self.game?.fileURL else { return }
         
         guard let emulatorCore, emulatorCore.isWirelessMultiplayerActive else { return }
         emulatorCore.isWirelessMultiplayerActive = false
