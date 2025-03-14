@@ -47,11 +47,10 @@ final class AchievementsManager
 
     private init()
     {
-        // TODO: Finalize version format.
-        let deltaVersion: String = if let version = Bundle.main.object(forInfoDictionaryKey: "DLTAVersion") as? String {
-            version
-        } else if let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String {
-            version
+        let deltaVersion: String = if let buildVersion = Bundle.main.object(forInfoDictionaryKey: kCFBundleVersionKey as String) as? String {
+            buildVersion
+        } else if let marketingVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String {
+            marketingVersion
         } else {
             "1"
         }
