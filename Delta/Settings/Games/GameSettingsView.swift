@@ -63,7 +63,7 @@ struct GameSettingsView: View
                 } header: {
                     Text("Graphics")
                 } footer: {
-                    Text("Use OpenGL ES 3.0 to render this game. You may need to disable this for certain games.")
+                    Text("Use OpenGL ES 3.0 to render this game. Try disabling this if you're experiencing graphics-related bugs.")
                 }
             }
             
