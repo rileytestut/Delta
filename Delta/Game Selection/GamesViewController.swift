@@ -86,6 +86,7 @@ class GamesViewController: UIViewController
         NotificationCenter.default.addObserver(self, selector: #selector(GamesViewController.syncingDidFinish(_:)), name: SyncCoordinator.didFinishSyncingNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GamesViewController.settingsDidChange(_:)), name: Settings.didChangeNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GamesViewController.emulationDidQuit(_:)), name: EmulatorCore.emulationDidQuitNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(GamesViewController.didFinishAuthenticatingAchievementsAccount(_:)), name: AchievementsManager.didFinishAuthenticatingNotification, object: nil)
     }
 }
 
@@ -637,6 +638,30 @@ private extension GamesViewController
             
             emulatorCore.stop()
             self.quitEmulation()
+        }
+    }
+    
+    @objc func didFinishAuthenticatingAchievementsAccount(_ notification: Notification)
+    {
+        guard let result = notification.userInfo?[AchievementsManager.resultUserInfoKey] as? Result<AchievementsManager.Account, AchievementsError> else { return }
+        
+        DispatchQueue.main.async {
+            let toastView: RSTToastView
+            let duration: Double
+            
+            switch result
+            {
+            case .success(let account):
+                toastView = RSTToastView(text: String(format: NSLocalizedString("RetroAchievements: Logged in as “%@”", comment: ""), account.displayName), detailText: nil)
+                duration = 4.0
+                
+            case .failure(let error):
+                toastView = RSTToastView(text: NSLocalizedString("Unable to Log In to RetroAchievements", comment: ""), detailText: error.localizedDescription)
+                duration = 4.0
+            }
+            
+            toastView.presentationEdge = .top
+            toastView.show(in: self.navigationController?.view ?? self.view, duration: duration)
         }
     }
 }

@@ -752,7 +752,10 @@ private extension GameCollectionViewController
         let openActions = UIApplication.shared.supportsMultipleScenes ? [openMenu] : []
         
         let saveFileMenu = UIMenu(title: NSLocalizedString("Manage Save File", comment: ""), image: UIImage(symbolNameIfAvailable: "doc"), children: [importSaveFile, exportSaveFile])
-        let savesMenu = UIMenu(title: "", options: .displayInline, children: [saveStatesAction, saveFileMenu])
+        
+        // Hide save states option if using RetroAchievements and Hardcore Mode.
+        let savesActions = (ExperimentalFeatures.shared.retroAchievements.isEnabled && ExperimentalFeatures.shared.retroAchievements.isHardcoreModeEnabled) ? [saveFileMenu] : [saveStatesAction, saveFileMenu]
+        let savesMenu = UIMenu(title: "", options: .displayInline, children: savesActions)
         
         let settingsMenu = UIMenu(title: "", options: .displayInline, children: [settingsAction])
         

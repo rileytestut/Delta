@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXAggregateTarget section */
@@ -171,6 +171,9 @@
 		C6F24AD92D64B550002F939F /* PauseViewController+Lu.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F24AD82D64B550002F939F /* PauseViewController+Lu.swift */; };
 		C6F24ADB2D64B5A0002F939F /* Lu-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C6F24ADA2D64B5A0002F939F /* Lu-Info.plist */; };
 		D5011C48281B6E8B00A0760B /* CharacterSet+Filename.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5011C47281B6E8B00A0760B /* CharacterSet+Filename.swift */; };
+		D5087E872D76563400E77936 /* AchievementsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5087E862D76563400E77936 /* AchievementsManager.swift */; };
+		D5087E8F2D766CFC00E77936 /* RetroAchievements.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5087E8E2D766CFA00E77936 /* RetroAchievements.swift */; };
+		D50996E92D7A536600BE069B /* AchievementsError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50996E82D7A536200BE069B /* AchievementsError.swift */; };
 		D50CA1572D419E7100F54920 /* GameSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50CA1562D419E7100F54920 /* GameSettingsView.swift */; };
 		D510BC752A5CA9F500450CC0 /* Delta6ToDelta7.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = D510BC742A5CA9F500450CC0 /* Delta6ToDelta7.xcmappingmodel */; };
 		D5147EC82A817B4A00D6CD64 /* ReviewSaveStatesOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5147EC72A817B4A00D6CD64 /* ReviewSaveStatesOptions.swift */; };
@@ -191,6 +194,7 @@
 		D534515D2D0A314900B800CE /* PatreonTiersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D534515C2D0A313E00B800CE /* PatreonTiersViewController.swift */; };
 		D539103229E88B6C0006B350 /* DeltaPreviews.h in Headers */ = {isa = PBXBuildFile; fileRef = D539103129E88B6C0006B350 /* DeltaPreviews.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D539104029E88BC40006B350 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D539103F29E88BC40006B350 /* ContentView.swift */; };
+		D53EF0D42D78E23F005C948A /* AchievementsTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53EF0D32D78E23F005C948A /* AchievementsTracker.swift */; };
 		D54A4BB329E4D27E004C7D57 /* FeatureDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54A4BB229E4D27E004C7D57 /* FeatureDetailView.swift */; };
 		D54E46D02BED714F00780713 /* NSUserActivity+Delta.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54E46CF2BED714F00780713 /* NSUserActivity+Delta.swift */; };
 		D54F710229E89DCB009C069A /* SettingsUserInfoKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54F710129E89DCB009C069A /* SettingsUserInfoKey.swift */; };
@@ -211,6 +215,7 @@
 		D5864970297734280081477E /* CheatMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586496F297734280081477E /* CheatMetadata.swift */; };
 		D586497229774ABD0081477E /* CheatBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586497129774ABD0081477E /* CheatBase.swift */; };
 		D5864978297756CE0081477E /* CheatBaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5864977297756CE0081477E /* CheatBaseView.swift */; };
+		D5974CD52D77C37500750CA8 /* Achievement.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5974CD42D77C37200750CA8 /* Achievement.swift */; };
 		D59B50B72C06666A00FDC53A /* Delta7ToDelta8.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = D59B50B62C06666A00FDC53A /* Delta7ToDelta8.xcmappingmodel */; };
 		D5A287252C23A1AC009883C3 /* SkinDebugging.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A287242C23A1AC009883C3 /* SkinDebugging.swift */; };
 		D5A2CAC02D69660800FBA4E4 /* WFCManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A2CABF2D69660800FBA4E4 /* WFCManager.swift */; };
@@ -278,6 +283,7 @@
 		D5E12AED2D011640000C7531 /* Profanity.txt in Resources */ = {isa = PBXBuildFile; fileRef = D5E12AEC2D01163A000C7531 /* Profanity.txt */; };
 		D5E76AAD2BE199890078C0C5 /* ShowTouches in Frameworks */ = {isa = PBXBuildFile; productRef = D5E76AAC2BE199890078C0C5 /* ShowTouches */; };
 		D5EB601B2C0E6190007C543C /* Stream+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5EB601A2C0E6190007C543C /* Stream+Conveniences.swift */; };
+		D5EF1A202D84BD59001B06E6 /* rcheevos in Frameworks */ = {isa = PBXBuildFile; productRef = D5EF1A1F2D84BD59001B06E6 /* rcheevos */; };
 		D5F702FD2C24CE5300DCD271 /* UISceneSession+Delta.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F702FC2C24CE5300DCD271 /* UISceneSession+Delta.swift */; };
 		D5F82FB82981D3AC00B229AF /* LegacySearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F82FB72981D3AC00B229AF /* LegacySearchBar.swift */; };
 		D5FB042C2C5AF40A008329DD /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D5FB042B2C5AF40A008329DD /* libresolv.tbd */; };
@@ -499,6 +505,9 @@
 		C6F24ADA2D64B5A0002F939F /* Lu-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Lu-Info.plist"; sourceTree = "<group>"; };
 		C786AF1D2DDB6223BE2063CC /* Pods-Delta.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Delta.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Delta/Pods-Delta.debug.xcconfig"; sourceTree = "<group>"; };
 		D5011C47281B6E8B00A0760B /* CharacterSet+Filename.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CharacterSet+Filename.swift"; sourceTree = "<group>"; };
+		D5087E862D76563400E77936 /* AchievementsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementsManager.swift; sourceTree = "<group>"; };
+		D5087E8E2D766CFA00E77936 /* RetroAchievements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetroAchievements.swift; sourceTree = "<group>"; };
+		D50996E82D7A536200BE069B /* AchievementsError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementsError.swift; sourceTree = "<group>"; };
 		D50CA1562D419E7100F54920 /* GameSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSettingsView.swift; sourceTree = "<group>"; };
 		D510BC742A5CA9F500450CC0 /* Delta6ToDelta7.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = Delta6ToDelta7.xcmappingmodel; sourceTree = "<group>"; };
 		D5147EC72A817B4A00D6CD64 /* ReviewSaveStatesOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewSaveStatesOptions.swift; sourceTree = "<group>"; };
@@ -520,6 +529,7 @@
 		D539102F29E88B6B0006B350 /* DeltaPreviews.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DeltaPreviews.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D539103129E88B6C0006B350 /* DeltaPreviews.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DeltaPreviews.h; sourceTree = "<group>"; };
 		D539103F29E88BC40006B350 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		D53EF0D32D78E23F005C948A /* AchievementsTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementsTracker.swift; sourceTree = "<group>"; };
 		D54A4BB229E4D27E004C7D57 /* FeatureDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureDetailView.swift; sourceTree = "<group>"; };
 		D54E46CF2BED714F00780713 /* NSUserActivity+Delta.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSUserActivity+Delta.swift"; sourceTree = "<group>"; };
 		D54F710129E89DCB009C069A /* SettingsUserInfoKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsUserInfoKey.swift; sourceTree = "<group>"; };
@@ -542,6 +552,7 @@
 		D58F39C529E0A473008B4100 /* Option.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Option.swift; sourceTree = "<group>"; };
 		D58F39C829E0A702008B4100 /* UserDefaults+OptionValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+OptionValues.swift"; sourceTree = "<group>"; };
 		D592D6FE29E48FFB008D218A /* OptionPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionPickerView.swift; sourceTree = "<group>"; };
+		D5974CD42D77C37200750CA8 /* Achievement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Achievement.swift; sourceTree = "<group>"; };
 		D59B50B52C0665C800FDC53A /* Delta 8.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Delta 8.xcdatamodel"; sourceTree = "<group>"; };
 		D59B50B62C06666A00FDC53A /* Delta7ToDelta8.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = Delta7ToDelta8.xcmappingmodel; sourceTree = "<group>"; };
 		D5A137442A7D814000AB1372 /* RepairDatabaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepairDatabaseViewController.swift; sourceTree = "<group>"; };
@@ -622,6 +633,7 @@
 				BF69FBAA23E399AA0051BEEA /* CoreMotion.framework in Frameworks */,
 				BF69FBA223E375A20051BEEA /* libVBA-M.a in Frameworks */,
 				BFFDF04623E3D3A600931B96 /* libMupen64Plus.a in Frameworks */,
+				D5EF1A202D84BD59001B06E6 /* rcheevos in Frameworks */,
 				D5AE76C22C2B59240086471B /* KeychainAccess in Frameworks */,
 				D5D7C1FA29E60EDE00663793 /* libDeltaFeatures.a in Frameworks */,
 				BFCADF1E25D22FE2008D78FB /* Systems.framework in Frameworks */,
@@ -1157,6 +1169,7 @@
 				D57D795C29F30B1400BB2CF8 /* Experimental Features */,
 				D504F5B92CE55C8100AD3760 /* Purchases */,
 				D5AE76AD2C2B52660086471B /* Patreon */,
+				D5087E7F2D76541400E77936 /* RetroAchievements */,
 				BF5942571E09BB5D0051894B /* Components */,
 				BF696B7E1D9B2AE6009639E0 /* Theming */,
 				BF090CEE1B490C1A00DCAB45 /* Extensions */,
@@ -1229,6 +1242,17 @@
 			path = Purchases;
 			sourceTree = "<group>";
 		};
+		D5087E7F2D76541400E77936 /* RetroAchievements */ = {
+			isa = PBXGroup;
+			children = (
+				D5087E862D76563400E77936 /* AchievementsManager.swift */,
+				D53EF0D32D78E23F005C948A /* AchievementsTracker.swift */,
+				D5974CD42D77C37200750CA8 /* Achievement.swift */,
+				D50996E82D7A536200BE069B /* AchievementsError.swift */,
+			);
+			path = RetroAchievements;
+			sourceTree = "<group>";
+		};
 		D50CA1552D419E4B00F54920 /* Games */ = {
 			isa = PBXGroup;
 			children = (
@@ -1298,6 +1322,7 @@
 				D5147EC72A817B4A00D6CD64 /* ReviewSaveStatesOptions.swift */,
 				D5A287242C23A1AC009883C3 /* SkinDebugging.swift */,
 				C6F24AD62D64B452002F939F /* Lu.swift */,
+				D5087E8E2D766CFA00E77936 /* RetroAchievements.swift */,
 			);
 			path = Features;
 			sourceTree = "<group>";
@@ -1466,6 +1491,7 @@
 				D5AE76C12C2B59240086471B /* KeychainAccess */,
 				D5E76AAC2BE199890078C0C5 /* ShowTouches */,
 				D52CB8C52CE2B7B600B04458 /* RevenueCat */,
+				D5EF1A1F2D84BD59001B06E6 /* rcheevos */,
 			);
 			productName = Delta;
 			productReference = BFFA71D71AAC406100EE9DD1 /* Delta.app */;
@@ -1562,6 +1588,7 @@
 				D5AE76C02C2B59240086471B /* XCRemoteSwiftPackageReference "KeychainAccess" */,
 				D5E76AAB2BE199890078C0C5 /* XCRemoteSwiftPackageReference "ShowTouches" */,
 				D52CB8C42CE2B7B600B04458 /* XCRemoteSwiftPackageReference "purchases-ios-spm" */,
+				D5EF1A1E2D84BD59001B06E6 /* XCRemoteSwiftPackageReference "rcheevos" */,
 			);
 			productRefGroup = BFFA71D81AAC406100EE9DD1 /* Products */;
 			projectDirPath = "";
@@ -1778,6 +1805,7 @@
 				BF59427E1E09BC830051894B /* Game.swift in Sources */,
 				D5011C48281B6E8B00A0760B /* CharacterSet+Filename.swift in Sources */,
 				BFE593CC21F3F8C2003412A6 /* _GameSave.swift in Sources */,
+				D5087E872D76563400E77936 /* AchievementsManager.swift in Sources */,
 				BF63A1A321A4AAAE00EE8F61 /* RecordSyncStatusViewController.swift in Sources */,
 				D5147EC82A817B4A00D6CD64 /* ReviewSaveStatesOptions.swift in Sources */,
 				BFAA1FED1B8AA4FA00495943 /* Settings.swift in Sources */,
@@ -1794,6 +1822,7 @@
 				D5A9C01D29DE058C00A8D610 /* VariableFastForward.swift in Sources */,
 				C6F24AD92D64B550002F939F /* PauseViewController+Lu.swift in Sources */,
 				BFE593CA21F3F8B7003412A6 /* GameSave.swift in Sources */,
+				D5087E8F2D766CFC00E77936 /* RetroAchievements.swift in Sources */,
 				BF63A1B521A4B76E00EE8F61 /* RecordVersionsViewController.swift in Sources */,
 				BF6424831F5B8F3F00D6AB44 /* ListMenuViewController.swift in Sources */,
 				BF1020E31F95B05B00313182 /* DeltaToDelta2.xcmappingmodel in Sources */,
@@ -1811,6 +1840,7 @@
 				D5D78AE529F9BC3700E064F0 /* DSAirPlay.swift in Sources */,
 				BF4828841F9027B600028B97 /* Delta.xcdatamodeld in Sources */,
 				D5F702FD2C24CE5300DCD271 /* UISceneSession+Delta.swift in Sources */,
+				D50996E92D7A536600BE069B /* AchievementsError.swift in Sources */,
 				D510BC752A5CA9F500450CC0 /* Delta6ToDelta7.xcmappingmodel in Sources */,
 				D5AE76BF2C2B54050086471B /* PatreonAccount.swift in Sources */,
 				BF5942951E09BD1A0051894B /* NSManagedObjectContext+Conveniences.swift in Sources */,
@@ -1894,6 +1924,7 @@
 				D5AE76BD2C2B53FC0086471B /* _PatreonAccount.swift in Sources */,
 				D56C36312D65471D00A8984D /* WhatsNewCell.swift in Sources */,
 				D524F4A3273DE9C000D500B2 /* ProcessInfo+JIT.swift in Sources */,
+				D5974CD52D77C37500750CA8 /* Achievement.swift in Sources */,
 				BFDCA1E9244F7E1000B8FBDB /* Delta5ToDelta6.xcmappingmodel in Sources */,
 				D5A817B329DF6C6C00904AFE /* ExperimentalFeatures.swift in Sources */,
 				BFD097211D3A01B8005A44C2 /* SaveStatesViewController.swift in Sources */,
@@ -1935,6 +1966,7 @@
 				BF6BF3271EB87EB8008E83CD /* PhotoLibraryImportOption.swift in Sources */,
 				BF5942661E09BBB10051894B /* LoadImageURLOperation.swift in Sources */,
 				D5AE78832BEAAD6100ED25DC /* GameSceneDelegate.swift in Sources */,
+				D53EF0D42D78E23F005C948A /* AchievementsTracker.swift in Sources */,
 				BF353FF21C5D7FB000C1184C /* PauseViewController.swift in Sources */,
 				BF00BEA625B758AA00C8607D /* SystemBIOS.swift in Sources */,
 				BF696B801D9B2B02009639E0 /* Theme.swift in Sources */,
@@ -2109,6 +2141,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
+					"RC_CLIENT_SUPPORTS_HASH=1",
 					"$(inherited)",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
@@ -2164,6 +2197,7 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = "RC_CLIENT_SUPPORTS_HASH=1";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -2541,6 +2575,14 @@
 				kind = branch;
 			};
 		};
+		D5EF1A1E2D84BD59001B06E6 /* XCRemoteSwiftPackageReference "rcheevos" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/rileytestut/rcheevos.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -2563,6 +2605,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = D5E76AAB2BE199890078C0C5 /* XCRemoteSwiftPackageReference "ShowTouches" */;
 			productName = ShowTouches;
+		};
+		D5EF1A1F2D84BD59001B06E6 /* rcheevos */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D5EF1A1E2D84BD59001B06E6 /* XCRemoteSwiftPackageReference "rcheevos" */;
+			productName = rcheevos;
 		};
 /* End XCSwiftPackageProductDependency section */
 
