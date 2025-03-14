@@ -209,8 +209,10 @@
 	<string>Delta uses the local network to communicate with AltServer and enable JIT.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Delta uses your microphone to emulate the Nintendo DS microphone.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Please allow Delta to save screenshots to your Photo Library.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Press "OK" to allow Delta to use images from your Photo Library as game artwork.</string>
+	<string>Press “OK” to allow Delta to use images from your Photo Library as game artwork.</string>
 	<key>NSUserActivityTypes</key>
 	<array>
 		<string>com.rileytestut.Delta.PlayGame</string>

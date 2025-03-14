@@ -73,6 +73,10 @@ struct ExperimentalFeatures: FeatureContainer
              description: "Enable this to show What’s New on next launch.")
     var showWhatsNew
     
+    @Feature(name: "Delta Screenshots Album",
+             description: "Save game screenshots to dedicated “Delta Screenshots” album.")
+    var screenshotsAlbum
+    
     private init()
     {
         self.prepareFeatures()
