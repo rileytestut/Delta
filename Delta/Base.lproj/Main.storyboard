@@ -162,7 +162,6 @@
                     </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nvR-NU-TUA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-                <exit id="oZi-D4-eoU" userLabel="Exit" sceneMemberID="exit"/>
                 <view contentMode="scaleToFill" id="9a8-fs-Zm2" userLabel="Header View">
                     <rect key="frame" x="0.0" y="0.0" width="240" height="200"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -188,7 +187,7 @@
                             <rect key="frame" x="186" y="28" width="30" height="30"/>
                             <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                             <connections>
-                                <segue destination="oZi-D4-eoU" kind="unwind" unwindAction="unwindToGameCollectionViewController:" id="JM6-wA-ZEk"/>
+                                <action selector="dismissWhatsNew" destination="htE-Bn-kea" eventType="primaryActionTriggered" id="8qO-uI-fkf"/>
                             </connections>
                         </button>
                     </subviews>

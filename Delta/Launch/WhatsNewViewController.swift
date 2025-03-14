@@ -266,6 +266,14 @@ private extension WhatsNewViewController
     }
 }
 
+private extension WhatsNewViewController
+{
+    @IBAction func dismissWhatsNew()
+    {
+        self.presentingViewController?.dismiss(animated: true)
+    }
+}
+
 extension WhatsNewViewController
 {
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView
