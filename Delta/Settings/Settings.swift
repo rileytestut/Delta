@@ -72,6 +72,7 @@ struct Settings
                         Settings.preferredCoreSettingsKey(for: .ds): MelonDS.core.identifier] as [String : Any]
         
         #if BETA
+        defaults[ExperimentalFeatures.shared.showWhatsNew.settingsKey.rawValue] = true // Re-show What's New even if user previously saw it in 1.7b5
         #else
         // Manually set MelonDS as preferred DS core in case DeSmuME is cached from a previous version.
         UserDefaults.standard.set(MelonDS.core.identifier, forKey: Settings.preferredCoreSettingsKey(for: .ds))
