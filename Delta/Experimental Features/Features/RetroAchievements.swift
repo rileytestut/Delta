@@ -56,9 +56,9 @@ struct AccountView: View
     private var authError: Error?
     
     var body: some View {
-        guard #available(iOS 15, *) else { return Text("RetroAchievements requires iOS 15 or later.") }
+        guard #available(iOS 15, *) else { return AnyView(Text("RetroAchievements requires iOS 15 or later.")) }
         
-        return List {
+        return AnyView(List {
             Section("Username") {
                 TextField("Username", text: $viewModel.username)
                     .keyboardType(.default)
@@ -98,7 +98,7 @@ struct AccountView: View
             Button("OK", role: .cancel) {}
         } message: { error in
             Text(verbatim: error.localizedDescription)
-        }
+        })
     }
 }
 
