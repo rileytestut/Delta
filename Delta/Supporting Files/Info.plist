@@ -179,7 +179,7 @@
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>DLTAVersion</key>
-	<string>1.7b5</string>
+	<string>1.7rc</string>
 	<key>GCSupportedGameControllers</key>
 	<array>
 		<dict>
