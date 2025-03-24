@@ -160,7 +160,10 @@ private extension PatreonViewController
             headerView.supportButton.addTarget(self, action: #selector(PatreonViewController.becomePatron), for: .primaryActionTriggered)
         }
         
-        #if !APP_STORE
+        #if APP_STORE
+        headerView.supportButton.isHidden = !PurchaseManager.shared.supportsExternalPurchases
+        headerView.restorePurchaseButton.isHidden = !PurchaseManager.shared.supportsExternalPurchases
+        #else
         headerView.restorePurchaseButton.isHidden = true
         #endif
     }
