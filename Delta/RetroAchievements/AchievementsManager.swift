@@ -101,7 +101,7 @@ extension AchievementsManager
     
     func authenticateInBackground()
     {
-        guard let username = Keychain.shared.retroAchievementsUsername, let token = Keychain.shared.retroAchievementsAuthToken else { return }
+        guard let username = Keychain.shared.retroAchievementsUsername, let token = Keychain.shared.retroAchievementsAuthToken, ExperimentalFeatures.shared.retroAchievements.isEnabled else { return }
         
         username.withCString { rawUsername in
             token.withCString { rawToken in
