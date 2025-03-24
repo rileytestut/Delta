@@ -14,7 +14,7 @@
 	</dict>
 	<dict>
 		<key>name</key>
-		<string>OpenGL ES 3.0 (N64)</string>
+		<string>Updated N64 Core</string>
 		<key>caption</key>
 		<string>Fixes various graphical issues such as black textures and more.</string>
 		<key>icon</key>
