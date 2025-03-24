@@ -209,9 +209,14 @@ private extension WhatsNewViewController
                 layoutSection.contentInsets.bottom = 0
                 layoutSection.contentInsets.leading += 8
                 layoutSection.contentInsets.trailing += 8
-                layoutSection.boundarySupplementaryItems = [
-                    NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: ElementKind.sectionHeader.rawValue, alignment: .top),
-                ]
+                
+                if PurchaseManager.shared.supportsExperimentalFeatures
+                {
+                    layoutSection.boundarySupplementaryItems = [
+                        NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: ElementKind.sectionHeader.rawValue, alignment: .top),
+                    ]
+                }
+                
                 return layoutSection
             }
         }, configuration: layoutConfig)
@@ -228,8 +233,18 @@ private extension WhatsNewViewController
             let data = try Data(contentsOf: fileURL)
             let features = try PropertyListDecoder().decode([NewFeature].self, from: data)
             
-            let generalDataSource = RSTArrayCollectionViewDataSource<Box<NewFeature>>(items: features.filter { !$0.isPatronExclusive }.map(Box.init))
-            let patronsDataSource = RSTArrayCollectionViewDataSource<Box<NewFeature>>(items: features.filter { $0.isPatronExclusive }.map(Box.init))
+            var preferredFeatures = features
+            if !PurchaseManager.shared.supportsExperimentalFeatures
+            {
+                // Only show non-Experimental Features.
+                preferredFeatures = preferredFeatures.filter { !$0.isPatronExclusive }
+            }
+            
+            // Only display first 5 preferred features.
+            preferredFeatures = Array(preferredFeatures.prefix(5))
+            
+            let generalDataSource = RSTArrayCollectionViewDataSource<Box<NewFeature>>(items: preferredFeatures.filter { !$0.isPatronExclusive }.map(Box.init))
+            let patronsDataSource = RSTArrayCollectionViewDataSource<Box<NewFeature>>(items: preferredFeatures.filter { $0.isPatronExclusive }.map(Box.init))
             
             let dataSource = RSTCompositeCollectionViewDataSource(dataSources: [generalDataSource, patronsDataSource])
             dataSource.cellConfigurationHandler = { (cell, feature, indexPath) in

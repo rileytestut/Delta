@@ -54,5 +54,15 @@
 		<key>isPatronExclusive</key>
 		<true/>
 	</dict>
+	<dict>
+		<key>name</key>
+		<string>Custom Game Controller Skins</string>
+		<key>caption</key>
+		<string>Choose custom skins when using a physical game controller.</string>
+		<key>icon</key>
+		<string>gamecontroller.fill</string>
+		<key>isPatronExclusive</key>
+		<false/>
+	</dict>
 </array>
 </plist>
