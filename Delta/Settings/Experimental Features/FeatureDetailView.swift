@@ -33,9 +33,17 @@ struct FeatureDetailView<Feature: AnyFeature>: View
                 }
                 .disabled(!PurchaseManager.shared.isExperimentalFeaturesAvailable)
             } footer: {
-                if let description = feature.description
+                if let description = feature.description, let detailedDescription = feature.detailedDescription
+                {
+                    Text(description) + Text("\n\n") + Text(detailedDescription)
+                }
+                else if let description = feature.description
                 {
                     Text(description)
+                }
+                else if let detailedDescription = feature.detailedDescription
+                {
+                    Text(detailedDescription)
                 }
             }
             

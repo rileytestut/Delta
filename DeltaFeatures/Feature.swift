@@ -19,6 +19,7 @@ public final class Feature<Options>: _AnyFeature
 {
     public let name: LocalizedStringKey
     public let description: LocalizedStringKey?
+    public let detailedDescription: LocalizedStringKey?
     
     // Assigned to property name.
     public internal(set) var key: String = ""
@@ -47,10 +48,11 @@ public final class Feature<Options>: _AnyFeature
     
     private var options: Options
     
-    public init(name: LocalizedStringKey, description: LocalizedStringKey? = nil, options: Options = EmptyOptions())
+    public init(name: LocalizedStringKey, description: LocalizedStringKey? = nil, detailedDescription: LocalizedStringKey? = nil, options: Options = EmptyOptions())
     {
         self.name = name
         self.description = description
+        self.detailedDescription = detailedDescription
         self.options = options
         
         self.prepareOptions()
