@@ -167,7 +167,7 @@ private extension FollowUsFooterView
     
     @IBAction func followOnBluesky()
     {
-        let url = URL(string: "https://bsky.app/profile/delta-emulator.bsky.social")!
+        let url = URL(string: "https://bsky.app/profile/deltaemulator.com")!
         UIApplication.shared.open(url, options: [:])
     }
     
