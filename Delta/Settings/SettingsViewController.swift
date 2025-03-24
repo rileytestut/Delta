@@ -130,6 +130,7 @@ class SettingsViewController: UITableViewController
         NotificationCenter.default.addObserver(self, selector: #selector(SettingsViewController.settingsDidChange(with:)), name: Settings.didChangeNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(SettingsViewController.externalGameControllerDidConnect(_:)), name: .externalGameControllerDidConnect, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(SettingsViewController.externalGameControllerDidDisconnect(_:)), name: .externalGameControllerDidDisconnect, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(SettingsViewController.didPressExperimentalFeaturesPatreonButton(_:)), name: BecomePatronButton.didPressNotification, object: nil)
         
         if #available(iOS 17.5, *)
         {
@@ -277,7 +278,7 @@ private extension SettingsViewController
             guard #unavailable(iOS 15) else { return false }
             
             // OSLogStore is not available on iOS 14, so section is only visible if experimental features is visible.
-            return !PurchaseManager.shared.isExperimentalFeaturesAvailable
+            return !PurchaseManager.shared.supportsExperimentalFeatures
             
         #if LEGACY || BETA
         case .patreon: return true
@@ -672,6 +673,34 @@ private extension SettingsViewController
     {
         self.tableView.reloadData()
     }
+    
+    @objc func didPressExperimentalFeaturesPatreonButton(_ notification: Notification)
+    {
+        let indexPath = IndexPath(row: PatreonRow.connectAccount.rawValue, section: Section.patreon.rawValue)
+        self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: false)
+        
+        self.navigationController?.popToRootViewController(animated: true)
+        
+        guard #available(iOS 16, *) else { return }
+        
+        Task<Void, Never> {
+            do
+            {
+                try await Task.sleep(for: .seconds(0.5))
+                
+                guard let cell = self.tableView.cellForRow(at: indexPath) else { return }
+                cell.setSelected(true, animated: true)
+                
+                try await Task.sleep(for: .seconds(0.5))
+                
+                cell.setSelected(false, animated: true)
+            }
+            catch
+            {
+                Logger.main.error("Failed to highlight Connect Patreon Account row. \(error.localizedDescription, privacy: .public)")
+            }
+        }
+    }
 }
 
 extension SettingsViewController
@@ -705,7 +734,7 @@ extension SettingsViewController
             
         case .syncing where !isSectionHidden(section): return SyncManager.shared.coordinator?.account == nil ? 1 : super.tableView(tableView, numberOfRowsInSection: sectionIndex)
         case .advanced where !isSectionHidden(section):
-            if PurchaseManager.shared.isExperimentalFeaturesAvailable
+            if PurchaseManager.shared.supportsExperimentalFeatures
             {
                 return super.tableView(tableView, numberOfRowsInSection: sectionIndex)
             }
@@ -1020,7 +1049,7 @@ extension SettingsViewController
         switch section
         {
         case .advanced:
-            if PurchaseManager.shared.isExperimentalFeaturesAvailable
+            if PurchaseManager.shared.supportsExperimentalFeatures
             {
                 return super.tableView(tableView, titleForFooterInSection: section.rawValue)
             }

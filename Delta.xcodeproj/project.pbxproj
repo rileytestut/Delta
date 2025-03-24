@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 60;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXAggregateTarget section */
@@ -282,6 +282,8 @@
 		D5E12AEB2D01157F000C7531 /* String+Profanity.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E12AEA2D011579000C7531 /* String+Profanity.swift */; };
 		D5E12AED2D011640000C7531 /* Profanity.txt in Resources */ = {isa = PBXBuildFile; fileRef = D5E12AEC2D01163A000C7531 /* Profanity.txt */; };
 		D5E76AAD2BE199890078C0C5 /* ShowTouches in Frameworks */ = {isa = PBXBuildFile; productRef = D5E76AAC2BE199890078C0C5 /* ShowTouches */; };
+		D5E7E6F22D91F7A10057CD52 /* BecomePatronButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E7E6F12D91F7840057CD52 /* BecomePatronButton.swift */; };
+		D5E7E6F32D91F7A10057CD52 /* BecomePatronButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E7E6F12D91F7840057CD52 /* BecomePatronButton.swift */; };
 		D5EB601B2C0E6190007C543C /* Stream+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5EB601A2C0E6190007C543C /* Stream+Conveniences.swift */; };
 		D5EF1A202D84BD59001B06E6 /* rcheevos in Frameworks */ = {isa = PBXBuildFile; productRef = D5EF1A1F2D84BD59001B06E6 /* rcheevos */; };
 		D5F702FD2C24CE5300DCD271 /* UISceneSession+Delta.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F702FC2C24CE5300DCD271 /* UISceneSession+Delta.swift */; };
@@ -614,6 +616,7 @@
 		D5E12AEA2D011579000C7531 /* String+Profanity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Profanity.swift"; sourceTree = "<group>"; };
 		D5E12AEC2D01163A000C7531 /* Profanity.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Profanity.txt; sourceTree = "<group>"; };
 		D5E4F8622C2A5864008E8316 /* Delta 9.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Delta 9.xcdatamodel"; sourceTree = "<group>"; };
+		D5E7E6F12D91F7840057CD52 /* BecomePatronButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BecomePatronButton.swift; sourceTree = "<group>"; };
 		D5EB601A2C0E6190007C543C /* Stream+Conveniences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Stream+Conveniences.swift"; sourceTree = "<group>"; };
 		D5F702FC2C24CE5300DCD271 /* UISceneSession+Delta.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UISceneSession+Delta.swift"; sourceTree = "<group>"; };
 		D5F82FB72981D3AC00B229AF /* LegacySearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacySearchBar.swift; sourceTree = "<group>"; };
@@ -1342,6 +1345,7 @@
 			children = (
 				D5A9C00229DDED6D00A8D610 /* ExperimentalFeaturesView.swift */,
 				D54A4BB229E4D27E004C7D57 /* FeatureDetailView.swift */,
+				D5E7E6F12D91F7840057CD52 /* BecomePatronButton.swift */,
 			);
 			path = "Experimental Features";
 			sourceTree = "<group>";
@@ -1852,6 +1856,7 @@
 				BF18B61F1E2985F900F70067 /* UIAlertController+Importing.swift in Sources */,
 				D586497229774ABD0081477E /* CheatBase.swift in Sources */,
 				BFDD04F11D5E2C27002D450E /* GameCollectionViewController.swift in Sources */,
+				D5E7E6F22D91F7A10057CD52 /* BecomePatronButton.swift in Sources */,
 				BFE4269E1D9C68E600DC913F /* SaveStatesStoryboardSegue.swift in Sources */,
 				BFFA71DD1AAC406100EE9DD1 /* AppDelegate.swift in Sources */,
 				BF525EE81FF5F370004AA849 /* DeepLinkController.swift in Sources */,
@@ -1984,6 +1989,7 @@
 				D539104029E88BC40006B350 /* ContentView.swift in Sources */,
 				D57D795629F300E100BB2CF8 /* CustomTintColor.swift in Sources */,
 				D5AE76CB2C2B81000086471B /* OSLog+Delta.swift in Sources */,
+				D5E7E6F32D91F7A10057CD52 /* BecomePatronButton.swift in Sources */,
 				D57D795F29F315F700BB2CF8 /* FeatureDetailView.swift in Sources */,
 				D51CB7A629EDC15900B59678 /* ExperimentalFeatures.swift in Sources */,
 				D57D796029F315F700BB2CF8 /* ExperimentalFeaturesView.swift in Sources */,
