@@ -1867,7 +1867,15 @@ private extension GameViewController
         {
             if let preferredWFCServer = Settings.preferredWFCServer
             {
-                let alertController = UIAlertController(title: NSLocalizedString("Restart Required", comment: ""), message: NSLocalizedString("Please restart this game to apply your changes.", comment: ""), preferredStyle: .alert)
+                var message = NSLocalizedString("Please restart this game to apply your changes.", comment: "")
+                
+                if FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.firmwareURL.path)
+                {
+                    message += "\n\n"
+                    message += NSLocalizedString("You may need to also “Erase Nintendo WFC Configuration” in-game.", comment: "")
+                }
+                
+                let alertController = UIAlertController(title: NSLocalizedString("Restart Required", comment: ""), message: message, preferredStyle: .alert)
                 alertController.addAction(UIAlertAction(title: NSLocalizedString("Restart", comment: ""), style: .destructive) { _ in
                     if let emulatorBridge = self.emulatorCore?.deltaCore.emulatorBridge as? MelonDSEmulatorBridge
                     {
