@@ -801,6 +801,7 @@ extension SettingsViewController
             {
             case .status:
                 let cell = cell as! BadgedTableViewCell
+                cell.tintColor = .systemRed
                 cell.badgeLabel.text = self.syncingConflictsCount.description
                 cell.badgeLabel.isHidden = (self.syncingConflictsCount == 0)
                 
@@ -835,7 +836,21 @@ extension SettingsViewController
             case .joinPatreon: break
             }
             
-        case .controllerOpacity, .display, .gameAudio, .multitasking, .hapticFeedback, .gestures, .airPlay, .hapticTouch, .advanced, .credits, .support: break
+        case .advanced:
+            let row = AdvancedRow(rawValue: indexPath.row)!
+            switch row
+            {
+            case .experimentalFeatures:
+                let cell = cell as! BadgedTableViewCell
+                cell.tintColor = .deltaPurple
+                cell.style = .roundedRect
+                cell.badgeLabel.text = NSLocalizedString("Patrons", comment: "")
+                cell.badgeLabel.isHidden = false
+                
+            case .exportLog: break
+            }
+            
+        case .controllerOpacity, .display, .gameAudio, .multitasking, .hapticFeedback, .gestures, .airPlay, .hapticTouch, .credits, .support: break
         }
 
         return cell

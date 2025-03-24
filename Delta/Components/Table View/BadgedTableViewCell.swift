@@ -8,9 +8,20 @@
 
 import UIKit
 
+extension BadgedTableViewCell
+{
+    enum Style
+    {
+        case pill
+        case roundedRect
+    }
+}
+
 class BadgedTableViewCell: UITableViewCell
 {
     let badgeLabel = UILabel()
+    
+    var style: Style = .pill
         
     required init?(coder aDecoder: NSCoder)
     {
@@ -30,7 +41,7 @@ class BadgedTableViewCell: UITableViewCell
     {
         self.badgeLabel.clipsToBounds = true
         self.badgeLabel.textAlignment = .center
-        self.badgeLabel.backgroundColor = .red
+        self.badgeLabel.backgroundColor = self.tintColor
         self.badgeLabel.font = UIFont.boldSystemFont(ofSize: 14)
         self.badgeLabel.textColor = .white
         self.contentView.addSubview(self.badgeLabel)
@@ -45,29 +56,43 @@ class BadgedTableViewCell: UITableViewCell
         let spacing = 8 as CGFloat
         
         var contentSize = self.badgeLabel.intrinsicContentSize
-        contentSize.width += 10
-        contentSize.height += 10
+        
+        switch self.style
+        {
+        case .pill:
+            contentSize.width += 10
+            contentSize.height += 10
+            
+        case .roundedRect:
+            contentSize.width += 16
+            contentSize.height += 6
+        }
+        
         contentSize.width = max(contentSize.width, contentSize.height)
         
-        var frame = CGRect(x: self.contentView.bounds.maxX - contentSize.width,
+        let frame = CGRect(x: self.contentView.bounds.maxX - contentSize.width - spacing,
                            y: self.contentView.bounds.midY - contentSize.height / 2,
                            width: contentSize.width,
                            height: contentSize.height)
-        
-        if self.accessoryType == .none
-        {
-            frame.origin.x -= spacing
-        }
-        
         self.badgeLabel.frame = frame
-        self.badgeLabel.layer.cornerRadius = frame.height / 2
         
-        self.badgeLabel.backgroundColor = .red
+        switch self.style
+        {
+        case .pill: self.badgeLabel.layer.cornerRadius = frame.height / 2
+        case .roundedRect: self.badgeLabel.layer.cornerRadius = frame.height / 3
+        }
         
         let overlap = textLabel.frame.maxX - (frame.minX - spacing)
         if overlap > 0 && !self.badgeLabel.isHidden
         {
             textLabel.frame.size.width -= overlap
         }
+    }
+    
+    override func tintColorDidChange()
+    {
+        super.tintColorDidChange()
+        
+        self.badgeLabel.backgroundColor = self.tintColor
     }
 }
