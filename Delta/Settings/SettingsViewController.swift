@@ -748,7 +748,15 @@ extension SettingsViewController
             // App Store builds never show the Join Patreon row.
             return 1
             #else
-            return super.tableView(tableView, numberOfRowsInSection: sectionIndex)
+            if DatabaseManager.shared.patreonAccount() != nil
+            {
+                // Signed in, so no need to show Join Patreon row.
+                return 1
+            }
+            else
+            {
+                return super.tableView(tableView, numberOfRowsInSection: sectionIndex)
+            }
             #endif
             
         default:
@@ -807,16 +815,6 @@ extension SettingsViewController
             let row = PatreonRow(rawValue: indexPath.row)!
             switch row
             {
-            case .joinPatreon:
-                if let patreonAccount = DatabaseManager.shared.patreonAccount(), patreonAccount.isPatron
-                {
-                    cell.textLabel?.text = NSLocalizedString("View Patreon", comment: "")
-                }
-                else
-                {
-                    cell.textLabel?.text = NSLocalizedString("Join our Patreon", comment: "")
-                }
-                
             case .connectAccount:
                 var content = cell.defaultContentConfiguration()
                 
@@ -833,6 +831,8 @@ extension SettingsViewController
                 }
                 
                 cell.contentConfiguration = content
+                
+            case .joinPatreon: break
             }
             
         case .controllerOpacity, .display, .gameAudio, .multitasking, .hapticFeedback, .gestures, .airPlay, .hapticTouch, .advanced, .credits, .support: break
