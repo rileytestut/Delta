@@ -21,9 +21,9 @@ private extension SettingsViewController
 {
     enum Section: Int
     {
+        case patreon
         case controllers
         case controllerSkins
-        case patreon
         case controllerOpacity
         case display
         case gameAudio
@@ -282,7 +282,7 @@ private extension SettingsViewController
         #if LEGACY || BETA
         case .patreon: return true
         #elseif APP_STORE
-        case .patreon: return !PurchaseManager.shared.supportsExternalPurchases
+        case .patreon: return !PurchaseManager.shared.supportsExperimentalFeatures
         #endif
             
         case .hapticTouch:
@@ -790,16 +790,17 @@ extension SettingsViewController
                 
             case .connectAccount:
                 var content = cell.defaultContentConfiguration()
-                content.textProperties.color = .deltaPurple
                 
                 if let patreonAccount = DatabaseManager.shared.patreonAccount()
                 {
                     let text = String(format: NSLocalizedString("Unlink %@", comment: ""), patreonAccount.name)
                     content.text = text
+                    content.textProperties.color = .deltaPurple
                 }
                 else
                 {
                     content.text = NSLocalizedString("Connect Patreon Account…", comment: "")
+                    content.textProperties.color = .label
                 }
                 
                 cell.contentConfiguration = content
@@ -986,6 +987,7 @@ extension SettingsViewController
                 
                 attributedText += " "
                 attributedText += symbolText
+                attributedText += "\n"
                 
                 footerView.attributedText = attributedText
                 footerView.urlHandler = { [weak self] _ in
@@ -1063,7 +1065,21 @@ extension SettingsViewController
         switch section
         {
         case .controllerSkins: return UITableView.automaticDimension
-        case .patreon: return UITableView.automaticDimension
+        case .patreon:
+            #if APP_STORE
+            if PurchaseManager.shared.supportsExternalPurchases
+            {
+                return UITableView.automaticDimension
+            }
+            else
+            {
+                // Can't show external link or description, so return small height as visual spacing.
+                return 15
+            }
+            #else
+            return UITableView.automaticDimension
+            #endif
+            
         case .support: return UITableView.automaticDimension
         default: return super.tableView(tableView, heightForFooterInSection: section.rawValue)
         }
