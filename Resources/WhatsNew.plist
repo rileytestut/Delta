@@ -16,9 +16,9 @@
 		<key>name</key>
 		<string>Updated N64 Core</string>
 		<key>caption</key>
-		<string>Fixes various graphical issues such as black textures and more.</string>
+		<string>Fixes graphical issues and supports custom resolutions and texture packs.</string>
 		<key>icon</key>
-		<string>paintbrush.fill</string>
+		<string>wand.and.stars</string>
 		<key>isPatronExclusive</key>
 		<false/>
 	</dict>
@@ -26,7 +26,7 @@
 		<key>name</key>
 		<string>Game Screenshots</string>
 		<key>caption</key>
-		<string>Take high-quality screenshots right from the pause menu.</string>
+		<string>Capture high-quality screenshots saved directly to your Photo Library.</string>
 		<key>icon</key>
 		<string>camera.fill</string>
 		<key>isPatronExclusive</key>
@@ -36,7 +36,7 @@
 		<key>name</key>
 		<string>RetroAchievements</string>
 		<key>caption</key>
-		<string>Connect a RetroAchievements account to track achievements in-game.</string>
+		<string>Connect a RetroAchievements account to unlock achievements in games.</string>
 		<key>icon</key>
 		<string>trophy.fill</string>
 		<key>fallbackIcon</key>
@@ -48,7 +48,7 @@
 		<key>name</key>
 		<string>Change Fast Forward Speed</string>
 		<key>caption</key>
-		<string>Choose your preferred Fast Forward speed from 2x all the way to 8x.</string>
+		<string>Choose your preferred Fast Forward speed for each system up to 8x.</string>
 		<key>icon</key>
 		<string>forward.fill</string>
 		<key>isPatronExclusive</key>
@@ -56,9 +56,9 @@
 	</dict>
 	<dict>
 		<key>name</key>
-		<string>Custom Game Controller Skins</string>
+		<string>Game Controller Skins</string>
 		<key>caption</key>
-		<string>Choose custom skins when using a physical game controller.</string>
+		<string>Use custom skins when playing with physical game controllers.</string>
 		<key>icon</key>
 		<string>gamecontroller.fill</string>
 		<key>isPatronExclusive</key>
