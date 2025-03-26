@@ -12,6 +12,8 @@ import Roxas
 
 extension WhatsNewViewController
 {
+    private static let maxFeatureCount = 5
+    
     private enum Section: Int
     {
         case general
@@ -91,8 +93,13 @@ class WhatsNewViewController: UICollectionViewController
         
         self.footerView = FollowUsFooterView(prefersFullColorIcons: true)
         self.footerView.translatesAutoresizingMaskIntoConstraints = false
-        self.footerView.textLabel.isHidden = true
         self.view.addSubview(self.footerView)
+        
+        if self.dataSource.itemCount >= Self.maxFeatureCount
+        {
+            // Hide "Follow us" label if showing maximum number of features.
+            self.footerView.textLabel.isHidden = true
+        }
         
         NSLayoutConstraint.activate([
             self.headerView.topAnchor.constraint(equalTo: self.view.topAnchor),
@@ -240,8 +247,8 @@ private extension WhatsNewViewController
                 preferredFeatures = preferredFeatures.filter { !$0.isPatronExclusive }
             }
             
-            // Only display first 5 preferred features.
-            preferredFeatures = Array(preferredFeatures.prefix(5))
+            // Only display first `maxFeatureCount` preferred features.
+            preferredFeatures = Array(preferredFeatures.prefix(Self.maxFeatureCount))
             
             let generalDataSource = RSTArrayCollectionViewDataSource<Box<NewFeature>>(items: preferredFeatures.filter { !$0.isPatronExclusive }.map(Box.init))
             let patronsDataSource = RSTArrayCollectionViewDataSource<Box<NewFeature>>(items: preferredFeatures.filter { $0.isPatronExclusive }.map(Box.init))
@@ -269,6 +276,7 @@ private extension WhatsNewViewController
             self.titleStackView.spacing = 15
             
             self.footerView.stackView.axis = .horizontal
+            self.footerView.followDeltaStackView.axis = .horizontal
         }
         else
         {
@@ -277,6 +285,7 @@ private extension WhatsNewViewController
             self.titleStackView.spacing = 4
             
             self.footerView.stackView.axis = .vertical
+            self.footerView.followDeltaStackView.axis = .vertical
         }
     }
 }

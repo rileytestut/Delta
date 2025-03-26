@@ -16,6 +16,7 @@ class FollowUsFooterView: RSTNibView
     
     @IBOutlet var textLabel: UILabel!
     @IBOutlet var stackView: UIStackView!
+    @IBOutlet var followDeltaStackView: UIStackView!
     
     @IBOutlet private var mastodonButton: UIButton!
     @IBOutlet private var threadsButton: UIButton!

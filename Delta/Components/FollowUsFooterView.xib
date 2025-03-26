@@ -13,6 +13,7 @@
             <connections>
                 <outlet property="blueskyButton" destination="vfA-YY-zsP" id="n2W-UR-B23"/>
                 <outlet property="followCarolineButton" destination="JG6-cH-sFe" id="J6t-Zb-5zc"/>
+                <outlet property="followDeltaStackView" destination="tMz-8D-4x0" id="ShU-H5-m7t"/>
                 <outlet property="followRileyButton" destination="VG4-mi-Er1" id="NML-dc-bDR"/>
                 <outlet property="followShaneButton" destination="8ox-FS-cDN" id="s74-Rs-z1y"/>
                 <outlet property="githubButton" destination="Fdw-X9-9Bg" id="ccT-hp-2DU"/>
