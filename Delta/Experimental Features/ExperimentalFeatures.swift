@@ -16,7 +16,7 @@ struct ExperimentalFeatures: FeatureContainer
              description: "Customize the appearance of games when AirPlaying to your TV.")
     var airPlaySkins
     
-    @Feature(name: "Variable Fast Forward",
+    @Feature(name: "Custom Fast Forward Speed",
              description: "Change the preferred Fast Foward speed per-system. You can also change it by long-pressing the Fast Forward button from the Pause Menu.",
              options: VariableFastForwardOptions())
     var variableFastForward
@@ -52,24 +52,16 @@ struct ExperimentalFeatures: FeatureContainer
              description: "Visually show touches. Useful for screen recordings and tutorials.")
     var showTouches
     
-    @Feature(name: "OpenGL ES 3.0",
-             description: "Render Nintendo 64 games with OpenGL ES 3.0. May fix visual issues.")
-    var openGLES3
-    
     @Feature(name: "Metal Renderer",
              description: "Use Metal to render games instead of OpenGL ES. Does not apply to N64 games.")
     var metal
     
-    @Feature(name: "Online Multiplayer (DS)",
-             description: "Play Nintendo WFC-compatible DS games online with friends.",
-             options: OnlineMultiplayerOptions())
-    var dsOnlineMultiplayer
-    
     @Feature(name: "Lu",
-             description: """
-             Ask Lu questions about your games to receive helpful tips, strategies, and interesting facts tailored to the games you're playing. Lu learns from your questions and preferences to provide personalized advice. We do not collect personal information, but we do collect data to maintain and improve our experience. See our Privacy Statement and Terms of Service below for more information.
+             description: "Ask Lu questions about your games to receive helpful tips, strategies, and interesting facts tailored to the games you're playing.",
+             detailedDescription: """
+             Lu learns from your questions and preferences to provide personalized advice. We do not collect personal information, but we do collect data to maintain and improve our experience. See our Privacy Statement and Terms of Service below for more information.
              
-             https://lulabs.ai/legal
+             https://www.lulabs.ai/legal
              
              If you have any questions about Lu, feel free to ask us in our Discord Server!
              
@@ -77,6 +69,19 @@ struct ExperimentalFeatures: FeatureContainer
              """,
              options: PlayWithLuOptions())
     var Lu
+    
+    @Feature(name: "Show What’s New",
+             description: "Enable this to show What’s New on next launch.")
+    var showWhatsNew
+    
+    @Feature(name: "Delta Screenshots Album",
+             description: "Save game screenshots to dedicated “Delta Screenshots” album.")
+    var screenshotsAlbum
+    
+    @Feature(name: "RetroAchievements",
+             description: "Log in with RetroAchievements to track your progress and achievements in games.",
+             options: RetroAchievementsOptions())
+    var retroAchievements
     
     private init()
     {

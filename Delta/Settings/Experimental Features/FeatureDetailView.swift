@@ -17,15 +17,33 @@ struct FeatureDetailView<Feature: AnyFeature>: View
     
     var body: some View {
         Form {
+            if !PurchaseManager.shared.isExperimentalFeaturesAvailable
+            {
+                Section {
+                } header: {
+                    BecomePatronButton()
+                }
+            }
+            
             Section {
                 Toggle(isOn: $feature.isEnabled.animation()) {
                     Text(feature.name)
                         .bold()
+                        .foregroundColor(PurchaseManager.shared.isExperimentalFeaturesAvailable ? .primary : .secondary)
                 }
+                .disabled(!PurchaseManager.shared.isExperimentalFeaturesAvailable)
             } footer: {
-                if let description = feature.description
+                if let description = feature.description, let detailedDescription = feature.detailedDescription
+                {
+                    Text(description) + Text("\n\n") + Text(detailedDescription)
+                }
+                else if let description = feature.description
                 {
                     Text(description)
+                }
+                else if let detailedDescription = feature.detailedDescription
+                {
+                    Text(detailedDescription)
                 }
             }
             

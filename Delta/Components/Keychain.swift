@@ -63,6 +63,12 @@ public class Keychain
     @KeychainItem(key: "revenueCatEmailAddress")
     public var revenueCatEmailAddress: String?
     
+    @KeychainItem(key: "retroAchievementsUsername")
+    public var retroAchievementsUsername: String?
+    
+    @KeychainItem(key: "retroAchievementsAuthToken")
+    public var retroAchievementsAuthToken: String?
+    
     private init()
     {
     }

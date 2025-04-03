@@ -107,6 +107,8 @@ private extension MelonDSCoreSettingsViewController
 
 class MelonDSCoreSettingsViewController: UITableViewController
 {
+    var scrollToBIOS: Bool = false
+    
     private var importingBIOS: SystemBIOS?
     
     override func viewDidLoad()
@@ -144,6 +146,19 @@ class MelonDSCoreSettingsViewController: UITableViewController
                 DatabaseManager.shared.prepare(core, in: context)
                 context.saveWithErrorLogging()
             }
+        }
+    }
+    
+    override func viewDidAppear(_ animated: Bool)
+    {
+        super.viewDidAppear(animated)
+        
+        if self.scrollToBIOS
+        {
+            let indexPath = IndexPath(row: 0, section: Section.dsBIOS.rawValue)
+            self.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+            
+            self.scrollToBIOS = false
         }
     }
 }
@@ -395,9 +410,9 @@ extension MelonDSCoreSettingsViewController
                 self.navigationController?.pushViewController(hostingController, animated: true)
                 
             case .reset:
-                let alertController = UIAlertController(title: String(localized: "Are you sure you want to reset your WFC configuration?"), message: String(localized: "You may need to re-register any friend codes you've added."), preferredStyle: .actionSheet)
+                let alertController = UIAlertController(title: String(localized: "Are you sure you want to reset your online settings?"), message: String(localized: "You may need to re-add any friend codes you’ve previously registered."), preferredStyle: .actionSheet)
                 alertController.addAction(.cancel)
-                alertController.addAction(UIAlertAction(title: String(localized: "Reset WFC Configuration"), style: .destructive) { [weak self] _ in
+                alertController.addAction(UIAlertAction(title: String(localized: "Reset Online Settings"), style: .destructive) { [weak self] _ in
                     WFCManager.shared.resetWFCConfiguration()
                     self?.tableView.reloadData()
                 })

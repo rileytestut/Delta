@@ -115,6 +115,8 @@ class GameViewController: DeltaCore.GameViewController
             self.updateAudio()
             
             self.presentedGyroAlert = false
+            
+            self.startTrackingAchievements()
         }
     }
     
@@ -161,7 +163,10 @@ class GameViewController: DeltaCore.GameViewController
     }
     
     private var _isLoadingSaveState = false
-    private var _onlineConnectionDate: Date?
+    
+    // Online Multiplayer
+    private var onlineConnectionDate: Date?
+    private var onlineBackgroundTaskID: UIBackgroundTaskIdentifier?
     
     // Handoff
     private var isContinuingHandoff = false
@@ -187,6 +192,9 @@ class GameViewController: DeltaCore.GameViewController
     private var presentedGyroAlert = false
     
     private var presentedJITAlert = false
+    
+    private var achievementsTracker: AchievementsTracker?
+    private var isPreparingAchievements = false
     
     override var shouldAutorotate: Bool {
         return !self.isGyroActive
@@ -588,6 +596,15 @@ extension GameViewController
                 pauseViewController.fastForwardItem = nil
             }
             
+            if ExperimentalFeatures.shared.retroAchievements.isEnabled && ExperimentalFeatures.shared.retroAchievements.isHardcoreModeEnabled
+            {
+                // Saving save states is fine, just not loading them
+                // pauseViewController.saveStateItem = nil
+                
+                pauseViewController.loadStateItem = nil
+                pauseViewController.cheatCodesItem = nil
+            }
+            
             self.pauseViewController = pauseViewController
             
         default: break
@@ -771,9 +788,14 @@ private extension GameViewController
         {
             Settings.localControllerPlayerIndex = 0
         }
+        else if let index = Settings.localControllerPlayerIndex, ExternalGameControllerManager.shared.connectedControllers.contains(where: { $0.playerIndex == index })
+        {
+            // There is an active controller with same player index as local controller, so disable local controller.
+            Settings.localControllerPlayerIndex = nil
+        }
         
-        // If Settings.localControllerPlayerIndex is non-nil, and there isn't a connected controller with same playerIndex, show controller view.
-        if let index = Settings.localControllerPlayerIndex, !ExternalGameControllerManager.shared.connectedControllers.contains(where: { $0.playerIndex == index })
+        // If Settings.localControllerPlayerIndex is non-nil, show controller view.
+        if let index = Settings.localControllerPlayerIndex
         {
             self.controllerView.playerIndex = index
             self.controllerView.isHidden = false
@@ -801,8 +823,6 @@ private extension GameViewController
                 self.controllerView.isHidden = true
                 self.controllerView.playerIndex = nil
             }
-
-            Settings.localControllerPlayerIndex = nil
         }
         
         self.view.setNeedsLayout()
@@ -902,7 +922,9 @@ private extension GameViewController
         }
         else
         {
-            self.controllerView.controllerSkin = nil
+            // TODO: Add this back once we've adopted modern keyboard input handling.
+            // Until then, setting controllerSkin to nil breaks our legacy keyboard handling.
+            // self.controllerView.controllerSkin = nil
         }
         
         self.updateExternalDisplay()
@@ -1232,6 +1254,8 @@ extension GameViewController: SaveStatesViewControllerDelegate
             print(error)
         }
         
+        self.achievementsTracker?.reset()
+        
         if isRunning
         {
             self.resumeEmulation()
@@ -1383,6 +1407,11 @@ extension GameViewController
     
     @objc func performQuickLoadAction()
     {
+        guard !ExperimentalFeatures.shared.retroAchievements.isEnabled || !ExperimentalFeatures.shared.retroAchievements.isHardcoreModeEnabled else {
+            // Disable loading save states when using RetroAchievements and Hardcore Mode
+            return
+        }
+        
         guard let game = self.game as? Game, let emulatorCore, !emulatorCore.isWirelessMultiplayerActive else { return }
         
         let fetchRequest = SaveState.fetchRequest(for: game, type: .quick)
@@ -1440,15 +1469,15 @@ extension GameViewController
         let minEdge = min(emulatorCore.videoManager.videoFormat.dimensions.width, emulatorCore.videoManager.videoFormat.dimensions.height)
         
         let imageScale: Double
-        if minEdge >= 720
+        if minEdge >= 1080
         {
-            // Screenshot is already at or above 720p, so no need to scale it.
+            // Screenshot is already at or above 1080p, so no need to scale it.
             imageScale = 1
         }
         else
         {
-            // Determine integer scaling to ensure we reach 720p.
-            imageScale = (720.0 / minEdge).rounded(.up)
+            // Determine integer scaling to ensure we reach 1080p.
+            imageScale = (1080.0 / minEdge).rounded(.up)
         }
         
         let imageSize = CGSize(width: snapshot.size.width * imageScale, height: snapshot.size.height * imageScale)
@@ -1651,6 +1680,7 @@ extension GameViewController: GameViewControllerDelegate
     {
         guard gameViewController == self else { return false }
         guard !self.isContinuingHandoff else { return false }
+        guard !self.isPreparingAchievements else { return false }
         
         var result = false
         
@@ -1837,7 +1867,15 @@ private extension GameViewController
         {
             if let preferredWFCServer = Settings.preferredWFCServer
             {
-                let alertController = UIAlertController(title: NSLocalizedString("Restart Required", comment: ""), message: NSLocalizedString("Please restart this game to apply your changes.", comment: ""), preferredStyle: .alert)
+                var message = NSLocalizedString("Please restart this game to apply your changes.", comment: "")
+                
+                if FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.firmwareURL.path)
+                {
+                    message += "\n\n"
+                    message += NSLocalizedString("You may need to also “Erase Nintendo WFC Configuration” in-game.", comment: "")
+                }
+                
+                let alertController = UIAlertController(title: NSLocalizedString("Restart Required", comment: ""), message: message, preferredStyle: .alert)
                 alertController.addAction(UIAlertAction(title: NSLocalizedString("Restart", comment: ""), style: .destructive) { _ in
                     if let emulatorBridge = self.emulatorCore?.deltaCore.emulatorBridge as? MelonDSEmulatorBridge
                     {
@@ -1989,12 +2027,60 @@ extension GameViewController: NSUserActivityDelegate
     }
 }
 
+//MARK: - RetroAchievements
+private extension GameViewController
+{
+    func startTrackingAchievements()
+    {
+        NotificationCenter.default.removeObserver(self, name: AchievementsTracker.didUnlockAchievementNotification, object: self.achievementsTracker)
+        
+        guard let emulatorCore, let game = self.game as? Game, ExperimentalFeatures.shared.retroAchievements.isEnabled else { return }
+        
+        self.isPreparingAchievements = true
+        
+        Task<Void, Never> {
+            do
+            {
+                let tracker = try AchievementsManager.shared.makeTracker(for: emulatorCore)
+                try await tracker.start()
+                
+                NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.didUnlockAchievement(with:)), name: AchievementsTracker.didUnlockAchievementNotification, object: tracker)
+                
+                self.achievementsTracker = tracker
+            }
+            catch
+            {
+                Logger.main.error("Failed to start tracking achievements for game \(game.name). \(error.localizedDescription, privacy: .public)")
+                
+                let toastView = RSTToastView(text: NSLocalizedString("Unable to Track Achievements", comment: ""), detailText: error.localizedDescription)
+                self.show(toastView)
+            }
+            
+            self.isPreparingAchievements = false
+            
+            DispatchQueue.global(qos: .userInitiated).async {
+                // Call from non-main thread to avoid potential deadlock.
+                self.resumeEmulation()
+            }
+        }
+    }
+}
+
 //MARK: - Notifications -
 private extension GameViewController
 {
     @objc func didEnterBackground(with notification: Notification)
     {
         self.updateAutoSaveState()
+        
+        if let emulatorCore, emulatorCore.isWirelessMultiplayerActive
+        {
+            self.onlineBackgroundTaskID = UIApplication.shared.beginBackgroundTask(withName: "Online Background Connection") { [weak self] in
+                guard let self, let taskID = self.onlineBackgroundTaskID else { return }
+                UIApplication.shared.endBackgroundTask(taskID)
+                self.onlineBackgroundTaskID = nil
+            }
+        }
     }
     
     @objc func managedObjectContextDidChange(with notification: Notification)
@@ -2202,7 +2288,7 @@ private extension GameViewController
     
     @objc func didConnectOnline(with notification: Notification)
     {
-        guard let bridge = notification.object as? EmulatorBridging, bridge.gameURL == self.game?.fileURL, ExperimentalFeatures.shared.dsOnlineMultiplayer.isEnabled else { return }
+        guard let bridge = notification.object as? EmulatorBridging, bridge.gameURL == self.game?.fileURL else { return }
         
         guard let emulatorCore, !emulatorCore.isWirelessMultiplayerActive else { return }
         
@@ -2234,13 +2320,13 @@ private extension GameViewController
         DispatchQueue.main.async {
             let toastView = RSTToastView(text: NSLocalizedString("Connecting to Nintendo WFC…", comment: ""), detailText: NSLocalizedString("Some features will be disabled while playing online.", comment: ""))
             self.show(toastView, in: self.view.window, duration: 5.0) // Show in window to fix not receiving touches 🤷‍♂️
-            self._onlineConnectionDate = Date()
+            self.onlineConnectionDate = Date()
         }
     }
     
     @objc func didDisconnectFromOnline(with notification: Notification)
     {
-        guard let bridge = notification.object as? EmulatorBridging, bridge.gameURL == self.game?.fileURL, ExperimentalFeatures.shared.dsOnlineMultiplayer.isEnabled else { return }
+        guard let bridge = notification.object as? EmulatorBridging, bridge.gameURL == self.game?.fileURL else { return }
         
         guard let emulatorCore, emulatorCore.isWirelessMultiplayerActive else { return }
         emulatorCore.isWirelessMultiplayerActive = false
@@ -2249,7 +2335,7 @@ private extension GameViewController
             let toastView = RSTToastView(text: NSLocalizedString("Disconnected from Nintendo WFC", comment: ""), detailText: nil)
             var duration = 3.0
             
-            if let onlineConnectionDate = self._onlineConnectionDate, Date().timeIntervalSince(onlineConnectionDate) < 30
+            if let onlineConnectionDate = self.onlineConnectionDate, Date().timeIntervalSince(onlineConnectionDate) < 30
             {
                 // If we're disconnecting within 30 seconds of connecting, show troubleshooting message.
                 toastView.detailTextLabel.text = NSLocalizedString("⚠️ Tap to view our Troubleshooting Guide.", comment: "")
@@ -2264,7 +2350,23 @@ private extension GameViewController
             }
             
             self.show(toastView, in: self.view.window, duration: duration) // Show in window to fix not receiving touches 🤷‍♂️
-            self._onlineConnectionDate = nil
+            self.onlineConnectionDate = nil
+        }
+    }
+    
+    @objc func didUnlockAchievement(with notification: Notification)
+    {
+        guard #available(iOS 15, *) else { return }
+        
+        guard let achievement = notification.userInfo?[AchievementsTracker.achievementUserInfoKey] as? Achievement else { return }
+        
+        DispatchQueue.main.async {
+            let title = String(format: NSLocalizedString("✅ Achievement Unlocked", comment: ""))
+            let message = String(AttributedString(localized: "\(achievement.title) (^[\(achievement.points) \("point")](inflect: true))").characters)
+            
+            let toastView = RSTToastView(text: title, detailText: message)
+            toastView.detailTextLabel.textAlignment = .center
+            self.show(toastView)
         }
     }
     

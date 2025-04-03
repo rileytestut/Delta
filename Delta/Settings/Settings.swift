@@ -58,8 +58,6 @@ struct Settings
     
     static func registerDefaults()
     {
-        let isPhone = (UIDevice.current.userInterfaceIdiom == .phone)
-        
         var defaults = [#keyPath(UserDefaults.translucentControllerSkinOpacity): 0.7,
                         #keyPath(UserDefaults.gameShortcutsMode): GameShortcutsMode.recent.rawValue,
                         #keyPath(UserDefaults.isButtonHapticFeedbackEnabled): true,
@@ -67,17 +65,14 @@ struct Settings
                         #keyPath(UserDefaults.sortSaveStatesByOldestFirst): true,
                         #keyPath(UserDefaults.isPreviewsEnabled): true,
                         #keyPath(UserDefaults.isAltJITEnabled): false,
-                        #keyPath(UserDefaults.respectSilentMode): isPhone, // Default to `true` for iPhone, but `false` for other devices.
+                        #keyPath(UserDefaults.respectSilentMode): false,
                         #keyPath(UserDefaults.pauseWhileInactive): true,
                         #keyPath(UserDefaults.supportsExternalDisplays): true,
                         #keyPath(UserDefaults.isQuickGesturesEnabled): true,
                         Settings.preferredCoreSettingsKey(for: .ds): MelonDS.core.identifier] as [String : Any]
         
         #if BETA
-        
-        defaults[ExperimentalFeatures.shared.openGLES3.settingsKey.rawValue] = true
-        defaults[ExperimentalFeatures.shared.dsOnlineMultiplayer.settingsKey.rawValue] = true
-        
+        defaults[ExperimentalFeatures.shared.showWhatsNew.settingsKey.rawValue] = true // Re-show What's New even if user previously saw it in 1.7b5
         #else
         // Manually set MelonDS as preferred DS core in case DeSmuME is cached from a previous version.
         UserDefaults.standard.set(MelonDS.core.identifier, forKey: Settings.preferredCoreSettingsKey(for: .ds))
@@ -92,6 +87,12 @@ struct Settings
         {
             UserDefaults.standard.shouldRepairDatabase = true
             ExperimentalFeatures.shared.repairDatabase.isEnabled = false // Disable so we only repair database once.
+        }
+        
+        if ExperimentalFeatures.shared.showWhatsNew.isEnabled
+        {
+            UserDefaults.standard.didShowWhatsNew = false
+            ExperimentalFeatures.shared.showWhatsNew.isEnabled = false // Disable so we only show What's New once.
         }
     }
 }
@@ -411,6 +412,12 @@ extension Settings
             return controllerSkin
         }
         
+        if let hasNoExternalControllerSkin = game.settings[.noExternalControllerSkin] as? Bool, hasNoExternalControllerSkin, isForExternalController
+        {
+            // Game's external controller skin has been explicitly set to nil, so DON'T fall back to system's preferred skin.
+            return nil
+        }
+        
         if let system = System(gameType: game.type)
         {
             // Fall back to using preferred controller skin for the system.
@@ -421,21 +428,28 @@ extension Settings
         return nil
     }
     
-    static func setPreferredControllerSkin(_ controllerSkin: ControllerSkin?, for game: Game, traits: DeltaCore.ControllerSkin.Traits, forExternalController isForExternalController: Bool)
+    static func setPreferredControllerSkin(_ controllerSkin: Optional<ControllerSkin?>, for game: Game, traits: DeltaCore.ControllerSkin.Traits, forExternalController isForExternalController: Bool)
     {
         let context = DatabaseManager.shared.newBackgroundContext()
         context.performAndWait {
             let game = context.object(with: game.objectID) as! Game
-            
             let skin: ControllerSkin?
-            if let controllerSkin = controllerSkin, let contextSkin = context.object(with: controllerSkin.objectID) as? ControllerSkin
+            
+            switch controllerSkin
             {
-                skin = contextSkin
-            }
-            else
-            {
+            case .some(let controllerSkin?):
+                skin = context.object(with: controllerSkin.objectID) as? ControllerSkin
+                
+            case .some(nil):
+                // Explicitly assigning no skin.
                 skin = nil
-            }            
+                game.settings[.noExternalControllerSkin] = true
+                
+            case nil:
+                // Resetting skin to system default.
+                skin = nil
+                game.settings.removeValue(forKey: .noExternalControllerSkin)
+            }
             
             switch (traits.orientation, traits.displayType, isForExternalController)
             {
@@ -464,7 +478,13 @@ extension Settings
         
         if let system = System(gameType: game.type)
         {
-            NotificationCenter.default.post(name: Settings.didChangeNotification, object: controllerSkin, userInfo: [NotificationUserInfoKey.name: Name.preferredControllerSkin, NotificationUserInfoKey.system: system, NotificationUserInfoKey.traits: traits])
+            // Unwrap double-nested optional skin into single-level optional we can send with notification.
+            let skin: ControllerSkin? = switch controllerSkin {
+            case .some(let controllerSkin?): controllerSkin
+            case .some(nil), nil: nil
+            }
+            
+            NotificationCenter.default.post(name: Settings.didChangeNotification, object: skin, userInfo: [NotificationUserInfoKey.name: Name.preferredControllerSkin, NotificationUserInfoKey.system: system, NotificationUserInfoKey.traits: traits])
         }
     }
 }

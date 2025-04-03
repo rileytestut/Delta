@@ -50,9 +50,19 @@ extension PHPhotoLibrary
     
     func saveScreenshotData(_ data: Data) async throws
     {
-        guard let screenshotsAlbum = try await self.fetchAlbum(named: "Delta Screenshots", createIfNeeded: true) else {
-            // This should never be called as long as we pass `true` to createIfNeeded:
-            throw PHPhotosError(.internalError, userInfo: [NSLocalizedDescriptionKey: NSLocalizedString("Unable to fetch “Delta Screenshots” album.", comment: "")])
+        let screenshotsAlbum: PHAssetCollection?
+        
+        if ExperimentalFeatures.shared.screenshotsAlbum.isEnabled
+        {
+            guard let album = try await self.fetchAlbum(named: "Delta Screenshots", createIfNeeded: true) else {
+                // This should never be called as long as we pass `true` to createIfNeeded:
+                throw PHPhotosError(.internalError, userInfo: [NSLocalizedDescriptionKey: NSLocalizedString("Unable to fetch “Delta Screenshots” album.", comment: "")])
+            }
+            screenshotsAlbum = album
+        }
+        else
+        {
+            screenshotsAlbum = nil
         }
         
         try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
@@ -64,19 +74,22 @@ extension PHPhotoLibrary
                 
                 let request = PHAssetCreationRequest.forAsset()
                 request.addResource(with: .photo, data: data, options: options)
-                                
-                do
+            
+                if let screenshotsAlbum
                 {
-                    guard let changeRequest = PHAssetCollectionChangeRequest(for: screenshotsAlbum), let placeholderAsset = request.placeholderForCreatedAsset else {
-                        throw PHPhotosError(.internalError, userInfo: [NSLocalizedDescriptionKey: NSLocalizedString("Could not add screenshot to album.", comment: "")])
+                    do
+                    {
+                        guard let changeRequest = PHAssetCollectionChangeRequest(for: screenshotsAlbum), let placeholderAsset = request.placeholderForCreatedAsset else {
+                            throw PHPhotosError(.internalError, userInfo: [NSLocalizedDescriptionKey: NSLocalizedString("Could not add screenshot to album.", comment: "")])
+                        }
+                        
+                        changeRequest.addAssets([placeholderAsset] as NSArray)
                     }
-                    
-                    changeRequest.addAssets([placeholderAsset] as NSArray)
-                }
-                catch
-                {
-                    Logger.main.error("Failed to save screenshot to album. \(error.localizedDescription, privacy: .public)")
-                    changeError = error
+                    catch
+                    {
+                        Logger.main.error("Failed to save screenshot to album. \(error.localizedDescription, privacy: .public)")
+                        changeError = error
+                    }
                 }
                 
             }) { success, error in

@@ -127,6 +127,8 @@ extension LaunchViewController
         
         WFCManager.shared.updateKnownWFCServers()
         
+        AchievementsManager.shared.authenticateInBackground()
+        
         func showGameViewController()
         {
             self.view.bringSubviewToFront(self.gameViewContainerView)

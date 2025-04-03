@@ -12,9 +12,9 @@ import MelonDSDeltaCore
 private extension URL
 {
 #if STAGING
-static let wfcServers = URL(string: "https://f000.backblazeb2.com/file/altstore-staging/delta/wfc-servers.json")!
+static let wfcServers = URL(string: "https://f000.backblazeb2.com/file/deltaemulator-staging/delta/wfc-servers.json")!
 #else
-static let wfcServers = URL(string: "https://cdn.altstore.io/file/altstore/delta/wfc-servers.json")!
+static let wfcServers = URL(string: "https://cdn.altstore.io/file/deltaemulator/delta/wfc-servers.json")!
 #endif
 }
 

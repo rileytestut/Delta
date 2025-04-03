@@ -21,9 +21,9 @@ private extension SettingsViewController
 {
     enum Section: Int
     {
+        case patreon
         case controllers
         case controllerSkins
-        case patreon
         case controllerOpacity
         case display
         case gameAudio
@@ -74,11 +74,6 @@ private extension SettingsViewController
     
     enum CreditsRow: Int, CaseIterable
     {
-        case riley
-        case shane
-        case caroline
-        case grant
-        case litRitt
         case friendZonePatrons
         case contributors
         case softwareLicenses
@@ -112,6 +107,8 @@ class SettingsViewController: UITableViewController
     @IBOutlet private var syncingServiceLabel: UILabel!
     @IBOutlet private var exportLogActivityIndicatorView: UIActivityIndicatorView!
     
+    @IBOutlet private var followUsFooterView: FollowUsFooterView!
+    
     private var selectionFeedbackGenerator: UISelectionFeedbackGenerator?
     
     private var previousSelectedRowIndexPath: IndexPath?
@@ -133,6 +130,7 @@ class SettingsViewController: UITableViewController
         NotificationCenter.default.addObserver(self, selector: #selector(SettingsViewController.settingsDidChange(with:)), name: Settings.didChangeNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(SettingsViewController.externalGameControllerDidConnect(_:)), name: .externalGameControllerDidConnect, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(SettingsViewController.externalGameControllerDidDisconnect(_:)), name: .externalGameControllerDidDisconnect, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(SettingsViewController.didPressExperimentalFeaturesPatreonButton(_:)), name: BecomePatronButton.didPressNotification, object: nil)
         
         if #available(iOS 17.5, *)
         {
@@ -169,6 +167,12 @@ class SettingsViewController: UITableViewController
         {
             self.tableView.register(AttributedHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: AttributedHeaderFooterView.reuseIdentifier)
         }
+        
+        self.followUsFooterView = FollowUsFooterView(prefersFullColorIcons: false)
+        self.followUsFooterView.stackView.spacing = 20
+        self.followUsFooterView.stackView.isLayoutMarginsRelativeArrangement = true
+        self.followUsFooterView.stackView.directionalLayoutMargins.top = 8
+        self.followUsFooterView.stackView.directionalLayoutMargins.bottom = 20
     }
     
     override func viewWillAppear(_ animated: Bool)
@@ -274,12 +278,12 @@ private extension SettingsViewController
             guard #unavailable(iOS 15) else { return false }
             
             // OSLogStore is not available on iOS 14, so section is only visible if experimental features is visible.
-            return !PurchaseManager.shared.isExperimentalFeaturesAvailable
+            return !PurchaseManager.shared.supportsExperimentalFeatures
             
         #if LEGACY || BETA
         case .patreon: return true
         #elseif APP_STORE
-        case .patreon: return !PurchaseManager.shared.supportsExternalPurchases
+        case .patreon: return !PurchaseManager.shared.supportsExperimentalFeatures
         #endif
             
         case .hapticTouch:
@@ -669,6 +673,34 @@ private extension SettingsViewController
     {
         self.tableView.reloadData()
     }
+    
+    @objc func didPressExperimentalFeaturesPatreonButton(_ notification: Notification)
+    {
+        let indexPath = IndexPath(row: PatreonRow.connectAccount.rawValue, section: Section.patreon.rawValue)
+        self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: false)
+        
+        self.navigationController?.popToRootViewController(animated: true)
+        
+        guard #available(iOS 16, *) else { return }
+        
+        Task<Void, Never> {
+            do
+            {
+                try await Task.sleep(for: .seconds(0.5))
+                
+                guard let cell = self.tableView.cellForRow(at: indexPath) else { return }
+                cell.setSelected(true, animated: true)
+                
+                try await Task.sleep(for: .seconds(0.5))
+                
+                cell.setSelected(false, animated: true)
+            }
+            catch
+            {
+                Logger.main.error("Failed to highlight Connect Patreon Account row. \(error.localizedDescription, privacy: .public)")
+            }
+        }
+    }
 }
 
 extension SettingsViewController
@@ -702,7 +734,7 @@ extension SettingsViewController
             
         case .syncing where !isSectionHidden(section): return SyncManager.shared.coordinator?.account == nil ? 1 : super.tableView(tableView, numberOfRowsInSection: sectionIndex)
         case .advanced where !isSectionHidden(section):
-            if PurchaseManager.shared.isExperimentalFeaturesAvailable
+            if PurchaseManager.shared.supportsExperimentalFeatures
             {
                 return super.tableView(tableView, numberOfRowsInSection: sectionIndex)
             }
@@ -716,7 +748,15 @@ extension SettingsViewController
             // App Store builds never show the Join Patreon row.
             return 1
             #else
-            return super.tableView(tableView, numberOfRowsInSection: sectionIndex)
+            if DatabaseManager.shared.patreonAccount() != nil
+            {
+                // Signed in, so no need to show Join Patreon row.
+                return 1
+            }
+            else
+            {
+                return super.tableView(tableView, numberOfRowsInSection: sectionIndex)
+            }
             #endif
             
         default:
@@ -761,6 +801,7 @@ extension SettingsViewController
             {
             case .status:
                 let cell = cell as! BadgedTableViewCell
+                cell.tintColor = .systemRed
                 cell.badgeLabel.text = self.syncingConflictsCount.description
                 cell.badgeLabel.isHidden = (self.syncingConflictsCount == 0)
                 
@@ -775,34 +816,41 @@ extension SettingsViewController
             let row = PatreonRow(rawValue: indexPath.row)!
             switch row
             {
-            case .joinPatreon:
-                if let patreonAccount = DatabaseManager.shared.patreonAccount(), patreonAccount.isPatron
-                {
-                    cell.textLabel?.text = NSLocalizedString("View Patreon", comment: "")
-                }
-                else
-                {
-                    cell.textLabel?.text = NSLocalizedString("Join our Patreon", comment: "")
-                }
-                
             case .connectAccount:
                 var content = cell.defaultContentConfiguration()
-                content.textProperties.color = .deltaPurple
                 
                 if let patreonAccount = DatabaseManager.shared.patreonAccount()
                 {
                     let text = String(format: NSLocalizedString("Unlink %@", comment: ""), patreonAccount.name)
                     content.text = text
+                    content.textProperties.color = .deltaPurple
                 }
                 else
                 {
                     content.text = NSLocalizedString("Connect Patreon Account…", comment: "")
+                    content.textProperties.color = .label
                 }
                 
                 cell.contentConfiguration = content
+                
+            case .joinPatreon: break
             }
             
-        case .controllerOpacity, .display, .gameAudio, .multitasking, .hapticFeedback, .gestures, .airPlay, .hapticTouch, .advanced, .credits, .support: break
+        case .advanced:
+            let row = AdvancedRow(rawValue: indexPath.row)!
+            switch row
+            {
+            case .experimentalFeatures:
+                let cell = cell as! BadgedTableViewCell
+                cell.tintColor = .deltaPurple
+                cell.style = .roundedRect
+                cell.badgeLabel.text = NSLocalizedString("Patrons", comment: "")
+                cell.badgeLabel.isHidden = false
+                
+            case .exportLog: break
+            }
+            
+        case .controllerOpacity, .display, .gameAudio, .multitasking, .hapticFeedback, .gestures, .airPlay, .hapticTouch, .credits, .support: break
         }
 
         return cell
@@ -853,15 +901,7 @@ extension SettingsViewController
             let row = CreditsRow(rawValue: indexPath.row)!
             switch row
             {
-            case .riley: self.openThreads(username: "rileytestut")
-            case .shane: self.openThreads(username: "shanegill.io")
-            case .caroline: self.openThreads(username: "carolinemoore")
-            case .grant: self.openThreads(username: "glinstagrant")
-            case .litRitt: self.openTwitter(username: "lit_ritt")
-            case .contributors:
-                guard #available(iOS 14, *) else { return }
-                self.showContributors()
-                
+            case .contributors: self.showContributors()
             case .friendZonePatrons, .softwareLicenses: break
             }
             
@@ -923,32 +963,6 @@ extension SettingsViewController
             {
             case .exportLog:
                 guard #unavailable(iOS 15) else { break }
-                return 0.0
-                
-            default: break
-            }
-            
-        case .credits:
-            let row = CreditsRow(rawValue: indexPath.row)!
-            switch row
-            {
-            case .grant:
-                // Hide row on iOS 14 and above
-                guard #available(iOS 14, *) else { break primary }
-                return 0.0
-                
-            case .litRitt:
-                // Hide row on iOS 14 and above
-                guard #available(iOS 14, *) else { break primary }
-                return 0.0
-                
-            case .contributors:
-                // Hide row on iOS 13 and below
-                guard #unavailable(iOS 14) else { break primary }
-                return 0.0
-                
-            case .friendZonePatrons:
-                guard !PurchaseManager.shared.supportsExternalPurchases else { break primary }
                 return 0.0
                 
             default: break
@@ -1017,6 +1031,7 @@ extension SettingsViewController
                 
                 attributedText += " "
                 attributedText += symbolText
+                attributedText += "\n"
                 
                 footerView.attributedText = attributedText
                 footerView.urlHandler = { [weak self] _ in
@@ -1032,6 +1047,9 @@ extension SettingsViewController
             
             return footerView
             
+        case .support:
+            return self.followUsFooterView
+            
         default: break
         }
         
@@ -1046,7 +1064,7 @@ extension SettingsViewController
         switch section
         {
         case .advanced:
-            if PurchaseManager.shared.isExperimentalFeaturesAvailable
+            if PurchaseManager.shared.supportsExperimentalFeatures
             {
                 return super.tableView(tableView, titleForFooterInSection: section.rawValue)
             }
@@ -1091,7 +1109,22 @@ extension SettingsViewController
         switch section
         {
         case .controllerSkins: return UITableView.automaticDimension
-        case .patreon: return UITableView.automaticDimension
+        case .patreon:
+            #if APP_STORE
+            if PurchaseManager.shared.supportsExternalPurchases
+            {
+                return UITableView.automaticDimension
+            }
+            else
+            {
+                // Can't show external link or description, so return small height as visual spacing.
+                return 15
+            }
+            #else
+            return UITableView.automaticDimension
+            #endif
+            
+        case .support: return UITableView.automaticDimension
         default: return super.tableView(tableView, heightForFooterInSection: section.rawValue)
         }
     }
@@ -1105,6 +1138,7 @@ extension SettingsViewController
         {
         case .controllerSkins: return 30
         case .patreon: return 30
+        case .support: return 180
         default: return UITableView.automaticDimension
         }
     }

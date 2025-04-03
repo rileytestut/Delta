@@ -14,9 +14,10 @@ public protocol AnyFeature<Options>: ObservableObject, Identifiable
     associatedtype Options = EmptyOptions
     
     var name: LocalizedStringKey { get }
-    var description: LocalizedStringKey?  { get }
+    var description: LocalizedStringKey? { get }
+    var detailedDescription: LocalizedStringKey? { get }
     
-    var key: String  { get }
+    var key: String { get }
     var settingsKey: SettingsName { get }
     
     var isEnabled: Bool { get set }

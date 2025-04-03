@@ -92,6 +92,17 @@ extension PurchaseManager
     }
     
     @MainActor
+    var supportsExperimentalFeatures: Bool {
+        #if APP_STORE
+        // We support Experimental Features if external purchases are supported.
+        return self.supportsExternalPurchases
+        #else
+        // AltStore builds always support Experimental Features.
+        return true
+        #endif
+    }
+    
+    @MainActor
     var isPatronIconsAvailable: Bool {
         #if BETA
         // Patron icons are always available in BETA version.

@@ -38,6 +38,15 @@
         }
       },
       {
+        "package": "rcheevos",
+        "repositoryURL": "https://github.com/rileytestut/rcheevos.git",
+        "state": {
+          "branch": "main",
+          "revision": "30848fc5a6ed563dc2c5abac6a750c6d3ba51c6b",
+          "version": null
+        }
+      },
+      {
         "package": "ShowTouches",
         "repositoryURL": "https://github.com/Cyberbeni/ShowTouches.git",
         "state": {

@@ -1246,7 +1246,9 @@ extension SaveStatesViewController
         guard let actions = self.actionsForSaveState(saveState) else { return nil }
         
         return UIContextMenuConfiguration(identifier: indexPath as NSIndexPath, previewProvider: { [weak self] in
-            guard let self = self, Settings.isPreviewsEnabled, self.filter != .incompatible else { return nil }
+            guard let self = self, Settings.isPreviewsEnabled, self.filter != .incompatible,
+                  (!ExperimentalFeatures.shared.retroAchievements.isEnabled || !ExperimentalFeatures.shared.retroAchievements.isHardcoreModeEnabled) // Disable preview in hardcore mode so it can't be abused to load state
+            else { return nil }
             
             let previewGameViewController = self.makePreviewGameViewController(for: saveState)
             self._previewTransitionViewController = previewGameViewController

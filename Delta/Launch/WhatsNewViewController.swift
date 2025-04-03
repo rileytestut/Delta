@@ -12,6 +12,8 @@ import Roxas
 
 extension WhatsNewViewController
 {
+    private static let maxFeatureCount = 5
+    
     private enum Section: Int
     {
         case general
@@ -29,8 +31,23 @@ extension WhatsNewViewController
         var name: String
         var caption: String
         var icon: String
+        var fallbackIcon: String?
         
         var isPatronExclusive: Bool
+        
+        var image: UIImage? {
+            if let image = UIImage(systemName: self.icon)
+            {
+                return image
+            }
+            
+            if let fallbackIcon, let image = UIImage(systemName: fallbackIcon)
+            {
+                return image
+            }
+            
+            return nil
+        }
     }
 }
 
@@ -38,22 +55,19 @@ class WhatsNewViewController: UICollectionViewController
 {
     private lazy var dataSource = self.makeDataSource()
     
+    private var footerView: FollowUsFooterView!
+    private var backgroundBlurView: UIView!
+    
     @IBOutlet private var headerView: UIView!
-    @IBOutlet private var footerView: UIView!
     
     @IBOutlet private var titleLabel: UILabel!
     @IBOutlet private var titleStackView: UIStackView!
-    
-    @IBOutlet private var followRileyButton: UIButton!
-    @IBOutlet private var followShaneButton: UIButton!
-    @IBOutlet private var followCarolineButton: UIButton!
-    @IBOutlet private var followUsStackView: UIStackView!
     
     @IBOutlet private var headerViewTopSpacingLayoutConstraint: NSLayoutConstraint!
     @IBOutlet private var headerViewBottomSpacingLayoutConstraint: NSLayoutConstraint!
     
     private var _previousInsets: UIEdgeInsets?
-        
+    
     override func viewDidLoad()
     {
         super.viewDidLoad()
@@ -73,8 +87,19 @@ class WhatsNewViewController: UICollectionViewController
         self.headerView.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(self.headerView)
         
+        self.backgroundBlurView = UIVisualEffectView(effect: UIBlurEffect(style: .systemMaterial))
+        self.backgroundBlurView.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(self.backgroundBlurView)
+        
+        self.footerView = FollowUsFooterView(prefersFullColorIcons: true)
         self.footerView.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(self.footerView)
+        
+        if self.dataSource.itemCount >= Self.maxFeatureCount
+        {
+            // Hide "Follow us" label if showing maximum number of features.
+            self.footerView.textLabel.isHidden = true
+        }
         
         NSLayoutConstraint.activate([
             self.headerView.topAnchor.constraint(equalTo: self.view.topAnchor),
@@ -83,10 +108,14 @@ class WhatsNewViewController: UICollectionViewController
             
             self.footerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
             self.footerView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-            self.footerView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
+            self.footerView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+            
+            self.backgroundBlurView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+            self.backgroundBlurView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            self.backgroundBlurView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+            self.backgroundBlurView.heightAnchor.constraint(equalTo: self.footerView.heightAnchor)
         ])
         
-        self.prepareFollowButtons()
         self.update()
     }
     
@@ -107,11 +136,13 @@ class WhatsNewViewController: UICollectionViewController
         
         var contentInset = self.collectionView.contentInset
         contentInset.top = self.headerView.bounds.height
-        contentInset.bottom = self.footerView.bounds.height
+        contentInset.bottom = (self.footerView.bounds.height - self.view.safeAreaInsets.bottom)
         
-        let maximumContentHeight = self.view.bounds.height - (self.headerView.bounds.height + self.footerView.bounds.height + 15 + 8) //TODO: Verify these constants, based on intergroupSpacing.
-        if maximumContentHeight > self.collectionView.contentSize.height
+        let maximumContentHeight = self.view.bounds.height - (self.headerView.bounds.height + self.footerView.bounds.height)
+        if self.collectionView.contentSize.height <= maximumContentHeight
         {
+            self.collectionView.bounces = false
+            
             // Adjust insets to vertically center content in view
             let difference = maximumContentHeight - self.collectionView.contentSize.height
             let inset = difference / 2.0
@@ -120,11 +151,17 @@ class WhatsNewViewController: UICollectionViewController
             // Don't need to adjust bottom insets, just top to offset it into center.
             // self.collectionView.contentInset.bottom += inset
         }
-        
+        else
+        {
+            self.collectionView.bounces = true
+        }
+                
         if contentInset != _previousInsets
         {
             let isAtTop = self.collectionView.contentOffset.y.rounded() == -self.collectionView.contentInset.top.rounded()
             self.collectionView.contentInset = contentInset
+            self.collectionView.verticalScrollIndicatorInsets.top = contentInset.top
+            self.collectionView.verticalScrollIndicatorInsets.bottom = contentInset.bottom
             
             if isAtTop
             {
@@ -179,9 +216,14 @@ private extension WhatsNewViewController
                 layoutSection.contentInsets.bottom = 0
                 layoutSection.contentInsets.leading += 8
                 layoutSection.contentInsets.trailing += 8
-                layoutSection.boundarySupplementaryItems = [
-                    NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: ElementKind.sectionHeader.rawValue, alignment: .top),
-                ]
+                
+                if PurchaseManager.shared.supportsExperimentalFeatures
+                {
+                    layoutSection.boundarySupplementaryItems = [
+                        NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: ElementKind.sectionHeader.rawValue, alignment: .top),
+                    ]
+                }
+                
                 return layoutSection
             }
         }, configuration: layoutConfig)
@@ -198,8 +240,18 @@ private extension WhatsNewViewController
             let data = try Data(contentsOf: fileURL)
             let features = try PropertyListDecoder().decode([NewFeature].self, from: data)
             
-            let generalDataSource = RSTArrayCollectionViewDataSource<Box<NewFeature>>(items: features.filter { !$0.isPatronExclusive }.map(Box.init))
-            let patronsDataSource = RSTArrayCollectionViewDataSource<Box<NewFeature>>(items: features.filter { $0.isPatronExclusive }.map(Box.init))
+            var preferredFeatures = features
+            if !PurchaseManager.shared.supportsExperimentalFeatures
+            {
+                // Only show non-Experimental Features.
+                preferredFeatures = preferredFeatures.filter { !$0.isPatronExclusive }
+            }
+            
+            // Only display first `maxFeatureCount` preferred features.
+            preferredFeatures = Array(preferredFeatures.prefix(Self.maxFeatureCount))
+            
+            let generalDataSource = RSTArrayCollectionViewDataSource<Box<NewFeature>>(items: preferredFeatures.filter { !$0.isPatronExclusive }.map(Box.init))
+            let patronsDataSource = RSTArrayCollectionViewDataSource<Box<NewFeature>>(items: preferredFeatures.filter { $0.isPatronExclusive }.map(Box.init))
             
             let dataSource = RSTCompositeCollectionViewDataSource(dataSources: [generalDataSource, patronsDataSource])
             dataSource.cellConfigurationHandler = { (cell, feature, indexPath) in
@@ -215,80 +267,6 @@ private extension WhatsNewViewController
         }
     }
     
-    func prepareFollowButtons()
-    {
-        struct MenuAction
-        {
-            var title: String
-            var subtitle: String
-            var image: UIImage?
-            var handler: UIActionHandler
-            
-            func makeAction() -> UIAction
-            {
-                if #available(iOS 15, *)
-                {
-                    return UIAction(title: self.title, subtitle: self.subtitle, image: self.image, handler: self.handler)
-                }
-                else
-                {
-                    return UIAction(title: self.title, image: self.image, handler: self.handler)
-                }
-            }
-        }
-        
-        let rileyActions = [
-            MenuAction(title: NSLocalizedString("Mastodon", comment: ""), subtitle: NSLocalizedString("@rileytestut@mastodon.social", comment: ""), image: UIImage(named: "Mastodon")) { _ in
-                let url = URL(string: "https://mastodon.social/@rileytestut")!
-                UIApplication.shared.open(url, options: [:])
-            },
-            
-            MenuAction(title: NSLocalizedString("Threads", comment: ""), subtitle: NSLocalizedString("@rileytestut", comment: ""), image: UIImage(named: "Threads")) { _ in
-                let url = URL(string: "https://www.threads.net/@rileytestut")!
-                UIApplication.shared.open(url, options: [:])
-            },
-            
-            MenuAction(title: NSLocalizedString("Bluesky", comment: ""), subtitle: NSLocalizedString("@riley.social", comment: ""), image: UIImage(named: "Bluesky")) { _ in
-                let url = URL(string: "https://bsky.app/profile/riley.social")!
-                UIApplication.shared.open(url, options: [:])
-            }
-        ]
-        
-        let shaneActions = [
-            MenuAction(title: NSLocalizedString("Threads", comment: ""), subtitle: NSLocalizedString("@shanegill.io", comment: ""), image: UIImage(named: "Threads")) { _ in
-                let url = URL(string: "https://www.threads.net/@shanegill.io")!
-                UIApplication.shared.open(url, options: [:])
-            },
-            
-            MenuAction(title: NSLocalizedString("Bluesky", comment: ""), subtitle: NSLocalizedString("@shanegillio.bsky.social", comment: ""), image: UIImage(named: "Bluesky")) { _ in
-                let url = URL(string: "https://bsky.app/profile/shanegillio.bsky.social")!
-                UIApplication.shared.open(url, options: [:])
-            }
-        ]
-        
-        let carolineAction = UIAction { _ in
-            let url = URL(string: "https://threads.net/@carolinemoore")!
-            UIApplication.shared.open(url, options: [:])
-        }
-        
-        let followRileyMenu = UIMenu(children: rileyActions.map { $0.makeAction() })
-        self.followRileyButton.menu = followRileyMenu
-        self.followRileyButton.showsMenuAsPrimaryAction = true
-        
-        let followShaneMenu = UIMenu(children: shaneActions.map { $0.makeAction() })
-        self.followShaneButton.menu = followShaneMenu
-        self.followShaneButton.showsMenuAsPrimaryAction = true
-        
-        self.followCarolineButton.addAction(carolineAction, for: .primaryActionTriggered)
-        
-        if #available(iOS 16, *)
-        {
-            // Always show actions in order we've listed them.
-            self.followRileyButton.preferredMenuElementOrder = .fixed
-            self.followShaneButton.preferredMenuElementOrder = .fixed
-        }
-    }
-    
     func update()
     {
         if self.traitCollection.verticalSizeClass == .compact
@@ -297,7 +275,8 @@ private extension WhatsNewViewController
             self.titleStackView.alignment = .firstBaseline
             self.titleStackView.spacing = 15
             
-            self.followUsStackView.axis = .horizontal
+            self.footerView.stackView.axis = .horizontal
+            self.footerView.followDeltaStackView.axis = .horizontal
         }
         else
         {
@@ -305,29 +284,17 @@ private extension WhatsNewViewController
             self.titleStackView.alignment = .center
             self.titleStackView.spacing = 4
             
-            self.followUsStackView.axis = .vertical
+            self.footerView.stackView.axis = .vertical
+            self.footerView.followDeltaStackView.axis = .vertical
         }
     }
 }
 
 private extension WhatsNewViewController
 {
-    @IBAction func followOnMastodon()
+    @IBAction func dismissWhatsNew()
     {
-        let url = URL(string: "https://indieapps.space/@delta")!
-        UIApplication.shared.open(url, options: [:])
-    }
-    
-    @IBAction func followOnThreads()
-    {
-        let url = URL(string: "https://www.threads.net/@delta_emulator")!
-        UIApplication.shared.open(url, options: [:])
-    }
-    
-    @IBAction func followOnBluesky()
-    {
-        let url = URL(string: "https://bsky.app/profile/delta-emulator.bsky.social")!
-        UIApplication.shared.open(url, options: [:])
+        self.presentingViewController?.dismiss(animated: true)
     }
 }
 
@@ -357,5 +324,25 @@ extension WhatsNewViewController
         }
         
         return headerView
+    }
+}
+
+extension WhatsNewViewController
+{
+    override func scrollViewDidScroll(_ scrollView: UIScrollView)
+    {
+        let viewport = scrollView.bounds.height - scrollView.contentInset.top - (scrollView.contentInset.bottom + self.view.safeAreaInsets.bottom)
+        
+        if scrollView.contentOffset.y.rounded() >= ((scrollView.contentSize.height - viewport) - scrollView.contentInset.top).rounded()
+        {
+            // At bottom of screen, so hide footer view background.
+            self.backgroundBlurView.isHidden = true
+            self.footerView.backgroundColor = .systemBackground
+        }
+        else
+        {
+            self.backgroundBlurView.isHidden = false
+            self.footerView.backgroundColor = nil
+        }
     }
 }

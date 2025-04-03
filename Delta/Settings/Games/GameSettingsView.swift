@@ -9,6 +9,7 @@
 import SwiftUI
 
 import DeltaCore
+import MelonDSDeltaCore
 
 struct GameSettingsView: View
 {
@@ -19,6 +20,9 @@ struct GameSettingsView: View
     
     @Environment(\.presentationMode)
     private var presentationMode
+    
+    @SwiftUI.State
+    private var hasBIOSFiles: Bool = false
     
     init(game: Game)
     {
@@ -59,19 +63,34 @@ struct GameSettingsView: View
                 } header: {
                     Text("Graphics")
                 } footer: {
-                    Text("Use OpenGL ES 3.0 to render this game. You may need to disable this for certain games.")
+                    Text("Use OpenGL ES 3.0 to render this game. Try disabling this if you're experiencing graphics-related bugs.")
                 }
             }
             
             if system == .ds
             {
                 Section {
-                    GamePickerView(game: game)
-                        .environment(\.managedObjectContext, self.context)
+                    if self.hasBIOSFiles
+                    {
+                        GamePickerView(game: game)
+                            .environment(\.managedObjectContext, self.context)
+                    }
+                    else
+                    {
+                        // BIOS is required for GBA slot emulation.
+                        
+                        NavigationLink {
+                            MelonDSCoreSettingsView()
+                                .ignoresSafeArea()
+                        } label: {
+                            Text("Import BIOS Files")
+                                .foregroundColor(Color("Purple"))
+                        }
+                    }
                 } header: {
                     Text("Dual Slot")
                 } footer: {
-                    Text("Choose a GBA game to emulate inserting it into the Nintendo DS dual slot.")
+                    Text("Emulate inserting a GBA game into the Nintendo DS dual slot.")
                 }
             }
         }
@@ -83,6 +102,20 @@ struct GameSettingsView: View
                 Button("Done") {
                     presentationMode.wrappedValue.dismiss()
                 }
+            }
+        }
+        .onAppear {
+            guard self.game.type == .ds else { return }
+            
+            if FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.bios7URL.path) &&
+                FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.bios9URL.path) &&
+                FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.firmwareURL.path)
+            {
+                self.hasBIOSFiles = true
+            }
+            else
+            {
+                self.hasBIOSFiles = false
             }
         }
         .onDisappear {
