@@ -120,6 +120,11 @@ public class Game: _Game, GameProtocol
     var internalName: String? {
         guard self.type == .n64 else { return nil }
         
+        if let internalName = _internalName
+        {
+            return internalName
+        }
+        
         do
         {
             guard let fileHandle = FileHandle(forReadingAtPath: self.fileURL.path) else { return nil }
@@ -128,8 +133,8 @@ public class Game: _Game, GameProtocol
             try fileHandle.seek(toOffset: 0x20)
             guard let data = try fileHandle.read(upToCount: 0x14) else { return nil }
             
-            let internalName = String(data: data, encoding: .utf8)?.trimmingCharacters(in: .whitespacesAndNewlines)
-            return internalName
+            _internalName = String(data: data, encoding: .utf8)?.trimmingCharacters(in: .whitespacesAndNewlines)
+            return _internalName
         }
         catch
         {
@@ -137,6 +142,7 @@ public class Game: _Game, GameProtocol
             return nil
         }
     }
+    private var _internalName: String?
 }
 
 extension Game
