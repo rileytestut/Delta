@@ -307,4 +307,18 @@ extension PreviewGameViewController: GameViewControllerDelegate
     {
         return self.isLivePreview
     }
+    
+    func gameViewController(_ gameViewController: DeltaCore.GameViewController, optionsFor game: GameProtocol) -> [EmulatorCore.Option: Any]
+    {
+        guard let game = game as? Game, game.type == .n64 else { return [:] }
+        
+        if let useOpenGLES2 = game.settings[.openGLES2] as? Bool, useOpenGLES2
+        {
+            return [.openGLES2: true]
+        }
+        else
+        {
+            return [:]
+        }
+    }
 }
