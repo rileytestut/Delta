@@ -64,6 +64,14 @@ extension AltAppIconsViewController
             case .patronsButtonPack: return NSLocalizedString("Patrons - Button Pack", comment: "")
             }
         }
+        
+        var isPatronExclusive: Bool {
+            switch self
+            {
+            case .modern, .classic: return false
+            case .patrons, .patronsButtonPack: return true
+            }
+        }
     }
     
     private enum IconStyle: Int, CaseIterable
@@ -119,12 +127,14 @@ class AltAppIconsViewController: UICollectionViewController
             let icons = try PropertyListDecoder().decode([Section: [AltIcon]].self, from: data)
             self.iconsBySection = icons
             
-            #if !BETA
+            #if APP_STORE
             if !PurchaseManager.shared.supportsExternalPurchases
             {
-                // External purchases aren't supported, so hide patron-exclusive icons.
-                self.iconsBySection[.patrons] = []
-                self.iconsBySection[.patronsButtonPack] = []
+                for section in Section.allCases where section.isPatronExclusive
+                {
+                    // External purchases aren't supported, so hide patron-exclusive icons.
+                    self.iconsBySection[section] = []
+                }
             }
             #endif
         }
@@ -285,7 +295,7 @@ private extension AltAppIconsViewController
             config.directionalLayoutMargins.top += 8
             config.directionalLayoutMargins.bottom += 8
             
-            if section == .patrons
+            if section.isPatronExclusive
             {
                 if PurchaseManager.shared.isPatronIconsAvailable
                 {
@@ -376,7 +386,7 @@ extension AltAppIconsViewController
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
     {
         let section = Section.allCases[indexPath.section]
-        if section == .patrons
+        if section.isPatronExclusive
         {
             guard PurchaseManager.shared.isPatronIconsAvailable else { return }
         }
@@ -420,11 +430,9 @@ extension AltAppIconsViewController
     override func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool 
     {
         let section = Section.allCases[indexPath.section]
-        switch section
-        {
-        case .modern, .classic: return true
-        case .patrons, .patronsButtonPack: return PurchaseManager.shared.isPatronIconsAvailable
-        }
+        guard section.isPatronExclusive else { return true }
+        
+        return PurchaseManager.shared.isPatronIconsAvailable
     }
 }
 
