@@ -85,9 +85,12 @@ public class Game: _Game, GameProtocol
     
     var settings: [Setting: Any] {
         get {
-            guard let gameSettings = self.gameSettings as? [String: Any] else { return [:] }
+            let gameSettings = self.gameSettings as? [String: Any] ?? [:]
+            var settings = gameSettings.map { (Setting(rawValue: $0), $1) }.reduce(into: [:]) { $0[$1.0] = $1.1 }
             
-            let settings = gameSettings.map { (Setting(rawValue: $0), $1) }.reduce(into: [:]) { $0[$1.0] = $1.1 }
+            // Merge default settings with game settings, preferring game settings.
+            settings.merge(self.defaultSettings) { overrideValue, defaultValue in overrideValue }
+            
             return settings
         }
         set {
@@ -100,6 +103,18 @@ public class Game: _Game, GameProtocol
                 self.gameSettings = newValue as NSDictionary
             }
         }
+    }
+    
+    private var defaultSettings: [Setting: Any] {
+        var settings: [Setting: Any] = [:]
+        
+        if let internalName, internalName.contains("DONKEY KONG 64"), self.type == .n64
+        {
+            // Enable OpenGL ES 2.0 by default for Donkey Kong 64.
+            settings[.openGLES2] = true
+        }
+        
+        return settings
     }
     
     var internalName: String? {
