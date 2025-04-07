@@ -191,6 +191,8 @@
 	<true/>
 	<key>GCSupportsGameMode</key>
 	<true/>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>dbapi-8-emm</string>
