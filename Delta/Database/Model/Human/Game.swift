@@ -101,6 +101,27 @@ public class Game: _Game, GameProtocol
             }
         }
     }
+    
+    var internalName: String? {
+        guard self.type == .n64 else { return nil }
+        
+        do
+        {
+            guard let fileHandle = FileHandle(forReadingAtPath: self.fileURL.path) else { return nil }
+            
+            // Values from https://www.romhacking.net/forum/index.php?topic=19524.msg275683#msg275683
+            try fileHandle.seek(toOffset: 0x20)
+            guard let data = try fileHandle.read(upToCount: 0x14) else { return nil }
+            
+            let internalName = String(data: data, encoding: .utf8)?.trimmingCharacters(in: .whitespacesAndNewlines)
+            return internalName
+        }
+        catch
+        {
+            Logger.main.error("Failed to read internal ROM name: \(error.localizedDescription, privacy: .public)")
+            return nil
+        }
+    }
 }
 
 extension Game
