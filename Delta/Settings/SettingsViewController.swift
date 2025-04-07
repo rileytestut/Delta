@@ -514,25 +514,8 @@ private extension SettingsViewController
     
     func joinPatreonCampaign()
     {
-        let patreonDeepLink = URL(string: "altstore://patreon")!
         let patreonURL = URL(string: "https://www.patreon.com/rileyshane")!
-        
-        let patreonAccount = DatabaseManager.shared.patreonAccount()
-        
-        // Prefer opening Patreon page in AltStore if it's installed.
-        // But only if we're not already a patron, otherwise open webpage directly.
-        if UIApplication.shared.canOpenURL(patreonDeepLink), patreonAccount?.isPatron != true
-        {
-            UIApplication.shared.open(patreonDeepLink, options: [:]) { (success) in
-                guard !success else { return }
-                
-                UIApplication.shared.open(patreonURL)
-            }
-        }
-        else
-        {
-            UIApplication.shared.open(patreonURL)
-        }
+        UIApplication.shared.open(patreonURL)
     }
     
     func authenticatePatreonAccount()
@@ -1041,7 +1024,7 @@ extension SettingsViewController
             else
             {
                 #if !APP_STORE
-                footerView.attributedText = AttributedString(localized: "Support future development and receive early access to new features by becoming a patron.")
+                footerView.attributedText = AttributedString(localized: "Support future development and receive access to exclusive app icons and Experimental Features.")
                 #endif
             }
             
