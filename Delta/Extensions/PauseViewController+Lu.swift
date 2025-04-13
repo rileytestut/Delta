@@ -24,16 +24,25 @@ private func luLog(_ type: OSLogType = .info, _ message: String) {
 // MARK: - API Data Structures
 private struct LuRequest: Codable {
     let game_id: String
+    let sha1: String
     let question: String
     let remember_conversation: Bool
-        
-    // Add an initializer with a default value for remember_conversation
-    init(game_id: String, question: String, remember_conversation: Bool = false) {
+    let attachments: [APIContext.Attachment]?
+
+    // Add an initializer with a default value for remember_conversation and attachments
+    init(game_id: String,
+        question: String,
+        sha1: String,
+        remember_conversation: Bool = false,
+        attachments: [APIContext.Attachment]? = nil) {
         self.game_id = game_id
+        self.sha1 = sha1
         self.question = question
         self.remember_conversation = remember_conversation
+        self.attachments = attachments
     }
 }
+
 private struct LuResponse: Codable {
     let message_id: String
     let answer: String
@@ -41,6 +50,8 @@ private struct LuResponse: Codable {
 
 private struct GameSupportResponse: Codable {
     let game_id: String
+    let supports_attachments: Bool?
+    let supports_savestates: Bool?
 }
 
 private struct FeedbackRequest: Codable {
@@ -53,7 +64,22 @@ private struct FeedbackRequest: Codable {
 private struct APIContext: Codable {
     let device_context: DeviceContext
     let game_context: GameContext
-    
+    let attachments: [Attachment]?
+
+    // Add a header-only version of context
+    var headerContext: HeaderContext {
+        HeaderContext(
+            device_context: device_context,
+            game_context: game_context
+        )
+    }
+
+    // New structure for header-only context
+    struct HeaderContext: Codable {
+        let device_context: DeviceContext
+        let game_context: GameContext
+    }
+
     struct DeviceContext: Codable {
         let device_id: String
         let device_name: String
@@ -62,7 +88,14 @@ private struct APIContext: Codable {
         let model: String
         let bundle_id: String
     }
-    
+
+    struct SaveStateMetadata: Codable {
+        let name: String
+        let creation_date: String
+        let modified_date: String
+        let type: String
+    }
+
     struct GameContext: Codable {
         let name: String
         let identifier: String
@@ -70,12 +103,19 @@ private struct APIContext: Codable {
         let save_states_count: Int
         let cheats_count: Int
         let last_played: String?
+        let save_states_metadata: [String: SaveStateMetadata]?
+    }
+
+    struct Attachment: Codable {
+        let type: String
+        let content: String
+        let filename: String
     }
 }
 
 private extension URLRequest {
     mutating func addContextHeaders(context: APIContext) {
-        if let contextData = try? JSONEncoder().encode(context),
+        if let contextData = try? JSONEncoder().encode(context.headerContext),
            let contextString = String(data: contextData, encoding: .utf8) {
             setValue(contextString, forHTTPHeaderField: "x-lu-context")
             luLog(.info, "Adding context headers")
@@ -89,31 +129,6 @@ private extension Date {
         formatter.formatOptions = [.withInternetDateTime]
         return formatter.string(from: self)
     }
-}
-
-private func createAPIContext(for game: Game) -> APIContext {
-    let deviceContext = APIContext.DeviceContext(
-        device_id: UIDevice.current.identifierForVendor?.uuidString ?? "unknown",
-        device_name: UIDevice.current.name,
-        system_name: UIDevice.current.systemName,
-        system_version: UIDevice.current.systemVersion,
-        model: UIDevice.current.model,
-        bundle_id: Bundle.main.bundleIdentifier ?? "unknown"
-    )
-    
-    let gameContext = APIContext.GameContext(
-        name: game.name,
-        identifier: game.identifier,
-        type: game.type.rawValue,
-        save_states_count: game.saveStates.count,
-        cheats_count: game.cheats.count,
-        last_played: game.playedDate?.ISO8601String()
-    )
-    
-    return APIContext(
-        device_context: deviceContext,
-        game_context: gameContext
-    )
 }
 
 private enum APIConstants {
@@ -159,6 +174,140 @@ private enum APIConstants {
 }
 
 extension PauseViewController {
+    
+    private func createAPIContext(for game: Game, includeAttachments: Bool = false) -> APIContext {
+        let deviceContext = APIContext.DeviceContext(
+            device_id: UIDevice.current.identifierForVendor?.uuidString ?? "unknown",
+            device_name: UIDevice.current.name,
+            system_name: UIDevice.current.systemName,
+            system_version: UIDevice.current.systemVersion,
+            model: UIDevice.current.model,
+            bundle_id: Bundle.main.bundleIdentifier ?? "unknown"
+        )
+
+        // Create save states metadata only if shareGameplayData is enabled
+        var saveStatesMetadata: [String: APIContext.SaveStateMetadata] = [:]
+
+        if ExperimentalFeatures.shared.Lu.wrappedValue.shareGameplayData {
+            let saveStates = SaveState.instancesWithPredicate(
+                NSPredicate(format: "%K == %@", #keyPath(SaveState.game), game),
+                inManagedObjectContext: DatabaseManager.shared.viewContext,
+                type: SaveState.self
+            )
+
+            for saveState in saveStates {
+                saveStatesMetadata[saveState.identifier] = APIContext.SaveStateMetadata(
+                    name: saveState.name ?? "Untitled",
+                    creation_date: saveState.creationDate.ISO8601String(),
+                    modified_date: saveState.modifiedDate.ISO8601String(),
+                    type: {
+                        switch saveState.type {
+                        case .auto: return "auto"
+                        case .quick: return "quick"
+                        case .general: return "general"
+                        case .locked: return "locked"
+                        }
+                    }()  // Immediately execute this inline closure
+                )
+            }
+
+            // Log the metadata collection
+            if !saveStatesMetadata.isEmpty {
+                luLog(.info, "Added \(saveStatesMetadata.count) save states to context metadata")
+            }
+        } else {
+            luLog(.info, "Not including save state metadata (user has not enabled shareGameplayData)")
+        }
+
+        let gameContext = APIContext.GameContext(
+            name: game.name,
+            identifier: game.identifier,
+            type: game.type.rawValue,
+            save_states_count: game.saveStates.count,
+            cheats_count: game.cheats.count,
+            last_played: game.playedDate?.ISO8601String(),
+            save_states_metadata: ExperimentalFeatures.shared.Lu.wrappedValue.shareGameplayData && !saveStatesMetadata.isEmpty ? saveStatesMetadata : nil
+        )
+        // Prepare attachments only if explicitly requested
+        var attachments: [APIContext.Attachment]? = nil
+
+        if includeAttachments, let emulatorCore = self.emulatorCore {
+            // Create a collection of attachments
+            var contextAttachments: [APIContext.Attachment] = []
+            var tempSaveStateURL: URL? = nil
+
+            // 1. Capture screenshot if available and supported
+            if includeAttachments && ExperimentalFeatures.shared.Lu.wrappedValue.supportsAttachments,
+               let snapshot = emulatorCore.videoManager.snapshot(),
+               let imageData = snapshot.pngData() {
+
+                // Generate timestamp for filename
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "yyyyMMdd_HHmmss"
+                let timestamp = dateFormatter.string(from: Date())
+
+                // Log screenshot info
+                let dataPrefix = imageData.prefix(16)
+                let hexString = dataPrefix.map { String(format: "%02x", $0) }.joined()
+                luLog(.info, "Screenshot data prefix: \(hexString)")
+                luLog(.info, "Screenshot size: \(imageData.count) bytes")
+
+                let screenshotAttachment = APIContext.Attachment(
+                    type: "screenshot",
+                    content: imageData.base64EncodedString(),
+                    filename: "screen_\(timestamp).png"
+                )
+
+                contextAttachments.append(screenshotAttachment)
+                luLog(.info, "Added screenshot to API context")
+            } else if !ExperimentalFeatures.shared.Lu.wrappedValue.supportsAttachments {
+                luLog(.info, "Screenshots not supported for this game - skipping")
+            }
+
+            // 2. Capture current game state if supported
+            if includeAttachments && ExperimentalFeatures.shared.Lu.wrappedValue.supportsSavestates {
+                tempSaveStateURL = FileManager.default.temporaryDirectory.appendingPathComponent("lu_temp_\(UUID().uuidString)")
+                let tempSaveState = emulatorCore.saveSaveState(to: tempSaveStateURL!)
+                if let saveStateData = try? Data(contentsOf: tempSaveState.fileURL) {
+                    let saveStateAttachment = APIContext.Attachment(
+                        type: "save_state",
+                        content: saveStateData.base64EncodedString(),
+                        filename: "state_\(tempSaveStateURL!)"
+                    )
+                    contextAttachments.append(saveStateAttachment)
+                    luLog(.info, "Added current save state to API context (size: \(saveStateData.count) bytes)")
+                    
+                    // Clean up temporary save state file
+                    if let url = tempSaveStateURL {
+                        luLog(.debug, "Attempting to delete temporary save state file at: \(url.path)")
+                        do {
+                            try FileManager.default.removeItem(at: url)
+                            luLog(.info, "Successfully deleted temporary save state file")
+                        } catch let error {
+                            luLog(.error, "Failed to delete temporary save state file: \(error.localizedDescription)")
+                        }
+                    }
+                }
+            } else {
+                luLog(.info, "Save states not supported for this game - skipping")
+            }
+
+            // Set the attachments if we have any
+            if !contextAttachments.isEmpty {
+                attachments = contextAttachments
+                luLog(.info, "Added \(contextAttachments.count) attachments to API context")
+            }
+
+            
+        }
+
+        return APIContext(
+            device_context: deviceContext,
+            game_context: gameContext,
+            attachments: attachments
+        )
+    }
+    
     func configureLuMenuItem() -> MenuItem {
         return MenuItem(text: NSLocalizedString("Ask Lu", comment: ""),
                         image: #imageLiteral(resourceName: "Lu"),
@@ -168,12 +317,6 @@ extension PauseViewController {
                 return
             }
 
-            
-            if let mostRecentSaveState = game.saveStates.max(by: { $0.modifiedDate < $1.modifiedDate }) {
-                let identifier = mostRecentSaveState.identifier
-                ExperimentalFeatures.shared.Lu.wrappedValue.activeSaveStateId = identifier
-            }
-            
             // Show initial loading indicator
             let loadingAlert = UIAlertController(
                 title: nil,
@@ -212,7 +355,7 @@ extension PauseViewController {
     private func showLuWelcomeMessage(for game: Game) {
         let welcomeAlert = UIAlertController(
             title: NSLocalizedString("Welcome to Lu!", comment: ""),
-            message: NSLocalizedString("We and our service providers may record your chat with us. By using this chat, you agree to our Terms of Service and Privacy Policy. \n \n https://lulabs.ai/legal", comment: ""),
+            message: NSLocalizedString("We and our service providers may record your chat with us. By using this chat, you agree to our Terms of Service and Privacy Policy. \n \n https://www.lulabs.ai/legal", comment: ""),
             preferredStyle: .alert
         )
         
@@ -289,30 +432,103 @@ extension PauseViewController {
             return
         }
         
-        // Create request with remember_conversation parameter if option is enabled
-        let shouldRememberConversation = ExperimentalFeatures.shared.Lu.wrappedValue.rememberConversations
+        // Check if user has opted in to sharing gameplay data
+        let shouldIncludeAttachments = ExperimentalFeatures.shared.Lu.wrappedValue.shareGameplayData
+
+        if shouldIncludeAttachments {
+            luLog(.info, "Including gameplay data with question (user opted in, supports_attachments=\(ExperimentalFeatures.shared.Lu.wrappedValue.supportsAttachments), supports_savestates=\(ExperimentalFeatures.shared.Lu.wrappedValue.supportsSavestates))")
+        } else {
+            luLog(.info, "Not including gameplay data with question (user opted out)")
+        }
+        // Create context and include attachments only if user has opted in
+        let context = createAPIContext(for: game, includeAttachments: shouldIncludeAttachments)
+        
         let request = LuRequest(
             game_id: activeGameId,
-            question: question,
-            remember_conversation: shouldRememberConversation
+            question: question, sha1: game.identifier.uppercased(),
+            remember_conversation: ExperimentalFeatures.shared.Lu.wrappedValue.rememberConversations,
+            attachments: context.attachments
         )
+
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = "POST"
         urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
         urlRequest.timeoutInterval = APIConstants.askTimeout
         
-        
-        let context = createAPIContext(for: game)
         urlRequest.addContextHeaders(context: context)
         
         do {
-            urlRequest.httpBody = try JSONEncoder().encode(request)
+            // Encode the request body
+            let requestData = try JSONEncoder().encode(request)
+            urlRequest.httpBody = requestData
+
+            // Log the request body and attachment information
+            let totalSize = requestData.count
+            luLog(.info, "Request payload size: \(totalSize) bytes")
+
+            // Log attachment information
+            if let attachments = context.attachments {
+                luLog(.info, "Request includes \(attachments.count) attachments:")
+                for (index, attachment) in attachments.enumerated() {
+                    let contentSize = attachment.content.count
+                    luLog(.info, "  [\(index + 1)] Type: \(attachment.type), Filename: \(attachment.filename), Content size: \(contentSize) bytes")
+                }
+            } else {
+                luLog(.info, "Request does not include any attachments")
+            }
+
+            // Only log the full request body if it's not too large
+            if totalSize < 10000 { // Don't log huge payloads with attachments
+                if let requestString = String(data: requestData, encoding: .utf8) {
+                    luLog(.info, "Request body: \(requestString)")
+                }
+            } else {
+                // For large payloads, create a compact representation
+                var requestInfo: [String: Any] = [
+                    "game_id": activeGameId,
+                    "question": question,
+                    "remember_conversation": ExperimentalFeatures.shared.Lu.wrappedValue.rememberConversations
+                ]
+
+                if let attachments = context.attachments {
+                    var attachmentInfo: [[String: Any]] = []
+                    for attachment in attachments {
+                        attachmentInfo.append([
+                            "type": attachment.type,
+                            "filename": attachment.filename,
+                            "content_size": attachment.content.count
+                        ])
+                    }
+                    requestInfo["attachments"] = attachmentInfo
+                }
+
+                if let compactJson = try? JSONSerialization.data(withJSONObject: requestInfo),
+                   let compactString = String(data: compactJson, encoding: .utf8) {
+                    luLog(.info, "Request body (summarized): \(compactString)")
+                }
+            }
+
+            // Log all request headers
+            luLog(.info, "Request headers:")
+            for (header, value) in urlRequest.allHTTPHeaderFields ?? [:] {
+                if header == "x-lu-context" {
+                    luLog(.info, "  \(header): [context object - logged above]")
+                } else {
+                    luLog(.info, "  \(header): \(value)")
+                }
+            }
+
+            luLog(.info, "Request prepared successfully, about to send to \(urlString)")
         } catch {
+            luLog(.error, "Failed to encode request: \(error.localizedDescription)")
             loadingAlert.dismiss(animated: true)
             self.showError("Failed to prepare your question")
             return
         }
-        luLog(.info, "Making request to URL: \(urlString), remembering conversation : \(shouldRememberConversation)")
+
+
+
+        luLog(.info, "Making request to URL: \(urlString). Options : Remember Conversation(\(ExperimentalFeatures.shared.Lu.wrappedValue.rememberConversations)), Share Gameplay Data(\(shouldIncludeAttachments))")
         
         let task = URLSession.shared.dataTask(with: urlRequest) { [weak self] (data, response, error) in
             DispatchQueue.main.async {
@@ -504,7 +720,8 @@ extension PauseViewController {
         urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
         urlRequest.timeoutInterval = APIConstants.feedbackTimeout
         
-        let context = createAPIContext(for: game)
+        // This endpoint doesn't need gameplay attachments
+        let context = createAPIContext(for: game, includeAttachments: false)
         urlRequest.addContextHeaders(context: context)
         
         do {
@@ -599,7 +816,8 @@ extension PauseViewController {
         request.httpMethod = "GET"
         request.timeoutInterval = APIConstants.supportTimeout
         
-        let context = createAPIContext(for: game)
+        // This endpoint doesn't need gameplay attachments
+        let context = createAPIContext(for: game, includeAttachments: false)
         request.addContextHeaders(context: context)
         luLog(.info, "Making request to URL: \(urlString)")
         let task = URLSession.shared.dataTask(with: request) { [weak self] (data, response, error) in
@@ -637,10 +855,14 @@ extension PauseViewController {
                             let supportResponse = try JSONDecoder().decode(GameSupportResponse.self, from: data)
 
                             ExperimentalFeatures.shared.Lu.wrappedValue.activeGameId = supportResponse.game_id
+                            // Store the supports_attachments and supports_savestates flags
+                            let supportsAttachments = supportResponse.supports_attachments ?? false
+                            let supportsSavestates = supportResponse.supports_savestates ?? false
+                            ExperimentalFeatures.shared.Lu.wrappedValue.supportsAttachments = supportsAttachments
+                            ExperimentalFeatures.shared.Lu.wrappedValue.supportsSavestates = supportsSavestates
                             
                             // Log successful response
-                            luLog(.info, "Response [check-rom]: game_id=\(supportResponse.game_id), status=\(httpResponse.statusCode)")
-                            
+                            luLog(.info, "Response [check-rom]: game_id=\(supportResponse.game_id), supports_attachments=\(supportsAttachments), supports_savestates=\(supportsSavestates), status=\(httpResponse.statusCode)")
                             completion(true)
                         } catch {
                             luLog(.error, "check-rom decode error: \(error.localizedDescription)")
