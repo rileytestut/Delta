@@ -56,8 +56,7 @@ class PatronsFooterView: UICollectionReusableView
 class AboutPatreonHeaderView: UICollectionReusableView
 {
     @IBOutlet var supportButton: UIButton!
-    @IBOutlet var restorePurchaseButton: UIButton!
-    
+    @IBOutlet var accountButton: UIButton!
     @IBOutlet var textView: UITextView!
     
     @IBOutlet private var rileyLabel: UILabel!
@@ -80,7 +79,7 @@ class AboutPatreonHeaderView: UICollectionReusableView
             imageView.layer.cornerRadius = imageView.bounds.midY
         }
         
-        for button in [self.supportButton!]
+        for button in [self.supportButton!, self.accountButton!]
         {
             button.clipsToBounds = true
             button.layer.cornerRadius = 16

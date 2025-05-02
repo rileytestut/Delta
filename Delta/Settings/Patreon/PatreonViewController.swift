@@ -11,7 +11,6 @@ import StoreKit
 
 import Roxas
 
-@available(iOS 17.5, *)
 extension PatreonViewController
 {
     private enum Section: Int, CaseIterable
@@ -28,7 +27,6 @@ extension PatreonViewController
     }
 }
 
-@available(iOS 17.5, *)
 class PatreonViewController: UICollectionViewController
 {
     private lazy var dataSource = self.makeDataSource()
@@ -59,6 +57,19 @@ class PatreonViewController: UICollectionViewController
         self.collectionView.register(PatronsHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "PatronsHeader")
         self.collectionView.register(PatronsFooterView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "PatronsFooter")
         
+        #if APP_STORE
+        
+        let restorePurchaseAction = UIAction(title: NSLocalizedString("Restore Purchase", comment: ""), image: UIImage(systemName: "arrow.clockwise")) { [weak self] _ in
+            self?.restorePurchase()
+        }
+        let restorePurchaseMenu = UIMenu(title: "", children: [restorePurchaseAction])
+        
+        let moreButton = UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"), style: .plain, target: nil, action: nil)
+        moreButton.menu = restorePurchaseMenu
+        self.navigationItem.rightBarButtonItem = moreButton
+        
+        #endif
+        
         NotificationCenter.default.addObserver(self, selector: #selector(PatreonViewController.didUpdatePatrons(_:)), name: FriendZoneManager.didUpdatePatronsNotification, object: nil)
         
         self.update()
@@ -86,7 +97,6 @@ class PatreonViewController: UICollectionViewController
     }
 }
 
-@available(iOS 17.5, *)
 private extension PatreonViewController
 {
     func makeDataSource() -> RSTCompositeCollectionViewDataSource<ManagedPatron>
@@ -117,22 +127,25 @@ private extension PatreonViewController
     
     func update()
     {
-        if let entitlement = RevenueCatManager.shared.entitlements[.discord], entitlement.isActive
+        if #available(iOS 17.5, *)
         {
-            self.editEmailButton.isHidden = false
-        }
-        else
-        {
-            self.editEmailButton.isHidden = true
-        }
-        
-        if let entitlement = RevenueCatManager.shared.entitlements[.credits], entitlement.isActive
-        {
-            self.editNameButton.isHidden = false
-        }
-        else
-        {
-            self.editNameButton.isHidden = true
+            if let entitlement = RevenueCatManager.shared.entitlements[.discord], entitlement.isActive
+            {
+                self.editEmailButton.isHidden = false
+            }
+            else
+            {
+                self.editEmailButton.isHidden = true
+            }
+            
+            if let entitlement = RevenueCatManager.shared.entitlements[.credits], entitlement.isActive
+            {
+                self.editNameButton.isHidden = false
+            }
+            else
+            {
+                self.editNameButton.isHidden = true
+            }
         }
         
         self.collectionView.reloadData()
@@ -143,33 +156,68 @@ private extension PatreonViewController
         headerView.layoutMargins = self.view.layoutMargins
         headerView.tintColor = .deltaPurple
         
-        headerView.restorePurchaseButton.addTarget(self, action: #selector(PatreonViewController.restorePurchase), for: .primaryActionTriggered)
+        headerView.supportButton.addTarget(self, action: #selector(PatreonViewController.openPatreonURL(_:)), for: .primaryActionTriggered)
+        headerView.accountButton.removeTarget(self, action: nil, for: .primaryActionTriggered)
         
-        if RevenueCatManager.shared.hasBetaAccess
+        let defaultSupportButtonTitle = NSLocalizedString("Join for $3/month", comment: "")
+        let isPatronSupportButtonTitle = NSLocalizedString("View Patreon", comment: "")
+        
+        let defaultText = NSLocalizedString("""
+        Hey y'all,
+        
+        You can support future development of Delta by donating to us on Patreon. In return, you'll unlock Patreon-exclusive app icons and receive early access to new features.
+        
+        Thanks for all your support 💜
+        Riley & Shane
+        """, comment: "")
+                
+        let isPatronText = NSLocalizedString("""
+        Hey ,
+        
+        You’re the best. Your account was linked successfully, so you now have access to Patreon-exclusive app icons and Experimental Features. You can find them all in Settings.
+        
+        Thanks for all of your support. Enjoy!
+        Riley & Shane
+        """, comment: "")
+        
+        if let account = DatabaseManager.shared.patreonAccount(), PatreonAPI.shared.isAuthenticated
         {
-            headerView.supportButton.setTitle(String(localized: "Manage Subscription"), for: .normal)
+            headerView.accountButton.addTarget(self, action: #selector(PatreonViewController.signOut(_:)), for: .primaryActionTriggered)
+            headerView.accountButton.setTitle(String(format: NSLocalizedString("Unlink %@", comment: ""), account.name), for: .normal)
             
-            headerView.supportButton.removeTarget(self, action: #selector(PatreonViewController.becomePatron), for: .primaryActionTriggered)
-            headerView.supportButton.addTarget(self, action: #selector(PatreonViewController.manageSubscription), for: .primaryActionTriggered)
+            if account.hasBetaAccess
+            {
+                headerView.supportButton.setTitle(isPatronSupportButtonTitle, for: .normal)
+                
+                let font = UIFont.systemFont(ofSize: 16)
+                let attributedText = NSMutableAttributedString(string: isPatronText, attributes: [.font: font,
+                                                                                                  .foregroundColor: UIColor.label])
+                
+                let boldedName = NSAttributedString(string: account.firstName ?? account.name,
+                                                    attributes: [.font: UIFont.boldSystemFont(ofSize: font.pointSize),
+                                                                 .foregroundColor: UIColor.label])
+                attributedText.insert(boldedName, at: 4)
+                
+                headerView.textView.attributedText = attributedText
+            }
+            else
+            {
+                headerView.supportButton.setTitle(defaultSupportButtonTitle, for: .normal)
+                headerView.textView.text = defaultText
+            }
         }
         else
         {
-            headerView.supportButton.setTitle(String(localized: "Become a “Patron” Today"), for: .normal)
+            headerView.accountButton.addTarget(self, action: #selector(PatreonViewController.authenticate(_:)), for: .primaryActionTriggered)
             
-            headerView.supportButton.removeTarget(self, action: #selector(PatreonViewController.manageSubscription), for: .primaryActionTriggered)
-            headerView.supportButton.addTarget(self, action: #selector(PatreonViewController.becomePatron), for: .primaryActionTriggered)
+            headerView.supportButton.setTitle(defaultSupportButtonTitle, for: .normal)
+            headerView.accountButton.setTitle(NSLocalizedString("Link Patreon account", comment: ""), for: .normal)
+            
+            headerView.textView.text = defaultText
         }
-        
-        #if APP_STORE
-        headerView.supportButton.isHidden = !PurchaseManager.shared.supportsExternalPurchases
-        headerView.restorePurchaseButton.isHidden = !PurchaseManager.shared.supportsExternalPurchases
-        #else
-        headerView.restorePurchaseButton.isHidden = true
-        #endif
     }
 }
 
-@available(iOS 17.5, *)
 private extension PatreonViewController
 {
     @objc func fetchPatrons()
@@ -177,7 +225,11 @@ private extension PatreonViewController
         // User explicitly navigated to this screen, so allow fetching friend zone patrons.
         UserDefaults.standard.shouldFetchFriendZonePatrons = true
         
-        FriendZoneManager.shared.updatePatronsIfNeeded()
+        if #available(iOS 17.5, *)
+        {
+            FriendZoneManager.shared.updatePatronsIfNeeded()
+        }
+        
         self.update()
     }
     
@@ -189,53 +241,46 @@ private extension PatreonViewController
         }
     }
     
-    @objc func becomePatron()
+    @objc func openPatreonURL(_ sender: UIButton)
     {
-        #if APP_STORE
-        
-        Task<Void, Never> {
-            do
+        func openPatreon()
+        {
+            let patreonURL: URL
+            if PurchaseManager.shared.isActivePatron
             {
-                let subscription = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<RevenueCatManager.Subscription, Error>) in
-                    let viewController = PatreonTiersViewController { [weak self] result in
-                        continuation.resume(with: result)
-                        self?.dismiss(animated: true)
-                    }
-                    
-                    let navigationController = UINavigationController(rootViewController: viewController)
-                    self.present(navigationController, animated: true)
-                }
-                
-                self.update()
-                
-                switch subscription
-                {
-                case .earlyAdopter: break
-                case .communityMember: self.editPatronEmail(nil)
-                case .friendZone: self.editPatronName(nil)
-                }
+                patreonURL = URL(string: "https://patreon.com/rileyshane")!
             }
-            catch is CancellationError
+            else
             {
-                // Ignore
+                patreonURL = UserDefaults.standard.externalPurchaseLink ?? URL(string: "https://patreon.com/join/rileyshane")!
             }
-            catch
-            {
-                let alertController = UIAlertController(title: NSLocalizedString("Unable to Purchase Subscription", comment: ""), error: error)
-                self.present(alertController, animated: true)
-            }
+            
+            UIApplication.shared.open(patreonURL, options: [:])
         }
         
-        #else
-        
-        let patreonURL = URL(string: "https://www.patreon.com/rileyshane")!
-        UIApplication.shared.open(patreonURL, options: [:])
-        
-        #endif
+        if UserDefaults.standard.isExternalPurchaseAlertDisabled
+        {
+            // External purchase alert is no longer required, so just open Patreon.
+            openPatreon()
+        }
+        else
+        {
+            let alertController = UIAlertController(title: NSLocalizedString("Open in “Safari”?", comment: ""),
+                                                    message: NSLocalizedString("You will leave the app and go to the developer's website.", comment: ""),
+                                                    preferredStyle: .alert)
+            alertController.addAction(.cancel)
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Open", comment: ""), style: .default) { _ in
+                openPatreon()
+            })
+            
+            self.present(alertController, animated: true)
+        }
     }
     
     @objc func manageSubscription()
     {
+        guard #available(iOS 17.5, *) else { return }
+        
         guard let windowScene = self.view.window?.windowScene else { return }
         
         Task<Void, Never> {
@@ -253,6 +298,8 @@ private extension PatreonViewController
     
     @objc func restorePurchase()
     {
+        guard #available(iOS 17.5, *) else { return }
+        
         Task<Void, Never> {
             do
             {
@@ -270,8 +317,80 @@ private extension PatreonViewController
         }
     }
     
+    @IBAction func authenticate(_ sender: UIButton)
+    {
+        PatreonAPI.shared.authenticate(presentingViewController: self) { (result) in
+            do
+            {
+                let account = try result.get()
+                let showThankYouAlert = account.hasBetaAccess
+                
+                try account.managedObjectContext?.save()
+                                
+                DispatchQueue.main.async {
+                    self.update()
+                    
+                    if showThankYouAlert
+                    {
+                        let alertController = UIAlertController(title: NSLocalizedString("Thanks for Supporting Us!", comment: ""),
+                                                                message: NSLocalizedString("You can now access Patreon-exclusive features like alternate app icons and Experimental Features.", comment: ""), preferredStyle: .alert)
+                        alertController.addAction(.ok)
+                        self.present(alertController, animated: true)
+                    }
+                }
+            }
+            catch is CancellationError
+            {
+                // Ignore
+            }
+            catch
+            {
+                DispatchQueue.main.async {
+                    let alertController = UIAlertController(title: NSLocalizedString("Unable to Authenticate with Patreon", comment: ""), error: error)
+                    self.present(alertController, animated: true)
+                }
+            }
+        }
+    }
+    
+    @IBAction func signOut(_ sender: UIButton)
+    {
+        func signOut()
+        {
+            PatreonAPI.shared.signOut { (result) in
+                do
+                {
+                    try result.get()
+                    
+                    DispatchQueue.main.async {
+                        self.update()
+                    }
+                }
+                catch
+                {
+                    DispatchQueue.main.async {
+                        let alertController = UIAlertController(title: NSLocalizedString("Unable to Sign Out of Patreon", comment: ""), error: error)
+                        self.present(alertController, animated: true)
+                    }
+                }
+            }
+        }
+        
+        let alertController = UIAlertController(title: NSLocalizedString("Are you sure you want to unlink your Patreon account?", comment: ""),
+                                                message: NSLocalizedString("You will no longer be able to access Patreon-exclusive features.", comment: ""),
+                                                preferredStyle: .actionSheet)
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Unlink Patreon Account", comment: ""), style: .destructive) { _ in signOut() })
+        alertController.addAction(.cancel)
+        alertController.popoverPresentationController?.sourceRect = sender.frame
+        alertController.popoverPresentationController?.sourceView = sender.superview
+        
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
     @IBAction func editPatronName(_ sender: UIBarButtonItem?)
     {
+        guard #available(iOS 17.5, *) else { return }
+        
         let alertTitle = (sender == nil) ? String(localized: "Thanks For Supporting Us!") : String(localized: "Edit Name")
         
         let alertController = UIAlertController(title: alertTitle, message: String(localized: "Please enter your full name so we can credit you on this page."), preferredStyle: .alert)
@@ -332,6 +451,8 @@ private extension PatreonViewController
     
     @IBAction func editPatronEmail(_ sender: UIBarButtonItem?)
     {
+        guard #available(iOS 17.5, *) else { return }
+        
         let alertTitle = (sender == nil) ? String(localized: "Thanks For Supporting Us!") : String(localized: "Edit Email")
         
         let alertController = UIAlertController(title: alertTitle, message: String(localized: "Please enter your email so we can send you an invitation to our Discord server."), preferredStyle: .alert)
@@ -391,7 +512,6 @@ private extension PatreonViewController
     }
 }
 
-@available(iOS 17.5, *)
 extension PatreonViewController
 {
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView
@@ -454,7 +574,6 @@ extension PatreonViewController
     }
 }
 
-@available(iOS 17.5, *)
 extension PatreonViewController: UICollectionViewDelegateFlowLayout
 {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize

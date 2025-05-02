@@ -31,19 +31,28 @@ class PurchaseManager
     @available(iOS 17.5, *) // iOS 17.5 is earliest version that supports reporting purchases via Apple's External Purchase Server API.
     func prepare() async
     {
-        do
+        #if APP_STORE
+        
+        if let storeCountryCode = await Storefront.current?.countryCode, storeCountryCode == "USA"
         {
-            guard AppStore.canMakePayments else { return }
+            self._supportsExternalPurchases = true
             
-            let canOpenPurchaseLink = await ExternalPurchaseLink.canOpen
-            self._supportsExternalPurchases = canOpenPurchaseLink
-            
-            try await RevenueCatManager.shared.start()
+            do
+            {
+                try await RevenueCatManager.shared.start()
+            }
+            catch
+            {
+                Logger.purchases.error("Failed to refresh RevenueCat customer info at launch. \(error.localizedDescription, privacy: .public)")
+            }
         }
-        catch
-        {
-            Logger.purchases.error("Failed to refresh RevenueCat customer info at launch. \(error.localizedDescription, privacy: .public)")
-        }
+        
+        #else
+        
+        // Delta always supports external purchases outside App Store.
+        self._supportsExternalPurchases = true
+        
+        #endif
     }
     
     @MainActor // @MainActor because some observers expect changes to happen on main thread.
@@ -64,6 +73,19 @@ class PurchaseManager
 extension PurchaseManager
 {
     @MainActor
+    var isActivePatron: Bool {
+        if let patreonAccount = DatabaseManager.shared.patreonAccount(), patreonAccount.hasBetaAccess
+        {
+            // User is signed into Patreon account and is an active patron.
+            return true
+        }
+        else
+        {
+            return false
+        }
+    }
+    
+    @MainActor
     var isExperimentalFeaturesAvailable: Bool {
         #if BETA
         // Experimental features are always available in BETA version.
@@ -73,9 +95,8 @@ extension PurchaseManager
         return false
         #else
         
-        if let patreonAccount = DatabaseManager.shared.patreonAccount(), patreonAccount.hasBetaAccess
+        if self.isActivePatron
         {
-            // User is signed into Patreon account and is active patron.
             return true
         }
         else if #available(iOS 17.5, *), RevenueCatManager.shared.hasBetaAccess
@@ -112,9 +133,8 @@ extension PurchaseManager
         return false
         #else
 
-        if let patreonAccount = DatabaseManager.shared.patreonAccount(), patreonAccount.hasPastBetaAccess
+        if self.isActivePatron
         {
-            // User is signed into Patreon account and is active patron.
             return true
         }
         else if #available(iOS 17.5, *), RevenueCatManager.shared.hasPastBetaAccess

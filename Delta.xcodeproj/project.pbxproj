@@ -207,6 +207,7 @@
 		D560BD8629EDC45600289847 /* ExternalDisplaySceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D560BD8529EDC45600289847 /* ExternalDisplaySceneDelegate.swift */; };
 		D56C362F2D6538C500A8984D /* WhatsNewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56C362E2D6538C500A8984D /* WhatsNewViewController.swift */; };
 		D56C36312D65471D00A8984D /* WhatsNewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56C36302D65471D00A8984D /* WhatsNewCell.swift */; };
+		D56E7E942DC43BE60067766D /* JoinPatreonButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56E7E932DC43BE60067766D /* JoinPatreonButton.swift */; };
 		D56F7ABC2B05988700490ACB /* AttributedHeaderFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56F7ABB2B05988700490ACB /* AttributedHeaderFooterView.swift */; };
 		D5795A1B2CD2D22900C1D7E9 /* PurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5795A1A2CD2D22200C1D7E9 /* PurchaseManager.swift */; };
 		D57D795629F300E100BB2CF8 /* CustomTintColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A817AF29DF4E6E00904AFE /* CustomTintColor.swift */; };
@@ -545,6 +546,7 @@
 		D560BD8529EDC45600289847 /* ExternalDisplaySceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExternalDisplaySceneDelegate.swift; sourceTree = "<group>"; };
 		D56C362E2D6538C500A8984D /* WhatsNewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatsNewViewController.swift; sourceTree = "<group>"; };
 		D56C36302D65471D00A8984D /* WhatsNewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatsNewCell.swift; sourceTree = "<group>"; };
+		D56E7E932DC43BE60067766D /* JoinPatreonButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinPatreonButton.swift; sourceTree = "<group>"; };
 		D56F7ABB2B05988700490ACB /* AttributedHeaderFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributedHeaderFooterView.swift; sourceTree = "<group>"; };
 		D5795A1A2CD2D22200C1D7E9 /* PurchaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseManager.swift; sourceTree = "<group>"; };
 		D58013E82CC992560055F11C /* Delta.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Delta.entitlements; sourceTree = "<group>"; };
@@ -1357,6 +1359,7 @@
 				D5AA0F0F2CE3F3C90015D134 /* PatreonComponents.swift */,
 				D5AA0F192CE404E90015D134 /* AboutPatreonHeaderView.xib */,
 				D534515C2D0A313E00B800CE /* PatreonTiersViewController.swift */,
+				D56E7E932DC43BE60067766D /* JoinPatreonButton.swift */,
 			);
 			path = Patreon;
 			sourceTree = "<group>";
@@ -1927,6 +1930,7 @@
 				BF5942871E09BC8B0051894B /* _ControllerSkin.swift in Sources */,
 				BF95E2791E4982A10030E7AD /* GamesDatabaseBrowserViewController.swift in Sources */,
 				D5AE76BD2C2B53FC0086471B /* _PatreonAccount.swift in Sources */,
+				D56E7E942DC43BE60067766D /* JoinPatreonButton.swift in Sources */,
 				D56C36312D65471D00A8984D /* WhatsNewCell.swift in Sources */,
 				D524F4A3273DE9C000D500B2 /* ProcessInfo+JIT.swift in Sources */,
 				D5974CD52D77C37500750CA8 /* Achievement.swift in Sources */,

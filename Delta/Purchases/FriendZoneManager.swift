@@ -28,6 +28,8 @@ extension FriendZoneManager
         var refreshID: String
         
         var disableExternalPurchaseLink: Bool?
+        var disableExternalPurchaseAlert: Bool?
+        var externalPurchaseLink: URL?
     }
 }
 
@@ -97,6 +99,11 @@ private extension FriendZoneManager
         
         let disableExternalPurchaseLink = response.disableExternalPurchaseLink ?? false
         UserDefaults.standard.isExternalPurchaseLinkDisabled = disableExternalPurchaseLink
+        
+        let disableExternalPurchaseAlert = response.disableExternalPurchaseAlert ?? false
+        UserDefaults.standard.isExternalPurchaseAlertDisabled = disableExternalPurchaseAlert
+        
+        UserDefaults.standard.externalPurchaseLink = response.externalPurchaseLink
         
         let previousRefreshID = UserDefaults.standard.patronsRefreshID
         guard response.refreshID != previousRefreshID && UserDefaults.standard.shouldFetchFriendZonePatrons else {
