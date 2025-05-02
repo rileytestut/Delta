@@ -81,6 +81,7 @@ private extension SettingsViewController
     enum SupportRow: Int, CaseIterable
     {
         case contactUs
+        case alternatePaymentMethods
         case privacyPolicy
         case termsOfUse
     }
@@ -520,6 +521,55 @@ private extension SettingsViewController
             await self.exportLogActivityIndicatorView.stopAnimating()
         }
     }
+    
+    @objc func showSubscriptions()
+    {
+        guard #available(iOS 17.5, *) else { return }
+        
+        Task<Void, Never> {
+            var tiersViewController: PatreonTiersViewController?
+            
+            do
+            {
+                var didResume = false
+                
+                let subscription = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<RevenueCatManager.Subscription, Error>) in
+                    let viewController = PatreonTiersViewController { [weak tiersViewController] result in
+                        if didResume
+                        {
+                            tiersViewController?.dismiss(animated: true)
+                            return
+                        }
+                        
+                        didResume = true
+                        continuation.resume(with: result)
+                    }
+                    
+                    let navigationController = UINavigationController(rootViewController: viewController)
+                    self.present(navigationController, animated: true)
+                    
+                    tiersViewController = viewController
+                }
+                
+                tiersViewController?.process(subscription)
+                
+                self.update()
+            }
+            catch is CancellationError
+            {
+                // Ignore
+                
+                tiersViewController?.dismiss(animated: true)
+            }
+            catch
+            {
+                let presentingViewController = self.presentingViewController ?? self
+                
+                let alertController = UIAlertController(title: NSLocalizedString("Unable to Purchase Subscription", comment: ""), error: error)
+                presentingViewController.present(alertController, animated: true)
+            }
+        }
+    }
 }
 
 private extension SettingsViewController
@@ -770,6 +820,8 @@ extension SettingsViewController
                     toastView.show(in: self.navigationController?.view ?? self.view, duration: 4.0)
                 }
                 
+            case .alternatePaymentMethods: self.showSubscriptions()
+                
             case .privacyPolicy:
                 let safariURL = URL(string: "https://altstore.io/privacy")!
                 UIApplication.shared.open(safariURL, options: [:])
@@ -802,6 +854,19 @@ extension SettingsViewController
             case .exportLog:
                 guard #unavailable(iOS 15) else { break }
                 return 0.0
+                
+            default: break
+            }
+            
+        case .support:
+            let row = SupportRow(rawValue: indexPath.row)!
+            switch row
+            {
+            #if APP_STORE
+            case .alternatePaymentMethods where !PurchaseManager.shared.supportsExternalPurchases: return 0.0
+            #else
+            case .alternatePaymentMethods: return 0.0
+            #endif
                 
             default: break
             }

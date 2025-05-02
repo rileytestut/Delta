@@ -18,13 +18,6 @@ extension PatreonViewController
         case about
         case patrons
     }
-    
-    private struct NaughtyWordError: LocalizedError
-    {
-        var errorDescription: String? {
-            NSLocalizedString("This name is not allowed.", comment: "")
-        }
-    }
 }
 
 class PatreonViewController: UICollectionViewController
@@ -33,12 +26,8 @@ class PatreonViewController: UICollectionViewController
     private lazy var patronsDataSource = self.makePatronsDataSource()
     
     private var prototypeAboutHeader: AboutPatreonHeaderView!
-    private weak var confirmEditAction: UIAlertAction?
     
     private var isUpdatingRevenueCatPatrons: Bool = false
-    
-    @IBOutlet private var editNameButton: UIBarButtonItem!
-    @IBOutlet private var editEmailButton: UIBarButtonItem!
         
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
@@ -56,19 +45,6 @@ class PatreonViewController: UICollectionViewController
         self.collectionView.register(aboutHeaderNib, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "AboutHeader")
         self.collectionView.register(PatronsHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "PatronsHeader")
         self.collectionView.register(PatronsFooterView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "PatronsFooter")
-        
-        #if APP_STORE
-        
-        let restorePurchaseAction = UIAction(title: NSLocalizedString("Restore Purchase", comment: ""), image: UIImage(systemName: "arrow.clockwise")) { [weak self] _ in
-            self?.restorePurchase()
-        }
-        let restorePurchaseMenu = UIMenu(title: "", children: [restorePurchaseAction])
-        
-        let moreButton = UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"), style: .plain, target: nil, action: nil)
-        moreButton.menu = restorePurchaseMenu
-        self.navigationItem.rightBarButtonItem = moreButton
-        
-        #endif
         
         NotificationCenter.default.addObserver(self, selector: #selector(PatreonViewController.didUpdatePatrons(_:)), name: FriendZoneManager.didUpdatePatronsNotification, object: nil)
         
@@ -127,27 +103,6 @@ private extension PatreonViewController
     
     func update()
     {
-        if #available(iOS 17.5, *)
-        {
-            if let entitlement = RevenueCatManager.shared.entitlements[.discord], entitlement.isActive
-            {
-                self.editEmailButton.isHidden = false
-            }
-            else
-            {
-                self.editEmailButton.isHidden = true
-            }
-            
-            if let entitlement = RevenueCatManager.shared.entitlements[.credits], entitlement.isActive
-            {
-                self.editNameButton.isHidden = false
-            }
-            else
-            {
-                self.editNameButton.isHidden = true
-            }
-        }
-        
         self.collectionView.reloadData()
     }
     
@@ -277,46 +232,6 @@ private extension PatreonViewController
         }
     }
     
-    @objc func manageSubscription()
-    {
-        guard #available(iOS 17.5, *) else { return }
-        
-        guard let windowScene = self.view.window?.windowScene else { return }
-        
-        Task<Void, Never> {
-            do
-            {
-                try await AppStore.showManageSubscriptions(in: windowScene, subscriptionGroupID: PurchaseManager.friendZoneSubscriptionGroupID)
-            }
-            catch
-            {
-                let alertController = UIAlertController(title: String(localized: "Unable to Manage Subscription"), error: error)
-                self.present(alertController, animated: true)
-            }
-        }
-    }
-    
-    @objc func restorePurchase()
-    {
-        guard #available(iOS 17.5, *) else { return }
-        
-        Task<Void, Never> {
-            do
-            {
-                try await RevenueCatManager.shared.requestRestorePurchases()
-            }
-            catch is CancellationError
-            {
-                // Ignore
-            }
-            catch
-            {
-                let alertController = UIAlertController(title: NSLocalizedString("Unable to Restore Purchase", comment: ""), error: error)
-                self.present(alertController, animated: true)
-            }
-        }
-    }
-    
     @IBAction func authenticate(_ sender: UIButton)
     {
         PatreonAPI.shared.authenticate(presentingViewController: self) { (result) in
@@ -385,130 +300,6 @@ private extension PatreonViewController
         alertController.popoverPresentationController?.sourceView = sender.superview
         
         self.present(alertController, animated: true, completion: nil)
-    }
-    
-    @IBAction func editPatronName(_ sender: UIBarButtonItem?)
-    {
-        guard #available(iOS 17.5, *) else { return }
-        
-        let alertTitle = (sender == nil) ? String(localized: "Thanks For Supporting Us!") : String(localized: "Edit Name")
-        
-        let alertController = UIAlertController(title: alertTitle, message: String(localized: "Please enter your full name so we can credit you on this page."), preferredStyle: .alert)
-        alertController.addTextField { [weak self] textField in
-            textField.textContentType = .name
-            textField.autocapitalizationType = .words
-            textField.autocorrectionType = .no
-            textField.placeholder = String(localized: "Full Name")
-            textField.returnKeyType = .done
-            textField.enablesReturnKeyAutomatically = true
-            textField.addTarget(self, action: #selector(PatreonViewController.editTextFieldChanged(_:)), for: .editingChanged)
-            
-            if let displayName = RevenueCatManager.shared.displayName
-            {
-                textField.text = displayName
-            }
-        }
-        
-        let cancelTitle = (sender == nil) ? String(localized: "Maybe Later") : String(localized: "Cancel")
-        let cancelAction = UIAlertAction(title: cancelTitle, style: .cancel)
-        
-        let editAction = UIAlertAction(title: String(localized: "Confirm"), style: .default) { [weak alertController] _ in
-            guard let textField = alertController?.textFields?.first, let displayName = textField.text, !displayName.isEmpty else { return }
-            
-            Task<Void, Never> {
-                do
-                {
-                    guard !displayName.containsProfanity else { throw NaughtyWordError() }
-                    
-                    try await RevenueCatManager.shared.setDisplayName(displayName)
-                    
-                    self.isUpdatingRevenueCatPatrons = true
-                    self.collectionView.reloadData()
-                    
-                    defer {
-                        self.isUpdatingRevenueCatPatrons = false
-                        
-                        // Automatically reloads data due to didUpdatePatronsNotification.
-                        // self.collectionView.reloadData()
-                    }
-                    
-                    try await FriendZoneManager.shared.updateRevenueCatPatrons()
-                }
-                catch
-                {
-                    let alertController = UIAlertController(title: String(localized: "Unable to Update Display Name"), error: error)
-                    self.present(alertController, animated: true)
-                }
-            }
-        }
-        self.confirmEditAction = editAction
-        
-        alertController.addAction(cancelAction)
-        alertController.addAction(editAction)
-        
-        self.present(alertController, animated: true)
-    }
-    
-    @IBAction func editPatronEmail(_ sender: UIBarButtonItem?)
-    {
-        guard #available(iOS 17.5, *) else { return }
-        
-        let alertTitle = (sender == nil) ? String(localized: "Thanks For Supporting Us!") : String(localized: "Edit Email")
-        
-        let alertController = UIAlertController(title: alertTitle, message: String(localized: "Please enter your email so we can send you an invitation to our Discord server."), preferredStyle: .alert)
-        alertController.addTextField { [weak self] textField in
-            textField.textContentType = .emailAddress
-            textField.autocapitalizationType = .none
-            textField.autocorrectionType = .no
-            textField.placeholder = String(localized: "me@example.com")
-            textField.returnKeyType = .done
-            textField.enablesReturnKeyAutomatically = true
-            textField.addTarget(self, action: #selector(PatreonViewController.editTextFieldChanged(_:)), for: .editingChanged)
-            
-            if let emailAddress = RevenueCatManager.shared.emailAddress
-            {
-                textField.text = emailAddress
-            }
-        }
-        
-        let cancelTitle = (sender == nil) ? String(localized: "Maybe Later") : String(localized: "Cancel")
-        let cancelAction = UIAlertAction(title: cancelTitle, style: .cancel)
-        
-        let editAction = UIAlertAction(title: String(localized: "Confirm"), style: .default) { [weak alertController] _ in
-            guard let textField = alertController?.textFields?.first, let emailAddress = textField.text, !emailAddress.isEmpty else { return }
-            
-            Task<Void, Never> {
-                do
-                {
-                    try await RevenueCatManager.shared.setEmailAddress(emailAddress)
-                    
-                    let alertController = UIAlertController(title: NSLocalizedString("Discord Invite Link", comment: ""), message: "https://discord.gg/QqmM3gPtbA", preferredStyle: .alert)
-                    alertController.addAction(UIAlertAction(title: NSLocalizedString("Copy to Clipboard", comment: ""), style: .default) { _ in
-                        UIPasteboard.general.url = URL(string: "https://discord.gg/QqmM3gPtbA")
-                    })
-                    alertController.addAction(.cancel)
-                    
-                    self.present(alertController, animated: true)
-                }
-                catch
-                {
-                    let alertController = UIAlertController(title: String(localized: "Unable to Update Email"), error: error)
-                    self.present(alertController, animated: true)
-                }
-            }
-        }
-        self.confirmEditAction = editAction
-        
-        alertController.addAction(cancelAction)
-        alertController.addAction(editAction)
-        
-        self.present(alertController, animated: true)
-    }
-    
-    @objc func editTextFieldChanged(_ sender: UITextField)
-    {
-        let text = sender.text ?? ""
-        self.confirmEditAction?.isEnabled = !text.isEmpty
     }
 }
 

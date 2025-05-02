@@ -20,7 +20,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="separatorColor" systemColor="separatorColor"/>
                         <label key="tableFooterView" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Delta 0.6.0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Str-BY-agW">
-                            <rect key="frame" x="0.0" y="2904" width="375" height="44"/>
+                            <rect key="frame" x="0.0" y="2948" width="375" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -843,8 +843,24 @@ Menu + Long-Press: Quick Load</string>
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell" textLabel="9v6-NL-xiw" style="IBUITableViewCellStyleDefault" id="KuI-g9-UlV">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell" textLabel="FH2-gy-ntx" style="IBUITableViewCellStyleDefault" id="Uk9-HX-5bo">
                                         <rect key="frame" x="16" y="2798" width="343" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Uk9-HX-5bo" id="ZWo-PS-iih">
+                                            <rect key="frame" x="0.0" y="0.0" width="316.5" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Alternate Payment Methods" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="FH2-gy-ntx">
+                                                    <rect key="frame" x="16" y="0.0" width="292.5" height="44"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell" textLabel="9v6-NL-xiw" style="IBUITableViewCellStyleDefault" id="KuI-g9-UlV">
+                                        <rect key="frame" x="16" y="2842" width="343" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KuI-g9-UlV" id="i8j-lL-Hwf">
                                             <rect key="frame" x="0.0" y="0.0" width="316.5" height="44"/>
@@ -860,7 +876,7 @@ Menu + Long-Press: Quick Load</string>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell" textLabel="ggi-Bt-bY5" style="IBUITableViewCellStyleDefault" id="Azw-Av-Bkc">
-                                        <rect key="frame" x="16" y="2842" width="343" height="44"/>
+                                        <rect key="frame" x="16" y="2886" width="343" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Azw-Av-Bkc" id="HT9-DH-U1U">
                                             <rect key="frame" x="0.0" y="0.0" width="316.5" height="44"/>
@@ -2554,24 +2570,7 @@ Delta uses OpenVGDB to provide automatic artwork for imported games.</string>
                             <outlet property="delegate" destination="4DO-Ey-uDN" id="0cu-hC-GJh"/>
                         </connections>
                     </collectionView>
-                    <navigationItem key="navigationItem" title="Patreon" largeTitleDisplayMode="always" id="kcs-Gu-L9Y">
-                        <rightBarButtonItems>
-                            <barButtonItem title="Item" image="person" catalog="system" id="6I6-F5-bt8">
-                                <connections>
-                                    <action selector="editPatronName:" destination="4DO-Ey-uDN" id="9te-ZE-msM"/>
-                                </connections>
-                            </barButtonItem>
-                            <barButtonItem title="Item" image="envelope" catalog="system" id="EEj-nQ-fkC">
-                                <connections>
-                                    <action selector="editPatronEmail:" destination="4DO-Ey-uDN" id="Hc5-SH-zoc"/>
-                                </connections>
-                            </barButtonItem>
-                        </rightBarButtonItems>
-                    </navigationItem>
-                    <connections>
-                        <outlet property="editEmailButton" destination="EEj-nQ-fkC" id="bZ2-xl-QfG"/>
-                        <outlet property="editNameButton" destination="6I6-F5-bt8" id="Gb4-2w-kvu"/>
-                    </connections>
+                    <navigationItem key="navigationItem" title="Patreon" largeTitleDisplayMode="always" id="kcs-Gu-L9Y"/>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QGe-T0-3mp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -2580,8 +2579,6 @@ Delta uses OpenVGDB to provide automatic artwork for imported games.</string>
     </scenes>
     <resources>
         <image name="ellipsis.circle" catalog="system" width="128" height="123"/>
-        <image name="envelope" catalog="system" width="128" height="85"/>
-        <image name="person" catalog="system" width="128" height="121"/>
         <namedColor name="Purple">
             <color red="0.54509803921568623" green="0.15686274509803921" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
