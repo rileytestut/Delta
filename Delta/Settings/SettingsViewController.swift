@@ -224,6 +224,16 @@ class SettingsViewController: UITableViewController
         case Segue.dsSettings, Segue.altAppIcons: break
         }
     }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?)
+    {
+        super.traitCollectionDidChange(previousTraitCollection)
+        
+        if self.traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle
+        {
+            self.tableView.reloadData()
+        }
+    }
 }
 
 private extension SettingsViewController
@@ -662,14 +672,22 @@ extension SettingsViewController
             }
             else
             {
-                // Not an active patron, so show "Join Patreon" button.
-                cell.contentConfiguration = UIHostingConfiguration {
-                    JoinPatreonButton()
+                if self.traitCollection.userInterfaceStyle == .dark
+                {
+                    cell.contentConfiguration = UIHostingConfiguration {
+                        JoinPatreonButton()
+                    }
+                    .background {
+                        RoundedRectangle(cornerRadius: 10, style: .continuous)
+                            .strokeBorder(Color.accentColor, lineWidth: 2)
+                            .background(Color(uiColor: .secondarySystemGroupedBackground))
+                    }
                 }
-                .background {
-                    RoundedRectangle(cornerRadius: 10, style: .continuous)
-                        .strokeBorder(Color.accentColor, lineWidth: 2)
-                        .background(Color(uiColor: .secondarySystemGroupedBackground))
+                else
+                {
+                    cell.contentConfiguration = UIHostingConfiguration {
+                        JoinPatreonButton()
+                    }
                 }
             }
             

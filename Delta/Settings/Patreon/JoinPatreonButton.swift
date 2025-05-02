@@ -18,7 +18,7 @@ struct JoinPatreonButton: View
             Text("Join our Patreon")
                 .font(.headline)
             
-            Text("Unlock exclusive app icons and receive early access to new features by supporting us.")
+            Text("Unlock exclusive app icons and receive early access to new features by donating.")
                 .font(.subheadline)
         }
         .foregroundColor(colorScheme == .dark ? .white : .accentColor)
