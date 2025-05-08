@@ -170,6 +170,8 @@
 		C6F24AD72D64B452002F939F /* Lu.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F24AD62D64B452002F939F /* Lu.swift */; };
 		C6F24AD92D64B550002F939F /* PauseViewController+Lu.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F24AD82D64B550002F939F /* PauseViewController+Lu.swift */; };
 		C6F24ADB2D64B5A0002F939F /* Lu-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C6F24ADA2D64B5A0002F939F /* Lu-Info.plist */; };
+		D5002BD92DCD3E81003418FD /* IAPScareScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5002BD82DCD3E81003418FD /* IAPScareScreen.swift */; };
+		D5002BDA2DCD3E87003418FD /* IAPScareScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5002BD82DCD3E81003418FD /* IAPScareScreen.swift */; };
 		D5002BDC2DCD3ED2003418FD /* MockPurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5002BDB2DCD3ED2003418FD /* MockPurchaseManager.swift */; };
 		D5002BDE2DCD3F31003418FD /* MockDatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5002BDD2DCD3F31003418FD /* MockDatabaseManager.swift */; };
 		D5011C48281B6E8B00A0760B /* CharacterSet+Filename.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5011C47281B6E8B00A0760B /* CharacterSet+Filename.swift */; };
@@ -509,6 +511,7 @@
 		C6F24AD82D64B550002F939F /* PauseViewController+Lu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PauseViewController+Lu.swift"; sourceTree = "<group>"; };
 		C6F24ADA2D64B5A0002F939F /* Lu-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Lu-Info.plist"; sourceTree = "<group>"; };
 		C786AF1D2DDB6223BE2063CC /* Pods-Delta.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Delta.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Delta/Pods-Delta.debug.xcconfig"; sourceTree = "<group>"; };
+		D5002BD82DCD3E81003418FD /* IAPScareScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAPScareScreen.swift; sourceTree = "<group>"; };
 		D5002BDB2DCD3ED2003418FD /* MockPurchaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPurchaseManager.swift; sourceTree = "<group>"; };
 		D5002BDD2DCD3F31003418FD /* MockDatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDatabaseManager.swift; sourceTree = "<group>"; };
 		D5011C47281B6E8B00A0760B /* CharacterSet+Filename.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CharacterSet+Filename.swift"; sourceTree = "<group>"; };
@@ -1365,6 +1368,7 @@
 				D5AA0F0F2CE3F3C90015D134 /* PatreonComponents.swift */,
 				D5AA0F192CE404E90015D134 /* AboutPatreonHeaderView.xib */,
 				D534515C2D0A313E00B800CE /* PatreonTiersViewController.swift */,
+				D5002BD82DCD3E81003418FD /* IAPScareScreen.swift */,
 				D56E7E932DC43BE60067766D /* JoinPatreonButton.swift */,
 			);
 			path = Patreon;
@@ -1893,6 +1897,7 @@
 				BFFA4C091E8A24D600D87934 /* GameTableViewCell.swift in Sources */,
 				BFFC46231D5984A000AF2CC6 /* LaunchViewController.swift in Sources */,
 				D5864970297734280081477E /* CheatMetadata.swift in Sources */,
+				D5002BD92DCD3E81003418FD /* IAPScareScreen.swift in Sources */,
 				D5AA0F162CE3F6600015D134 /* FriendZoneManager.swift in Sources */,
 				D5A2CAC02D69660800FBA4E4 /* WFCManager.swift in Sources */,
 				BF8DDD241F4F6C880088A21B /* InputCalloutView.swift in Sources */,
@@ -2005,6 +2010,7 @@
 				D57D795F29F315F700BB2CF8 /* FeatureDetailView.swift in Sources */,
 				D51CB7A629EDC15900B59678 /* ExperimentalFeatures.swift in Sources */,
 				D57D796029F315F700BB2CF8 /* ExperimentalFeaturesView.swift in Sources */,
+				D5002BDA2DCD3E87003418FD /* IAPScareScreen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

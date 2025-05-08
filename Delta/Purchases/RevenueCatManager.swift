@@ -46,11 +46,15 @@ extension RevenueCatManager
         }
     }
     
-    enum Subscription
+    enum Subscription: Identifiable
     {
         case earlyAdopter
         case communityMember
         case friendZone
+        
+        var id: Self {
+            return self
+        }
         
         var title: String {
             switch self

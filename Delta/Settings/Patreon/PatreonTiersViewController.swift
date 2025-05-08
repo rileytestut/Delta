@@ -351,6 +351,12 @@ struct PatreonTiersView: View
     @State
     private var isShowingError: Bool = false
     
+    @State
+    private var warningSubscription: RevenueCatManager.Subscription?
+    
+    @State
+    private var pendingSubscription: RevenueCatManager.Subscription?
+    
     var body: some View {
         List {
             Section {
@@ -372,6 +378,21 @@ struct PatreonTiersView: View
                 subscriptionRow(for: .friendZone)
             }
         }
+        .sheet(item: $warningSubscription) { subscription in
+            IAPScareScreen() { result in
+                switch result
+                {
+                case .success: pendingSubscription = subscription
+                case .failure: pendingSubscription = nil
+                }
+                
+                warningSubscription = nil
+            }
+        }
+        .onChange(of: pendingSubscription) { oldValue, newValue in
+            guard let newValue else { return }
+            purchase(newValue)
+        }
         .environment(\.defaultMinListHeaderHeight, 0) // Minimize header size
         .navigationTitle("Choose Patron Tier")
         .navigationBarTitleDisplayMode(.inline)
@@ -384,7 +405,7 @@ struct PatreonTiersView: View
     
     private func subscriptionRow(for subscription: RevenueCatManager.Subscription) -> some View
     {
-        Button(action: { purchase(subscription) }) {
+        Button(action: { warningSubscription = subscription }) {
             VStack(alignment: .leading, spacing: 8) {
                 HStack {
                     Text(subscription.title)
@@ -425,6 +446,8 @@ struct PatreonTiersView: View
                 self.subscriptionError = error
                 self.isShowingError = true
             }
+            
+            self.pendingSubscription = nil
         }
     }
 }
