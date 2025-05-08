@@ -170,6 +170,8 @@
 		C6F24AD72D64B452002F939F /* Lu.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F24AD62D64B452002F939F /* Lu.swift */; };
 		C6F24AD92D64B550002F939F /* PauseViewController+Lu.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F24AD82D64B550002F939F /* PauseViewController+Lu.swift */; };
 		C6F24ADB2D64B5A0002F939F /* Lu-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C6F24ADA2D64B5A0002F939F /* Lu-Info.plist */; };
+		D5002BDC2DCD3ED2003418FD /* MockPurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5002BDB2DCD3ED2003418FD /* MockPurchaseManager.swift */; };
+		D5002BDE2DCD3F31003418FD /* MockDatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5002BDD2DCD3F31003418FD /* MockDatabaseManager.swift */; };
 		D5011C48281B6E8B00A0760B /* CharacterSet+Filename.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5011C47281B6E8B00A0760B /* CharacterSet+Filename.swift */; };
 		D5087E872D76563400E77936 /* AchievementsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5087E862D76563400E77936 /* AchievementsManager.swift */; };
 		D5087E8F2D766CFC00E77936 /* RetroAchievements.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5087E8E2D766CFA00E77936 /* RetroAchievements.swift */; };
@@ -507,6 +509,8 @@
 		C6F24AD82D64B550002F939F /* PauseViewController+Lu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PauseViewController+Lu.swift"; sourceTree = "<group>"; };
 		C6F24ADA2D64B5A0002F939F /* Lu-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Lu-Info.plist"; sourceTree = "<group>"; };
 		C786AF1D2DDB6223BE2063CC /* Pods-Delta.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Delta.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Delta/Pods-Delta.debug.xcconfig"; sourceTree = "<group>"; };
+		D5002BDB2DCD3ED2003418FD /* MockPurchaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPurchaseManager.swift; sourceTree = "<group>"; };
+		D5002BDD2DCD3F31003418FD /* MockDatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDatabaseManager.swift; sourceTree = "<group>"; };
 		D5011C47281B6E8B00A0760B /* CharacterSet+Filename.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CharacterSet+Filename.swift"; sourceTree = "<group>"; };
 		D5087E862D76563400E77936 /* AchievementsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementsManager.swift; sourceTree = "<group>"; };
 		D5087E8E2D766CFA00E77936 /* RetroAchievements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetroAchievements.swift; sourceTree = "<group>"; };
@@ -1284,6 +1288,8 @@
 			children = (
 				D539103129E88B6C0006B350 /* DeltaPreviews.h */,
 				D539103F29E88BC40006B350 /* ContentView.swift */,
+				D5002BDB2DCD3ED2003418FD /* MockPurchaseManager.swift */,
+				D5002BDD2DCD3F31003418FD /* MockDatabaseManager.swift */,
 				D57D795829F3054800BB2CF8 /* Experimental Features */,
 			);
 			path = DeltaPreviews;
@@ -1990,7 +1996,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D5002BDE2DCD3F31003418FD /* MockDatabaseManager.swift in Sources */,
 				D539104029E88BC40006B350 /* ContentView.swift in Sources */,
+				D5002BDC2DCD3ED2003418FD /* MockPurchaseManager.swift in Sources */,
 				D57D795629F300E100BB2CF8 /* CustomTintColor.swift in Sources */,
 				D5AE76CB2C2B81000086471B /* OSLog+Delta.swift in Sources */,
 				D5E7E6F32D91F7A10057CD52 /* BecomePatronButton.swift in Sources */,
