@@ -11,7 +11,6 @@ import StoreKit
 
 import Roxas
 
-@available(iOS 17.5, *)
 extension PatreonViewController
 {
     private enum Section: Int, CaseIterable
@@ -19,28 +18,16 @@ extension PatreonViewController
         case about
         case patrons
     }
-    
-    private struct NaughtyWordError: LocalizedError
-    {
-        var errorDescription: String? {
-            NSLocalizedString("This name is not allowed.", comment: "")
-        }
-    }
 }
 
-@available(iOS 17.5, *)
 class PatreonViewController: UICollectionViewController
 {
     private lazy var dataSource = self.makeDataSource()
     private lazy var patronsDataSource = self.makePatronsDataSource()
     
     private var prototypeAboutHeader: AboutPatreonHeaderView!
-    private weak var confirmEditAction: UIAlertAction?
     
     private var isUpdatingRevenueCatPatrons: Bool = false
-    
-    @IBOutlet private var editNameButton: UIBarButtonItem!
-    @IBOutlet private var editEmailButton: UIBarButtonItem!
         
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
@@ -86,7 +73,6 @@ class PatreonViewController: UICollectionViewController
     }
 }
 
-@available(iOS 17.5, *)
 private extension PatreonViewController
 {
     func makeDataSource() -> RSTCompositeCollectionViewDataSource<ManagedPatron>
@@ -117,24 +103,6 @@ private extension PatreonViewController
     
     func update()
     {
-        if let entitlement = RevenueCatManager.shared.entitlements[.discord], entitlement.isActive
-        {
-            self.editEmailButton.isHidden = false
-        }
-        else
-        {
-            self.editEmailButton.isHidden = true
-        }
-        
-        if let entitlement = RevenueCatManager.shared.entitlements[.credits], entitlement.isActive
-        {
-            self.editNameButton.isHidden = false
-        }
-        else
-        {
-            self.editNameButton.isHidden = true
-        }
-        
         self.collectionView.reloadData()
     }
     
@@ -143,33 +111,68 @@ private extension PatreonViewController
         headerView.layoutMargins = self.view.layoutMargins
         headerView.tintColor = .deltaPurple
         
-        headerView.restorePurchaseButton.addTarget(self, action: #selector(PatreonViewController.restorePurchase), for: .primaryActionTriggered)
+        headerView.supportButton.addTarget(self, action: #selector(PatreonViewController.openPatreonURL(_:)), for: .primaryActionTriggered)
+        headerView.accountButton.removeTarget(self, action: nil, for: .primaryActionTriggered)
         
-        if RevenueCatManager.shared.hasBetaAccess
+        let defaultSupportButtonTitle = NSLocalizedString("Join for $3/month", comment: "")
+        let isPatronSupportButtonTitle = NSLocalizedString("View Patreon", comment: "")
+        
+        let defaultText = NSLocalizedString("""
+        Hey y'all,
+        
+        You can support future development of Delta by donating to us on Patreon. In return, you'll unlock Patreon-exclusive app icons and receive early access to new features.
+        
+        Thanks for all your support 💜
+        Riley & Shane
+        """, comment: "")
+                
+        let isPatronText = NSLocalizedString("""
+        Hey ,
+        
+        You’re the best. Your account was linked successfully, so you now have access to Patreon-exclusive app icons and Experimental Features. You can find them all in Settings.
+        
+        Thanks for all of your support. Enjoy!
+        Riley & Shane
+        """, comment: "")
+        
+        if let account = DatabaseManager.shared.patreonAccount(), PatreonAPI.shared.isAuthenticated
         {
-            headerView.supportButton.setTitle(String(localized: "Manage Subscription"), for: .normal)
+            headerView.accountButton.addTarget(self, action: #selector(PatreonViewController.signOut(_:)), for: .primaryActionTriggered)
+            headerView.accountButton.setTitle(String(format: NSLocalizedString("Unlink %@", comment: ""), account.name), for: .normal)
             
-            headerView.supportButton.removeTarget(self, action: #selector(PatreonViewController.becomePatron), for: .primaryActionTriggered)
-            headerView.supportButton.addTarget(self, action: #selector(PatreonViewController.manageSubscription), for: .primaryActionTriggered)
+            if account.hasBetaAccess
+            {
+                headerView.supportButton.setTitle(isPatronSupportButtonTitle, for: .normal)
+                
+                let font = UIFont.systemFont(ofSize: 16)
+                let attributedText = NSMutableAttributedString(string: isPatronText, attributes: [.font: font,
+                                                                                                  .foregroundColor: UIColor.label])
+                
+                let boldedName = NSAttributedString(string: account.firstName ?? account.name,
+                                                    attributes: [.font: UIFont.boldSystemFont(ofSize: font.pointSize),
+                                                                 .foregroundColor: UIColor.label])
+                attributedText.insert(boldedName, at: 4)
+                
+                headerView.textView.attributedText = attributedText
+            }
+            else
+            {
+                headerView.supportButton.setTitle(defaultSupportButtonTitle, for: .normal)
+                headerView.textView.text = defaultText
+            }
         }
         else
         {
-            headerView.supportButton.setTitle(String(localized: "Become a “Patron” Today"), for: .normal)
+            headerView.accountButton.addTarget(self, action: #selector(PatreonViewController.authenticate(_:)), for: .primaryActionTriggered)
             
-            headerView.supportButton.removeTarget(self, action: #selector(PatreonViewController.manageSubscription), for: .primaryActionTriggered)
-            headerView.supportButton.addTarget(self, action: #selector(PatreonViewController.becomePatron), for: .primaryActionTriggered)
+            headerView.supportButton.setTitle(defaultSupportButtonTitle, for: .normal)
+            headerView.accountButton.setTitle(NSLocalizedString("Link Patreon account", comment: ""), for: .normal)
+            
+            headerView.textView.text = defaultText
         }
-        
-        #if APP_STORE
-        headerView.supportButton.isHidden = !PurchaseManager.shared.supportsExternalPurchases
-        headerView.restorePurchaseButton.isHidden = !PurchaseManager.shared.supportsExternalPurchases
-        #else
-        headerView.restorePurchaseButton.isHidden = true
-        #endif
     }
 }
 
-@available(iOS 17.5, *)
 private extension PatreonViewController
 {
     @objc func fetchPatrons()
@@ -177,7 +180,11 @@ private extension PatreonViewController
         // User explicitly navigated to this screen, so allow fetching friend zone patrons.
         UserDefaults.standard.shouldFetchFriendZonePatrons = true
         
-        FriendZoneManager.shared.updatePatronsIfNeeded()
+        if #available(iOS 17.5, *)
+        {
+            FriendZoneManager.shared.updatePatronsIfNeeded()
+        }
+        
         self.update()
     }
     
@@ -189,30 +196,62 @@ private extension PatreonViewController
         }
     }
     
-    @objc func becomePatron()
+    @objc func openPatreonURL(_ sender: UIButton)
     {
-        #if APP_STORE
+        func openPatreon()
+        {
+            let patreonURL: URL
+            if PurchaseManager.shared.isActivePatron
+            {
+                patreonURL = URL(string: "https://patreon.com/rileyshane")!
+            }
+            else
+            {
+                patreonURL = UserDefaults.standard.externalPurchaseLink ?? URL(string: "https://patreon.com/join/rileyshane")!
+            }
+            
+            UIApplication.shared.open(patreonURL, options: [:])
+        }
         
-        Task<Void, Never> {
+        if UserDefaults.standard.isExternalPurchaseAlertDisabled
+        {
+            // External purchase alert is no longer required, so just open Patreon.
+            openPatreon()
+        }
+        else
+        {
+            let alertController = UIAlertController(title: NSLocalizedString("Open in “Safari”?", comment: ""),
+                                                    message: NSLocalizedString("You will leave the app and go to the developer's website.", comment: ""),
+                                                    preferredStyle: .alert)
+            alertController.addAction(.cancel)
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Open", comment: ""), style: .default) { _ in
+                openPatreon()
+            })
+            
+            self.present(alertController, animated: true)
+        }
+    }
+    
+    @IBAction func authenticate(_ sender: UIButton)
+    {
+        PatreonAPI.shared.authenticate(presentingViewController: self) { (result) in
             do
             {
-                let subscription = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<RevenueCatManager.Subscription, Error>) in
-                    let viewController = PatreonTiersViewController { [weak self] result in
-                        continuation.resume(with: result)
-                        self?.dismiss(animated: true)
-                    }
+                let account = try result.get()
+                let showThankYouAlert = account.hasBetaAccess
+                
+                try account.managedObjectContext?.save()
+                                
+                DispatchQueue.main.async {
+                    self.update()
                     
-                    let navigationController = UINavigationController(rootViewController: viewController)
-                    self.present(navigationController, animated: true)
-                }
-                
-                self.update()
-                
-                switch subscription
-                {
-                case .earlyAdopter: break
-                case .communityMember: self.editPatronEmail(nil)
-                case .friendZone: self.editPatronName(nil)
+                    if showThankYouAlert
+                    {
+                        let alertController = UIAlertController(title: NSLocalizedString("Thanks for Supporting Us!", comment: ""),
+                                                                message: NSLocalizedString("You can now access Patreon-exclusive features like alternate app icons and Experimental Features.", comment: ""), preferredStyle: .alert)
+                        alertController.addAction(.ok)
+                        self.present(alertController, animated: true)
+                    }
                 }
             }
             catch is CancellationError
@@ -221,177 +260,49 @@ private extension PatreonViewController
             }
             catch
             {
-                let alertController = UIAlertController(title: NSLocalizedString("Unable to Purchase Subscription", comment: ""), error: error)
-                self.present(alertController, animated: true)
-            }
-        }
-        
-        #else
-        
-        let patreonURL = URL(string: "https://www.patreon.com/rileyshane")!
-        UIApplication.shared.open(patreonURL, options: [:])
-        
-        #endif
-    }
-    
-    @objc func manageSubscription()
-    {
-        guard let windowScene = self.view.window?.windowScene else { return }
-        
-        Task<Void, Never> {
-            do
-            {
-                try await AppStore.showManageSubscriptions(in: windowScene, subscriptionGroupID: PurchaseManager.friendZoneSubscriptionGroupID)
-            }
-            catch
-            {
-                let alertController = UIAlertController(title: String(localized: "Unable to Manage Subscription"), error: error)
-                self.present(alertController, animated: true)
+                DispatchQueue.main.async {
+                    let alertController = UIAlertController(title: NSLocalizedString("Unable to Authenticate with Patreon", comment: ""), error: error)
+                    self.present(alertController, animated: true)
+                }
             }
         }
     }
     
-    @objc func restorePurchase()
+    @IBAction func signOut(_ sender: UIButton)
     {
-        Task<Void, Never> {
-            do
-            {
-                try await RevenueCatManager.shared.requestRestorePurchases()
-            }
-            catch is CancellationError
-            {
-                // Ignore
-            }
-            catch
-            {
-                let alertController = UIAlertController(title: NSLocalizedString("Unable to Restore Purchase", comment: ""), error: error)
-                self.present(alertController, animated: true)
-            }
-        }
-    }
-    
-    @IBAction func editPatronName(_ sender: UIBarButtonItem?)
-    {
-        let alertTitle = (sender == nil) ? String(localized: "Thanks For Supporting Us!") : String(localized: "Edit Name")
-        
-        let alertController = UIAlertController(title: alertTitle, message: String(localized: "Please enter your full name so we can credit you on this page."), preferredStyle: .alert)
-        alertController.addTextField { [weak self] textField in
-            textField.textContentType = .name
-            textField.autocapitalizationType = .words
-            textField.autocorrectionType = .no
-            textField.placeholder = String(localized: "Full Name")
-            textField.returnKeyType = .done
-            textField.enablesReturnKeyAutomatically = true
-            textField.addTarget(self, action: #selector(PatreonViewController.editTextFieldChanged(_:)), for: .editingChanged)
-            
-            if let displayName = RevenueCatManager.shared.displayName
-            {
-                textField.text = displayName
-            }
-        }
-        
-        let cancelTitle = (sender == nil) ? String(localized: "Maybe Later") : String(localized: "Cancel")
-        let cancelAction = UIAlertAction(title: cancelTitle, style: .cancel)
-        
-        let editAction = UIAlertAction(title: String(localized: "Confirm"), style: .default) { [weak alertController] _ in
-            guard let textField = alertController?.textFields?.first, let displayName = textField.text, !displayName.isEmpty else { return }
-            
-            Task<Void, Never> {
+        func signOut()
+        {
+            PatreonAPI.shared.signOut { (result) in
                 do
                 {
-                    guard !displayName.containsProfanity else { throw NaughtyWordError() }
+                    try result.get()
                     
-                    try await RevenueCatManager.shared.setDisplayName(displayName)
-                    
-                    self.isUpdatingRevenueCatPatrons = true
-                    self.collectionView.reloadData()
-                    
-                    defer {
-                        self.isUpdatingRevenueCatPatrons = false
-                        
-                        // Automatically reloads data due to didUpdatePatronsNotification.
-                        // self.collectionView.reloadData()
+                    DispatchQueue.main.async {
+                        self.update()
                     }
-                    
-                    try await FriendZoneManager.shared.updateRevenueCatPatrons()
                 }
                 catch
                 {
-                    let alertController = UIAlertController(title: String(localized: "Unable to Update Display Name"), error: error)
-                    self.present(alertController, animated: true)
+                    DispatchQueue.main.async {
+                        let alertController = UIAlertController(title: NSLocalizedString("Unable to Sign Out of Patreon", comment: ""), error: error)
+                        self.present(alertController, animated: true)
+                    }
                 }
             }
         }
-        self.confirmEditAction = editAction
         
-        alertController.addAction(cancelAction)
-        alertController.addAction(editAction)
+        let alertController = UIAlertController(title: NSLocalizedString("Are you sure you want to unlink your Patreon account?", comment: ""),
+                                                message: NSLocalizedString("You will no longer be able to access Patreon-exclusive features.", comment: ""),
+                                                preferredStyle: .actionSheet)
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Unlink Patreon Account", comment: ""), style: .destructive) { _ in signOut() })
+        alertController.addAction(.cancel)
+        alertController.popoverPresentationController?.sourceRect = sender.frame
+        alertController.popoverPresentationController?.sourceView = sender.superview
         
-        self.present(alertController, animated: true)
-    }
-    
-    @IBAction func editPatronEmail(_ sender: UIBarButtonItem?)
-    {
-        let alertTitle = (sender == nil) ? String(localized: "Thanks For Supporting Us!") : String(localized: "Edit Email")
-        
-        let alertController = UIAlertController(title: alertTitle, message: String(localized: "Please enter your email so we can send you an invitation to our Discord server."), preferredStyle: .alert)
-        alertController.addTextField { [weak self] textField in
-            textField.textContentType = .emailAddress
-            textField.autocapitalizationType = .none
-            textField.autocorrectionType = .no
-            textField.placeholder = String(localized: "me@example.com")
-            textField.returnKeyType = .done
-            textField.enablesReturnKeyAutomatically = true
-            textField.addTarget(self, action: #selector(PatreonViewController.editTextFieldChanged(_:)), for: .editingChanged)
-            
-            if let emailAddress = RevenueCatManager.shared.emailAddress
-            {
-                textField.text = emailAddress
-            }
-        }
-        
-        let cancelTitle = (sender == nil) ? String(localized: "Maybe Later") : String(localized: "Cancel")
-        let cancelAction = UIAlertAction(title: cancelTitle, style: .cancel)
-        
-        let editAction = UIAlertAction(title: String(localized: "Confirm"), style: .default) { [weak alertController] _ in
-            guard let textField = alertController?.textFields?.first, let emailAddress = textField.text, !emailAddress.isEmpty else { return }
-            
-            Task<Void, Never> {
-                do
-                {
-                    try await RevenueCatManager.shared.setEmailAddress(emailAddress)
-                    
-                    let alertController = UIAlertController(title: NSLocalizedString("Discord Invite Link", comment: ""), message: "https://discord.gg/QqmM3gPtbA", preferredStyle: .alert)
-                    alertController.addAction(UIAlertAction(title: NSLocalizedString("Copy to Clipboard", comment: ""), style: .default) { _ in
-                        UIPasteboard.general.url = URL(string: "https://discord.gg/QqmM3gPtbA")
-                    })
-                    alertController.addAction(.cancel)
-                    
-                    self.present(alertController, animated: true)
-                }
-                catch
-                {
-                    let alertController = UIAlertController(title: String(localized: "Unable to Update Email"), error: error)
-                    self.present(alertController, animated: true)
-                }
-            }
-        }
-        self.confirmEditAction = editAction
-        
-        alertController.addAction(cancelAction)
-        alertController.addAction(editAction)
-        
-        self.present(alertController, animated: true)
-    }
-    
-    @objc func editTextFieldChanged(_ sender: UITextField)
-    {
-        let text = sender.text ?? ""
-        self.confirmEditAction?.isEnabled = !text.isEmpty
+        self.present(alertController, animated: true, completion: nil)
     }
 }
 
-@available(iOS 17.5, *)
 extension PatreonViewController
 {
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView
@@ -454,7 +365,6 @@ extension PatreonViewController
     }
 }
 
-@available(iOS 17.5, *)
 extension PatreonViewController: UICollectionViewDelegateFlowLayout
 {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize

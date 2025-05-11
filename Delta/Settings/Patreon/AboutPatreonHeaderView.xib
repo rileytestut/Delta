@@ -16,7 +16,7 @@
             <autoresizingMask key="autoresizingMask"/>
             <subviews>
                 <stackView opaque="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" axis="vertical" distribution="equalSpacing" spacing="25" translatesAutoresizingMaskIntoConstraints="NO" id="XiA-Jf-XMp">
-                    <rect key="frame" x="16" y="2" width="343" height="440"/>
+                    <rect key="frame" x="16" y="2" width="343" height="398"/>
                     <subviews>
                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="5Ol-zN-wYv">
                             <rect key="frame" x="0.0" y="0.0" width="343" height="215"/>
@@ -96,30 +96,40 @@ Become a Friend Zone patron today to add your name to this page and receive earl
                             </subviews>
                         </stackView>
                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="QS9-vO-bj8">
-                            <rect key="frame" x="0.0" y="349" width="343" height="91"/>
+                            <rect key="frame" x="0.0" y="275" width="343" height="123"/>
                             <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yEi-L6-kQ8">
-                                    <rect key="frame" x="0.0" y="0.0" width="343" height="55"/>
-                                    <color key="backgroundColor" name="Purple"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="55" id="0wq-co-xdm"/>
-                                    </constraints>
-                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="19"/>
-                                    <inset key="contentEdgeInsets" minX="0.0" minY="8" maxX="0.0" maxY="8"/>
-                                    <state key="normal" title="Donate for $12.99 / month">
-                                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </state>
-                                </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6QE-Lh-Xka">
-                                    <rect key="frame" x="95" y="59" width="153.5" height="32"/>
-                                    <state key="normal" title="Button"/>
-                                    <buttonConfiguration key="configuration" style="plain" title="Restore Purchase">
-                                        <fontDescription key="titleFontDescription" type="boldSystem" pointSize="15"/>
-                                    </buttonConfiguration>
-                                </button>
+                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="13" translatesAutoresizingMaskIntoConstraints="NO" id="x54-9c-XCI">
+                                    <rect key="frame" x="0.0" y="0.0" width="343" height="123"/>
+                                    <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yEi-L6-kQ8">
+                                            <rect key="frame" x="0.0" y="0.0" width="343" height="55"/>
+                                            <color key="backgroundColor" name="Purple"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="55" id="0wq-co-xdm"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="19"/>
+                                            <inset key="contentEdgeInsets" minX="0.0" minY="8" maxX="0.0" maxY="8"/>
+                                            <state key="normal" title="Join for $3/month">
+                                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </state>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ymY-qC-4y4">
+                                            <rect key="frame" x="0.0" y="68" width="343" height="55"/>
+                                            <color key="backgroundColor" name="Purple"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="55" id="jwd-lN-rBs"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="19"/>
+                                            <inset key="contentEdgeInsets" minX="0.0" minY="8" maxX="0.0" maxY="8"/>
+                                            <state key="normal" title="Link Patreon account">
+                                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </state>
+                                        </button>
+                                    </subviews>
+                                </stackView>
                             </subviews>
                             <constraints>
-                                <constraint firstItem="yEi-L6-kQ8" firstAttribute="width" secondItem="QS9-vO-bj8" secondAttribute="width" id="gbK-WB-3Ko"/>
+                                <constraint firstItem="x54-9c-XCI" firstAttribute="width" secondItem="QS9-vO-bj8" secondAttribute="width" id="Lsj-a9-31A"/>
                             </constraints>
                         </stackView>
                     </subviews>
@@ -128,11 +138,11 @@ Become a Friend Zone patron today to add your name to this page and receive earl
             <constraints>
                 <constraint firstAttribute="trailingMargin" secondItem="XiA-Jf-XMp" secondAttribute="trailing" id="5Am-7b-Fwq"/>
                 <constraint firstItem="XiA-Jf-XMp" firstAttribute="leading" secondItem="xq2-Pl-zaG" secondAttribute="leadingMargin" id="IRk-tt-CTc"/>
-                <constraint firstAttribute="bottom" secondItem="XiA-Jf-XMp" secondAttribute="bottom" constant="8" id="dcS-XA-ZLZ"/>
+                <constraint firstAttribute="bottom" secondItem="XiA-Jf-XMp" secondAttribute="bottom" constant="50" id="dcS-XA-ZLZ"/>
                 <constraint firstItem="XiA-Jf-XMp" firstAttribute="top" secondItem="xq2-Pl-zaG" secondAttribute="top" constant="2" id="j8p-JX-Dcz"/>
             </constraints>
             <connections>
-                <outlet property="restorePurchaseButton" destination="6QE-Lh-Xka" id="zMS-EW-nKc"/>
+                <outlet property="accountButton" destination="ymY-qC-4y4" id="EW1-P8-uLE"/>
                 <outlet property="rileyImageView" destination="7Qz-HN-996" id="OJA-VM-qRM"/>
                 <outlet property="rileyLabel" destination="Nrc-bG-vHF" id="w9B-Bj-bam"/>
                 <outlet property="shaneImageView" destination="pT5-ji-gDW" id="Bae-VB-2zM"/>
@@ -153,7 +163,7 @@ Become a Friend Zone patron today to add your name to this page and receive earl
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="secondaryLabelColor">
-            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

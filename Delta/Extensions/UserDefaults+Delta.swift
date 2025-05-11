@@ -16,6 +16,8 @@ extension UserDefaults
     @NSManaged var shouldFetchFriendZonePatrons: Bool
     
     @NSManaged var isExternalPurchaseLinkDisabled: Bool
+    @NSManaged var isExternalPurchaseAlertDisabled: Bool
+    @NSManaged var externalPurchaseLink: URL?
     
     @NSManaged var didShowChooseWFCServerAlert: Bool
     

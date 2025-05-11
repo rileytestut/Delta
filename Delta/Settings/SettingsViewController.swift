@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftUI
 import SafariServices
 import QuickLook
 import MessageUI
@@ -68,13 +69,11 @@ private extension SettingsViewController
     
     enum PatreonRow: Int, CaseIterable
     {
-        case connectAccount
         case joinPatreon
     }
     
     enum CreditsRow: Int, CaseIterable
     {
-        case friendZonePatrons
         case contributors
         case softwareLicenses
     }
@@ -82,6 +81,7 @@ private extension SettingsViewController
     enum SupportRow: Int, CaseIterable
     {
         case contactUs
+        case alternatePaymentMethods
         case privacyPolicy
         case termsOfUse
     }
@@ -223,6 +223,16 @@ class SettingsViewController: UITableViewController
             preferredControllerSkinsViewController.system = system
             
         case Segue.dsSettings, Segue.altAppIcons: break
+        }
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?)
+    {
+        super.traitCollectionDidChange(previousTraitCollection)
+        
+        if self.traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle
+        {
+            self.tableView.reloadData()
         }
     }
 }
@@ -512,107 +522,51 @@ private extension SettingsViewController
         }
     }
     
-    func joinPatreonCampaign()
+    @objc func showSubscriptions()
     {
-        let patreonURL = URL(string: "https://www.patreon.com/rileyshane")!
-        UIApplication.shared.open(patreonURL)
-    }
-    
-    func authenticatePatreonAccount()
-    {
-        PatreonAPI.shared.authenticate(presentingViewController: self) { (result) in
+        guard #available(iOS 17.5, *) else { return }
+        
+        Task<Void, Never> {
+            var tiersViewController: PatreonTiersViewController?
+            
             do
             {
-                let account = try result.get()
-                let showThankYouAlert = account.hasBetaAccess
+                var didResume = false
                 
-                try account.managedObjectContext?.save()
-                                
-                DispatchQueue.main.async {
-                    self.update()
-                    
-                    if showThankYouAlert
-                    {
-                        let alertController = UIAlertController(title: NSLocalizedString("Thanks for Supporting Us!", comment: ""),
-                                                                message: NSLocalizedString("You can now access patron-exclusive features like alternate app icons and Experimental Features.", comment: ""), preferredStyle: .alert)
-                        alertController.addAction(.ok)
-                        self.present(alertController, animated: true)
+                let subscription = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<RevenueCatManager.Subscription, Error>) in
+                    let viewController = PatreonTiersViewController { [weak tiersViewController] result in
+                        if didResume
+                        {
+                            tiersViewController?.dismiss(animated: true)
+                            return
+                        }
+                        
+                        didResume = true
+                        continuation.resume(with: result)
                     }
+                    
+                    let navigationController = UINavigationController(rootViewController: viewController)
+                    self.present(navigationController, animated: true)
+                    
+                    tiersViewController = viewController
                 }
+                
+                tiersViewController?.process(subscription)
+                
+                self.update()
             }
             catch is CancellationError
             {
                 // Ignore
+                
+                tiersViewController?.dismiss(animated: true)
             }
             catch
             {
-                DispatchQueue.main.async {
-                    let alertController = UIAlertController(title: NSLocalizedString("Unable to Authenticate with Patreon", comment: ""), error: error)
-                    self.present(alertController, animated: true)
-                }
-            }
-        }
-    }
-    
-    func signOutPatreonAccount()
-    {
-        func signOut()
-        {
-            PatreonAPI.shared.signOut { (result) in
-                do
-                {
-                    try result.get()
-                    
-                    DispatchQueue.main.async {
-                        self.update()
-                    }
-                }
-                catch
-                {
-                    DispatchQueue.main.async {
-                        let alertController = UIAlertController(title: NSLocalizedString("Unable to Sign Out of Patreon", comment: ""), error: error)
-                        self.present(alertController, animated: true)
-                    }
-                }
-            }
-        }
-        
-        let alertController = UIAlertController(title: NSLocalizedString("Are you sure you want to unlink your Patreon account?", comment: ""),
-                                                message: NSLocalizedString("You will no longer be able to access Patreon-exclusive features.", comment: ""),
-                                                preferredStyle: .actionSheet)
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Unlink Patreon Account", comment: ""), style: .destructive) { _ in signOut() })
-        alertController.addAction(.cancel)
-        
-        let indexPath = IndexPath(item: PatreonRow.connectAccount.rawValue, section: Section.patreon.rawValue)
-        let frame = self.tableView.rectForRow(at: indexPath)
-        alertController.popoverPresentationController?.sourceRect = frame
-        alertController.popoverPresentationController?.sourceView = self.tableView
-        
-        self.present(alertController, animated: true, completion: nil)
-    }
-    
-    @available(iOS 17.5, *)
-    func openExternalPurchaseLink()
-    {
-        Task<Void, Never> {
-            do
-            {
-                self.navigationItem.rightBarButtonItem?.isIndicatingActivity = true
-                                
-                try await ExternalPurchaseLink.open()
+                let presentingViewController = self.presentingViewController ?? self
                 
-                // Keep activity indicator visible for at least 1 second.
-                try await Task.sleep(for: .seconds(1.0))
-                self.navigationItem.rightBarButtonItem?.isIndicatingActivity = false
-            }
-            catch
-            {
-                Logger.main.error("Failed to open external purchase link. \(error.localizedDescription, privacy: .public)")
-                
-                let toastView = RSTToastView(text: NSLocalizedString("Unable to open external purchase link.", comment: ""), detailText: error.localizedDescription)
-                toastView.show(in: self.navigationController?.view ?? self.view, duration: 5.0)
-                
-                self.navigationItem.rightBarButtonItem?.isIndicatingActivity = false
+                let alertController = UIAlertController(title: NSLocalizedString("Unable to Purchase Subscription", comment: ""), error: error)
+                presentingViewController.present(alertController, animated: true)
             }
         }
     }
@@ -659,30 +613,7 @@ private extension SettingsViewController
     
     @objc func didPressExperimentalFeaturesPatreonButton(_ notification: Notification)
     {
-        let indexPath = IndexPath(row: PatreonRow.connectAccount.rawValue, section: Section.patreon.rawValue)
-        self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: false)
-        
-        self.navigationController?.popToRootViewController(animated: true)
-        
-        guard #available(iOS 16, *) else { return }
-        
-        Task<Void, Never> {
-            do
-            {
-                try await Task.sleep(for: .seconds(0.5))
-                
-                guard let cell = self.tableView.cellForRow(at: indexPath) else { return }
-                cell.setSelected(true, animated: true)
-                
-                try await Task.sleep(for: .seconds(0.5))
-                
-                cell.setSelected(false, animated: true)
-            }
-            catch
-            {
-                Logger.main.error("Failed to highlight Connect Patreon Account row. \(error.localizedDescription, privacy: .public)")
-            }
-        }
+        self.performSegue(withIdentifier: "joinPatreonSegue", sender: nil)
     }
 }
 
@@ -725,22 +656,6 @@ extension SettingsViewController
             {
                 return 1
             }
-            
-        case .patreon where !isSectionHidden(section):
-            #if APP_STORE
-            // App Store builds never show the Join Patreon row.
-            return 1
-            #else
-            if DatabaseManager.shared.patreonAccount() != nil
-            {
-                // Signed in, so no need to show Join Patreon row.
-                return 1
-            }
-            else
-            {
-                return super.tableView(tableView, numberOfRowsInSection: sectionIndex)
-            }
-            #endif
             
         default:
             if isSectionHidden(section)
@@ -796,27 +711,34 @@ extension SettingsViewController
             cell.detailTextLabel?.text = preferredCore?.metadata?.name.value ?? preferredCore?.name ?? NSLocalizedString("Unknown", comment: "")
             
         case .patreon:
-            let row = PatreonRow(rawValue: indexPath.row)!
-            switch row
+            guard #available(iOS 16, *) else { break }
+            
+            if PurchaseManager.shared.isActivePatron
             {
-            case .connectAccount:
                 var content = cell.defaultContentConfiguration()
-                
-                if let patreonAccount = DatabaseManager.shared.patreonAccount()
+                content.text = NSLocalizedString("Manage Patreon Account", comment: "")
+                cell.contentConfiguration = content
+                cell.backgroundConfiguration = nil
+            }
+            else
+            {
+                if self.traitCollection.userInterfaceStyle == .dark
                 {
-                    let text = String(format: NSLocalizedString("Unlink %@", comment: ""), patreonAccount.name)
-                    content.text = text
-                    content.textProperties.color = .deltaPurple
+                    cell.contentConfiguration = UIHostingConfiguration {
+                        JoinPatreonButton()
+                    }
+                    .background {
+                        RoundedRectangle(cornerRadius: 10, style: .continuous)
+                            .strokeBorder(Color.accentColor, lineWidth: 2)
+                            .background(Color(uiColor: .secondarySystemGroupedBackground))
+                    }
                 }
                 else
                 {
-                    content.text = NSLocalizedString("Connect Patreon Account…", comment: "")
-                    content.textProperties.color = .label
+                    cell.contentConfiguration = UIHostingConfiguration {
+                        JoinPatreonButton()
+                    }
                 }
-                
-                cell.contentConfiguration = content
-                
-            case .joinPatreon: break
             }
             
         case .advanced:
@@ -850,7 +772,7 @@ extension SettingsViewController
         case .controllerSkins: self.performSegue(withIdentifier: Segue.controllerSkins.rawValue, sender: cell)
         case .display: self.performSegue(withIdentifier: Segue.altAppIcons.rawValue, sender: cell)
         case .cores: self.performSegue(withIdentifier: Segue.dsSettings.rawValue, sender: cell)
-        case .controllerOpacity, .gameAudio, .multitasking, .hapticFeedback, .gestures, .airPlay, .hapticTouch, .syncing: break
+        case .patreon, .controllerOpacity, .gameAudio, .multitasking, .hapticFeedback, .gestures, .airPlay, .hapticTouch, .syncing: break
         case .advanced:
             let row = AdvancedRow(rawValue: indexPath.row)!
             switch row
@@ -861,31 +783,13 @@ extension SettingsViewController
                 
             case .experimentalFeatures: self.showExperimentalFeatures()
             }
-
-        case .patreon:
-            let row = PatreonRow(rawValue: indexPath.row)!
-            switch row
-            {
-            case .joinPatreon: self.joinPatreonCampaign()
-            case .connectAccount:
-                if let _ = DatabaseManager.shared.patreonAccount()
-                {
-                    self.signOutPatreonAccount()
-                }
-                else
-                {
-                    self.authenticatePatreonAccount()
-                }
-            }
-            
-            tableView.deselectRow(at: indexPath, animated: true)
             
         case .credits:
             let row = CreditsRow(rawValue: indexPath.row)!
             switch row
             {
             case .contributors: self.showContributors()
-            case .friendZonePatrons, .softwareLicenses: break
+            case .softwareLicenses: break
             }
             
         case .support:
@@ -916,6 +820,8 @@ extension SettingsViewController
                     toastView.show(in: self.navigationController?.view ?? self.view, duration: 4.0)
                 }
                 
+            case .alternatePaymentMethods: self.showSubscriptions()
+                
             case .privacyPolicy:
                 let safariURL = URL(string: "https://altstore.io/privacy")!
                 UIApplication.shared.open(safariURL, options: [:])
@@ -932,6 +838,7 @@ extension SettingsViewController
     primary:
         switch Section(rawValue: indexPath.section)!
         {
+        case .patreon: return UITableView.automaticDimension
         case .airPlay:
             let row = AirPlayRow(rawValue: indexPath.row)!
             switch row
@@ -951,6 +858,19 @@ extension SettingsViewController
             default: break
             }
             
+        case .support:
+            let row = SupportRow(rawValue: indexPath.row)!
+            switch row
+            {
+            #if APP_STORE
+            case .alternatePaymentMethods where !PurchaseManager.shared.supportsExternalPurchases: return 0.0
+            #else
+            case .alternatePaymentMethods: return 0.0
+            #endif
+                
+            default: break
+            }
+            
         default: break
         }
         
@@ -964,6 +884,7 @@ extension SettingsViewController
         
         switch section
         {
+        case .patreon where !PurchaseManager.shared.isActivePatron: return nil
         case .airPlay where self.view.traitCollection.userInterfaceIdiom == .pad: return NSLocalizedString("AirPlay / External Displays", comment: "")
         case .hapticTouch where self.view.traitCollection.forceTouchCapability == .available: return NSLocalizedString("3D Touch", comment: "")
         default: return super.tableView(tableView, titleForHeaderInSection: section.rawValue)
@@ -989,45 +910,6 @@ extension SettingsViewController
             
             footerView.attributedText = attributedText
                         
-            return footerView
-            
-        case .patreon:
-            guard #available(iOS 15, *), let footerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: AttributedHeaderFooterView.reuseIdentifier) as? AttributedHeaderFooterView else { break }
-            
-            if let patreonAccount = DatabaseManager.shared.patreonAccount(), patreonAccount.hasBetaAccess
-            {
-                footerView.attributedText = AttributedString(localized: "You can now access patron-exclusive app icons and Experimental Features.")
-            }
-            else if #available(iOS 17.5, *), PurchaseManager.shared.supportsExternalPurchases
-            {
-                // Supports external purchases, but not an active patron, so show external purchase link.
-                
-                var attributedText = AttributedString(localized: "Buy for $3 at altstore.io/patreon")
-                attributedText.font = UIFont.systemFont(ofSize: 17.0)
-                attributedText.link = URL(string: "https://altstore.io/patreon")
-                
-                let imageAttachment = NSTextAttachment()
-                imageAttachment.image = UIImage(named: "LinkOut")?.withRenderingMode(.alwaysTemplate)
-                
-                var symbolText = AttributedString(NSAttributedString(attachment: imageAttachment))
-                symbolText.foregroundColor = .deltaPurple
-                
-                attributedText += " "
-                attributedText += symbolText
-                attributedText += "\n"
-                
-                footerView.attributedText = attributedText
-                footerView.urlHandler = { [weak self] _ in
-                    self?.openExternalPurchaseLink()
-                }
-            }
-            else
-            {
-                #if !APP_STORE
-                footerView.attributedText = AttributedString(localized: "Support future development and receive access to exclusive app icons and Experimental Features.")
-                #endif
-            }
-            
             return footerView
             
         case .support:
@@ -1073,15 +955,18 @@ extension SettingsViewController
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat
     {
         let section = Section(rawValue: section)!
+        guard !isSectionHidden(section) else { return 1 }
         
-        if isSectionHidden(section)
+        switch section
         {
-            return 1
+        case .patreon where !PurchaseManager.shared.isActivePatron:
+            // Add additional spacing between header and top of this section.
+            return 28
+            
+        default: break
         }
-        else
-        {
-            return super.tableView(tableView, heightForHeaderInSection: section.rawValue)
-        }
+        
+        return super.tableView(tableView, heightForHeaderInSection: section.rawValue)
     }
     
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat
@@ -1092,21 +977,7 @@ extension SettingsViewController
         switch section
         {
         case .controllerSkins: return UITableView.automaticDimension
-        case .patreon:
-            #if APP_STORE
-            if PurchaseManager.shared.supportsExternalPurchases
-            {
-                return UITableView.automaticDimension
-            }
-            else
-            {
-                // Can't show external link or description, so return small height as visual spacing.
-                return 15
-            }
-            #else
-            return UITableView.automaticDimension
-            #endif
-            
+        case .patreon: return 18
         case .support: return UITableView.automaticDimension
         default: return super.tableView(tableView, heightForFooterInSection: section.rawValue)
         }
@@ -1120,7 +991,6 @@ extension SettingsViewController
         switch section
         {
         case .controllerSkins: return 30
-        case .patreon: return 30
         case .support: return 180
         default: return UITableView.automaticDimension
         }
