@@ -30,7 +30,7 @@ struct IAPScareScreen: View
                 ScrollView {
                     VStack(spacing: 30) {
                         VStack(spacing: 15) {
-                            Text("You’re about to use a non-Patreon payment processor.\nPatreon is not responsible for the privacy or security of purchases processed by external parties.")
+                            Text("You’re about to use Apple’s In-App Purchase system.\nPatreon is not responsible for the privacy or security of purchases made with In-App Purchase.")
                                 .font(.largeTitle)
                                 .bold()
                             
