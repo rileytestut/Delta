@@ -22,6 +22,14 @@ struct PlayWithLuOptions {
     @Option
     var activeSaveStateId: String = ""
     
+    // Hidden option to track whether the current game supports attachments
+    @Option
+    var supportsAttachments: Bool = false
+
+    // Hidden option to track whether the current game supports save states
+    @Option
+    var supportsSavestates: Bool = false
+    
     @Option(name: "Share Gameplay Data",
             description: """
             Allow Lu to analyze gameplay data (e.g., save states, active cheats, playtime) for more personalized and accurate responses. Your personal information is never shared.
