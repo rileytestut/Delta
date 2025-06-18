@@ -114,9 +114,9 @@ extension GamesViewController
         self.pageControl = UIPageControl()
         self.pageControl.translatesAutoresizingMaskIntoConstraints = false
         self.pageControl.hidesForSinglePage = false
-        self.pageControl.numberOfPages = 3
         self.pageControl.currentPageIndicatorTintColor = UIColor.deltaPurple
         self.pageControl.pageIndicatorTintColor = UIColor.lightGray
+        self.pageControl.addTarget(self, action: #selector(pageControlValueChanged(_:)), for: .valueChanged)
         self.navigationController?.toolbar.addSubview(self.pageControl)
         
         self.pageControl.centerXAnchor.constraint(equalTo: (self.navigationController?.toolbar.centerXAnchor)!, constant: 0).isActive = true
@@ -312,6 +312,19 @@ private extension GamesViewController
             {
                 collectionViewController.theme = self.theme
             }
+        }
+    }
+}
+
+// MARK: - Actions -
+private extension GamesViewController
+{
+    @objc func pageControlValueChanged(_ sender: UIPageControl)
+    {
+        guard let destinationViewController = viewControllerForIndex(sender.currentPage) else { return }
+        pageViewController.setViewControllers([destinationViewController], direction: .forward, animated: true) { [weak self] _ in
+            guard let self = self else { return }
+            self.pageViewController(self.pageViewController, didFinishAnimating: true, previousViewControllers: [destinationViewController], transitionCompleted: true)
         }
     }
 }
