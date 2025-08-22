@@ -348,7 +348,7 @@
 		BF02D5D91DDEBB3000A5E131 /* openvgdb.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = openvgdb.sqlite; sourceTree = "<group>"; };
 		BF0418131D01E93400E85BCF /* GBADeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = GBADeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF04E6FE1DB8625C000F35D3 /* ControllerSkinsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControllerSkinsViewController.swift; sourceTree = "<group>"; };
-		BF07200E219A3A9500F05DA4 /* ZIPFoundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ZIPFoundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+
 		BF0758DE2202827C005110F2 /* Delta 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Delta 4.xcdatamodel"; sourceTree = "<group>"; };
 		BF090CF11B490D8300DCAB45 /* Delta-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Delta-Bridging-Header.h"; sourceTree = "<group>"; };
 		BF1020E21F95B05B00313182 /* DeltaToDelta2.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = DeltaToDelta2.xcmappingmodel; sourceTree = "<group>"; };
@@ -446,7 +446,7 @@
 		BF71CF861FE90006001F1613 /* AppIconShortcutsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIconShortcutsViewController.swift; sourceTree = "<group>"; };
 		BF71CF891FE904B1001F1613 /* GameTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GameTableViewCell.xib; sourceTree = "<group>"; };
 		BF797A2C1C2D339F00F1A000 /* UILabel+FontSize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+FontSize.swift"; sourceTree = "<group>"; };
-		BF79966C224C075A009B094F /* N64DeltaCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = N64DeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+
 		BF7AE8041C2E858400B1B5BC /* GridMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GridMenuViewController.swift; sourceTree = "<group>"; };
 		BF7AE8091C2E8C7600B1B5BC /* UIColor+Delta.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Delta.swift"; sourceTree = "<group>"; };
 		BF8A333321A484A000A42FD4 /* BadgedTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgedTableViewCell.swift; sourceTree = "<group>"; };
@@ -461,8 +461,8 @@
 		BFAA1FEC1B8AA4FA00495943 /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		BFAB9F7C219A43380080EC7D /* SyncManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncManager.swift; sourceTree = "<group>"; };
 		BFAB9F87219A4B670080EC7D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		BFB359412278FD6700CFD920 /* N64DeltaCore_Video.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = N64DeltaCore_Video.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		BFB359422278FD6800CFD920 /* N64DeltaCore_RSP.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = N64DeltaCore_RSP.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+
+
 		BFB3645723245A6000CD0EB1 /* LicensesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LicensesViewController.swift; sourceTree = "<group>"; };
 		BFBAB2E21EB685A2004E0B0E /* DeltaCoreProtocol+Delta.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DeltaCoreProtocol+Delta.swift"; sourceTree = "<group>"; };
 		BFC134E01AAD82460087AD7B /* SNESDeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SNESDeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1018,14 +1018,12 @@
 				BF69FBA123E375A20051BEEA /* libVBA-M.a */,
 				BF5ACE3823E23D6500BD0F20 /* libVBA-M.a */,
 				BFDF71DA22F94CDF0074D92E /* DSDeltaCore.framework */,
-				BFB359412278FD6700CFD920 /* N64DeltaCore_Video.framework */,
-				BFB359422278FD6800CFD920 /* N64DeltaCore_RSP.framework */,
-				BF79966C224C075A009B094F /* N64DeltaCore.framework */,
+
 				BFDE2CC6222DF345008038E0 /* Harmony_Dropbox.framework */,
 				BFDE2CC8222DF345008038E0 /* SwiftyDropbox.framework */,
 				BFDE2CC7222DF345008038E0 /* Alamofire.framework */,
 				BF98C9812204D9A1006B95AC /* NESDeltaCore.framework */,
-				BF07200E219A3A9500F05DA4 /* ZIPFoundation.framework */,
+
 				BF48F754219A1EEB00BC2FC1 /* Harmony.framework */,
 				BF48F75A219A1F8300BC2FC1 /* Harmony_Drive.framework */,
 				BFF0742B1E9DC17500ACDF4A /* GBCDeltaCore.framework */,
@@ -2285,7 +2283,7 @@
 					"-l\"SNESDeltaCore\"",
 					"-l\"SQLite.swift\"",
 					"-l\"SwiftyDropbox\"",
-					"-l\"ZIPFoundation\"",
+
 					"-l\"sqlite3\"",
 					"-framework",
 					"\"CoreGraphics\"",
