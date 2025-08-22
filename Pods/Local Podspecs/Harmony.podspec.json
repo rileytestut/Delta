@@ -22,9 +22,7 @@
     "Harmony/**/*.xcmappingmodel"
   ],
   "dependencies": {
-    "Roxas": [
-
-    ]
+    "Roxas": []
   },
   "subspecs": [
     {

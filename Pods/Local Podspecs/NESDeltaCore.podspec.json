@@ -29,9 +29,7 @@
     ]
   },
   "dependencies": {
-    "DeltaCore": [
-
-    ]
+    "DeltaCore": []
   },
   "xcconfig": {
     "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "FRAMEWORK NATIVE",

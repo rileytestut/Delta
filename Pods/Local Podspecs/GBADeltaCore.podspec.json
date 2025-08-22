@@ -38,9 +38,7 @@
     ]
   },
   "dependencies": {
-    "DeltaCore": [
-
-    ]
+    "DeltaCore": []
   },
   "xcconfig": {
     "HEADER_SEARCH_PATHS": "\"${PODS_CONFIGURATION_BUILD_DIR}\" \"$(PODS_ROOT)/Headers/Private/GBADeltaCore/SFML/include\" \"$(PODS_ROOT)/Headers/Private/GBADeltaCore/SFML/src\"",

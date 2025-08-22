@@ -12,7 +12,7 @@ target 'Delta' do
     pod 'DeltaCore', :path => 'Cores/DeltaCore'
     pod 'NESDeltaCore', :path => 'Cores/NESDeltaCore'
     pod 'SNESDeltaCore', :path => 'Cores/SNESDeltaCore'
-    pod 'N64DeltaCore', :path => 'Cores/N64DeltaCore'
+    # pod 'N64DeltaCore', :path => 'Cores/N64DeltaCore'  # Temporarily disabled for NFC MVP
     pod 'GBCDeltaCore', :path => 'Cores/GBCDeltaCore'
     pod 'GBADeltaCore', :path => 'Cores/GBADeltaCore'
     pod 'MelonDSDeltaCore', :path => 'Cores/MelonDSDeltaCore'
@@ -28,8 +28,18 @@ target 'DeltaPreviews' do
 end
 
 # Unlink DeltaCore to prevent conflicts with Systems.framework
+# Fix deployment target warnings for all pods
 post_install do |installer|
     installer.pods_project.targets.each do |target|
+        # Fix deployment targets for all pods (resolves iOS 12.0+ simulator requirement)
+        target.build_configurations.each do |config|
+            if config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'].to_f < 14.0
+                config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '14.0'
+                puts "Updated #{target.name} deployment target to iOS 14.0"
+            end
+        end
+        
+        # Remove DeltaCore linking conflicts
         if target.name == "Pods-Delta"
             puts "Updating #{target.name} OTHER_LDFLAGS"
             target.build_configurations.each do |config|

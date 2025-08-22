@@ -26,9 +26,7 @@
     ]
   },
   "dependencies": {
-    "ZIPFoundation": [
-
-    ]
+    "ZIPFoundation": []
   },
   "xcconfig": {
     "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "STATIC_LIBRARY",

@@ -53,9 +53,7 @@
     ]
   },
   "dependencies": {
-    "DeltaCore": [
-
-    ]
+    "DeltaCore": []
   },
   "xcconfig": {
     "HEADER_SEARCH_PATHS": "\"${PODS_CONFIGURATION_BUILD_DIR}\" \"$(PODS_ROOT)/Headers/Private/MelonDSDeltaCore/melonDS/src\" \"$(PODS_ROOT)/Headers/Private/MelonDSDeltaCore/melonDS/src/frontend/libslirp\"",

@@ -31,9 +31,7 @@
     ]
   },
   "dependencies": {
-    "DeltaCore": [
-
-    ]
+    "DeltaCore": []
   },
   "xcconfig": {
     "HEADER_SEARCH_PATHS": "\"${PODS_CONFIGURATION_BUILD_DIR}\"",
