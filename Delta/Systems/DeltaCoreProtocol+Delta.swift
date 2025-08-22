@@ -12,7 +12,7 @@ import NESDeltaCore
 import SNESDeltaCore
 import GBCDeltaCore
 import GBADeltaCore
-import N64DeltaCore
+// import N64DeltaCore  // Temporarily disabled for NFC MVP
 import MelonDSDeltaCore
 
 import Systems
@@ -78,8 +78,8 @@ extension DeltaCoreProtocol
         {
         case NES.core, SNES.core, GBC.core: return 4
         case GBA.core: return 3
-        case N64.core where UIDevice.current.hasA11ProcessorOrBetter: return 3
-        case N64.core where UIDevice.current.hasA9ProcessorOrBetter: return 1.5
+        // case N64.core where UIDevice.current.hasA11ProcessorOrBetter: return 3  // Temporarily disabled
+        // case N64.core where UIDevice.current.hasA9ProcessorOrBetter: return 1.5  // Temporarily disabled
         case MelonDS.core where UIDevice.current.hasA15ProcessorOrBetter || ProcessInfo.processInfo.isJITAvailable: return 3
         case MelonDS.core where UIDevice.current.hasA11ProcessorOrBetter: return 1.5
         case GPGX.core: return 4

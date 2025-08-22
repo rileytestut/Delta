@@ -207,10 +207,12 @@
 	<array>
 		<string>_altserver._tcp</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>Delta needs camera access for screen recording during live streams.</string>
 	<key>NSLocalNetworkUsageDescription</key>
 	<string>Delta uses the local network to communicate with AltServer and enable JIT.</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>Delta uses your microphone to emulate the Nintendo DS microphone.</string>
+	<string>Delta uses your microphone to emulate the Nintendo DS microphone and for live streaming audio.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Please allow Delta to save screenshots to your Photo Library.</string>
 	<key>NSPhotoLibraryUsageDescription</key>

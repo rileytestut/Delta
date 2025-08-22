@@ -6,308 +6,331 @@
 //  Copyright © 2016 Riley Testut. All rights reserved.
 //
 
-import UIKit
-import Photos
-
+import AltKit
 import DeltaCore
 import GBADeltaCore
-import N64DeltaCore
+// import N64DeltaCore  // Temporarily disabled for NFC MVP
 import MelonDSDeltaCore
-import Systems
-
+import Photos
 import Roxas
-import AltKit
+import Systems
+import UIKit
 
 private var kvoContext = 0
 
-private extension DeltaCore.ControllerSkin
-{
-    func hasTouchScreen(for traits: DeltaCore.ControllerSkin.Traits) -> Bool
-    {
-        let hasTouchScreen = self.items(for: traits)?.contains(where: { $0.kind == .touchScreen }) ?? false
+extension DeltaCore.ControllerSkin {
+    fileprivate func hasTouchScreen(for traits: DeltaCore.ControllerSkin.Traits) -> Bool {
+        let hasTouchScreen =
+            self.items(for: traits)?.contains(where: { $0.kind == .touchScreen }) ?? false
         return hasTouchScreen
     }
 }
 
-private extension GameViewController
-{
-    struct PausedSaveState: SaveStateProtocol
-    {
+extension GameViewController {
+    fileprivate struct PausedSaveState: SaveStateProtocol {
         var fileURL: URL
         var gameType: GameType
-        
+
         var isSaved = false
-        
-        init(fileURL: URL, gameType: GameType)
-        {
+
+        init(fileURL: URL, gameType: GameType) {
             self.fileURL = fileURL
             self.gameType = gameType
         }
     }
-    
-    struct DefaultInputMapping: GameControllerInputMappingProtocol
-    {
+
+    fileprivate struct DefaultInputMapping: GameControllerInputMappingProtocol {
         let gameController: GameController
-        
+
         var gameControllerInputType: GameControllerInputType {
             return self.gameController.inputType
         }
-        
-        func input(forControllerInput controllerInput: Input) -> Input?
-        {
-            if let mappedInput = self.gameController.defaultInputMapping?.input(forControllerInput: controllerInput)
+
+        func input(forControllerInput controllerInput: Input) -> Input? {
+            if let mappedInput = self.gameController.defaultInputMapping?.input(
+                forControllerInput: controllerInput)
             {
                 return mappedInput
             }
-            
+
             // Only intercept controller skin inputs.
             guard controllerInput.type == .controller(.controllerSkin) else { return nil }
-            
+
             let actionInput = ActionInput(stringValue: controllerInput.stringValue)
             return actionInput
         }
     }
-    
-    struct SustainInputsMapping: GameControllerInputMappingProtocol
-    {
+
+    fileprivate struct SustainInputsMapping: GameControllerInputMappingProtocol {
         let gameController: GameController
-        
+
         var gameControllerInputType: GameControllerInputType {
             return self.gameController.inputType
         }
-        
-        func input(forControllerInput controllerInput: Input) -> Input?
-        {
-            if let mappedInput = self.gameController.defaultInputMapping?.input(forControllerInput: controllerInput), mappedInput == StandardGameControllerInput.menu
+
+        func input(forControllerInput controllerInput: Input) -> Input? {
+            if let mappedInput = self.gameController.defaultInputMapping?.input(
+                forControllerInput: controllerInput),
+                mappedInput == StandardGameControllerInput.menu
             {
                 return mappedInput
             }
-            
+
             return controllerInput
         }
     }
 }
 
-class GameViewController: DeltaCore.GameViewController
-{
+class GameViewController: DeltaCore.GameViewController {
     /// Assumed to be Delta.Game instance
     override var game: GameProtocol? {
         willSet {
-            self.emulatorCore?.removeObserver(self, forKeyPath: #keyPath(EmulatorCore.state), context: &kvoContext)
-            
+            self.emulatorCore?.removeObserver(
+                self, forKeyPath: #keyPath(EmulatorCore.state), context: &kvoContext)
+
             let game = self.game as? Game
-            NotificationCenter.default.removeObserver(self, name: .NSManagedObjectContextDidSave, object: game?.managedObjectContext)
+            NotificationCenter.default.removeObserver(
+                self, name: .NSManagedObjectContextDidSave, object: game?.managedObjectContext)
         }
         didSet {
-            self.emulatorCore?.addObserver(self, forKeyPath: #keyPath(EmulatorCore.state), options: [.old], context: &kvoContext)
-            
+            self.emulatorCore?.addObserver(
+                self, forKeyPath: #keyPath(EmulatorCore.state), options: [.old],
+                context: &kvoContext)
+
             let game = self.game as? Game
-            NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.managedObjectContextDidChange(with:)), name: .NSManagedObjectContextObjectsDidChange, object: game?.managedObjectContext)
-            
+            NotificationCenter.default.addObserver(
+                self, selector: #selector(GameViewController.managedObjectContextDidChange(with:)),
+                name: .NSManagedObjectContextObjectsDidChange, object: game?.managedObjectContext)
+
             self.emulatorCore?.saveHandler = { [weak self] _ in self?.updateGameSave() }
-            
-            if oldValue?.fileURL != game?.fileURL
-            {
+
+            if oldValue?.fileURL != game?.fileURL {
                 self.shouldResetSustainedInputs = true
             }
-            
+
             self.updateControllers()
             self.updateAudio()
-            
+
             self.presentedGyroAlert = false
-            
+
             self.startTrackingAchievements()
         }
     }
-    
+
     private var isGameScene: Bool {
         let gameScene = self.view.window?.windowScene as? GameScene
         return gameScene != nil
     }
-    
+
     //MARK: - Private Properties -
     private var pauseViewController: PauseViewController?
     private var pausingGameController: GameController?
-    
+
     // Prevents the same save state from being saved multiple times
     private var pausedSaveState: PausedSaveState? {
-        didSet
-        {
-            if let saveState = oldValue, self.pausedSaveState == nil
-            {
-                do
-                {
+        didSet {
+            if let saveState = oldValue, self.pausedSaveState == nil {
+                do {
                     try FileManager.default.removeItem(at: saveState.fileURL)
-                }
-                catch
-                {
+                } catch {
                     print(error)
                 }
             }
         }
     }
-    
+
     private var _deepLinkResumingSaveState: SaveStateProtocol? {
         didSet {
             guard let saveState = oldValue, _deepLinkResumingSaveState == nil else { return }
-            
-            do
-            {
+
+            do {
                 try FileManager.default.removeItem(at: saveState.fileURL)
-            }
-            catch
-            {
+            } catch {
                 print(error)
             }
         }
     }
-    
+
     private var _isLoadingSaveState = false
-    
+
     // Online Multiplayer
     private var onlineConnectionDate: Date?
     private var onlineBackgroundTaskID: UIBackgroundTaskIdentifier?
-    
+
     // Handoff
     private var isContinuingHandoff = false
     private var handoffPlaceholderView: RSTPlaceholderView!
-    
+
     // Gestures
     private var isMenuButtonHeldDown = false
     private var ignoreNextMenuInput = false
     private lazy var menuButtonGestureRecognizers = self.makeMenuButtonGestureRecognizers()
     private lazy var menuButtonKeyboardGestureRecognizers = self.makeMenuButtonGestureRecognizers()
-        
+
     // Sustain Buttons
     private var isSelectingSustainedButtons = false
     private var sustainInputsMapping: SustainInputsMapping?
     private var shouldResetSustainedInputs = false
-    
+
     private var sustainButtonsContentView: UIView!
     private var sustainButtonsBlurView: UIVisualEffectView!
     private var sustainButtonsBackgroundView: RSTPlaceholderView!
     private var inputsToSustain = [AnyInput: Double]()
-    
+
     private var isGyroActive = false
     private var presentedGyroAlert = false
-    
+
     private var presentedJITAlert = false
-    
+
     private var achievementsTracker: AchievementsTracker?
     private var isPreparingAchievements = false
-    
+
     override var shouldAutorotate: Bool {
         return !self.isGyroActive
     }
-    
+
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         guard self.isGyroActive else { return super.supportedInterfaceOrientations }
-        
+
         // Lock orientation to whatever current device orientation is.
-        
+
         switch UIDevice.current.orientation
         {
         case .portrait: return .portrait
         case .portraitUpsideDown: return .portraitUpsideDown
-            
+
         // UIDevice.landscapeLeft == UIInterfaceOrientation.landscapeRight (and vice versa)
         case .landscapeLeft: return .landscapeRight
         case .landscapeRight: return .landscapeLeft
-            
+
         default: return super.supportedInterfaceOrientations
         }
     }
-    
+
     override var preferredScreenEdgesDeferringSystemGestures: UIRectEdge {
         return .all
     }
-    
+
     override var prefersStatusBarHidden: Bool {
         return !ExperimentalFeatures.shared.showStatusBar.isEnabled
     }
-    
+
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
-    
-    required init()
-    {
+
+    required init() {
         super.init()
-        
+
         self.initialize()
     }
-    
-    required init?(coder aDecoder: NSCoder)
-    {
+
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        
+
         self.initialize()
     }
-    
-    private func initialize()
-    {
+
+    private func initialize() {
         self.delegate = self
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.updateControllers), name: .externalGameControllerDidConnect, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.updateControllers), name: .externalGameControllerDidDisconnect, object: nil)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.didEnterBackground(with:)), name: UIApplication.didEnterBackgroundNotification, object: UIApplication.shared)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.settingsDidChange(with:)), name: Settings.didChangeNotification, object: nil)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.deepLinkControllerWillLaunchGame(with:)), name: .deepLinkControllerWillLaunchGame, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.deepLinkControllerLaunchGame(with:)), name: .deepLinkControllerLaunchGame, object: nil)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.didActivateGyro(with:)), name: GBA.didActivateGyroNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.didDeactivateGyro(with:)), name: GBA.didDeactivateGyroNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.didConnectOnline(with:)), name: MelonDS.didConnectToWFCNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.didDisconnectFromOnline(with:)), name: MelonDS.didDisconnectFromWFCNotification, object: nil)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.emulationDidQuit(with:)), name: EmulatorCore.emulationDidQuitNotification, object: nil)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.didEnableJIT(with:)), name: ServerManager.didEnableJITNotification, object: nil)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.sceneWillConnect(with:)), name: UIScene.willConnectNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.sceneDidDisconnect(with:)), name: UIScene.didDisconnectNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.sceneSessionWillQuit(with:)), name: UISceneSession.willQuitNotification, object: nil)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.sceneKeyboardFocusDidChange(with:)), name: UIScene.keyboardFocusDidChangeNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.keyboardDidShow(with:)), name: UIResponder.keyboardDidShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.keyboardDidChangeFrame(with:)), name: UIResponder.keyboardDidChangeFrameNotification, object: nil)
-        
+
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(GameViewController.updateControllers),
+            name: .externalGameControllerDidConnect, object: nil)
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(GameViewController.updateControllers),
+            name: .externalGameControllerDidDisconnect, object: nil)
+
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(GameViewController.didEnterBackground(with:)),
+            name: UIApplication.didEnterBackgroundNotification, object: UIApplication.shared)
+
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(GameViewController.settingsDidChange(with:)),
+            name: Settings.didChangeNotification, object: nil)
+
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(GameViewController.deepLinkControllerWillLaunchGame(with:)),
+            name: .deepLinkControllerWillLaunchGame, object: nil)
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(GameViewController.deepLinkControllerLaunchGame(with:)),
+            name: .deepLinkControllerLaunchGame, object: nil)
+
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(GameViewController.didActivateGyro(with:)),
+            name: GBA.didActivateGyroNotification, object: nil)
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(GameViewController.didDeactivateGyro(with:)),
+            name: GBA.didDeactivateGyroNotification, object: nil)
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(GameViewController.didConnectOnline(with:)),
+            name: MelonDS.didConnectToWFCNotification, object: nil)
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(GameViewController.didDisconnectFromOnline(with:)),
+            name: MelonDS.didDisconnectFromWFCNotification, object: nil)
+
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(GameViewController.emulationDidQuit(with:)),
+            name: EmulatorCore.emulationDidQuitNotification, object: nil)
+
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(GameViewController.didEnableJIT(with:)),
+            name: ServerManager.didEnableJITNotification, object: nil)
+
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(GameViewController.sceneWillConnect(with:)),
+            name: UIScene.willConnectNotification, object: nil)
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(GameViewController.sceneDidDisconnect(with:)),
+            name: UIScene.didDisconnectNotification, object: nil)
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(GameViewController.sceneSessionWillQuit(with:)),
+            name: UISceneSession.willQuitNotification, object: nil)
+
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(GameViewController.sceneKeyboardFocusDidChange(with:)),
+            name: UIScene.keyboardFocusDidChangeNotification, object: nil)
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(GameViewController.keyboardDidShow(with:)),
+            name: UIResponder.keyboardDidShowNotification, object: nil)
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(GameViewController.keyboardDidChangeFrame(with:)),
+            name: UIResponder.keyboardDidChangeFrameNotification, object: nil)
+
         self.automaticallyPausesWhileInactive = Settings.pauseWhileInactive
     }
-    
-    deinit
-    {
-        self.emulatorCore?.removeObserver(self, forKeyPath: #keyPath(EmulatorCore.state), context: &kvoContext)
+
+    deinit {
+        self.emulatorCore?.removeObserver(
+            self, forKeyPath: #keyPath(EmulatorCore.state), context: &kvoContext)
     }
-    
+
     // MARK: - GameControllerReceiver -
-    override func gameController(_ gameController: GameController, didActivate input: Input, value: Double)
-    {
+    override func gameController(
+        _ gameController: GameController, didActivate input: Input, value: Double
+    ) {
         super.gameController(gameController, didActivate: input, value: value)
-        
+
         // Ignore unless we're the active scene.
         guard self.view.window?.windowScene?.hasKeyboardFocus == true else { return }
-        
-        if self.isSelectingSustainedButtons
-        {
-            guard let pausingGameController = self.pausingGameController, gameController == pausingGameController else { return }
-            
-            if input != StandardGameControllerInput.menu
-            {
+
+        if self.isSelectingSustainedButtons {
+            guard let pausingGameController = self.pausingGameController,
+                gameController == pausingGameController
+            else { return }
+
+            if input != StandardGameControllerInput.menu {
                 self.inputsToSustain[AnyInput(input)] = value
             }
-        }
-        else if let standardInput = StandardGameControllerInput(input: input), standardInput == .menu, gameController.inputType == .controllerSkin
+        } else if let standardInput = StandardGameControllerInput(input: input),
+            standardInput == .menu, gameController.inputType == .controllerSkin
         {
             self.isMenuButtonHeldDown = true
-            
+
             let sustainInputsMapping = SustainInputsMapping(gameController: gameController)
             gameController.addReceiver(self, inputMapping: sustainInputsMapping)
-        }
-        else if let actionInput = ActionInput(input: input), let emulatorCore = self.emulatorCore, emulatorCore.state == .running
+        } else if let actionInput = ActionInput(input: input), let emulatorCore = self.emulatorCore,
+            emulatorCore.state == .running
         {
             switch actionInput
             {
@@ -317,50 +340,41 @@ class GameViewController: DeltaCore.GameViewController
             case .reverseScreens: self.performReverseScreensAction()
             case .screenshot: self.performScreenshotAction()
             case .toggleFastForward:
-                let isFastForwarding = (emulatorCore.rate != emulatorCore.deltaCore.supportedRates.lowerBound)
+                let isFastForwarding =
+                    (emulatorCore.rate != emulatorCore.deltaCore.supportedRates.lowerBound)
                 self.performFastForwardAction(activate: !isFastForwarding)
             }
-        }
-        else if self.isMenuButtonHeldDown
-        {
+        } else if self.isMenuButtonHeldDown {
             self.ignoreNextMenuInput = true
-            
-            if gameController.sustainedInputs.keys.contains(AnyInput(input))
-            {
+
+            if gameController.sustainedInputs.keys.contains(AnyInput(input)) {
                 DispatchQueue.main.async {
                     gameController.unsustain(input)
                 }
-            }
-            else
-            {                
+            } else {
                 gameController.sustain(input, value: value)
             }
         }
     }
-    
-    override func gameController(_ gameController: GameController, didDeactivate input: Input)
-    {
+
+    override func gameController(_ gameController: GameController, didDeactivate input: Input) {
         super.gameController(gameController, didDeactivate: input)
-        
+
         // Ignore unless we're the active scene.
         guard self.view.window?.windowScene?.hasKeyboardFocus == true else { return }
-        
-        if self.isSelectingSustainedButtons
-        {
-            if input.isContinuous
-            {
+
+        if self.isSelectingSustainedButtons {
+            if input.isContinuous {
                 self.inputsToSustain[AnyInput(input)] = nil
             }
-        }
-        else if let standardInput = StandardGameControllerInput(input: input), standardInput == .menu, gameController.inputType == .controllerSkin
+        } else if let standardInput = StandardGameControllerInput(input: input),
+            standardInput == .menu, gameController.inputType == .controllerSkin
         {
             self.isMenuButtonHeldDown = false
-            
+
             // Reset controller mapping back to what it should be.
             self.updateControllers()
-        }
-        else if let actionInput = ActionInput(input: input)
-        {
+        } else if let actionInput = ActionInput(input: input) {
             switch actionInput
             {
             case .quickSave: break
@@ -374,56 +388,68 @@ class GameViewController: DeltaCore.GameViewController
     }
 }
 
-
 //MARK: - UIViewController -
 /// UIViewController
-extension GameViewController
-{
-    override func viewDidLoad()
-    {
+extension GameViewController {
+    override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         // Lays out self.gameView, so we can pin self.sustainButtonsContentView to it without resulting in a temporary "cannot satisfy constraints".
         self.view.layoutIfNeeded()
-        
-        self.controllerView.translucentControllerSkinOpacity = Settings.translucentControllerSkinOpacity
-        
+
+        self.controllerView.translucentControllerSkinOpacity =
+            Settings.translucentControllerSkinOpacity
+
         // Sustain Button
-        self.sustainButtonsContentView = UIView(frame: CGRect(x: 0, y: 0, width: self.gameView.bounds.width, height: self.gameView.bounds.height))
+        self.sustainButtonsContentView = UIView(
+            frame: CGRect(
+                x: 0, y: 0, width: self.gameView.bounds.width, height: self.gameView.bounds.height))
         self.sustainButtonsContentView.translatesAutoresizingMaskIntoConstraints = false
         self.sustainButtonsContentView.isHidden = true
         self.view.insertSubview(self.sustainButtonsContentView, aboveSubview: self.gameView)
-        
+
         let blurEffect = UIBlurEffect(style: .dark)
         let vibrancyEffect = UIVibrancyEffect(blurEffect: blurEffect)
-        
+
         self.sustainButtonsBlurView = UIVisualEffectView(effect: blurEffect)
-        self.sustainButtonsBlurView.frame = CGRect(x: 0, y: 0, width: self.sustainButtonsContentView.bounds.width, height: self.sustainButtonsContentView.bounds.height)
+        self.sustainButtonsBlurView.frame = CGRect(
+            x: 0, y: 0, width: self.sustainButtonsContentView.bounds.width,
+            height: self.sustainButtonsContentView.bounds.height)
         self.sustainButtonsBlurView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.sustainButtonsContentView.addSubview(self.sustainButtonsBlurView)
-        
+
         let vibrancyView = UIVisualEffectView(effect: vibrancyEffect)
-        vibrancyView.frame = CGRect(x: 0, y: 0, width: self.sustainButtonsBlurView.contentView.bounds.width, height: self.sustainButtonsBlurView.contentView.bounds.height)
+        vibrancyView.frame = CGRect(
+            x: 0, y: 0, width: self.sustainButtonsBlurView.contentView.bounds.width,
+            height: self.sustainButtonsBlurView.contentView.bounds.height)
         vibrancyView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.sustainButtonsBlurView.contentView.addSubview(vibrancyView)
-        
-        self.sustainButtonsBackgroundView = RSTPlaceholderView(frame: CGRect(x: 0, y: 0, width: vibrancyView.contentView.bounds.width, height: vibrancyView.contentView.bounds.height))
+
+        self.sustainButtonsBackgroundView = RSTPlaceholderView(
+            frame: CGRect(
+                x: 0, y: 0, width: vibrancyView.contentView.bounds.width,
+                height: vibrancyView.contentView.bounds.height))
         self.sustainButtonsBackgroundView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        self.sustainButtonsBackgroundView.textLabel.text = NSLocalizedString("Select Buttons to Hold Down", comment: "")
+        self.sustainButtonsBackgroundView.textLabel.text = NSLocalizedString(
+            "Select Buttons to Hold Down", comment: "")
         self.sustainButtonsBackgroundView.textLabel.numberOfLines = 1
         self.sustainButtonsBackgroundView.textLabel.minimumScaleFactor = 0.5
         self.sustainButtonsBackgroundView.textLabel.adjustsFontSizeToFitWidth = true
-        self.sustainButtonsBackgroundView.detailTextLabel.text = NSLocalizedString("Press the Menu button when finished.", comment: "")
+        self.sustainButtonsBackgroundView.detailTextLabel.text = NSLocalizedString(
+            "Press the Menu button when finished.", comment: "")
         self.sustainButtonsBackgroundView.alpha = 0.0
         vibrancyView.contentView.addSubview(self.sustainButtonsBackgroundView)
-        
+
         // Handoff
-        self.handoffPlaceholderView = RSTPlaceholderView(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height))
+        self.handoffPlaceholderView = RSTPlaceholderView(
+            frame: CGRect(
+                x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height))
         self.handoffPlaceholderView.translatesAutoresizingMaskIntoConstraints = false
         self.handoffPlaceholderView.isHidden = true
         self.handoffPlaceholderView.textLabel.isHidden = true
         self.handoffPlaceholderView.detailTextLabel.font = UIFont.preferredFont(forTextStyle: .body)
-        self.handoffPlaceholderView.detailTextLabel.text = NSLocalizedString("Resuming…", comment: "")
+        self.handoffPlaceholderView.detailTextLabel.text = NSLocalizedString(
+            "Resuming…", comment: "")
         self.handoffPlaceholderView.detailTextLabel.numberOfLines = 1
         self.handoffPlaceholderView.detailTextLabel.minimumScaleFactor = 0.5
         self.handoffPlaceholderView.detailTextLabel.adjustsFontSizeToFitWidth = true
@@ -431,154 +457,162 @@ extension GameViewController
         self.handoffPlaceholderView.activityIndicatorView.startAnimating()
         self.handoffPlaceholderView.activityIndicatorView.color = .white
         self.view.insertSubview(self.handoffPlaceholderView, aboveSubview: self.gameView)
-        
+
         // Gestures
-        for gestureRecognizer in self.menuButtonGestureRecognizers
-        {
+        for gestureRecognizer in self.menuButtonGestureRecognizers {
             self.view.addGestureRecognizer(gestureRecognizer)
         }
-        
+
         // Auto Layout
         NSLayoutConstraint.activate([
-            self.sustainButtonsContentView.leadingAnchor.constraint(equalTo: self.gameView.leadingAnchor),
-            self.sustainButtonsContentView.trailingAnchor.constraint(equalTo: self.gameView.trailingAnchor),
+            self.sustainButtonsContentView.leadingAnchor.constraint(
+                equalTo: self.gameView.leadingAnchor),
+            self.sustainButtonsContentView.trailingAnchor.constraint(
+                equalTo: self.gameView.trailingAnchor),
             self.sustainButtonsContentView.topAnchor.constraint(equalTo: self.gameView.topAnchor),
-            self.sustainButtonsContentView.bottomAnchor.constraint(equalTo: self.gameView.bottomAnchor),
-            
-            self.handoffPlaceholderView.leadingAnchor.constraint(equalTo: self.gameView.leadingAnchor),
-            self.handoffPlaceholderView.trailingAnchor.constraint(equalTo: self.gameView.trailingAnchor),
+            self.sustainButtonsContentView.bottomAnchor.constraint(
+                equalTo: self.gameView.bottomAnchor),
+
+            self.handoffPlaceholderView.leadingAnchor.constraint(
+                equalTo: self.gameView.leadingAnchor),
+            self.handoffPlaceholderView.trailingAnchor.constraint(
+                equalTo: self.gameView.trailingAnchor),
             self.handoffPlaceholderView.topAnchor.constraint(equalTo: self.gameView.topAnchor),
-            self.handoffPlaceholderView.bottomAnchor.constraint(equalTo: self.gameView.bottomAnchor),
+            self.handoffPlaceholderView.bottomAnchor.constraint(
+                equalTo: self.gameView.bottomAnchor),
         ])
-        
+
         self.updateControllers()
     }
-    
-    override func viewDidAppear(_ animated: Bool)
-    {
+
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
-        if self.emulatorCore?.deltaCore == MelonDS.core, ProcessInfo.processInfo.isJITAvailable
-        {
+
+        if self.emulatorCore?.deltaCore == MelonDS.core, ProcessInfo.processInfo.isJITAvailable {
             self.showJITEnabledAlert()
         }
-        
+
         self.startGameActivity()
-        
+
         if let scene = UIApplication.shared.externalDisplayScene, Settings.supportsExternalDisplays
         {
             // We have priority, so replace whatever is currently on external display.
             self.connectExternalDisplay(for: scene)
         }
     }
-    
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator)
-    {
+
+    override func viewWillTransition(
+        to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator
+    ) {
         super.viewWillTransition(to: size, with: coordinator)
-        
+
         guard UIApplication.shared.applicationState != .background else { return }
-                
-        coordinator.animate(alongsideTransition: { (context) in
-            self.updateControllerSkin()
-        }, completion: nil)        
+
+        coordinator.animate(
+            alongsideTransition: { (context) in
+                self.updateControllerSkin()
+            }, completion: nil)
     }
-    
-    override func viewDidLayoutSubviews()
-    {
+
+    override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
-        if let sustainButtonsBackgroundView
-        {
+
+        if let sustainButtonsBackgroundView {
             // Fixes Hold Button description laying out vertically after orientation change.
-            sustainButtonsBackgroundView.detailTextLabel.preferredMaxLayoutWidth = sustainButtonsBackgroundView.bounds.width
+            sustainButtonsBackgroundView.detailTextLabel.preferredMaxLayoutWidth =
+                sustainButtonsBackgroundView.bounds.width
         }
     }
-    
+
     // MARK: - Segues
     /// KVO
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?)
-    {
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let identifier = segue.identifier else { return }
-        
+
         self.pauseGameActivity()
-        
+
         switch identifier
         {
         case "showGamesViewController":
-            let gamesViewController = (segue.destination as! UINavigationController).topViewController as! GamesViewController
-            
-            if let emulatorCore = self.emulatorCore
-            {
+            let gamesViewController =
+                (segue.destination as! UINavigationController).topViewController
+                as! GamesViewController
+
+            if let emulatorCore = self.emulatorCore {
                 gamesViewController.theme = .translucent
                 gamesViewController.activeEmulatorCore = emulatorCore
-                
+
                 self.updateAutoSaveState()
-            }
-            else
-            {
+            } else {
                 gamesViewController.theme = .opaque
             }
-            
+
         case "pause":
-            
-            if let game = self.game
-            {
+
+            if let game = self.game {
                 let fileURL = FileManager.default.uniqueTemporaryURL()
                 self.pausedSaveState = PausedSaveState(fileURL: fileURL, gameType: game.type)
-                
+
                 self.emulatorCore?.saveSaveState(to: fileURL)
             }
 
             guard let gameController = sender as? GameController else {
-                fatalError("sender for pauseSegue must be the game controller that pressed the Menu button")
+                fatalError(
+                    "sender for pauseSegue must be the game controller that pressed the Menu button"
+                )
             }
-            
+
             self.pausingGameController = gameController
-            
+
             let pauseViewController = segue.destination as! PauseViewController
-            pauseViewController.pauseText = (self.game as? Game)?.name ?? NSLocalizedString("Delta", comment: "")
+            pauseViewController.pauseText =
+                (self.game as? Game)?.name ?? NSLocalizedString("Delta", comment: "")
             pauseViewController.emulatorCore = self.emulatorCore
             pauseViewController.saveStatesViewControllerDelegate = self
             pauseViewController.cheatsViewControllerDelegate = self
-            pauseViewController.closeButtonTitle = self.isGameScene ? NSLocalizedString("Close", comment: "") : NSLocalizedString("Main Menu", comment: "")
-            
-            if let traits = self.controllerView.controllerSkinTraits, let menuInsets = self.controllerView.controllerSkin?.menuInsets(for: traits)
+            pauseViewController.closeButtonTitle =
+                self.isGameScene
+                ? NSLocalizedString("Close", comment: "")
+                : NSLocalizedString("Main Menu", comment: "")
+
+            if let traits = self.controllerView.controllerSkinTraits,
+                let menuInsets = self.controllerView.controllerSkin?.menuInsets(for: traits)
             {
                 pauseViewController.menuInsets = menuInsets
             }
-                        
-            pauseViewController.fastForwardItem?.isSelected = (self.emulatorCore?.rate != self.emulatorCore?.deltaCore.supportedRates.lowerBound)
+
+            pauseViewController.fastForwardItem?.isSelected =
+                (self.emulatorCore?.rate != self.emulatorCore?.deltaCore.supportedRates.lowerBound)
             pauseViewController.fastForwardItem?.action = { [unowned self] item in
                 self.performFastForwardAction(activate: item.isSelected)
             }
             pauseViewController.screenshotItem?.action = { [unowned self] item in
                 self.performScreenshotAction()
             }
-            
-            pauseViewController.sustainButtonsItem?.isSelected = gameController.sustainedInputs.count > 0
-            pauseViewController.sustainButtonsItem?.action = { [unowned self, unowned pauseViewController] item in
-                
-                for input in gameController.sustainedInputs.keys
-                {
+
+            pauseViewController.sustainButtonsItem?.isSelected =
+                gameController.sustainedInputs.count > 0
+            pauseViewController.sustainButtonsItem?.action = {
+                [unowned self, unowned pauseViewController] item in
+
+                for input in gameController.sustainedInputs.keys {
                     gameController.unsustain(input)
                 }
-                
-                if item.isSelected
-                {
+
+                if item.isSelected {
                     self.showSustainButtonView()
                     pauseViewController.dismiss()
                 }
-                
+
                 // Re-set gameController as pausingGameController.
                 self.pausingGameController = gameController
             }
-            
-            if self.emulatorCore?.deltaCore.supportedRates.upperBound == 1
-            {
+
+            if self.emulatorCore?.deltaCore.supportedRates.upperBound == 1 {
                 pauseViewController.fastForwardItem = nil
             }
-            
+
             switch self.game?.type
             {
             case .genesis?:
@@ -587,153 +621,157 @@ extension GameViewController
 
             default: break
             }
-            
-            if let emulatorCore, emulatorCore.isWirelessMultiplayerActive
-            {
+
+            if let emulatorCore, emulatorCore.isWirelessMultiplayerActive {
                 pauseViewController.saveStateItem = nil
                 pauseViewController.loadStateItem = nil
                 pauseViewController.cheatCodesItem = nil
                 pauseViewController.fastForwardItem = nil
             }
-            
-            if ExperimentalFeatures.shared.retroAchievements.isEnabled && ExperimentalFeatures.shared.retroAchievements.isHardcoreModeEnabled
+
+            if ExperimentalFeatures.shared.retroAchievements.isEnabled
+                && ExperimentalFeatures.shared.retroAchievements.isHardcoreModeEnabled
             {
                 // Saving save states is fine, just not loading them
                 // pauseViewController.saveStateItem = nil
-                
+
                 pauseViewController.loadStateItem = nil
                 pauseViewController.cheatCodesItem = nil
             }
-            
+
             self.pauseViewController = pauseViewController
-            
+
         default: break
         }
     }
-    
-    @IBAction private func unwindFromPauseViewController(_ segue: UIStoryboardSegue)
-    {
+
+    @IBAction private func unwindFromPauseViewController(_ segue: UIStoryboardSegue) {
         self.pauseViewController = nil
         self.pausingGameController = nil
-        
+
         guard let identifier = segue.identifier else { return }
-        
+
         switch identifier
         {
         case "unwindFromPauseMenu":
-            
+
             self.pausedSaveState = nil
-            
+
             DispatchQueue.main.async {
-                
-                if self._isLoadingSaveState
-                {
+
+                if self._isLoadingSaveState {
                     // If loading save state, resume emulation immediately (since the game view needs to be updated ASAP)
-                    
-                    if self.resumeEmulation()
-                    {
+
+                    if self.resumeEmulation() {
                         // Temporarily disable audioManager to prevent delayed audio bug when using 3D Touch Peek & Pop
                         self.emulatorCore?.audioManager.isEnabled = false
-                        
+
                         // Re-enable after delay
-                        
+
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                             self.emulatorCore?.audioManager.isEnabled = true
                         }
                     }
-                }
-                else
-                {
+                } else {
                     // Otherwise, wait for the transition to complete before resuming emulation
-                    self.transitionCoordinator?.animate(alongsideTransition: nil, completion: { (context) in
-                        self.resumeEmulation()
-                    })
+                    self.transitionCoordinator?.animate(
+                        alongsideTransition: nil,
+                        completion: { (context) in
+                            self.resumeEmulation()
+                        })
                 }
-                
+
                 self._isLoadingSaveState = false
-                
-                if self.emulatorCore?.deltaCore == MelonDS.core, ProcessInfo.processInfo.isJITAvailable
+
+                if self.emulatorCore?.deltaCore == MelonDS.core,
+                    ProcessInfo.processInfo.isJITAvailable
                 {
-                    self.transitionCoordinator?.animate(alongsideTransition: nil, completion: { (context) in
-                        self.showJITEnabledAlert()
-                    })
+                    self.transitionCoordinator?.animate(
+                        alongsideTransition: nil,
+                        completion: { (context) in
+                            self.showJITEnabledAlert()
+                        })
                 }
             }
-            
+
             self.startGameActivity()
-            
+
         case "unwindToGames":
-            if self.isGameScene
-            {
+            if self.isGameScene {
                 guard let session = self.view.window?.windowScene?.session else { return }
-                UIApplication.shared.requestSceneSessionDestruction(session, options: nil) { error in
-                    Logger.main.error("Failed to close game window. \(error.localizedDescription, privacy: .public)")
+                UIApplication.shared.requestSceneSessionDestruction(session, options: nil) {
+                    error in
+                    Logger.main.error(
+                        "Failed to close game window. \(error.localizedDescription, privacy: .public)"
+                    )
                 }
-                
+
                 // Ensure emulation stops when explicitly quit.
                 self.emulatorCore?.stop()
-            }
-            else
-            {
+            } else {
                 DispatchQueue.main.async {
-                    self.transitionCoordinator?.animate(alongsideTransition: nil, completion: { (context) in
-                        self.performSegue(withIdentifier: "showGamesViewController", sender: nil)
-                    })
+                    self.transitionCoordinator?.animate(
+                        alongsideTransition: nil,
+                        completion: { (context) in
+                            self.performSegue(
+                                withIdentifier: "showGamesViewController", sender: nil)
+                        })
                 }
             }
-                        
+
         default: break
         }
     }
-    
-    @IBAction private func unwindFromGamesViewController(with segue: UIStoryboardSegue)
-    {
+
+    @IBAction private func unwindFromGamesViewController(with segue: UIStoryboardSegue) {
         self.pausedSaveState = nil
-        
-        if let emulatorCore = self.emulatorCore, emulatorCore.state == .paused
-        {
+
+        if let emulatorCore = self.emulatorCore, emulatorCore.state == .paused {
             emulatorCore.resume()
         }
     }
-    
+
     // MARK: - KVO
     /// KVO
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?)
-    {
-        guard context == &kvoContext else { return super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context) }
-        
-        guard let rawValue = change?[.oldKey] as? Int, let previousState = EmulatorCore.State(rawValue: rawValue) else { return }
-        
-        if let saveState = _deepLinkResumingSaveState, let emulatorCore = self.emulatorCore, emulatorCore.state == .running
+    override func observeValue(
+        forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?,
+        context: UnsafeMutableRawPointer?
+    ) {
+        guard context == &kvoContext else {
+            return super.observeValue(
+                forKeyPath: keyPath, of: object, change: change, context: context)
+        }
+
+        guard let rawValue = change?[.oldKey] as? Int,
+            let previousState = EmulatorCore.State(rawValue: rawValue)
+        else { return }
+
+        if let saveState = _deepLinkResumingSaveState, let emulatorCore = self.emulatorCore,
+            emulatorCore.state == .running
         {
             emulatorCore.pause()
-            
-            do
-            {
+
+            do {
                 try emulatorCore.load(saveState)
-            }
-            catch
-            {
+            } catch {
                 print(error)
             }
-            
+
             _deepLinkResumingSaveState = nil
             emulatorCore.resume()
         }
-        
-        if previousState == .stopped
-        {
+
+        if previousState == .stopped {
             self.emulatorCore?.updateCheats()
         }
-        
-        if self.emulatorCore?.state == .running
-        {
+
+        if self.emulatorCore?.state == .running {
             DatabaseManager.shared.performBackgroundTask { (context) in
                 guard let game = self.game as? Game else { return }
-                
+
                 let backgroundGame = context.object(with: game.objectID) as! Game
                 backgroundGame.playedDate = Date()
-                
+
                 context.saveWithErrorLogging()
             }
         }
@@ -741,285 +779,246 @@ extension GameViewController
 }
 
 //MARK: - Emulation -
-private extension GameViewController
-{
-    func quitEmulation()
-    {
-        if let presentedViewController = self.presentedViewController
-        {
+extension GameViewController {
+    fileprivate func quitEmulation() {
+        if let presentedViewController = self.presentedViewController {
             presentedViewController.dismiss(animated: true) {
                 self.quitEmulation()
             }
-            
+
             return
         }
-        
+
         self.updateAutoSaveState()
-        
+
         self.emulatorCore?.stop()
         self.game = nil
-        
+
         // Make sure split view controller doesn't accidentally re-appear.
         self.controllerView.resignFirstResponder()
-        
-        if self.isGameScene
-        {
+
+        if self.isGameScene {
             guard let session = self.view.window?.windowScene?.session else { return }
             UIApplication.shared.requestSceneSessionDestruction(session, options: nil) { error in
-                Logger.main.error("Failed to close game window. \(error.localizedDescription, privacy: .public)")
+                Logger.main.error(
+                    "Failed to close game window. \(error.localizedDescription, privacy: .public)")
             }
-        }
-        else
-        {
+        } else {
             self.performSegue(withIdentifier: "showGamesViewController", sender: nil)
         }
-        
+
         self.stopGameActivity()
     }
 }
 
 //MARK: - Controllers -
-private extension GameViewController
-{
-    @objc func updateControllers()
-    {
-        let firstActiveController = ExternalGameControllerManager.shared.connectedControllers.first(where: { $0.playerIndex != nil })
-        if firstActiveController == nil && Settings.localControllerPlayerIndex == nil
-        {
+extension GameViewController {
+    @objc fileprivate func updateControllers() {
+        let firstActiveController = ExternalGameControllerManager.shared.connectedControllers.first(
+            where: { $0.playerIndex != nil })
+        if firstActiveController == nil && Settings.localControllerPlayerIndex == nil {
             Settings.localControllerPlayerIndex = 0
-        }
-        else if let index = Settings.localControllerPlayerIndex, ExternalGameControllerManager.shared.connectedControllers.contains(where: { $0.playerIndex == index })
+        } else if let index = Settings.localControllerPlayerIndex,
+            ExternalGameControllerManager.shared.connectedControllers.contains(where: {
+                $0.playerIndex == index
+            })
         {
             // There is an active controller with same player index as local controller, so disable local controller.
             Settings.localControllerPlayerIndex = nil
         }
-        
+
         // If Settings.localControllerPlayerIndex is non-nil, show controller view.
-        if let index = Settings.localControllerPlayerIndex
-        {
+        if let index = Settings.localControllerPlayerIndex {
             self.controllerView.playerIndex = index
             self.controllerView.isHidden = false
-        }
-        else
-        {
+        } else {
             if let game = self.game as? Game,
-               let traits = self.controllerView.controllerSkinTraits,
-               let firstActiveController,
-               let _ = Settings.preferredControllerSkin(for: game, traits: traits, forExternalController: true)
+                let traits = self.controllerView.controllerSkinTraits,
+                let firstActiveController,
+                Settings.preferredControllerSkin(
+                    for: game, traits: traits, forExternalController: true) != nil
             {
                 self.controllerView.isHidden = false
-                self.controllerView.playerIndex = firstActiveController.playerIndex // Give Controller View same playerIndex as first active connected controller if using external controller skin
-            }
-            else if let game = self.game,
-                    let traits = self.controllerView.controllerSkinTraits,
-                    let controllerSkin = DeltaCore.ControllerSkin.standardControllerSkin(for: game.type),
-                    controllerSkin.hasTouchScreen(for: traits)
+                self.controllerView.playerIndex = firstActiveController.playerIndex  // Give Controller View same playerIndex as first active connected controller if using external controller skin
+            } else if let game = self.game,
+                let traits = self.controllerView.controllerSkinTraits,
+                let controllerSkin = DeltaCore.ControllerSkin.standardControllerSkin(
+                    for: game.type),
+                controllerSkin.hasTouchScreen(for: traits)
             {
                 self.controllerView.isHidden = false
                 self.controllerView.playerIndex = 0
-            }
-            else
-            {
+            } else {
                 self.controllerView.isHidden = true
                 self.controllerView.playerIndex = nil
             }
         }
-        
+
         self.view.setNeedsLayout()
         self.view.layoutIfNeeded()
-        
+
         // Roundabout way of combining arrays to prevent rare runtime crash in + operator :(
         var controllers = [GameController]()
         controllers.append(self.controllerView)
         controllers.append(contentsOf: ExternalGameControllerManager.shared.connectedControllers)
-        
-        if let emulatorCore = self.emulatorCore, let game = self.game
-        {
-            for gameController in controllers
-            {
-                if gameController.playerIndex != nil
-                {
+
+        if let emulatorCore = self.emulatorCore, let game = self.game {
+            for gameController in controllers {
+                if gameController.playerIndex != nil {
                     let inputMapping: GameControllerInputMappingProtocol
-                    
-                    if let mapping = GameControllerInputMapping.inputMapping(for: gameController, gameType: game.type, in: DatabaseManager.shared.viewContext)
+
+                    if let mapping = GameControllerInputMapping.inputMapping(
+                        for: gameController, gameType: game.type,
+                        in: DatabaseManager.shared.viewContext)
                     {
                         inputMapping = mapping
-                    }
-                    else
-                    {
+                    } else {
                         inputMapping = DefaultInputMapping(gameController: gameController)
                     }
-                    
+
                     gameController.addReceiver(self, inputMapping: inputMapping)
                     gameController.addReceiver(emulatorCore, inputMapping: inputMapping)
-                }
-                else
-                {
+                } else {
                     gameController.removeReceiver(self)
                     gameController.removeReceiver(emulatorCore)
                 }
             }
         }
-        
-        if self.shouldResetSustainedInputs
-        {
-            for controller in controllers
-            {
-                for input in controller.sustainedInputs.keys
-                {
+
+        if self.shouldResetSustainedInputs {
+            for controller in controllers {
+                for input in controller.sustainedInputs.keys {
                     controller.unsustain(input)
                 }
             }
-            
+
             self.shouldResetSustainedInputs = false
         }
-        
+
         self.controllerView.isButtonHapticFeedbackEnabled = Settings.isButtonHapticFeedbackEnabled
-        self.controllerView.isThumbstickHapticFeedbackEnabled = Settings.isThumbstickHapticFeedbackEnabled
-        
+        self.controllerView.isThumbstickHapticFeedbackEnabled =
+            Settings.isThumbstickHapticFeedbackEnabled
+
         self.updateControllerSkin()
     }
-    
-    func updateControllerSkin()
-    {
+
+    fileprivate func updateControllerSkin() {
         guard let game = self.game as? Game, let window = self.view.window else { return }
-        
+
         let traits = DeltaCore.ControllerSkin.Traits.defaults(for: window)
-        let isExternalControllerConnected = ExternalGameControllerManager.shared.connectedControllers.contains(where: { $0.playerIndex != nil })
-        
-        if Settings.localControllerPlayerIndex != nil
-        {
+        let isExternalControllerConnected = ExternalGameControllerManager.shared
+            .connectedControllers.contains(where: { $0.playerIndex != nil })
+
+        if Settings.localControllerPlayerIndex != nil {
             // If there is both a local player and a connected controller with a controller skin, we prioritize local player's skin.
             // Even if the skin doesn't exist, we'll fall back to standard skin for local player.
-            let controllerSkin = Settings.preferredControllerSkin(for: game, traits: traits, forExternalController: false) // Explicitly load non-external controller skin.
+            let controllerSkin = Settings.preferredControllerSkin(
+                for: game, traits: traits, forExternalController: false)  // Explicitly load non-external controller skin.
             self.controllerView.controllerSkin = controllerSkin
-        }
-        else if isExternalControllerConnected, let externalControllerSkin = Settings.preferredControllerSkin(for: game, traits: traits, forExternalController: true)
+        } else if isExternalControllerConnected,
+            let externalControllerSkin = Settings.preferredControllerSkin(
+                for: game, traits: traits, forExternalController: true)
         {
             // No local player, but user has selected an external controller skin, so show that instead.
             self.controllerView.controllerSkin = externalControllerSkin
-        }
-        else if let controllerSkin = DeltaCore.ControllerSkin.standardControllerSkin(for: game.type), controllerSkin.hasTouchScreen(for: traits)
+        } else if let controllerSkin = DeltaCore.ControllerSkin.standardControllerSkin(
+            for: game.type), controllerSkin.hasTouchScreen(for: traits)
         {
             var touchControllerSkin = TouchControllerSkin(controllerSkin: controllerSkin)
-            
-            if UIApplication.shared.isExternalDisplayConnected
-            {
+
+            if UIApplication.shared.isExternalDisplayConnected {
                 // Only show touch screen if external display is connected.
                 touchControllerSkin.screenPredicate = { $0.isTouchScreen }
             }
-            
-            if self.view.bounds.width > self.view.bounds.height
-            {
+
+            if self.view.bounds.width > self.view.bounds.height {
                 touchControllerSkin.screenLayoutAxis = .horizontal
-            }
-            else
-            {
+            } else {
                 touchControllerSkin.screenLayoutAxis = .vertical
             }
-            
+
             self.controllerView.controllerSkin = touchControllerSkin
-        }
-        else
-        {
+        } else {
             // TODO: Add this back once we've adopted modern keyboard input handling.
             // Until then, setting controllerSkin to nil breaks our legacy keyboard handling.
             // self.controllerView.controllerSkin = nil
         }
-        
+
         self.updateExternalDisplay()
-        
-        if let pauseViewController
-        {
-            if let traits = self.controllerView.controllerSkinTraits, let menuInsets = self.controllerView.controllerSkin?.menuInsets(for: traits)
+
+        if let pauseViewController {
+            if let traits = self.controllerView.controllerSkinTraits,
+                let menuInsets = self.controllerView.controllerSkin?.menuInsets(for: traits)
             {
                 pauseViewController.menuInsets = menuInsets
-            }
-            else
-            {
+            } else {
                 pauseViewController.menuInsets = .zero
             }
         }
-        
+
         self.view.setNeedsLayout()
     }
-    
-    func updateGameViews()
-    {
-        if self.isContinuingHandoff
-        {
+
+    fileprivate func updateGameViews() {
+        if self.isContinuingHandoff {
             // Continuing from Handoff which may take a while, so hide all views.
-            for gameView in self.gameViews
-            {
+            for gameView in self.gameViews {
                 gameView.isEnabled = false
                 gameView.isHidden = true
             }
-        }
-        else if UIApplication.shared.isExternalDisplayConnected
-        {
+        } else if UIApplication.shared.isExternalDisplayConnected {
             // AirPlaying, hide all (non-touch) screens.
-            
+
             if let traits = self.controllerView.controllerSkinTraits,
-               let supportedTraits = self.controllerView.controllerSkin?.supportedTraits(for: traits),
-               let screens = self.controllerView.controllerSkin?.screens(for: supportedTraits)
+                let supportedTraits = self.controllerView.controllerSkin?.supportedTraits(
+                    for: traits),
+                let screens = self.controllerView.controllerSkin?.screens(for: supportedTraits)
             {
-                for (screen, gameView) in zip(screens, self.gameViews)
-                {
+                for (screen, gameView) in zip(screens, self.gameViews) {
                     gameView.isEnabled = screen.isTouchScreen
-                    
-                    if gameView == self.gameView && !(screen.isTouchScreen && Settings.features.dsAirPlay.topScreenOnly)
+
+                    if gameView == self.gameView
+                        && !(screen.isTouchScreen && Settings.features.dsAirPlay.topScreenOnly)
                     {
                         // Always show AirPlay indicator on self.gameView, unless it is a touch screen AND we're only AirPlaying top screen.
                         gameView.isAirPlaying = true
                         gameView.isHidden = false
-                    }
-                    else
-                    {
+                    } else {
                         gameView.isAirPlaying = false
                         gameView.isHidden = !screen.isTouchScreen
                     }
                 }
-            }
-            else
-            {
+            } else {
                 // Either self.controllerView.controllerSkin is `nil`, or it doesn't support these traits.
                 // Most likely this system only has 1 screen, so just hide self.gameView.
-                
+
                 self.gameView.isEnabled = false
                 self.gameView.isHidden = false
                 self.gameView.isAirPlaying = true
             }
-        }
-        else
-        {
+        } else {
             // Not AirPlaying, show all screens.
-            
+
             if let traits = self.controllerView.controllerSkinTraits,
-               let supportedTraits = self.controllerView.controllerSkin?.supportedTraits(for: traits),
-               let screens = self.controllerView.controllerSkin?.screens(for: supportedTraits),
-               ExperimentalFeatures.shared.reverseScreens.isEnabled
+                let supportedTraits = self.controllerView.controllerSkin?.supportedTraits(
+                    for: traits),
+                let screens = self.controllerView.controllerSkin?.screens(for: supportedTraits),
+                ExperimentalFeatures.shared.reverseScreens.isEnabled
             {
-                for (screen, gameView) in zip(screens, self.gameViews)
-                {
+                for (screen, gameView) in zip(screens, self.gameViews) {
                     gameView.isAirPlaying = false
-                    
-                    if let outputFrame = screen.outputFrame, outputFrame.isEmpty
-                    {
+
+                    if let outputFrame = screen.outputFrame, outputFrame.isEmpty {
                         // Frame is empty, so always disable it,
                         gameView.isEnabled = false
                         gameView.isHidden = true
-                    }
-                    else
-                    {
+                    } else {
                         gameView.isEnabled = true
                         gameView.isHidden = false
                     }
                 }
-            }
-            else
-            {
-                for gameView in self.gameViews
-                {
+            } else {
+                for gameView in self.gameViews {
                     gameView.isEnabled = true
                     gameView.isHidden = false
                     gameView.isAirPlaying = false
@@ -1031,49 +1030,39 @@ private extension GameViewController
 
 //MARK: - Game Saves -
 /// Game Saves
-private extension GameViewController
-{
-    func updateGameSave()
-    {
+extension GameViewController {
+    fileprivate func updateGameSave() {
         guard let game = self.game as? Game else { return }
-        
+
         DatabaseManager.shared.performBackgroundTask { (context) in
-            do
-            {
+            do {
                 let game = context.object(with: game.objectID) as! Game
-                
+
                 let hash = try RSTHasher.sha1HashOfFile(at: game.gameSaveURL)
                 let previousHash = game.gameSave?.sha1
-                
+
                 guard hash != previousHash else { return }
-                
-                if let gameSave = game.gameSave
-                {
+
+                if let gameSave = game.gameSave {
                     gameSave.modifiedDate = Date()
                     gameSave.sha1 = hash
-                }
-                else
-                {
+                } else {
                     let gameSave = GameSave(context: context)
                     gameSave.identifier = game.identifier
                     gameSave.sha1 = hash
-                    
+
                     game.gameSave = gameSave
                 }
-                
+
                 try context.save()
-                
-                if ExperimentalFeatures.shared.toastNotifications.gameSaveEnabled
-                {
-                    self.presentExperimentalToastView(NSLocalizedString("Game Data Saved", comment: ""))
+
+                if ExperimentalFeatures.shared.toastNotifications.gameSaveEnabled {
+                    self.presentExperimentalToastView(
+                        NSLocalizedString("Game Data Saved", comment: ""))
                 }
-            }
-            catch CocoaError.fileNoSuchFile
-            {
+            } catch CocoaError.fileNoSuchFile {
                 // Ignore
-            }
-            catch
-            {
+            } catch {
                 print("Error updating game save.", error)
             }
         }
@@ -1082,254 +1071,225 @@ private extension GameViewController
 
 //MARK: - Save States -
 /// Save States
-extension GameViewController: SaveStatesViewControllerDelegate
-{
-    private func updateAutoSaveState()
-    {
+extension GameViewController: SaveStatesViewControllerDelegate {
+    private func updateAutoSaveState() {
         // Ensures game is non-nil and also a Game subclass
         guard let game = self.game as? Game else { return }
-        
-        guard let emulatorCore = self.emulatorCore, emulatorCore.state != .stopped, !emulatorCore.isWirelessMultiplayerActive else { return }
-        
+
+        guard let emulatorCore = self.emulatorCore, emulatorCore.state != .stopped,
+            !emulatorCore.isWirelessMultiplayerActive
+        else { return }
+
         // If pausedSaveState exists and has already been saved, don't update auto save state
         // This prevents us from filling our auto save state slots with the same save state
         let savedPausedSaveState = self.pausedSaveState?.isSaved ?? false
         guard !savedPausedSaveState else { return }
-        
+
         self.pausedSaveState?.isSaved = true
-        
+
         // Must be done synchronously
         let backgroundContext = DatabaseManager.shared.newBackgroundContext()
         backgroundContext.performAndWait {
-            
+
             let game = backgroundContext.object(with: game.objectID) as! Game
-            
+
             let fetchRequest = SaveState.fetchRequest(for: game, type: .auto)
-            fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(SaveState.creationDate), ascending: true)]
-            
-            do
-            {
+            fetchRequest.sortDescriptors = [
+                NSSortDescriptor(key: #keyPath(SaveState.creationDate), ascending: true)
+            ]
+
+            do {
                 let saveStates = try fetchRequest.execute()
-                
-                if let saveState = saveStates.first, saveStates.count >= 2
-                {
+
+                if let saveState = saveStates.first, saveStates.count >= 2 {
                     // If there are two or more auto save states, update the oldest one
                     self.update(saveState, with: self.pausedSaveState)
-                    
+
                     // Tiny hack: SaveStatesViewController sorts save states by creation date, so we update the creation date too
                     // Simpler than deleting old save states ¯\_(ツ)_/¯
                     saveState.creationDate = saveState.modifiedDate
-                }
-                else
-                {
+                } else {
                     // Otherwise, create a new one
                     let saveState = SaveState.insertIntoManagedObjectContext(backgroundContext)
                     saveState.type = .auto
                     saveState.game = game
-                    
+
                     self.update(saveState, with: self.pausedSaveState)
                 }
-            }
-            catch
-            {
+            } catch {
                 print(error)
             }
 
             backgroundContext.saveWithErrorLogging()
         }
     }
-    
+
     private func update(_ saveState: SaveState, with replacementSaveState: SaveStateProtocol? = nil)
     {
         let isRunning = (self.emulatorCore?.state == .running)
-        
-        if isRunning
-        {
+
+        if isRunning {
             self.pauseEmulation()
         }
-        
-        if let replacementSaveState = replacementSaveState
-        {
-            do
-            {
-                if FileManager.default.fileExists(atPath: saveState.fileURL.path)
-                {
+
+        if let replacementSaveState = replacementSaveState {
+            do {
+                if FileManager.default.fileExists(atPath: saveState.fileURL.path) {
                     // Don't use replaceItem(), since that removes the original file as well
                     try FileManager.default.removeItem(at: saveState.fileURL)
                 }
-                
-                try FileManager.default.copyItem(at: replacementSaveState.fileURL, to: saveState.fileURL)
-            }
-            catch
-            {
+
+                try FileManager.default.copyItem(
+                    at: replacementSaveState.fileURL, to: saveState.fileURL)
+            } catch {
                 print(error)
             }
-        }
-        else
-        {
+        } else {
             self.emulatorCore?.saveSaveState(to: saveState.fileURL)
         }
-        
+
         if let snapshot = self.emulatorCore?.videoManager.snapshot(), let data = snapshot.pngData()
         {
-            do
-            {
+            do {
                 try data.write(to: saveState.imageFileURL, options: [.atomicWrite])
-            }
-            catch
-            {
+            } catch {
                 print(error)
             }
         }
-        
+
         saveState.modifiedDate = Date()
         saveState.coreIdentifier = self.emulatorCore?.deltaCore.identifier
         saveState.coreVersion = self.emulatorCore?.deltaCore.version
-        
+
         if ExperimentalFeatures.shared.toastNotifications.stateSaveEnabled,
-           saveState.type != .auto
+            saveState.type != .auto
         {
             self.presentExperimentalToastView(NSLocalizedString("Saved Save State", comment: ""))
         }
-        
-        if isRunning
-        {
+
+        if isRunning {
             self.resumeEmulation()
         }
     }
-    
-    private func load(_ saveState: SaveStateProtocol)
-    {
+
+    private func load(_ saveState: SaveStateProtocol) {
         let isRunning = (self.emulatorCore?.state == .running)
-        
-        if isRunning
-        {
+
+        if isRunning {
             self.pauseEmulation()
         }
-        
+
         // If we're loading the auto save state, we need to create a temporary copy of saveState.
         // Then, we update the auto save state, but load our copy so everything works out.
         var temporarySaveState: SaveStateProtocol? = nil
-        
-        if let autoSaveState = saveState as? SaveState, autoSaveState.type == .auto
-        {
+
+        if let autoSaveState = saveState as? SaveState, autoSaveState.type == .auto {
             let temporaryURL = FileManager.default.uniqueTemporaryURL()
-            
-            do
-            {
+
+            do {
                 try FileManager.default.moveItem(at: saveState.fileURL, to: temporaryURL)
-                temporarySaveState = DeltaCore.SaveState(fileURL: temporaryURL, gameType: saveState.gameType)
-            }
-            catch
-            {
+                temporarySaveState = DeltaCore.SaveState(
+                    fileURL: temporaryURL, gameType: saveState.gameType)
+            } catch {
                 print(error)
             }
         }
-        
+
         self.updateAutoSaveState()
-        
-        do
-        {
-            if let temporarySaveState = temporarySaveState
-            {
+
+        do {
+            if let temporarySaveState = temporarySaveState {
                 try self.emulatorCore?.load(temporarySaveState)
                 try FileManager.default.removeItem(at: temporarySaveState.fileURL)
-            }
-            else
-            {
+            } else {
                 try self.emulatorCore?.load(saveState)
             }
-            
-            if ExperimentalFeatures.shared.toastNotifications.stateLoadEnabled
-            {
-                self.presentExperimentalToastView(NSLocalizedString("Loaded Save State", comment: ""))
+
+            if ExperimentalFeatures.shared.toastNotifications.stateLoadEnabled {
+                self.presentExperimentalToastView(
+                    NSLocalizedString("Loaded Save State", comment: ""))
             }
-        }
-        catch EmulatorCore.SaveStateError.doesNotExist
-        {
+        } catch EmulatorCore.SaveStateError.doesNotExist {
             print("Save State does not exist.")
-        }
-        catch let error as NSError
-        {
+        } catch let error as NSError {
             print(error)
         }
-        
+
         self.achievementsTracker?.reset()
-        
-        if isRunning
-        {
+
+        if isRunning {
             self.resumeEmulation()
         }
     }
-    
+
     //MARK: - SaveStatesViewControllerDelegate
-    
-    func saveStatesViewController(_ saveStatesViewController: SaveStatesViewController, updateSaveState saveState: SaveState)
-    {
-        let updatingExistingSaveState = FileManager.default.fileExists(atPath: saveState.fileURL.path)
-        
+
+    func saveStatesViewController(
+        _ saveStatesViewController: SaveStatesViewController, updateSaveState saveState: SaveState
+    ) {
+        let updatingExistingSaveState = FileManager.default.fileExists(
+            atPath: saveState.fileURL.path)
+
         self.update(saveState)
-        
+
         // Dismiss if updating an existing save state.
         // If creating a new one, don't dismiss.
-        if updatingExistingSaveState
-        {
+        if updatingExistingSaveState {
             self.pauseViewController?.dismiss()
         }
     }
-    
-    func saveStatesViewController(_ saveStatesViewController: SaveStatesViewController, loadSaveState saveState: SaveStateProtocol)
-    {
+
+    func saveStatesViewController(
+        _ saveStatesViewController: SaveStatesViewController,
+        loadSaveState saveState: SaveStateProtocol
+    ) {
         self._isLoadingSaveState = true
-        
+
         self.load(saveState)
-        
+
         self.pauseViewController?.dismiss()
     }
 }
 
 //MARK: - Cheats -
 /// Cheats
-extension GameViewController: CheatsViewControllerDelegate
-{
-    func cheatsViewController(_ cheatsViewController: CheatsViewController, activateCheat cheat: Cheat)
-    {
+extension GameViewController: CheatsViewControllerDelegate {
+    func cheatsViewController(
+        _ cheatsViewController: CheatsViewController, activateCheat cheat: Cheat
+    ) {
         self.emulatorCore?.activateCheatWithErrorLogging(cheat)
     }
-    
-    func cheatsViewController(_ cheatsViewController: CheatsViewController, deactivateCheat cheat: Cheat)
-    {
+
+    func cheatsViewController(
+        _ cheatsViewController: CheatsViewController, deactivateCheat cheat: Cheat
+    ) {
         self.emulatorCore?.deactivate(cheat)
     }
 }
 
 //MARK: - Audio -
 /// Audio
-private extension GameViewController
-{
-    func updateAudio()
-    {
+extension GameViewController {
+    fileprivate func updateAudio() {
         self.emulatorCore?.audioManager.respectsSilentMode = Settings.respectSilentMode
     }
 }
 
 //MARK: - Sustain Buttons -
-private extension GameViewController
-{
-    func showSustainButtonView()
-    {
+extension GameViewController {
+    fileprivate func showSustainButtonView() {
         guard let gameController = self.pausingGameController else { return }
-        
+
         self.isSelectingSustainedButtons = true
-        
+
         let sustainInputsMapping = SustainInputsMapping(gameController: gameController)
         gameController.addReceiver(self, inputMapping: sustainInputsMapping)
-        
+
         let blurEffect = self.sustainButtonsBlurView.effect
         self.sustainButtonsBlurView.effect = nil
-        
+
         self.sustainButtonsContentView.isHidden = false
-        
+
         UIView.animate(withDuration: 0.4) {
             self.sustainButtonsBlurView.effect = blurEffect
             self.sustainButtonsBackgroundView.alpha = 1.0
@@ -1337,667 +1297,640 @@ private extension GameViewController
             self.controllerView.becomeFirstResponder()
         }
     }
-    
-    func hideSustainButtonView()
-    {
+
+    fileprivate func hideSustainButtonView() {
         guard let gameController = self.pausingGameController else { return }
-        
+
         self.isSelectingSustainedButtons = false
-        
+
         self.updateControllers()
         self.sustainInputsMapping = nil
-        
+
         // Activate all sustained inputs, since they will now be mapped to game inputs.
-        for (input, value) in self.inputsToSustain
-        {
+        for (input, value) in self.inputsToSustain {
             gameController.sustain(input, value: value)
         }
-        
+
         let blurEffect = self.sustainButtonsBlurView.effect
-        
-        UIView.animate(withDuration: 0.4, animations: {
-            self.sustainButtonsBlurView.effect = nil
-            self.sustainButtonsBackgroundView.alpha = 0.0
-        }) { (finished) in
+
+        UIView.animate(
+            withDuration: 0.4,
+            animations: {
+                self.sustainButtonsBlurView.effect = nil
+                self.sustainButtonsBackgroundView.alpha = 0.0
+            }
+        ) { (finished) in
             self.sustainButtonsContentView.isHidden = true
             self.sustainButtonsBlurView.effect = blurEffect
         }
-        
+
         self.inputsToSustain = [:]
     }
 }
 
 //MARK: - Action Inputs -
 /// Action Inputs
-extension GameViewController
-{
-    @objc func performQuickSaveAction()
-    {
-        guard let game = self.game as? Game, let emulatorCore, !emulatorCore.isWirelessMultiplayerActive else { return }
-        
+extension GameViewController {
+    @objc func performQuickSaveAction() {
+        guard let game = self.game as? Game, let emulatorCore,
+            !emulatorCore.isWirelessMultiplayerActive
+        else { return }
+
         let backgroundContext = DatabaseManager.shared.newBackgroundContext()
         backgroundContext.performAndWait {
-            
+
             let game = backgroundContext.object(with: game.objectID) as! Game
             let fetchRequest = SaveState.fetchRequest(for: game, type: .quick)
-            
-            do
-            {
-                if let quickSaveState = try fetchRequest.execute().first
-                {
+
+            do {
+                if let quickSaveState = try fetchRequest.execute().first {
                     self.update(quickSaveState)
-                }
-                else
-                {
+                } else {
                     let saveState = SaveState(context: backgroundContext)
                     saveState.type = .quick
                     saveState.game = game
-                    
+
                     self.update(saveState)
                 }
-            }
-            catch
-            {
+            } catch {
                 print(error)
             }
-            
+
             backgroundContext.saveWithErrorLogging()
         }
     }
-    
-    @objc func performQuickLoadAction()
-    {
-        guard !ExperimentalFeatures.shared.retroAchievements.isEnabled || !ExperimentalFeatures.shared.retroAchievements.isHardcoreModeEnabled else {
+
+    @objc func performQuickLoadAction() {
+        guard
+            !ExperimentalFeatures.shared.retroAchievements.isEnabled
+                || !ExperimentalFeatures.shared.retroAchievements.isHardcoreModeEnabled
+        else {
             // Disable loading save states when using RetroAchievements and Hardcore Mode
             return
         }
-        
-        guard let game = self.game as? Game, let emulatorCore, !emulatorCore.isWirelessMultiplayerActive else { return }
-        
+
+        guard let game = self.game as? Game, let emulatorCore,
+            !emulatorCore.isWirelessMultiplayerActive
+        else { return }
+
         let fetchRequest = SaveState.fetchRequest(for: game, type: .quick)
-        
-        do
-        {
+
+        do {
             if let quickSaveState = try DatabaseManager.shared.viewContext.fetch(fetchRequest).first
             {
                 self.load(quickSaveState)
             }
-        }
-        catch
-        {
+        } catch {
             print(error)
         }
     }
-    
-    func performFastForwardAction(activate: Bool)
-    {
-        guard let emulatorCore = self.emulatorCore, !emulatorCore.isWirelessMultiplayerActive else { return }
-        
-        if activate
-        {
+
+    func performFastForwardAction(activate: Bool) {
+        guard let emulatorCore = self.emulatorCore, !emulatorCore.isWirelessMultiplayerActive else {
+            return
+        }
+
+        if activate {
             if ExperimentalFeatures.shared.variableFastForward.isEnabled,
-               let preferredSpeed = ExperimentalFeatures.shared.variableFastForward[emulatorCore.game.type],
-               (preferredSpeed.rawValue <= emulatorCore.deltaCore.supportedRates.upperBound || ExperimentalFeatures.shared.variableFastForward.allowUnrestrictedSpeeds)
+                let preferredSpeed = ExperimentalFeatures.shared.variableFastForward[
+                    emulatorCore.game.type],
+                preferredSpeed.rawValue <= emulatorCore.deltaCore.supportedRates.upperBound
+                    || ExperimentalFeatures.shared.variableFastForward.allowUnrestrictedSpeeds
             {
                 emulatorCore.rate = preferredSpeed.rawValue
-            }
-            else
-            {
+            } else {
                 emulatorCore.rate = emulatorCore.deltaCore.supportedRates.upperBound
             }
-            
-            if ExperimentalFeatures.shared.toastNotifications.fastForwardEnabled
-            {
-                self.presentExperimentalToastView(NSLocalizedString("Fast Forward Enabled", comment: ""))
+
+            if ExperimentalFeatures.shared.toastNotifications.fastForwardEnabled {
+                self.presentExperimentalToastView(
+                    NSLocalizedString("Fast Forward Enabled", comment: ""))
             }
-        }
-        else
-        {
+        } else {
             emulatorCore.rate = emulatorCore.deltaCore.supportedRates.lowerBound
-            
-            if ExperimentalFeatures.shared.toastNotifications.fastForwardEnabled
-            {
-                self.presentExperimentalToastView(NSLocalizedString("Fast Forward Disabled", comment: ""))
+
+            if ExperimentalFeatures.shared.toastNotifications.fastForwardEnabled {
+                self.presentExperimentalToastView(
+                    NSLocalizedString("Fast Forward Disabled", comment: ""))
             }
         }
     }
-    
-    func performScreenshotAction()
-    {
+
+    func performScreenshotAction() {
         guard let emulatorCore, let snapshot = emulatorCore.videoManager.snapshot() else { return }
-        
-        let minEdge = min(emulatorCore.videoManager.videoFormat.dimensions.width, emulatorCore.videoManager.videoFormat.dimensions.height)
-        
+
+        let minEdge = min(
+            emulatorCore.videoManager.videoFormat.dimensions.width,
+            emulatorCore.videoManager.videoFormat.dimensions.height)
+
         let imageScale: Double
-        if minEdge >= 1080
-        {
+        if minEdge >= 1080 {
             // Screenshot is already at or above 1080p, so no need to scale it.
             imageScale = 1
-        }
-        else
-        {
+        } else {
             // Determine integer scaling to ensure we reach 1080p.
             imageScale = (1080.0 / minEdge).rounded(.up)
         }
-        
-        let imageSize = CGSize(width: snapshot.size.width * imageScale, height: snapshot.size.height * imageScale)
-        
+
+        let imageSize = CGSize(
+            width: snapshot.size.width * imageScale, height: snapshot.size.height * imageScale)
+
         let screenshotData: Data
-        if imageScale == 1, let data = snapshot.pngData()
-        {
+        if imageScale == 1, let data = snapshot.pngData() {
             // No need to redraw image because it's already the correct size.
             screenshotData = data
-        }
-        else
-        {
+        } else {
             let format = UIGraphicsImageRendererFormat()
             format.scale = 1
-            
+
             let renderer = UIGraphicsImageRenderer(size: imageSize, format: format)
             screenshotData = renderer.pngData { (context) in
                 context.cgContext.interpolationQuality = .none
                 snapshot.draw(in: CGRect(origin: .zero, size: imageSize))
             }
         }
-        
+
         Task<Void, Never>(priority: .userInitiated) {
-            do
-            {
+            do {
                 try await PHPhotoLibrary.requestAuthorizationIfNeeded()
                 try await PHPhotoLibrary.shared().saveScreenshotData(screenshotData)
-                
-                let toastView = RSTToastView(text: NSLocalizedString("Saved screenshot to Photos", comment: ""), detailText: nil)
+
+                let toastView = RSTToastView(
+                    text: NSLocalizedString("Saved screenshot to Photos", comment: ""),
+                    detailText: nil)
+                self.show(toastView)
+            } catch {
+                let toastView = RSTToastView(
+                    text: NSLocalizedString("Unable to Save Screenshot", comment: ""),
+                    detailText: error.localizedDescription)
                 self.show(toastView)
             }
-            catch
-            {
-                let toastView = RSTToastView(text: NSLocalizedString("Unable to Save Screenshot", comment: ""), detailText: error.localizedDescription)
-                self.show(toastView)
-            }
-            
+
             self.pauseViewController?.screenshotItem?.isSelected = false
         }
     }
-    
-    func performReverseScreensAction()
-    {
-        guard let controllerSkin = self.controllerView.controllerSkin as? ControllerSkin else { return }
+
+    func performReverseScreensAction() {
+        guard let controllerSkin = self.controllerView.controllerSkin as? ControllerSkin else {
+            return
+        }
         controllerSkin.isReversingScreens.toggle()
-        
+
         self.updateControllerSkin()
     }
 }
 
-private extension GameViewController
-{
-    func connectExternalDisplay(for scene: ExternalDisplayScene)
-    {
+extension GameViewController {
+    fileprivate func connectExternalDisplay(for scene: ExternalDisplayScene) {
         // hasKeyboardFocus is false when enabling AirPlay via Control Center, so can't rely on that.
         // guard let windowScene = self.view.window?.windowScene, windowScene.hasKeyboardFocus else { return }
-        
+
         // We need to receive gameViewController(_:didUpdateGameViews:) callback.
         scene.gameViewController.delegate = self
-                
+
         self.updateControllerSkin()
-        
+
         // Implicitly called from updateControllerSkin()
         // self.updateExternalDisplay()
-        
+
         self.updateGameViews()
     }
-    
-    func updateExternalDisplay()
-    {
-        guard let scene = UIApplication.shared.externalDisplayScene, scene.gameViewController.delegate === self else { return }
-        
-        if scene.game?.fileURL != self.game?.fileURL
-        {
+
+    fileprivate func updateExternalDisplay() {
+        guard let scene = UIApplication.shared.externalDisplayScene,
+            scene.gameViewController.delegate === self
+        else { return }
+
+        if scene.game?.fileURL != self.game?.fileURL {
             scene.game = self.game
         }
-        
+
         var controllerSkin: ControllerSkinProtocol?
-        
-        if let game = self.game, let system = System(gameType: game.type), let traits = scene.gameViewController.controllerView.controllerSkinTraits
+
+        if let game = self.game, let system = System(gameType: game.type),
+            let traits = scene.gameViewController.controllerView.controllerSkinTraits
         {
             //TODO: Support per-game AirPlay skins
-            if let preferredControllerSkin = Settings.preferredControllerSkin(for: system, traits: traits, forExternalController: false), preferredControllerSkin.supports(traits)
+            if let preferredControllerSkin = Settings.preferredControllerSkin(
+                for: system, traits: traits, forExternalController: false),
+                preferredControllerSkin.supports(traits)
             {
                 // Use preferredControllerSkin directly.
                 controllerSkin = preferredControllerSkin
-            }
-            else if let standardSkin = DeltaCore.ControllerSkin.standardControllerSkin(for: game.type), standardSkin.supports(traits)
+            } else if let standardSkin = DeltaCore.ControllerSkin.standardControllerSkin(
+                for: game.type), standardSkin.supports(traits)
             {
-                if standardSkin.hasTouchScreen(for: traits)
-                {
+                if standardSkin.hasTouchScreen(for: traits) {
                     // Only use TouchControllerSkin for standard controller skins with touch screens.
-                    
-                    var touchControllerSkin = DeltaCore.TouchControllerSkin(controllerSkin: standardSkin)
+
+                    var touchControllerSkin = DeltaCore.TouchControllerSkin(
+                        controllerSkin: standardSkin)
                     touchControllerSkin.screenLayoutAxis = Settings.features.dsAirPlay.layoutAxis
 
-                    if Settings.features.dsAirPlay.topScreenOnly
-                    {
+                    if Settings.features.dsAirPlay.topScreenOnly {
                         touchControllerSkin.screenPredicate = { !$0.isTouchScreen }
                     }
 
                     controllerSkin = touchControllerSkin
-                }
-                else
-                {
+                } else {
                     controllerSkin = standardSkin
                 }
             }
         }
-        
+
         scene.gameViewController.controllerView.controllerSkin = controllerSkin
-        
+
         // Implicitly called when assigning controllerSkin.
         // self.updateExternalDisplayGameViews()
     }
-    
-    func updateExternalDisplayGameViews()
-    {
-        guard let scene = UIApplication.shared.externalDisplayScene, let emulatorCore = self.emulatorCore, scene.gameViewController.delegate === self else { return }
-        
-        for gameView in scene.gameViewController.gameViews
-        {
+
+    fileprivate func updateExternalDisplayGameViews() {
+        guard let scene = UIApplication.shared.externalDisplayScene,
+            let emulatorCore = self.emulatorCore, scene.gameViewController.delegate === self
+        else { return }
+
+        for gameView in scene.gameViewController.gameViews {
             emulatorCore.add(gameView)
             gameView.exclusiveVideoManager = emulatorCore.videoManager
-            
+
             // GameView must layout subviews after resetting EAGLContext before it can render frames.
             // Fixes external display screen sometimes not updating when switching back to paused game.
             gameView.setNeedsLayout()
             gameView.layoutIfNeeded()
         }
     }
-    
-    func disconnectExternalDisplay(for scene: ExternalDisplayScene)
-    {
-        if scene.gameViewController.delegate === self
-        {
+
+    fileprivate func disconnectExternalDisplay(for scene: ExternalDisplayScene) {
+        if scene.gameViewController.delegate === self {
             scene.gameViewController.delegate = nil
         }
-        
-        for gameView in scene.gameViewController.gameViews
-        {
+
+        for gameView in scene.gameViewController.gameViews {
             self.emulatorCore?.remove(gameView)
         }
-        
-        self.updateControllerSkin() // Reset TouchControllerSkin + GameViews
-        self.updateGameViews() // Ensure we re-enable GameView and hide AirPlay message.
+
+        self.updateControllerSkin()  // Reset TouchControllerSkin + GameViews
+        self.updateGameViews()  // Ensure we re-enable GameView and hide AirPlay message.
     }
 }
 
 //MARK: - GameViewControllerDelegate -
 /// GameViewControllerDelegate
-extension GameViewController: GameViewControllerDelegate
-{
-    func gameViewController(_ gameViewController: DeltaCore.GameViewController, handleMenuInputFrom gameController: GameController)
-    {
+extension GameViewController: GameViewControllerDelegate {
+    func gameViewController(
+        _ gameViewController: DeltaCore.GameViewController,
+        handleMenuInputFrom gameController: GameController
+    ) {
         guard gameViewController == self else { return }
-        
+
         guard !self.ignoreNextMenuInput else {
             self.ignoreNextMenuInput = false
             return
         }
-        
-        if let pausingGameController = self.pausingGameController
-        {
+
+        if let pausingGameController = self.pausingGameController {
             guard pausingGameController == gameController else { return }
         }
-        
-        if self.isSelectingSustainedButtons
-        {
+
+        if self.isSelectingSustainedButtons {
             self.hideSustainButtonView()
         }
-        
-        if let pauseViewController = self.pauseViewController, !self.isSelectingSustainedButtons
-        {
+
+        if let pauseViewController = self.pauseViewController, !self.isSelectingSustainedButtons {
             pauseViewController.dismiss()
-        }
-        else if self.presentedViewController == nil
-        {
+        } else if self.presentedViewController == nil {
             self.pauseEmulation()
             self.controllerView.resignFirstResponder()
-            
+
             self.performSegue(withIdentifier: "pause", sender: gameController)
         }
     }
-    
-    func gameViewControllerShouldPauseEmulation(_ gameViewController: DeltaCore.GameViewController) -> Bool
+
+    func gameViewControllerShouldPauseEmulation(_ gameViewController: DeltaCore.GameViewController)
+        -> Bool
     {
         guard gameViewController == self else { return true }
-        
-        if let emulatorCore, emulatorCore.isWirelessMultiplayerActive
-        {
+
+        if let emulatorCore, emulatorCore.isWirelessMultiplayerActive {
             // Disable pausing game when wireless multiplayer is active.
             return false
         }
-        
+
         return true
     }
-    
-    func gameViewControllerShouldResumeEmulation(_ gameViewController: DeltaCore.GameViewController) -> Bool
+
+    func gameViewControllerShouldResumeEmulation(_ gameViewController: DeltaCore.GameViewController)
+        -> Bool
     {
         guard gameViewController == self else { return false }
         guard !self.isContinuingHandoff else { return false }
         guard !self.isPreparingAchievements else { return false }
-        
+
         var result = false
-        
+
         rst_dispatch_sync_on_main_thread {
-            result = (self.presentedViewController == nil || self.presentedViewController?.isDisappearing == true) && !self.isSelectingSustainedButtons && self.view.window != nil
+            result =
+                (self.presentedViewController == nil
+                    || self.presentedViewController?.isDisappearing == true)
+                && !self.isSelectingSustainedButtons && self.view.window != nil
         }
-        
+
         return result
     }
-    
-    func gameViewController(_ gameViewController: DeltaCore.GameViewController, didUpdateGameViews gameViews: [GameView])
-    {
+
+    func gameViewController(
+        _ gameViewController: DeltaCore.GameViewController, didUpdateGameViews gameViews: [GameView]
+    ) {
         // gameViewController could be `self` or ExternalDisplayScene.gameViewController.
-        
-        if gameViewController == self
-        {
+
+        if gameViewController == self {
             self.updateGameViews()
-        }
-        else
-        {
+        } else {
             self.updateExternalDisplayGameViews()
         }
     }
-    
-    func gameViewController(_ gameViewController: DeltaCore.GameViewController, optionsFor game: GameProtocol) -> [EmulatorCore.Option: Any]
-    {
-        if let game = game as? Game, game.type == .n64
-        {
-            if let useOpenGLES2 = game.settings[.openGLES2] as? Bool, useOpenGLES2
-            {
-                return [.openGLES2: true]
-            }
-            else
-            {
-                return [:]
-            }
+
+    func gameViewController(
+        _ gameViewController: DeltaCore.GameViewController, optionsFor game: GameProtocol
+    ) -> [EmulatorCore.Option: Any] {
+        var options: [EmulatorCore.Option: Any] = [
+            .metal: ExperimentalFeatures.shared.metal.isEnabled
+        ]
+
+        if #available(iOS 18, macOS 15, *), ProcessInfo.processInfo.isiOSAppOnMac {
+            // macOS 15 Sequoia no longer supports rendering bitmap CIImages with OpenGL ES,
+            // so always render with Metal.
+            options[.metal] = true
         }
-        else
-        {
-            var options: [EmulatorCore.Option: Any] = [.metal: ExperimentalFeatures.shared.metal.isEnabled]
-            
-            if #available(iOS 18, macOS 15, *), ProcessInfo.processInfo.isiOSAppOnMac
-            {
-                // macOS 15 Sequoia no longer supports rendering bitmap CIImages with OpenGL ES,
-                // so always render with Metal.
-                options[.metal] = true
-            }
-            
-            return options
-        }
+
+        return options
     }
 }
 
 //MARK: - Gestures -
 /// Gestures
-extension GameViewController
-{
-    private func makeMenuButtonGestureRecognizers() -> Set<UIGestureRecognizer>
-    {
+extension GameViewController {
+    private func makeMenuButtonGestureRecognizers() -> Set<UIGestureRecognizer> {
         var gestureRecognizers = Set<UIGestureRecognizer>()
-        
-        let fastForwardSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(GameViewController.handleSwipeGesture(_:)))
+
+        let fastForwardSwipeGestureRecognizer = UISwipeGestureRecognizer(
+            target: self, action: #selector(GameViewController.handleSwipeGesture(_:)))
         fastForwardSwipeGestureRecognizer.delegate = self
         fastForwardSwipeGestureRecognizer.direction = [.left, .right]
         gestureRecognizers.insert(fastForwardSwipeGestureRecognizer)
-        
-        let quickLoadGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(GameViewController.handleQuickLoadGesture(_:)))
+
+        let quickLoadGestureRecognizer = UILongPressGestureRecognizer(
+            target: self, action: #selector(GameViewController.handleQuickLoadGesture(_:)))
         quickLoadGestureRecognizer.delegate = self
         quickLoadGestureRecognizer.numberOfTapsRequired = 0
         gestureRecognizers.insert(quickLoadGestureRecognizer)
-        
-        let quickSaveGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(GameViewController.handleQuickSaveGesture(_:)))
+
+        let quickSaveGestureRecognizer = UITapGestureRecognizer(
+            target: self, action: #selector(GameViewController.handleQuickSaveGesture(_:)))
         quickSaveGestureRecognizer.delegate = self
         quickSaveGestureRecognizer.numberOfTapsRequired = 2
         quickSaveGestureRecognizer.require(toFail: quickLoadGestureRecognizer)
         gestureRecognizers.insert(quickSaveGestureRecognizer)
-        
+
         return gestureRecognizers
     }
-    
-    override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool
-    {
+
+    override func gestureRecognizer(
+        _ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch
+    ) -> Bool {
         guard super.gestureRecognizer(gestureRecognizer, shouldReceive: touch) else { return false }
-        
-        if self.menuButtonGestureRecognizers.contains(gestureRecognizer) || self.menuButtonKeyboardGestureRecognizers.contains(gestureRecognizer)
+
+        if self.menuButtonGestureRecognizers.contains(gestureRecognizer)
+            || self.menuButtonKeyboardGestureRecognizers.contains(gestureRecognizer)
         {
             let shouldBegin = self.isMenuButtonHeldDown && Settings.isQuickGesturesEnabled
             return shouldBegin
         }
-        
+
         // Default to true, as if this method wasn't overridden.
         return true
     }
-    
-    @objc private func handleSwipeGesture(_ gestureRecognizer: UISwipeGestureRecognizer)
-    {
+
+    @objc private func handleSwipeGesture(_ gestureRecognizer: UISwipeGestureRecognizer) {
         guard let emulatorCore = self.emulatorCore else { return }
-        
-        let isFastForwarding = (emulatorCore.rate != emulatorCore.deltaCore.supportedRates.lowerBound)
+
+        let isFastForwarding =
+            (emulatorCore.rate != emulatorCore.deltaCore.supportedRates.lowerBound)
         self.performFastForwardAction(activate: !isFastForwarding)
-        
+
         self.ignoreNextMenuInput = true
     }
-    
-    @objc private func handleQuickSaveGesture(_ gestureRecognizer: UITapGestureRecognizer)
-    {
+
+    @objc private func handleQuickSaveGesture(_ gestureRecognizer: UITapGestureRecognizer) {
         self.performQuickSaveAction()
         self.ignoreNextMenuInput = true
     }
-    
-    @objc private func handleQuickLoadGesture(_ gestureRecognizer: UILongPressGestureRecognizer)
-    {
+
+    @objc private func handleQuickLoadGesture(_ gestureRecognizer: UILongPressGestureRecognizer) {
         self.performQuickLoadAction()
         self.ignoreNextMenuInput = true
-        
+
         // Cancel gesture to prevent additional callbacks
         gestureRecognizer.isEnabled = false
         gestureRecognizer.isEnabled = true
     }
 }
 
-private extension GameViewController
-{
-    func show(_ toastView: RSTToastView, in superview: UIView? = nil, duration: TimeInterval = 3.0)
-    {
+extension GameViewController {
+    fileprivate func show(
+        _ toastView: RSTToastView, in superview: UIView? = nil, duration: TimeInterval = 3.0
+    ) {
         let superview = superview ?? self.view!
-        
+
         toastView.textLabel.textAlignment = .center
         toastView.presentationEdge = .top
         toastView.show(in: superview, duration: duration)
     }
-    
-    func showJITEnabledAlert()
-    {
-        guard !self.presentedJITAlert, self.presentedViewController == nil, self.game != nil else { return }
+
+    fileprivate func showJITEnabledAlert() {
+        guard !self.presentedJITAlert, self.presentedViewController == nil, self.game != nil else {
+            return
+        }
         self.presentedJITAlert = true
-        
-        func presentToastView()
-        {
+
+        func presentToastView() {
             let detailText: String?
             let duration: TimeInterval
-            
-            if UserDefaults.standard.jitEnabledAlertCount < 3
-            {
-                detailText = NSLocalizedString("You can now Fast Forward DS games up to 3x speed.", comment: "")
+
+            if UserDefaults.standard.jitEnabledAlertCount < 3 {
+                detailText = NSLocalizedString(
+                    "You can now Fast Forward DS games up to 3x speed.", comment: "")
                 duration = 5.0
-            }
-            else
-            {
+            } else {
                 detailText = nil
                 duration = 2.0
             }
-            
-            let toastView = RSTToastView(text: NSLocalizedString("JIT Compilation Enabled", comment: ""), detailText: detailText)
+
+            let toastView = RSTToastView(
+                text: NSLocalizedString("JIT Compilation Enabled", comment: ""),
+                detailText: detailText)
             toastView.edgeOffset.vertical = 8
             self.show(toastView, duration: duration)
-            
+
             UserDefaults.standard.jitEnabledAlertCount += 1
         }
-        
+
         DispatchQueue.main.async {
-            if let transitionCoordinator = self.transitionCoordinator
-            {
+            if let transitionCoordinator = self.transitionCoordinator {
                 transitionCoordinator.animate(alongsideTransition: nil) { (context) in
                     presentToastView()
                 }
-            }
-            else
-            {
+            } else {
                 presentToastView()
             }
         }
     }
-    
+
     @available(iOS 15, *)
-    func chooseWFCServer()
-    {
+    fileprivate func chooseWFCServer() {
         let viewController = WFCServersView.makeViewController()
-        
+
         let navigationController = UINavigationController(rootViewController: viewController)
         navigationController.isModalInPresentation = true
-        
-        func finish()
-        {
-            if let preferredWFCServer = Settings.preferredWFCServer
-            {
-                var message = NSLocalizedString("Please restart this game to apply your changes.", comment: "")
-                
-                if FileManager.default.fileExists(atPath: MelonDSEmulatorBridge.shared.firmwareURL.path)
+
+        func finish() {
+            if let preferredWFCServer = Settings.preferredWFCServer {
+                var message = NSLocalizedString(
+                    "Please restart this game to apply your changes.", comment: "")
+
+                if FileManager.default.fileExists(
+                    atPath: MelonDSEmulatorBridge.shared.firmwareURL.path)
                 {
                     message += "\n\n"
-                    message += NSLocalizedString("You may need to also “Erase Nintendo WFC Configuration” in-game.", comment: "")
+                    message += NSLocalizedString(
+                        "You may need to also “Erase Nintendo WFC Configuration” in-game.",
+                        comment: "")
                 }
-                
-                let alertController = UIAlertController(title: NSLocalizedString("Restart Required", comment: ""), message: message, preferredStyle: .alert)
-                alertController.addAction(UIAlertAction(title: NSLocalizedString("Restart", comment: ""), style: .destructive) { _ in
-                    if let emulatorBridge = self.emulatorCore?.deltaCore.emulatorBridge as? MelonDSEmulatorBridge
-                    {
-                        emulatorBridge.wfcDNS = preferredWFCServer
-                    }
-                    
-                    self.emulatorCore?.stop()
-                    self.emulatorCore?.start()
-                    
-                    navigationController.dismiss(animated: true)
-                })
-                alertController.addAction(UIAlertAction(title: NSLocalizedString("Later", comment: ""), style: .cancel) { _ in
-                    self.emulatorCore?.resume()
-                    navigationController.dismiss(animated: true)
-                })
-                
+
+                let alertController = UIAlertController(
+                    title: NSLocalizedString("Restart Required", comment: ""), message: message,
+                    preferredStyle: .alert)
+                alertController.addAction(
+                    UIAlertAction(
+                        title: NSLocalizedString("Restart", comment: ""), style: .destructive
+                    ) { _ in
+                        if let emulatorBridge = self.emulatorCore?.deltaCore.emulatorBridge
+                            as? MelonDSEmulatorBridge
+                        {
+                            emulatorBridge.wfcDNS = preferredWFCServer
+                        }
+
+                        self.emulatorCore?.stop()
+                        self.emulatorCore?.start()
+
+                        navigationController.dismiss(animated: true)
+                    })
+                alertController.addAction(
+                    UIAlertAction(title: NSLocalizedString("Later", comment: ""), style: .cancel) {
+                        _ in
+                        self.emulatorCore?.resume()
+                        navigationController.dismiss(animated: true)
+                    })
+
                 viewController.present(alertController, animated: true)
-            }
-            else
-            {
+            } else {
                 // No changes, so just resume + dismiss navigationController.
                 self.emulatorCore?.resume()
                 navigationController.dismiss(animated: true)
             }
         }
-        
-        let doneButton = UIBarButtonItem(systemItem: .done, primaryAction: UIAction { _ in
-            finish()
-        })
+
+        let doneButton = UIBarButtonItem(
+            systemItem: .done,
+            primaryAction: UIAction { _ in
+                finish()
+            })
         viewController.navigationItem.rightBarButtonItem = doneButton
-        
+
         self.present(navigationController, animated: true)
     }
 }
 
 //MARK: - Handoff -
-extension GameViewController: NSUserActivityDelegate
-{
-    func prepareForHandoff()
-    {
+extension GameViewController: NSUserActivityDelegate {
+    func prepareForHandoff() {
         guard !self.isContinuingHandoff else { return }
         self.isContinuingHandoff = true
-        
+
         self.updateGameViews()
-        
+
         self.handoffPlaceholderView.alpha = 1.0
         self.handoffPlaceholderView.isHidden = false
     }
-    
-    func finishHandoff()
-    {
+
+    func finishHandoff() {
         guard self.isContinuingHandoff else { return }
         self.isContinuingHandoff = false
-        
+
         self.updateGameViews()
-        
+
         UIView.animate(withDuration: 0.4) {
             self.handoffPlaceholderView.alpha = 0.0
         } completion: { _ in
             self.handoffPlaceholderView.isHidden = true
         }
     }
-    
-    func startGameActivity()
-    {
-        if let userActivity = self.view.window?.windowScene?.userActivity, userActivity.activityType == NSUserActivity.playGameActivityType,
-           let gameID = userActivity.userInfo?[NSUserActivity.gameIDKey] as? String, let game = self.game as? Game, game.identifier == gameID
+
+    func startGameActivity() {
+        if let userActivity = self.view.window?.windowScene?.userActivity,
+            userActivity.activityType == NSUserActivity.playGameActivityType,
+            let gameID = userActivity.userInfo?[NSUserActivity.gameIDKey] as? String,
+            let game = self.game as? Game, game.identifier == gameID
         {
             // There is an existing activity for this game, so make it the current activity.
             userActivity.becomeCurrent()
-        }
-        else if let game = self.game as? Game
-        {
+        } else if let game = self.game as? Game {
             // No existing activity, or activity is different type, so create new activity.
-            
+
             let userActivity = NSUserActivity(game: game)
             userActivity.delegate = self
             userActivity.isEligibleForHandoff = true
             userActivity.supportsContinuationStreams = true
-            userActivity.userInfo?[NSUserActivity.isSaveStateAvailable] = true // Allow transferring save states via Handoff
+            userActivity.userInfo?[NSUserActivity.isSaveStateAvailable] = true  // Allow transferring save states via Handoff
             userActivity.requiredUserInfoKeys?.insert(NSUserActivity.isSaveStateAvailable)
             userActivity.becomeCurrent()
             self.view.window?.windowScene?.userActivity = userActivity
-        }
-        else
-        {
+        } else {
             // No game, so stop current activity instead.
             self.stopGameActivity()
         }
     }
-    
-    func pauseGameActivity()
-    {
-        guard let userActivity = self.view.window?.windowScene?.userActivity, userActivity.activityType == NSUserActivity.playGameActivityType else { return }
+
+    func pauseGameActivity() {
+        guard let userActivity = self.view.window?.windowScene?.userActivity,
+            userActivity.activityType == NSUserActivity.playGameActivityType
+        else { return }
         userActivity.resignCurrent()
     }
-    
-    func stopGameActivity()
-    {
+
+    func stopGameActivity() {
         self.pauseGameActivity()
         self.view.window?.windowScene?.userActivity = nil
     }
-    
-    func userActivity(_ userActivity: NSUserActivity, didReceive inputStream: InputStream, outputStream: OutputStream)
-    {
+
+    func userActivity(
+        _ userActivity: NSUserActivity, didReceive inputStream: InputStream,
+        outputStream: OutputStream
+    ) {
         inputStream.open()
         outputStream.open()
-        
+
         let isRunning = (self.emulatorCore?.state == .running)
-        if isRunning
-        {
+        if isRunning {
             self.pauseEmulation()
         }
-        
+
         let temporaryURL = FileManager.default.uniqueTemporaryURL()
         self.emulatorCore?.saveSaveState(to: temporaryURL)
-        
+
         Task<Void, Never> {
-            do
-            {
-                if #available(iOS 16, *)
-                {
+            do {
+                if #available(iOS 16, *) {
                     // Wait for save state to flush to disk (necessary for N64).
                     try await Task.sleep(for: .seconds(0.5))
                 }
@@ -2005,22 +1938,21 @@ extension GameViewController: NSUserActivityDelegate
                 defer {
                     try? FileManager.default.removeItem(at: temporaryURL)
                 }
-                
+
                 let data = try Data(contentsOf: temporaryURL)
                 try await outputStream.send(data)
-                
+
                 self.quitEmulation()
-            }
-            catch
-            {
-                Logger.main.error("Failed to send save state for Handoff. \(error.localizedDescription, privacy: .public)")
-                
-                if isRunning
-                {
+            } catch {
+                Logger.main.error(
+                    "Failed to send save state for Handoff. \(error.localizedDescription, privacy: .public)"
+                )
+
+                if isRunning {
                     self.resumeEmulation()
                 }
             }
-            
+
             inputStream.close()
             outputStream.close()
         }
@@ -2028,36 +1960,41 @@ extension GameViewController: NSUserActivityDelegate
 }
 
 //MARK: - RetroAchievements
-private extension GameViewController
-{
-    func startTrackingAchievements()
-    {
-        NotificationCenter.default.removeObserver(self, name: AchievementsTracker.didUnlockAchievementNotification, object: self.achievementsTracker)
-        
-        guard let emulatorCore, let game = self.game as? Game, ExperimentalFeatures.shared.retroAchievements.isEnabled else { return }
-        
+extension GameViewController {
+    fileprivate func startTrackingAchievements() {
+        NotificationCenter.default.removeObserver(
+            self, name: AchievementsTracker.didUnlockAchievementNotification,
+            object: self.achievementsTracker)
+
+        guard let emulatorCore, let game = self.game as? Game,
+            ExperimentalFeatures.shared.retroAchievements.isEnabled
+        else { return }
+
         self.isPreparingAchievements = true
-        
+
         Task<Void, Never> {
-            do
-            {
+            do {
                 let tracker = try AchievementsManager.shared.makeTracker(for: emulatorCore)
                 try await tracker.start()
-                
-                NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.didUnlockAchievement(with:)), name: AchievementsTracker.didUnlockAchievementNotification, object: tracker)
-                
+
+                NotificationCenter.default.addObserver(
+                    self, selector: #selector(GameViewController.didUnlockAchievement(with:)),
+                    name: AchievementsTracker.didUnlockAchievementNotification, object: tracker)
+
                 self.achievementsTracker = tracker
-            }
-            catch
-            {
-                Logger.main.error("Failed to start tracking achievements for game \(game.name). \(error.localizedDescription, privacy: .public)")
-                
-                let toastView = RSTToastView(text: NSLocalizedString("Unable to Track Achievements", comment: ""), detailText: error.localizedDescription)
+            } catch {
+                Logger.main.error(
+                    "Failed to start tracking achievements for game \(game.name). \(error.localizedDescription, privacy: .public)"
+                )
+
+                let toastView = RSTToastView(
+                    text: NSLocalizedString("Unable to Track Achievements", comment: ""),
+                    detailText: error.localizedDescription)
                 self.show(toastView)
             }
-            
+
             self.isPreparingAchievements = false
-            
+
             DispatchQueue.global(qos: .userInitiated).async {
                 // Call from non-main thread to avoid potential deadlock.
                 self.resumeEmulation()
@@ -2067,448 +2004,474 @@ private extension GameViewController
 }
 
 //MARK: - Notifications -
-private extension GameViewController
-{
-    @objc func didEnterBackground(with notification: Notification)
-    {
+extension GameViewController {
+    @objc fileprivate func didEnterBackground(with notification: Notification) {
         self.updateAutoSaveState()
-        
-        if let emulatorCore, emulatorCore.isWirelessMultiplayerActive
-        {
-            self.onlineBackgroundTaskID = UIApplication.shared.beginBackgroundTask(withName: "Online Background Connection") { [weak self] in
+
+        if let emulatorCore, emulatorCore.isWirelessMultiplayerActive {
+            self.onlineBackgroundTaskID = UIApplication.shared.beginBackgroundTask(
+                withName: "Online Background Connection"
+            ) { [weak self] in
                 guard let self, let taskID = self.onlineBackgroundTaskID else { return }
                 UIApplication.shared.endBackgroundTask(taskID)
                 self.onlineBackgroundTaskID = nil
             }
         }
     }
-    
-    @objc func managedObjectContextDidChange(with notification: Notification)
-    {
-        guard let deletedObjects = notification.userInfo?[NSDeletedObjectsKey] as? Set<NSManagedObject> else { return }
+
+    @objc fileprivate func managedObjectContextDidChange(with notification: Notification) {
+        guard
+            let deletedObjects = notification.userInfo?[NSDeletedObjectsKey]
+                as? Set<NSManagedObject>
+        else { return }
         guard let game = self.game as? Game else { return }
-        
-        if deletedObjects.contains(game)
-        {
+
+        if deletedObjects.contains(game) {
             self.emulatorCore?.gameViews.forEach { $0.inputImage = nil }
             self.game = nil
         }
     }
-    
-    @objc func settingsDidChange(with notification: Notification)
-    {
-        guard let settingsName = notification.userInfo?[Settings.NotificationUserInfoKey.name] as? Settings.Name else { return }
-        
+
+    @objc fileprivate func settingsDidChange(with notification: Notification) {
+        guard
+            let settingsName = notification.userInfo?[Settings.NotificationUserInfoKey.name]
+                as? Settings.Name
+        else { return }
+
         switch settingsName
         {
-        case .localControllerPlayerIndex, .isButtonHapticFeedbackEnabled, .isThumbstickHapticFeedbackEnabled:
+        case .localControllerPlayerIndex, .isButtonHapticFeedbackEnabled,
+            .isThumbstickHapticFeedbackEnabled:
             self.updateControllers()
 
         case .preferredControllerSkin:
             guard
-                let system = notification.userInfo?[Settings.NotificationUserInfoKey.system] as? System,
-                let traits = notification.userInfo?[Settings.NotificationUserInfoKey.traits] as? DeltaCore.ControllerSkin.Traits
+                let system = notification.userInfo?[Settings.NotificationUserInfoKey.system]
+                    as? System,
+                let traits = notification.userInfo?[Settings.NotificationUserInfoKey.traits]
+                    as? DeltaCore.ControllerSkin.Traits
             else { return }
-                        
-            if system.gameType == self.game?.type && traits.orientation == self.controllerView.controllerSkinTraits?.orientation
+
+            if system.gameType == self.game?.type
+                && traits.orientation == self.controllerView.controllerSkinTraits?.orientation
             {
                 self.updateControllerSkin()
             }
-            
+
         case .translucentControllerSkinOpacity:
-            self.controllerView.translucentControllerSkinOpacity = Settings.translucentControllerSkinOpacity
-            
+            self.controllerView.translucentControllerSkinOpacity =
+                Settings.translucentControllerSkinOpacity
+
         case .respectSilentMode:
             self.updateAudio()
-                
+
         case .syncingService, .isAltJITEnabled: break
-            
-        case Settings.features.dsAirPlay.$topScreenOnly.settingsKey: fallthrough
-        case Settings.features.dsAirPlay.$layoutAxis.settingsKey:
+
+        case Settings.features.dsAirPlay.$topScreenOnly.settingsKey,
+            Settings.features.dsAirPlay.$layoutAxis.settingsKey:
             self.updateExternalDisplay()
-        
-        case ExperimentalFeatures.shared.airPlaySkins.settingsKey: fallthrough
-        case _ where settingsName.rawValue.hasPrefix(ExperimentalFeatures.shared.airPlaySkins.settingsKey.rawValue):
+
+        case ExperimentalFeatures.shared.airPlaySkins.settingsKey,
+            _
+        where settingsName.rawValue.hasPrefix(
+            ExperimentalFeatures.shared.airPlaySkins.settingsKey.rawValue):
             // Update whenever any of the AirPlay skins have changed.
             self.updateExternalDisplay()
-            
-        case .pauseWhileInactive: self.automaticallyPausesWhileInactive = Settings.pauseWhileInactive
+
+        case .pauseWhileInactive:
+            self.automaticallyPausesWhileInactive = Settings.pauseWhileInactive
         case .supportsExternalDisplays:
             // May return nil if Settings.supportsExternalDisplays is false
             // guard let externalDisplayScene = UIApplication.shared.externalDisplayScene else { break }
-            
-            guard let scene = UIApplication.shared.connectedScenes.compactMap({ $0 as? ExternalDisplayScene }).first(where: { $0.session.role == .windowExternalDisplay }) else { break }
-            
-            if Settings.supportsExternalDisplays /*, scene.hasKeyboardFocus */ // Connect all scenes, not just one with keyboard focus.
+
+            guard
+                let scene = UIApplication.shared.connectedScenes.compactMap({
+                    $0 as? ExternalDisplayScene
+                }).first(where: { $0.session.role == .windowExternalDisplay })
+            else { break }
+
+            if Settings.supportsExternalDisplays /*, scene.hasKeyboardFocus */// Connect all scenes, not just one with keyboard focus.
             {
                 self.connectExternalDisplay(for: scene)
-            }
-            else
-            {
+            } else {
                 self.disconnectExternalDisplay(for: scene)
             }
-            
-            
+
         default: break
         }
     }
-    
-    @objc func deepLinkControllerWillLaunchGame(with notification: Notification)
-    {
-        guard let game = notification.userInfo?[DeepLink.Key.game] as? Game, let scene = notification.userInfo?[DeepLink.Key.scene] as? UIScene, scene == self.view.window?.windowScene else { return }
-        
+
+    @objc fileprivate func deepLinkControllerWillLaunchGame(with notification: Notification) {
+        guard let game = notification.userInfo?[DeepLink.Key.game] as? Game,
+            let scene = notification.userInfo?[DeepLink.Key.scene] as? UIScene,
+            scene == self.view.window?.windowScene
+        else { return }
+
         // Game won't start until we call finishHandoff()
         self.game = game
         self.prepareForHandoff()
-        
+
         self.returnToGameViewController()
     }
-    
-    @objc func deepLinkControllerLaunchGame(with notification: Notification)
-    {
-        guard let game = notification.userInfo?[DeepLink.Key.game] as? Game, let scene = notification.userInfo?[DeepLink.Key.scene] as? UIScene, scene == self.view.window?.windowScene else { return }
-        
+
+    @objc fileprivate func deepLinkControllerLaunchGame(with notification: Notification) {
+        guard let game = notification.userInfo?[DeepLink.Key.game] as? Game,
+            let scene = notification.userInfo?[DeepLink.Key.scene] as? UIScene,
+            scene == self.view.window?.windowScene
+        else { return }
+
         let previousGame = self.game
         self.game = game
-        
-        if self.isContinuingHandoff
-        {
+
+        if self.isContinuingHandoff {
             let error = notification.userInfo?[DeepLink.Key.error] as? Error
             self.finishHandoff()
-            
+
             if let saveState = notification.userInfo?[DeepLink.Key.saveState] as? SaveStateProtocol
             {
                 // Included save state with deep link, so load it when emulator core is started.
                 // Note: Will be automatically deleted when loaded, so make a copy if it's important.
                 _deepLinkResumingSaveState = saveState
             }
-            
-            if let error
-            {
-                let toastView = RSTToastView(text: NSLocalizedString("Handoff Failed", comment: ""), detailText: error.localizedDescription)
+
+            if let error {
+                let toastView = RSTToastView(
+                    text: NSLocalizedString("Handoff Failed", comment: ""),
+                    detailText: error.localizedDescription)
                 self.show(toastView)
             }
-        }
-        else if let pausedSaveState = self.pausedSaveState, game == (previousGame as? Game)
-        {
+        } else if let pausedSaveState = self.pausedSaveState, game == (previousGame as? Game) {
             // Launching current game via deep link, so we store a copy of the paused save state to resume when emulator core is started.
-            
-            do
-            {
+
+            do {
                 let temporaryURL = FileManager.default.uniqueTemporaryURL()
                 try FileManager.default.copyItem(at: pausedSaveState.fileURL, to: temporaryURL)
-                
-                _deepLinkResumingSaveState = DeltaCore.SaveState(fileURL: temporaryURL, gameType: game.type)
-            }
-            catch
-            {
-                Logger.main.error("Failed to resume save state after deep link. \(error.localizedDescription, privacy: .public)")
+
+                _deepLinkResumingSaveState = DeltaCore.SaveState(
+                    fileURL: temporaryURL, gameType: game.type)
+            } catch {
+                Logger.main.error(
+                    "Failed to resume save state after deep link. \(error.localizedDescription, privacy: .public)"
+                )
             }
         }
-                
-        self.returnToGameViewController() {
+
+        self.returnToGameViewController {
             self.resumeEmulation()
         }
     }
-    
-    func returnToGameViewController(completion: (() -> Void)? = nil)
-    {
-        if let pauseViewController = self.pauseViewController
-        {
-            let segue = UIStoryboardSegue(identifier: "unwindFromPauseMenu", source: pauseViewController, destination: self)
+
+    fileprivate func returnToGameViewController(completion: (() -> Void)? = nil) {
+        if let pauseViewController = self.pauseViewController {
+            let segue = UIStoryboardSegue(
+                identifier: "unwindFromPauseMenu", source: pauseViewController, destination: self)
             self.unwindFromPauseViewController(segue)
-        }
-        else if
-            let navigationController = self.presentedViewController as? UINavigationController,
-            let pageViewController = navigationController.topViewController?.children.first as? UIPageViewController,
-            let gameCollectionViewController = pageViewController.viewControllers?.first as? GameCollectionViewController
+        } else if let navigationController = self.presentedViewController
+            as? UINavigationController,
+            let pageViewController = navigationController.topViewController?.children.first
+                as? UIPageViewController,
+            let gameCollectionViewController = pageViewController.viewControllers?.first
+                as? GameCollectionViewController
         {
-            let segue = UIStoryboardSegue(identifier: "unwindFromGames", source: gameCollectionViewController, destination: self)
+            let segue = UIStoryboardSegue(
+                identifier: "unwindFromGames", source: gameCollectionViewController,
+                destination: self)
             self.unwindFromGamesViewController(with: segue)
         }
-        
-        if let presentedViewController = self.presentedViewController
-        {
+
+        if let presentedViewController = self.presentedViewController {
             presentedViewController.dismiss(animated: true, completion: completion)
-        }
-        else
-        {
+        } else {
             completion?()
         }
     }
-    
-    @objc func didActivateGyro(with notification: Notification)
-    {
+
+    @objc fileprivate func didActivateGyro(with notification: Notification) {
         self.isGyroActive = true
-        
-        if #available(iOS 16, *)
-        {
+
+        if #available(iOS 16, *) {
             DispatchQueue.main.async {
                 self.setNeedsUpdateOfSupportedInterfaceOrientations()
-                self.parent?.setNeedsUpdateOfSupportedInterfaceOrientations() // LaunchViewController
+                self.parent?.setNeedsUpdateOfSupportedInterfaceOrientations()  // LaunchViewController
             }
         }
-        
+
         guard !self.presentedGyroAlert else { return }
-        
+
         self.presentedGyroAlert = true
-        
-        func presentToastView()
-        {
-            let toastView = RSTToastView(text: NSLocalizedString("Autorotation Disabled", comment: ""), detailText: NSLocalizedString("Pause game to change orientation.", comment: ""))
+
+        func presentToastView() {
+            let toastView = RSTToastView(
+                text: NSLocalizedString("Autorotation Disabled", comment: ""),
+                detailText: NSLocalizedString("Pause game to change orientation.", comment: ""))
             self.show(toastView)
         }
-        
+
         DispatchQueue.main.async {
-            if let transitionCoordinator = self.transitionCoordinator
-            {
+            if let transitionCoordinator = self.transitionCoordinator {
                 transitionCoordinator.animate(alongsideTransition: nil) { (context) in
                     presentToastView()
                 }
-            }
-            else
-            {
+            } else {
                 presentToastView()
             }
         }
     }
-    
-    @objc func didDeactivateGyro(with notification: Notification)
-    {
+
+    @objc fileprivate func didDeactivateGyro(with notification: Notification) {
         self.isGyroActive = false
-        
-        if #available(iOS 16, *)
-        {
+
+        if #available(iOS 16, *) {
             DispatchQueue.main.async {
                 self.setNeedsUpdateOfSupportedInterfaceOrientations()
-                self.parent?.setNeedsUpdateOfSupportedInterfaceOrientations() // LaunchViewController
+                self.parent?.setNeedsUpdateOfSupportedInterfaceOrientations()  // LaunchViewController
             }
         }
     }
-    
-    @objc func didConnectOnline(with notification: Notification)
-    {
-        guard let bridge = notification.object as? EmulatorBridging, bridge.gameURL == self.game?.fileURL else { return }
-        
+
+    @objc fileprivate func didConnectOnline(with notification: Notification) {
+        guard let bridge = notification.object as? EmulatorBridging,
+            bridge.gameURL == self.game?.fileURL
+        else { return }
+
         guard let emulatorCore, !emulatorCore.isWirelessMultiplayerActive else { return }
-        
-        if Settings.preferredWFCServer == nil && !UserDefaults.standard.didShowChooseWFCServerAlert, #available(iOS 15, *)
+
+        if Settings.preferredWFCServer == nil && !UserDefaults.standard.didShowChooseWFCServerAlert,
+            #available(iOS 15, *)
         {
             // Ask user to choose preferred WFC server before connecting online.
-            
+
             DispatchQueue.main.async {
                 emulatorCore.pause()
-                
-                let alertController = UIAlertController(title: NSLocalizedString("Choose WFC Server", comment: ""), message: NSLocalizedString("You must choose a 3rd-party WFC server to use Nintendo DS online features.", comment: ""), preferredStyle: .alert)
-                alertController.addAction(UIAlertAction(title: NSLocalizedString("Later", comment: ""), style: .cancel) { _ in
-                    emulatorCore.resume()
-                })
-                alertController.addAction(UIAlertAction(title: NSLocalizedString("Choose Server", comment: ""), style: .default) { _ in
-                    self.chooseWFCServer()
-                })
-                
+
+                let alertController = UIAlertController(
+                    title: NSLocalizedString("Choose WFC Server", comment: ""),
+                    message: NSLocalizedString(
+                        "You must choose a 3rd-party WFC server to use Nintendo DS online features.",
+                        comment: ""), preferredStyle: .alert)
+                alertController.addAction(
+                    UIAlertAction(title: NSLocalizedString("Later", comment: ""), style: .cancel) {
+                        _ in
+                        emulatorCore.resume()
+                    })
+                alertController.addAction(
+                    UIAlertAction(
+                        title: NSLocalizedString("Choose Server", comment: ""), style: .default
+                    ) { _ in
+                        self.chooseWFCServer()
+                    })
+
                 self.present(alertController, animated: true)
                 UserDefaults.standard.didShowChooseWFCServerAlert = true
             }
-            
+
             return
         }
-        
+
         emulatorCore.isWirelessMultiplayerActive = true
-        emulatorCore.rate = 1.0 // Disable FF in case it is currently enabled.
-        
+        emulatorCore.rate = 1.0  // Disable FF in case it is currently enabled.
+
         DispatchQueue.main.async {
-            let toastView = RSTToastView(text: NSLocalizedString("Connecting to Nintendo WFC…", comment: ""), detailText: NSLocalizedString("Some features will be disabled while playing online.", comment: ""))
-            self.show(toastView, in: self.view.window, duration: 5.0) // Show in window to fix not receiving touches 🤷‍♂️
+            let toastView = RSTToastView(
+                text: NSLocalizedString("Connecting to Nintendo WFC…", comment: ""),
+                detailText: NSLocalizedString(
+                    "Some features will be disabled while playing online.", comment: ""))
+            self.show(toastView, in: self.view.window, duration: 5.0)  // Show in window to fix not receiving touches 🤷‍♂️
             self.onlineConnectionDate = Date()
         }
     }
-    
-    @objc func didDisconnectFromOnline(with notification: Notification)
-    {
-        guard let bridge = notification.object as? EmulatorBridging, bridge.gameURL == self.game?.fileURL else { return }
-        
+
+    @objc fileprivate func didDisconnectFromOnline(with notification: Notification) {
+        guard let bridge = notification.object as? EmulatorBridging,
+            bridge.gameURL == self.game?.fileURL
+        else { return }
+
         guard let emulatorCore, emulatorCore.isWirelessMultiplayerActive else { return }
         emulatorCore.isWirelessMultiplayerActive = false
-        
+
         DispatchQueue.main.async {
-            let toastView = RSTToastView(text: NSLocalizedString("Disconnected from Nintendo WFC", comment: ""), detailText: nil)
+            let toastView = RSTToastView(
+                text: NSLocalizedString("Disconnected from Nintendo WFC", comment: ""),
+                detailText: nil)
             var duration = 3.0
-            
-            if let onlineConnectionDate = self.onlineConnectionDate, Date().timeIntervalSince(onlineConnectionDate) < 30
+
+            if let onlineConnectionDate = self.onlineConnectionDate,
+                Date().timeIntervalSince(onlineConnectionDate) < 30
             {
                 // If we're disconnecting within 30 seconds of connecting, show troubleshooting message.
-                toastView.detailTextLabel.text = NSLocalizedString("⚠️ Tap to view our Troubleshooting Guide.", comment: "")
-                
+                toastView.detailTextLabel.text = NSLocalizedString(
+                    "⚠️ Tap to view our Troubleshooting Guide.", comment: "")
+
                 let action = UIAction { _ in
-                    let troubleshootingGuideURL = URL(string: "https://faq.deltaemulator.com/using-delta/online-multiplayer")!
+                    let troubleshootingGuideURL = URL(
+                        string: "https://faq.deltaemulator.com/using-delta/online-multiplayer")!
                     UIApplication.shared.open(troubleshootingGuideURL, options: [:])
                 }
                 toastView.addAction(action, for: .touchUpInside)
-                
+
                 duration = 5.0
             }
-            
-            self.show(toastView, in: self.view.window, duration: duration) // Show in window to fix not receiving touches 🤷‍♂️
+
+            self.show(toastView, in: self.view.window, duration: duration)  // Show in window to fix not receiving touches 🤷‍♂️
             self.onlineConnectionDate = nil
         }
     }
-    
-    @objc func didUnlockAchievement(with notification: Notification)
-    {
+
+    @objc fileprivate func didUnlockAchievement(with notification: Notification) {
         guard #available(iOS 15, *) else { return }
-        
-        guard let achievement = notification.userInfo?[AchievementsTracker.achievementUserInfoKey] as? Achievement else { return }
-        
+
+        guard
+            let achievement = notification.userInfo?[AchievementsTracker.achievementUserInfoKey]
+                as? Achievement
+        else { return }
+
         DispatchQueue.main.async {
             let title = String(format: NSLocalizedString("✅ Achievement Unlocked", comment: ""))
-            let message = String(AttributedString(localized: "\(achievement.title) (^[\(achievement.points) \("point")](inflect: true))").characters)
-            
+            let message = String(
+                AttributedString(
+                    localized:
+                        "\(achievement.title) (^[\(achievement.points) \("point")](inflect: true))"
+                ).characters)
+
             let toastView = RSTToastView(text: title, detailText: message)
             toastView.detailTextLabel.textAlignment = .center
             self.show(toastView)
         }
     }
-    
-    @objc func didEnableJIT(with notification: Notification)
-    {
+
+    @objc fileprivate func didEnableJIT(with notification: Notification) {
         DispatchQueue.main.async {
             self.showJITEnabledAlert()
         }
-        
+
         DispatchQueue.global(qos: .utility).async {
-            guard let emulatorCore = self.emulatorCore, let emulatorBridge = emulatorCore.deltaCore.emulatorBridge as? MelonDSEmulatorBridge, !emulatorBridge.isJITEnabled
+            guard let emulatorCore = self.emulatorCore,
+                let emulatorBridge = emulatorCore.deltaCore.emulatorBridge
+                    as? MelonDSEmulatorBridge, !emulatorBridge.isJITEnabled
             else { return }
-            
+
             guard emulatorCore.state != .stopped else {
                 // Emulator core is not running, which means we can set
                 // isJITEnabled to true without resetting the core.
                 emulatorBridge.isJITEnabled = true
                 return
             }
-            
+
             let isVideoEnabled = emulatorCore.videoManager.isEnabled
             emulatorCore.videoManager.isEnabled = false
-            
+
             let isRunning = (emulatorCore.state == .running)
-            if isRunning
-            {
+            if isRunning {
                 self.pauseEmulation()
             }
-            
+
             let temporaryFileURL = FileManager.default.uniqueTemporaryURL()
-            
+
             let saveState = emulatorCore.saveSaveState(to: temporaryFileURL)
             emulatorCore.stop()
-            
+
             emulatorBridge.isJITEnabled = true
-            
+
             emulatorCore.start()
             emulatorCore.pause()
-            
-            do
-            {
+
+            do {
                 try emulatorCore.load(saveState)
-            }
-            catch
-            {
+            } catch {
                 print("Failed to load save state after enabling JIT.", error)
             }
-            
-            if isRunning
-            {
+
+            if isRunning {
                 self.resumeEmulation()
             }
-            
+
             emulatorCore.videoManager.isEnabled = isVideoEnabled
         }
     }
-    
-    @objc func emulationDidQuit(with notification: Notification)
-    {
-        guard let emulatorCore = notification.object as? EmulatorCore, emulatorCore == self.emulatorCore else { return }
-        
+
+    @objc fileprivate func emulationDidQuit(with notification: Notification) {
+        guard let emulatorCore = notification.object as? EmulatorCore,
+            emulatorCore == self.emulatorCore
+        else { return }
+
         DispatchQueue.main.async {
             guard self.presentedViewController == nil else { return }
-            
+
             // Wait for emulation to stop completely before performing segue.
             var token: NSKeyValueObservation?
-            token = self.emulatorCore?.observe(\.state, options: [.initial]) { (emulatorCore, change) in
+            token = self.emulatorCore?.observe(\.state, options: [.initial]) {
+                (emulatorCore, change) in
                 guard emulatorCore.state == .stopped else { return }
-                
+
                 DispatchQueue.main.async {
                     self.quitEmulation()
                 }
-                
+
                 token?.invalidate()
             }
         }
     }
-    
-    @objc func sceneWillConnect(with notification: Notification)
-    {
-        guard let scene = notification.object as? ExternalDisplayScene, Settings.supportsExternalDisplays else { return }
+
+    @objc fileprivate func sceneWillConnect(with notification: Notification) {
+        guard let scene = notification.object as? ExternalDisplayScene,
+            Settings.supportsExternalDisplays
+        else { return }
         self.connectExternalDisplay(for: scene)
     }
-    
-    @objc func sceneDidDisconnect(with notification: Notification)
-    {
+
+    @objc fileprivate func sceneDidDisconnect(with notification: Notification) {
         // Always allow disconnecting external displays.
         // guard Settings.supportsExternalDisplays else { return }
-        
+
         guard let scene = notification.object as? ExternalDisplayScene else { return }
         self.disconnectExternalDisplay(for: scene)
     }
-    
-    @objc func sceneSessionWillQuit(with notification: Notification)
-    {
-        guard let session = notification.object as? UISceneSession, let windowScene = self.view.window?.windowScene, session.scene == windowScene else { return }
-        Logger.main.info("Discarding current scene session, quitting emulation for game \((self.game as? Game)?.identifier ?? "nil", privacy: .public)")
-        
+
+    @objc fileprivate func sceneSessionWillQuit(with notification: Notification) {
+        guard let session = notification.object as? UISceneSession,
+            let windowScene = self.view.window?.windowScene, session.scene == windowScene
+        else { return }
+        Logger.main.info(
+            "Discarding current scene session, quitting emulation for game \((self.game as? Game)?.identifier ?? "nil", privacy: .public)"
+        )
+
         self.updateAutoSaveState()
-        self.emulatorCore?.stop() // Required to ensure data isn't corrupted due to starting new game before previous EmulatorBridge state is reset.
+        self.emulatorCore?.stop()  // Required to ensure data isn't corrupted due to starting new game before previous EmulatorBridge state is reset.
     }
-    
-    @objc func sceneKeyboardFocusDidChange(with notification: Notification)
-    {
-        guard let scene = notification.object as? UIWindowScene, scene == self.view.window?.windowScene else { return }
+
+    @objc fileprivate func sceneKeyboardFocusDidChange(with notification: Notification) {
+        guard let scene = notification.object as? UIWindowScene,
+            scene == self.view.window?.windowScene
+        else { return }
         guard let externalDisplayScene = UIApplication.shared.externalDisplayScene else { return }
-        
-        if scene.hasKeyboardFocus
-        {
+
+        if scene.hasKeyboardFocus {
             self.connectExternalDisplay(for: externalDisplayScene)
-            
-            if self.presentedViewController == nil
-            {
+
+            if self.presentedViewController == nil {
                 self.startGameActivity()
             }
-        }
-        else
-        {
+        } else {
             // DON'T disconnect, only connect when active (so it stays connected to last active scene)
         }
     }
-    
-    @objc func keyboardDidShow(with notification: Notification)
-    {
+
+    @objc fileprivate func keyboardDidShow(with notification: Notification) {
         guard let inputView = self.controllerView.inputView else { return }
-        
+
         // Using keyboard game controller, so add gesture recognizers to keyboard.
-        for gestureRecognizer in self.menuButtonKeyboardGestureRecognizers
-        {
+        for gestureRecognizer in self.menuButtonKeyboardGestureRecognizers {
             inputView.addGestureRecognizer(gestureRecognizer)
         }
     }
-    
-    @objc func keyboardDidChangeFrame(with notification: Notification)
-    {
+
+    @objc fileprivate func keyboardDidChangeFrame(with notification: Notification) {
         self.keyboardDidShow(with: notification)
     }
 }
 
-private extension UserDefaults
-{
-    @NSManaged var desmumeDeprecatedAlertCount: Int
-    
-    @NSManaged var jitEnabledAlertCount: Int
+extension UserDefaults {
+    @NSManaged fileprivate var desmumeDeprecatedAlertCount: Int
+
+    @NSManaged fileprivate var jitEnabledAlertCount: Int
 }
