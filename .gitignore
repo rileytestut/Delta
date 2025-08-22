@@ -1,14 +1,15 @@
 # Mac OS X
 #
 *.DS_Store
+*/.DS_Store
 
 # Xcode
 #
 
 ## Build generated
 build/
-DerivedData
-.build
+DerivedData/
+.build/
 
 ## Various settings
 *.pbxuser
@@ -19,17 +20,33 @@ DerivedData
 !default.mode2v3
 *.perspectivev3
 !default.perspectivev3
-xcuserdata
+xcuserdata/
 
 ## Other
 *.xccheckout
 *.moved-aside
 *.xcuserstate
 *.xcscmblueprint
+*.xcarchive
 
 ## Obj-C/Swift specific
 *.hmap
 *.ipa
+
+## Backup and temporary files
+*.orig
+*.rej
+*.tmp
+*.swp
+*.swo
+*~
+
+## IDE specific
+.vscode/
+.idea/
+
+## Package Manager
+.swiftpm/
 
 ## Project-Specific
 Delta.playground

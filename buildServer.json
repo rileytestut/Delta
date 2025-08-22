@@ -1,0 +1,19 @@
+{
+	"name": "xcode build server",
+	"version": "0.2",
+	"bspVersion": "2.0",
+	"languages": [
+		"c",
+		"cpp",
+		"objective-c",
+		"objective-cpp",
+		"swift"
+	],
+	"argv": [
+		"/usr/local/bin/xcode-build-server"
+	],
+	"workspace": "/Users/jordancassady/git/Delta/Delta.xcworkspace",
+	"build_root": "/Users/jordancassady/Library/Developer/Xcode/DerivedData/Delta-eebvwyvbeldfgldwgnottfkoiqvd",
+	"scheme": "Delta",
+	"kind": "xcode"
+}

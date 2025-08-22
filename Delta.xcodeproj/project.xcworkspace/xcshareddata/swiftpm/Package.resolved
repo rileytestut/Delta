@@ -1,0 +1,50 @@
+{
+  "originHash" : "c4ebf555d28d802ecbbc488a66ef1c55f4891343949a0fefab9fca439c9df89b",
+  "pins" : [
+    {
+      "identity" : "altkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/altstoreio/AltKit.git",
+      "state" : {
+        "revision" : "2fd376df1c79ec06a5c80cc8933da027f65b3148"
+      }
+    },
+    {
+      "identity" : "keychainaccess",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kishikawakatsumi/KeychainAccess.git",
+      "state" : {
+        "revision" : "84e546727d66f1adc5439debad16270d0fdd04e7",
+        "version" : "4.2.2"
+      }
+    },
+    {
+      "identity" : "purchases-ios-spm",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/RevenueCat/purchases-ios-spm.git",
+      "state" : {
+        "revision" : "b2a5f6c6fb4de109fc6dd6491d7f0657fbc983bf",
+        "version" : "5.35.0"
+      }
+    },
+    {
+      "identity" : "rcheevos",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/rileytestut/rcheevos.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "30848fc5a6ed563dc2c5abac6a750c6d3ba51c6b"
+      }
+    },
+    {
+      "identity" : "showtouches",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Cyberbeni/ShowTouches.git",
+      "state" : {
+        "branch" : "master",
+        "revision" : "ca11972f297a23a152a459dabe4821f314cc9c75"
+      }
+    }
+  ],
+  "version" : 3
+}
