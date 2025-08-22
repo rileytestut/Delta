@@ -165,7 +165,7 @@
 		BFFC464C1D5998D600AF2CC6 /* CheatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFC464B1D5998D600AF2CC6 /* CheatTableViewCell.swift */; };
 		BFFDF03723E3BB2600931B96 /* libSnes9x.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BFFDF03623E3BB2600931B96 /* libSnes9x.a */; };
 		BFFDF03F23E3C28A00931B96 /* libGambatte.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BFFDF03D23E3C0F000931B96 /* libGambatte.a */; };
-		BFFDF04623E3D3A600931B96 /* libMupen64Plus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BFFDF04523E3D3A600931B96 /* libMupen64Plus.a */; };
+
 		C6F24AD72D64B452002F939F /* Lu.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F24AD62D64B452002F939F /* Lu.swift */; };
 		C6F24AD92D64B550002F939F /* PauseViewController+Lu.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F24AD82D64B550002F939F /* PauseViewController+Lu.swift */; };
 		C6F24ADB2D64B5A0002F939F /* Lu-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C6F24ADA2D64B5A0002F939F /* Lu-Info.plist */; };
@@ -505,7 +505,7 @@
 		BFFC464B1D5998D600AF2CC6 /* CheatTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheatTableViewCell.swift; sourceTree = "<group>"; };
 		BFFDF03623E3BB2600931B96 /* libSnes9x.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libSnes9x.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFFDF03D23E3C0F000931B96 /* libGambatte.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libGambatte.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		BFFDF04523E3D3A600931B96 /* libMupen64Plus.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libMupen64Plus.a; sourceTree = BUILT_PRODUCTS_DIR; };
+
 		C68D9CFD8F2F4CD791EB1DB7 /* libPods-DeltaPreviews.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DeltaPreviews.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6F24AD62D64B452002F939F /* Lu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lu.swift; sourceTree = "<group>"; };
 		C6F24AD82D64B550002F939F /* PauseViewController+Lu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PauseViewController+Lu.swift"; sourceTree = "<group>"; };
@@ -644,7 +644,7 @@
 				D52CB8C82CE2B7C800B04458 /* StoreKit.framework in Frameworks */,
 				BF69FBAA23E399AA0051BEEA /* CoreMotion.framework in Frameworks */,
 				BF69FBA223E375A20051BEEA /* libVBA-M.a in Frameworks */,
-				BFFDF04623E3D3A600931B96 /* libMupen64Plus.a in Frameworks */,
+	
 				D5EF1A202D84BD59001B06E6 /* rcheevos in Frameworks */,
 				D5AE76C22C2B59240086471B /* KeychainAccess in Frameworks */,
 				D5D7C1FA29E60EDE00663793 /* libDeltaFeatures.a in Frameworks */,
@@ -1009,7 +1009,7 @@
 				BF6E70C225D22F7600E41CD1 /* Systems.framework */,
 				BFDCA1E5244EBAA900B8FBDB /* liblibDeSmuME.a */,
 				BF30AC25244E88BE00F0C744 /* libMelonDSDeltaCore.a */,
-				BFFDF04523E3D3A600931B96 /* libMupen64Plus.a */,
+
 				BFFDF03D23E3C0F000931B96 /* libGambatte.a */,
 				BFFDF03623E3BB2600931B96 /* libSnes9x.a */,
 				BF69FBC823E3A8380051BEEA /* libNestopia.a */,
