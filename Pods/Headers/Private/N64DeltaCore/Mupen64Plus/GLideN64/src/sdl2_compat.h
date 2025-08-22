@@ -1,1 +1,0 @@
-../../../../../../../Cores/N64DeltaCore/Mupen64Plus/GLideN64/src/sdl2_compat.h
