@@ -32,7 +32,15 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		18FC614F90FE76140AAECE67 /* DeltaOperatorUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCBF2F877CA6072880A54F35 /* DeltaOperatorUtils.swift */; };
 		1FA4ABA79AB72914FE414A61 /* libPods-Delta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DC866E433B3BA9AE18ABA1EC /* libPods-Delta.a */; };
+		28B653353E8323FA65C54A42 /* OperatorUICoordinators.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C8C13CE90324CBBA76BC3E /* OperatorUICoordinators.swift */; };
+		3C42B866777FEA42CD529B95 /* OperatorKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 796FA895EF62DF6A509DCA55 /* OperatorKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		4C9DD6C0CC4DC2F8F032ED35 /* AppDelegate+Operator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7C8DB38D2A6B16B8609EAC /* AppDelegate+Operator.swift */; };
+		4F501EDE15C52E1E6230DB9E /* DeltaOperatorGameObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4327597BCB33E196164D3BB6 /* DeltaOperatorGameObserver.swift */; };
+		5FFDBC83E8777EB11777803A /* GamesViewController+Operator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6FDC5A03AD5693BEFFE87C /* GamesViewController+Operator.swift */; };
+		6FF8B1728BDBAF892B397F5E /* DeltaOperatorWritebackToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCE7674E5643CDB43BC8ED32 /* DeltaOperatorWritebackToast.swift */; };
+		70FF20879DA0DCEE53D8CAED /* OperatorKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 796FA895EF62DF6A509DCA55 /* OperatorKit.xcframework */; };
 		823D998F2E566EE40025F4CD /* GBCColorPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 823D998E2E566EE40025F4CD /* GBCColorPalette.swift */; };
 		8279ED042E53BA4F008995FA /* GBACoreSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8279ED032E53BA4F008995FA /* GBACoreSettingsView.swift */; };
 		8279ED0E2E53C76C008995FA /* NESCoreSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8279ED0D2E53C76C008995FA /* NESCoreSettingsView.swift */; };
@@ -44,9 +52,13 @@
 		82C83A732E4FCC030020711E /* CoreSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82C83A722E4FCC030020711E /* CoreSettingsView.swift */; };
 		82F450AB2E6A1CD00097CE1C /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 82F450AA2E6A1CD00097CE1C /* AppIcon.icon */; };
 		87343D7B985519A5890A61C6 /* libPods-DeltaPreviews.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E3E5A45AB20C8A87754453B /* libPods-DeltaPreviews.a */; };
+		89DAEB1EDE294B3A7C857765 /* DeltaOperatorFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2157B527EA676AA703BEBF02 /* DeltaOperatorFacade.swift */; };
+		930F926748EAFE4DA261B958 /* GameCollectionViewController+Operator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D171C53E58A0B9BAF0B89D5 /* GameCollectionViewController+Operator.swift */; };
+		954A28F5338A5300C0B9497E /* OperatorSlotDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0654CFCA3D2CB4D35CC99F89 /* OperatorSlotDataSource.swift */; };
 		AC1C991029F8B8C30020E6E4 /* ToastNotificationOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC1C990F29F8B8C30020E6E4 /* ToastNotificationOptions.swift */; };
 		AC1C992729F9F1CF0020E6E4 /* GameViewController+ExperimentalToasts.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC1C992629F9F1CF0020E6E4 /* GameViewController+ExperimentalToasts.swift */; };
 		ACF7E30F29F743A3000FE071 /* PHPhotoLibrary+Screenshots.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACF7E30E29F743A3000FE071 /* PHPhotoLibrary+Screenshots.swift */; };
+		B8BF6056C00AB0507A06D39E /* OperatorStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C31F852121CBEF08181BD23 /* OperatorStatusView.swift */; };
 		BF00BEA625B758AA00C8607D /* SystemBIOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF00BEA525B758AA00C8607D /* SystemBIOS.swift */; };
 		BF02D5DA1DDEBB3000A5E131 /* openvgdb.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = BF02D5D91DDEBB3000A5E131 /* openvgdb.sqlite */; };
 		BF04E6FF1DB8625C000F35D3 /* ControllerSkinsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF04E6FE1DB8625C000F35D3 /* ControllerSkinsViewController.swift */; };
@@ -291,6 +303,7 @@
 		D5CDCCF12A859E7500E22131 /* ReviewSaveStatesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A1375A2A7D8F2600AB1372 /* ReviewSaveStatesViewController.swift */; };
 		D5CDCCF22A859E7500E22131 /* RepairDatabaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A137442A7D814000AB1372 /* RepairDatabaseViewController.swift */; };
 		D5CDCCF32A859E7500E22131 /* GamePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A137662A7DB37200AB1372 /* GamePickerViewController.swift */; };
+		D5CFE17546CF1D8015B5696E /* DeltaOperatorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C124B55FFADA30BF671EE4F8 /* DeltaOperatorDelegate.swift */; };
 		D5D39E792AF2D624004BE3F7 /* GameView+AirPlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D39E782AF2D624004BE3F7 /* GameView+AirPlay.swift */; };
 		D5D45CF52D0CDDF600BADDF5 /* Delta9ToDelta10.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = D5D45CF42D0CDDF600BADDF5 /* Delta9ToDelta10.xcmappingmodel */; };
 		D5D78AE529F9BC3700E064F0 /* DSAirPlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D78AE429F9BC3700E064F0 /* DSAirPlay.swift */; };
@@ -539,6 +552,7 @@
 				D5C7DD0B2E26CF5B0048FF5C /* GBADeltaCore.framework in Embed Frameworks */,
 				D5C7DD132E26CF6F0048FF5C /* N64DeltaCore_RSP.framework in Embed Frameworks */,
 				D5C7DD082E26CF540048FF5C /* SNESDeltaCore.framework in Embed Frameworks */,
+				3C42B866777FEA42CD529B95 /* OperatorKit.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -555,7 +569,13 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0654CFCA3D2CB4D35CC99F89 /* OperatorSlotDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperatorSlotDataSource.swift; sourceTree = "<group>"; };
+		0B6FDC5A03AD5693BEFFE87C /* GamesViewController+Operator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GamesViewController+Operator.swift"; sourceTree = "<group>"; };
+		2157B527EA676AA703BEBF02 /* DeltaOperatorFacade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeltaOperatorFacade.swift; sourceTree = "<group>"; };
 		22506DA00971C4300AF90A35 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4327597BCB33E196164D3BB6 /* DeltaOperatorGameObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeltaOperatorGameObserver.swift; sourceTree = "<group>"; };
+		796FA895EF62DF6A509DCA55 /* OperatorKit.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = OperatorKit.xcframework; sourceTree = "<group>"; };
+		7C31F852121CBEF08181BD23 /* OperatorStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperatorStatusView.swift; sourceTree = "<group>"; };
 		7E3E5A45AB20C8A87754453B /* libPods-DeltaPreviews.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DeltaPreviews.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		823D998E2E566EE40025F4CD /* GBCColorPalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GBCColorPalette.swift; sourceTree = "<group>"; };
 		8279ED032E53BA4F008995FA /* GBACoreSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GBACoreSettingsView.swift; sourceTree = "<group>"; };
@@ -568,6 +588,7 @@
 		82C83A722E4FCC030020711E /* CoreSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreSettingsView.swift; sourceTree = "<group>"; };
 		82F450AA2E6A1CD00097CE1C /* AppIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = AppIcon.icon; sourceTree = "<group>"; };
 		8ECE6641DE30D01EA30FE7F6 /* Pods-DeltaPreviews.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DeltaPreviews.release.xcconfig"; path = "Pods/Target Support Files/Pods-DeltaPreviews/Pods-DeltaPreviews.release.xcconfig"; sourceTree = "<group>"; };
+		9D171C53E58A0B9BAF0B89D5 /* GameCollectionViewController+Operator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameCollectionViewController+Operator.swift"; sourceTree = "<group>"; };
 		A01281C7023C0041B25963BE /* Pods-DeltaPreviews.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DeltaPreviews.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DeltaPreviews/Pods-DeltaPreviews.debug.xcconfig"; sourceTree = "<group>"; };
 		A19FF50F55441BC2B2248241 /* Pods-Delta.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Delta.release.xcconfig"; path = "Pods/Target Support Files/Pods-Delta/Pods-Delta.release.xcconfig"; sourceTree = "<group>"; };
 		AC1C990F29F8B8C30020E6E4 /* ToastNotificationOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastNotificationOptions.swift; sourceTree = "<group>"; };
@@ -718,10 +739,13 @@
 		BFFC46221D5984A000AF2CC6 /* LaunchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
 		BFFC46451D59861000AF2CC6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BFFC464B1D5998D600AF2CC6 /* CheatTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheatTableViewCell.swift; sourceTree = "<group>"; };
+		C124B55FFADA30BF671EE4F8 /* DeltaOperatorDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeltaOperatorDelegate.swift; sourceTree = "<group>"; };
+		C1C8C13CE90324CBBA76BC3E /* OperatorUICoordinators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperatorUICoordinators.swift; sourceTree = "<group>"; };
 		C6F24AD62D64B452002F939F /* Lu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lu.swift; sourceTree = "<group>"; };
 		C6F24AD82D64B550002F939F /* PauseViewController+Lu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PauseViewController+Lu.swift"; sourceTree = "<group>"; };
 		C6F24ADA2D64B5A0002F939F /* Lu-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Lu-Info.plist"; sourceTree = "<group>"; };
 		C786AF1D2DDB6223BE2063CC /* Pods-Delta.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Delta.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Delta/Pods-Delta.debug.xcconfig"; sourceTree = "<group>"; };
+		CE7C8DB38D2A6B16B8609EAC /* AppDelegate+Operator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+Operator.swift"; sourceTree = "<group>"; };
 		D5002BD82DCD3E81003418FD /* IAPScareScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAPScareScreen.swift; sourceTree = "<group>"; };
 		D5002BDB2DCD3ED2003418FD /* MockPurchaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPurchaseManager.swift; sourceTree = "<group>"; };
 		D5002BDD2DCD3F31003418FD /* MockDatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDatabaseManager.swift; sourceTree = "<group>"; };
@@ -860,6 +884,8 @@
 		D5F82FB72981D3AC00B229AF /* LegacySearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacySearchBar.swift; sourceTree = "<group>"; };
 		D5FB042B2C5AF40A008329DD /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
 		DC866E433B3BA9AE18ABA1EC /* libPods-Delta.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Delta.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		DCBF2F877CA6072880A54F35 /* DeltaOperatorUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeltaOperatorUtils.swift; sourceTree = "<group>"; };
+		FCE7674E5643CDB43BC8ED32 /* DeltaOperatorWritebackToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeltaOperatorWritebackToast.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -889,6 +915,7 @@
 				D5E76AAD2BE199890078C0C5 /* ShowTouches in Frameworks */,
 				D5C7DD192E26CF810048FF5C /* MelonDSDeltaCore.framework in Frameworks */,
 				D5C45FEF2BE992A80009DBB0 /* AltKit in Frameworks */,
+				70FF20879DA0DCEE53D8CAED /* OperatorKit.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -911,6 +938,39 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		11F7EF970F3EE7DAA5EE0DC8 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				C124B55FFADA30BF671EE4F8 /* DeltaOperatorDelegate.swift */,
+				2157B527EA676AA703BEBF02 /* DeltaOperatorFacade.swift */,
+				4327597BCB33E196164D3BB6 /* DeltaOperatorGameObserver.swift */,
+				DCBF2F877CA6072880A54F35 /* DeltaOperatorUtils.swift */,
+				FCE7674E5643CDB43BC8ED32 /* DeltaOperatorWritebackToast.swift */,
+				0654CFCA3D2CB4D35CC99F89 /* OperatorSlotDataSource.swift */,
+				7C31F852121CBEF08181BD23 /* OperatorStatusView.swift */,
+				C1C8C13CE90324CBBA76BC3E /* OperatorUICoordinators.swift */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		43183841AF258C4DC1FAC9AB /* DeltaOperator */ = {
+			isa = PBXGroup;
+			children = (
+				11F7EF970F3EE7DAA5EE0DC8 /* Sources */,
+				AB84EA4BA606FA3C8B99017F /* Frameworks */,
+			);
+			name = DeltaOperator;
+			path = External/DeltaOperator;
+			sourceTree = "<group>";
+		};
+		AB84EA4BA606FA3C8B99017F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				796FA895EF62DF6A509DCA55 /* OperatorKit.xcframework */,
+			);
+			path = Frameworks;
+			sourceTree = "<group>";
+		};
 		BF090CEE1B490C1A00DCAB45 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -945,6 +1005,9 @@
 				D5E12AEA2D011579000C7531 /* String+Profanity.swift */,
 				C6F24AD82D64B550002F939F /* PauseViewController+Lu.swift */,
 				82C63BDA2E57BB4700B0C812 /* UIColor+Hex.swift */,
+				CE7C8DB38D2A6B16B8609EAC /* AppDelegate+Operator.swift */,
+				0B6FDC5A03AD5693BEFFE87C /* GamesViewController+Operator.swift */,
+				9D171C53E58A0B9BAF0B89D5 /* GameCollectionViewController+Operator.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1386,6 +1449,7 @@
 				BFEC732F1AAECCBD00650035 /* Resources */,
 				BFFA71D81AAC406100EE9DD1 /* Products */,
 				FD1E8AE87FA2DB8793F7B937 /* Pods */,
+				43183841AF258C4DC1FAC9AB /* DeltaOperator */,
 			);
 			sourceTree = "<group>";
 		};
@@ -2417,6 +2481,9 @@
 				82C83A732E4FCC030020711E /* CoreSettingsView.swift in Sources */,
 				BFE56E1923EB7BE00014FECD /* UIImage+SymbolFallback.swift in Sources */,
 				AC1C992729F9F1CF0020E6E4 /* GameViewController+ExperimentalToasts.swift in Sources */,
+				4C9DD6C0CC4DC2F8F032ED35 /* AppDelegate+Operator.swift in Sources */,
+				5FFDBC83E8777EB11777803A /* GamesViewController+Operator.swift in Sources */,
+				930F926748EAFE4DA261B958 /* GameCollectionViewController+Operator.swift in Sources */,
 				D5E12AEB2D01157F000C7531 /* String+Profanity.swift in Sources */,
 				D5AE76B82C2B52820086471B /* Tier.swift in Sources */,
 				BF6EE5E91F7C5F860051AD6C /* _GameControllerInputMapping.swift in Sources */,
@@ -2482,6 +2549,14 @@
 				BF7AE8081C2E858400B1B5BC /* GridMenuViewController.swift in Sources */,
 				BF6BF31A1EB82146008E83CD /* ClipboardImportOption.swift in Sources */,
 				BF59427F1E09BC830051894B /* GameCollection.swift in Sources */,
+				D5CFE17546CF1D8015B5696E /* DeltaOperatorDelegate.swift in Sources */,
+				4F501EDE15C52E1E6230DB9E /* DeltaOperatorGameObserver.swift in Sources */,
+				954A28F5338A5300C0B9497E /* OperatorSlotDataSource.swift in Sources */,
+				B8BF6056C00AB0507A06D39E /* OperatorStatusView.swift in Sources */,
+				28B653353E8323FA65C54A42 /* OperatorUICoordinators.swift in Sources */,
+				6FF8B1728BDBAF892B397F5E /* DeltaOperatorWritebackToast.swift in Sources */,
+				18FC614F90FE76140AAECE67 /* DeltaOperatorUtils.swift in Sources */,
+				89DAEB1EDE294B3A7C857765 /* DeltaOperatorFacade.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

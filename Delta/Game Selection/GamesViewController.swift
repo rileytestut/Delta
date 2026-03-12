@@ -110,6 +110,9 @@ extension GamesViewController
         self.placeholderView.stackView.addArrangedSubview(faqButton)
         self.placeholderView.stackView.setCustomSpacing(20.0, after: self.placeholderView.detailTextLabel)
         self.view.insertSubview(self.placeholderView, at: 0)
+
+        // Operator: install cartridge status overlay on placeholder
+        self.configureOperatorOverlay(placeholderStackView: self.placeholderView.stackView)
         
         self.pageControl = UIPageControl()
         self.pageControl.translatesAutoresizingMaskIntoConstraints = false
@@ -374,6 +377,9 @@ private extension GamesViewController
         
         self.navigationController?.setToolbarHidden(sections < 2, animated: animated)
         
+        // Operator: show or hide cartridge status on empty placeholder
+        self.updateOperatorPlaceholderVisibility(sectionCount: sections)
+
         if sections > 0
         {
             // Reset page view controller if currently hidden or current child should view controller no longer exists
