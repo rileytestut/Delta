@@ -503,6 +503,7 @@ private extension GamesViewController
         }
         
         self.navigationController?.setToolbarHidden(sections < 2, animated: animated)
+        self.pageControl.setHidden(sections < 2, animated: false)
         
         if sections > 0
         {

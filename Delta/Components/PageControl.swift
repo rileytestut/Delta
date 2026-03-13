@@ -74,6 +74,7 @@ struct PageControl: View
                 indicators
                     .glassEffect()
             }
+            .frame(height: 40) // Ensures correct layout when appearing from hidden
         }
         else
         {
