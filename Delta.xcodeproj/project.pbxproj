@@ -39,6 +39,7 @@
 		8279ED102E53C780008995FA /* SNESCoreSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8279ED0F2E53C780008995FA /* SNESCoreSettingsView.swift */; };
 		8279ED142E53C7A4008995FA /* N64CoreSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8279ED132E53C7A4008995FA /* N64CoreSettingsView.swift */; };
 		8279ED162E53C8BC008995FA /* GenesisCoreSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8279ED152E53C8BC008995FA /* GenesisCoreSettingsView.swift */; };
+		82A787D92F60C4F400E4CA06 /* PageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82A787D82F60C4F400E4CA06 /* PageControl.swift */; };
 		82B3FAA92E3D592D002F179E /* GBCCoreSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82B3FAA02E3D5926002F179E /* GBCCoreSettingsView.swift */; };
 		82C63BDB2E57BB4700B0C812 /* UIColor+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82C63BDA2E57BB4700B0C812 /* UIColor+Hex.swift */; };
 		82C83A732E4FCC030020711E /* CoreSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82C83A722E4FCC030020711E /* CoreSettingsView.swift */; };
@@ -566,6 +567,7 @@
 		8279ED0F2E53C780008995FA /* SNESCoreSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SNESCoreSettingsView.swift; sourceTree = "<group>"; };
 		8279ED132E53C7A4008995FA /* N64CoreSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = N64CoreSettingsView.swift; sourceTree = "<group>"; };
 		8279ED152E53C8BC008995FA /* GenesisCoreSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenesisCoreSettingsView.swift; sourceTree = "<group>"; };
+		82A787D82F60C4F400E4CA06 /* PageControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageControl.swift; sourceTree = "<group>"; };
 		82B3FAA02E3D5926002F179E /* GBCCoreSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GBCCoreSettingsView.swift; sourceTree = "<group>"; };
 		82C63BDA2E57BB4700B0C812 /* UIColor+Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Hex.swift"; sourceTree = "<group>"; };
 		82C83A722E4FCC030020711E /* CoreSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreSettingsView.swift; sourceTree = "<group>"; };
@@ -1030,6 +1032,7 @@
 			isa = PBXGroup;
 			children = (
 				BF4828871F90290F00028B97 /* Action.swift */,
+				82A787D82F60C4F400E4CA06 /* PageControl.swift */,
 				BF1F45BE21AF676F00EF9895 /* Box.swift */,
 				D5AE76C32C2B59360086471B /* Keychain.swift */,
 				D5B6F5D22D6FC0F00061C365 /* FollowUsFooterView.swift */,
@@ -2312,6 +2315,7 @@
 				D5CDCCF22A859E7500E22131 /* RepairDatabaseViewController.swift in Sources */,
 				BF3540081C5DAFAD00C1184C /* PauseTransitionCoordinator.swift in Sources */,
 				D5AE76D12C2BA5B70086471B /* Delta8ToDelta9.xcmappingmodel in Sources */,
+				82A787D92F60C4F400E4CA06 /* PageControl.swift in Sources */,
 				BF525EEA1FF6CD12004AA849 /* DeepLink.swift in Sources */,
 				AC1C991029F8B8C30020E6E4 /* ToastNotificationOptions.swift in Sources */,
 				BF8A334621A4926F00A42FD4 /* GameSyncStatusViewController.swift in Sources */,
