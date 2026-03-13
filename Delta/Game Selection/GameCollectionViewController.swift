@@ -772,7 +772,7 @@ private extension GameCollectionViewController
             self.openInNewWindow(game)
         }
         
-        let favoriteIcon: UIImage? = game.isFavorite ? UIImage(systemName: "heart.fill") : UIImage(systemName: "heart")
+        let favoriteIcon: UIImage? = game.isFavorite ? UIImage(systemName: "star.fill") : UIImage(systemName: "star")
         
         let favoriteActionText: String = game.isFavorite ? "Unfavorite" : "Favorite"
         let favoriteAction = UIAction(title: NSLocalizedString(favoriteActionText, comment: ""), image: favoriteIcon) { [unowned self] action in
