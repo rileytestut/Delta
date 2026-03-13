@@ -78,7 +78,7 @@ class GamesViewController: UIViewController
     
     private var pageViewController: UIPageViewController!
     private var placeholderView: RSTPlaceholderView!
-    private var pageControl: UIPageControl!
+    private var pageControl: PageControlView!
     
     private let fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>
     private let favoritesFetchedResultsController: NSFetchedResultsController<Game>
@@ -158,17 +158,34 @@ extension GamesViewController
         self.placeholderView.stackView.setCustomSpacing(20.0, after: self.placeholderView.detailTextLabel)
         self.view.insertSubview(self.placeholderView, at: 0)
         
-        self.pageControl = UIPageControl()
+        self.pageControl = PageControlView()
         self.pageControl.translatesAutoresizingMaskIntoConstraints = false
-        self.pageControl.hidesForSinglePage = false
-        self.pageControl.numberOfPages = 3
-        self.pageControl.currentPageIndicatorTintColor = UIColor.deltaPurple
-        self.pageControl.pageIndicatorTintColor = UIColor.lightGray
-        self.navigationController?.toolbar.addSubview(self.pageControl)
+
+        if #available(iOS 26, *)
+        {
+            self.view.addSubview(self.pageControl)
+            self.pageControl.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+            self.pageControl.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        }
+        else
+        {
+            self.navigationController?.toolbar.addSubview(self.pageControl)
+            self.pageControl.centerXAnchor.constraint(equalTo: (self.navigationController?.toolbar.centerXAnchor)!).isActive = true
+            self.pageControl.centerYAnchor.constraint(equalTo: (self.navigationController?.toolbar.centerYAnchor)!).isActive = true
+        }
         
-        self.pageControl.centerXAnchor.constraint(equalTo: (self.navigationController?.toolbar.centerXAnchor)!, constant: 0).isActive = true
-        self.pageControl.centerYAnchor.constraint(equalTo: (self.navigationController?.toolbar.centerYAnchor)!, constant: 0).isActive = true
-        
+        self.pageControl.model.onPageSelected = { [weak self] index in
+            guard let self, let viewController = self.viewControllerForIndex(index) else { return }
+
+            let direction: UIPageViewController.NavigationDirection =
+                index > self.pageControl.model.currentPage ? .forward : .reverse
+
+            self.pageViewController.setViewControllers([viewController], direction: direction, animated: true, completion: nil)
+
+            self.title = viewController.title
+            self.pageControl.model.currentPage = index
+        }
+
         if #available(iOS 26.0, *)
         {
             let resumeButton = UIBarButtonItem(image: UIImage(systemName: "play"), style: .prominent, target: self, action:  #selector(GamesViewController.resumeGame))
@@ -375,6 +392,37 @@ private extension GamesViewController
 // MARK: - Helper Methods -
 private extension GamesViewController
 {
+    func pageIndicator(for page: Page) -> PageIndicator
+    {
+        switch page
+        {
+        case .fetchRequest(_, "Favorites"):
+            return PageIndicator(id: "Favorites", image: UIImage(systemName: "star.fill")!, alwaysShowsImage: true)
+        case .fetchRequest(_, "Recently Played"):
+            return PageIndicator(id: "Recently Played", image: UIImage(systemName: "clock.fill")!, alwaysShowsImage: true, imageScale: 0.8)
+        case .fetchRequest(_, let title):
+            return PageIndicator(id: title, image: UIImage(systemName: "gamecontroller.fill")!, alwaysShowsImage: true)
+        case .gameCollection(let collection):
+            return PageIndicator(id: collection.identifier, image: controllerIcon(for: collection), alwaysShowsImage: false)
+        }
+    }
+
+    func controllerIcon(for collection: GameCollection) -> UIImage
+    {
+        guard let system = collection.system else { return UIImage(systemName: "gamecontroller.fill")! }
+        
+        switch system
+        {
+        case .nes:     return UIImage(named: "NES")!
+        case .snes:    return UIImage(named: "SNES")!
+        case .n64:     return UIImage(named: "N64")!
+        case .gbc:     return UIImage(named: "GBC")!
+        case .gba:     return UIImage(named: "GBA")!
+        case .ds:      return UIImage(named: "DS")!
+        case .genesis: return UIImage(named: "Genesis")!
+        }
+    }
+
     func viewControllerForIndex(_ index: Int) -> GameCollectionViewController?
     {
         
@@ -416,7 +464,7 @@ private extension GamesViewController
         self.hasRecentlyPlayed = hasRecentlyPlayed
         
         let sections = self.pages.count
-        self.pageControl.numberOfPages = sections
+        self.pageControl.model.indicators = self.pages.map { self.pageIndicator(for: $0) }
         
         var resetPageViewController = false
         
@@ -426,25 +474,25 @@ private extension GamesViewController
             {
                 if let index = self.pages.firstIndex(of: .gameCollection(gameCollection))
                 {
-                    self.pageControl.currentPage = index
+                    self.pageControl.model.currentPage = index
                 }
                 else
                 {
                     resetPageViewController = true
                     
-                    self.pageControl.currentPage = 0
+                    self.pageControl.model.currentPage = 0
                 }
             }
             else if let customTitle = viewController.customTitle, let customFetchRequest = viewController.fetchRequest
             {
                 if let index = self.pages.firstIndex(of: .fetchRequest(customFetchRequest, title: customTitle)) {
-                    self.pageControl.currentPage = index
+                    self.pageControl.model.currentPage = index
                 }
                 else
                 {
                     resetPageViewController = true
                         
-                    self.pageControl.currentPage = 0
+                    self.pageControl.model.currentPage = 0
                 }
             }
         }
@@ -483,7 +531,7 @@ private extension GamesViewController
                     self.pageViewController.setViewControllers([viewController], direction: .forward, animated: false, completion: nil)
                     
                     self.title = viewController.title
-                    self.pageControl.currentPage = index
+                    self.pageControl.model.currentPage = index
                 }
             }
             else
@@ -793,7 +841,7 @@ extension GamesViewController: UIPageViewControllerDataSource, UIPageViewControl
             {
                 if let index = self.pages.firstIndex(of: .gameCollection(gameCollection))
                 {
-                    self.pageControl.currentPage = index
+                    self.pageControl.model.currentPage = index
                     
                     Settings.previousGameCollection = gameCollection
                 }
@@ -801,7 +849,7 @@ extension GamesViewController: UIPageViewControllerDataSource, UIPageViewControl
             else if let customTitle = viewController.customTitle,  let customFetchRequest = viewController.fetchRequest
             {
                 if let index = self.pages.firstIndex(of: .fetchRequest(customFetchRequest, title: customTitle)) {
-                    self.pageControl.currentPage = index
+                    self.pageControl.model.currentPage = index
                     
                     Settings.previousGameCollection = nil
                 }
