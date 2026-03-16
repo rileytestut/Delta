@@ -39,7 +39,6 @@ class GamesViewController: UIViewController
         }
     }
     
-    private var hasFavorites: Bool = false
     private var hasRecentlyPlayed: Bool = false
     
     weak var activeEmulatorCore: EmulatorCore? {
@@ -62,13 +61,14 @@ class GamesViewController: UIViewController
     
     var pages: [Page] {
         var result: [Page] = []
-        if self.hasFavorites {
+        let gameCollections = self.fetchedResultsController.fetchedObjects as? [GameCollection] ?? []
+        if !gameCollections.isEmpty {
             result.append(.fetchRequest(Game.favoritesFetchRequest, title: "Favorites"))
         }
         if self.hasRecentlyPlayed {
             result.append(.fetchRequest(Game.recentlyPlayedFetchRequest, title: "Recently Played"))
         }
-        result += (self.fetchedResultsController.fetchedObjects ?? []).map { .gameCollection($0 as! GameCollection) }
+        result += gameCollections.map { .gameCollection($0) }
         return result
     }
     
@@ -465,9 +465,6 @@ private extension GamesViewController
     
     func updateSections(animated: Bool)
     {
-        let hasFavorites = self.favoritesFetchedResultsController.fetchedObjects?.count ?? 0 > 0
-        self.hasFavorites = hasFavorites
-        
         let hasRecentlyPlayed = self.recentlyPlayedFetchedResultsController.fetchedObjects?.count ?? 0 > 0
         self.hasRecentlyPlayed = hasRecentlyPlayed
         
@@ -518,18 +515,7 @@ private extension GamesViewController
             // Reset page view controller if currently hidden or current child should view controller no longer exists
             if self.pageViewController.view.isHidden || resetPageViewController
             {
-                var index = 0
-                
-                if let gameCollection = Settings.previousGameCollection
-                {
-                    if let gameCollectionIndex = self.pages.firstIndex(of: .gameCollection(gameCollection))
-                    {
-                        index = gameCollectionIndex
-                    }
-                }
-                else {
-                    // Assume that nil previousGameCollection means either they have no games or they were most recently looking at favorites
-                }
+                let index = min(1, self.pages.count - 1) // Recents page, or first game system
                 
                 if let viewController = self.viewControllerForIndex(index)
                 {
