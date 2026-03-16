@@ -444,6 +444,14 @@ private extension GamesViewController
         {
         case .fetchRequest(let fetchRequest, let title):
             viewController.customTitle = title
+
+            if title == "Favorites"
+            {
+                viewController.placeholderTitle = String(localized: "No Favorites")
+                viewController.placeholderDescription = String(localized: "Long press a game to add it to your favorites.")
+                viewController.placeholderImage = UIImage(systemName: "star.fill")
+            }
+
             viewController.fetchRequest = fetchRequest
         case .gameCollection(let gameCollection):
             viewController.gameCollection = gameCollection
