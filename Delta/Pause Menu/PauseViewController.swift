@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 import DeltaCore
 
@@ -57,6 +58,8 @@ class PauseViewController: UIViewController, PauseInfoProviding
     
     private var pauseNavigationController: UINavigationController!
     
+    @IBOutlet private var blurView: UIVisualEffectView!
+    
     /// UIViewController
     override var preferredContentSize: CGSize {
         set { }
@@ -86,6 +89,11 @@ class PauseViewController: UIViewController, PauseInfoProviding
     override func viewDidLoad() 
     {
         super.viewDidLoad()
+        
+        if #available(iOS 26, *)
+        {
+            self.blurView.effect = nil
+        }
         
         if let gridMenuViewController = self.navigationController?.topViewController as? GridMenuViewController
         {
@@ -122,6 +130,16 @@ class PauseViewController: UIViewController, PauseInfoProviding
         self.pauseNavigationController.view.setNeedsLayout()
         self.pauseNavigationController.view.layoutIfNeeded()
     }
+    
+    func showItems()
+    {
+        
+    }
+    
+    func hideItems(animated: Bool)
+    {
+        
+    }
 }
 
 extension PauseViewController
@@ -142,11 +160,30 @@ extension PauseViewController
             self.pauseNavigationController.delegate = self
             self.pauseNavigationController.navigationBar.tintColor = UIColor.deltaPurple
             self.pauseNavigationController.view.backgroundColor = UIColor.clear
+//            self.pauseNavigationController.navigationBar.backgroundColor = .red
             
-            let gridMenuViewController = self.pauseNavigationController.topViewController as! GridMenuViewController
-            
-            if #available(iOS 13.0, *)
+            if #available(iOS 26, *)
             {
+                let pauseViewController = PauseViewHostingController(items: self.pauseItems) { [weak self] in
+                    self?.dismiss()
+                } stopHandler: { [weak self] in
+                    self?.returnToMainMenu()
+                }
+                pauseViewController.hideItems(animated: false)
+                
+                self.pauseNavigationController.setViewControllers([pauseViewController], animated: false)
+//                self.pauseNavigationController.setToolbarHidden(false, animated: false) // Hide toolbar to fix layout issues
+
+                // Reset storyboard's barStyle = .black which forces legacy appearance
+                // and prevents iOS 26 liquid glass progressive blur.
+                self.pauseNavigationController.navigationBar.barStyle = .default
+                self.pauseNavigationController.overrideUserInterfaceStyle = .dark
+            }
+            else
+            {
+                let gridMenuViewController = self.pauseNavigationController.topViewController as! GridMenuViewController
+                gridMenuViewController.items = self.pauseItems
+                
                 let navigationBarAppearance = self.pauseNavigationController.navigationBar.standardAppearance.copy()
                 navigationBarAppearance.backgroundEffect = UIBlurEffect(style: .dark)
                 navigationBarAppearance.backgroundColor = UIColor.black.withAlphaComponent(0.2)
@@ -159,8 +196,6 @@ extension PauseViewController
                 transparentBarAppearance.backgroundEffect = nil
                 gridMenuViewController.navigationItem.standardAppearance = transparentBarAppearance
             }
-            
-            gridMenuViewController.items = self.pauseItems
             
         case "saveStates":
             let saveStatesViewController = segue.destination as! SaveStatesViewController
@@ -181,6 +216,11 @@ extension PauseViewController
 
 extension PauseViewController
 {
+    func returnToMainMenu()
+    {
+        self.performSegue(withIdentifier: "unwindToGames", sender: self)
+    }
+    
     func dismiss()
     {
         self.performSegue(withIdentifier: "unwindFromPauseMenu", sender: self)
@@ -199,6 +239,14 @@ extension PauseViewController: UINavigationControllerDelegate
     func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool)
     {
         self.updateSafeAreaInsets()
+        
+        if #available(iOS 26, *)
+        {
+            if let collectionViewController = viewController as? UICollectionViewController
+            {
+                viewController.setContentScrollView(collectionViewController.collectionView, for: .top)
+            }
+        }
     }
 }
 
@@ -233,10 +281,9 @@ private extension PauseViewController
         self.sustainButtonsItem = MenuItem(text: NSLocalizedString("Hold Buttons", comment: ""), image: #imageLiteral(resourceName: "SustainButtons"), action: { _ in })
         self.screenshotItem = MenuItem(text: NSLocalizedString("Screenshot", comment: ""), image: #imageLiteral(resourceName: "Screenshot"), action: { _ in })
         
-        if ExperimentalFeatures.shared.variableFastForward.isEnabled
+        if ExperimentalFeatures.shared.variableFastForward.isEnabled, let (menuTitle, menuOptions) = self.makeFastForwardMenu(for: emulatorCore.game)
         {
-            let menu = self.makeFastForwardMenu(for: emulatorCore.game)
-            self.fastForwardItem?.menu = menu
+            self.fastForwardItem?.menuOptions = menuOptions
         }
         // Add Lu menu item if enabled
         if ExperimentalFeatures.shared.Lu.isEnabled {
@@ -275,56 +322,61 @@ private extension PauseViewController
         }
     }
     
-    func makeFastForwardMenu(for game: GameProtocol) -> UIMenu?
+    func makeFastForwardMenu(for game: GameProtocol) -> (title: String, options: [Action])?
     {
         guard let deltaCore = Delta.core(for: game.type), #available(iOS 15, *) else { return nil }
         
-        let menu = UIMenu(title: NSLocalizedString("Change the Fast Forward speed for this system.", comment: ""), options: [.singleSelection], children: [
-            UIDeferredMenuElement.uncached { [weak self] completion in
-                let preferredSpeed = ExperimentalFeatures.shared.variableFastForward[game.type]
+        let menuTitle = NSLocalizedString("Change the Fast Forward speed for this system.", comment: "")
+        
+        let preferredSpeed = ExperimentalFeatures.shared.variableFastForward[game.type]
+        let supportedSpeeds = FastForwardSpeed.speeds(in: deltaCore.supportedRates)
+        
+        var menuOptions = zip(0..., supportedSpeeds).map { (index, speed) in
+            
+            let style: Action.Style = (speed == preferredSpeed) ? .selected : .default
+            var action = Action(title: speed.description, style: style) { action in
+                ExperimentalFeatures.shared.variableFastForward[game.type] = speed
                 
-                let supportedSpeeds = FastForwardSpeed.speeds(in: deltaCore.supportedRates)
-                var actions = zip(0..., supportedSpeeds).map { (index, speed) in
-                    
-                    let state: UIAction.State = (speed == preferredSpeed) ? .on : .off
-                    let action = UIAction(title: speed.description, state: state) { action in
-                        ExperimentalFeatures.shared.variableFastForward[game.type] = speed
-                        
-                        if let fastForwardItem = self?.fastForwardItem
-                        {
-                            fastForwardItem.isSelected = true // Always enable FF after selecting speed.
-                            fastForwardItem.action(fastForwardItem)
-                        }
-                    }
-                    
-                    if #available(iOS 16, *)
-                    {
-                        let configuration = UIImage.SymbolConfiguration(hierarchicalColor: .deltaPurple)
-                        
-                        let percentage = Double(index + 1) / Double(supportedSpeeds.count)
-                        action.image = UIImage(systemName: "timelapse", variableValue: percentage, configuration: configuration)
-                    }
-                    
-                    return action
-                }
-
-                let state: UIAction.State = (preferredSpeed == nil) ? .on : .off
-                let action = UIAction(title: NSLocalizedString("Maximum", comment: ""), state: state) { action in
-                    ExperimentalFeatures.shared.variableFastForward[game.type] = nil
-                    
-                    if let fastForwardItem = self?.fastForwardItem
+                if let fastForwardItem = self.fastForwardItem
+                {
+                    if #unavailable(iOS 26)
                     {
                         fastForwardItem.isSelected = true // Always enable FF after selecting speed.
-                        fastForwardItem.action(fastForwardItem)
                     }
+                    else
+                    {
+                        // Except on iOS 26, where we toggle it in the callback (TODO: Change the callback to fix this)
+                    }
+                    
+                    
+                    fastForwardItem.action(fastForwardItem)
                 }
-                actions.append(action)
-                
-                completion(actions)
             }
-        ])
+            
+            if #available(iOS 16, *)
+            {
+                let configuration = UIImage.SymbolConfiguration(hierarchicalColor: .deltaPurple)
+                
+                let percentage = Double(index + 1) / Double(supportedSpeeds.count)
+                action.image = UIImage(systemName: "timelapse", variableValue: percentage, configuration: configuration)
+            }
+            
+            return action
+        }
+
+        let style: Action.Style = (preferredSpeed == nil) ? .selected : .default
+        let action = Action(title: NSLocalizedString("Maximum", comment: ""), style: style) { action in
+            ExperimentalFeatures.shared.variableFastForward[game.type] = nil
+            
+            if let fastForwardItem = self.fastForwardItem
+            {
+                fastForwardItem.isSelected = true // Always enable FF after selecting speed.
+                fastForwardItem.action(fastForwardItem)
+            }
+        }
+        menuOptions.append(action)
         
-        return menu
+        return (menuTitle, menuOptions)
     }
     
     func openNewMainWindow()

@@ -9,20 +9,26 @@
 import UIKit
 
 // Must be class for use with Objective-C generics :(
+@Observable
 class MenuItem: NSObject
 {
     var text: String
     var image: UIImage?
     var action: ((MenuItem) -> Void)
     
+    var menuOptions: [Action]
     var menu: UIMenu?
     
-    @objc dynamic var isSelected = false
+//    @objc(isSelected) private dynamic var isSelected = false
     
-    init(text: String, image: UIImage?, action: @escaping ((MenuItem) -> Void))
+    var isSelected: Bool = false
+    
+    init(text: String, image: UIImage?, menuOptions: [Action] = [], menu: UIMenu? = nil, action: @escaping ((MenuItem) -> Void))
     {
         self.image = image
         self.text = text
+        self.menuOptions = menuOptions
+        self.menu = menu
         self.action = action
     }
 }

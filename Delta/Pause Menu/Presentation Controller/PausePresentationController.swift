@@ -19,6 +19,8 @@ class PausePresentationController: UIPresentationController
 {
     let presentationAnimator: UIViewPropertyAnimator
     
+    private let blurAnimator: UIViewPropertyAnimator
+    
     private let blurringView: UIVisualEffectView
     private let vibrancyView: UIVisualEffectView
     
@@ -39,7 +41,15 @@ class PausePresentationController: UIPresentationController
         if contentHeight == 0
         {
             let statusBarHeight = statusBarManager.statusBarFrame.height
-            frame = CGRect(x: 0, y: statusBarHeight, width: containerView.bounds.width, height: containerView.bounds.height - statusBarHeight)
+            
+            if #available(iOS 26, *)
+            {
+                frame = CGRect(x: 0, y: 0, width: containerView.bounds.width, height: containerView.bounds.height)
+            }
+            else
+            {
+                frame = CGRect(x: 0, y: statusBarHeight, width: containerView.bounds.width, height: containerView.bounds.height - statusBarHeight)
+            }
         }
         else
         {
@@ -53,6 +63,9 @@ class PausePresentationController: UIPresentationController
     init(presentedViewController: UIViewController, presenting presentingViewController: UIViewController?, presentationAnimator: UIViewPropertyAnimator)
     {
         self.presentationAnimator = presentationAnimator
+        
+        self.blurAnimator = UIViewPropertyAnimator(duration: presentationAnimator.duration, timingParameters: presentationAnimator.timingParameters ?? UISpringTimingParameters())
+        self.blurAnimator.pausesOnCompletion = true // Allows us to reverse animation for dismissal.
         
         self.blurringView = UIVisualEffectView(effect: nil)
         self.vibrancyView = UIVisualEffectView(effect: nil)
@@ -88,24 +101,40 @@ class PausePresentationController: UIPresentationController
         self.vibrancyView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.containerView?.addSubview(self.vibrancyView)
         
+        if #available(iOS 26, *)
+        {
+            // Animate in dark overlay to mask abrupt blur change (below).
+            self.vibrancyView.contentView.backgroundColor = .black.withAlphaComponent(0.5)
+            self.vibrancyView.contentView.alpha = 0.0
+        }
+        
         self.contentView.alpha = 0.0
         self.vibrancyView.contentView.addSubview(self.contentView)
         
+        let blurEffect = UIBlurEffect(style: .systemUltraThinMaterialDark)
+        
         self.presentationAnimator.addAnimations {
-            if #available(iOS 26, *)
-            {
-                let glass = UIGlassEffect(style: .regular)
-                glass.tintColor = .black.withAlphaComponent(0.3)
-                
-                self.blurringView.effect = glass
-            }
-            else
-            {
-                self.blurringView.effect = UIBlurEffect(style: .dark)
-            }
-            
-            self.vibrancyView.effect = UIVibrancyEffect(blurEffect: UIBlurEffect(style: .dark))
             self.contentView.alpha = 1.0
+            self.vibrancyView.contentView.alpha = 1.0
+            
+            if #unavailable(iOS 26)
+            {
+                // Makes vibrancy view have light background on iOS 26
+                self.vibrancyView.effect = UIVibrancyEffect(blurEffect: blurEffect)
+            }
+        }
+        
+        self.blurAnimator.addAnimations {
+            self.blurringView.effect = blurEffect
+        }
+        
+        if #available(iOS 26, *)
+        {
+            // Pause animation at 0.15 completion to result in 15% progressive blur.
+            // Unfortunately we can't animate this change, so we mask with dark overlay fade above.
+            self.blurAnimator.startAnimation()
+            self.blurAnimator.pauseAnimation()
+            self.blurAnimator.fractionComplete = 0.15
         }
         
         // I have absolutely no clue why animating with transition coordinator results in no animation on iOS 11.
@@ -113,23 +142,26 @@ class PausePresentationController: UIPresentationController
         // self.presentingViewController.transitionCoordinator?.animate(alongsideTransition: { context in }, completion: nil)
     }
     
+//    override func presentationTransitionDidEnd(_ completed: Bool)
+//    {
+//        if #available(iOS 26, *)
+//        {
+//            // We need to explicitly stop paused animations before releasing them.
+//            self.blurAnimator.stopAnimation(true)
+//        }
+//    }
+    
     override func dismissalTransitionWillBegin()
     {
+        // Play blur animation in reverse.
+        self.blurAnimator.isReversed = true
+        self.blurAnimator.startAnimation()
+        
         self.presentingViewController.transitionCoordinator?.animate(alongsideTransition: { context in
-            // TODO: check if alpha animation is working in later iOS 26 versions and, ideally, if blur effect animation is fixed
-            
-            if #available(iOS 26, *)
-            {
-                // Annoying workaround bc 0.0 breaks the layout
-                self.blurringView.alpha = 0.02
-            }
-            else
-            {
-                self.blurringView.effect = nil
-            }
+            self.contentView.alpha = 0.0
             
             self.vibrancyView.effect = nil
-            self.contentView.alpha = 0.0
+            self.vibrancyView.contentView.alpha = 0.0
         }) { _ in
             self.blurringView.effect = nil
         }
@@ -139,6 +171,9 @@ class PausePresentationController: UIPresentationController
     {
         self.blurringView.removeFromSuperview()
         self.vibrancyView.removeFromSuperview()
+        
+        // We need to explicitly stop paused animations before releasing them.
+        self.blurAnimator.stopAnimation(true)
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator)
@@ -198,7 +233,7 @@ class PausePresentationController: UIPresentationController
         // Unhide pauseIconImageView so its height is involved with layout calculations
         self.pauseIconImageView.isHidden = false
         
-        self.contentView.frame = CGRect(x: 0, y: statusBarHeight, width: self.containerView!.bounds.width, height: self.frameOfPresentedViewInContainerView.minY - statusBarHeight)
+        self.contentView.frame = CGRect(x: 0, y: statusBarHeight, width: self.containerView!.bounds.width, height: max(self.frameOfPresentedViewInContainerView.minY - statusBarHeight, 0))
         
         self.contentView.setNeedsLayout() // Ensures that layout will actually occur (sometimes the system thinks a layout is not needed, which messes up calculations)
         self.contentView.layoutIfNeeded()

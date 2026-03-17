@@ -550,6 +550,11 @@ extension GameViewController
                         
             pauseViewController.fastForwardItem?.isSelected = (self.emulatorCore?.rate != self.emulatorCore?.deltaCore.supportedRates.lowerBound)
             pauseViewController.fastForwardItem?.action = { [unowned self] item in
+                if #available(iOS 26, *)
+                {
+                    item.isSelected.toggle()
+                }
+                
                 self.performFastForwardAction(activate: item.isSelected)
             }
             pauseViewController.screenshotItem?.action = { [unowned self] item in
@@ -558,6 +563,11 @@ extension GameViewController
             
             pauseViewController.sustainButtonsItem?.isSelected = gameController.sustainedInputs.count > 0
             pauseViewController.sustainButtonsItem?.action = { [unowned self, unowned pauseViewController] item in
+                
+                if #available(iOS 26, *)
+                {
+                    item.isSelected.toggle()
+                }
                 
                 for input in gameController.sustainedInputs.keys
                 {
