@@ -117,7 +117,7 @@ private extension GridMenuViewController
         cell.maximumImageSize = CGSize(width: 78, height: 78)
         
         cell.imageView.contentMode = .center
-        cell.imageView.layer.cornerRadius = (cell.maximumImageSize.height / 2)
+        cell.imageView.layer.cornerRadius = 16.0
         
         cell.textLabel.text = pauseItem.text
         cell.textLabel.textColor = self.view.tintColor
