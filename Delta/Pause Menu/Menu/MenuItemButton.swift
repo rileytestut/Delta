@@ -21,9 +21,6 @@ struct MenuItemButton: View
     @State
     var item: MenuItem
     
-    @State
-    var isHidden: Bool = false
-    
     var body: some View {
         // This probably should be a .contextMenu() View modifier instead of Menu...
         // but the animation when presenting the context menu is kinda jank on iOS 26 :(
@@ -51,12 +48,9 @@ struct MenuItemButton: View
         .frame(width: MenuItemButton.preferredSize.width, height: MenuItemButton.preferredSize.height)
         .buttonBorderShape(.roundedRectangle(radius: MenuItemButton.preferredCornerRadius))
         
-        // Glass effect
-        .glassEffect(isHidden ? .identity : .clear.interactive(), in: .rect(cornerRadius: MenuItemButton.preferredCornerRadius))
+        // Glass effect (+ selection highlight)
+        .glassEffect(item.isSelected ? .clear.tint(.white.opacity(0.7)).interactive() : .clear.interactive(), in: .rect(cornerRadius: MenuItemButton.preferredCornerRadius))
         .glassEffectTransition(.materialize)
-        
-        // Apply white highlight if selected
-        .background(!isHidden && item.isSelected ? Color.white.opacity(0.7) : .clear, in: .rect(cornerRadius: MenuItemButton.preferredCornerRadius))
         .foregroundStyle(item.isSelected ? .black : .white)
     }
     

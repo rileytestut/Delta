@@ -80,7 +80,7 @@ struct PauseView: View
                         if !isHidden
                         {
                             ForEach(items, id: \.text) { item in
-                                MenuItemButton(item: item, isHidden: isHidden)
+                                MenuItemButton(item: item)
                                     .frame(maxWidth: .infinity, maxHeight: .infinity) // Fill proposed frame with glass effect
                             }
                         }
