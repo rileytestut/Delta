@@ -517,7 +517,10 @@ private extension SaveStatesViewController
         case .translucent:
             self.view.backgroundColor = nil
             
-            self.vibrancyView.effect = UIVibrancyEffect(blurEffect: UIBlurEffect(style: .dark))
+            if #unavailable(iOS 26)
+            {
+                self.vibrancyView.effect = UIVibrancyEffect(blurEffect: UIBlurEffect(style: .dark))
+            }
             
             self.placeholderView.textLabel.textColor = UIColor.white
             self.placeholderView.detailTextLabel.textColor = UIColor.white
@@ -591,11 +594,12 @@ private extension SaveStatesViewController
         
         cell.imageView.backgroundColor = UIColor.white
         cell.imageView.image = UIImage(named: "DeltaPlaceholder")
-        cell.textLabel.textColor = UIColor.gray
         
         switch self.theme
         {
         case .opaque:
+            cell.textLabel.textColor = .gray
+            
             if #available(iOS 26, *)
             {
                 cell.isImageViewGlassEnabled = true
@@ -610,14 +614,18 @@ private extension SaveStatesViewController
         case .translucent:
             if #available(iOS 26, *)
             {
+                cell.textLabel.textColor = .white
+                
                 cell.isImageViewGlassEnabled = true
+                cell.isTextLabelVibrancyEnabled = false
             }
             else
             {
+                cell.textLabel.textColor = .gray
+                
                 cell.isImageViewVibrancyEnabled = true
+                cell.isTextLabelVibrancyEnabled = true
             }
-            
-            cell.isTextLabelVibrancyEnabled = true
         }
         
         let dimensions: CGSize
@@ -632,7 +640,8 @@ private extension SaveStatesViewController
                 
         cell.maximumImageSize = CGSize(width: self.prototypeCellWidthConstraint.constant, height: (self.prototypeCellWidthConstraint.constant / dimensions.width) * dimensions.height)
         
-        cell.textLabel.font = UIFont.preferredFont(forTextStyle: .subheadline)
+        let fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .subheadline).withSymbolicTraits(.traitBold)!
+        cell.textLabel.font = UIFont(descriptor: fontDescriptor, size: 0.0)
         cell.textLabel.text = saveState.localizedName
     }
     
@@ -669,7 +678,15 @@ private extension SaveStatesViewController
                 
             case .translucent:
                 headerView.textView.textColor = UIColor.white
-                headerView.isTextVibrancyEnabled = true
+                
+                if #available(iOS 26, *)
+                {
+                    headerView.isTextVibrancyEnabled = false
+                }
+                else
+                {
+                    headerView.isTextVibrancyEnabled = true
+                }
             }
         }
     }

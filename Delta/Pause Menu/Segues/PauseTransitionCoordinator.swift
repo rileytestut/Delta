@@ -44,6 +44,20 @@ class PauseTransitionCoordinator: NSObject, UIViewControllerAnimatedTransitionin
             navigationController.view.layoutIfNeeded()
         }
         
+        if #available(iOS 26, *)
+        {
+            if let tableViewController = destinationViewController as? UITableViewController
+            {
+                let adjustedOffset = tableViewController.tableView.adjustedContentInset.top
+                tableViewController.tableView.contentOffset = CGPoint(x: 0, y: -adjustedOffset)
+            }
+            else if let collectionViewController = destinationViewController as? UICollectionViewController
+            {
+                let adjustedOffset = collectionViewController.collectionView.adjustedContentInset.top
+                collectionViewController.collectionView.contentOffset = CGPoint(x: 0, y: -adjustedOffset)
+            }
+        }
+        
         UIView.animate(withDuration: self.transitionDuration(using: transitionContext), delay:0, options:RSTSystemTransitionAnimationCurve, animations: {
             
             sourceViewController.view.frame.origin.y = self.presenting ? -sourceViewController.view.bounds.height : transitionContext.containerView.bounds.height
