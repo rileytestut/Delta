@@ -14,11 +14,16 @@ extension PauseView
     @Observable
     class HostingController: UIHostingController<AnyView> // PauseView.environment(self)
     {
+        var resumeHandler: () -> Void = {}
+        var stopHandler: () -> Void = {}
+        
         fileprivate private(set) var isHidden: Bool = true
         fileprivate private(set) var isAnimated: Bool = true
         
-        var resumeHandler: () -> Void = {}
-        var stopHandler: () -> Void = {}
+        fileprivate var isGameScene: Bool {
+            let gameScene = self.view.window?.windowScene as? GameScene
+            return gameScene != nil
+        }
         
         required dynamic init?(coder aDecoder: NSCoder)
         {
@@ -96,9 +101,18 @@ struct PauseView: View
         .toolbarVisibility(isHidden ? .hidden : .visible, for: .bottomBar)
         .toolbar {
             ToolbarItemGroup(placement: .bottomBar) {
-                Button("Main Menu", systemImage: "house.fill", role: .close, action: stopHandler)
-                    .glassEffect()
-                    .glassEffectTransition(.materialize)
+                Button(role: .close, action: stopHandler) {
+                    if hostingViewController.isGameScene
+                    {
+                        Label("Quit Game", systemImage: "xmark")
+                    }
+                    else
+                    {
+                        Label("Main Menu", systemImage: "house.fill")
+                    }
+                }
+                .glassEffect()
+                .glassEffectTransition(.materialize)
                 
                 Spacer()
                 
