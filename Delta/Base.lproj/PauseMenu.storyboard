@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Dt0-nV-isV">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Dt0-nV-isV">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24504"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -52,9 +51,11 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="blurView" destination="p2M-dE-BJs" id="hOS-OL-0W0"/>
                         <segue destination="kQK-P0-mVu" kind="unwind" identifier="unwindFromPauseMenu" unwindAction="unwindFromPauseViewController:" id="2DE-Nv-qaq"/>
                         <segue destination="OOk-k7-INg" kind="show" identifier="saveStates" id="iKc-6q-unN"/>
                         <segue destination="wb8-5o-1jE" kind="show" identifier="cheats" id="g84-5G-av7"/>
+                        <segue destination="kQK-P0-mVu" kind="unwind" identifier="unwindToGames" unwindAction="unwindFromPauseViewController:" id="Ih2-Gk-P8X"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PWj-WH-rlB" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -67,9 +68,12 @@
             <objects>
                 <navigationController id="sWv-Ky-VGs" sceneMemberID="viewController">
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" barStyle="black" id="Snh-Z0-9kC">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" preservesSuperviewLayoutMargins="YES" barStyle="black" largeTitles="YES" id="Snh-Z0-9kC">
+                        <rect key="frame" x="0.0" y="20" width="375" height="106"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <textAttributes key="largeTitleTextAttributes">
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </textAttributes>
                     </navigationBar>
                     <connections>
                         <segue destination="0jA-NY-mvB" kind="relationship" relationship="rootViewController" id="Mhb-Fd-RdX"/>
@@ -108,7 +112,7 @@
                             <outlet property="delegate" destination="0jA-NY-mvB" id="Zhk-cY-zpe"/>
                         </connections>
                     </collectionView>
-                    <navigationItem key="navigationItem" title="Paused" id="rY7-Wx-NaD">
+                    <navigationItem key="navigationItem" title="Paused" largeTitleDisplayMode="never" id="rY7-Wx-NaD">
                         <barButtonItem key="leftBarButtonItem" title="Main Menu" image="house" catalog="system" style="plain" id="2yt-vB-uMF">
                             <connections>
                                 <segue destination="WU3-gG-BA5" kind="unwind" identifier="unwindToGames" unwindAction="unwindFromPauseViewController:" id="SdW-CX-n27"/>
