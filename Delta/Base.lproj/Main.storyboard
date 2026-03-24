@@ -160,6 +160,7 @@
                         <outlet property="headerViewTopSpacingLayoutConstraint" destination="hGu-fL-Twp" id="R1d-kL-Bpg"/>
                         <outlet property="titleLabel" destination="H9c-FD-pG7" id="pAO-tp-TGf"/>
                         <outlet property="titleStackView" destination="bDV-fM-drz" id="opE-Og-uPy"/>
+                        <outlet property="versionLabel" destination="a56-e7-hy4" id="49g-gr-JPf"/>
                     </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nvR-NU-TUA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

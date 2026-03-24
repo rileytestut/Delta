@@ -61,6 +61,7 @@ class WhatsNewViewController: UICollectionViewController
     @IBOutlet private var headerView: UIView!
     
     @IBOutlet private var titleLabel: UILabel!
+    @IBOutlet private var versionLabel: UILabel!
     @IBOutlet private var titleStackView: UIStackView!
     @IBOutlet private var closeButton: UIButton!
     
@@ -95,6 +96,8 @@ class WhatsNewViewController: UICollectionViewController
         self.footerView = FollowUsFooterView(prefersFullColorIcons: true)
         self.footerView.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(self.footerView)
+        
+        self.versionLabel.text = String(localized: "Delta \(UserDefaults.whatsNewVersion)")
         
         if #available(iOS 26, *)
         {

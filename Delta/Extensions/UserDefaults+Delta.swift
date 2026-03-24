@@ -10,6 +10,11 @@ import Foundation
 
 extension UserDefaults
 {
+    static let whatsNewVersion: String = "2.0"
+}
+
+extension UserDefaults
+{
     @NSManaged var shouldRepairDatabase: Bool
     
     @NSManaged var patronsRefreshID: String?
@@ -22,4 +27,5 @@ extension UserDefaults
     @NSManaged var didShowChooseWFCServerAlert: Bool
     
     @NSManaged var didShowWhatsNew: Bool
+    @NSManaged var previousWhatsNewVersion: String?
 }

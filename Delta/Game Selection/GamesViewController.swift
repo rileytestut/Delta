@@ -254,10 +254,14 @@ extension GamesViewController
     {
         super.viewDidAppear(animated)
         
-        if !UserDefaults.standard.didShowWhatsNew
+        let whatsNewVersion = UserDefaults.standard.previousWhatsNewVersion ?? "0"
+        let isUpdatedWhatsNew = (whatsNewVersion.compare(UserDefaults.whatsNewVersion, options: .numeric) == .orderedAscending)
+        
+        if !UserDefaults.standard.didShowWhatsNew || isUpdatedWhatsNew
         {
             self.performSegue(withIdentifier: "showWhatsNew", sender: nil)
             UserDefaults.standard.didShowWhatsNew = true
+            UserDefaults.standard.previousWhatsNewVersion = UserDefaults.whatsNewVersion
         }
     }
     

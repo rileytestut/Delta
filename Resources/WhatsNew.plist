@@ -4,31 +4,21 @@
 <array>
 	<dict>
 		<key>name</key>
-		<string>Online Multiplayer (DS)</string>
+		<string>Liquid Glass UI</string>
 		<key>caption</key>
-		<string>Play online-compatible Nintendo DS games with friends around the world.</string>
+		<string>An all-new look designed for iOS 26.</string>
 		<key>icon</key>
-		<string>globe</string>
+		<string>drop.fill</string>
 		<key>isPatronExclusive</key>
 		<false/>
 	</dict>
 	<dict>
 		<key>name</key>
-		<string>Updated N64 Core</string>
+		<string>Sega Genesis</string>
 		<key>caption</key>
-		<string>Fixes graphical issues and supports custom resolutions and texture packs.</string>
+		<string>Play your favorite Genesis games with our gorgeous new controller skin.</string>
 		<key>icon</key>
-		<string>wand.and.stars</string>
-		<key>isPatronExclusive</key>
-		<false/>
-	</dict>
-	<dict>
-		<key>name</key>
-		<string>Game Screenshots</string>
-		<key>caption</key>
-		<string>Capture high-quality screenshots saved directly to your Photo Library.</string>
-		<key>icon</key>
-		<string>camera.fill</string>
+		<string>gamecontroller.fill</string>
 		<key>isPatronExclusive</key>
 		<false/>
 	</dict>
@@ -39,30 +29,18 @@
 		<string>Connect a RetroAchievements account to unlock achievements in games.</string>
 		<key>icon</key>
 		<string>trophy.fill</string>
-		<key>fallbackIcon</key>
-		<string>gamecontroller.fill</string>
-		<key>isPatronExclusive</key>
-		<true/>
-	</dict>
-	<dict>
-		<key>name</key>
-		<string>Change Fast Forward Speed</string>
-		<key>caption</key>
-		<string>Choose your preferred Fast Forward speed for each system up to 8x.</string>
-		<key>icon</key>
-		<string>forward.fill</string>
-		<key>isPatronExclusive</key>
-		<true/>
-	</dict>
-	<dict>
-		<key>name</key>
-		<string>Game Controller Skins</string>
-		<key>caption</key>
-		<string>Use custom skins when playing with physical game controllers.</string>
-		<key>icon</key>
-		<string>gamecontroller.fill</string>
 		<key>isPatronExclusive</key>
 		<false/>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>AirPlay Skins</string>
+		<key>caption</key>
+		<string>Customize the appearance of your games when AirPlaying to your TV.</string>
+		<key>icon</key>
+		<string>photo.tv</string>
+		<key>isPatronExclusive</key>
+		<true/>
 	</dict>
 </array>
 </plist>
