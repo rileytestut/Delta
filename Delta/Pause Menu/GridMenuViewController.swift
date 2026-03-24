@@ -117,7 +117,7 @@ private extension GridMenuViewController
         cell.maximumImageSize = CGSize(width: 78, height: 78)
         
         cell.imageView.contentMode = .center
-        cell.imageView.layer.cornerRadius = (cell.maximumImageSize.height / 2)
+        cell.imageView.layer.cornerRadius = 16.0
         
         cell.textLabel.text = pauseItem.text
         cell.textLabel.textColor = self.view.tintColor
@@ -150,7 +150,7 @@ private extension GridMenuViewController
         
         for (index, item) in self.items.enumerated()
         {
-            let observer = item.observe(\.isSelected, changeHandler: { [unowned self] (item, change) in
+            let observer = item.observe(\._isSelectedObjC, changeHandler: { [unowned self] (item, change) in
                 let indexPath = IndexPath(item: index, section: 0)
                 
                 if let cell = self.collectionView?.cellForItem(at: indexPath) as? GridCollectionViewCell
@@ -204,9 +204,9 @@ extension GridMenuViewController
     override func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration?
     {
         let item = self.dataSource.item(at: indexPath)
-        guard let menu = item.menu else { return nil }
+        guard !item.menuOptions.isEmpty else { return nil }
         
-        return UIContextMenuConfiguration(identifier: indexPath as NSIndexPath, previewProvider: nil) { _ in menu }
+        return UIContextMenuConfiguration(identifier: indexPath as NSIndexPath, previewProvider: nil) { _ in UIMenu(children: item.menuOptions.menuActions) }
     }
     
     override func collectionView(_ collectionView: UICollectionView, previewForHighlightingContextMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview?

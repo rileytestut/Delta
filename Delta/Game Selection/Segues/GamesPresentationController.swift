@@ -35,10 +35,7 @@ class GamesPresentationController: UIPresentationController
         self.animator.addAnimations {
             if #available(iOS 26, *)
             {
-                let glass = UIGlassEffect(style: .regular)
-                glass.tintColor = .black.withAlphaComponent(0.3)
-                
-                self.blurView.effect = glass
+                self.blurView.effect = UIBlurEffect(style: .systemChromeMaterial)
             }
             else
             {
@@ -49,23 +46,8 @@ class GamesPresentationController: UIPresentationController
     
     override func dismissalTransitionWillBegin()
     {
-        // TODO: check if alpha animation is working in later iOS 26 versions and, ideally, if blur effect animation is fixed
-
-        if #available(iOS 26, *)
-        {
-            self.animator.addAnimations {
-                self.blurView.alpha = 0
-            }
-            
-            self.animator.addCompletion { _ in
-                self.blurView.effect = nil
-            }
-        }
-        else
-        {
-            self.animator.addAnimations {
-                self.blurView.effect = nil
-            }
+        self.animator.addAnimations {
+            self.blurView.effect = nil
         }
     }
     

@@ -44,7 +44,7 @@ extension CheatsViewController
         
         self.title = NSLocalizedString("Cheats", comment: "")
         
-        let vibrancyEffect = UIVibrancyEffect(blurEffect: UIBlurEffect(style: .dark))
+        let vibrancyEffect: UIVisualEffect? = if #available(iOS 26, *) { nil } else { UIVibrancyEffect(blurEffect: UIBlurEffect(style: .dark)) }
         let vibrancyView = UIVisualEffectView(effect: vibrancyEffect)
         
         let placeholderView = RSTPlaceholderView(frame: CGRect(x: 0, y: 0, width: vibrancyView.bounds.width, height: vibrancyView.bounds.height))

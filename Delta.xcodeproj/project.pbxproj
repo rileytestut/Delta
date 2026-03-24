@@ -178,6 +178,7 @@
 		D5002BDC2DCD3ED2003418FD /* MockPurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5002BDB2DCD3ED2003418FD /* MockPurchaseManager.swift */; };
 		D5002BDE2DCD3F31003418FD /* MockDatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5002BDD2DCD3F31003418FD /* MockDatabaseManager.swift */; };
 		D5011C48281B6E8B00A0760B /* CharacterSet+Filename.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5011C47281B6E8B00A0760B /* CharacterSet+Filename.swift */; };
+		D503AC3A2F6A15EA00002717 /* MenuItemButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D503AC392F6A15EA00002717 /* MenuItemButton.swift */; };
 		D5087E872D76563400E77936 /* AchievementsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5087E862D76563400E77936 /* AchievementsManager.swift */; };
 		D5087E8F2D766CFC00E77936 /* RetroAchievements.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5087E8E2D766CFA00E77936 /* RetroAchievements.swift */; };
 		D50996E92D7A536600BE069B /* AchievementsError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50996E82D7A536200BE069B /* AchievementsError.swift */; };
@@ -196,9 +197,11 @@
 		D52CB8C62CE2B7B600B04458 /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = D52CB8C52CE2B7B600B04458 /* RevenueCat */; };
 		D52CB8C82CE2B7C800B04458 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D52CB8C72CE2B7C800B04458 /* StoreKit.framework */; };
 		D52CB8CA2CE2B85E00B04458 /* RevenueCatManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52CB8C92CE2B85800B04458 /* RevenueCatManager.swift */; };
+		D52DB1B72F5F8AE000C7491E /* PauseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52DB1B62F5F8AE000C7491E /* PauseView.swift */; };
 		D53415A5298C782A00FD67B1 /* ContributorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53415A4298C782A00FD67B1 /* ContributorsView.swift */; };
 		D53415A7298C78BC00FD67B1 /* Contributors.plist in Resources */ = {isa = PBXBuildFile; fileRef = D53415A6298C78BC00FD67B1 /* Contributors.plist */; };
 		D534515D2D0A314900B800CE /* PatreonTiersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D534515C2D0A313E00B800CE /* PatreonTiersViewController.swift */; };
+		D5363C462F5BA9B40065182B /* ContainerRelativeGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5363C3D2F5BA9AE0065182B /* ContainerRelativeGrid.swift */; };
 		D539103229E88B6C0006B350 /* DeltaPreviews.h in Headers */ = {isa = PBXBuildFile; fileRef = D539103129E88B6C0006B350 /* DeltaPreviews.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D539104029E88BC40006B350 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D539103F29E88BC40006B350 /* ContentView.swift */; };
 		D53BE5FF2E873E6B0012DE0F /* MicrochipIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = D53BE5FE2E873E6B0012DE0F /* MicrochipIcon.icon */; };
@@ -726,6 +729,7 @@
 		D5002BDB2DCD3ED2003418FD /* MockPurchaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPurchaseManager.swift; sourceTree = "<group>"; };
 		D5002BDD2DCD3F31003418FD /* MockDatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDatabaseManager.swift; sourceTree = "<group>"; };
 		D5011C47281B6E8B00A0760B /* CharacterSet+Filename.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CharacterSet+Filename.swift"; sourceTree = "<group>"; };
+		D503AC392F6A15EA00002717 /* MenuItemButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItemButton.swift; sourceTree = "<group>"; };
 		D5087E862D76563400E77936 /* AchievementsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementsManager.swift; sourceTree = "<group>"; };
 		D5087E8E2D766CFA00E77936 /* RetroAchievements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetroAchievements.swift; sourceTree = "<group>"; };
 		D50996E82D7A536200BE069B /* AchievementsError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementsError.swift; sourceTree = "<group>"; };
@@ -743,10 +747,12 @@
 		D5265A7F2D48489C0002C6CE /* GameSettingsWrapperViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSettingsWrapperViews.swift; sourceTree = "<group>"; };
 		D52CB8C72CE2B7C800B04458 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		D52CB8C92CE2B85800B04458 /* RevenueCatManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevenueCatManager.swift; sourceTree = "<group>"; };
+		D52DB1B62F5F8AE000C7491E /* PauseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PauseView.swift; sourceTree = "<group>"; };
 		D532B8BC29E5EDAD009EE27C /* OptionalProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalProtocol.swift; sourceTree = "<group>"; };
 		D53415A4298C782A00FD67B1 /* ContributorsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContributorsView.swift; sourceTree = "<group>"; };
 		D53415A6298C78BC00FD67B1 /* Contributors.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Contributors.plist; sourceTree = "<group>"; };
 		D534515C2D0A313E00B800CE /* PatreonTiersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatreonTiersViewController.swift; sourceTree = "<group>"; };
+		D5363C3D2F5BA9AE0065182B /* ContainerRelativeGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerRelativeGrid.swift; sourceTree = "<group>"; };
 		D539102F29E88B6B0006B350 /* DeltaPreviews.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DeltaPreviews.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D539103129E88B6C0006B350 /* DeltaPreviews.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DeltaPreviews.h; sourceTree = "<group>"; };
 		D539103F29E88BC40006B350 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -1186,7 +1192,7 @@
 				BF353FF41C5D837600C1184C /* PauseMenu.storyboard */,
 				BF353FF11C5D7FB000C1184C /* PauseViewController.swift */,
 				BF7AE8041C2E858400B1B5BC /* GridMenuViewController.swift */,
-				BF353FF81C5D870B00C1184C /* MenuItem.swift */,
+				D53ED1252F565D8000F5B5C0 /* Menu */,
 				BF3540031C5DA6D800C1184C /* Save States */,
 				BFC9B7371CEFCD08008629BB /* Cheats */,
 				BF353FFB1C5DA2F600C1184C /* Presentation Controller */,
@@ -1534,6 +1540,17 @@
 				D57D795829F3054800BB2CF8 /* Experimental Features */,
 			);
 			path = DeltaPreviews;
+			sourceTree = "<group>";
+		};
+		D53ED1252F565D8000F5B5C0 /* Menu */ = {
+			isa = PBXGroup;
+			children = (
+				BF353FF81C5D870B00C1184C /* MenuItem.swift */,
+				D52DB1B62F5F8AE000C7491E /* PauseView.swift */,
+				D503AC392F6A15EA00002717 /* MenuItemButton.swift */,
+				D5363C3D2F5BA9AE0065182B /* ContainerRelativeGrid.swift */,
+			);
+			path = Menu;
 			sourceTree = "<group>";
 		};
 		D57A81912E29ADC8006E06E8 /* Dependencies */ = {
@@ -2303,6 +2320,7 @@
 				BFE593CC21F3F8C2003412A6 /* _GameSave.swift in Sources */,
 				D5087E872D76563400E77936 /* AchievementsManager.swift in Sources */,
 				BF63A1A321A4AAAE00EE8F61 /* RecordSyncStatusViewController.swift in Sources */,
+				D503AC3A2F6A15EA00002717 /* MenuItemButton.swift in Sources */,
 				D5147EC82A817B4A00D6CD64 /* ReviewSaveStatesOptions.swift in Sources */,
 				BFAA1FED1B8AA4FA00495943 /* Settings.swift in Sources */,
 				D56C362F2D6538C500A8984D /* WhatsNewViewController.swift in Sources */,
@@ -2314,6 +2332,7 @@
 				BF59428E1E09BCFB0051894B /* ImportController.swift in Sources */,
 				BF13A7581D5D2FD9000BB055 /* EmulatorCore+Delta.swift in Sources */,
 				BF48F74E219A16DA00BC2FC1 /* SyncingServicesViewController.swift in Sources */,
+				D5363C462F5BA9B40065182B /* ContainerRelativeGrid.swift in Sources */,
 				D552DE3A2D39C5A500E737BE /* WFCServersView.swift in Sources */,
 				D5A9C01D29DE058C00A8D610 /* VariableFastForward.swift in Sources */,
 				C6F24AD92D64B550002F939F /* PauseViewController+Lu.swift in Sources */,
@@ -2450,6 +2469,7 @@
 				BF59427D1E09BC830051894B /* ControllerSkin.swift in Sources */,
 				D5A287252C23A1AC009883C3 /* SkinDebugging.swift in Sources */,
 				D56F7ABC2B05988700490ACB /* AttributedHeaderFooterView.swift in Sources */,
+				D52DB1B72F5F8AE000C7491E /* PauseView.swift in Sources */,
 				BFAB9F7D219A43380080EC7D /* SyncManager.swift in Sources */,
 				82C63BDB2E57BB4700B0C812 /* UIColor+Hex.swift in Sources */,
 				BFCEA67E1D56FF640061A534 /* UIViewControllerContextTransitioning+Conveniences.swift in Sources */,

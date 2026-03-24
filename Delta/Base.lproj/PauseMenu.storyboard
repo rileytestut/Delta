@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Dt0-nV-isV">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Dt0-nV-isV">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24504"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -52,9 +51,11 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="blurView" destination="p2M-dE-BJs" id="hOS-OL-0W0"/>
                         <segue destination="kQK-P0-mVu" kind="unwind" identifier="unwindFromPauseMenu" unwindAction="unwindFromPauseViewController:" id="2DE-Nv-qaq"/>
                         <segue destination="OOk-k7-INg" kind="show" identifier="saveStates" id="iKc-6q-unN"/>
                         <segue destination="wb8-5o-1jE" kind="show" identifier="cheats" id="g84-5G-av7"/>
+                        <segue destination="kQK-P0-mVu" kind="unwind" identifier="unwindToGames" unwindAction="unwindFromPauseViewController:" id="Ih2-Gk-P8X"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PWj-WH-rlB" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -67,9 +68,12 @@
             <objects>
                 <navigationController id="sWv-Ky-VGs" sceneMemberID="viewController">
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" barStyle="black" id="Snh-Z0-9kC">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" preservesSuperviewLayoutMargins="YES" barStyle="black" largeTitles="YES" id="Snh-Z0-9kC">
+                        <rect key="frame" x="0.0" y="20" width="375" height="106"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <textAttributes key="largeTitleTextAttributes">
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </textAttributes>
                     </navigationBar>
                     <connections>
                         <segue destination="0jA-NY-mvB" kind="relationship" relationship="rootViewController" id="Mhb-Fd-RdX"/>
@@ -108,7 +112,7 @@
                             <outlet property="delegate" destination="0jA-NY-mvB" id="Zhk-cY-zpe"/>
                         </connections>
                     </collectionView>
-                    <navigationItem key="navigationItem" title="Paused" id="rY7-Wx-NaD">
+                    <navigationItem key="navigationItem" title="Paused" largeTitleDisplayMode="never" id="rY7-Wx-NaD">
                         <barButtonItem key="leftBarButtonItem" title="Main Menu" image="house" catalog="system" style="plain" id="2yt-vB-uMF">
                             <connections>
                                 <segue destination="WU3-gG-BA5" kind="unwind" identifier="unwindToGames" unwindAction="unwindFromPauseViewController:" id="SdW-CX-n27"/>
@@ -135,7 +139,7 @@
             <objects>
                 <collectionViewController storyboardIdentifier="saveStatesViewController" id="OOk-k7-INg" customClass="SaveStatesViewController" customModule="Delta" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" id="XgF-OF-CVf">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="657"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="20" minimumInteritemSpacing="20" id="tvW-q1-PD8" customClass="GridCollectionViewLayout" customModule="Delta" customModuleProvider="target">
@@ -163,7 +167,7 @@
                             <outlet property="delegate" destination="OOk-k7-INg" id="aLg-5i-MAd"/>
                         </connections>
                     </collectionView>
-                    <navigationItem key="navigationItem" title="Save State" id="BoG-k2-aR2">
+                    <navigationItem key="navigationItem" title="Save State" largeTitleDisplayMode="always" id="BoG-k2-aR2">
                         <rightBarButtonItems>
                             <barButtonItem systemItem="add" id="lKg-Ks-hWN">
                                 <connections>
@@ -187,7 +191,7 @@
             <objects>
                 <tableViewController id="wb8-5o-1jE" customClass="CheatsViewController" customModule="Delta" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="f5S-hV-1yV">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="657"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
@@ -241,7 +245,7 @@
                             <outlet property="delegate" destination="wb8-5o-1jE" id="tPS-Bm-ceI"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Cheats" id="Gsv-JZ-Yc0">
+                    <navigationItem key="navigationItem" title="Cheats" largeTitleDisplayMode="always" id="Gsv-JZ-Yc0">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="xr9-Op-Op7">
                             <connections>
                                 <action selector="addCheat" destination="wb8-5o-1jE" id="FEG-zY-Sde"/>
@@ -258,22 +262,21 @@
         <scene sceneID="SMZ-Ah-CVb">
             <objects>
                 <tableViewController storyboardIdentifier="editCheatViewController" id="jTR-Oe-YUJ" customClass="EditCheatViewController" customModule="Delta" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="interactive" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="BV9-ff-x83">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="interactive" dataMode="static" style="insetGrouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="BV9-ff-x83">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <sections>
                             <tableViewSection headerTitle="Name" id="QT6-DZ-g70">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" id="ZeC-rg-QFa">
-                                        <rect key="frame" x="0.0" y="55.5" width="375" height="44"/>
+                                        <rect key="frame" x="16" y="55.5" width="343" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" tableViewCell="ZeC-rg-QFa" id="UIF-fK-ApW">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="343" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Cheat Name" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="DD1-X0-hg7">
-                                                    <rect key="frame" x="16" y="0.0" width="343" height="44"/>
+                                                    <rect key="frame" x="16" y="0.0" width="311" height="44"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" returnKeyType="done"/>
                                                     <connections>
@@ -295,14 +298,14 @@
                             <tableViewSection headerTitle="Type" footerTitle="Description" id="rvn-VK-2uH">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" id="Tst-zn-e04">
-                                        <rect key="frame" x="0.0" y="163" width="375" height="44"/>
+                                        <rect key="frame" x="16" y="163" width="343" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" tableViewCell="Tst-zn-e04" id="gwV-zS-RWQ">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="343" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="xrD-ue-96Q">
-                                                    <rect key="frame" x="16" y="6.5" width="343" height="32"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="343" height="45"/>
                                                     <segments>
                                                         <segment title="First"/>
                                                         <segment title="Second"/>
@@ -314,8 +317,10 @@
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="xrD-ue-96Q" firstAttribute="centerY" secondItem="gwV-zS-RWQ" secondAttribute="centerY" id="HEE-6o-6oQ"/>
-                                                <constraint firstItem="xrD-ue-96Q" firstAttribute="leading" secondItem="gwV-zS-RWQ" secondAttribute="leadingMargin" id="e07-ea-lKZ"/>
-                                                <constraint firstItem="xrD-ue-96Q" firstAttribute="trailing" secondItem="gwV-zS-RWQ" secondAttribute="trailingMargin" id="qk0-rE-QTg"/>
+                                                <constraint firstAttribute="bottom" secondItem="xrD-ue-96Q" secondAttribute="bottom" id="HPn-Xa-8Ba"/>
+                                                <constraint firstAttribute="trailing" secondItem="xrD-ue-96Q" secondAttribute="trailing" id="RrW-7j-qjy"/>
+                                                <constraint firstItem="xrD-ue-96Q" firstAttribute="top" secondItem="gwV-zS-RWQ" secondAttribute="top" id="b2D-EJ-gP5"/>
+                                                <constraint firstItem="xrD-ue-96Q" firstAttribute="leading" secondItem="gwV-zS-RWQ" secondAttribute="leading" id="e07-ea-lKZ"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -324,14 +329,14 @@
                             <tableViewSection headerTitle="Code" footerTitle="Description" id="rHC-nA-ga0">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="210" id="xxc-cz-sb7">
-                                        <rect key="frame" x="0.0" y="282.5" width="375" height="210"/>
+                                        <rect key="frame" x="16" y="282.5" width="343" height="210"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" tableViewCell="xxc-cz-sb7" id="agU-SE-fNa">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="210"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="343" height="210"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="XXXXXXXX YYYYYYYY" translatesAutoresizingMaskIntoConstraints="NO" id="a17-LB-QXD" customClass="CheatTextView" customModule="Delta" customModuleProvider="target">
-                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="210"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="343" height="210"/>
                                                     <color key="textColor" systemColor="labelColor"/>
                                                     <fontDescription key="fontDescription" name="Menlo-Regular" family="Menlo" pointSize="26"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters" autocorrectionType="no" spellCheckingType="no" returnKeyType="done"/>

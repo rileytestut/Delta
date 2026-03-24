@@ -10,7 +10,7 @@ import UIKit
 
 extension Action
 {
-    enum Style
+    enum Style: Hashable
     {
         case `default`
         case cancel
@@ -48,7 +48,7 @@ extension Action.Style
     }
 }
 
-struct Action
+struct Action: Hashable
 {
     var title: String
     var style: Style
@@ -61,6 +61,18 @@ struct Action
         self.style = style
         self.image = image
         self.action = action
+    }
+    
+    static func ==(lhs: Action, rhs: Action) -> Bool
+    {
+        return lhs.title == rhs.title && lhs.style == rhs.style && lhs.image == rhs.image
+    }
+    
+    func hash(into hasher: inout Hasher)
+    {
+        hasher.combine(self.title)
+        hasher.combine(self.style)
+        hasher.combine(self.image)
     }
 }
 
