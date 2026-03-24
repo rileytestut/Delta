@@ -1509,7 +1509,7 @@ Menu + Long-Press: Quick Load</string>
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="ssH-mM-uG6" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" largeTitles="YES" id="Ckw-ES-lkE">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" largeTitles="YES" id="Ckw-ES-lkE">
                         <rect key="frame" x="0.0" y="20" width="375" height="106"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
