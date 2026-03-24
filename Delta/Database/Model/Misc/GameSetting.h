@@ -11,3 +11,4 @@
 typedef NSString *GameSetting NS_REFINED_FOR_SWIFT NS_TYPED_EXTENSIBLE_ENUM;
 FOUNDATION_EXPORT GameSetting const GameSettingOpenGLES2;
 FOUNDATION_EXPORT GameSetting const GameSettingNoExternalControllerSkin;
+FOUNDATION_EXPORT GameSetting const GameSettingRetroAchievementsEnabled;

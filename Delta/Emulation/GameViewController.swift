@@ -587,7 +587,8 @@ extension GameViewController
                 pauseViewController.fastForwardItem = nil
             }
             
-            if ExperimentalFeatures.shared.retroAchievements.isEnabled && ExperimentalFeatures.shared.retroAchievements.isHardcoreModeEnabled
+            if let game = self.game as? Game, ExperimentalFeatures.shared.retroAchievements.isEnabled,
+               game.settings[.retroAchievementsEnabled] as? Bool ?? true, ExperimentalFeatures.shared.retroAchievements.isHardcoreModeEnabled
             {
                 // Saving save states is fine, just not loading them
                 // pauseViewController.saveStateItem = nil
@@ -2025,7 +2026,8 @@ private extension GameViewController
     {
         NotificationCenter.default.removeObserver(self, name: AchievementsTracker.didUnlockAchievementNotification, object: self.achievementsTracker)
         
-        guard let emulatorCore, let game = self.game as? Game, ExperimentalFeatures.shared.retroAchievements.isEnabled else { return }
+        guard let emulatorCore, let game = self.game as? Game, ExperimentalFeatures.shared.retroAchievements.isEnabled, game.settings[.retroAchievementsEnabled] as? Bool ?? true
+        else { return }
         
         self.isPreparingAchievements = true
         

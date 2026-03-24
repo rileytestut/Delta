@@ -94,6 +94,24 @@ struct GameSettingsView: View
                     Text("Emulate inserting a GBA game into the Nintendo DS dual slot.")
                 }
             }
+            
+            if ExperimentalFeatures.shared.retroAchievements.isEnabled
+            {
+                Section {
+                    let binding = Binding {
+                        game.settings[.retroAchievementsEnabled] as? Bool ?? true
+                    } set: { isRetroAchievementsEnabled in
+                        game.settings[.retroAchievementsEnabled] = isRetroAchievementsEnabled
+                    }
+
+                    Toggle("RetroAchievements", isOn: binding)
+                        .toggleStyle(SwitchToggleStyle(tint: Color("Purple")))
+                } header: {
+                    Text("RetroAchievements")
+                } footer: {
+                    Text("Log in with RetroAchievements to track your progress and achievements in this specific game.")
+                }
+            }
         }
         .accentColor(Color("Purple"))
         .navigationTitle(game.name)

@@ -10,3 +10,4 @@
 
 GameSetting const GameSettingOpenGLES2 = @"DLTAOpenGLES2";
 GameSetting const GameSettingNoExternalControllerSkin = @"DLTANoExternalControllerSkin";
+GameSetting const GameSettingRetroAchievementsEnabled = @"DLTARetroAchievementsEnabled";
