@@ -108,6 +108,14 @@ class GameCollectionViewController: UICollectionViewController
         }
     }
     
+    var fetchRequest: NSFetchRequest<Game>? {
+        didSet {
+            self.title = self.customTitle
+            self.updateDataSource()
+        }
+    }
+    var customTitle: String?
+    
     var theme: Theme = .opaque {
         didSet {
             // self.collectionView?.reloadData()
@@ -463,14 +471,24 @@ private extension GameCollectionViewController
     
     func updateDataSource()
     {
-        let fetchRequest: NSFetchRequest<Game> = Game.fetchRequest()
+        let fetchRequest: NSFetchRequest<Game>
         
-        if let gameCollection = self.gameCollection
+        if let customFetchRequest = self.fetchRequest
         {
+            fetchRequest = customFetchRequest
+        }
+        else if let gameCollection = self.gameCollection
+        {
+            fetchRequest = Game.fetchRequest()
             fetchRequest.predicate = NSPredicate(format: "%K == %@", #keyPath(Game.gameCollection), gameCollection)
+            fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(Game.name), ascending: true)]
+        }
+        else
+        {
+            fetchRequest = Game.fetchRequest()
+            fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(Game.name), ascending: true)]
         }
         
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(Game.name), ascending: true)]
         fetchRequest.returnsObjectsAsFaults = false
         
         self.dataSource.fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DatabaseManager.shared.viewContext, sectionNameKeyPath: nil, cacheName: nil)
@@ -754,6 +772,14 @@ private extension GameCollectionViewController
             self.openInNewWindow(game)
         }
         
+        let favoriteIcon: UIImage? = game.isFavorite ? UIImage(systemName: "heart.fill") : UIImage(systemName: "heart")
+        
+        let favoriteActionText: String = game.isFavorite ? "Unfavorite" : "Favorite"
+        let favoriteAction = UIAction(title: NSLocalizedString(favoriteActionText, comment: ""), image: favoriteIcon) { [unowned self] action in
+            self.favorite(game)
+            
+        }
+        
         let renameAction = UIAction(title: NSLocalizedString("Rename", comment: ""), image: UIImage(symbolNameIfAvailable: "pencil")) { [unowned self] action in
             self.rename(game)
         }
@@ -803,10 +829,10 @@ private extension GameCollectionViewController
             return [renameAction, shareAction, settingsMenu, deleteAction]
             
         case .ds where game.identifier == Game.melonDSBIOSIdentifier || game.identifier == Game.melonDSDSiBIOSIdentifier:
-            return openActions + [renameAction, changeArtworkAction, settingsMenu, saveStatesAction]
+            return openActions + [favoriteAction, renameAction, changeArtworkAction, settingsMenu, saveStatesAction]
             
         default:
-            return openActions + [renameAction, changeArtworkAction, shareAction, settingsMenu, savesMenu, deleteAction]
+            return openActions + [favoriteAction, renameAction, changeArtworkAction, shareAction, settingsMenu, savesMenu, deleteAction]
         }
     }
     
@@ -851,6 +877,15 @@ private extension GameCollectionViewController
             }
             
             self.present(alertController, animated: true, completion: nil)
+        }
+    }
+    
+    func favorite(_ game: Game)
+    {
+        DatabaseManager.shared.performBackgroundTask { (context) in
+            let temporaryGame = context.object(with: game.objectID) as! Game
+            temporaryGame.isFavorite.toggle()
+            context.saveWithErrorLogging()
         }
     }
     

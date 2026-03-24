@@ -151,8 +151,15 @@ extension Game
         let fetchRequest: NSFetchRequest<Game> = Game.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "%K != nil", #keyPath(Game.playedDate))
         fetchRequest.sortDescriptors = [NSSortDescriptor(keyPath: \Game.playedDate, ascending: false), NSSortDescriptor(keyPath: \Game.name, ascending: true)]
-        fetchRequest.fetchLimit = 4
         
+        return fetchRequest
+    }
+    
+    
+    class var favoritesFetchRequest: NSFetchRequest<Game> {
+        let fetchRequest: NSFetchRequest<Game> = Game.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "%K == true", #keyPath(Game.isFavorite))
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(Game.name), ascending: true)]
         return fetchRequest
     }
 }

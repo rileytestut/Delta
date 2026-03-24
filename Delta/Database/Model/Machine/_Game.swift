@@ -22,6 +22,8 @@ public class _Game: NSManagedObject
 
     @NSManaged public var identifier: String
 
+    @NSManaged public var isFavorite: Bool
+
     @NSManaged public var name: String
 
     @NSManaged public var playedDate: Date?

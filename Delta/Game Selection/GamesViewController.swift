@@ -15,6 +15,22 @@ import DeltaCore
 import Roxas
 import Harmony
 
+enum Page: Equatable
+{
+    case gameCollection(GameCollection)
+    case fetchRequest(NSFetchRequest<Game>, title: String)
+    
+    static func ==(lhs: Page, rhs: Page) -> Bool
+    {
+        switch (lhs, rhs)
+        {
+        case (.gameCollection(let collectionA), .gameCollection(let collectionB)): return collectionA == collectionB
+        case (.fetchRequest(_, let titleA), .fetchRequest(_, let titleB)): return titleA == titleB
+        case (.fetchRequest, _), (.gameCollection, _): return false
+        }
+    }
+}
+
 class GamesViewController: UIViewController
 {
     var theme: Theme = .opaque {
@@ -22,6 +38,9 @@ class GamesViewController: UIViewController
             self.updateTheme()
         }
     }
+    
+    private var hasFavorites: Bool = false
+    private var hasRecentlyPlayed: Bool = false
     
     weak var activeEmulatorCore: EmulatorCore? {
         didSet
@@ -41,6 +60,18 @@ class GamesViewController: UIViewController
         }
     }
     
+    var pages: [Page] {
+        var result: [Page] = []
+        if self.hasFavorites {
+            result.append(.fetchRequest(Game.favoritesFetchRequest, title: "Favorites"))
+        }
+        if self.hasRecentlyPlayed {
+            result.append(.fetchRequest(Game.recentlyPlayedFetchRequest, title: "Recently Played"))
+        }
+        result += (self.fetchedResultsController.fetchedObjects ?? []).map { .gameCollection($0 as! GameCollection) }
+        return result
+    }
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
@@ -50,6 +81,8 @@ class GamesViewController: UIViewController
     private var pageControl: UIPageControl!
     
     private let fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>
+    private let favoritesFetchedResultsController: NSFetchedResultsController<Game>
+    private let recentlyPlayedFetchedResultsController: NSFetchedResultsController<Game>
     
     private var searchController: RSTSearchController?
     private lazy var importController: ImportController = self.makeImportController()
@@ -78,9 +111,23 @@ class GamesViewController: UIViewController
                 
         self.fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DatabaseManager.shared.viewContext, sectionNameKeyPath: nil, cacheName: nil)
         
+        let favoritesFetchRequest = Game.favoritesFetchRequest
+        favoritesFetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(Game.name), ascending: true)]
+        favoritesFetchRequest.predicate = NSPredicate(format: "%K == true", #keyPath(Game.isFavorite))
+        favoritesFetchRequest.fetchLimit = 1
+        self.favoritesFetchedResultsController = NSFetchedResultsController<Game>(fetchRequest: favoritesFetchRequest, managedObjectContext: DatabaseManager.shared.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+        
+        let recentlyPlayedFetchRequest = Game.fetchRequest() as NSFetchRequest<Game>
+        recentlyPlayedFetchRequest.fetchLimit = 1
+        recentlyPlayedFetchRequest.sortDescriptors = [NSSortDescriptor(keyPath: \Game.playedDate, ascending: false)]
+        recentlyPlayedFetchRequest.predicate = NSPredicate(format: "%K != nil", #keyPath(Game.playedDate), #keyPath(Game.playedDate))
+        self.recentlyPlayedFetchedResultsController = NSFetchedResultsController<Game>(fetchRequest: recentlyPlayedFetchRequest, managedObjectContext: DatabaseManager.shared.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+        
         super.init(coder: aDecoder)
         
         self.fetchedResultsController.delegate = self
+        self.favoritesFetchedResultsController.delegate = self
+        self.recentlyPlayedFetchedResultsController.delegate = self
         
         NotificationCenter.default.addObserver(self, selector: #selector(GamesViewController.syncingDidStart(_:)), name: SyncCoordinator.didStartSyncingNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GamesViewController.syncingDidFinish(_:)), name: SyncCoordinator.didFinishSyncingNotification, object: nil)
@@ -184,7 +231,11 @@ extension GamesViewController
     {
         super.viewWillAppear(animated)
         
-        if self.fetchedResultsController.performFetchIfNeeded()
+        let favoritesDidFetch = self.favoritesFetchedResultsController.performFetchIfNeeded()
+        let recentlyPlayedDidFetch = self.recentlyPlayedFetchedResultsController.performFetchIfNeeded()
+        let collectionsDidFetch = self.fetchedResultsController.performFetchIfNeeded()
+        
+        if favoritesDidFetch || recentlyPlayedDidFetch || collectionsDidFetch
         {
             self.updateSections(animated: false)
         }
@@ -256,6 +307,8 @@ private extension GamesViewController
     {
         let searchResultsController = self.storyboard?.instantiateViewController(withIdentifier: "gameCollectionViewController") as! GameCollectionViewController
         searchResultsController.gameCollection = nil
+        searchResultsController.fetchRequest = nil
+        searchResultsController.customTitle = nil
         searchResultsController.theme = self.theme
         searchResultsController.activeEmulatorCore = self.activeEmulatorCore
         
@@ -324,21 +377,30 @@ private extension GamesViewController
 {
     func viewControllerForIndex(_ index: Int) -> GameCollectionViewController?
     {
-        guard let pages = self.fetchedResultsController.sections?.first?.numberOfObjects, pages > 0 else { return nil }
+        
+        guard !self.pages.isEmpty else { return nil }
         
         // Return nil if only one section, and not asking for the 0th view controller
-        guard !(pages == 1 && index != 0) else { return nil }
+        guard !(pages.count == 1 && index != 0) else { return nil }
         
-        var safeIndex = index % pages
+        var safeIndex = index % pages.count
         if safeIndex < 0
         {
-            safeIndex = pages + safeIndex
+            safeIndex = (pages.count + safeIndex)
+        }
+                
+        let viewController = self.storyboard?.instantiateViewController(withIdentifier: "gameCollectionViewController") as! GameCollectionViewController
+        
+        let page = self.pages[safeIndex]
+        switch page
+        {
+        case .fetchRequest(let fetchRequest, let title):
+            viewController.customTitle = title
+            viewController.fetchRequest = fetchRequest
+        case .gameCollection(let gameCollection):
+            viewController.gameCollection = gameCollection
         }
         
-        let indexPath = IndexPath(row: safeIndex, section: 0)
-        
-        let viewController = self.storyboard?.instantiateViewController(withIdentifier: "gameCollectionViewController") as! GameCollectionViewController
-        viewController.gameCollection = self.fetchedResultsController.object(at: indexPath) as? GameCollection
         viewController.theme = self.theme
         viewController.activeEmulatorCore = self.activeEmulatorCore
         
@@ -347,24 +409,44 @@ private extension GamesViewController
     
     func updateSections(animated: Bool)
     {
-        let sections = self.fetchedResultsController.sections?.first?.numberOfObjects ?? 0
+        let hasFavorites = self.favoritesFetchedResultsController.fetchedObjects?.count ?? 0 > 0
+        self.hasFavorites = hasFavorites
+        
+        let hasRecentlyPlayed = self.recentlyPlayedFetchedResultsController.fetchedObjects?.count ?? 0 > 0
+        self.hasRecentlyPlayed = hasRecentlyPlayed
+        
+        let sections = self.pages.count
         self.pageControl.numberOfPages = sections
         
         var resetPageViewController = false
         
-        if let viewController = self.pageViewController.viewControllers?.first as? GameCollectionViewController, let gameCollection = viewController.gameCollection
+        if let viewController = self.pageViewController.viewControllers?.first as? GameCollectionViewController
         {
-            if let index = self.fetchedResultsController.fetchedObjects?.firstIndex(where: { $0 as! GameCollection == gameCollection })
+            if let gameCollection = viewController.gameCollection
             {
-                self.pageControl.currentPage = index
+                if let index = self.pages.firstIndex(of: .gameCollection(gameCollection))
+                {
+                    self.pageControl.currentPage = index
+                }
+                else
+                {
+                    resetPageViewController = true
+                    
+                    self.pageControl.currentPage = 0
+                }
             }
-            else
+            else if let customTitle = viewController.customTitle, let customFetchRequest = viewController.fetchRequest
             {
-                resetPageViewController = true
-                
-                self.pageControl.currentPage = 0
+                if let index = self.pages.firstIndex(of: .fetchRequest(customFetchRequest, title: customTitle)) {
+                    self.pageControl.currentPage = index
+                }
+                else
+                {
+                    resetPageViewController = true
+                        
+                    self.pageControl.currentPage = 0
+                }
             }
-            
         }
         
         if self.pageViewController.viewControllers?.count == 0
@@ -383,10 +465,13 @@ private extension GamesViewController
                 
                 if let gameCollection = Settings.previousGameCollection
                 {
-                    if let gameCollectionIndex = self.fetchedResultsController.fetchedObjects?.firstIndex(where: { $0 as! GameCollection == gameCollection })
+                    if let gameCollectionIndex = self.pages.firstIndex(of: .gameCollection(gameCollection))
                     {
                         index = gameCollectionIndex
                     }
+                }
+                else {
+                    // Assume that nil previousGameCollection means either they have no games or they were most recently looking at favorites
                 }
                 
                 if let viewController = self.viewControllerForIndex(index)
@@ -676,30 +761,53 @@ extension GamesViewController: UIPageViewControllerDataSource, UIPageViewControl
     //MARK: - UIPageViewControllerDataSource
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController?
     {
-        let viewController = self.viewControllerForIndex(self.pageControl.currentPage - 1)
-        return viewController
+        guard let gameCollectionVC = viewController as? GameCollectionViewController,
+            let index = indexForViewController(gameCollectionVC) else { return nil }
+        
+        return self.viewControllerForIndex(index - 1)
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController?
     {
-        let viewController = self.viewControllerForIndex(self.pageControl.currentPage + 1)
-        return viewController
+        guard let gameCollectionVC = viewController as? GameCollectionViewController,
+            let index = indexForViewController(gameCollectionVC) else { return nil }
+        
+        return self.viewControllerForIndex(index + 1)
+    }
+    
+    func indexForViewController(_ viewController: GameCollectionViewController) -> Int?
+    {
+        if let gameCollection = viewController.gameCollection {
+            return self.pages.firstIndex(of: .gameCollection(gameCollection))
+        } else if let customTitle = viewController.customTitle, let customFetchRequest = viewController.fetchRequest {
+            return self.pages.firstIndex(of: .fetchRequest(customFetchRequest, title: customTitle))
+        }
+        return nil
     }
     
     //MARK: - UIPageViewControllerDelegate
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool)
     {
-        if let viewController = pageViewController.viewControllers?.first as? GameCollectionViewController, let gameCollection = viewController.gameCollection
-        {
-            let index = self.fetchedResultsController.fetchedObjects?.firstIndex(where: { $0 as! GameCollection == gameCollection }) ?? 0
-            self.pageControl.currentPage = index
-            
-            Settings.previousGameCollection = gameCollection
+        if let viewController = pageViewController.viewControllers?.first as? GameCollectionViewController {
+            if let gameCollection = viewController.gameCollection
+            {
+                if let index = self.pages.firstIndex(of: .gameCollection(gameCollection))
+                {
+                    self.pageControl.currentPage = index
+                    
+                    Settings.previousGameCollection = gameCollection
+                }
+            }
+            else if let customTitle = viewController.customTitle,  let customFetchRequest = viewController.fetchRequest
+            {
+                if let index = self.pages.firstIndex(of: .fetchRequest(customFetchRequest, title: customTitle)) {
+                    self.pageControl.currentPage = index
+                    
+                    Settings.previousGameCollection = nil
+                }
+            }
         }
-        else
-        {
-            Settings.previousGameCollection = nil
-        }
+        else { Settings.previousGameCollection = nil }
         
         self.title = pageViewController.viewControllers?.first?.title
     }
