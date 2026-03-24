@@ -95,7 +95,8 @@ extension AchievementsTracker
         case .gbc: RC_CONSOLE_GAMEBOY_COLOR // TODO: Differentiate regular Game Boy games
         case .gba: RC_CONSOLE_GAMEBOY_ADVANCE
         case .ds: RC_CONSOLE_NINTENDO_DS
-        case .genesis, nil: throw AchievementsError(errorCode: AchievementsError.unsupportedSystem, message: NSLocalizedString("System is not yet supported.", comment: ""))
+        case .genesis: RC_CONSOLE_MEGA_DRIVE
+        case nil: throw AchievementsError(errorCode: AchievementsError.unsupportedSystem, message: NSLocalizedString("System is not yet supported.", comment: ""))
         }
         
         let callback: @convention(c) (Int32, UnsafePointer<CChar>?, OpaquePointer?, UnsafeMutableRawPointer?) -> Void = { (result, errorMessage, client, userData) in
