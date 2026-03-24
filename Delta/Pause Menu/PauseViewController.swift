@@ -233,9 +233,9 @@ private extension PauseViewController
         self.sustainButtonsItem = MenuItem(text: NSLocalizedString("Hold Buttons", comment: ""), image: #imageLiteral(resourceName: "SustainButtons"), action: { _ in })
         self.screenshotItem = MenuItem(text: NSLocalizedString("Screenshot", comment: ""), image: #imageLiteral(resourceName: "Screenshot"), action: { _ in })
         
-        if ExperimentalFeatures.shared.variableFastForward.isEnabled
+        if ExperimentalFeatures.shared.variableFastForward.isEnabled, let game = emulatorCore.game as? Game
         {
-            let menu = self.makeFastForwardMenu(for: emulatorCore.game)
+            let menu = self.makeFastForwardMenu(for: game)
             self.fastForwardItem?.menu = menu
         }
         // Add Lu menu item if enabled
@@ -275,25 +275,23 @@ private extension PauseViewController
         }
     }
     
-    func makeFastForwardMenu(for game: GameProtocol) -> UIMenu?
+    func makeFastForwardMenu(for game: Game) -> UIMenu?
     {
         guard let deltaCore = Delta.core(for: game.type), #available(iOS 15, *) else { return nil }
         
-        let menu = UIMenu(title: NSLocalizedString("Change the Fast Forward speed for this system.", comment: ""), options: [.singleSelection], children: [
+        let menu = UIMenu(title: NSLocalizedString("Change the Fast Forward speed for this game.", comment: ""), options: [.singleSelection], children: [
             UIDeferredMenuElement.uncached { [weak self] completion in
-                let preferredSpeed = ExperimentalFeatures.shared.variableFastForward[game.type]
-                
+                let preferredSpeed = game.settings[.fastForwardSpeed] as? Double
+
                 let supportedSpeeds = FastForwardSpeed.speeds(in: deltaCore.supportedRates)
                 var actions = zip(0..., supportedSpeeds).map { (index, speed) in
-                    
-                    let state: UIAction.State = (speed == preferredSpeed) ? .on : .off
+
+                    let state: UIAction.State = (speed.rawValue == preferredSpeed) ? .on : .off
                     let action = UIAction(title: speed.description, state: state) { action in
-                        ExperimentalFeatures.shared.variableFastForward[game.type] = speed
-                        
-                        if let fastForwardItem = self?.fastForwardItem
-                        {
-                            fastForwardItem.isSelected = true // Always enable FF after selecting speed.
-                            fastForwardItem.action(fastForwardItem)
+                        DatabaseManager.shared.performBackgroundTask { context in
+                            let temporaryGame = context.object(with: game.objectID) as! Game
+                            temporaryGame.settings[.fastForwardSpeed] = speed.rawValue
+                            context.saveWithErrorLogging()
                         }
                     }
                     
@@ -309,13 +307,11 @@ private extension PauseViewController
                 }
 
                 let state: UIAction.State = (preferredSpeed == nil) ? .on : .off
-                let action = UIAction(title: NSLocalizedString("Maximum", comment: ""), state: state) { action in
-                    ExperimentalFeatures.shared.variableFastForward[game.type] = nil
-                    
-                    if let fastForwardItem = self?.fastForwardItem
-                    {
-                        fastForwardItem.isSelected = true // Always enable FF after selecting speed.
-                        fastForwardItem.action(fastForwardItem)
+                let action = UIAction(title: NSLocalizedString("Default", comment: ""), state: state) { action in
+                    DatabaseManager.shared.performBackgroundTask { context in
+                        let temporaryGame = context.object(with: game.objectID) as! Game
+                        temporaryGame.settings[.fastForwardSpeed] = nil
+                        context.saveWithErrorLogging()
                     }
                 }
                 actions.append(action)

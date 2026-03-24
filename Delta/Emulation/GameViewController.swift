@@ -1427,17 +1427,33 @@ extension GameViewController
         
         if activate
         {
-            if ExperimentalFeatures.shared.variableFastForward.isEnabled,
-               let preferredSpeed = ExperimentalFeatures.shared.variableFastForward[emulatorCore.game.type],
-               (preferredSpeed.rawValue <= emulatorCore.deltaCore.supportedRates.upperBound || ExperimentalFeatures.shared.variableFastForward.allowUnrestrictedSpeeds)
+            // Per-game speed > system-wide per-system speed > maximum supported
+            let speed: Double
+            if let game = emulatorCore.game as? Game,
+               let speedValue = game.settings[.fastForwardSpeed] as? Double
             {
-                emulatorCore.rate = preferredSpeed.rawValue
+                speed = speedValue
+            }
+            else if ExperimentalFeatures.shared.variableFastForward.isEnabled,
+                    let preferredSpeed = ExperimentalFeatures.shared.variableFastForward[emulatorCore.game.type]
+            {
+                speed = preferredSpeed.rawValue
+            }
+            else
+            {
+                speed = emulatorCore.deltaCore.supportedRates.upperBound
+            }
+
+            if speed <= emulatorCore.deltaCore.supportedRates.upperBound ||
+                ExperimentalFeatures.shared.variableFastForward.allowUnrestrictedSpeeds
+            {
+                emulatorCore.rate = speed
             }
             else
             {
                 emulatorCore.rate = emulatorCore.deltaCore.supportedRates.upperBound
             }
-            
+
             if ExperimentalFeatures.shared.toastNotifications.fastForwardEnabled
             {
                 self.presentExperimentalToastView(NSLocalizedString("Fast Forward Enabled", comment: ""))
@@ -1446,7 +1462,7 @@ extension GameViewController
         else
         {
             emulatorCore.rate = emulatorCore.deltaCore.supportedRates.lowerBound
-            
+
             if ExperimentalFeatures.shared.toastNotifications.fastForwardEnabled
             {
                 self.presentExperimentalToastView(NSLocalizedString("Fast Forward Disabled", comment: ""))
