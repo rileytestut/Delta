@@ -579,15 +579,6 @@ extension GameViewController
                 pauseViewController.fastForwardItem = nil
             }
             
-            switch self.game?.type
-            {
-            case .genesis?:
-                // GPGX core does not support cheats yet.
-                pauseViewController.cheatCodesItem = nil
-
-            default: break
-            }
-            
             if let emulatorCore, emulatorCore.isWirelessMultiplayerActive
             {
                 pauseViewController.saveStateItem = nil
