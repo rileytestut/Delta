@@ -192,13 +192,13 @@ extension GamesViewController
             self.pageControl.centerYAnchor.constraint(equalTo: (self.navigationController?.toolbar.centerYAnchor)!).isActive = true
         }
         
-        self.pageControl.model.onPageSelected = { [weak self] index in
+        self.pageControl.model.onPageSelected = { [weak self] index, animated in
             guard let self, let viewController = self.viewControllerForIndex(index) else { return }
 
             let direction: UIPageViewController.NavigationDirection =
                 index > self.pageControl.model.currentPage ? .forward : .reverse
 
-            self.pageViewController.setViewControllers([viewController], direction: direction, animated: true, completion: nil)
+            self.pageViewController.setViewControllers([viewController], direction: direction, animated: animated, completion: nil)
 
             self.title = viewController.title
             self.pageControl.model.currentPage = index

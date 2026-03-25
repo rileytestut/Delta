@@ -24,7 +24,7 @@ class PageModel
     var currentPage: Int = 0
 
     @ObservationIgnored
-    var onPageSelected: ((Int) -> Void)?
+    var onPageSelected: ((Int, _ animated: Bool) -> Void)?
 }
 
 class PageControlView: UIView
@@ -101,8 +101,9 @@ struct PageControl: View
                     
                     if index != scrubbingPage
                     {
+                        let animated = scrubbingPage == nil // Animate on first change only, subsequent changes are scrubs
                         scrubbingPage = index
-                        model.onPageSelected?(index)
+                        model.onPageSelected?(index, animated)
                     }
                 }
                 .onEnded { _ in scrubbingPage = nil }
