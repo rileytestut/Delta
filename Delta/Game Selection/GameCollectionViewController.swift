@@ -501,6 +501,7 @@ private extension GameCollectionViewController
         config.image = self.placeholderImage
         config.text = self.placeholderTitle
         config.secondaryText = self.placeholderDescription
+        config.textToSecondaryTextPadding = 8
         self.dataSource.placeholderView = UIContentUnavailableView(configuration: config)
     }
     
@@ -784,8 +785,8 @@ private extension GameCollectionViewController
         
         let favoriteIcon: UIImage? = game.isFavorite ? UIImage(systemName: "star.fill") : UIImage(systemName: "star")
         
-        let favoriteActionText: String = game.isFavorite ? "Unfavorite" : "Favorite"
-        let favoriteAction = UIAction(title: NSLocalizedString(favoriteActionText, comment: ""), image: favoriteIcon) { [unowned self] action in
+        let favoriteActionText: String = game.isFavorite ? String(localized: "Unfavorite") : String(localized: "Favorite")
+        let favoriteAction = UIAction(title: favoriteActionText, image: favoriteIcon) { [unowned self] action in
             self.favorite(game)
             
         }

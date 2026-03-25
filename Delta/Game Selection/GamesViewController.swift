@@ -79,7 +79,7 @@ class GamesViewController: UIViewController
         }
     }
     
-    var pages: [Page] {
+    fileprivate var pages: [Page] {
         var result: [Page] = []
         let gameCollections = self.fetchedResultsController.fetchedObjects as? [GameCollection] ?? []
         if !gameCollections.isEmpty {
@@ -412,8 +412,9 @@ private extension GamesViewController
 {
     func viewControllerForIndex(_ index: Int) -> GameCollectionViewController?
     {
+        let pages = self.pages // Cache so we don't regenerate every time
         
-        guard !self.pages.isEmpty else { return nil }
+        guard !pages.isEmpty else { return nil }
         
         // Return nil if only one section, and not asking for the 0th view controller
         guard !(pages.count == 1 && index != 0) else { return nil }
@@ -426,7 +427,7 @@ private extension GamesViewController
                 
         let viewController = self.storyboard?.instantiateViewController(withIdentifier: "gameCollectionViewController") as! GameCollectionViewController
         
-        let page = self.pages[safeIndex]
+        let page = pages[safeIndex]
         viewController.page = page
 
         switch page
@@ -470,7 +471,7 @@ private extension GamesViewController
             else
             {
                 resetPageViewController = true
-                self.pageControl.model.currentPage = 0
+                self.pageControl.model.currentPage = min(1, self.pages.count - 1)
             }
         }
         

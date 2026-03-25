@@ -10,17 +10,13 @@ import SwiftUI
 
 struct PageIndicator: Identifiable, Equatable
 {
-    static func == (lhs: PageIndicator, rhs: PageIndicator) -> Bool
-    {
-        lhs.id == rhs.id && lhs.alwaysShowsImage == rhs.alwaysShowsImage && lhs.imageScale == rhs.imageScale
-    }
-
-    let id: String
-    let image: UIImage
-    let alwaysShowsImage: Bool
-    var imageScale: CGFloat = 1.0
+    var id: String
+    var image: UIImage
+    var alwaysShowsImage: Bool = false
+    var imageScale: Double = 1.0
 }
 
+@MainActor
 @Observable
 class PageModel
 {
@@ -70,7 +66,7 @@ struct PageControl: View
     var body: some View {
         if #available(iOS 26, *)
         {
-            GlassEffectContainer(spacing: 0) {
+            GlassEffectContainer {
                 indicators
                     .glassEffect()
             }
@@ -100,6 +96,7 @@ struct PageControl: View
         .gesture(
             DragGesture(minimumDistance: 0, coordinateSpace: .local)
                 .onChanged { value in
+                    // Convert drag position to page index, accounting for 14pt horizontal padding and 23pt indicator width (20 + 3)
                     let index = max(0, min(model.indicators.count - 1, Int((value.location.x - 14) / 23)))
                     
                     if index != scrubbingPage
