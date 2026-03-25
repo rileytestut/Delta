@@ -89,6 +89,20 @@ extension System
         case .ds: return 2004
         }
     }
+    
+    var controllerIcon: UIImage {
+        let fallback = UIImage(systemName: "gamecontroller.fill")!
+        switch self
+        {
+        case .nes: return UIImage(named: "NES") ?? fallback
+        case .snes: return UIImage(named: "SNES") ?? fallback
+        case .n64: return UIImage(named: "N64") ?? fallback
+        case .gbc: return UIImage(named: "GBC") ?? fallback
+        case .gba: return UIImage(named: "GBA") ?? fallback
+        case .ds: return UIImage(named: "DS") ?? fallback
+        case .genesis: return UIImage(named: "Genesis") ?? fallback
+        }
+    }
 }
 
 extension System
