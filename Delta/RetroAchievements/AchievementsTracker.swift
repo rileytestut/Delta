@@ -79,7 +79,8 @@ final class AchievementsTracker
 
 extension AchievementsTracker
 {
-    func start() async throws
+    @discardableResult
+    func start() async throws -> AchievementsManager.Game
     {
         if self.emulatorCore.state == .stopped
         {
@@ -99,12 +100,42 @@ extension AchievementsTracker
         case nil: throw AchievementsError(errorCode: AchievementsError.unsupportedSystem, message: NSLocalizedString("System is not yet supported.", comment: ""))
         }
         
+        final class UserData
+        {
+            var continuation: CheckedContinuation<AchievementsManager.Game, Error>?
+            
+            init(continuation: CheckedContinuation<AchievementsManager.Game, Error>? = nil)
+            {
+                self.continuation = continuation
+            }
+        }
+        
         let callback: @convention(c) (Int32, UnsafePointer<CChar>?, OpaquePointer?, UnsafeMutableRawPointer?) -> Void = { (result, errorMessage, client, userData) in
-            guard let userData = userData?.assumingMemoryBound(to: AchievementsManager.UserData.self).pointee, let continuation = userData.continuation else { return }
+            guard let userData = userData?.assumingMemoryBound(to: UserData.self).pointee, let continuation = userData.continuation else { return }
             
             if result == RC_OK
             {
-                continuation.resume()
+                guard let client, let gameInfo = rc_client_get_game_info(client) else {
+                    continuation.resume(throwing: AchievementsError(errorCode: AchievementsError.unknown, message: String(localized: "Failed to retrieve RetroAchievements game info.")))
+                    return
+                }
+                
+                let title = String(cString: gameInfo.pointee.title)
+                let avatarURL = URL { buffer, size in
+                    rc_client_game_get_image_url(gameInfo, buffer, size)
+                }
+                
+                var summary = rc_client_user_game_summary_t()
+                withUnsafeMutablePointer(to: &summary) { pointer in
+                    rc_client_get_user_game_summary(client, pointer)
+                }
+                
+                let game = AchievementsManager.Game(title: title,
+                                                    imageURL: avatarURL,
+                                                    unlockedAchievements: Int(summary.num_unlocked_achievements),
+                                                    totalAchievements: Int(summary.num_core_achievements),
+                                                    currentPoints: Int(summary.points_unlocked))
+                continuation.resume(returning: game)
             }
             else
             {
@@ -113,10 +144,10 @@ extension AchievementsTracker
             }
         }
         
-        let userData = UnsafeMutablePointer<AchievementsManager.UserData>.allocate(capacity: 1)
+        let userData = UnsafeMutablePointer<UserData>.allocate(capacity: 1)
         
-        try await withCheckedThrowingContinuation { continuation in
-            userData.initialize(to: .init(tracker: self, continuation: continuation))
+        let game = try await withCheckedThrowingContinuation { continuation in
+            userData.initialize(to: .init(continuation: continuation))
             rc_client_begin_identify_and_load_game(self.client, UInt32(consoleType), (self.gameURL as NSURL).fileSystemRepresentation, nil, 0, callback, userData)
         }
         
@@ -127,6 +158,8 @@ extension AchievementsTracker
             // Game has no achievements or leaderboard, so disable hardcore mode.
             rc_client_set_hardcore_enabled(self.client, 0)
         }
+        
+        return game
     }
     
     func reset()

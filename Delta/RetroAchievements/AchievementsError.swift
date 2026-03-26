@@ -11,6 +11,7 @@ import Foundation
 struct AchievementsError: CustomNSError
 {
     // Use positive values for our own error codes
+    static let unknown: Int = 0
     static let notAuthenticated: Int = 1
     static let unsupportedSystem: Int = 2
     

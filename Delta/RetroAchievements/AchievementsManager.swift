@@ -11,6 +11,28 @@ import Foundation
 import DeltaCore
 import rcheevos
 
+extension URL
+{
+    init?(raFunction: (UnsafeMutablePointer<CChar>?, Int) -> Int32)
+    {
+        var characters: [CChar] = .init(repeating: 0, count: 512)
+        let result = characters.withUnsafeMutableBufferPointer { buffer in
+            raFunction(buffer.baseAddress, 512)
+        }
+        
+        if result == RC_OK, let avatarLink = String(cString: characters, encoding: .utf8)
+        {
+            guard let avatarURL = URL(string: avatarLink) else { return nil }
+            self = avatarURL
+        }
+        else
+        {
+            Logger.achievements.error("Failed to get image URL from RetroAchievements API. Error: \(result)")
+            return nil
+        }
+    }
+}
+
 extension AchievementsManager
 {
     static let didFinishAuthenticatingNotification = Notification.Name("DLTADidFinishAuthenticatingNotification")
@@ -21,6 +43,20 @@ extension AchievementsManager
     {
         var username: String
         var displayName: String
+        var totalPoints: Int
+        
+        var avatarURL: URL?
+    }
+    
+    struct Game
+    {
+        var title: String
+        var imageURL: URL?
+        
+        var unlockedAchievements: Int
+        var totalAchievements: Int
+        
+        var currentPoints: Int
     }
     
     final class UserData
@@ -116,18 +152,21 @@ extension AchievementsManager
     {
         let userData = userData?.assumingMemoryBound(to: UserData.self).pointee
         
-        if result == RC_OK, let info = rc_client_get_user_info(client)?.pointee
+        if result == RC_OK, let info = rc_client_get_user_info(client) 
         {
-            let username = String(cString: info.username)
-            let token = String(cString: info.token)
-            let displayName = String(cString: info.display_name)
+            let username = String(cString: info.pointee.username)
+            let token = String(cString: info.pointee.token)
+            let displayName = String(cString: info.pointee.display_name)
+            let avatarURL = URL { buffer, size in
+                rc_client_user_get_image_url(info, buffer, 512)
+            }
             
             Keychain.shared.retroAchievementsUsername = username
             Keychain.shared.retroAchievementsAuthToken = token
             
             Logger.achievements.info("Successfully authenticated RetroAchievements user \(username) (\(displayName))")
             
-            let account = Account(username: username, displayName: displayName)
+            let account = Account(username: username, displayName: displayName, totalPoints: Int(info.pointee.score), avatarURL: avatarURL)
             AchievementsManager.shared.account = account
             
             userData?.continuation?.resume()

@@ -14,7 +14,11 @@ struct Achievement
     var description: String?
     var progress: Double
     var points: Int
-    
+    var imageURL: URL?
+}
+
+extension Achievement
+{
     init(achievement: rc_client_achievement_t)
     {
         self.title = String(cString: achievement.title)
@@ -26,5 +30,12 @@ struct Achievement
         
         self.progress = Double(achievement.measured_percent)
         self.points = Int(achievement.points)
+        
+        let imageURL = URL { buffer, size in
+            withUnsafePointer(to: achievement) { pointer in
+                rc_client_achievement_get_image_url(pointer, Int32(achievement.state), buffer, size)
+            }
+        }
+        self.imageURL = imageURL
     }
 }

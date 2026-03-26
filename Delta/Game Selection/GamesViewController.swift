@@ -14,6 +14,7 @@ import DeltaCore
 
 import Roxas
 import Harmony
+import SwiftUI
 
 private var pageKey: Int = 0
 
@@ -760,16 +761,32 @@ private extension GamesViewController
             switch result
             {
             case .success(let account):
-                toastView = RSTToastView(text: String(format: NSLocalizedString("RetroAchievements: Logged in as “%@”", comment: ""), account.displayName), detailText: nil)
-                duration = 4.0
-                
+                if #available (iOS 26.0, *)
+                {
+                    let greetingView = AchievementToastView {
+                        AchievementGreeting(account: account)
+                    }
+                    
+                    // Delay for 0.5 seconds to give time to show page title on launch
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        greetingView.show(in: self.navigationController?.view ?? self.view, duration: 4.0, useAutoLayout: false) // We shouldn't add constraints to views we don't control (i.e. navigation controller's view) or else Bad Things Might Happen™
+                    }
+                }
+                else
+                {
+                    toastView = RSTToastView(text: String(format: NSLocalizedString("RetroAchievements: Logged in as “%@”", comment: ""), account.displayName), detailText: nil)
+                    duration = 4.0
+                    
+                    toastView.presentationEdge = .top
+                    toastView.show(in: self.navigationController?.view ?? self.view, duration: duration)
+                }
             case .failure(let error):
                 toastView = RSTToastView(text: NSLocalizedString("Unable to Log In to RetroAchievements", comment: ""), detailText: error.localizedDescription)
                 duration = 4.0
+                
+                toastView.presentationEdge = .top
+                toastView.show(in: self.navigationController?.view ?? self.view, duration: duration)
             }
-            
-            toastView.presentationEdge = .top
-            toastView.show(in: self.navigationController?.view ?? self.view, duration: duration)
         }
     }
 }

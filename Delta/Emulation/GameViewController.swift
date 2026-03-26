@@ -17,6 +17,7 @@ import GPGXDeltaCore
 
 import Roxas
 import AltKit
+import SwiftUI
 
 private var kvoContext = 0
 
@@ -2051,11 +2052,19 @@ private extension GameViewController
             do
             {
                 let tracker = try AchievementsManager.shared.makeTracker(for: emulatorCore)
-                try await tracker.start()
+                let gameInfo = try await tracker.start()
                 
                 NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.didUnlockAchievement(with:)), name: AchievementsTracker.didUnlockAchievementNotification, object: tracker)
                 
                 self.achievementsTracker = tracker
+                
+                if #available (iOS 26.0, *)
+                {
+                    let toastView = AchievementToastView {
+                        AchievementGameBanner(game: gameInfo)
+                    }
+                    toastView.show(in: self.view, duration: 4.0)
+                }
             }
             catch
             {
@@ -2365,17 +2374,22 @@ private extension GameViewController
     
     @objc func didUnlockAchievement(with notification: Notification)
     {
-        guard #available(iOS 15, *) else { return }
-        
         guard let achievement = notification.userInfo?[AchievementsTracker.achievementUserInfoKey] as? Achievement else { return }
         
         DispatchQueue.main.async {
-            let title = String(format: NSLocalizedString("✅ Achievement Unlocked", comment: ""))
-            let message = String(AttributedString(localized: "\(achievement.title) (^[\(achievement.points) \("point")](inflect: true))").characters)
-            
-            let toastView = RSTToastView(text: title, detailText: message)
-            toastView.detailTextLabel.textAlignment = .center
-            self.show(toastView)
+            if #available (iOS 26.0, *) {
+                let toastView = AchievementToastView {
+                    AchievementNotification(achievement: achievement)
+                }
+                toastView.show(in: self.view, duration: 4.0)
+            } else {
+                let title = String(format: NSLocalizedString("✅ Achievement Unlocked", comment: ""))
+                let message = String(AttributedString(localized: "\(achievement.title) (^[\(achievement.points) \("point")](inflect: true))").characters)
+                
+                let toastView = RSTToastView(text: title, detailText: message)
+                toastView.detailTextLabel.textAlignment = .center
+                self.show(toastView)
+            }
         }
     }
     
