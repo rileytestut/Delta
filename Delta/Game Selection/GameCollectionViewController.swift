@@ -116,6 +116,10 @@ class GameCollectionViewController: UICollectionViewController
     }
     var customTitle: String?
     
+    var placeholderTitle: String?
+    var placeholderDescription: String?
+    var placeholderImage: UIImage?
+    
     var theme: Theme = .opaque {
         didSet {
             // self.collectionView?.reloadData()
@@ -492,6 +496,13 @@ private extension GameCollectionViewController
         fetchRequest.returnsObjectsAsFaults = false
         
         self.dataSource.fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DatabaseManager.shared.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+        
+        var config = UIContentUnavailableConfiguration.empty()
+        config.image = self.placeholderImage
+        config.text = self.placeholderTitle
+        config.secondaryText = self.placeholderDescription
+        config.textToSecondaryTextPadding = 8
+        self.dataSource.placeholderView = UIContentUnavailableView(configuration: config)
     }
     
     //MARK: - Configure Cells
@@ -772,10 +783,10 @@ private extension GameCollectionViewController
             self.openInNewWindow(game)
         }
         
-        let favoriteIcon: UIImage? = game.isFavorite ? UIImage(systemName: "heart.fill") : UIImage(systemName: "heart")
+        let favoriteIcon: UIImage? = game.isFavorite ? UIImage(systemName: "star.fill") : UIImage(systemName: "star")
         
-        let favoriteActionText: String = game.isFavorite ? "Unfavorite" : "Favorite"
-        let favoriteAction = UIAction(title: NSLocalizedString(favoriteActionText, comment: ""), image: favoriteIcon) { [unowned self] action in
+        let favoriteActionText: String = game.isFavorite ? String(localized: "Unfavorite") : String(localized: "Favorite")
+        let favoriteAction = UIAction(title: favoriteActionText, image: favoriteIcon) { [unowned self] action in
             self.favorite(game)
             
         }

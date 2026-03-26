@@ -15,18 +15,38 @@ import DeltaCore
 import Roxas
 import Harmony
 
-enum Page: Equatable
+private var pageKey: Int = 0
+
+extension GameCollectionViewController
 {
-    case gameCollection(GameCollection)
-    case fetchRequest(NSFetchRequest<Game>, title: String)
-    
-    static func ==(lhs: Page, rhs: Page) -> Bool
+    fileprivate var page: Page?
     {
-        switch (lhs, rhs)
+        get {
+            objc_getAssociatedObject(self, &pageKey) as? Page
+        }
+        set {
+            objc_setAssociatedObject(self, &pageKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+    }
+}
+
+fileprivate enum Page: Equatable
+{
+    case favorites
+    case recentlyPlayed
+    case gameCollection(GameCollection)
+    
+    var pageIndicator: PageIndicator
+    {
+        switch self
         {
-        case (.gameCollection(let collectionA), .gameCollection(let collectionB)): return collectionA == collectionB
-        case (.fetchRequest(_, let titleA), .fetchRequest(_, let titleB)): return titleA == titleB
-        case (.fetchRequest, _), (.gameCollection, _): return false
+        case .favorites:
+            return PageIndicator(id: "favorites", image: UIImage(systemName: "star.fill")!, alwaysShowsImage: true)
+        case .recentlyPlayed:
+            return PageIndicator(id: "recentlyPlayed", image: UIImage(systemName: "clock.fill")!, alwaysShowsImage: true, imageScale: 0.8)
+        case .gameCollection(let collection):
+            let icon = collection.system?.controllerIcon ?? UIImage(systemName: "gamecontroller.fill")!
+            return PageIndicator(id: collection.identifier, image: icon)
         }
     }
 }
@@ -39,7 +59,6 @@ class GamesViewController: UIViewController
         }
     }
     
-    private var hasFavorites: Bool = false
     private var hasRecentlyPlayed: Bool = false
     
     weak var activeEmulatorCore: EmulatorCore? {
@@ -60,15 +79,16 @@ class GamesViewController: UIViewController
         }
     }
     
-    var pages: [Page] {
+    fileprivate var pages: [Page] {
         var result: [Page] = []
-        if self.hasFavorites {
-            result.append(.fetchRequest(Game.favoritesFetchRequest, title: "Favorites"))
+        let gameCollections = self.fetchedResultsController.fetchedObjects as? [GameCollection] ?? []
+        if !gameCollections.isEmpty {
+            result.append(.favorites)
         }
         if self.hasRecentlyPlayed {
-            result.append(.fetchRequest(Game.recentlyPlayedFetchRequest, title: "Recently Played"))
+            result.append(.recentlyPlayed)
         }
-        result += (self.fetchedResultsController.fetchedObjects ?? []).map { .gameCollection($0 as! GameCollection) }
+        result += gameCollections.map { .gameCollection($0) }
         return result
     }
     
@@ -78,7 +98,7 @@ class GamesViewController: UIViewController
     
     private var pageViewController: UIPageViewController!
     private var placeholderView: RSTPlaceholderView!
-    private var pageControl: UIPageControl!
+    private var pageControl: PageControlView!
     
     private let fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>
     private let favoritesFetchedResultsController: NSFetchedResultsController<Game>
@@ -112,8 +132,6 @@ class GamesViewController: UIViewController
         self.fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DatabaseManager.shared.viewContext, sectionNameKeyPath: nil, cacheName: nil)
         
         let favoritesFetchRequest = Game.favoritesFetchRequest
-        favoritesFetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(Game.name), ascending: true)]
-        favoritesFetchRequest.predicate = NSPredicate(format: "%K == true", #keyPath(Game.isFavorite))
         favoritesFetchRequest.fetchLimit = 1
         self.favoritesFetchedResultsController = NSFetchedResultsController<Game>(fetchRequest: favoritesFetchRequest, managedObjectContext: DatabaseManager.shared.viewContext, sectionNameKeyPath: nil, cacheName: nil)
         
@@ -158,17 +176,34 @@ extension GamesViewController
         self.placeholderView.stackView.setCustomSpacing(20.0, after: self.placeholderView.detailTextLabel)
         self.view.insertSubview(self.placeholderView, at: 0)
         
-        self.pageControl = UIPageControl()
+        self.pageControl = PageControlView()
         self.pageControl.translatesAutoresizingMaskIntoConstraints = false
-        self.pageControl.hidesForSinglePage = false
-        self.pageControl.numberOfPages = 3
-        self.pageControl.currentPageIndicatorTintColor = UIColor.deltaPurple
-        self.pageControl.pageIndicatorTintColor = UIColor.lightGray
-        self.navigationController?.toolbar.addSubview(self.pageControl)
+
+        if #available(iOS 26, *)
+        {
+            self.view.addSubview(self.pageControl)
+            self.pageControl.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+            self.pageControl.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        }
+        else
+        {
+            self.navigationController?.toolbar.addSubview(self.pageControl)
+            self.pageControl.centerXAnchor.constraint(equalTo: (self.navigationController?.toolbar.centerXAnchor)!).isActive = true
+            self.pageControl.centerYAnchor.constraint(equalTo: (self.navigationController?.toolbar.centerYAnchor)!).isActive = true
+        }
         
-        self.pageControl.centerXAnchor.constraint(equalTo: (self.navigationController?.toolbar.centerXAnchor)!, constant: 0).isActive = true
-        self.pageControl.centerYAnchor.constraint(equalTo: (self.navigationController?.toolbar.centerYAnchor)!, constant: 0).isActive = true
-        
+        self.pageControl.model.onPageSelected = { [weak self] index, animated in
+            guard let self, let viewController = self.viewControllerForIndex(index) else { return }
+
+            let direction: UIPageViewController.NavigationDirection =
+                index > self.pageControl.model.currentPage ? .forward : .reverse
+
+            self.pageViewController.setViewControllers([viewController], direction: direction, animated: animated, completion: nil)
+
+            self.title = viewController.title
+            self.pageControl.model.currentPage = index
+        }
+
         if #available(iOS 26.0, *)
         {
             let resumeButton = UIBarButtonItem(image: UIImage(systemName: "play"), style: .prominent, target: self, action:  #selector(GamesViewController.resumeGame))
@@ -381,8 +416,9 @@ private extension GamesViewController
 {
     func viewControllerForIndex(_ index: Int) -> GameCollectionViewController?
     {
+        let pages = self.pages // Cache so we don't regenerate every time
         
-        guard !self.pages.isEmpty else { return nil }
+        guard !pages.isEmpty else { return nil }
         
         // Return nil if only one section, and not asking for the 0th view controller
         guard !(pages.count == 1 && index != 0) else { return nil }
@@ -395,12 +431,20 @@ private extension GamesViewController
                 
         let viewController = self.storyboard?.instantiateViewController(withIdentifier: "gameCollectionViewController") as! GameCollectionViewController
         
-        let page = self.pages[safeIndex]
+        let page = pages[safeIndex]
+        viewController.page = page
+
         switch page
         {
-        case .fetchRequest(let fetchRequest, let title):
-            viewController.customTitle = title
-            viewController.fetchRequest = fetchRequest
+        case .favorites:
+            viewController.customTitle = NSLocalizedString("Favorites", comment: "")
+            viewController.placeholderTitle = String(localized: "No Favorites")
+            viewController.placeholderDescription = String(localized: "Long-press a game to add it to your favorites.")
+            viewController.placeholderImage = UIImage(systemName: "star.fill")
+            viewController.fetchRequest = Game.favoritesFetchRequest // Triggers placeholder build, so placeholder properties need to come first
+        case .recentlyPlayed:
+            viewController.customTitle = NSLocalizedString("Recently Played", comment: "")
+            viewController.fetchRequest = Game.recentlyPlayedFetchRequest
         case .gameCollection(let gameCollection):
             viewController.gameCollection = gameCollection
         }
@@ -413,43 +457,25 @@ private extension GamesViewController
     
     func updateSections(animated: Bool)
     {
-        let hasFavorites = self.favoritesFetchedResultsController.fetchedObjects?.count ?? 0 > 0
-        self.hasFavorites = hasFavorites
-        
         let hasRecentlyPlayed = self.recentlyPlayedFetchedResultsController.fetchedObjects?.count ?? 0 > 0
         self.hasRecentlyPlayed = hasRecentlyPlayed
         
         let sections = self.pages.count
-        self.pageControl.numberOfPages = sections
+        self.pageControl.model.indicators = self.pages.map { $0.pageIndicator }
         
         var resetPageViewController = false
         
+        // Sync page control to whichever page is currently visible, or reset if page no longer exists
         if let viewController = self.pageViewController.viewControllers?.first as? GameCollectionViewController
         {
-            if let gameCollection = viewController.gameCollection
+            if let page = viewController.page, let index = self.pages.firstIndex(of: page)
             {
-                if let index = self.pages.firstIndex(of: .gameCollection(gameCollection))
-                {
-                    self.pageControl.currentPage = index
-                }
-                else
-                {
-                    resetPageViewController = true
-                    
-                    self.pageControl.currentPage = 0
-                }
+                self.pageControl.model.currentPage = index
             }
-            else if let customTitle = viewController.customTitle, let customFetchRequest = viewController.fetchRequest
+            else
             {
-                if let index = self.pages.firstIndex(of: .fetchRequest(customFetchRequest, title: customTitle)) {
-                    self.pageControl.currentPage = index
-                }
-                else
-                {
-                    resetPageViewController = true
-                        
-                    self.pageControl.currentPage = 0
-                }
+                resetPageViewController = true
+                self.pageControl.model.currentPage = min(1, self.pages.count - 1)
             }
         }
         
@@ -459,24 +485,14 @@ private extension GamesViewController
         }
         
         self.navigationController?.setToolbarHidden(sections < 2, animated: animated)
+        self.pageControl.setHidden(sections < 2, animated: false)
         
         if sections > 0
         {
             // Reset page view controller if currently hidden or current child should view controller no longer exists
             if self.pageViewController.view.isHidden || resetPageViewController
             {
-                var index = 0
-                
-                if let gameCollection = Settings.previousGameCollection
-                {
-                    if let gameCollectionIndex = self.pages.firstIndex(of: .gameCollection(gameCollection))
-                    {
-                        index = gameCollectionIndex
-                    }
-                }
-                else {
-                    // Assume that nil previousGameCollection means either they have no games or they were most recently looking at favorites
-                }
+                let index = min(1, self.pages.count - 1) // Recents page, or first game system
                 
                 if let viewController = self.viewControllerForIndex(index)
                 {
@@ -487,7 +503,7 @@ private extension GamesViewController
                     self.pageViewController.setViewControllers([viewController], direction: .forward, animated: false, completion: nil)
                     
                     self.title = viewController.title
-                    self.pageControl.currentPage = index
+                    self.pageControl.model.currentPage = index
                 }
             }
             else
@@ -781,34 +797,26 @@ extension GamesViewController: UIPageViewControllerDataSource, UIPageViewControl
     
     func indexForViewController(_ viewController: GameCollectionViewController) -> Int?
     {
-        if let gameCollection = viewController.gameCollection {
-            return self.pages.firstIndex(of: .gameCollection(gameCollection))
-        } else if let customTitle = viewController.customTitle, let customFetchRequest = viewController.fetchRequest {
-            return self.pages.firstIndex(of: .fetchRequest(customFetchRequest, title: customTitle))
-        }
-        return nil
+        guard let page = viewController.page else { return nil }
+        return self.pages.firstIndex(of: page)
     }
     
     //MARK: - UIPageViewControllerDelegate
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool)
     {
-        if let viewController = pageViewController.viewControllers?.first as? GameCollectionViewController {
-            if let gameCollection = viewController.gameCollection
+        if let viewController = pageViewController.viewControllers?.first as? GameCollectionViewController,
+           let page = viewController.page,
+           let index = self.pages.firstIndex(of: page)
+        {
+            self.pageControl.model.currentPage = index
+
+            if case .gameCollection(let collection) = page
             {
-                if let index = self.pages.firstIndex(of: .gameCollection(gameCollection))
-                {
-                    self.pageControl.currentPage = index
-                    
-                    Settings.previousGameCollection = gameCollection
-                }
+                Settings.previousGameCollection = collection
             }
-            else if let customTitle = viewController.customTitle,  let customFetchRequest = viewController.fetchRequest
+            else
             {
-                if let index = self.pages.firstIndex(of: .fetchRequest(customFetchRequest, title: customTitle)) {
-                    self.pageControl.currentPage = index
-                    
-                    Settings.previousGameCollection = nil
-                }
+                Settings.previousGameCollection = nil
             }
         }
         else { Settings.previousGameCollection = nil }
