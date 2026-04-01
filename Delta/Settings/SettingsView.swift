@@ -49,12 +49,14 @@ struct SettingsView: View
                     if #available(iOS 26, *)
                     {
                         Button(role: .close) {
+                            NotificationCenter.default.post(name: Settings.didCloseNotification, object: nil)
                             dismiss()
                         }
                     }
                     else
                     {
                         Button("Done") {
+                            NotificationCenter.default.post(name: Settings.didCloseNotification, object: nil)
                             dismiss()
                         }
                     }
