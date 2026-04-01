@@ -47,6 +47,8 @@
 		8279ED102E53C780008995FA /* SNESCoreSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8279ED0F2E53C780008995FA /* SNESCoreSettingsView.swift */; };
 		8279ED142E53C7A4008995FA /* N64CoreSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8279ED132E53C7A4008995FA /* N64CoreSettingsView.swift */; };
 		8279ED162E53C8BC008995FA /* GenesisCoreSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8279ED152E53C8BC008995FA /* GenesisCoreSettingsView.swift */; };
+		828242262F7C40C300D8F899 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 828242252F7C40C300D8F899 /* SettingsView.swift */; };
+		828242302F7C487800D8F899 /* SettingsRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8282422F2F7C487800D8F899 /* SettingsRow.swift */; };
 		82A787D92F60C4F400E4CA06 /* PageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82A787D82F60C4F400E4CA06 /* PageControl.swift */; };
 		82B3FAA92E3D592D002F179E /* GBCCoreSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82B3FAA02E3D5926002F179E /* GBCCoreSettingsView.swift */; };
 		82C63BDB2E57BB4700B0C812 /* UIColor+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82C63BDA2E57BB4700B0C812 /* UIColor+Hex.swift */; };
@@ -596,6 +598,8 @@
 		8279ED0F2E53C780008995FA /* SNESCoreSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SNESCoreSettingsView.swift; sourceTree = "<group>"; };
 		8279ED132E53C7A4008995FA /* N64CoreSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = N64CoreSettingsView.swift; sourceTree = "<group>"; };
 		8279ED152E53C8BC008995FA /* GenesisCoreSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenesisCoreSettingsView.swift; sourceTree = "<group>"; };
+		828242252F7C40C300D8F899 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		8282422F2F7C487800D8F899 /* SettingsRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRow.swift; sourceTree = "<group>"; };
 		82A787D82F60C4F400E4CA06 /* PageControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageControl.swift; sourceTree = "<group>"; };
 		82B3FAA02E3D5926002F179E /* GBCCoreSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GBCCoreSettingsView.swift; sourceTree = "<group>"; };
 		82C63BDA2E57BB4700B0C812 /* UIColor+Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Hex.swift"; sourceTree = "<group>"; };
@@ -1353,6 +1357,8 @@
 				BFAA1FEC1B8AA4FA00495943 /* Settings.swift */,
 				BF5E7F451B9A652600AE44F8 /* Settings.storyboard */,
 				BF5E7F431B9A650B00AE44F8 /* SettingsViewController.swift */,
+				8282422F2F7C487800D8F899 /* SettingsRow.swift */,
+				828242252F7C40C300D8F899 /* SettingsView.swift */,
 				BFB3645723245A6000CD0EB1 /* LicensesViewController.swift */,
 				BFE9907E24451DE6006409A7 /* Cores */,
 				BF71CF851FE8FFF1001F1613 /* App Icon */,
@@ -2526,6 +2532,7 @@
 				D5B4235C2BD9C24000093054 /* RoundedImageView.swift in Sources */,
 				BF5942941E09BD1A0051894B /* NSManagedObject+Conveniences.swift in Sources */,
 				D5A9C00329DDED6D00A8D610 /* ExperimentalFeaturesView.swift in Sources */,
+				828242302F7C487800D8F899 /* SettingsRow.swift in Sources */,
 				BF1F45BF21AF676F00EF9895 /* Box.swift in Sources */,
 				BF7AE80A1C2E8C7600B1B5BC /* UIColor+Delta.swift in Sources */,
 				ACF7E30F29F743A3000FE071 /* PHPhotoLibrary+Screenshots.swift in Sources */,
@@ -2593,6 +2600,7 @@
 				D5265A7E2D4845C90002C6CE /* GameSetting.m in Sources */,
 				D5AE76BB2C2B52820086471B /* Benefit.swift in Sources */,
 				BF5942931E09BD1A0051894B /* NSFetchedResultsController+Conveniences.m in Sources */,
+				828242262F7C40C300D8F899 /* SettingsView.swift in Sources */,
 				D5CDCCEE2A859DC200E22131 /* SyncValidationError.swift in Sources */,
 				BF4828881F90290F00028B97 /* Action.swift in Sources */,
 				8279ED102E53C780008995FA /* SNESCoreSettingsView.swift in Sources */,
