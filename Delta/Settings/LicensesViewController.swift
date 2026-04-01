@@ -7,6 +7,22 @@
 //
 
 import UIKit
+import SwiftUI
+
+extension LicensesViewController
+{
+    struct ViewRepresentable: UIViewControllerRepresentable
+    {
+        func makeUIViewController(context: Context) -> LicensesViewController
+        {
+            let storyboard = UIStoryboard(name: "Settings", bundle: .main)
+            let viewController = storyboard.instantiateViewController(withIdentifier: "licenses") as! LicensesViewController
+            return viewController
+        }
+
+        func updateUIViewController(_ uiViewController: LicensesViewController, context: Context) {}
+    }
+}
 
 class LicensesViewController: UIViewController
 {

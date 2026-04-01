@@ -1184,7 +1184,7 @@ Menu + Long-Press: Quick Load</string>
         <!--Controllers-->
         <scene sceneID="swa-DT-VKS">
             <objects>
-                <tableViewController id="uBz-mm-mXr" customClass="ControllersSettingsViewController" customModule="Delta" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="controllersSettings" id="uBz-mm-mXr" customClass="ControllersSettingsViewController" customModule="Delta" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="insetGrouped" separatorStyle="default" rowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="hLd-Z5-I3b">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1354,7 +1354,7 @@ Menu + Long-Press: Quick Load</string>
         <!--Home Screen Shortcuts-->
         <scene sceneID="e9N-fv-yuQ">
             <objects>
-                <tableViewController id="yXS-6u-1AN" customClass="AppIconShortcutsViewController" customModule="Delta" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="appIconShortcuts" id="yXS-6u-1AN" customClass="AppIconShortcutsViewController" customModule="Delta" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="insetGrouped" separatorStyle="default" rowHeight="97" sectionHeaderHeight="18" sectionFooterHeight="18" id="BGy-Nh-8Yd">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1481,7 +1481,7 @@ Menu + Long-Press: Quick Load</string>
         <!--Alt App Icons View Controller-->
         <scene sceneID="GyB-rQ-UAg">
             <objects>
-                <collectionViewController id="3dI-qS-gTg" customClass="AltAppIconsViewController" customModule="Delta" customModuleProvider="target" sceneMemberID="viewController">
+                <collectionViewController storyboardIdentifier="altAppIcons" id="3dI-qS-gTg" customClass="AltAppIconsViewController" customModule="Delta" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="j1R-PT-yrg">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1597,7 +1597,7 @@ Menu + Long-Press: Quick Load</string>
         <!--Syncing Service-->
         <scene sceneID="8nM-uV-t0b">
             <objects>
-                <tableViewController title="Syncing Service" id="R9m-rV-VgV" customClass="SyncingServicesViewController" customModule="Delta" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="syncingServices" title="Syncing Service" id="R9m-rV-VgV" customClass="SyncingServicesViewController" customModule="Delta" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="Zsb-6q-tLe">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1743,7 +1743,7 @@ Menu + Long-Press: Quick Load</string>
         <!--Sync Status-->
         <scene sceneID="IYe-DI-U7i">
             <objects>
-                <tableViewController title="Sync Status" id="vVg-ci-JRa" customClass="SyncStatusViewController" customModule="Delta" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="syncStatus" title="Sync Status" id="vVg-ci-JRa" customClass="SyncStatusViewController" customModule="Delta" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="Nza-ON-XbS">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -2158,7 +2158,7 @@ Menu + Long-Press: Quick Load</string>
         <!--Licenses-->
         <scene sceneID="x0a-yZ-xix">
             <objects>
-                <viewController id="Vew-Fv-phU" customClass="LicensesViewController" customModule="Delta" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="licenses" id="Vew-Fv-phU" customClass="LicensesViewController" customModule="Delta" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="OFY-Qi-vAX">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -2685,7 +2685,7 @@ Delta uses OpenVGDB to provide automatic artwork for imported games.</string>
         <!--Patreon-->
         <scene sceneID="vxf-6s-Sqp">
             <objects>
-                <collectionViewController id="4DO-Ey-uDN" customClass="PatreonViewController" customModule="Delta" customModuleProvider="target" sceneMemberID="viewController">
+                <collectionViewController storyboardIdentifier="patreon" id="4DO-Ey-uDN" customClass="PatreonViewController" customModule="Delta" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" id="DK6-vp-wGV">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

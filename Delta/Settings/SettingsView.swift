@@ -145,7 +145,7 @@ private struct ServicesSection: View
     var body: some View {
         Section {
             NavigationLink {
-                EmptyView() // TODO: UIKit bridge
+                SyncingServicesViewController.ViewRepresentable()
             } label: {
                 SettingsRow(label: Text("Delta Sync"), systemImage: "arrow.triangle.2.circlepath", color: .blue) {
                     if let name = syncingServiceName {
@@ -210,7 +210,7 @@ private struct PatreonSection: View
         {
             Section {
                 NavigationLink {
-                    EmptyView() // TODO: UIKit bridge
+                    PatreonViewController.ViewRepresentable()
                 } label: {
                     SettingsRow(
                         label: Text(PurchaseManager.shared.isActivePatron
@@ -231,7 +231,7 @@ private struct DisplaySection: View
     var body: some View {
         Section("Display") {
             NavigationLink {
-                EmptyView() // TODO: UIKit bridge
+                AltAppIconsViewController.ViewRepresentable()
             } label: {
                 SettingsRow(label: Text("App Icon"), systemImage: "square.grid.2x2", color: .indigo)
             }
@@ -275,13 +275,13 @@ private struct CreditsSection: View
     var body: some View {
         Section("Credits") {
             NavigationLink {
-                EmptyView() // TODO: UIKit bridge
+                ContributorsView()
             } label: {
                 Text("Contributors")
             }
 
             NavigationLink {
-                EmptyView() // TODO: UIKit bridge
+                LicensesViewController.ViewRepresentable()
             } label: {
                 Text("Software Licenses")
             }

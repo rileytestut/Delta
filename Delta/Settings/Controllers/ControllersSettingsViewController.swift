@@ -7,9 +7,28 @@
 //
 
 import UIKit
+import SwiftUI
 import DeltaCore
 
 import Roxas
+
+extension ControllersSettingsViewController
+{
+    struct ViewRepresentable: UIViewControllerRepresentable
+    {
+        let playerIndex: Int
+
+        func makeUIViewController(context: Context) -> ControllersSettingsViewController
+        {
+            let storyboard = UIStoryboard(name: "Settings", bundle: .main)
+            let viewController = storyboard.instantiateViewController(withIdentifier: "controllersSettings") as! ControllersSettingsViewController
+            viewController.playerIndex = playerIndex
+            return viewController
+        }
+
+        func updateUIViewController(_ uiViewController: ControllersSettingsViewController, context: Context) {}
+    }
+}
 
 extension ControllersSettingsViewController
 {

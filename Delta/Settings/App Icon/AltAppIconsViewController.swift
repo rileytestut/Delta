@@ -10,6 +10,21 @@ import UIKit
 import SwiftUI
 import Roxas
 
+extension AltAppIconsViewController
+{
+    struct ViewRepresentable: UIViewControllerRepresentable
+    {
+        func makeUIViewController(context: Context) -> AltAppIconsViewController
+        {
+            let storyboard = UIStoryboard(name: "Settings", bundle: .main)
+            let viewController = storyboard.instantiateViewController(withIdentifier: "altAppIcons") as! AltAppIconsViewController
+            return viewController
+        }
+
+        func updateUIViewController(_ uiViewController: AltAppIconsViewController, context: Context) {}
+    }
+}
+
 extension UIApplication
 {
     static let didChangeAppIconNotification = Notification.Name("io.altstore.AppManager.didChangeAppIcon")

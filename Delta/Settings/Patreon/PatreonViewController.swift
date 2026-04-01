@@ -8,8 +8,24 @@
 
 import UIKit
 import StoreKit
+import SwiftUI
 
 import Roxas
+
+extension PatreonViewController
+{
+    struct ViewRepresentable: UIViewControllerRepresentable
+    {
+        func makeUIViewController(context: Context) -> PatreonViewController
+        {
+            let storyboard = UIStoryboard(name: "Settings", bundle: .main)
+            let viewController = storyboard.instantiateViewController(withIdentifier: "patreon") as! PatreonViewController
+            return viewController
+        }
+
+        func updateUIViewController(_ uiViewController: PatreonViewController, context: Context) {}
+    }
+}
 
 extension PatreonViewController
 {

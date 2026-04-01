@@ -125,6 +125,11 @@ struct ContributorsView: View
         }
     }
     
+    init()
+    {
+        self._viewModel = StateObject(wrappedValue: ViewModel())
+    }
+
     fileprivate init(contributors: [Contributor]? = nil, viewModel: ViewModel = ViewModel())
     {
         if let contributors
