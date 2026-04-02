@@ -315,17 +315,15 @@ extension GamesViewController
             self.pageViewController.delegate = self
             self.pageViewController.view.isHidden = true
         
-        case "showSettings":
-            let destinationViewController = segue.destination
-            destinationViewController.presentationController?.delegate = self
-            
         default: break
         }
     }
     
-    @IBAction private func unwindFromSettingsViewController(_ segue: UIStoryboardSegue)
+    @IBAction private func showSettings(_ sender: Any)
     {
-        self.sync()
+        let hostingController = UIHostingController(rootView: SettingsView())
+        present(hostingController, animated: true)
+        hostingController.presentationController?.delegate = self
     }
 
     @objc private func settingsDidClose(_ notification: Notification)

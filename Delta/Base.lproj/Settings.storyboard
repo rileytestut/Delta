@@ -1067,11 +1067,7 @@ Menu + Long-Press: Quick Load</string>
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Settings" largeTitleDisplayMode="always" id="DYU-tO-Lmw">
-                        <barButtonItem key="leftBarButtonItem" style="plain" systemItem="cancel" id="UdW-1j-fSz">
-                            <connections>
-                                <segue destination="slQ-xv-zI1" kind="unwind" identifier="unwindSettingsSegue" unwindAction="unwindFromSettingsViewController:" id="7gb-Bj-XU3"/>
-                            </connections>
-                        </barButtonItem>
+                        <barButtonItem key="leftBarButtonItem" style="plain" systemItem="cancel" id="UdW-1j-fSz"/>
                     </navigationItem>
                     <size key="freeformSize" width="375" height="3400"/>
                     <connections>
