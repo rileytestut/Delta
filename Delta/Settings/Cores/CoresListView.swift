@@ -52,6 +52,7 @@ struct CoresListView: View
         case .gbc: GBCCoreSettingsView()
         case .gba: GBACoreSettingsView()
         case .ds: MelonDSCoreSettingsView()
+            .ignoresSafeArea()
         }
     }
 }

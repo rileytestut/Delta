@@ -17,7 +17,8 @@ struct ControllerSettingsView: View
     var body: some View {
         Form {
             ForEach(0..<4) { playerIndex in
-                NavigationLink(destination: ControllersSettingsViewController.ViewRepresentable(playerIndex: playerIndex)) {
+                NavigationLink(destination: ControllersSettingsViewController.ViewRepresentable(playerIndex: playerIndex)
+                    .ignoresSafeArea()) {
                     LabeledContent("Player \(playerIndex + 1)") {
                         Text(controllerName(for: playerIndex))
                             .foregroundStyle(.secondary)

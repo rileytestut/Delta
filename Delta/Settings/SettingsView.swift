@@ -146,6 +146,7 @@ private struct ServicesSection: View
         Section {
             NavigationLink {
                 SyncingServicesViewController.ViewRepresentable()
+                    .ignoresSafeArea()
             } label: {
                 SettingsRow(label: Text("Delta Sync"), systemImage: "arrow.triangle.2.circlepath", color: .blue) {
                     if let name = syncingServiceName {
@@ -211,6 +212,7 @@ private struct PatreonSection: View
             Section {
                 NavigationLink {
                     PatreonViewController.ViewRepresentable()
+                        .ignoresSafeArea()
                 } label: {
                     SettingsRow(
                         label: Text(PurchaseManager.shared.isActivePatron
@@ -232,6 +234,7 @@ private struct DisplaySection: View
         Section("Display") {
             NavigationLink {
                 AltAppIconsViewController.ViewRepresentable()
+                    .ignoresSafeArea()
             } label: {
                 SettingsRow(label: Text("App Icon"), systemImage: "square.grid.2x2", color: .indigo)
             }
@@ -282,6 +285,7 @@ private struct CreditsSection: View
 
             NavigationLink {
                 LicensesViewController.ViewRepresentable()
+                    .ignoresSafeArea()
             } label: {
                 Text("Software Licenses")
             }

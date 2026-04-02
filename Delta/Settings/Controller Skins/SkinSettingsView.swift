@@ -36,7 +36,8 @@ struct SkinSettingsView: View
 
             Section {
                 ForEach(System.registeredSystems, id: \.self) { system in
-                    NavigationLink(destination: PreferredControllerSkinsViewController.ViewRepresentable(system: system)) {
+                    NavigationLink(destination: PreferredControllerSkinsViewController.ViewRepresentable(system: system)
+                    .ignoresSafeArea()) {
                         Text(system.localizedName)
                     }
                 }
