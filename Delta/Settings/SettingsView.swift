@@ -34,15 +34,16 @@ struct SettingsView: View
     var body: some View {
         NavigationStack {
             Form {
+                PatreonSection()
                 ControlsSection()
                 EmulationSection()
-                ServicesSection()
-                PatreonSection()
                 DisplaySection()
+                ServicesSection()
                 BehaviorSection()
                 CreditsSection()
                 SupportSection()
             }
+            .safeAreaPadding(.top, 8)
             .navigationTitle("Settings")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
@@ -146,37 +147,33 @@ private struct ServicesSection: View
         Section {
             NavigationLink {
                 SyncingServicesViewController.ViewRepresentable()
-                    .navigationTitle("Syncing Service")
+                    .navigationTitle("Delta Sync")
                     .navigationBarTitleDisplayMode(.inline)
                     .ignoresSafeArea()
             } label: {
-                SettingsRow(label: Text("Delta Sync"), systemImage: "arrow.triangle.2.circlepath", color: .blue) {
+                SettingsRow(label: Text("Delta Sync"), systemImage: "arrow.triangle.2.circlepath", color: .indigo) {
                     if let name = syncingServiceName {
                         Text(name).foregroundStyle(.secondary)
                     }
                 }
             }
-            
-            NavigationLink {
-                EmptyView() // TODO: UIKit bridge
-            } label: {
-                SettingsRow(label: Text("RetroAchievements"), systemImage: "medal", color: .blue) {
-                    // TODO: Show username if logged in
+
+            if isAccountConnected
+            {
+                NavigationLink {
+                    SyncStatusViewController.ViewRepresentable()
+                        .navigationTitle("Sync Status")
+                        .navigationBarTitleDisplayMode(.inline)
+                        .ignoresSafeArea()
+                } label: {
+                    SettingsRow(label: Text("Sync Status"), systemImage: "checkmark.icloud", color: .indigo) {
+                        SettingsBadge(text: "\(syncConflictsCount) conflicts",
+                                      color: syncConflictsCount > 0 ? .red : .green)
+                    }
                 }
             }
-
-            // TODO: decide whether to add back for beta
-//            if isAccountConnected
-//            {
-//                NavigationLink {
-//                    EmptyView() // TODO: UIKit bridge
-//                } label: {
-//                    SettingsRow(label: "Sync Status", systemImage: "checkmark.icloud", color: .blue) {
-//                        SettingsBadge(text: "\(syncConflictsCount) conflicts",
-//                                      color: syncConflictsCount > 0 ? .red : .green)
-//                    }
-//                }
-//            }
+        } footer: {
+            Text("Sync your games, save data, save states, and cheats between devices.")
         }
         .onReceive(NotificationCenter.default.publisher(for: Settings.didChangeNotification)) { notification in
             guard let name = notification.userInfo?[Settings.NotificationUserInfoKey.name] as? Settings.Name else { return }
@@ -220,11 +217,13 @@ private struct PatreonSection: View
                 } label: {
                     SettingsRow(
                         label: Text(PurchaseManager.shared.isActivePatron
-                            ? "Manage Subscription" : "Join Our Patreon"),
+                            ? "Manage Subscription" : "Become a Patron"),
                         systemImage: "heart",
                         color: .accentColor
                     )
                 }
+            } footer: {
+                Text("Get early access to new features and unlock exclusive app icons.")
             }
         }
     }
@@ -242,7 +241,7 @@ private struct DisplaySection: View
                     .navigationBarTitleDisplayMode(.inline)
                     .ignoresSafeArea()
             } label: {
-                SettingsRow(label: Text("App Icon"), systemImage: "square.grid.2x2", color: .indigo)
+                SettingsRow(label: Text("App Icon"), systemImage: "square.grid.2x2", color: .blue)
             }
         }
     }
@@ -255,14 +254,6 @@ private struct BehaviorSection: View
     var body: some View {
         Section {
             NavigationLink {
-                ExperimentalFeaturesView()
-            } label: {
-                SettingsRow(label: Text("Experimental"), systemImage: "flask", color: .gray) {
-                    SettingsBadge(text: "Patrons")
-                }
-            }
-
-            NavigationLink {
                 MinorSettingsView()
             } label: {
                 SettingsRow(label: Text("Minor"), systemImage: "slider.horizontal.3", color: .gray)
@@ -272,6 +263,14 @@ private struct BehaviorSection: View
                 AdvancedSettingsView()
             } label: {
                 SettingsRow(label: Text("Advanced"), systemImage: "gearshape", color: .gray)
+            }
+            
+            NavigationLink {
+                ExperimentalFeaturesView()
+            } label: {
+                SettingsRow(label: Text("Experimental"), systemImage: "flask", color: .gray) {
+                    SettingsBadge(text: "Patrons")
+                }
             }
         }
     }
@@ -305,9 +304,23 @@ private struct CreditsSection: View
 
 private struct SupportSection: View
 {
+    @Environment(\.openURL)
+    var openURL
+    
     var body: some View {
         Section {
-            Button("Contact Us") { } // TODO: implement
+            Button("Contact Us") {
+                // TODO: support attachments
+                let email = "support@altstore.io"
+                let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? ""
+                let subject = "Delta \(version) Feedback"
+                let urlString = "mailto:\(email)?subject=\(subject)"
+                
+                if let url = URL(string: urlString)
+                {
+                    openURL(url)
+                }
+            }
             
             Link("Privacy Policy", destination: URL(string: "https://altstore.io/privacy")!)
             

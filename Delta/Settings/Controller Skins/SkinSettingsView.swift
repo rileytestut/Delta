@@ -31,7 +31,7 @@ struct SkinSettingsView: View
                         .sensoryFeedback(.selection, trigger: opacity)
                 }
             } footer: {
-                Text("Adjusts the transparency of on-screen controller skins.")
+                Text("Adjusts the transparency of on-screen controller skins, if supported by the skin.")
             }
 
             Section {
@@ -46,7 +46,7 @@ struct SkinSettingsView: View
             } header: {
                 Text("Systems")
             } footer: {
-                Text("Customize the appearance of each system.")
+                Text("Customize the appearance of each system. [Learn more...](https://faq.deltaemulator.com/using-delta/controller-skins)")
             }
         }
         .tint(.accentColor)
