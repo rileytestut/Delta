@@ -41,6 +41,8 @@ struct AdvancedSettingsView: View
 
             Section {
                 NavigationLink(destination: AppIconShortcutsViewController.ViewRepresentable()
+                    .navigationTitle("Home Screen Shortcuts")
+                    .navigationBarTitleDisplayMode(.inline)
                     .ignoresSafeArea()) {
                     Text("Home Screen Shortcuts")
                 }

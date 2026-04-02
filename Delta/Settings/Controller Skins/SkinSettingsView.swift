@@ -37,6 +37,8 @@ struct SkinSettingsView: View
             Section {
                 ForEach(System.registeredSystems, id: \.self) { system in
                     NavigationLink(destination: PreferredControllerSkinsViewController.ViewRepresentable(system: system)
+                    .navigationTitle(system.localizedShortName)
+                    .navigationBarTitleDisplayMode(.inline)
                     .ignoresSafeArea()) {
                         Text(system.localizedName)
                     }
