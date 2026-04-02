@@ -28,12 +28,14 @@ struct PreferredControllerSkinsView: UIViewControllerRepresentable
 
 struct MelonDSCoreSettingsView: UIViewControllerRepresentable
 {
+    var scrollToBIOS: Bool = false
+
     func makeUIViewController(context: Context) -> MelonDSCoreSettingsViewController
     {
         let storyboard = UIStoryboard(name: "Settings", bundle: nil)
         
         let viewController = storyboard.instantiateViewController(withIdentifier: "dsSettingsViewController") as! MelonDSCoreSettingsViewController
-        viewController.scrollToBIOS = true
+        viewController.scrollToBIOS = scrollToBIOS
         return viewController
     }
     
