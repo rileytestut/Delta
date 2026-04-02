@@ -14,10 +14,10 @@ struct VideoSettingsView: View
     @AppStorage(Settings.Name.supportsExternalDisplays.rawValue)
     private var supportsExternalDisplays: Bool = true
     
-    @SwiftUI.State
-    private var topScreenOnly: Bool = Settings.features.dsAirPlay.topScreenOnly
+    @AppStorage(Settings.Name.dsAirPlayTopScreenOnly.rawValue)
+    private var topScreenOnly: Bool = true
     
-    @SwiftUI.State
+    @SwiftUI.State // State instead of AppStorage since value is derived
     private var layoutHorizontally: Bool = Settings.features.dsAirPlay.layoutAxis == .horizontal
 
     var body: some View {

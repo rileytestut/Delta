@@ -10,7 +10,7 @@ import SwiftUI
 
 struct MinorSettingsView: View
 {
-    @AppStorage("isPreviewsEnabled") // Would use Settings.Name.isPreviewsEnabled.rawvalue but it doesn't exist
+    @AppStorage(Settings.Name.isPreviewsEnabled.rawValue)
     private var isPreviewsEnabled: Bool = true
 
     var body: some View {
