@@ -41,5 +41,7 @@ struct MelonDSCoreSettingsView: UIViewControllerRepresentable
     
     func updateUIViewController(_ uiViewController: MelonDSCoreSettingsViewController, context: Context)
     {
+        let parentViewController = uiViewController.parent ?? uiViewController
+        parentViewController.navigationItem.title = uiViewController.navigationItem.title // Fixes title not appearing in SwiftUI NavigationStack
     }
 }

@@ -26,7 +26,11 @@ extension ControllersSettingsViewController
             return viewController
         }
 
-        func updateUIViewController(_ uiViewController: ControllersSettingsViewController, context: Context) {}
+        func updateUIViewController(_ uiViewController: ControllersSettingsViewController, context: Context)
+        {
+            let parentViewController = uiViewController.parent ?? uiViewController
+            parentViewController.navigationItem.title = uiViewController.navigationItem.title // Fixes title not appearing in SwiftUI NavigationStack
+        }
     }
 }
 

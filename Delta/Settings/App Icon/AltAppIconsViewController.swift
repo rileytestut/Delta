@@ -21,7 +21,12 @@ extension AltAppIconsViewController
             return viewController
         }
 
-        func updateUIViewController(_ uiViewController: AltAppIconsViewController, context: Context) {}
+        func updateUIViewController(_ uiViewController: AltAppIconsViewController, context: Context)
+        {
+            let parentViewController = uiViewController.parent ?? uiViewController
+            parentViewController.navigationItem.title = uiViewController.navigationItem.title // Fixes title not appearing in SwiftUI NavigationStack
+            parentViewController.navigationItem.titleView = uiViewController.navigationItem.titleView
+        }
     }
 }
 

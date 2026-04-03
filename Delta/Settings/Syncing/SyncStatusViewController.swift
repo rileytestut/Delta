@@ -22,7 +22,11 @@ extension SyncStatusViewController
             return viewController
         }
 
-        func updateUIViewController(_ uiViewController: SyncStatusViewController, context: Context) {}
+        func updateUIViewController(_ uiViewController: SyncStatusViewController, context: Context)
+        {
+            let parentViewController = uiViewController.parent ?? uiViewController
+            parentViewController.navigationItem.title = uiViewController.navigationItem.title // Fixes title not appearing in SwiftUI NavigationStack
+        }
     }
 }
 

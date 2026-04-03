@@ -26,7 +26,11 @@ extension PreferredControllerSkinsViewController
             return viewController
         }
 
-        func updateUIViewController(_ uiViewController: PreferredControllerSkinsViewController, context: Context) {}
+        func updateUIViewController(_ uiViewController: PreferredControllerSkinsViewController, context: Context)
+        {
+            let parentViewController = uiViewController.parent ?? uiViewController
+            parentViewController.navigationItem.title = uiViewController.navigationItem.title // Fixes title not appearing in SwiftUI NavigationStack
+        }
     }
 }
 
