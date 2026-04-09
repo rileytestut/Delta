@@ -188,6 +188,14 @@
 		C6F24AD72D64B452002F939F /* Lu.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F24AD62D64B452002F939F /* Lu.swift */; };
 		C6F24AD92D64B550002F939F /* PauseViewController+Lu.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F24AD82D64B550002F939F /* PauseViewController+Lu.swift */; };
 		C6F24ADB2D64B5A0002F939F /* Lu-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C6F24ADA2D64B5A0002F939F /* Lu-Info.plist */; };
+		CA0001072E60000100000007 /* ControllerSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0001062E60000100000006 /* ControllerSettingsView.swift */; };
+		CA00010A2E6000010000000A /* SkinSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0001092E60000100000009 /* SkinSettingsView.swift */; };
+		CA00010D2E6000010000000D /* AudioSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA00010C2E6000010000000C /* AudioSettingsView.swift */; };
+		CA0001102E60000100000010 /* VideoSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA00010F2E6000010000000F /* VideoSettingsView.swift */; };
+		CA0001192E60000100000019 /* CoresListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0001182E60000100000018 /* CoresListView.swift */; };
+		CA00011F2E6000010000001F /* MinorSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA00011E2E6000010000001E /* MinorSettingsView.swift */; };
+		CA0001222E60000100000022 /* AdvancedSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0001212E60000100000021 /* AdvancedSettingsView.swift */; };
+		CA0001272E60000100000027 /* TouchHapticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0001262E60000100000026 /* TouchHapticsView.swift */; };
 		D5002BD92DCD3E81003418FD /* IAPScareScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5002BD82DCD3E81003418FD /* IAPScareScreen.swift */; };
 		D5002BDA2DCD3E87003418FD /* IAPScareScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5002BD82DCD3E81003418FD /* IAPScareScreen.swift */; };
 		D5002BDC2DCD3ED2003418FD /* MockPurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5002BDB2DCD3ED2003418FD /* MockPurchaseManager.swift */; };
@@ -763,7 +771,15 @@
 		C6F24AD82D64B550002F939F /* PauseViewController+Lu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PauseViewController+Lu.swift"; sourceTree = "<group>"; };
 		C6F24ADA2D64B5A0002F939F /* Lu-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Lu-Info.plist"; sourceTree = "<group>"; };
 		C786AF1D2DDB6223BE2063CC /* Pods-Delta.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Delta.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Delta/Pods-Delta.debug.xcconfig"; sourceTree = "<group>"; };
-		CE7C8DB38D2A6B16B8609EAC /* AppDelegate+Operator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+Operator.swift"; sourceTree = "<group>"; };
+		CA0001062E60000100000006 /* ControllerSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerSettingsView.swift; sourceTree = "<group>"; };
+		CA0001092E60000100000009 /* SkinSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkinSettingsView.swift; sourceTree = "<group>"; };
+		CA00010C2E6000010000000C /* AudioSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioSettingsView.swift; sourceTree = "<group>"; };
+		CA00010F2E6000010000000F /* VideoSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoSettingsView.swift; sourceTree = "<group>"; };
+		CA0001182E60000100000018 /* CoresListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoresListView.swift; sourceTree = "<group>"; };
+		CA00011E2E6000010000001E /* MinorSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MinorSettingsView.swift; sourceTree = "<group>"; };
+		CA0001212E60000100000021 /* AdvancedSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedSettingsView.swift; sourceTree = "<group>"; };
+		CA0001262E60000100000026 /* TouchHapticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchHapticsView.swift; sourceTree = "<group>"; };
+        CE7C8DB38D2A6B16B8609EAC /* AppDelegate+Operator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+Operator.swift"; sourceTree = "<group>"; };
 		D5002BD82DCD3E81003418FD /* IAPScareScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAPScareScreen.swift; sourceTree = "<group>"; };
 		D5002BDB2DCD3ED2003418FD /* MockPurchaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPurchaseManager.swift; sourceTree = "<group>"; };
 		D5002BDD2DCD3F31003418FD /* MockDatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDatabaseManager.swift; sourceTree = "<group>"; };
@@ -1045,6 +1061,7 @@
 			isa = PBXGroup;
 			children = (
 				BF11734F1DA32CF600047DF8 /* ControllersSettingsViewController.swift */,
+				CA0001062E60000100000006 /* ControllerSettingsView.swift */,
 				BF616A121F08184A0077F8B2 /* ControllerInputsViewController.swift */,
 				BF8DDD231F4F6C880088A21B /* InputCalloutView.swift */,
 				D55917D92B51D097007B7DC0 /* LocalDeviceController.swift */,
@@ -1056,6 +1073,7 @@
 			isa = PBXGroup;
 			children = (
 				BF1DAD5C1D9F576000E752A7 /* PreferredControllerSkinsViewController.swift */,
+				CA0001092E60000100000009 /* SkinSettingsView.swift */,
 				BF04E6FE1DB8625C000F35D3 /* ControllerSkinsViewController.swift */,
 				BF99A5961DC2F9C400468E9E /* ControllerSkinTableViewCell.swift */,
 			);
@@ -1364,6 +1382,11 @@
 				BF71CF851FE8FFF1001F1613 /* App Icon */,
 				BF11734E1DA32CEC00047DF8 /* Controllers */,
 				BF1DAD5B1D9F574900E752A7 /* Controller Skins */,
+				CA0001132E60000100000013 /* Audio */,
+				CA0001162E60000100000016 /* Video */,
+				CA0001252E60000100000025 /* Touch */,
+				CA00011D2E6000010000001D /* Minor */,
+				CA0001202E60000100000020 /* Advanced */,
 				BF48F74C219A16C100BC2FC1 /* Syncing */,
 				D5D78AE329F9BC0200E064F0 /* Features */,
 				D5A9BFFF29DDECF500A8D610 /* Experimental Features */,
@@ -1414,6 +1437,7 @@
 		BFE9907E24451DE6006409A7 /* Cores */ = {
 			isa = PBXGroup;
 			children = (
+				CA0001182E60000100000018 /* CoresListView.swift */,
 				BFE9907F24451E15006409A7 /* MelonDSCoreSettingsViewController.swift */,
 				BF00BEA525B758AA00C8607D /* SystemBIOS.swift */,
 				823D998E2E566EE40025F4CD /* GBCColorPalette.swift */,
@@ -1570,6 +1594,46 @@
 				D56C36302D65471D00A8984D /* WhatsNewCell.swift */,
 			);
 			path = Launch;
+			sourceTree = "<group>";
+		};
+		CA0001132E60000100000013 /* Audio */ = {
+			isa = PBXGroup;
+			children = (
+				CA00010C2E6000010000000C /* AudioSettingsView.swift */,
+			);
+			path = Audio;
+			sourceTree = "<group>";
+		};
+		CA0001162E60000100000016 /* Video */ = {
+			isa = PBXGroup;
+			children = (
+				CA00010F2E6000010000000F /* VideoSettingsView.swift */,
+			);
+			path = Video;
+			sourceTree = "<group>";
+		};
+		CA00011D2E6000010000001D /* Minor */ = {
+			isa = PBXGroup;
+			children = (
+				CA00011E2E6000010000001E /* MinorSettingsView.swift */,
+			);
+			path = Minor;
+			sourceTree = "<group>";
+		};
+		CA0001202E60000100000020 /* Advanced */ = {
+			isa = PBXGroup;
+			children = (
+				CA0001212E60000100000021 /* AdvancedSettingsView.swift */,
+			);
+			path = Advanced;
+			sourceTree = "<group>";
+		};
+		CA0001252E60000100000025 /* Touch */ = {
+			isa = PBXGroup;
+			children = (
+				CA0001262E60000100000026 /* TouchHapticsView.swift */,
+			);
+			path = Touch;
 			sourceTree = "<group>";
 		};
 		D502F82129EF05F800ACCDA1 /* Scenes */ = {
@@ -2623,6 +2687,14 @@
 				6FF8B1728BDBAF892B397F5E /* DeltaOperatorWritebackToast.swift in Sources */,
 				18FC614F90FE76140AAECE67 /* DeltaOperatorUtils.swift in Sources */,
 				89DAEB1EDE294B3A7C857765 /* DeltaOperatorFacade.swift in Sources */,
+				CA0001192E60000100000019 /* CoresListView.swift in Sources */,
+				CA0001272E60000100000027 /* TouchHapticsView.swift in Sources */,
+				CA00011F2E6000010000001F /* MinorSettingsView.swift in Sources */,
+				CA0001222E60000100000022 /* AdvancedSettingsView.swift in Sources */,
+				CA0001072E60000100000007 /* ControllerSettingsView.swift in Sources */,
+				CA00010A2E6000010000000A /* SkinSettingsView.swift in Sources */,
+				CA00010D2E6000010000000D /* AudioSettingsView.swift in Sources */,
+				CA0001102E60000100000010 /* VideoSettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
