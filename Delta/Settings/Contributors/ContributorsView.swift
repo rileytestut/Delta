@@ -7,9 +7,7 @@
 //
 
 import SwiftUI
-import SafariServices
 
-@available(iOS 14, *)
 private extension NavigationLink where Label == EmptyView, Destination == EmptyView
 {
     // Copied from https://stackoverflow.com/a/66891173
@@ -18,7 +16,6 @@ private extension NavigationLink where Label == EmptyView, Destination == EmptyV
     }
 }
 
-@available(iOS 14, *)
 extension ContributorsView
 {
     fileprivate class ViewModel: ObservableObject
@@ -28,11 +25,6 @@ extension ContributorsView
         
         @Published
         var error: Error?
-        
-        @Published
-        var webViewURL: URL?
-        
-        weak var hostingController: UIViewController?
         
         func loadContributors()
         {
@@ -55,20 +47,16 @@ extension ContributorsView
     
     static func makeViewController() -> UIHostingController<some View>
     {
-        let viewModel = ViewModel()
-        let contributorsView = ContributorsView(viewModel: viewModel)
+        let contributorsView = ContributorsView()
         
         let hostingController = UIHostingController(rootView: contributorsView)
         hostingController.navigationItem.largeTitleDisplayMode = .never
         hostingController.navigationItem.title = contributorsView.localizedTitle
         
-        viewModel.hostingController = hostingController
-                
         return hostingController
     }
 }
 
-@available(iOS 14, *)
 struct ContributorsView: View
 {
     @StateObject
@@ -77,6 +65,12 @@ struct ContributorsView: View
     @State
     private var showErrorAlert: Bool = false
     
+    @Environment(\.openURL)
+    private var openURL
+
+    @Environment(\.dismiss)
+    private var dismiss
+
     private var localizedTitle: String { NSLocalizedString("Contributors", comment: "") }
     
     var body: some View {
@@ -89,15 +83,11 @@ struct ContributorsView: View
             ForEach(viewModel.contributors ?? []) { contributor in
                 Section {
                     // First row = contributor
-                    ContributionCell(name: Text(contributor.name).bold(), url: contributor.url, linkName: contributor.linkName) { webViewURL in
-                        viewModel.webViewURL = webViewURL
-                    }
-                    
+                    ContributionCell(name: Text(contributor.name).bold(), url: contributor.url, linkName: contributor.linkName) { openURL($0) }
+
                     // Remaining rows = contributions
                     ForEach(contributor.contributions) { contribution in
-                        ContributionCell(name: Text(contribution.name), url: contribution.url) { webViewURL in
-                            viewModel.webViewURL = webViewURL
-                        }
+                        ContributionCell(name: Text(contribution.name), url: contribution.url) { openURL($0) }
                     }
                 }
             }
@@ -108,17 +98,12 @@ struct ContributorsView: View
         .environmentObject(viewModel)
         .alert(isPresented: $showErrorAlert) {
             Alert(title: Text("Unable to Load Contributors"), message: Text(viewModel.error?.localizedDescription ?? ""), dismissButton: .default(Text("OK")) {
-                guard let hostingController = viewModel.hostingController else { return }
-                hostingController.navigationController?.popViewController(animated: true)
+                dismiss()
             })
         }
         .onReceive(viewModel.$error) { error in
             guard error != nil else { return }
             showErrorAlert = true
-        }
-        .onReceive(viewModel.$webViewURL) { webViewURL in
-            guard let webViewURL else { return }
-            openURL(webViewURL)
         }
         .onAppear {
             viewModel.loadContributors()
@@ -142,7 +127,6 @@ struct ContributorsView: View
     }
 }
 
-@available(iOS 14, *)
 struct ContributionCell: View
 {
     var name: Text
@@ -193,18 +177,5 @@ struct ContributionCell: View
             // No URL to open, so disable cell highlighting.
             body.buttonStyle(.plain)
         }
-    }
-}
-
-@available(iOS 14, *)
-private extension ContributorsView
-{
-    func openURL(_ url: URL)
-    {
-        guard let hostingController = viewModel.hostingController else { return }
-        
-        let safariViewController = SFSafariViewController(url: url)
-        safariViewController.preferredControlTintColor = .deltaPurple
-        hostingController.present(safariViewController, animated: true)
     }
 }
