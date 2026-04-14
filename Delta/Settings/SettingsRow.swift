@@ -32,22 +32,23 @@ struct SettingsRow<Content: View>: View
             } icon: {
                 if #available(iOS 26, *)
                 {
-                    Image(systemName: systemImage)
-                        .imageScale(.medium)
-                        .foregroundStyle(.white)
-                        .frame(width: 29, height: 29)
+                    image
                         .glassEffect(.regular.tint(color), in: RoundedRectangle(cornerRadius: 7))
                 }
                 else
                 {
-                    Image(systemName: systemImage)
-                        .imageScale(.medium)
-                        .foregroundStyle(.white)
-                        .frame(width: 29, height: 29)
+                    image
                         .background(color, in: RoundedRectangle(cornerRadius: 7))
                 }
             }
         }
+    }
+    
+    var image: some View {
+        Image(systemName: systemImage)
+            .imageScale(.medium)
+            .foregroundStyle(.white)
+            .frame(width: 29, height: 29)
     }
 }
 

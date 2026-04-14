@@ -298,6 +298,9 @@ private struct SupportSection: View
     @Environment(\.openURL)
     var openURL
     
+    @SwiftUI.State
+    private var showMailError = false
+
     var body: some View {
         Section {
             Button("Contact Us") {
@@ -309,9 +312,12 @@ private struct SupportSection: View
                 
                 if let url = URL(string: urlString)
                 {
-                    openURL(url)
+                    openURL(url) { success in
+                        if !success { showMailError = true }
+                    }
                 }
             }
+            .alert("Cannot Send Mail", isPresented: $showMailError) {}
             
             Link("Privacy Policy", destination: URL(string: "https://altstore.io/privacy")!)
             
