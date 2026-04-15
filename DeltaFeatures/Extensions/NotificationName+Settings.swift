@@ -11,5 +11,4 @@ import Foundation
 public extension Notification.Name
 {
     static let settingsDidChange = Notification.Name("SettingsDidChangeNotification")
-    static let settingsDidClose  = Notification.Name("SettingsDidCloseNotification")
 }

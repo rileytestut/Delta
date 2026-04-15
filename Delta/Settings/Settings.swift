@@ -54,7 +54,6 @@ extension Settings
     typealias NotificationUserInfoKey = SettingsUserInfoKey
     
     static let didChangeNotification = Notification.Name.settingsDidChange
-    static let didCloseNotification  = Notification.Name.settingsDidClose
 }
 
 struct Settings

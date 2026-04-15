@@ -151,7 +151,6 @@ class GamesViewController: UIViewController
         NotificationCenter.default.addObserver(self, selector: #selector(GamesViewController.syncingDidStart(_:)), name: SyncCoordinator.didStartSyncingNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GamesViewController.syncingDidFinish(_:)), name: SyncCoordinator.didFinishSyncingNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GamesViewController.settingsDidChange(_:)), name: Settings.didChangeNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(GamesViewController.settingsDidClose(_:)), name: Settings.didCloseNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GamesViewController.emulationDidQuit(_:)), name: EmulatorCore.emulationDidQuitNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GamesViewController.didFinishAuthenticatingAchievementsAccount(_:)), name: AchievementsManager.didFinishAuthenticatingNotification, object: nil)
     }
@@ -324,11 +323,6 @@ extension GamesViewController
         let hostingController = UIHostingController(rootView: SettingsView())
         present(hostingController, animated: true)
         hostingController.presentationController?.delegate = self
-    }
-
-    @objc private func settingsDidClose(_ notification: Notification)
-    {
-        self.sync()
     }
 }
 
