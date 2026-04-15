@@ -99,6 +99,9 @@ private struct ExportLogRow: View
 
         Task.detached(priority: .userInitiated)
         {
+            // Track the created directory so we can clean it up if anything fails before the sheet takes ownership
+            var pendingDirectory: URL?
+
             do {
                 let store = try OSLogStore(scope: .currentProcessIdentifier)
                 let position = store.position(timeIntervalSinceLatestBoot: 0)
@@ -112,6 +115,7 @@ private struct ExportLogRow: View
 
                 let outputDirectory = FileManager.default.uniqueTemporaryURL()
                 try FileManager.default.createDirectory(at: outputDirectory, withIntermediateDirectories: true)
+                pendingDirectory = outputDirectory
 
                 let formatter = DateFormatter()
                 formatter.dateFormat = "yyyy-MM-dd_HH-mm-ss"
@@ -123,10 +127,18 @@ private struct ExportLogRow: View
                     showPreview = true
                     isExporting = false
                 }
+
+                pendingDirectory = nil // Ownership handed off to the sheet, which will handle cleanup
             }
             catch
             {
-                print("Failed to export logs:", error)
+                Logger.main.error("Failed to export logs. \(error.localizedDescription, privacy: .public)")
+                
+                if let directory = pendingDirectory
+                {
+                    try? FileManager.default.removeItem(at: directory)
+                }
+                
                 await MainActor.run { isExporting = false }
             }
         }
