@@ -116,7 +116,6 @@ extension Settings
     
     static var translucentControllerSkinOpacity: CGFloat {
         set {
-            guard newValue != self.translucentControllerSkinOpacity else { return }
             UserDefaults.standard.translucentControllerSkinOpacity = newValue
             NotificationCenter.default.post(name: Settings.didChangeNotification, object: nil, userInfo: [NotificationUserInfoKey.name: Name.translucentControllerSkinOpacity])
         }
