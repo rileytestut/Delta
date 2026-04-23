@@ -12,35 +12,37 @@ import DeltaCore
 struct ControllerSettingsView: View
 {
     @SwiftUI.State
-    private var gameControllerManager: ExternalGameControllerManager = .shared
+    private var playerControllerNames: [String] = Self.currentPlayerControllerNames()
 
     var body: some View {
         Form {
             ForEach(0..<4) { playerIndex in
                 NavigationLink(destination: ControllersSettingsViewController.ViewRepresentable(playerIndex: playerIndex).ignoresSafeArea()) {
-                    LabeledContent("Player \(playerIndex + 1)") {
-                        Text(controllerName(for: playerIndex))
-                            .foregroundStyle(.secondary)
-                    }
+                    LabeledContent("Player \(playerIndex + 1)", value: playerControllerNames[playerIndex])
                 }
             }
         }
         .tint(.accentColor)
         .navigationTitle("Controllers")
         .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+            playerControllerNames = Self.currentPlayerControllerNames()
+        }
     }
 
-    private func controllerName(for playerIndex: Int) -> String
+    private static func currentPlayerControllerNames() -> [String]
     {
-        if playerIndex == (Settings.localControllerPlayerIndex ?? -1)
-        {
-            return LocalDeviceController().name
+        (0..<4).map { playerIndex in
+            if playerIndex == (Settings.localControllerPlayerIndex ?? -1)
+            {
+                return LocalDeviceController().name
+            }
+            else if let controller = ExternalGameControllerManager.shared.connectedControllers.first(where: { $0.playerIndex == playerIndex })
+            {
+                return controller.name
+            }
+
+            return ""
         }
-        else if let controller = gameControllerManager.connectedControllers.first(where: { $0.playerIndex == playerIndex })
-        {
-            return controller.name
-        }
-        
-        return ""
     }
 }
