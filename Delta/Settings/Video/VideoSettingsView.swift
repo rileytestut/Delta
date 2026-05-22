@@ -23,7 +23,7 @@ struct VideoSettingsView: View
     var body: some View {
         Form {
             Section {
-                Toggle("Support External Displays", isOn: $supportsExternalDisplays)
+                Toggle("Display Full Screen", isOn: $supportsExternalDisplays)
                     .onChange(of: supportsExternalDisplays) { _, newValue in
                         Settings.supportsExternalDisplays = newValue
                     }

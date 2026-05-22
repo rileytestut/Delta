@@ -29,15 +29,8 @@ struct CoresListView: View
 
     private func coreName(for system: System) -> String
     {
-        if system == .ds
-        {
-            let core = Settings.preferredCore(for: .ds)
-            return core?.metadata?.name.value ?? core?.name ?? NSLocalizedString("Unknown", comment: "")
-        }
-        else
-        {
-            return system.deltaCore.name
-        }
+        let core = Settings.preferredCore(for: system.gameType) ?? system.deltaCore
+        return core.metadata?.name.value ?? core.name
     }
     
     @ViewBuilder

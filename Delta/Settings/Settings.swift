@@ -39,7 +39,7 @@ extension Settings.Name
     static let opensGamesInNewWindow: Settings.Name = "opensGamesInNewWindow"
     static let preferredGBColorPalette: Settings.Name = "preferredGBColorPalette"
     static let isPreviewsEnabled: Settings.Name = "isPreviewsEnabled"
-    static let dsAirPlayTopScreenOnly: Settings.Name = "dsAirPlay_topScreenOnly"
+    static let dsAirPlayTopScreenOnly: Settings.Name = Settings.features.dsAirPlay.$topScreenOnly.settingsKey
 }
 
 extension Settings
@@ -116,6 +116,7 @@ extension Settings
     
     static var translucentControllerSkinOpacity: CGFloat {
         set {
+            guard newValue != self.translucentControllerSkinOpacity else { return }
             UserDefaults.standard.translucentControllerSkinOpacity = newValue
             NotificationCenter.default.post(name: Settings.didChangeNotification, object: nil, userInfo: [NotificationUserInfoKey.name: Name.translucentControllerSkinOpacity])
         }

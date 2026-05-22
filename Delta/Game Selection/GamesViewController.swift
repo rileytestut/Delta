@@ -321,8 +321,8 @@ extension GamesViewController
     @IBAction private func showSettings(_ sender: Any)
     {
         let hostingController = UIHostingController(rootView: SettingsView())
-        present(hostingController, animated: true)
         hostingController.presentationController?.delegate = self
+        self.present(hostingController, animated: true)
     }
 }
 

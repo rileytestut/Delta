@@ -17,6 +17,18 @@ struct SkinSettingsView: View
     var body: some View {
         Form {
             Section {
+                ForEach(System.registeredSystems, id: \.self) { system in
+                    NavigationLink(destination: PreferredControllerSkinsViewController.ViewRepresentable(system: system).ignoresSafeArea()) {
+                        Text(system.localizedName)
+                    }
+                }
+            } header: {
+                Text("Systems")
+            } footer: {
+                Text("Customize the appearance of each system. [Learn more…](https://faq.deltaemulator.com/using-delta/controller-skins)")
+            }
+            
+            Section {
                 VStack(alignment: .leading) {
                     LabeledContent("Opacity") {
                         Text("\(Int(opacity * 100))%")
@@ -33,21 +45,9 @@ struct SkinSettingsView: View
             } footer: {
                 Text("Adjusts the transparency of on-screen controller skins, if supported by the skin.")
             }
-
-            Section {
-                ForEach(System.registeredSystems, id: \.self) { system in
-                    NavigationLink(destination: PreferredControllerSkinsViewController.ViewRepresentable(system: system).ignoresSafeArea()) {
-                        Text(system.localizedName)
-                    }
-                }
-            } header: {
-                Text("Systems")
-            } footer: {
-                Text("Customize the appearance of each system. [Learn more...](https://faq.deltaemulator.com/using-delta/controller-skins)")
-            }
         }
         .tint(.accentColor)
-        .navigationTitle("Skins")
+        .navigationTitle("Controller Skins")
         .navigationBarTitleDisplayMode(.inline)
     }
 }

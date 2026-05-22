@@ -11,7 +11,7 @@ import SwiftUI
 import DeltaCore
 import Harmony
 
-struct SettingsBadge: View
+private struct SettingsBadge: View
 {
     let text: String
     var color: Color = .accentColor
@@ -46,15 +46,17 @@ struct SettingsView: View
             .safeAreaPadding(.top, 8)
             .navigationTitle("Settings")
             .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    if #available(iOS 26, *)
-                    {
+                if #available(iOS 26, *)
+                {
+                    ToolbarItem(placement: .cancellationAction) {
                         Button(role: .close) {
                             dismiss()
                         }
                     }
-                    else
-                    {
+                }
+                else
+                {
+                    ToolbarItem(placement: .confirmationAction) {
                         Button("Done") {
                             dismiss()
                         }
@@ -161,8 +163,14 @@ private struct ServicesSection: View
                         .ignoresSafeArea()
                 } label: {
                     SettingsRow(label: Text("Sync Status"), systemImage: "checkmark.icloud", color: .indigo) {
-                        SettingsBadge(text: "\(syncConflictsCount) conflicts",
-                                      color: syncConflictsCount > 0 ? .red : .green)
+                        if syncConflictsCount > 0
+                        {
+                            SettingsBadge(text: "\(syncConflictsCount) conflicts", color: .red)
+                        }
+                        else
+                        {
+                            SettingsBadge(text: "Up-to-date", color: .green)
+                        }
                     }
                 }
             }
@@ -170,14 +178,15 @@ private struct ServicesSection: View
             Text("Sync your games, save data, save states, and cheats between devices.")
         }
         .onReceive(NotificationCenter.default.publisher(for: Settings.didChangeNotification)) { notification in
-            guard let name = notification.userInfo?[Settings.NotificationUserInfoKey.name] as? Settings.Name else { return }
-
-            if name == .syncingService
-            {
-                syncingServiceName = Settings.syncingService?.localizedName
-                isAccountConnected = SyncManager.shared.coordinator?.account != nil
-                refreshSyncConflicts()
-            }
+            guard let name = notification.userInfo?[Settings.NotificationUserInfoKey.name] as? Settings.Name,
+                  name == .syncingService else { return }
+            
+            syncingServiceName = Settings.syncingService?.localizedName
+            isAccountConnected = SyncManager.shared.coordinator?.account != nil
+            refreshSyncConflicts()
+        }
+        .onReceive(NotificationCenter.default.publisher(for: SyncCoordinator.didFinishSyncingNotification).receive(on: DispatchQueue.main)) { _ in
+            refreshSyncConflicts()
         }
         .onAppear {
             refreshSyncConflicts()
@@ -190,7 +199,7 @@ private struct ServicesSection: View
             let records = try SyncManager.shared.recordController?.fetchConflictedRecords() ?? []
             syncConflictsCount = records.count
         } catch {
-            print(error)
+            Logger.main.error("Failed to refresh sync conflicts. \(error.localizedDescription, privacy: .public)")
         }
     }
 }
@@ -200,7 +209,7 @@ private struct ServicesSection: View
 private struct PatreonSection: View
 {
     var body: some View {
-        if PurchaseManager.shared.supportsExperimentalFeatures
+        if PurchaseManager.shared.supportsExternalPurchases
         {
             Section {
                 NavigationLink {
@@ -331,7 +340,7 @@ private struct SupportSection: View
 
 // MARK: - Footer
 
-struct RepresentedFooterView: UIViewRepresentable
+private struct RepresentedFooterView: UIViewRepresentable
 {
     func makeUIView(context: Context) -> FollowUsFooterView
     {
@@ -347,7 +356,7 @@ struct RepresentedFooterView: UIViewRepresentable
 
     func sizeThatFits(_ proposal: ProposedViewSize, uiView: FollowUsFooterView, context: Context) -> CGSize?
     {
-        let width = proposal.width ?? UIScreen.main.bounds.width
+        guard let width = proposal.width ?? uiView.window?.bounds.width else { return nil }
 
         return uiView.systemLayoutSizeFitting(
             CGSize(width: width, height: UIView.layoutFittingCompressedSize.height),

@@ -12,13 +12,13 @@ import DeltaCore
 struct ControllerSettingsView: View
 {
     @SwiftUI.State
-    private var playerControllerNames: [String] = Self.currentPlayerControllerNames()
+    private var playerControllerNames: [String?] = Self.currentPlayerControllerNames()
 
     var body: some View {
         Form {
             ForEach(0..<4) { playerIndex in
                 NavigationLink(destination: ControllersSettingsViewController.ViewRepresentable(playerIndex: playerIndex).ignoresSafeArea()) {
-                    LabeledContent("Player \(playerIndex + 1)", value: playerControllerNames[playerIndex])
+                    LabeledContent("Player \(playerIndex + 1)", value: playerControllerNames[playerIndex] ?? "")
                 }
             }
         }
@@ -30,10 +30,10 @@ struct ControllerSettingsView: View
         }
     }
 
-    private static func currentPlayerControllerNames() -> [String]
+    private static func currentPlayerControllerNames() -> [String?]
     {
         (0..<4).map { playerIndex in
-            if playerIndex == (Settings.localControllerPlayerIndex ?? -1)
+            if Settings.localControllerPlayerIndex == playerIndex
             {
                 return LocalDeviceController().name
             }
@@ -42,7 +42,7 @@ struct ControllerSettingsView: View
                 return controller.name
             }
 
-            return ""
+            return nil
         }
     }
 }

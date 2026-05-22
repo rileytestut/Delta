@@ -43,7 +43,9 @@ struct AdvancedSettingsView: View
                 NavigationLink(destination: AppIconShortcutsViewController.ViewRepresentable().ignoresSafeArea()) {
                     Text("Home Screen Shortcuts")
                 }
-
+            }
+            
+            Section {
                 ExportLogRow()
             }
         }
@@ -99,8 +101,7 @@ private struct ExportLogRow: View
 
         Task.detached(priority: .userInitiated)
         {
-            // Track the created directory so we can clean it up if anything fails before the sheet takes ownership
-            var pendingDirectory: URL?
+            let outputDirectory = FileManager.default.uniqueTemporaryURL()
 
             do {
                 let store = try OSLogStore(scope: .currentProcessIdentifier)
@@ -113,9 +114,7 @@ private struct ExportLogRow: View
 
                 let outputText = entries.joined(separator: "\n")
 
-                let outputDirectory = FileManager.default.uniqueTemporaryURL()
                 try FileManager.default.createDirectory(at: outputDirectory, withIntermediateDirectories: true)
-                pendingDirectory = outputDirectory
 
                 let formatter = DateFormatter()
                 formatter.dateFormat = "yyyy-MM-dd_HH-mm-ss"
@@ -127,18 +126,14 @@ private struct ExportLogRow: View
                     showPreview = true
                     isExporting = false
                 }
-
-                pendingDirectory = nil // Ownership handed off to the sheet, which will handle cleanup
             }
             catch
             {
                 Logger.main.error("Failed to export logs. \(error.localizedDescription, privacy: .public)")
-                
-                if let directory = pendingDirectory
-                {
-                    try? FileManager.default.removeItem(at: directory)
-                }
-                
+
+                // If the directory was never created, try? swallows the "no such file" error.
+                try? FileManager.default.removeItem(at: outputDirectory)
+
                 await MainActor.run { isExporting = false }
             }
         }
@@ -149,19 +144,29 @@ private struct QuickLookPreview: UIViewControllerRepresentable
 {
     let url: URL
 
-    func makeUIViewController(context: Context) -> QLPreviewController {
+    func makeUIViewController(context: Context) -> QLPreviewController
+    {
         let controller = QLPreviewController()
         controller.dataSource = context.coordinator
         return controller
     }
 
     func updateUIViewController(_: QLPreviewController, context: Context) {}
-    func makeCoordinator() -> Coordinator { Coordinator(url: url) }
+    
+    func makeCoordinator() -> Coordinator
+    {
+        Coordinator(url: url)
+    }
 
     final class Coordinator: NSObject, QLPreviewControllerDataSource
     {
         let url: URL
-        init(url: URL) { self.url = url }
+        
+        init(url: URL)
+        {
+            self.url = url
+        }
+        
         func numberOfPreviewItems(in controller: QLPreviewController) -> Int { 1 }
         func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> any QLPreviewItem { url as NSURL }
     }
