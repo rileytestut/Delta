@@ -11,9 +11,14 @@ import DeltaCore
 
 struct SkinSettingsView: View
 {
-    @AppStorage(Settings.Name.translucentControllerSkinOpacity.rawValue)
-    private var opacity: Double = 0.7
-    
+    // @State instead of @AppStorage so the slider drags continuously.
+    @SwiftUI.State
+    private var opacity: Double = Double(Settings.translucentControllerSkinOpacity)
+
+    private var snappedOpacity: Double {
+        (opacity / 0.05).rounded() * 0.05 // 5% step
+    }
+
     var body: some View {
         Form {
             Section {
@@ -31,16 +36,16 @@ struct SkinSettingsView: View
             Section {
                 VStack(alignment: .leading) {
                     LabeledContent("Opacity") {
-                        Text("\(Int(opacity * 100))%")
+                        Text("\(Int(snappedOpacity * 100))%")
                             .foregroundStyle(.secondary)
                             .monospacedDigit()
                     }
-                    
-                    Slider(value: $opacity, in: 0...1, step: 0.05)
-                        .onChange(of: opacity) { _, newValue in
+
+                    Slider(value: $opacity, in: 0...1)
+                        .onChange(of: snappedOpacity) { _, newValue in
                             Settings.translucentControllerSkinOpacity = newValue
                         }
-                        .sensoryFeedback(.selection, trigger: opacity)
+                        .sensoryFeedback(.selection, trigger: snappedOpacity)
                 }
             } footer: {
                 Text("Adjusts the transparency of on-screen controller skins, if supported by the skin.")
@@ -49,5 +54,8 @@ struct SkinSettingsView: View
         .tint(.accentColor)
         .navigationTitle("Controller Skins")
         .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+            opacity = Double(Settings.translucentControllerSkinOpacity)
+        }
     }
 }
