@@ -15,6 +15,9 @@ struct SettingsRow<Content: View>: View
     private let color: Color
     private let content: Content
 
+    @ScaledMetric
+    private var badgeSize: CGFloat = 29
+
     init(label: Text, systemImage: String, color: Color, @ViewBuilder content: () -> Content)
     {
         self.label = label
@@ -33,12 +36,11 @@ struct SettingsRow<Content: View>: View
                 if #available(iOS 26, *)
                 {
                     image
-                        .glassEffect(.regular.tint(color), in: RoundedRectangle(cornerRadius: 7))
+                        .glassEffect(.regular.tint(color), in: RoundedRectangle(cornerRadius: badgeSize / 4))
                 }
                 else
                 {
                     image
-                        .background(color, in: RoundedRectangle(cornerRadius: 7))
                 }
             }
         }
@@ -48,7 +50,8 @@ struct SettingsRow<Content: View>: View
         Image(systemName: systemImage)
             .imageScale(.medium)
             .foregroundStyle(.white)
-            .frame(width: 29, height: 29)
+            .frame(width: badgeSize, height: badgeSize)
+            .background(color, in: RoundedRectangle(cornerRadius: badgeSize / 4))
     }
 }
 

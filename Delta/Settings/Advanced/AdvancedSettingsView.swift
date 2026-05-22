@@ -8,7 +8,6 @@
 
 import SwiftUI
 import OSLog
-import QuickLook
 
 struct AdvancedSettingsView: View
 {
@@ -63,9 +62,6 @@ private struct ExportLogRow: View
     @SwiftUI.State
     private var exportedURL: URL?
 
-    @SwiftUI.State
-    private var showPreview = false
-
     var body: some View {
         Button {
             exportLog()
@@ -80,19 +76,14 @@ private struct ExportLogRow: View
             }
         }
         .disabled(isExporting)
-        .sheet(isPresented: $showPreview, onDismiss: cleanupExportedLog) {
-            if let url = exportedURL
+        .quickLookPreview($exportedURL)
+        .onChange(of: exportedURL) { oldValue, newValue in
+            // Clean up the temp directory when preview is dismissed.
+            if newValue == nil, let oldValue
             {
-                QuickLookPreview(url: url)
+                try? FileManager.default.removeItem(at: oldValue.deletingLastPathComponent())
             }
         }
-    }
-
-    private func cleanupExportedLog()
-    {
-        guard let url = exportedURL else { return }
-        try? FileManager.default.removeItem(at: url.deletingLastPathComponent())
-        exportedURL = nil
     }
 
     private func exportLog()
@@ -123,7 +114,6 @@ private struct ExportLogRow: View
 
                 await MainActor.run {
                     exportedURL = outputURL
-                    showPreview = true
                     isExporting = false
                 }
             }
@@ -137,37 +127,5 @@ private struct ExportLogRow: View
                 await MainActor.run { isExporting = false }
             }
         }
-    }
-}
-
-private struct QuickLookPreview: UIViewControllerRepresentable
-{
-    let url: URL
-
-    func makeUIViewController(context: Context) -> QLPreviewController
-    {
-        let controller = QLPreviewController()
-        controller.dataSource = context.coordinator
-        return controller
-    }
-
-    func updateUIViewController(_: QLPreviewController, context: Context) {}
-    
-    func makeCoordinator() -> Coordinator
-    {
-        Coordinator(url: url)
-    }
-
-    final class Coordinator: NSObject, QLPreviewControllerDataSource
-    {
-        let url: URL
-        
-        init(url: URL)
-        {
-            self.url = url
-        }
-        
-        func numberOfPreviewItems(in controller: QLPreviewController) -> Int { 1 }
-        func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> any QLPreviewItem { url as NSURL }
     }
 }

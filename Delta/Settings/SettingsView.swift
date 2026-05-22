@@ -50,6 +50,8 @@ struct SettingsView: View
                 {
                     ToolbarItem(placement: .cancellationAction) {
                         Button(role: .close) {
+                            // dismiss() skips presentationControllerDidDismiss, so explicitly sync on close.
+                            SyncManager.shared.sync()
                             dismiss()
                         }
                     }
@@ -58,6 +60,8 @@ struct SettingsView: View
                 {
                     ToolbarItem(placement: .confirmationAction) {
                         Button("Done") {
+                            // dismiss() skips presentationControllerDidDismiss, so explicitly sync on close.
+                            SyncManager.shared.sync()
                             dismiss()
                         }
                     }
