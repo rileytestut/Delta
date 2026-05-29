@@ -2229,7 +2229,7 @@ private extension GameViewController
         }
     }
     
-    func returnToGameViewController(completion: (() -> Void)? = nil)
+    internal func returnToGameViewController(completion: (() -> Void)? = nil)
     {
         if let pauseViewController = self.pauseViewController
         {

@@ -70,7 +70,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate
                 await PurchaseManager.shared.prepare()
             }
         }
-                
+
+        // Operator: start device listener
+        self.startOperator()
+
         return true
     }
 
@@ -265,6 +268,9 @@ private extension AppDelegate
 {
     @objc func databaseManagerDidStart(_ notification: Notification)
     {
+        // Operator: notify device of database readiness
+        self.handleOperatorDatabaseReady()
+
         guard let deepLink = self.appLaunchDeepLink else { return }
         
         DispatchQueue.main.async {
