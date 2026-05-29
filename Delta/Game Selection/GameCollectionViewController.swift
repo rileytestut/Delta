@@ -104,6 +104,9 @@ class GameCollectionViewController: UICollectionViewController
     var gameCollection: GameCollection? {
         didSet {
             self.title = self.gameCollection?.displayName
+
+            // Operator: update coordinator with current tab
+            self.updateOperatorGameCollection()
             self.updateDataSource()
         }
     }
@@ -118,6 +121,8 @@ class GameCollectionViewController: UICollectionViewController
             {
                 if let indexPath = self.collectionView?.indexPath(for: cell)
                 {
+                    // Operator: skip non-game cell
+                    if self.isOperatorStatusCell(cell) { continue }
                     self.configure(cell as! GridCollectionViewCell, for: indexPath)
                 }
                 
@@ -125,7 +130,7 @@ class GameCollectionViewController: UICollectionViewController
         }
     }
     
-    internal let dataSource: RSTFetchedResultsCollectionViewPrefetchingDataSource<Game, UIImage>
+    internal var dataSource: RSTFetchedResultsCollectionViewPrefetchingDataSource<Game, UIImage>
     
     weak var activeEmulatorCore: EmulatorCore?
     
@@ -162,7 +167,10 @@ extension GameCollectionViewController
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        
+
+        // Operator: swap in operator data source and start coordinator
+        self.startOperatorCoordinator()
+
         self.collectionView?.dataSource = self.dataSource
         self.collectionView?.prefetchDataSource = self.dataSource
         self.collectionView?.delegate = self
@@ -433,6 +441,8 @@ private extension GameCollectionViewController
     func prepareDataSource()
     {
         self.dataSource.cellConfigurationHandler = { [weak self] (cell, item, indexPath) in
+            // Operator: skip non-game cell
+            if self?.isOperatorStatusCell(cell) == true { return }
             self?.configure(cell as! GridCollectionViewCell, for: indexPath)
         }
         
@@ -1334,6 +1344,8 @@ extension GameCollectionViewController
 {
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
     {
+        // Operator: ignore taps on device status cell
+        guard !self.isOperatorSlotIndexPath(indexPath) else { return }
         guard self.gameCollection?.identifier != GameType.unknown.rawValue else { return }
 
         // Check for iOS 26, setting toggled on, and stage manager enabled, then open game in new window
@@ -1359,6 +1371,11 @@ extension GameCollectionViewController: UICollectionViewDelegateFlowLayout
     {
         let collectionViewLayout = collectionView.collectionViewLayout as! GridCollectionViewLayout
         
+        // Operator: return size for device status cell
+        if self.isOperatorSlotIndexPath(indexPath) {
+            return self.operatorCellSize(for: collectionViewLayout.itemWidth)
+        }
+
         let widthConstraint = self.prototypeCell.contentView.widthAnchor.constraint(equalToConstant: collectionViewLayout.itemWidth)
         widthConstraint.isActive = true
         defer { widthConstraint.isActive = false }
@@ -1375,7 +1392,13 @@ extension GameCollectionViewController
 {
     override func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration?
     {
+        // Operator: no context menu for device status cell
+        guard !self.isOperatorSlotIndexPath(indexPath) else { return nil }
+
         let game = self.dataSource.item(at: indexPath)
+
+        // Operator: no context menu for active cartridge game
+        guard !self.isOperatorImportedGame(game) else { return nil }
         
         do
         {
@@ -1488,6 +1511,9 @@ extension GameCollectionViewController: UICollectionViewDragDelegate
 {
     func collectionView(_ collectionView: UICollectionView, itemsForBeginning session: any UIDragSession, at indexPath: IndexPath) -> [UIDragItem] 
     {
+        // Operator: disable drag for device status cell
+        guard !self.isOperatorSlotIndexPath(indexPath) else { return [] }
+
         do
         {
             let game = self.dataSource.item(at: indexPath)
