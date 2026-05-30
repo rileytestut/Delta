@@ -38,6 +38,8 @@ extension Settings.Name
     static let customWFCServer: Settings.Name = "customWFCServer"
     static let opensGamesInNewWindow: Settings.Name = "opensGamesInNewWindow"
     static let preferredGBColorPalette: Settings.Name = "preferredGBColorPalette"
+    static let isPreviewsEnabled: Settings.Name = "isPreviewsEnabled"
+    static let dsAirPlayTopScreenOnly: Settings.Name = Settings.features.dsAirPlay.$topScreenOnly.settingsKey
 }
 
 extension Settings

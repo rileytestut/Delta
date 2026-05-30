@@ -41,7 +41,7 @@
                     <navigationItem key="navigationItem" title="Games" id="pFk-as-3k4">
                         <barButtonItem key="leftBarButtonItem" image="gearshape" catalog="system" id="2gg-lC-FhX">
                             <connections>
-                                <segue destination="xMK-Cs-fAS" kind="presentation" identifier="showSettings" id="uN5-PN-7FK"/>
+                                <action selector="showSettings:" destination="jeE-WD-wXO" id="CA1-sg-SHW"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="FeA-O5-xd2">
@@ -320,14 +320,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TZS-QE-4Yg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1036" y="1719"/>
-        </scene>
-        <!--Settings-->
-        <scene sceneID="L3X-MM-hJL">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Settings" id="xMK-Cs-fAS" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="2N5-3k-beA" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1036" y="605"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="zJI-sC-1sm">

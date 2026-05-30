@@ -81,7 +81,7 @@ struct GameSettingsView: View
                         // BIOS is required for GBA slot emulation.
                         
                         NavigationLink {
-                            MelonDSCoreSettingsView()
+                            MelonDSCoreSettingsView(scrollToBIOS: true)
                                 .ignoresSafeArea()
                         } label: {
                             Text("Import BIOS Files")

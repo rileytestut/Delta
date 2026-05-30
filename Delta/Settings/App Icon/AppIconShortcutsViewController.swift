@@ -8,10 +8,30 @@
 
 import UIKit
 import AVFoundation
+import SwiftUI
 
 import DeltaCore
 
 import Roxas
+
+extension AppIconShortcutsViewController
+{
+    struct ViewRepresentable: UIViewControllerRepresentable
+    {
+        func makeUIViewController(context: Context) -> AppIconShortcutsViewController
+        {
+            let storyboard = UIStoryboard(name: "Settings", bundle: .main)
+            let viewController = storyboard.instantiateViewController(withIdentifier: "appIconShortcuts") as! AppIconShortcutsViewController
+            return viewController
+        }
+
+        func updateUIViewController(_ uiViewController: AppIconShortcutsViewController, context: Context)
+        {
+            let parentViewController = uiViewController.parent ?? uiViewController
+            parentViewController.navigationItem.title = uiViewController.navigationItem.title // Fixes title not appearing in SwiftUI NavigationStack
+        }
+    }
+}
 
 @objc(SwitchTableViewCell)
 class SwitchTableViewCell: UITableViewCell

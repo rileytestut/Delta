@@ -7,6 +7,26 @@
 //
 
 import UIKit
+import SwiftUI
+
+extension LicensesViewController
+{
+    struct ViewRepresentable: UIViewControllerRepresentable
+    {
+        func makeUIViewController(context: Context) -> LicensesViewController
+        {
+            let storyboard = UIStoryboard(name: "Settings", bundle: .main)
+            let viewController = storyboard.instantiateViewController(withIdentifier: "licenses") as! LicensesViewController
+            return viewController
+        }
+
+        func updateUIViewController(_ uiViewController: LicensesViewController, context: Context)
+        {
+            let parentViewController = uiViewController.parent ?? uiViewController
+            parentViewController.navigationItem.title = uiViewController.navigationItem.title // Fixes title not appearing in SwiftUI NavigationStack
+        }
+    }
+}
 
 class LicensesViewController: UIViewController
 {

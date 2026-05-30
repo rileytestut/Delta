@@ -7,9 +7,32 @@
 //
 
 import UIKit
+import SwiftUI
 
 // Access UIWindowScene.isStageManagerEnabled
 @_spi(Internal) import DeltaCore
+
+extension PreferredControllerSkinsViewController
+{
+    struct ViewRepresentable: UIViewControllerRepresentable
+    {
+        let system: System
+
+        func makeUIViewController(context: Context) -> PreferredControllerSkinsViewController
+        {
+            let storyboard = UIStoryboard(name: "Settings", bundle: .main)
+            let viewController = storyboard.instantiateViewController(withIdentifier: "preferredControllerSkins") as! PreferredControllerSkinsViewController
+            viewController.system = system
+            return viewController
+        }
+
+        func updateUIViewController(_ uiViewController: PreferredControllerSkinsViewController, context: Context)
+        {
+            let parentViewController = uiViewController.parent ?? uiViewController
+            parentViewController.navigationItem.title = uiViewController.navigationItem.title // Fixes title not appearing in SwiftUI NavigationStack
+        }
+    }
+}
 
 private extension UIImage
 {

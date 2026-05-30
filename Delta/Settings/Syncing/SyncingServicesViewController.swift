@@ -7,10 +7,30 @@
 //
 
 import UIKit
+import SwiftUI
 
 import Harmony
 
 import Roxas
+
+extension SyncingServicesViewController
+{
+    struct ViewRepresentable: UIViewControllerRepresentable
+    {
+        func makeUIViewController(context: Context) -> SyncingServicesViewController
+        {
+            let storyboard = UIStoryboard(name: "Settings", bundle: .main)
+            let viewController = storyboard.instantiateViewController(withIdentifier: "syncingServices") as! SyncingServicesViewController
+            return viewController
+        }
+
+        func updateUIViewController(_ uiViewController: SyncingServicesViewController, context: Context)
+        {
+            let parentViewController = uiViewController.parent ?? uiViewController
+            parentViewController.navigationItem.title = uiViewController.navigationItem.title // Fixes title not appearing in SwiftUI NavigationStack
+        }
+    }
+}
 
 extension SyncingServicesViewController
 {

@@ -7,8 +7,28 @@
 //
 
 import UIKit
+import SwiftUI
 
 import Roxas
+
+extension SyncStatusViewController
+{
+    struct ViewRepresentable: UIViewControllerRepresentable
+    {
+        func makeUIViewController(context: Context) -> SyncStatusViewController
+        {
+            let storyboard = UIStoryboard(name: "Settings", bundle: .main)
+            let viewController = storyboard.instantiateViewController(withIdentifier: "syncStatus") as! SyncStatusViewController
+            return viewController
+        }
+
+        func updateUIViewController(_ uiViewController: SyncStatusViewController, context: Context)
+        {
+            let parentViewController = uiViewController.parent ?? uiViewController
+            parentViewController.navigationItem.title = uiViewController.navigationItem.title // Fixes title not appearing in SwiftUI NavigationStack
+        }
+    }
+}
 
 class SyncStatusViewController: UITableViewController
 {

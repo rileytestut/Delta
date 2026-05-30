@@ -10,6 +10,26 @@ import UIKit
 import SwiftUI
 import Roxas
 
+extension AltAppIconsViewController
+{
+    struct ViewRepresentable: UIViewControllerRepresentable
+    {
+        func makeUIViewController(context: Context) -> AltAppIconsViewController
+        {
+            let storyboard = UIStoryboard(name: "Settings", bundle: .main)
+            let viewController = storyboard.instantiateViewController(withIdentifier: "altAppIcons") as! AltAppIconsViewController
+            return viewController
+        }
+
+        func updateUIViewController(_ uiViewController: AltAppIconsViewController, context: Context)
+        {
+            let parentViewController = uiViewController.parent ?? uiViewController
+            parentViewController.navigationItem.title = uiViewController.navigationItem.title // Fixes title not appearing in SwiftUI NavigationStack
+            parentViewController.navigationItem.titleView = uiViewController.navigationItem.titleView
+        }
+    }
+}
+
 extension UIApplication
 {
     static let didChangeAppIconNotification = Notification.Name("io.altstore.AppManager.didChangeAppIcon")
