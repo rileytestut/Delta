@@ -72,6 +72,8 @@ struct Settings
                         #keyPath(UserDefaults.supportsExternalDisplays): true,
                         #keyPath(UserDefaults.isQuickGesturesEnabled): true,
                         #keyPath(UserDefaults.opensGamesInNewWindow): false,
+                        #keyPath(UserDefaults.cheatSorting): "name",
+                        #keyPath(UserDefaults.cheatSortDescending): false,
                         Settings.preferredCoreSettingsKey(for: .ds): MelonDS.core.identifier] as [String : Any]
         
         #if BETA
@@ -315,6 +317,22 @@ extension Settings
         set {
             UserDefaults.standard.preferredGBColorPalette = newValue?.rawValue
             NotificationCenter.default.post(name: Settings.didChangeNotification, object: nil, userInfo: [NotificationUserInfoKey.name: Name.preferredGBColorPalette])
+        }
+    }
+    
+    static var cheatSorting: String {
+        set { UserDefaults.standard.cheatSorting = newValue }
+        get {
+            let cheatSorting = UserDefaults.standard.cheatSorting
+            return cheatSorting
+        }
+    }
+    
+    static var cheatSortDescending: Bool {
+        set { UserDefaults.standard.cheatSortDescending = newValue }
+        get {
+            let cheatSortDescending = UserDefaults.standard.cheatSortDescending
+            return cheatSortDescending
         }
     }
     
@@ -615,4 +633,7 @@ private extension UserDefaults
     @NSManaged var opensGamesInNewWindow: Bool
     
     @NSManaged var preferredGBColorPalette: String?
+    
+    @NSManaged var cheatSorting: String
+    @NSManaged var cheatSortDescending: Bool
 }

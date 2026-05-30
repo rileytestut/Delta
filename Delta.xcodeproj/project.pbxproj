@@ -338,6 +338,8 @@
 		D5F82FB82981D3AC00B229AF /* LegacySearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F82FB72981D3AC00B229AF /* LegacySearchBar.swift */; };
 		D5FB042C2C5AF40A008329DD /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D5FB042B2C5AF40A008329DD /* libresolv.tbd */; };
 		E647EE152F633116000DA257 /* AchievementToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = E647EE142F633115000DA257 /* AchievementToast.swift */; };
+		E65B0F932F6C65E4009B7F0A /* CheatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E65B0F922F6C65E4009B7F0A /* CheatsView.swift */; };
+		E6955FAB2F743735001B8A75 /* CheatsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6955FAA2F743735001B8A75 /* CheatsButton.swift */; };
 		E6BD34AB2F563F1A001C9D78 /* AchievementGreeting.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6BD34AA2F563F1A001C9D78 /* AchievementGreeting.swift */; };
 		E6BD34AD2F587BF0001C9D78 /* AchievementGameBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6BD34AC2F587BF0001C9D78 /* AchievementGameBanner.swift */; };
 		E6EB10AF2F58B1C50001AAD2 /* AchievementNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6EB10AE2F58B1C50001AAD2 /* AchievementNotification.swift */; };
@@ -896,11 +898,13 @@
 		D5F82FB72981D3AC00B229AF /* LegacySearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacySearchBar.swift; sourceTree = "<group>"; };
 		D5FB042B2C5AF40A008329DD /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
 		DC866E433B3BA9AE18ABA1EC /* libPods-Delta.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Delta.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		DCBF2F877CA6072880A54F35 /* DeltaOperatorUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeltaOperatorUtils.swift; sourceTree = "<group>"; };
-        E647EE142F633115000DA257 /* AchievementToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementToast.swift; sourceTree = "<group>"; };
-        E6BD34AA2F563F1A001C9D78 /* AchievementGreeting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementGreeting.swift; sourceTree = "<group>"; };
-        E6BD34AC2F587BF0001C9D78 /* AchievementGameBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementGameBanner.swift; sourceTree = "<group>"; };
-        E6EB10AE2F58B1C50001AAD2 /* AchievementNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementNotification.swift; sourceTree = "<group>"; };
+        DCBF2F877CA6072880A54F35 /* DeltaOperatorUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeltaOperatorUtils.swift; sourceTree = "<group>"; };
+		E647EE142F633115000DA257 /* AchievementToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementToast.swift; sourceTree = "<group>"; };
+		E65B0F922F6C65E4009B7F0A /* CheatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheatsView.swift; sourceTree = "<group>"; };
+		E6955FAA2F743735001B8A75 /* CheatsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheatsButton.swift; sourceTree = "<group>"; };
+		E6BD34AA2F563F1A001C9D78 /* AchievementGreeting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementGreeting.swift; sourceTree = "<group>"; };
+		E6BD34AC2F587BF0001C9D78 /* AchievementGameBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementGameBanner.swift; sourceTree = "<group>"; };
+		E6EB10AE2F58B1C50001AAD2 /* AchievementNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementNotification.swift; sourceTree = "<group>"; };
 		FCE7674E5643CDB43BC8ED32 /* DeltaOperatorWritebackToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeltaOperatorWritebackToast.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1375,10 +1379,12 @@
 			isa = PBXGroup;
 			children = (
 				BFC9B7381CEFCD34008629BB /* CheatsViewController.swift */,
+				E65B0F922F6C65E4009B7F0A /* CheatsView.swift */,
 				BFFC464B1D5998D600AF2CC6 /* CheatTableViewCell.swift */,
 				BF34FA061CF0F510006624C7 /* EditCheatViewController.swift */,
 				BF34FA101CF1899D006624C7 /* CheatTextView.swift */,
 				BF31878A1D489AAA00BD020D /* CheatValidator.swift */,
+				E6955FAA2F743735001B8A75 /* CheatsButton.swift */,
 			);
 			path = Cheats;
 			sourceTree = "<group>";
@@ -2460,6 +2466,7 @@
 				BF04E6FF1DB8625C000F35D3 /* ControllerSkinsViewController.swift in Sources */,
 				D5AE76B62C2B52820086471B /* Patron.swift in Sources */,
 				D53415A5298C782A00FD67B1 /* ContributorsView.swift in Sources */,
+				E6955FAB2F743735001B8A75 /* CheatsButton.swift in Sources */,
 				BF5942891E09BC8B0051894B /* _GameCollection.swift in Sources */,
 				BF34FA111CF1899D006624C7 /* CheatTextView.swift in Sources */,
 				D524F4A5273DEBB400D500B2 /* ServerManager+Delta.swift in Sources */,
@@ -2487,6 +2494,7 @@
 				D5AE76B92C2B52820086471B /* PatreonAPI.swift in Sources */,
 				BF5942701E09BC5D0051894B /* GamesDatabase.swift in Sources */,
 				BF34FA071CF0F510006624C7 /* EditCheatViewController.swift in Sources */,
+				E65B0F932F6C65E4009B7F0A /* CheatsView.swift in Sources */,
 				BF1F45A421AF274D00EF9895 /* SyncResultViewController.swift in Sources */,
 				D5AE76C42C2B59360086471B /* Keychain.swift in Sources */,
 				D5AE76B72C2B52820086471B /* Campaign.swift in Sources */,

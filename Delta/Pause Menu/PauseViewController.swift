@@ -218,6 +218,12 @@ extension PauseViewController: UINavigationControllerDelegate
 {
     func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning?
     {
+        // UIHostingController has its own layout system that conflicts with
+        // PauseTransitionCoordinator's layoutIfNeeded() calls during animation.
+        if toVC is UIHostingController<AnyView> || fromVC is UIHostingController<AnyView> {
+            return nil
+        }
+
         let transitionCoordinator = PauseTransitionCoordinator(presentationController: self.presentationController!)
         transitionCoordinator.presenting = (operation == .push)
         return transitionCoordinator
@@ -263,11 +269,20 @@ private extension PauseViewController
         })
         
         self.cheatCodesItem = MenuItem(text: NSLocalizedString("Cheat Codes", comment: ""), image: #imageLiteral(resourceName: "CheatCodes"), action: { [unowned self] item in
-            self.performSegue(withIdentifier: "cheats", sender: self)
-            
-            if #available(iOS 26, *)
-            {
+            if #available (iOS 26.0, *) {
                 item.isSelected = false
+                
+                guard let game = self.emulatorCore?.game as? Game else { return }
+                let hostingController = CheatsView.HostingController(game: game)
+                hostingController.activateCheat = { [weak self] cheat in
+                    self?.emulatorCore?.activateCheatWithErrorLogging(cheat)
+                }
+                hostingController.deactivateCheat = { [weak self] cheat in
+                    self?.emulatorCore?.deactivate(cheat)
+                }
+                self.pauseNavigationController?.pushViewController(hostingController, animated: true)
+            } else {
+                self.performSegue(withIdentifier: "cheats", sender: self)
             }
         })
         

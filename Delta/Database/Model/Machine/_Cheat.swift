@@ -26,6 +26,8 @@ public class _Cheat: NSManagedObject
 
     @NSManaged public var name: String
 
+    @NSManaged public var symbolName: String?
+
     @NSManaged public var type: CheatType
 
     // MARK: - Relationships
