@@ -54,6 +54,10 @@ extension Cheat: Syncable
         return self.name
     }
     
+    public var effectiveSymbolName: String {
+        return self.symbolName ?? "star.fill"
+    }
+    
     public func resolveConflict(_ record: AnyRecord) -> ConflictResolution
     {
         return .newest

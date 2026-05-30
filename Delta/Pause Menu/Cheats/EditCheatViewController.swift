@@ -23,6 +23,7 @@ private extension EditCheatViewController
     enum Section: Int
     {
         case name
+        case icon
         case type
         case code
     }
@@ -53,6 +54,8 @@ class EditCheatViewController: UITableViewController
     private var mutableCheat: Cheat!
     private var managedObjectContext = DatabaseManager.shared.newBackgroundContext()
     
+    private var isReturningFromIconPicker = false
+    
     @IBOutlet private var nameTextField: UITextField!
     @IBOutlet private var typeSegmentedControl: UISegmentedControl!
     @IBOutlet private var codeTextView: CheatTextView!
@@ -64,10 +67,20 @@ extension EditCheatViewController
     {
         super.viewDidLoad()
         
+        if #available(iOS 26, *)
+        {
+            self.tableView.rowHeight = 54 // Default iOS 26 height
+        }
+        else
+        {
+            self.tableView.rowHeight = 44 // Default height pre-iOS 26
+        }
+        
         var name: String!
         var type: CheatType!
         var code: String!
-        
+        var symbolName: String!
+
         self.managedObjectContext.performAndWait {
             
             // Main Thread context is read-only, so we either create a new cheat, or get a reference to the current cheat in a new background context
@@ -90,6 +103,7 @@ extension EditCheatViewController
             name = self.mutableCheat.name
             type = self.mutableCheat.type
             code = self.mutableCheat.code.sanitized(with: self.selectedCheatFormat.allowedCodeCharacters)
+            symbolName = self.mutableCheat.effectiveSymbolName
         }
 
         
@@ -123,6 +137,8 @@ extension EditCheatViewController
             self.typeSegmentedControl.selectedSegmentIndex = 0
         }
         
+        self.tableView.layoutIfNeeded() // Ensure icon cell exists before updateIconCell calls cellForRow(at:)
+        self.updateIconCell(symbolName: symbolName)
         self.updateCheatType(self.typeSegmentedControl)
         self.updateSaveButtonState()
     }
@@ -133,10 +149,12 @@ extension EditCheatViewController
         
         // This matters when going from peek -> pop
         // Otherwise, has no effect because viewDidLayoutSubviews has already been called
-        if self.isAppearing && !self.isPreviewing
+        if self.isAppearing && !self.isPreviewing && !self.isReturningFromIconPicker
         {
             self.nameTextField.becomeFirstResponder()
         }
+
+        self.isReturningFromIconPicker = false
     }
     
     override func viewDidLayoutSubviews()
@@ -154,7 +172,7 @@ extension EditCheatViewController
             }
         }
         
-        if self.isAppearing && !self.isPreviewing
+        if self.isAppearing && !self.isPreviewing && !self.isReturningFromIconPicker
         {
             self.nameTextField.becomeFirstResponder()
         }
@@ -222,6 +240,20 @@ private extension EditCheatViewController
         self.view.setNeedsLayout()
     }
     
+    func updateIconCell(symbolName: String)
+    {
+        let config = UIImage.SymbolConfiguration(scale: .large)
+        let image = UIImage(systemName: symbolName, withConfiguration: config)
+        
+        let indexPath = IndexPath(row: 0, section: Section.icon.rawValue)
+        guard let cell = self.tableView.cellForRow(at: indexPath) else { return }
+        
+        var content = cell.defaultContentConfiguration()
+        content.image = image
+        content.text = String(localized: "Change icon")
+        cell.contentConfiguration = content
+    }
+
     func updateSaveButtonState()
     {
         let isValidName = !(self.nameTextField.text ?? "").isEmpty
@@ -307,11 +339,38 @@ private extension EditCheatViewController
 
 extension EditCheatViewController
 {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
+    {
+        guard Section(rawValue: indexPath.section) == .icon else { return }
+
+        var currentSymbolName: String!
+        self.mutableCheat.managedObjectContext?.performAndWait {
+            currentSymbolName = self.mutableCheat.effectiveSymbolName
+        }
+
+        let iconPicker = CheatIconPickerView.makeViewController(selectedSymbolName: currentSymbolName) { [weak self] symbolName in
+            guard let self, let symbolName else { return }
+
+            self.mutableCheat.managedObjectContext?.performAndWait {
+                self.mutableCheat.symbolName = symbolName
+            }
+
+            self.updateIconCell(symbolName: symbolName)
+            self.navigationController?.popViewController(animated: true)
+        }
+
+        self.nameTextField.resignFirstResponder()
+        self.codeTextView.resignFirstResponder()
+        self.isReturningFromIconPicker = true
+        
+        self.navigationController?.pushViewController(iconPicker, animated: true)
+    }
+
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String?
     {
         switch Section(rawValue: section)!
         {
-        case .name: return super.tableView(tableView, titleForFooterInSection: section)
+        case .name, .icon: return super.tableView(tableView, titleForFooterInSection: section)
             
         case .type:
             let title = String.localizedStringWithFormat("Code format is %@.", self.selectedCheatFormat.format)

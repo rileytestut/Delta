@@ -271,6 +271,9 @@
 		D5AE76C82C2B808F0086471B /* AltAppIconsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5AE76C72C2B808F0086471B /* AltAppIconsViewController.swift */; };
 		D5AE76CA2C2B809C0086471B /* Icons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5AE76C52C2B7F3D0086471B /* Icons.xcassets */; };
 		D5AE76CB2C2B81000086471B /* OSLog+Delta.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CDCCC32A85765900E22131 /* OSLog+Delta.swift */; };
+		CA0101012F8E000100000002 /* CheatIcons.plist in Resources */ = {isa = PBXBuildFile; fileRef = CA0101012F8E000100000001 /* CheatIcons.plist */; };
+		CA0101012F8E000100000003 /* CheatIcons.plist in Resources */ = {isa = PBXBuildFile; fileRef = CA0101012F8E000100000001 /* CheatIcons.plist */; };
+		CA0101012F8E000100000005 /* CheatIconPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0101012F8E000100000004 /* CheatIconPickerView.swift */; };
 		D5AE76CD2C2B81870086471B /* AltIcons.plist in Resources */ = {isa = PBXBuildFile; fileRef = D5AE76CC2C2B81870086471B /* AltIcons.plist */; };
 		D5AE76CE2C2B81870086471B /* AltIcons.plist in Resources */ = {isa = PBXBuildFile; fileRef = D5AE76CC2C2B81870086471B /* AltIcons.plist */; };
 		D5AE76D12C2BA5B70086471B /* Delta8ToDelta9.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = D5AE76D02C2BA5B70086471B /* Delta8ToDelta9.xcmappingmodel */; };
@@ -856,6 +859,8 @@
 		D5AE76C32C2B59360086471B /* Keychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
 		D5AE76C52C2B7F3D0086471B /* Icons.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Icons.xcassets; sourceTree = "<group>"; };
 		D5AE76C72C2B808F0086471B /* AltAppIconsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AltAppIconsViewController.swift; sourceTree = "<group>"; };
+		CA0101012F8E000100000001 /* CheatIcons.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = CheatIcons.plist; sourceTree = "<group>"; };
+		CA0101012F8E000100000004 /* CheatIconPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheatIconPickerView.swift; sourceTree = "<group>"; };
 		D5AE76CC2C2B81870086471B /* AltIcons.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = AltIcons.plist; sourceTree = "<group>"; };
 		D5AE76D02C2BA5B70086471B /* Delta8ToDelta9.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = Delta8ToDelta9.xcmappingmodel; sourceTree = "<group>"; };
 		D5AE78822BEAAD6100ED25DC /* GameSceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSceneDelegate.swift; sourceTree = "<group>"; };
@@ -1385,6 +1390,7 @@
 				BF34FA101CF1899D006624C7 /* CheatTextView.swift */,
 				BF31878A1D489AAA00BD020D /* CheatValidator.swift */,
 				E6955FAA2F743735001B8A75 /* CheatsButton.swift */,
+				CA0101012F8E000100000004 /* CheatIconPickerView.swift */,
 			);
 			path = Cheats;
 			sourceTree = "<group>";
@@ -1423,6 +1429,7 @@
 				D5AE76C52C2B7F3D0086471B /* Icons.xcassets */,
 				D53BE5FE2E873E6B0012DE0F /* MicrochipIcon.icon */,
 				D5AE76CC2C2B81870086471B /* AltIcons.plist */,
+				CA0101012F8E000100000001 /* CheatIcons.plist */,
 				BF02D5D91DDEBB3000A5E131 /* openvgdb.sqlite */,
 				D5D797E7298DC9E200738869 /* cheatbase.zip */,
 				D53415A6298C78BC00FD67B1 /* Contributors.plist */,
@@ -2226,6 +2233,7 @@
 				D5AA0F1A2CE404E90015D134 /* AboutPatreonHeaderView.xib in Resources */,
 				82F450AB2E6A1CD00097CE1C /* AppIcon.icon in Resources */,
 				D5AE76CD2C2B81870086471B /* AltIcons.plist in Resources */,
+				CA0101012F8E000100000002 /* CheatIcons.plist in Resources */,
 				BF6BF3211EB82362008E83CD /* GamesDatabase.storyboard in Resources */,
 				D5E12AED2D011640000C7531 /* Profanity.txt in Resources */,
 				BFAB9F88219A4B670080EC7D /* GoogleService-Info.plist in Resources */,
@@ -2250,6 +2258,7 @@
 			files = (
 				D5AE76CA2C2B809C0086471B /* Icons.xcassets in Resources */,
 				D5AE76CE2C2B81870086471B /* AltIcons.plist in Resources */,
+				CA0101012F8E000100000003 /* CheatIcons.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2507,6 +2516,7 @@
 				BFFC461F1D59823500AF2CC6 /* GamesStoryboardSegue.swift in Sources */,
 				BF2B98E61C97E32F00F6D57D /* SaveStatesCollectionHeaderView.swift in Sources */,
 				BFC9B7391CEFCD34008629BB /* CheatsViewController.swift in Sources */,
+				CA0101012F8E000100000005 /* CheatIconPickerView.swift in Sources */,
 				D5CDCCF32A859E7500E22131 /* GamePickerViewController.swift in Sources */,
 				D5864978297756CE0081477E /* CheatBaseView.swift in Sources */,
 				BF353FFF1C5DA3C500C1184C /* PausePresentationController.swift in Sources */,

@@ -30,7 +30,7 @@ struct CheatsButton: View
             HStack(spacing: 6) {
                 let isCompact = horizontalSizeClass == .compact
                 
-                Image(systemName: cheat.symbolName ?? "bolt.fill")
+                Image(systemName: cheat.effectiveSymbolName)
                     .foregroundStyle(cheat.isEnabled ? Color(uiColor: .deltaPurple) : Color.white)
                     .frame(width: isCompact ? 40 : 44, height: isCompact ? 40 : 44)
                     .font(.system(size: isCompact ? 20 : 24)) // Explicit size since we don't want to scale with Dynamic Type
