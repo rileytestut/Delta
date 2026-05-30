@@ -218,12 +218,6 @@ extension PauseViewController: UINavigationControllerDelegate
 {
     func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning?
     {
-        // UIHostingController has its own layout system that conflicts with
-        // PauseTransitionCoordinator's layoutIfNeeded() calls during animation.
-        if toVC is UIHostingController<AnyView> || fromVC is UIHostingController<AnyView> {
-            return nil
-        }
-
         let transitionCoordinator = PauseTransitionCoordinator(presentationController: self.presentationController!)
         transitionCoordinator.presenting = (operation == .push)
         return transitionCoordinator

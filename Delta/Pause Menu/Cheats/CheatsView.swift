@@ -85,6 +85,9 @@ struct CheatsView: View
     @SwiftUI.State
     private var prefersDescending: Bool = false
     
+    @SwiftUI.State
+    private var isVisible: Bool = false
+    
     init(hostingViewController: HostingController)
     {
         self.hostingViewController = hostingViewController
@@ -95,24 +98,16 @@ struct CheatsView: View
     }
     
     var body: some View {
-        List(cheats, id: \.self) { cheat in
-            CheatsButton(cheat: cheat, onEdit: { edit(cheat) }, onToggle: { toggle(cheat) })
-                .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                    Button {
-                        edit(cheat)
-                    } label: {
-                        Label("Edit", systemImage: "pencil")
-                    }
-                    .tint(.gray)
-                    
-                    Button(role: .destructive) {
-                        delete(cheat)
-                    } label: {
-                        Label("Delete", systemImage: "trash")
-                    }
-                }
-                .listRowBackground(Color.clear)
-                .listRowSeparator(.hidden)
+        Group {
+            // Delay fetching + displaying cheats until after view is visible to fix deadlock.
+            if isVisible
+            {
+                list
+            }
+            else
+            {
+                EmptyView()
+            }
         }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
@@ -133,6 +128,31 @@ struct CheatsView: View
         }
         .onChange(of: prefersDescending) {
             applySorting()
+        }
+        .task { @MainActor in
+            isVisible = true // View is now on screen, so we can load cheats without deadlock.
+        }
+    }
+    
+    private var list: some View {
+        List(cheats, id: \.self) { cheat in
+            CheatsButton(cheat: cheat, onEdit: { edit(cheat) }, onToggle: { toggle(cheat) })
+                .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                    Button {
+                        edit(cheat)
+                    } label: {
+                        Label("Edit", systemImage: "pencil")
+                    }
+                    .tint(.gray)
+                    
+                    Button(role: .destructive) {
+                        delete(cheat)
+                    } label: {
+                        Label("Delete", systemImage: "trash")
+                    }
+                }
+                .listRowBackground(Color.clear)
+                .listRowSeparator(.hidden)
         }
     }
     
