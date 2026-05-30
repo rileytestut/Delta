@@ -39,7 +39,7 @@ struct SettingsView: View
                 EmulationSection()
                 DisplaySection()
                 ServicesSection()
-                BehaviorSection()
+                MiscellaneousSection()
                 CreditsSection()
                 SupportSection()
             }
@@ -253,7 +253,7 @@ private struct DisplaySection: View
 
 // MARK: - Experimental, Minor, & Advanced
 
-private struct BehaviorSection: View
+private struct MiscellaneousSection: View
 {
     var body: some View {
         Section {
