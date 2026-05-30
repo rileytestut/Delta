@@ -243,21 +243,7 @@ extension GamesViewController
             }
         }
         
-        if #available(iOS 14, *)
-        {
-            self.importController.presentingViewController = self
-            
-            let importActions = self.importController.makeActions().menuActions
-            let importMenu = UIMenu(title: NSLocalizedString("Import From…", comment: ""), image: UIImage(systemName: "square.and.arrow.down"), children: importActions)
-            self.importButton.menu = importMenu
-
-            self.importButton.action = nil
-            self.importButton.target = nil
-        }
-        else
-        {
-            self.importController.barButtonItem = self.importButton
-        }
+        self.importController.barButtonItem = self.importButton
         
         self.navigationItem.leftBarButtonItem?.accessibilityLabel = NSLocalizedString("Settings", comment: "")
         
@@ -566,11 +552,8 @@ extension GamesViewController: ImportControllerDelegate
         documentTypes.insert("com.rileytestut.gbc")
         documentTypes.insert("com.rileytestut.gb")
         
-        let itunesImportOption = iTunesImportOption(presentingViewController: self)
-        
         let importController = ImportController(documentTypes: documentTypes)
         importController.delegate = self
-        importController.importOptions = [itunesImportOption]
         
         return importController
     }
