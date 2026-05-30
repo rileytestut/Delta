@@ -250,6 +250,7 @@
 		D5864970297734280081477E /* CheatMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586496F297734280081477E /* CheatMetadata.swift */; };
 		D586497229774ABD0081477E /* CheatBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586497129774ABD0081477E /* CheatBase.swift */; };
 		D5864978297756CE0081477E /* CheatBaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5864977297756CE0081477E /* CheatBaseView.swift */; };
+		D58C548F2FCAC43E00B408BA /* Delta11ToDelta12.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = D58C548E2FCAC43E00B408BA /* Delta11ToDelta12.xcmappingmodel */; };
 		D5974CD52D77C37500750CA8 /* Achievement.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5974CD42D77C37200750CA8 /* Achievement.swift */; };
 		D59B50B72C06666A00FDC53A /* Delta7ToDelta8.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = D59B50B62C06666A00FDC53A /* Delta7ToDelta8.xcmappingmodel */; };
 		D5A287252C23A1AC009883C3 /* SkinDebugging.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A287242C23A1AC009883C3 /* SkinDebugging.swift */; };
@@ -841,6 +842,8 @@
 		D586496F297734280081477E /* CheatMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheatMetadata.swift; sourceTree = "<group>"; };
 		D586497129774ABD0081477E /* CheatBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheatBase.swift; sourceTree = "<group>"; };
 		D5864977297756CE0081477E /* CheatBaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheatBaseView.swift; sourceTree = "<group>"; };
+		D58C54852FCAC37B00B408BA /* Delta 12.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Delta 12.xcdatamodel"; sourceTree = "<group>"; };
+		D58C548E2FCAC43E00B408BA /* Delta11ToDelta12.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = Delta11ToDelta12.xcmappingmodel; sourceTree = "<group>"; };
 		D58F39C529E0A473008B4100 /* Option.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Option.swift; sourceTree = "<group>"; };
 		D58F39C829E0A702008B4100 /* UserDefaults+OptionValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+OptionValues.swift"; sourceTree = "<group>"; };
 		D592D6FE29E48FFB008D218A /* OptionPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionPickerView.swift; sourceTree = "<group>"; };
@@ -1484,6 +1487,7 @@
 				D5AE76D02C2BA5B70086471B /* Delta8ToDelta9.xcmappingmodel */,
 				D5D45CF42D0CDDF600BADDF5 /* Delta9ToDelta10.xcmappingmodel */,
 				D51D8EC72D49CA26002649C2 /* Delta10ToDelta11.xcmappingmodel */,
+				D58C548E2FCAC43E00B408BA /* Delta11ToDelta12.xcmappingmodel */,
 				BFEF24F11F7DD4BE00454C62 /* Policies */,
 			);
 			path = Migrations;
@@ -2499,6 +2503,7 @@
 				BF13A7581D5D2FD9000BB055 /* EmulatorCore+Delta.swift in Sources */,
 				BF48F74E219A16DA00BC2FC1 /* SyncingServicesViewController.swift in Sources */,
 				D5363C462F5BA9B40065182B /* ContainerRelativeGrid.swift in Sources */,
+				D58C548F2FCAC43E00B408BA /* Delta11ToDelta12.xcmappingmodel in Sources */,
 				D552DE3A2D39C5A500E737BE /* WFCServersView.swift in Sources */,
 				D5A9C01D29DE058C00A8D610 /* VariableFastForward.swift in Sources */,
 				C6F24AD92D64B550002F939F /* PauseViewController+Lu.swift in Sources */,
@@ -3374,6 +3379,7 @@
 		BF4828811F9027B600028B97 /* Delta.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				D58C54852FCAC37B00B408BA /* Delta 12.xcdatamodel */,
 				D51D8EC62D49C998002649C2 /* Delta 11.xcdatamodel */,
 				D5D45CF32D0CDCB700BADDF5 /* Delta 10.xcdatamodel */,
 				D5E4F8622C2A5864008E8316 /* Delta 9.xcdatamodel */,
@@ -3386,7 +3392,7 @@
 				BF4828821F9027B600028B97 /* Delta 2.xcdatamodel */,
 				BF4828831F9027B600028B97 /* Delta.xcdatamodel */,
 			);
-			currentVersion = D51D8EC62D49C998002649C2 /* Delta 11.xcdatamodel */;
+			currentVersion = D58C54852FCAC37B00B408BA /* Delta 12.xcdatamodel */;
 			path = Delta.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
