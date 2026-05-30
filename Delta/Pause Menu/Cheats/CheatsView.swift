@@ -154,6 +154,14 @@ struct CheatsView: View
                 .listRowBackground(Color.clear)
                 .listRowSeparator(.hidden)
         }
+        .overlay {
+            if cheats.isEmpty
+            {
+                ContentUnavailableView("No Cheats",
+                                       image: "CheatCodes",
+                                       description: Text("You can add a new cheat by pressing the + button in the top right."))
+            }
+        }
     }
     
     private var sortingMenu: some View {
