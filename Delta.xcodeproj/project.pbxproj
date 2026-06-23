@@ -196,6 +196,9 @@
 		CA00011F2E6000010000001F /* MinorSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA00011E2E6000010000001E /* MinorSettingsView.swift */; };
 		CA0001222E60000100000022 /* AdvancedSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0001212E60000100000021 /* AdvancedSettingsView.swift */; };
 		CA0001272E60000100000027 /* TouchHapticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0001262E60000100000026 /* TouchHapticsView.swift */; };
+		CA0101012F8E000100000002 /* CheatIcons.plist in Resources */ = {isa = PBXBuildFile; fileRef = CA0101012F8E000100000001 /* CheatIcons.plist */; };
+		CA0101012F8E000100000003 /* CheatIcons.plist in Resources */ = {isa = PBXBuildFile; fileRef = CA0101012F8E000100000001 /* CheatIcons.plist */; };
+		CA0101012F8E000100000005 /* CheatIconPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0101012F8E000100000004 /* CheatIconPickerView.swift */; };
 		D5002BD92DCD3E81003418FD /* IAPScareScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5002BD82DCD3E81003418FD /* IAPScareScreen.swift */; };
 		D5002BDA2DCD3E87003418FD /* IAPScareScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5002BD82DCD3E81003418FD /* IAPScareScreen.swift */; };
 		D5002BDC2DCD3ED2003418FD /* MockPurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5002BDB2DCD3ED2003418FD /* MockPurchaseManager.swift */; };
@@ -283,9 +286,6 @@
 		D5AE76C82C2B808F0086471B /* AltAppIconsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5AE76C72C2B808F0086471B /* AltAppIconsViewController.swift */; };
 		D5AE76CA2C2B809C0086471B /* Icons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5AE76C52C2B7F3D0086471B /* Icons.xcassets */; };
 		D5AE76CB2C2B81000086471B /* OSLog+Delta.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CDCCC32A85765900E22131 /* OSLog+Delta.swift */; };
-		CA0101012F8E000100000002 /* CheatIcons.plist in Resources */ = {isa = PBXBuildFile; fileRef = CA0101012F8E000100000001 /* CheatIcons.plist */; };
-		CA0101012F8E000100000003 /* CheatIcons.plist in Resources */ = {isa = PBXBuildFile; fileRef = CA0101012F8E000100000001 /* CheatIcons.plist */; };
-		CA0101012F8E000100000005 /* CheatIconPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0101012F8E000100000004 /* CheatIconPickerView.swift */; };
 		D5AE76CD2C2B81870086471B /* AltIcons.plist in Resources */ = {isa = PBXBuildFile; fileRef = D5AE76CC2C2B81870086471B /* AltIcons.plist */; };
 		D5AE76CE2C2B81870086471B /* AltIcons.plist in Resources */ = {isa = PBXBuildFile; fileRef = D5AE76CC2C2B81870086471B /* AltIcons.plist */; };
 		D5AE76D12C2BA5B70086471B /* Delta8ToDelta9.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = D5AE76D02C2BA5B70086471B /* Delta8ToDelta9.xcmappingmodel */; };
@@ -781,7 +781,9 @@
 		CA00011E2E6000010000001E /* MinorSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MinorSettingsView.swift; sourceTree = "<group>"; };
 		CA0001212E60000100000021 /* AdvancedSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedSettingsView.swift; sourceTree = "<group>"; };
 		CA0001262E60000100000026 /* TouchHapticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchHapticsView.swift; sourceTree = "<group>"; };
-        CE7C8DB38D2A6B16B8609EAC /* AppDelegate+Operator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+Operator.swift"; sourceTree = "<group>"; };
+		CA0101012F8E000100000001 /* CheatIcons.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = CheatIcons.plist; sourceTree = "<group>"; };
+		CA0101012F8E000100000004 /* CheatIconPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheatIconPickerView.swift; sourceTree = "<group>"; };
+		CE7C8DB38D2A6B16B8609EAC /* AppDelegate+Operator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+Operator.swift"; sourceTree = "<group>"; };
 		D5002BD82DCD3E81003418FD /* IAPScareScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAPScareScreen.swift; sourceTree = "<group>"; };
 		D5002BDB2DCD3ED2003418FD /* MockPurchaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPurchaseManager.swift; sourceTree = "<group>"; };
 		D5002BDD2DCD3F31003418FD /* MockDatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDatabaseManager.swift; sourceTree = "<group>"; };
@@ -884,8 +886,6 @@
 		D5AE76C32C2B59360086471B /* Keychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
 		D5AE76C52C2B7F3D0086471B /* Icons.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Icons.xcassets; sourceTree = "<group>"; };
 		D5AE76C72C2B808F0086471B /* AltAppIconsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AltAppIconsViewController.swift; sourceTree = "<group>"; };
-		CA0101012F8E000100000001 /* CheatIcons.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = CheatIcons.plist; sourceTree = "<group>"; };
-		CA0101012F8E000100000004 /* CheatIconPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheatIconPickerView.swift; sourceTree = "<group>"; };
 		D5AE76CC2C2B81870086471B /* AltIcons.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = AltIcons.plist; sourceTree = "<group>"; };
 		D5AE76D02C2BA5B70086471B /* Delta8ToDelta9.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = Delta8ToDelta9.xcmappingmodel; sourceTree = "<group>"; };
 		D5AE78822BEAAD6100ED25DC /* GameSceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSceneDelegate.swift; sourceTree = "<group>"; };
@@ -928,7 +928,7 @@
 		D5F82FB72981D3AC00B229AF /* LegacySearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacySearchBar.swift; sourceTree = "<group>"; };
 		D5FB042B2C5AF40A008329DD /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
 		DC866E433B3BA9AE18ABA1EC /* libPods-Delta.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Delta.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-        DCBF2F877CA6072880A54F35 /* DeltaOperatorUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeltaOperatorUtils.swift; sourceTree = "<group>"; };
+		DCBF2F877CA6072880A54F35 /* DeltaOperatorUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeltaOperatorUtils.swift; sourceTree = "<group>"; };
 		E647EE142F633115000DA257 /* AchievementToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementToast.swift; sourceTree = "<group>"; };
 		E65B0F922F6C65E4009B7F0A /* CheatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheatsView.swift; sourceTree = "<group>"; };
 		E6955FAA2F743735001B8A75 /* CheatsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheatsButton.swift; sourceTree = "<group>"; };
