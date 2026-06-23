@@ -79,9 +79,13 @@ extension RevenueCatManager
 @available(iOS 17.5, *)
 private extension RevenueCatManager
 {
-    static let projectID = "bcb273c1"
-    static let apiKeyV1 = "sk_CnWLjZPMhUXNCsYCniuCbEGxrmjby"
-    static let apiKeyV2 = "sk_DNGXQqVGzSAneClgROmffzVjXNBLQ"
+    private struct Tokens: Decodable
+    {
+        var projectID: String
+        var clientPublicKey: String
+        var clientSecretV1: String
+        var clientSecretV2: String
+    }
     
     struct ProductID: RawRepresentable, Codable, Hashable
     {
@@ -179,8 +183,40 @@ class RevenueCatManager
     
     private let baseURL = URL(string: "https://api.revenuecat.com")!
     
+    private let projectID: String
+    private let clientPublicKey: String
+    private let clientSecretV1: String
+    private let clientSecretV2: String
+    
     private init()
     {
+        let fileURL = Bundle.main.url(forResource: "RevenueCatAPI", withExtension: "plist")!
+        
+        do
+        {
+            let data = try Data(contentsOf: fileURL)
+            
+            let tokens = try PropertyListDecoder().decode(Tokens.self, from: data)
+            self.projectID = tokens.projectID
+            self.clientPublicKey = tokens.clientPublicKey
+            self.clientSecretV1 = tokens.clientSecretV1
+            self.clientSecretV2 = tokens.clientSecretV2
+            
+            if self.projectID.isEmpty || self.clientPublicKey.isEmpty || self.clientSecretV1.isEmpty || self.clientSecretV2.isEmpty
+            {
+                Logger.main.error("RevenueCatAPI.plist is missing required API keys. Please provide your own API keys to use RevenueCat functionality.")
+            }
+        }
+        catch
+        {
+            Logger.main.error("Failed to load RevenueCatAPI tokens. \(error.localizedDescription, privacy: .public)")
+            
+            self.projectID = ""
+            self.clientPublicKey = ""
+            self.clientSecretV1 = ""
+            self.clientSecretV2 = ""
+        }
+        
         #if DEBUG
         Purchases.logLevel = .debug
         #else
@@ -188,7 +224,7 @@ class RevenueCatManager
         #endif
         
         // Use anonymous user IDs.
-        Purchases.configure(withAPIKey: "appl_kJGpGeyHNEybFWbrtftMmpkKOXL")
+        Purchases.configure(withAPIKey: self.clientPublicKey)
     }
     
     func start() async throws
@@ -310,14 +346,14 @@ extension RevenueCatManager
     @discardableResult
     func fetchFriendZoneUsers() async throws -> [User]
     {
-        let apiURL = URL(string: "https://api.revenuecat.com/v2/projects/\(RevenueCatManager.projectID)/customers?limit=1000")!
+        let apiURL = URL(string: "https://api.revenuecat.com/v2/projects/\(self.projectID)/customers?limit=1000")!
         
         var userIDs: Set<String> = []
         
         func fetchPatrons(url: URL) async throws
         {
             var request = URLRequest(url: url)
-            request.setValue("Bearer \(RevenueCatManager.apiKeyV2)", forHTTPHeaderField: "Authorization")
+            request.setValue("Bearer \(self.clientSecretV2)", forHTTPHeaderField: "Authorization")
             
             let response = try await self.send(request, expecting: FetchCustomersResponse.self)
             
@@ -361,7 +397,7 @@ extension RevenueCatManager
         let apiURL = URL(string: "https://api.revenuecat.com/v1/subscribers/\(id)")!
         
         var request = URLRequest(url: apiURL)
-        request.setValue("Bearer \(RevenueCatManager.apiKeyV1)", forHTTPHeaderField: "Authorization")
+        request.setValue("Bearer \(self.clientSecretV1)", forHTTPHeaderField: "Authorization")
         
         let response = try await self.send(request, expecting: GetSubscriberResponse.self, dateStrategy: .iso8601)
         let name = response.subscriber.subscriber_attributes?[.name]?.value

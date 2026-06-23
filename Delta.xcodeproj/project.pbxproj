@@ -233,6 +233,7 @@
 		D54E46D02BED714F00780713 /* NSUserActivity+Delta.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54E46CF2BED714F00780713 /* NSUserActivity+Delta.swift */; };
 		D54F710229E89DCB009C069A /* SettingsUserInfoKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54F710129E89DCB009C069A /* SettingsUserInfoKey.swift */; };
 		D54F710429E89DFC009C069A /* NotificationName+Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54F710329E89DFC009C069A /* NotificationName+Settings.swift */; };
+		D55183C22FEB2259009A96CC /* RevenueCatAPI.plist in Resources */ = {isa = PBXBuildFile; fileRef = D55183C12FEB2259009A96CC /* RevenueCatAPI.plist */; };
 		D552DE3A2D39C5A500E737BE /* WFCServersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D552DE392D39C5A500E737BE /* WFCServersView.swift */; };
 		D552DE3D2D39DB2A00E737BE /* WFCServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D552DE3C2D39DB2700E737BE /* WFCServer.swift */; };
 		D55917DA2B51D097007B7DC0 /* LocalDeviceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55917D92B51D097007B7DC0 /* LocalDeviceController.swift */; };
@@ -818,6 +819,7 @@
 		D54E46CF2BED714F00780713 /* NSUserActivity+Delta.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSUserActivity+Delta.swift"; sourceTree = "<group>"; };
 		D54F710129E89DCB009C069A /* SettingsUserInfoKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsUserInfoKey.swift; sourceTree = "<group>"; };
 		D54F710329E89DFC009C069A /* NotificationName+Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationName+Settings.swift"; sourceTree = "<group>"; };
+		D55183C12FEB2259009A96CC /* RevenueCatAPI.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = RevenueCatAPI.plist; sourceTree = "<group>"; };
 		D552DE392D39C5A500E737BE /* WFCServersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WFCServersView.swift; sourceTree = "<group>"; };
 		D552DE3C2D39DB2700E737BE /* WFCServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WFCServer.swift; sourceTree = "<group>"; };
 		D554C3822A58D89700E93359 /* Delta 7.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Delta 7.xcdatamodel"; sourceTree = "<group>"; };
@@ -1468,6 +1470,7 @@
 				D53415A6298C78BC00FD67B1 /* Contributors.plist */,
 				D5E12AEC2D01163A000C7531 /* Profanity.txt */,
 				D5BE1BD62D0B9CBE00D2142E /* PatreonAPI.plist */,
+				D55183C12FEB2259009A96CC /* RevenueCatAPI.plist */,
 				D5B0F4E42D67F0660069F4DB /* WhatsNew.plist */,
 				82F450AA2E6A1CD00097CE1C /* AppIcon.icon */,
 			);
@@ -2315,6 +2318,7 @@
 				BF5E7F461B9A652600AE44F8 /* Settings.storyboard in Resources */,
 				BF02D5DA1DDEBB3000A5E131 /* openvgdb.sqlite in Resources */,
 				D53415A7298C78BC00FD67B1 /* Contributors.plist in Resources */,
+				D55183C22FEB2259009A96CC /* RevenueCatAPI.plist in Resources */,
 				C6F24ADB2D64B5A0002F939F /* Lu-Info.plist in Resources */,
 				BF71CF8A1FE904B1001F1613 /* GameTableViewCell.xib in Resources */,
 				BFFC46461D59861000AF2CC6 /* LaunchScreen.storyboard in Resources */,
