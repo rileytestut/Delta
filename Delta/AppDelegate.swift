@@ -210,6 +210,7 @@ extension AppDelegate
         }
         else if url.scheme?.lowercased() == "delta"
         {
+            if LibraryExport.handle(url) { return true }
             return self.deepLinkController.handle(.url(url))
         }
         

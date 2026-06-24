@@ -87,6 +87,10 @@ struct ExperimentalFeatures: FeatureContainer
              description: "Enable support for Epilogue Operator devices to play games directly from cartridges. Requires an app restart to take effect.")
     var operatorDevice
 
+    @Feature(name: "Library Export",
+             description: "Allow other apps to fetch your game library via the “delta://gameInfo?scheme=<callerScheme>” URL request. Delta responds by opening “<callerScheme>://delta?games=<payload>”, where the payload is a base64url-encoded JSON array of your games.")
+    var libraryExport
+
     private init()
     {
         self.prepareFeatures()
