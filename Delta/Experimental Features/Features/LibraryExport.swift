@@ -14,6 +14,8 @@ import CoreData
 
 import DeltaCore
 
+import SDWebImage
+
 enum LibraryExport
 {
     static let host = "gameInfo"
@@ -54,30 +56,41 @@ enum LibraryExport
         return true
     }
     
+    private struct GameInfo
+    {
+        var titleName: String
+        var titleId: String
+        var artworkURL: URL?
+    }
+    
     private static func exportLibrary(toCallerScheme callerScheme: String, incomingScheme: String) async
     {
         let context = DatabaseManager.shared.viewContext
         
-        let games: [GameScheme] = await context.perform {
+        let gameInfos: [GameInfo] = await context.perform {
             let fetchRequest: NSFetchRequest<Game> = Game.fetchRequest()
             fetchRequest.sortDescriptors = [NSSortDescriptor(keyPath: \Game.name, ascending: true)]
             
             guard let results = try? context.fetch(fetchRequest) else { return [] }
             
-            return results.compactMap { game -> GameScheme? in
+            return results.compactMap { game -> GameInfo? in
                 // Skip BIOS pseudo-entries, which aren't real playable games.
                 guard game.identifier != Game.melonDSBIOSIdentifier,
                       game.identifier != Game.melonDSDSiBIOSIdentifier
                 else { return nil }
                 
-                return GameScheme(
-                    titleName: game.name,
-                    titleId: game.identifier,
-                    developer: "",
-                    version: "",
-                    iconData: self.iconData(for: game)
-                )
+                return GameInfo(titleName: game.name, titleId: game.identifier, artworkURL: game.artworkURL)
             }
+        }
+        
+        let games: [GameScheme] = gameInfos.map { info in
+            GameScheme(
+                titleName: info.titleName,
+                titleId: info.titleId,
+                developer: "",
+                version: "",
+                iconData: self.iconData(for: info.artworkURL)
+            )
         }
         
         guard let payload = try? JSONEncoder().encode(games) else {
@@ -95,14 +108,34 @@ enum LibraryExport
         await UIApplication.shared.open(returnURL)
     }
     
-    private static func iconData(for game: Game) -> Data?
+    private static func iconData(for artworkURL: URL?) -> Data?
     {
-        guard let artworkURL = game.artworkURL, artworkURL.isFileURL,
-              let data = try? Data(contentsOf: artworkURL),
-              let image = UIImage(data: data)
-        else { return nil }
+        guard let artworkURL else { return nil }
         
-        return image.jpegData(compressionQuality: 0.5)
+        let image: UIImage?
+        
+        if artworkURL.isFileURL
+        {
+            //Custom box art the user imported themselves
+            image = (try? Data(contentsOf: artworkURL)).flatMap { UIImage(data: $0) }
+        }
+        else
+        {
+            //Cached Box Art from the database
+            image = self.cachedImage(for: artworkURL)
+        }
+        
+        return image?.jpegData(compressionQuality: 0.5)
+    }
+    
+    private static func cachedImage(for url: URL) -> UIImage?
+    {
+        guard let manager = SDWebImageManager.shared() else { return nil }
+        
+        let cacheKey = manager.cacheKey(for: url)
+        
+        return manager.imageCache.imageFromMemoryCache(forKey: cacheKey)
+            ?? manager.imageCache.imageFromDiskCache(forKey: cacheKey)
     }
 }
 
