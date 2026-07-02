@@ -211,6 +211,7 @@ private extension SceneDelegate
                 }
                 else if url.scheme?.lowercased() == "delta"
                 {
+                    if LibraryExport.handle(url) { return }
                     _ = self.deepLinkController.handle(deepLink)
                 }
             }
