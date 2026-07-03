@@ -21,6 +21,11 @@ struct ExperimentalFeatures: FeatureContainer
              options: VariableFastForwardOptions())
     var variableFastForward
     
+    @Feature(name: "Fast Forward Speed Picker",
+             description: "Choose a single preferred Fast Forward speed to use across all systems.",
+             options: FastForwardSpeedPickerOptions())
+    var fastForwardSpeedPicker
+    
     @Feature(name: "Show Status Bar",
              description: "Enable to show the Status Bar during gameplay.")
     var showStatusBar
