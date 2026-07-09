@@ -1428,7 +1428,7 @@ extension GameViewController
         
         if activate
         {
-            // Per-game speed > system-wide per-system speed > maximum supported
+            // Per-game speed > system-wide per-system speed > global picker speed > maximum supported
             let speed: Double
             if let game = emulatorCore.game as? Game,
                let speedValue = game.settings[.fastForwardSpeed] as? Double
@@ -1439,6 +1439,12 @@ extension GameViewController
                     let preferredSpeed = ExperimentalFeatures.shared.variableFastForward[emulatorCore.game.type]
             {
                 speed = preferredSpeed.rawValue
+            }
+            else if let pickedSpeed = self.experimentalPickedFastForwardSpeed
+            {
+                // Fast Forward Speed Picker experimental feature. Lowest priority of the
+                // user-configured speeds, and nil (no effect) whenever the feature is disabled.
+                speed = pickedSpeed
             }
             else
             {
