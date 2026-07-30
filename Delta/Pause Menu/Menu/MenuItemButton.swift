@@ -21,12 +21,17 @@ struct MenuItemButton: View
     @State
     var item: MenuItem
     
+    var disabledHandler: (MenuItem) -> Void = { _ in }
+
     var body: some View {
         // This probably should be a .contextMenu() View modifier instead of Menu...
         // but the animation when presenting the context menu is kinda jank on iOS 26 :(
         Menu {
-            ForEach(item.menuOptions, id: \.title) { action in
-                button(for: action)
+            if item.isEnabled
+            {
+                ForEach(item.menuOptions, id: \.title) { action in
+                    button(for: action)
+                }
             }
         } label: {
             VStack(spacing: 10) {
@@ -40,7 +45,15 @@ struct MenuItemButton: View
                     .font(.headline)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .opacity(item.isEnabled ? 1.0 : 0.4)
         } primaryAction: {
+            guard item.isEnabled else
+            {
+                // Item only appears disabled so we can explain why it's unavailable when tapped.
+                disabledHandler(item)
+                return
+            }
+
             item.isSelected.toggle() // Match previous behavior which set isSelected before calling action
             item.action(item)
         }

@@ -79,6 +79,9 @@ struct PauseView: View
     @SwiftUI.State
     private var isHidden: Bool = true
     
+    @SwiftUI.State
+    private var disabledItem: MenuItem?
+
     @AppStorage(Settings.Name.pauseMenuToolbarPlacement.rawValue)
     private var toolbarPlacement: Settings.PauseMenuToolbarPlacement = .bottom
 
@@ -103,8 +106,10 @@ struct PauseView: View
                         if !isHidden
                         {
                             ForEach(items, id: \.text) { item in
-                                MenuItemButton(item: item)
-                                    .frame(maxWidth: .infinity, maxHeight: .infinity) // Fill proposed frame with glass effect
+                                MenuItemButton(item: item) { tappedItem in
+                                    disabledItem = tappedItem
+                                }
+                                .frame(maxWidth: .infinity, maxHeight: .infinity) // Fill proposed frame with glass effect
                             }
                         }
                     }
@@ -169,6 +174,11 @@ struct PauseView: View
             {
                 isHidden = newValue
             }
+        }
+        .alert("\(disabledItem?.text ?? "") Disabled in Hardcore Mode", isPresented: Binding(get: { disabledItem != nil }, set: { if !$0 { disabledItem = nil } })) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text("\(disabledItem?.text ?? "") can not be used when RetroAchievements’ Hardcore mode is enabled.")
         }
     }
 }

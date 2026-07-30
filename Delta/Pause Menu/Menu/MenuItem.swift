@@ -17,6 +17,8 @@ class MenuItem: NSObject
     
     var menuOptions: [Action]
     
+    var isEnabled: Bool = true
+    
     @nonobjc var isSelected: Bool = false {
         didSet {
             self._isSelectedObjC = self.isSelected

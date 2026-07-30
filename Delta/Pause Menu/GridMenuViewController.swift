@@ -138,6 +138,8 @@ private extension GridMenuViewController
         cell.isImageViewVibrancyEnabled = self.isVibrancyEnabled
         cell.isTextLabelVibrancyEnabled = self.isVibrancyEnabled
         
+        cell.contentView.alpha = pauseItem.isEnabled ? 1.0 : 0.4
+        
         if #available(iOS 26.0, *)
         {
             cell.isImageViewGlassEnabled = false
@@ -161,6 +163,16 @@ private extension GridMenuViewController
             
             self.registeredKVOObservers.insert(observer)
         }
+    }
+
+    func presentDisabledAlert(for item: MenuItem)
+    {
+        let title = String(format: NSLocalizedString("%@ Disabled in Hardcore Mode", comment: ""), item.text)
+        let message = String(format: NSLocalizedString("%@ can not be used when RetroAchievements’ Hardcore mode is enabled.", comment: ""), item.text)
+
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alertController.addAction(.ok)
+        self.present(alertController, animated: true)
     }
 }
 
@@ -191,9 +203,18 @@ extension GridMenuViewController
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
     {
-        self.previousIndexPath = indexPath
-        
         let item = self.items[indexPath.item]
+
+        guard item.isEnabled else
+        {
+            // Item only appears disabled so we can trigger UI to explain why it can't be tapped
+            collectionView.deselectItem(at: indexPath, animated: true)
+            self.presentDisabledAlert(for: item)
+            return
+        }
+
+        self.previousIndexPath = indexPath
+
         item.isSelected = !item.isSelected
         item.action(item)
     }
@@ -204,7 +225,7 @@ extension GridMenuViewController
     override func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration?
     {
         let item = self.dataSource.item(at: indexPath)
-        guard !item.menuOptions.isEmpty else { return nil }
+        guard !item.menuOptions.isEmpty, item.isEnabled else { return nil }
         
         return UIContextMenuConfiguration(identifier: indexPath as NSIndexPath, previewProvider: nil) { _ in UIMenu(children: item.menuOptions.menuActions) }
     }

@@ -643,8 +643,9 @@ extension GameViewController
                 // Saving save states is fine, just not loading them
                 // pauseViewController.saveStateItem = nil
                 
-                pauseViewController.loadStateItem = nil
-                pauseViewController.cheatCodesItem = nil
+                pauseViewController.loadStateItem?.isEnabled = false
+                pauseViewController.fastForwardItem?.isEnabled = false
+                pauseViewController.cheatCodesItem?.isEnabled = false
             }
             
             self.pauseViewController = pauseViewController
