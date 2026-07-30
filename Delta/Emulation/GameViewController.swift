@@ -644,7 +644,6 @@ extension GameViewController
                 // pauseViewController.saveStateItem = nil
                 
                 pauseViewController.loadStateItem?.isEnabled = false
-                pauseViewController.fastForwardItem?.isEnabled = false
                 pauseViewController.cheatCodesItem?.isEnabled = false
             }
             
