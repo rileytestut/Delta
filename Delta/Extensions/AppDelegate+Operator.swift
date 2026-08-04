@@ -26,7 +26,9 @@ extension AppDelegate
     func handleOperatorDatabaseReady()
     {
         guard ExperimentalFeatures.shared.operatorDevice.isEnabled else { return }
-        self.operatorFacade.onDatabaseReady()
+        DispatchQueue.main.async {
+            self.operatorFacade.onDatabaseReady()
+        }
     }
 }
 

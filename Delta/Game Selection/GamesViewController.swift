@@ -400,7 +400,7 @@ private extension GamesViewController
 }
 
 // MARK: - Helper Methods -
-private extension GamesViewController
+internal extension GamesViewController
 {
     func viewControllerForIndex(_ index: Int) -> GameCollectionViewController?
     {
@@ -476,12 +476,12 @@ private extension GamesViewController
         self.pageControl.setHidden(sections < 2, animated: false)
         
         // Operator: show or hide cartridge status on empty placeholder
-        self.updateOperatorPlaceholderVisibility(sectionCount: sections)
+        self.updateOperatorPlaceholderVisibility(sectionCount: sections, isLibraryHidden: self.pageViewController.view.isHidden)
 
         if sections > 0
         {
             // Reset page view controller if currently hidden or current child should view controller no longer exists
-            if self.pageViewController.view.isHidden || resetPageViewController
+            if (self.pageViewController.view.isHidden || resetPageViewController), !self.isOperatorImportTransferring
             {
                 let index = min(1, self.pages.count - 1) // Recents page, or first game system
                 
@@ -497,7 +497,7 @@ private extension GamesViewController
                     self.pageControl.model.currentPage = index
                 }
             }
-            else
+            else if !self.isOperatorImportTransferring
             {
                 self.pageViewController.setViewControllers(self.pageViewController.viewControllers, direction: .forward, animated: false, completion: nil)
             }

@@ -1393,6 +1393,7 @@ extension GameCollectionViewController
         // Operator: ignore taps on device status cell
         guard !self.isOperatorSlotIndexPath(indexPath) else { return }
         guard self.gameCollection?.identifier != GameType.unknown.rawValue else { return }
+        guard !self.deferLaunchIfOperatorImporting(self.dataSource.item(at: indexPath)) else { return }
 
         // Check for iOS 26, setting toggled on, and stage manager enabled, then open game in new window
         if #available(iOS 26, *),

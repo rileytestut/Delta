@@ -40,6 +40,10 @@
 		4F501EDE15C52E1E6230DB9E /* DeltaOperatorGameObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4327597BCB33E196164D3BB6 /* DeltaOperatorGameObserver.swift */; };
 		5FFDBC83E8777EB11777803A /* GamesViewController+Operator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6FDC5A03AD5693BEFFE87C /* GamesViewController+Operator.swift */; };
 		6FF8B1728BDBAF892B397F5E /* DeltaOperatorWritebackToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCE7674E5643CDB43BC8ED32 /* DeltaOperatorWritebackToast.swift */; };
+		DE17A0A57E000000000000B2 /* DeltaOperatorToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE17A0A57E000000000000A1 /* DeltaOperatorToast.swift */; };
+		DE17A0A57E00000000000202 /* DeltaOperatorSaveReadToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE17A0A57E00000000000201 /* DeltaOperatorSaveReadToast.swift */; };
+		DE17A0A57E00000000000302 /* OperatorLaunchCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE17A0A57E00000000000301 /* OperatorLaunchCoordinator.swift */; };
+		DE17A0A57E000000000000F2 /* DeltaOperatorImportToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE17A0A57E000000000000E1 /* DeltaOperatorImportToast.swift */; };
 		70FF20879DA0DCEE53D8CAED /* OperatorKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 796FA895EF62DF6A509DCA55 /* OperatorKit.xcframework */; };
 		823D998F2E566EE40025F4CD /* GBCColorPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 823D998E2E566EE40025F4CD /* GBCColorPalette.swift */; };
 		8279ED042E53BA4F008995FA /* GBACoreSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8279ED032E53BA4F008995FA /* GBACoreSettingsView.swift */; };
@@ -946,6 +950,10 @@
 		E6BD34AC2F587BF0001C9D78 /* AchievementGameBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementGameBanner.swift; sourceTree = "<group>"; };
 		E6EB10AE2F58B1C50001AAD2 /* AchievementNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementNotification.swift; sourceTree = "<group>"; };
 		FCE7674E5643CDB43BC8ED32 /* DeltaOperatorWritebackToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeltaOperatorWritebackToast.swift; sourceTree = "<group>"; };
+		DE17A0A57E000000000000A1 /* DeltaOperatorToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeltaOperatorToast.swift; sourceTree = "<group>"; };
+		DE17A0A57E00000000000201 /* DeltaOperatorSaveReadToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeltaOperatorSaveReadToast.swift; sourceTree = "<group>"; };
+		DE17A0A57E00000000000301 /* OperatorLaunchCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperatorLaunchCoordinator.swift; sourceTree = "<group>"; };
+		DE17A0A57E000000000000E1 /* DeltaOperatorImportToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeltaOperatorImportToast.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1006,7 +1014,11 @@
 				4327597BCB33E196164D3BB6 /* DeltaOperatorGameObserver.swift */,
 				DCBF2F877CA6072880A54F35 /* DeltaOperatorUtils.swift */,
 				FCE7674E5643CDB43BC8ED32 /* DeltaOperatorWritebackToast.swift */,
+				DE17A0A57E000000000000A1 /* DeltaOperatorToast.swift */,
+				DE17A0A57E000000000000E1 /* DeltaOperatorImportToast.swift */,
+				DE17A0A57E00000000000201 /* DeltaOperatorSaveReadToast.swift */,
 				0654CFCA3D2CB4D35CC99F89 /* OperatorSlotDataSource.swift */,
+				DE17A0A57E00000000000301 /* OperatorLaunchCoordinator.swift */,
 				7C31F852121CBEF08181BD23 /* OperatorStatusView.swift */,
 				C1C8C13CE90324CBBA76BC3E /* OperatorUICoordinators.swift */,
 			);
@@ -2713,6 +2725,10 @@
 				B8BF6056C00AB0507A06D39E /* OperatorStatusView.swift in Sources */,
 				28B653353E8323FA65C54A42 /* OperatorUICoordinators.swift in Sources */,
 				6FF8B1728BDBAF892B397F5E /* DeltaOperatorWritebackToast.swift in Sources */,
+				DE17A0A57E000000000000B2 /* DeltaOperatorToast.swift in Sources */,
+				DE17A0A57E000000000000F2 /* DeltaOperatorImportToast.swift in Sources */,
+				DE17A0A57E00000000000202 /* DeltaOperatorSaveReadToast.swift in Sources */,
+				DE17A0A57E00000000000302 /* OperatorLaunchCoordinator.swift in Sources */,
 				18FC614F90FE76140AAECE67 /* DeltaOperatorUtils.swift in Sources */,
 				89DAEB1EDE294B3A7C857765 /* DeltaOperatorFacade.swift in Sources */,
 				CA0001192E60000100000019 /* CoresListView.swift in Sources */,

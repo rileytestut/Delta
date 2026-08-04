@@ -6,6 +6,7 @@
 //  Copyright © 2026 Epilogue. All rights reserved.
 //
 
+import Combine
 import UIKit
 import ObjectiveC.runtime
 
@@ -13,6 +14,9 @@ import DeltaFeatures
 import OperatorKit
 
 private var operatorCoordinatorKey: UInt8 = 0
+private var operatorLaunchCoordinatorKey: UInt8 = 0
+private var pendingLaunchGameKey: UInt8 = 0
+private var slotStateCancellableKey: UInt8 = 0
 
 extension GameCollectionViewController
 {
@@ -58,6 +62,30 @@ extension GameCollectionViewController
     {
         return OperatorKitController.shared.importedGameIdentifier == game.identifier
     }
+
+    func isOperatorImportInProgress(for game: Game) -> Bool
+    {
+        let controller = OperatorKitController.shared
+        guard controller.importedGameIdentifier == game.identifier else { return false }
+        if case .imported = controller.slotState { return false }
+        return true
+    }
+
+    func deferLaunchIfOperatorImporting(_ game: Game) -> Bool
+    {
+        guard ExperimentalFeatures.shared.operatorDevice.isEnabled else { return false }
+
+        if self.isOperatorImportInProgress(for: game)
+        {
+            self.pendingOperatorLaunchGame = game
+            self.startOperatorLaunchObserver()
+            return true
+        }
+        self.pendingOperatorLaunchGame = nil
+
+        guard self.isOperatorImportedGame(game) else { return false }
+        return self.operatorLaunchCoordinator.deferLaunchIfSaveUnverified(of: game)
+    }
 }
 
 private extension GameCollectionViewController
@@ -72,6 +100,53 @@ private extension GameCollectionViewController
             let coordinator = OperatorCollectionCoordinator()
             objc_setAssociatedObject(self, &operatorCoordinatorKey, coordinator, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
             return coordinator
+        }
+    }
+
+    var pendingOperatorLaunchGame: Game? {
+        get { objc_getAssociatedObject(self, &pendingLaunchGameKey) as? Game }
+        set { objc_setAssociatedObject(self, &pendingLaunchGameKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
+    }
+
+    var operatorLaunchCancellable: AnyCancellable? {
+        get { objc_getAssociatedObject(self, &slotStateCancellableKey) as? AnyCancellable }
+        set { objc_setAssociatedObject(self, &slotStateCancellableKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
+    }
+
+    var operatorLaunchCoordinator: OperatorLaunchCoordinator {
+        get {
+            if let coordinator = objc_getAssociatedObject(self, &operatorLaunchCoordinatorKey) as? OperatorLaunchCoordinator
+            {
+                return coordinator
+            }
+
+            let coordinator = OperatorLaunchCoordinator()
+            coordinator.start(collectionViewController: self)
+            objc_setAssociatedObject(self, &operatorLaunchCoordinatorKey, coordinator, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            return coordinator
+        }
+    }
+
+    func startOperatorLaunchObserver()
+    {
+        guard self.operatorLaunchCancellable == nil else { return }
+        self.operatorLaunchCancellable = OperatorKitController.shared.$slotState
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] state in self?.launchPendingOperatorGameIfReady(state) }
+    }
+
+    func launchPendingOperatorGameIfReady(_ state: OperatorSlotState)
+    {
+        guard case .imported(let id) = state,
+              let game = self.pendingOperatorLaunchGame, game.identifier == id
+        else { return }
+        self.pendingOperatorLaunchGame = nil
+
+        DispatchQueue.main.async { [weak self] in
+            guard let self, let collectionView = self.collectionView,
+                  let indexPath = self.dataSource.fetchedResultsController.indexPath(forObject: game)
+            else { return }
+            self.collectionView(collectionView, didSelectItemAt: indexPath)
         }
     }
 }
