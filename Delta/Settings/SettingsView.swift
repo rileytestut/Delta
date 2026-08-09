@@ -13,7 +13,7 @@ import Harmony
 
 private struct SettingsBadge: View
 {
-    let text: String
+    let text: LocalizedStringKey
     var color: Color = .accentColor
 
     var body: some View {

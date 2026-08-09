@@ -12,6 +12,10 @@ import SwiftUI
 struct AchievementGameBanner: View
 {
     let game: AchievementsManager.Game
+
+    private var pointUnit: String {
+        game.currentPoints == 1 ? String(localized: "pt") : String(localized: "pts")
+    }
     
     private var bannerContent: some View
     {
@@ -36,7 +40,7 @@ struct AchievementGameBanner: View
                         }
                     }
                     
-                    Text("\(game.currentPoints.formatted()) \(game.currentPoints == 1 ? "pt" : "pts")")
+                    Text("\(game.currentPoints.formatted()) \(pointUnit)")
                         .padding(.vertical, 2)
                         .padding(.horizontal, 6)
                         .background(Color(uiColor: .deltaLightPurple).opacity(0.3), in: .capsule)

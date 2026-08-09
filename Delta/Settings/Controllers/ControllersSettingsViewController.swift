@@ -49,7 +49,7 @@ class ControllersSettingsViewController: UITableViewController
 {
     var playerIndex: Int! {
         didSet {
-            self.title = NSLocalizedString("Player \(self.playerIndex + 1)", comment: "")
+            self.title = String(format: NSLocalizedString("Player %d", comment: ""), self.playerIndex + 1)
         }
     }
     
