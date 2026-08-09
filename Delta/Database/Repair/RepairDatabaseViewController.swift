@@ -77,7 +77,7 @@ private extension RepairDatabaseViewController
             {
             case .failure(let error):
                 DispatchQueue.main.async {
-                    let alertController = UIAlertController(title: "Unable to Repair Games", error: error)
+                    let alertController = UIAlertController(title: NSLocalizedString("Unable to Repair Games", comment: ""), error: error)
                     self.present(alertController, animated: true)
                 }
                 
@@ -87,7 +87,7 @@ private extension RepairDatabaseViewController
                         switch result
                         {
                         case .failure(let error):
-                            let alertController = UIAlertController(title: "Unable to Repair Save Files", error: error)
+                            let alertController = UIAlertController(title: NSLocalizedString("Unable to Repair Save Files", comment: ""), error: error)
                             self.present(alertController, animated: true)
                             
                         case .success:

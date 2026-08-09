@@ -2593,7 +2593,8 @@ private extension GameViewController
                 toastView.show(in: self.view, duration: 4.0)
             } else {
                 let title = String(format: NSLocalizedString("✅ Achievement Unlocked", comment: ""))
-                let message = String(AttributedString(localized: "\(achievement.title) (^[\(achievement.points) \("point")](inflect: true))").characters)
+                let point = String(localized: "point")
+                let message = String(AttributedString(localized: "\(achievement.title) (^[\(achievement.points) \(point)](inflect: true))").characters)
                 
                 let toastView = RSTToastView(text: title, detailText: message)
                 toastView.detailTextLabel.textAlignment = .center

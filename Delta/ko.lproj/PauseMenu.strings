@@ -1,0 +1,47 @@
+/* ObjectID = "rY7-Wx-NaD"; property = "title"; */
+"rY7-Wx-NaD.title" = "일시 정지";
+
+/* ObjectID = "2yt-vB-uMF"; property = "title"; */
+"2yt-vB-uMF.title" = "메인 메뉴";
+
+/* ObjectID = "BoG-k2-aR2"; property = "title"; */
+"BoG-k2-aR2.title" = "세이브 스테이트";
+
+/* ObjectID = "FlO-FB-hpP"; property = "title"; */
+"FlO-FB-hpP.title" = "옵션";
+
+/* ObjectID = "Gsv-JZ-Yc0"; property = "title"; */
+"Gsv-JZ-Yc0.title" = "치트";
+
+/* ObjectID = "QT6-DZ-g70"; property = "headerTitle"; */
+"QT6-DZ-g70.headerTitle" = "이름";
+
+/* ObjectID = "DD1-X0-hg7"; property = "placeholder"; */
+"DD1-X0-hg7.placeholder" = "치트 이름";
+
+/* ObjectID = "6XN-uU-GJ5"; property = "text"; */
+"6XN-uU-GJ5.text" = "아이콘 변경";
+
+/* ObjectID = "rvn-VK-2uH"; property = "headerTitle"; */
+"rvn-VK-2uH.headerTitle" = "유형";
+
+/* ObjectID = "rvn-VK-2uH"; property = "footerTitle"; */
+"rvn-VK-2uH.footerTitle" = "설명";
+
+/* ObjectID = "rHC-nA-ga0"; property = "headerTitle"; */
+"rHC-nA-ga0.headerTitle" = "코드";
+
+/* ObjectID = "rHC-nA-ga0"; property = "footerTitle"; */
+"rHC-nA-ga0.footerTitle" = "설명";
+
+/* ObjectID = "a17-LB-QXD"; property = "text"; */
+"a17-LB-QXD.text" = "XXXXXXXX YYYYYYYY";
+
+/* ObjectID = "zdc-ES-dan"; property = "title"; */
+"zdc-ES-dan.title" = "치트";
+
+/* ObjectID = "xrD-ue-96Q"; property = "segmentTitles[0]"; */
+"xrD-ue-96Q.segmentTitles[0]" = "첫 번째";
+
+/* ObjectID = "xrD-ue-96Q"; property = "segmentTitles[1]"; */
+"xrD-ue-96Q.segmentTitles[1]" = "두 번째";

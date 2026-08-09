@@ -89,6 +89,8 @@
 		BF353FF91C5D870B00C1184C /* MenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF353FF81C5D870B00C1184C /* MenuItem.swift */; };
 		BF353FFF1C5DA3C500C1184C /* PausePresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF353FFD1C5DA3C500C1184C /* PausePresentationController.swift */; };
 		BF3540001C5DA3C500C1184C /* PausePresentationControllerContentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF353FFE1C5DA3C500C1184C /* PausePresentationControllerContentView.xib */; };
+		E5FB2509336BA07BECE429E5 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = C1626A34322395AB20E64B10 /* Localizable.strings */; };
+		4851F22C23545AF790AF115C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F41E4AC7EA77A4E548A071BA /* InfoPlist.strings */; };
 		BF3540021C5DA3D500C1184C /* PauseStoryboardSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3540011C5DA3D500C1184C /* PauseStoryboardSegue.swift */; };
 		BF3540081C5DAFAD00C1184C /* PauseTransitionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3540071C5DAFAD00C1184C /* PauseTransitionCoordinator.swift */; };
 		BF3D6C512202865F0083E05A /* Delta2ToDelta3.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = BF3D6C502202865F0083E05A /* Delta2ToDelta3.xcmappingmodel */; };
@@ -644,7 +646,8 @@
 		BF18B61E1E2985F900F70067 /* UIAlertController+Importing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIAlertController+Importing.swift"; sourceTree = "<group>"; };
 		BF1DAD5C1D9F576000E752A7 /* PreferredControllerSkinsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferredControllerSkinsViewController.swift; sourceTree = "<group>"; };
 		BF1F45A321AF274D00EF9895 /* SyncResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncResultViewController.swift; sourceTree = "<group>"; };
-		BF1F45AA21AF4B5800EF9895 /* SyncResultsViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SyncResultsViewController.storyboard; sourceTree = "<group>"; };
+		461E1C1029A65398D84C67C3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Syncing/SyncResultsViewController.storyboard; sourceTree = "<group>"; };
+		5A56C43E75A93020D886AA3F /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/SyncResultsViewController.strings; sourceTree = "<group>"; };
 		BF1F45AC21AF57BA00EF9895 /* HarmonyMetadataKey+Keys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "HarmonyMetadataKey+Keys.swift"; sourceTree = "<group>"; };
 		BF1F45BE21AF676F00EF9895 /* Box.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
 		BF27CC861BC9E3C600A20D89 /* Delta.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Delta.entitlements; sourceTree = "<group>"; };
@@ -656,9 +659,11 @@
 		BF34FA101CF1899D006624C7 /* CheatTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheatTextView.swift; sourceTree = "<group>"; };
 		BF353FF11C5D7FB000C1184C /* PauseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PauseViewController.swift; sourceTree = "<group>"; };
 		BF353FF51C5D837600C1184C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/PauseMenu.storyboard; sourceTree = "<group>"; };
+		5E850D36BCFD02F13076B334 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/PauseMenu.strings; sourceTree = "<group>"; };
 		BF353FF81C5D870B00C1184C /* MenuItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuItem.swift; sourceTree = "<group>"; };
 		BF353FFD1C5DA3C500C1184C /* PausePresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PausePresentationController.swift; sourceTree = "<group>"; };
-		BF353FFE1C5DA3C500C1184C /* PausePresentationControllerContentView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PausePresentationControllerContentView.xib; path = Delta/Base.lproj/PausePresentationControllerContentView.xib; sourceTree = SOURCE_ROOT; };
+		E8137A1EA5B77524826F252B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/PausePresentationControllerContentView.xib; sourceTree = "<group>"; };
+		379381BFDEEBCE00BA4C7E89 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/PausePresentationControllerContentView.strings; sourceTree = "<group>"; };
 		BF3540011C5DA3D500C1184C /* PauseStoryboardSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PauseStoryboardSegue.swift; sourceTree = "<group>"; };
 		BF3540041C5DA70400C1184C /* SaveStatesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SaveStatesViewController.swift; sourceTree = "<group>"; };
 		BF3540071C5DAFAD00C1184C /* PauseTransitionCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PauseTransitionCoordinator.swift; sourceTree = "<group>"; };
@@ -698,7 +703,8 @@
 		BF5942911E09BD1A0051894B /* NSManagedObject+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+Conveniences.swift"; sourceTree = "<group>"; };
 		BF5942921E09BD1A0051894B /* NSManagedObjectContext+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+Conveniences.swift"; sourceTree = "<group>"; };
 		BF5E7F431B9A650B00AE44F8 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
-		BF5E7F451B9A652600AE44F8 /* Settings.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Settings.storyboard; path = Delta/Base.lproj/Settings.storyboard; sourceTree = SOURCE_ROOT; };
+		6028BB19CF5D883A3000CBCC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Settings.storyboard; sourceTree = "<group>"; };
+		8AF88B976A36206BAAA492BB /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Settings.strings; sourceTree = "<group>"; };
 		BF616A121F08184A0077F8B2 /* ControllerInputsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerInputsViewController.swift; sourceTree = "<group>"; };
 		BF63A1A221A4AAAE00EE8F61 /* RecordSyncStatusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordSyncStatusViewController.swift; sourceTree = "<group>"; };
 		BF63A1B421A4B76E00EE8F61 /* RecordVersionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordVersionsViewController.swift; sourceTree = "<group>"; };
@@ -717,6 +723,7 @@
 		BF6BF3191EB82146008E83CD /* ClipboardImportOption.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClipboardImportOption.swift; sourceTree = "<group>"; };
 		BF6BF31B1EB821A0008E83CD /* GamesDatabaseImportOption.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GamesDatabaseImportOption.swift; sourceTree = "<group>"; };
 		BF6BF3201EB82362008E83CD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/GamesDatabase.storyboard; sourceTree = "<group>"; };
+		90B38EF277F0027A744C3708 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/GamesDatabase.strings; sourceTree = "<group>"; };
 		BF6BF3261EB87EB8008E83CD /* PhotoLibraryImportOption.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibraryImportOption.swift; sourceTree = "<group>"; };
 		BF6EE5E81F7C5F860051AD6C /* _GameControllerInputMapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = _GameControllerInputMapping.swift; sourceTree = "<group>"; };
 		BF6EE5EA1F7C5F8F0051AD6C /* GameControllerInputMapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameControllerInputMapping.swift; sourceTree = "<group>"; };
@@ -766,13 +773,16 @@
 		BFFA4C081E8A24D600D87934 /* GameTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameTableViewCell.swift; sourceTree = "<group>"; };
 		BFFA71D71AAC406100EE9DD1 /* Delta.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Delta.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFFA71DB1AAC406100EE9DD1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		42E0C602001B0332C6BBB1A8 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		BFFA71DC1AAC406100EE9DD1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BFFA71E11AAC406100EE9DD1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		E2A2382998C65E9AA22C02AD /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Main.strings; sourceTree = "<group>"; };
 		BFFC461B1D59823500AF2CC6 /* GamesPresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GamesPresentationController.swift; sourceTree = "<group>"; };
 		BFFC461C1D59823500AF2CC6 /* GamesStoryboardSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GamesStoryboardSegue.swift; sourceTree = "<group>"; };
 		BFFC461D1D59823500AF2CC6 /* InitialGamesStoryboardSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitialGamesStoryboardSegue.swift; sourceTree = "<group>"; };
 		BFFC46221D5984A000AF2CC6 /* LaunchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
 		BFFC46451D59861000AF2CC6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		0196E53871AA3F1DBCE26872 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
 		BFFC464B1D5998D600AF2CC6 /* CheatTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheatTableViewCell.swift; sourceTree = "<group>"; };
 		C124B55FFADA30BF671EE4F8 /* DeltaOperatorDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeltaOperatorDelegate.swift; sourceTree = "<group>"; };
 		C1C8C13CE90324CBBA76BC3E /* OperatorUICoordinators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperatorUICoordinators.swift; sourceTree = "<group>"; };
@@ -877,7 +887,8 @@
 		D5AA0F112CE3F4FB0015D134 /* ManagedPatron.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagedPatron.swift; sourceTree = "<group>"; };
 		D5AA0F132CE3F5040015D134 /* _ManagedPatron.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = _ManagedPatron.swift; sourceTree = "<group>"; };
 		D5AA0F152CE3F65E0015D134 /* FriendZoneManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendZoneManager.swift; sourceTree = "<group>"; };
-		D5AA0F192CE404E90015D134 /* AboutPatreonHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AboutPatreonHeaderView.xib; sourceTree = "<group>"; };
+		136DB6A536BF958F45B890C6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Settings/Patreon/AboutPatreonHeaderView.xib; sourceTree = "<group>"; };
+		A4213391D4CF78EA29F564AE /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/AboutPatreonHeaderView.strings; sourceTree = "<group>"; };
 		D5AAF27629884F8600F21ACF /* CheatDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheatDevice.swift; sourceTree = "<group>"; };
 		D5ADD12129F33FBF00CE0560 /* Features.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Features.swift; sourceTree = "<group>"; };
 		D5AE76AE2C2B52810086471B /* UserAccount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserAccount.swift; sourceTree = "<group>"; };
@@ -898,7 +909,8 @@
 		D5B0F4E42D67F0660069F4DB /* WhatsNew.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = WhatsNew.plist; sourceTree = "<group>"; };
 		D5B4235B2BD9C24000093054 /* RoundedImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedImageView.swift; sourceTree = "<group>"; };
 		D5B6F5D22D6FC0F00061C365 /* FollowUsFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowUsFooterView.swift; sourceTree = "<group>"; };
-		D5B6F5D42D6FC23E0061C365 /* FollowUsFooterView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FollowUsFooterView.xib; sourceTree = "<group>"; };
+		1D3C22BE8430516B082C7972 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Components/FollowUsFooterView.xib; sourceTree = "<group>"; };
+		3FD56624305F1D85D99D17A8 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/FollowUsFooterView.strings; sourceTree = "<group>"; };
 		D5BE1BD62D0B9CBE00D2142E /* PatreonAPI.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = PatreonAPI.plist; sourceTree = "<group>"; };
 		D5C7DD032E26CF350048FF5C /* NESDeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = NESDeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5C7DD062E26CF540048FF5C /* SNESDeltaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SNESDeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1548,6 +1560,7 @@
 				D58013E82CC992560055F11C /* Delta.entitlements */,
 				BFFA71DC1AAC406100EE9DD1 /* AppDelegate.swift */,
 				BFFA71E01AAC406100EE9DD1 /* Main.storyboard */,
+				C1626A34322395AB20E64B10 /* Localizable.strings */,
 				D502F82129EF05F800ACCDA1 /* Scenes */,
 				BFFC46211D59848000AF2CC6 /* Launch */,
 				BF46894D1AAC469800A2586D /* Game Selection */,
@@ -1577,6 +1590,7 @@
 				BF090CF11B490D8300DCAB45 /* Delta-Bridging-Header.h */,
 				BF27CC861BC9E3C600A20D89 /* Delta.entitlements */,
 				BFFA71DB1AAC406100EE9DD1 /* Info.plist */,
+				F41E4AC7EA77A4E548A071BA /* InfoPlist.strings */,
 				BFAB9F87219A4B670080EC7D /* GoogleService-Info.plist */,
 				C6F24ADA2D64B5A0002F939F /* Lu-Info.plist */,
 			);
@@ -2134,6 +2148,7 @@
 				English,
 				en,
 				Base,
+				ko,
 			);
 			mainGroup = BFFA71CE1AAC406100EE9DD1;
 			packageReferences = (
@@ -2320,6 +2335,8 @@
 				D53BE5FF2E873E6B0012DE0F /* MicrochipIcon.icon in Resources */,
 				D5D797E9298DCC7300738869 /* cheatbase.zip in Resources */,
 				BFFA71E21AAC406100EE9DD1 /* Main.storyboard in Resources */,
+				E5FB2509336BA07BECE429E5 /* Localizable.strings in Resources */,
+				4851F22C23545AF790AF115C /* InfoPlist.strings in Resources */,
 				D5B6F5D52D6FC23E0061C365 /* FollowUsFooterView.xib in Resources */,
 				D5AE76C62C2B7F3D0086471B /* Icons.xcassets in Resources */,
 				D5AA0F1A2CE404E90015D134 /* AboutPatreonHeaderView.xib in Resources */,
@@ -2829,12 +2846,72 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		BF1F45AA21AF4B5800EF9895 /* SyncResultsViewController.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				461E1C1029A65398D84C67C3 /* Base */,
+				5A56C43E75A93020D886AA3F /* ko */,
+			);
+			name = SyncResultsViewController.storyboard;
+			path = Delta;
+			sourceTree = SOURCE_ROOT;
+		};
+		D5AA0F192CE404E90015D134 /* AboutPatreonHeaderView.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				136DB6A536BF958F45B890C6 /* Base */,
+				A4213391D4CF78EA29F564AE /* ko */,
+			);
+			name = AboutPatreonHeaderView.xib;
+			path = Delta;
+			sourceTree = SOURCE_ROOT;
+		};
+		D5B6F5D42D6FC23E0061C365 /* FollowUsFooterView.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1D3C22BE8430516B082C7972 /* Base */,
+				3FD56624305F1D85D99D17A8 /* ko */,
+			);
+			name = FollowUsFooterView.xib;
+			path = Delta;
+			sourceTree = SOURCE_ROOT;
+		};
+		F41E4AC7EA77A4E548A071BA /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				42E0C602001B0332C6BBB1A8 /* ko */,
+			);
+			name = InfoPlist.strings;
+			path = Delta;
+			sourceTree = SOURCE_ROOT;
+		};
 		BF353FF41C5D837600C1184C /* PauseMenu.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				BF353FF51C5D837600C1184C /* Base */,
+				5E850D36BCFD02F13076B334 /* ko */,
 			);
 			name = PauseMenu.storyboard;
+			path = Delta;
+			sourceTree = SOURCE_ROOT;
+		};
+		BF353FFE1C5DA3C500C1184C /* PausePresentationControllerContentView.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E8137A1EA5B77524826F252B /* Base */,
+				379381BFDEEBCE00BA4C7E89 /* ko */,
+			);
+			name = PausePresentationControllerContentView.xib;
+			path = Delta;
+			sourceTree = SOURCE_ROOT;
+		};
+		BF5E7F451B9A652600AE44F8 /* Settings.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6028BB19CF5D883A3000CBCC /* Base */,
+				8AF88B976A36206BAAA492BB /* ko */,
+			);
+			name = Settings.storyboard;
 			path = Delta;
 			sourceTree = SOURCE_ROOT;
 		};
@@ -2842,6 +2919,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				BF6BF3201EB82362008E83CD /* Base */,
+				90B38EF277F0027A744C3708 /* ko */,
 			);
 			name = GamesDatabase.storyboard;
 			path = Delta;
@@ -2851,10 +2929,19 @@
 			isa = PBXVariantGroup;
 			children = (
 				BFFA71E11AAC406100EE9DD1 /* Base */,
+				E2A2382998C65E9AA22C02AD /* ko */,
 			);
 			name = Main.storyboard;
 			path = Delta;
 			sourceTree = SOURCE_ROOT;
+		};
+		C1626A34322395AB20E64B10 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0196E53871AA3F1DBCE26872 /* ko */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
 		};
 		BFFC46441D59861000AF2CC6 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
@@ -3085,6 +3172,7 @@
 				STRIP_INSTALLED_PRODUCT = YES;
 				STRIP_STYLE = "non-global";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = BETA;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_INCLUDE_PATHS = "$(inherited) \"$(SRCROOT)/Cores/GPGXDeltaCore/Sources/GPGXBridge\"";
 				SWIFT_OBJC_BRIDGING_HEADER = "Delta/Supporting Files/Delta-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -3119,6 +3207,7 @@
 				STRIP_INSTALLED_PRODUCT = YES;
 				STRIP_STYLE = "non-global";
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_INCLUDE_PATHS = "$(inherited) \"$(SRCROOT)/Cores/GPGXDeltaCore/Sources/GPGXBridge\"";
 				SWIFT_OBJC_BRIDGING_HEADER = "Delta/Supporting Files/Delta-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";

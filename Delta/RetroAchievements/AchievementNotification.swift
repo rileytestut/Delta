@@ -19,6 +19,11 @@ struct AchievementNotification: View
     @Environment(AchievementToastView.self)
     private var hostingView
 
+    private var pointUnit: String
+    {
+        achievement.points == 1 ? String(localized: "pt") : String(localized: "pts")
+    }
+
     var body: some View {
         AchievementToast(glassShape: .rect(cornerRadius: 26)) {
             Button {
@@ -44,7 +49,7 @@ struct AchievementNotification: View
 
                             if isExpanded {
                                 Spacer()
-                                Text("\(achievement.points) \(achievement.points == 1 ? "pt" : "pts")")
+                                Text("\(achievement.points) \(pointUnit)")
                                     .font(.caption)
                                     .padding(.vertical, 2)
                                     .padding(.horizontal, 5)

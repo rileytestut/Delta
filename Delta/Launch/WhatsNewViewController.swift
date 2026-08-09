@@ -34,6 +34,16 @@ extension WhatsNewViewController
         var fallbackIcon: String?
         
         var isPatronExclusive: Bool
+
+        var localizedName: String
+        {
+            Bundle.main.localizedString(forKey: self.name, value: self.name, table: nil)
+        }
+
+        var localizedCaption: String
+        {
+            Bundle.main.localizedString(forKey: self.caption, value: self.caption, table: nil)
+        }
         
         var image: UIImage? {
             if let image = UIImage(systemName: self.icon)

@@ -320,7 +320,7 @@ extension PauseViewController {
             // Show initial loading indicator
             let loadingAlert = UIAlertController(
                 title: nil,
-                message: "Checking game...",
+                message: NSLocalizedString("Checking game...", comment: ""),
                 preferredStyle: .alert
             )
             
@@ -374,7 +374,7 @@ extension PauseViewController {
     private func showLuQuestionPrompt(for game: Game) {
         
         let alertController = UIAlertController(
-            title: NSLocalizedString("Ask Lu about \(game.name)", comment: ""),
+            title: String(format: NSLocalizedString("Ask Lu about %@", comment: ""), game.name),
             message: NSLocalizedString("What would you like to know about this game?", comment: ""),
             preferredStyle: .alert
         )
@@ -405,7 +405,7 @@ extension PauseViewController {
 
         let loadingAlert = UIAlertController(
             title: nil,
-            message: "Lu is thinking...",
+            message: NSLocalizedString("Lu is thinking...", comment: ""),
             preferredStyle: .alert
         )
         
@@ -421,14 +421,14 @@ extension PauseViewController {
         let urlString = APIConstants.askBaseURL
         guard let url = URL(string: urlString) else {
             loadingAlert.dismiss(animated: true)
-            self.showError("Failed to create request")
+            self.showError(NSLocalizedString("Failed to create request", comment: ""))
             return
         }
         
         let activeGameId = ExperimentalFeatures.shared.Lu.wrappedValue.activeGameId
         if activeGameId.isEmpty {
             loadingAlert.dismiss(animated: true)
-            self.showError("Failed to prepare your question")
+            self.showError(NSLocalizedString("Failed to prepare your question", comment: ""))
             return
         }
         
@@ -522,7 +522,7 @@ extension PauseViewController {
         } catch {
             luLog(.error, "Failed to encode request: \(error.localizedDescription)")
             loadingAlert.dismiss(animated: true)
-            self.showError("Failed to prepare your question")
+            self.showError(NSLocalizedString("Failed to prepare your question", comment: ""))
             return
         }
 
@@ -536,23 +536,23 @@ extension PauseViewController {
                     if let error = error as? URLError {
                         switch error.code {
                         case .timedOut:
-                            self?.showError("Lu is taking longer than usual to respond. Please try again.")
+                            self?.showError(NSLocalizedString("Lu is taking longer than usual to respond. Please try again.", comment: ""))
                         case .notConnectedToInternet:
-                            self?.showError("No internet connection. Please check your connection and try again.")
+                            self?.showError(NSLocalizedString("No internet connection. Please check your connection and try again.", comment: ""))
                         default:
-                            self?.showError("Unable to connect to Lu. Please try again later.")
+                            self?.showError(NSLocalizedString("Unable to connect to Lu. Please try again later.", comment: ""))
                         }
                         return
                     }
                     
                     guard let httpResponse = response as? HTTPURLResponse else {
-                        self?.showError("Received an invalid response. Please try again.")
+                        self?.showError(NSLocalizedString("Received an invalid response. Please try again.", comment: ""))
                         return
                     }
                     
                     guard httpResponse.statusCode == 200,
                           let data = data else {
-                        self?.showError("Lu encountered an error. Please try again later.")
+                        self?.showError(NSLocalizedString("Lu encountered an error. Please try again later.", comment: ""))
                         return
                     }
                     
@@ -560,7 +560,7 @@ extension PauseViewController {
                         let luResponse = try JSONDecoder().decode(LuResponse.self, from: data)
                         self?.showLuResponse(response: luResponse, question: question, for: game)
                     } catch {
-                        self?.showError("Failed to understand Lu's response. Please try again.")
+                        self?.showError(NSLocalizedString("Failed to understand Lu's response. Please try again.", comment: ""))
                     }
                 }
             }
@@ -569,16 +569,11 @@ extension PauseViewController {
     }
     
     private func showLuResponse(response: LuResponse, question: String, for game: Game) {
-        var messageText = ""
-        
-        messageText += """
-        Q: \(question)
-        
-        \(response.answer)
-        """
+        var messageText = String(format: NSLocalizedString("Q: %@", comment: ""), question)
+        messageText += "\n\n" + response.answer
         
         if ExperimentalFeatures.shared.Lu.wrappedValue.rememberConversations {
-            messageText += "\n\n(Conversation will be remembered for this game)"
+            messageText += "\n\n" + NSLocalizedString("(Conversation will be remembered for this game)", comment: "")
         }
         
         let responseAlert = UIAlertController(
@@ -595,72 +590,72 @@ extension PauseViewController {
         }
         
         let feedbackActions = UIAlertAction(
-            title: "Share feedback",
+            title: NSLocalizedString("Share feedback", comment: ""),
             style: .default
         ) { [weak self] _ in
             let feedbackAlert = UIAlertController(
-                title: "Feedback",
-                message: "Let us know how Lu handled your question:\n\n\"\(question)\"",
+                title: NSLocalizedString("Feedback", comment: ""),
+                message: String(format: NSLocalizedString("Let us know how Lu handled your question:\n\n\"%@\"", comment: ""), question),
                 preferredStyle: .alert
             )
             
             let thumbsUpAction = UIAlertAction(
-                title: "👍 Great!",
+                title: NSLocalizedString("👍 Great!", comment: ""),
                 style: .default
             ) { [weak self] _ in
                 self?.sendFeedback(messageId: response.message_id, feedback: "POSITIVE", feedbackMessage: nil, for: game) {
                     let successAlert = UIAlertController(
-                        title: "Thank You!",
-                        message: "Your feedback helps Lu improve and provide even better answers in the future.",
+                        title: NSLocalizedString("Thank You!", comment: ""),
+                        message: NSLocalizedString("Your feedback helps Lu improve and provide even better answers in the future.", comment: ""),
                         preferredStyle: .alert
                     )
-                    successAlert.addAction(UIAlertAction(title: "OK", style: .default))
+                    successAlert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default))
                     self?.present(successAlert, animated: true)
                 }
             }
             
             let thumbsDownAction = UIAlertAction(
-                title: "👎 Needs Improvement",
+                title: NSLocalizedString("👎 Needs Improvement", comment: ""),
                 style: .default
             ) { [weak self] _ in
                 let inputAlert = UIAlertController(
-                    title: "Additional Feedback",
-                    message: "How can Lu improve its response to your question?\n\n\"\(question)\"",
+                    title: NSLocalizedString("Additional Feedback", comment: ""),
+                    message: String(format: NSLocalizedString("How can Lu improve its response to your question?\n\n\"%@\"", comment: ""), question),
                     preferredStyle: .alert
                 )
                 
                 inputAlert.addTextField { textField in
-                    textField.placeholder = "Enter your feedback"
+                    textField.placeholder = NSLocalizedString("Enter your feedback", comment: "")
                 }
                 
                 let sendAction = UIAlertAction(
-                    title: "Send",
+                    title: NSLocalizedString("Send", comment: ""),
                     style: .default
                 ) { _ in
                     if let message = inputAlert.textFields?.first?.text {
                         self?.sendFeedback(messageId: response.message_id, feedback: "NEGATIVE", feedbackMessage: message, for: game) {
                             let successAlert = UIAlertController(
-                                title: "Feedback Received",
-                                message: "Thank you for helping Lu learn and grow. Your feedback is greatly appreciated!",
+                                title: NSLocalizedString("Feedback Received", comment: ""),
+                                message: NSLocalizedString("Thank you for helping Lu learn and grow. Your feedback is greatly appreciated!", comment: ""),
                                 preferredStyle: .alert
                             )
-                            successAlert.addAction(UIAlertAction(title: "OK", style: .default))
+                            successAlert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default))
                             self?.present(successAlert, animated: true)
                         }
                     } else {
                         self?.sendFeedback(messageId: response.message_id, feedback: "NEGATIVE", feedbackMessage: nil, for: game) {
                             let successAlert = UIAlertController(
-                                title: "Feedback Received",
-                                message: "Thank you for your feedback. Lu will keep working to provide better responses.",
+                                title: NSLocalizedString("Feedback Received", comment: ""),
+                                message: NSLocalizedString("Thank you for your feedback. Lu will keep working to provide better responses.", comment: ""),
                                 preferredStyle: .alert
                             )
-                            successAlert.addAction(UIAlertAction(title: "OK", style: .default))
+                            successAlert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default))
                             self?.present(successAlert, animated: true)
                         }
                     }
                 }
                 
-                let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+                let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel)
                 
                 inputAlert.addAction(sendAction)
                 inputAlert.addAction(cancelAction)
@@ -668,7 +663,7 @@ extension PauseViewController {
                 self?.present(inputAlert, animated: true)
             }
             
-            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+            let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel)
             
             feedbackAlert.addAction(thumbsUpAction)
             feedbackAlert.addAction(thumbsDownAction)
@@ -696,7 +691,7 @@ extension PauseViewController {
         // Show loading indicator
         let loadingAlert = UIAlertController(
             title: nil,
-            message: "Sharing feedback...",
+            message: NSLocalizedString("Sharing feedback...", comment: ""),
             preferredStyle: .alert
         )
         
@@ -737,12 +732,12 @@ extension PauseViewController {
                     if error != nil {
                         
                         let errorAlert = UIAlertController(
-                            title: "Feedback Error",
-                            message: "Failed to send feedback. Please try again later.",
+                            title: NSLocalizedString("Feedback Error", comment: ""),
+                            message: NSLocalizedString("Failed to send feedback. Please try again later.", comment: ""),
                             preferredStyle: .alert
                         )
                         luLog(.error, "[feedbacks] Failed to send feedback to Lu API")
-                        errorAlert.addAction(UIAlertAction(title: "OK", style: .default))
+                        errorAlert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default))
                         self?.present(errorAlert, animated: true)
                         return
                     }
@@ -758,12 +753,12 @@ extension PauseViewController {
                     } else {
                         // Show error alert for non-200 status codes
                         let errorAlert = UIAlertController(
-                            title: "Lu can't help you right now",
-                            message: "Something went wrong while sharing your feedback with Lu. Please try again later.",
+                            title: NSLocalizedString("Lu can't help you right now", comment: ""),
+                            message: NSLocalizedString("Something went wrong while sharing your feedback with Lu. Please try again later.", comment: ""),
                             preferredStyle: .alert
                         )
                         luLog(.error, "Error [feedbacks]: Failed to send feedback due to errors, status=\(httpResponse.statusCode)")
-                        errorAlert.addAction(UIAlertAction(title: "OK", style: .default))
+                        errorAlert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default))
                         self?.present(errorAlert, animated: true)
                     }
                 }
@@ -774,12 +769,12 @@ extension PauseViewController {
     
     private func showError(_ message: String) {
         let alert = UIAlertController(
-            title: "Lu can't help you right now",
+            title: NSLocalizedString("Lu can't help you right now", comment: ""),
             message: message,
             preferredStyle: .alert
         )
         
-        let okAction = UIAlertAction(title: "OK", style: .default)
+        let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default)
         alert.addAction(okAction)
         
         self.present(alert, animated: true)
@@ -787,12 +782,12 @@ extension PauseViewController {
     
     private func showUnsupportedGameMessage() {
         let alert = UIAlertController(
-            title: "Lu Can't Help You Yet",
-            message: "Sorry, but Lu doesn't support this game just yet. Don't worry—we're already working on getting it onboarded as soon as possible. Thank you so much for giving Lu a try!",
+            title: NSLocalizedString("Lu Can't Help You Yet", comment: ""),
+            message: NSLocalizedString("Sorry, but Lu doesn't support this game just yet. Don't worry—we're already working on getting it onboarded as soon as possible. Thank you so much for giving Lu a try!", comment: ""),
             preferredStyle: .alert
         )
         
-        let okAction = UIAlertAction(title: "OK", style: .default)
+        let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default)
         alert.addAction(okAction)
         
         self.present(alert, animated: true)
@@ -807,7 +802,8 @@ extension PauseViewController {
         let urlString = "\(APIConstants.supportBaseURL)?sha1=\(sha1)"
         guard let url = URL(string: urlString) else {
             luLog(.error, "Invalid URL for check-rom endpoint")
-            showError("Sorry, but Lu can't help you with this game right now. Don't worry—we're already working on getting it fixed as soon as possible. Thank you so much for giving Lu a try! Issue : Something went wrong while checking game knowledge")
+            let issue = NSLocalizedString("Something went wrong while checking game knowledge", comment: "")
+            showError(String(format: NSLocalizedString("Sorry, but Lu can't help you with this game right now. Don't worry—we're already working on getting it fixed as soon as possible. Thank you so much for giving Lu a try! Issue : %@", comment: ""), issue))
             completion(false)
             return
         }
@@ -825,24 +821,29 @@ extension PauseViewController {
                 guard let self = self else { return }
                 
                 if let error = error as? URLError {
-                    let errorMessage: String
+                    let logErrorMessage: String
+                    let userErrorMessage: String
                     switch error.code {
                     case .timedOut:
-                        errorMessage = "Connection timed out. Please check your internet connection and try again."
+                        logErrorMessage = "Connection timed out. Please check your internet connection and try again."
+                        userErrorMessage = NSLocalizedString("Connection timed out. Please check your internet connection and try again.", comment: "")
                     case .notConnectedToInternet:
-                        errorMessage = "No internet connection. Please check your connection and try again."
+                        logErrorMessage = "No internet connection. Please check your connection and try again."
+                        userErrorMessage = NSLocalizedString("No internet connection. Please check your connection and try again.", comment: "")
                     default:
-                        errorMessage = "Unable to connect to Lu. Please try again later."
+                        logErrorMessage = "Unable to connect to Lu. Please try again later."
+                        userErrorMessage = NSLocalizedString("Unable to connect to Lu. Please try again later.", comment: "")
                     }
                     
-                    luLog(.error,"check-rom error: \(errorMessage) - \(error.localizedDescription)")
-                    self.showError("Sorry, but Lu can't help you with this game right now. Don't worry—we're already working on getting it fixed as soon as possible. Thank you so much for giving Lu a try! Issue : \(errorMessage)")
+                    luLog(.error,"check-rom error: \(logErrorMessage) - \(error.localizedDescription)")
+                    self.showError(String(format: NSLocalizedString("Sorry, but Lu can't help you with this game right now. Don't worry—we're already working on getting it fixed as soon as possible. Thank you so much for giving Lu a try! Issue : %@", comment: ""), userErrorMessage))
                     completion(false)
                     return
                 }
                 
                 guard let httpResponse = response as? HTTPURLResponse else {
-                    self.showError("Sorry, but Lu can't help you with this game right now. Don't worry—we're already working on getting it fixed as soon as possible. Thank you so much for giving Lu a try! Issue : Received an invalid response. Please try again.")
+                    let issue = NSLocalizedString("Received an invalid response. Please try again.", comment: "")
+                    self.showError(String(format: NSLocalizedString("Sorry, but Lu can't help you with this game right now. Don't worry—we're already working on getting it fixed as soon as possible. Thank you so much for giving Lu a try! Issue : %@", comment: ""), issue))
                     luLog(.error,"check-rom error: invalid response \(response?.description ?? "nil")")
                     completion(false)
                     return
@@ -866,7 +867,7 @@ extension PauseViewController {
                             completion(true)
                         } catch {
                             luLog(.error, "check-rom decode error: \(error.localizedDescription)")
-                            self.showError("Failed to process game support information")
+                            self.showError(NSLocalizedString("Failed to process game support information", comment: ""))
                             completion(false)
                         }
                     }
@@ -876,12 +877,12 @@ extension PauseViewController {
                     completion(false)
                 case 500...599:
                     luLog(.error, "check-rom server error: Status \(httpResponse.statusCode)")
-                    self.showError("Lu is temporarily unavailable. Please try again later.")
+                    self.showError(NSLocalizedString("Lu is temporarily unavailable. Please try again later.", comment: ""))
                     completion(false)
                     
                 default:
                     luLog(.error, "check-rom unexpected error, status: \(httpResponse.statusCode)")
-                    self.showError("Something unexpected happened. Please try again.")
+                    self.showError(NSLocalizedString("Something unexpected happened. Please try again.", comment: ""))
                     completion(false)
                 }
             }

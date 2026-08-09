@@ -40,8 +40,8 @@ extension WhatsNewCollectionViewCell
 {
     func configure(with feature: WhatsNewViewController.NewFeature)
     {
-        self.nameLabel.text = feature.name
-        self.captionLabel.text = feature.caption
+        self.nameLabel.text = feature.localizedName
+        self.captionLabel.text = feature.localizedCaption
         self.imageView.image = feature.image
         
         if feature.isPatronExclusive

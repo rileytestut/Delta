@@ -1,0 +1,4 @@
+"NSLocalNetworkUsageDescription" = "Delta는 AltServer와 통신하고 JIT를 활성화하며 Epilogue Operator 기기에 연결하기 위해 로컬 네트워크를 사용합니다.";
+"NSMicrophoneUsageDescription" = "Delta는 Nintendo DS의 마이크 기능을 에뮬레이션하기 위해 사용자의 마이크를 사용합니다.";
+"NSPhotoLibraryAddUsageDescription" = "Delta가 스크린샷을 사진 보관함에 저장할 수 있도록 허용해 주세요.";
+"NSPhotoLibraryUsageDescription" = "“확인”을 눌러 Delta가 사진 보관함의 이미지를 게임 아트워크로 사용할 수 있도록 허용해 주세요.";

@@ -284,7 +284,7 @@ private struct InputMappingRow: View
                 } label: {
                     Label(controllerInput.localizedDisplayName, systemImage: controllerInput.sfSymbolName)
                 } currentValueLabel: {
-                    Text(mappedInput.wrappedValue?.localizedDisplayName ?? String(localized: defaultInput == nil ? "Remove" : "Default"))
+                    Text(mappedInput.wrappedValue?.localizedDisplayName ?? (defaultInput == nil ? String(localized: "Remove") : String(localized: "Default")))
                 }
             }
             else
@@ -302,8 +302,16 @@ private struct InputMappingRow: View
     
     @ViewBuilder
     var pickerOptions: some View {
-        Text(defaultInput == nil ? "Remove" : "Default")
-            .tag(AnyInput?.none)
+        if defaultInput == nil
+        {
+            Text("Remove")
+                .tag(AnyInput?.none)
+        }
+        else
+        {
+            Text("Default")
+                .tag(AnyInput?.none)
+        }
         
         Section {
             ForEach(mappableInputs, id: \.self) { input in
