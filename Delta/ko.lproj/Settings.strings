@@ -1,0 +1,497 @@
+/* ObjectID = "eHi-aO-uGS"; property = "title"; */
+"eHi-aO-uGS.title" = "설정";
+
+/* ObjectID = "Str-BY-agW"; property = "text"; */
+"Str-BY-agW.text" = "Delta 0.6.0";
+
+/* ObjectID = "QvT-Yt-oP1"; property = "headerTitle"; */
+"QvT-Yt-oP1.headerTitle" = "후원자";
+
+/* ObjectID = "faT-qa-JP0"; property = "text"; */
+"faT-qa-JP0.text" = "Patreon 계정 관리";
+
+/* ObjectID = "c6K-sJ-0vW"; property = "headerTitle"; */
+"c6K-sJ-0vW.headerTitle" = "컨트롤러";
+
+/* ObjectID = "tls-Hv-Rx2"; property = "text"; */
+"tls-Hv-Rx2.text" = "플레이어 1";
+
+/* ObjectID = "vJP-Ie-a9H"; property = "text"; */
+"vJP-Ie-a9H.text" = "Riley's iPhone";
+
+/* ObjectID = "e3u-x9-IEC"; property = "text"; */
+"e3u-x9-IEC.text" = "플레이어 2";
+
+/* ObjectID = "2OP-A1-VYo"; property = "text"; */
+"2OP-A1-VYo.text" = "SteelSeries Stratus";
+
+/* ObjectID = "Cdn-11-xZe"; property = "text"; */
+"Cdn-11-xZe.text" = "플레이어 3";
+
+/* ObjectID = "wWc-NY-Bsd"; property = "text"; */
+"wWc-NY-Bsd.text" = "MOGA Gamepad";
+
+/* ObjectID = "Hls-3b-EaS"; property = "text"; */
+"Hls-3b-EaS.text" = "플레이어 4";
+
+/* ObjectID = "hNf-uc-PLR"; property = "text"; */
+"hNf-uc-PLR.text" = "Jayce's iPhone";
+
+/* ObjectID = "Nch-k1-6pR"; property = "headerTitle"; */
+"Nch-k1-6pR.headerTitle" = "컨트롤러 스킨";
+
+/* ObjectID = "mBC-YU-BVK"; property = "text"; */
+"mBC-YU-BVK.text" = "시스템 이름";
+
+/* ObjectID = "Dxs-Me-IVU"; property = "text"; */
+"Dxs-Me-IVU.text" = "시스템 이름";
+
+/* ObjectID = "o9x-Kn-6bC"; property = "text"; */
+"o9x-Kn-6bC.text" = "시스템 이름";
+
+/* ObjectID = "XVO-TO-ncw"; property = "text"; */
+"XVO-TO-ncw.text" = "시스템 이름";
+
+/* ObjectID = "vV9-Fk-zd5"; property = "text"; */
+"vV9-Fk-zd5.text" = "시스템 이름";
+
+/* ObjectID = "Etp-g5-W9R"; property = "text"; */
+"Etp-g5-W9R.text" = "시스템 이름";
+
+/* ObjectID = "sF6-5e-HL2"; property = "text"; */
+"sF6-5e-HL2.text" = "시스템 이름";
+
+/* ObjectID = "SwK-m9-8gt"; property = "headerTitle"; */
+"SwK-m9-8gt.headerTitle" = "컨트롤러 불투명도";
+
+/* ObjectID = "SwK-m9-8gt"; property = "footerTitle"; */
+"SwK-m9-8gt.footerTitle" = "컨트롤러 스킨에서 지원하는 경우 컨트롤러의 불투명도를 결정합니다.";
+
+/* ObjectID = "zaz-yD-CYG"; property = "text"; */
+"zaz-yD-CYG.text" = "50%";
+
+/* ObjectID = "dV4-8P-2Dw"; property = "headerTitle"; */
+"dV4-8P-2Dw.headerTitle" = "화면";
+
+/* ObjectID = "dV4-8P-2Dw"; property = "footerTitle"; */
+"dV4-8P-2Dw.footerTitle" = "다른 앱 아이콘을 선택해 Delta를 원하는 모습으로 꾸밀 수 있습니다.";
+
+/* ObjectID = "iV4-br-PKm"; property = "text"; */
+"iV4-br-PKm.text" = "앱 아이콘 변경";
+
+/* ObjectID = "aJ4-xT-aZL"; property = "headerTitle"; */
+"aJ4-xT-aZL.headerTitle" = "게임 오디오";
+
+/* ObjectID = "aJ4-xT-aZL"; property = "footerTitle"; */
+"aJ4-xT-aZL.footerTitle" = "사용하면 기기가 무음 모드가 아닐 때만 Delta가 게임 오디오를 재생합니다.";
+
+/* ObjectID = "mue-uO-1xE"; property = "text"; */
+"mue-uO-1xE.text" = "무음 모드 따르기";
+
+/* ObjectID = "vbO-8P-7Mc"; property = "headerTitle"; */
+"vbO-8P-7Mc.headerTitle" = "멀티태스킹";
+
+/* ObjectID = "vbO-8P-7Mc"; property = "footerTitle"; */
+"vbO-8P-7Mc.footerTitle" = "게임 창이 활성 상태가 아닐 때 자동으로 일시 정지합니다.";
+
+/* ObjectID = "yQG-GF-gkg"; property = "text"; */
+"yQG-GF-gkg.text" = "게임을 새 창에서 열기";
+
+/* ObjectID = "9fx-lk-IIz"; property = "text"; */
+"9fx-lk-IIz.text" = "비활성 상태에서 일시 정지";
+
+/* ObjectID = "avK-bg-nm6"; property = "headerTitle"; */
+"avK-bg-nm6.headerTitle" = "햅틱 피드백";
+
+/* ObjectID = "avK-bg-nm6"; property = "footerTitle"; */
+"avK-bg-nm6.footerTitle" = "사용하면 터치 화면 조작에 반응해 기기가 진동합니다.";
+
+/* ObjectID = "XPP-qe-q75"; property = "text"; */
+"XPP-qe-q75.text" = "버튼";
+
+/* ObjectID = "MDR-bb-TYm"; property = "text"; */
+"MDR-bb-TYm.text" = "컨트롤 스틱";
+
+/* ObjectID = "y6U-7a-bnX"; property = "headerTitle"; */
+"y6U-7a-bnX.headerTitle" = "Delta 동기화";
+
+/* ObjectID = "y6U-7a-bnX"; property = "footerTitle"; */
+"y6U-7a-bnX.footerTitle" = "기기 간에 게임, 저장 데이터, 저장 상태 및 치트를 동기화합니다.";
+
+/* ObjectID = "4U1-fe-PIb"; property = "text"; */
+"4U1-fe-PIb.text" = "서비스";
+
+/* ObjectID = "kLY-5g-v8n"; property = "text"; */
+"kLY-5g-v8n.text" = "Google Drive";
+
+/* ObjectID = "1u0-gh-zP7"; property = "text"; */
+"1u0-gh-zP7.text" = "동기화 상태";
+
+/* ObjectID = "BoE-ds-6Mb"; property = "headerTitle"; */
+"BoE-ds-6Mb.headerTitle" = "제스처";
+
+/* ObjectID = "xqO-bP-GZu"; property = "text"; */
+"xqO-bP-GZu.text" = "메뉴 버튼 제스처";
+
+/* ObjectID = "PsL-N1-lvD"; property = "headerTitle"; */
+"PsL-N1-lvD.headerTitle" = "AirPlay";
+
+/* ObjectID = "PsL-N1-lvD"; property = "footerTitle"; */
+"PsL-N1-lvD.footerTitle" = "게임 창이 활성 상태가 아닐 때 자동으로 일시 정지합니다.";
+
+/* ObjectID = "YY1-UX-Gda"; property = "text"; */
+"YY1-UX-Gda.text" = "전체 화면으로 표시";
+
+/* ObjectID = "pD5-rE-bOF"; property = "text"; */
+"pD5-rE-bOF.text" = "위쪽 화면만";
+
+/* ObjectID = "YWh-UD-X86"; property = "text"; */
+"YWh-UD-X86.text" = "Nintendo DS";
+
+/* ObjectID = "4ZP-9E-Rfx"; property = "text"; */
+"4ZP-9E-Rfx.text" = "화면을 가로로 배치";
+
+/* ObjectID = "3Mn-R8-hr1"; property = "text"; */
+"3Mn-R8-hr1.text" = "Nintendo DS";
+
+/* ObjectID = "fdp-8c-oOc"; property = "headerTitle"; */
+"fdp-8c-oOc.headerTitle" = "햅틱 터치";
+
+/* ObjectID = "fdp-8c-oOc"; property = "footerTitle"; */
+"fdp-8c-oOc.footerTitle" = "컨텍스트 메뉴를 사용할 때 게임과 저장 상태를 미리 봅니다.";
+
+/* ObjectID = "c5i-qG-ir9"; property = "text"; */
+"c5i-qG-ir9.text" = "홈 화면 바로가기";
+
+/* ObjectID = "rDR-EH-JuO"; property = "text"; */
+"rDR-EH-JuO.text" = "컨텍스트 메뉴 미리보기";
+
+/* ObjectID = "1eN-id-M8c"; property = "headerTitle"; */
+"1eN-id-M8c.headerTitle" = "코어 설정";
+
+/* ObjectID = "1eN-id-M8c"; property = "footerTitle"; */
+"1eN-id-M8c.footerTitle" = "개별 에뮬레이션 코어의 설정을 관리합니다.";
+
+/* ObjectID = "XbP-aW-HU8"; property = "text"; */
+"XbP-aW-HU8.text" = "Nintendo";
+
+/* ObjectID = "gXM-DZ-5a1"; property = "text"; */
+"gXM-DZ-5a1.text" = "Nestopia";
+
+/* ObjectID = "K3D-rt-m4C"; property = "text"; */
+"K3D-rt-m4C.text" = "Sega Genesis";
+
+/* ObjectID = "1ye-yG-hW2"; property = "text"; */
+"1ye-yG-hW2.text" = "Genesis Plus GX";
+
+/* ObjectID = "XLE-ZJ-ESC"; property = "text"; */
+"XLE-ZJ-ESC.text" = "Super Nintendo";
+
+/* ObjectID = "T9u-HX-5Ar"; property = "text"; */
+"T9u-HX-5Ar.text" = "Snes9x";
+
+/* ObjectID = "qJY-Ha-rdz"; property = "text"; */
+"qJY-Ha-rdz.text" = "Nintendo 64";
+
+/* ObjectID = "fLK-oP-kku"; property = "text"; */
+"fLK-oP-kku.text" = "Mupen64Plus";
+
+/* ObjectID = "zUQ-MC-PSt"; property = "text"; */
+"zUQ-MC-PSt.text" = "Game Boy Color";
+
+/* ObjectID = "z1Q-cc-JYV"; property = "text"; */
+"z1Q-cc-JYV.text" = "Gambatte";
+
+/* ObjectID = "RAd-mB-Iwr"; property = "text"; */
+"RAd-mB-Iwr.text" = "Game Boy Advance";
+
+/* ObjectID = "yYc-QH-cts"; property = "text"; */
+"yYc-QH-cts.text" = "VBA-M";
+
+/* ObjectID = "V9s-w5-hm9"; property = "text"; */
+"V9s-w5-hm9.text" = "Nintendo DS";
+
+/* ObjectID = "Ejw-YM-kCu"; property = "text"; */
+"Ejw-YM-kCu.text" = "melonDS";
+
+/* ObjectID = "EzW-IN-YAf"; property = "headerTitle"; */
+"EzW-IN-YAf.headerTitle" = "고급";
+
+/* ObjectID = "EzW-IN-YAf"; property = "footerTitle"; */
+"EzW-IN-YAf.footerTitle" = "기여자가 추가한 새 기능을 시험해 봅니다.";
+
+/* ObjectID = "XPB-zq-ssX"; property = "text"; */
+"XPB-zq-ssX.text" = "오류 로그 내보내기…";
+
+/* ObjectID = "Dca-za-cfI"; property = "text"; */
+"Dca-za-cfI.text" = "실험적 기능";
+
+/* ObjectID = "foh-L9-g6W"; property = "headerTitle"; */
+"foh-L9-g6W.headerTitle" = "크레딧";
+
+/* ObjectID = "g59-8E-zW7"; property = "text"; */
+"g59-8E-zW7.text" = "기여자";
+
+/* ObjectID = "2K3-IL-94S"; property = "text"; */
+"2K3-IL-94S.text" = "라이선스";
+
+/* ObjectID = "EXh-f2-RH0"; property = "headerTitle"; */
+"EXh-f2-RH0.headerTitle" = "지원";
+
+/* ObjectID = "mLw-eP-4gt"; property = "text"; */
+"mLw-eP-4gt.text" = "문의하기";
+
+/* ObjectID = "FH2-gy-ntx"; property = "text"; */
+"FH2-gy-ntx.text" = "기타 결제 방법";
+
+/* ObjectID = "9v6-NL-xiw"; property = "text"; */
+"9v6-NL-xiw.text" = "개인정보 처리방침";
+
+/* ObjectID = "ggi-Bt-bY5"; property = "text"; */
+"ggi-Bt-bY5.text" = "이용 약관";
+
+/* ObjectID = "DYU-tO-Lmw"; property = "title"; */
+"DYU-tO-Lmw.title" = "설정";
+
+/* ObjectID = "x1g-pH-DnF"; property = "title"; */
+"x1g-pH-DnF.title" = "조작";
+
+/* ObjectID = "4jy-hy-YS3"; property = "title"; */
+"4jy-hy-YS3.title" = "재설정";
+
+/* ObjectID = "VBO-V1-Wfu"; property = "text"; */
+"VBO-V1-Wfu.text" = "컨트롤러 이름";
+
+/* ObjectID = "tqn-1q-p53"; property = "text"; */
+"tqn-1q-p53.text" = "플레이어 1";
+
+/* ObjectID = "OeA-dF-xlk"; property = "text"; */
+"OeA-dF-xlk.text" = "연결된 컨트롤러 없음";
+
+/* ObjectID = "QK7-oi-2jJ"; property = "title"; */
+"QK7-oi-2jJ.title" = "컨트롤러";
+
+/* ObjectID = "jGW-i7-nK1"; property = "headerTitle"; */
+"jGW-i7-nK1.headerTitle" = "세로";
+
+/* ObjectID = "yJn-Ez-ya2"; property = "text"; */
+"yJn-Ez-ya2.text" = "컨트롤러 스킨 없음";
+
+/* ObjectID = "PqP-JS-vGE"; property = "headerTitle"; */
+"PqP-JS-vGE.headerTitle" = "가로";
+
+/* ObjectID = "lT5-hl-WFR"; property = "text"; */
+"lT5-hl-WFR.text" = "컨트롤러 스킨 없음";
+
+/* ObjectID = "epN-iR-ZX6"; property = "title"; */
+"epN-iR-ZX6.title" = "필터";
+
+/* ObjectID = "wfE-7e-l8g"; property = "title"; */
+"wfE-7e-l8g.title" = "홈 화면 바로가기";
+
+/* ObjectID = "pG9-hI-tRE"; property = "title"; */
+"pG9-hI-tRE.title" = "컨트롤러 스킨";
+
+/* ObjectID = "DAY-hh-zI6"; property = "text"; */
+"DAY-hh-zI6.text" = "없음";
+
+/* ObjectID = "Ful-dk-I0G"; property = "title"; */
+"Ful-dk-I0G.title" = "컨트롤러 스킨";
+
+/* ObjectID = "XU0-TI-SPi"; property = "title"; */
+"XU0-TI-SPi.title" = "재설정";
+
+/* ObjectID = "R9m-rV-VgV"; property = "title"; */
+"R9m-rV-VgV.title" = "동기화 서비스";
+
+/* ObjectID = "m5I-He-R1D"; property = "footerTitle"; */
+"m5I-He-R1D.footerTitle" = "기기 간에 게임, 저장 데이터, 저장 상태 및 치트를 동기화합니다.";
+
+/* ObjectID = "mIB-Au-dYz"; property = "headerTitle"; */
+"mIB-Au-dYz.headerTitle" = "서비스";
+
+/* ObjectID = "4fb-TC-FrG"; property = "text"; */
+"4fb-TC-FrG.text" = "Google Drive";
+
+/* ObjectID = "qR3-zd-gmV"; property = "text"; */
+"qR3-zd-gmV.text" = "Dropbox";
+
+/* ObjectID = "1Wk-cG-HDE"; property = "headerTitle"; */
+"1Wk-cG-HDE.headerTitle" = "계정";
+
+/* ObjectID = "AYq-XK-j5L"; property = "text"; */
+"AYq-XK-j5L.text" = "Riley Testut";
+
+/* ObjectID = "md7-6u-egL"; property = "text"; */
+"md7-6u-egL.text" = "riley@rileytestut.com";
+
+/* ObjectID = "4TQ-cm-2sN"; property = "text"; */
+"4TQ-cm-2sN.text" = "로그아웃";
+
+/* ObjectID = "4u9-KL-pDs"; property = "title"; */
+"4u9-KL-pDs.title" = "동기화 서비스";
+
+/* ObjectID = "vVg-ci-JRa"; property = "title"; */
+"vVg-ci-JRa.title" = "동기화 상태";
+
+/* ObjectID = "AWh-ik-Gvu"; property = "text"; */
+"AWh-ik-Gvu.text" = "제목";
+
+/* ObjectID = "Piz-MQ-rK5"; property = "text"; */
+"Piz-MQ-rK5.text" = "이전 동기화";
+
+/* ObjectID = "Bdv-pR-x5Q"; property = "title"; */
+"Bdv-pR-x5Q.title" = "동기화 상태";
+
+/* ObjectID = "RWL-4W-NpH"; property = "text"; */
+"RWL-4W-NpH.text" = "게임";
+
+/* ObjectID = "QBt-p1-jpG"; property = "text"; */
+"QBt-p1-jpG.text" = "동기화 활성화";
+
+/* ObjectID = "vpJ-Pg-nU9"; property = "headerTitle"; */
+"vpJ-Pg-nU9.headerTitle" = "기기 내";
+
+/* ObjectID = "npF-wl-PPC"; property = "text"; */
+"npF-wl-PPC.text" = "상태";
+
+/* ObjectID = "SYD-cR-5TY"; property = "text"; */
+"SYD-cR-5TY.text" = "업데이트";
+
+/* ObjectID = "EFZ-Om-S4W"; property = "text"; */
+"EFZ-Om-S4W.text" = "날짜";
+
+/* ObjectID = "D5a-Na-NTh"; property = "text"; */
+"D5a-Na-NTh.text" = "October 7, 1995";
+
+/* ObjectID = "Bct-0y-ptf"; property = "headerTitle"; */
+"Bct-0y-ptf.headerTitle" = "클라우드";
+
+/* ObjectID = "aeh-me-gZl"; property = "text"; */
+"aeh-me-gZl.text" = "상태";
+
+/* ObjectID = "0Rm-b2-HX5"; property = "text"; */
+"0Rm-b2-HX5.text" = "업데이트";
+
+/* ObjectID = "jzK-yT-69q"; property = "text"; */
+"jzK-yT-69q.text" = "날짜";
+
+/* ObjectID = "b43-lW-Enx"; property = "text"; */
+"b43-lW-Enx.text" = "October 7, 1995";
+
+/* ObjectID = "r04-kp-xeN"; property = "text"; */
+"r04-kp-xeN.text" = "기기";
+
+/* ObjectID = "VIa-dS-7SR"; property = "text"; */
+"VIa-dS-7SR.text" = "Riley's iPhone 7";
+
+/* ObjectID = "8zd-va-DMf"; property = "text"; */
+"8zd-va-DMf.text" = "버전 보기";
+
+/* ObjectID = "Itj-QW-4dw"; property = "text"; */
+"Itj-QW-4dw.text" = "제목";
+
+/* ObjectID = "2fS-9A-FKk"; property = "text"; */
+"2fS-9A-FKk.text" = "부제목";
+
+/* ObjectID = "GLC-Lc-6VM"; property = "title"; */
+"GLC-Lc-6VM.title" = "버전";
+
+/* ObjectID = "I8z-cN-A01"; property = "title"; */
+"I8z-cN-A01.title" = "복원";
+
+/* ObjectID = "Rmi-Mn-bdo"; property = "title"; */
+"Rmi-Mn-bdo.title" = "라이선스";
+
+/* ObjectID = "OwL-4c-EEA"; property = "title"; */
+"OwL-4c-EEA.title" = "DS 설정";
+
+/* ObjectID = "ozc-x3-LhT"; property = "headerTitle"; */
+"ozc-x3-LhT.headerTitle" = "코어 정보";
+
+/* ObjectID = "kYg-4f-oTo"; property = "text"; */
+"kYg-4f-oTo.text" = "이름";
+
+/* ObjectID = "yak-dZ-uPc"; property = "text"; */
+"yak-dZ-uPc.text" = "melonDS";
+
+/* ObjectID = "h6M-Uh-TBA"; property = "text"; */
+"h6M-Uh-TBA.text" = "개발자";
+
+/* ObjectID = "ERw-hy-cF5"; property = "text"; */
+"ERw-hy-cF5.text" = "Arisotura";
+
+/* ObjectID = "Q4e-k1-vf6"; property = "text"; */
+"Q4e-k1-vf6.text" = "버전";
+
+/* ObjectID = "DPq-JK-5hr"; property = "text"; */
+"DPq-JK-5hr.text" = "0.9.5";
+
+/* ObjectID = "Uvd-Lt-Ckx"; property = "text"; */
+"Uvd-Lt-Ckx.text" = "소스";
+
+/* ObjectID = "kHA-YX-Ah9"; property = "text"; */
+"kHA-YX-Ah9.text" = "GitHub";
+
+/* ObjectID = "6JV-NA-R4y"; property = "text"; */
+"6JV-NA-R4y.text" = "후원하기";
+
+/* ObjectID = "TXn-bD-NB8"; property = "text"; */
+"TXn-bD-NB8.text" = "Patreon";
+
+/* ObjectID = "MyM-jI-qtY"; property = "headerTitle"; */
+"MyM-jI-qtY.headerTitle" = "성능";
+
+/* ObjectID = "MyM-jI-qtY"; property = "footerTitle"; */
+"MyM-jI-qtY.footerTitle" = "사용하면 Delta가 AltServer와 동일한 Wi-Fi 네트워크에 있을 때 JIT를 자동으로 활성화합니다.";
+
+/* ObjectID = "XPc-dG-N6R"; property = "text"; */
+"XPc-dG-N6R.text" = "AltJIT 사용";
+
+/* ObjectID = "ObZ-cl-5sV"; property = "headerTitle"; */
+"ObZ-cl-5sV.headerTitle" = "DS BIOS 파일";
+
+/* ObjectID = "Bfp-iA-wWE"; property = "text"; */
+"Bfp-iA-wWE.text" = "bios7.bin";
+
+/* ObjectID = "fgD-y0-55T"; property = "text"; */
+"fgD-y0-55T.text" = "bios9.bin";
+
+/* ObjectID = "SIu-zD-qfE"; property = "text"; */
+"SIu-zD-qfE.text" = "firmware.bin";
+
+/* ObjectID = "SAz-hG-O4G"; property = "headerTitle"; */
+"SAz-hG-O4G.headerTitle" = "DSi BIOS 파일";
+
+/* ObjectID = "QKd-rm-101"; property = "text"; */
+"QKd-rm-101.text" = "dsibios7.bin";
+
+/* ObjectID = "6OX-32-izR"; property = "text"; */
+"6OX-32-izR.text" = "dsibios9.bin";
+
+/* ObjectID = "Czu-qN-Luq"; property = "text"; */
+"Czu-qN-Luq.text" = "dsifirmware.bin";
+
+/* ObjectID = "VWi-nu-uMv"; property = "text"; */
+"VWi-nu-uMv.text" = "dsinand.bin";
+
+/* ObjectID = "7dF-4c-IZh"; property = "title"; */
+"7dF-4c-IZh.title" = "Nintendo DS";
+
+/* ObjectID = "ywo-nv-GyW"; property = "text"; */
+"ywo-nv-GyW.text" = "Caroline Moore";
+
+/* ObjectID = "kcs-Gu-L9Y"; property = "title"; */
+"kcs-Gu-L9Y.title" = "Patreon";
+
+/* ObjectID = "FuI-rT-eft"; property = "segmentTitles[0]"; */
+"FuI-rT-eft.segmentTitles[0]" = "전체 화면";
+
+/* ObjectID = "FuI-rT-eft"; property = "segmentTitles[1]"; */
+"FuI-rT-eft.segmentTitles[1]" = "분할 화면";
+
+/* ObjectID = "BoE-ds-6Mb"; property = "footerTitle"; */
+"BoE-ds-6Mb.footerTitle" = "메뉴 버튼을 누른 채 제스처를 사용해 빠른 동작을 수행할 수 있습니다.\n\n메뉴 + 가로로 스와이프: 빨리 감기\n메뉴 + 컨트롤러 입력: 버튼 길게 누르기\n메뉴 + 두 번 탭: 빠른 저장\n메뉴 + 길게 누르기: 빠른 불러오기";
+
+/* ObjectID = "Lw6-5a-pvQ"; property = "text"; */
+"Lw6-5a-pvQ.text" = "Delta and AltStore LLC are in no way affiliated with Nintendo Co., Ltd.\n\nStephen Celis (SQLite.swift)\nCopyright (c) 2014-2015 Stephen Celis (<stephen@stephencelis.com>)\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n\nOlivier Poitrey (SDWebImage)\nCopyright (c) 2009-2018 Olivier Poitrey rs@dailymotion.com\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is furnished\nto do so, subject to the following conditions:\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\nTHE SOFTWARE.\n\nThomas Zoechling (ZIPFoundation)\nCopyright (c) 2017 Thomas Zoechling\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n\nDropbox Inc. (SwiftyDropbox)\nCopyright (c) 2015 Dropbox Inc., http://www.dropbox.com/\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n\"Software\"), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND\nNONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE\nLIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION\nOF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION\nWITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n\nGoogle (Google API Objective-C Client)\nLicensed under Apache 2 license.\n\nNick Farina (SMCalloutView)\nLicensed under Apache 2 license.\n\nDelta uses these emulator cores licensed under the GNU Public License version 3:\n\nNestopia\nmupen64plus\nGambatte\nvisualboyadvance-m\nDeSmuME\nmelonDS\n\nDelta uses these emulator cores licensed under their respective licenses:\n\nSnes9x\nGenesis Plus GX\n\nDelta uses OpenVGDB to provide automatic artwork for imported games.";
