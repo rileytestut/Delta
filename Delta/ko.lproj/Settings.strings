@@ -116,7 +116,7 @@
 "y6U-7a-bnX.headerTitle" = "Delta 동기화";
 
 /* ObjectID = "y6U-7a-bnX"; property = "footerTitle"; */
-"y6U-7a-bnX.footerTitle" = "기기 간에 게임, 저장 데이터, 저장 상태 및 치트를 동기화합니다.";
+"y6U-7a-bnX.footerTitle" = "기기 간에 게임, 저장 데이터, 세이브 스테이트 및 치트를 동기화합니다.";
 
 /* ObjectID = "4U1-fe-PIb"; property = "text"; */
 "4U1-fe-PIb.text" = "서비스";
@@ -158,7 +158,7 @@
 "fdp-8c-oOc.headerTitle" = "햅틱 터치";
 
 /* ObjectID = "fdp-8c-oOc"; property = "footerTitle"; */
-"fdp-8c-oOc.footerTitle" = "컨텍스트 메뉴를 사용할 때 게임과 저장 상태를 미리 봅니다.";
+"fdp-8c-oOc.footerTitle" = "컨텍스트 메뉴를 사용할 때 게임과 세이브 스테이트를 미리 봅니다.";
 
 /* ObjectID = "c5i-qG-ir9"; property = "text"; */
 "c5i-qG-ir9.text" = "홈 화면 바로가기";
@@ -305,7 +305,7 @@
 "R9m-rV-VgV.title" = "동기화 서비스";
 
 /* ObjectID = "m5I-He-R1D"; property = "footerTitle"; */
-"m5I-He-R1D.footerTitle" = "기기 간에 게임, 저장 데이터, 저장 상태 및 치트를 동기화합니다.";
+"m5I-He-R1D.footerTitle" = "기기 간에 게임, 저장 데이터, 세이브 스테이트 및 치트를 동기화합니다.";
 
 /* ObjectID = "mIB-Au-dYz"; property = "headerTitle"; */
 "mIB-Au-dYz.headerTitle" = "서비스";
