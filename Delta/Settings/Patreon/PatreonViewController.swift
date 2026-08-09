@@ -146,8 +146,8 @@ private extension PatreonViewController
         Riley & Shane
         """, comment: "")
                 
-        let isPatronText = NSLocalizedString("""
-        Hey ,
+        let isPatronTextFormat = NSLocalizedString("""
+        Hey %@,
         
         You’re the best. Your account was linked successfully, so you now have access to Patreon-exclusive app icons and Experimental Features. You can find them all in Settings.
         
@@ -164,14 +164,19 @@ private extension PatreonViewController
             {
                 headerView.supportButton.setTitle(isPatronSupportButtonTitle, for: .normal)
                 
+                let patronName = account.firstName ?? account.name
+                let isPatronText = String(format: isPatronTextFormat, patronName)
                 let font = UIFont.systemFont(ofSize: 16)
                 let attributedText = NSMutableAttributedString(string: isPatronText, attributes: [.font: font,
                                                                                                   .foregroundColor: UIColor.label])
                 
-                let boldedName = NSAttributedString(string: account.firstName ?? account.name,
-                                                    attributes: [.font: UIFont.boldSystemFont(ofSize: font.pointSize),
-                                                                 .foregroundColor: UIColor.label])
-                attributedText.insert(boldedName, at: 4)
+                let nameRange = (isPatronText as NSString).range(of: patronName)
+                if nameRange.location != NSNotFound
+                {
+                    attributedText.addAttributes([.font: UIFont.boldSystemFont(ofSize: font.pointSize),
+                                                  .foregroundColor: UIColor.label],
+                                                 range: nameRange)
+                }
                 
                 headerView.textView.attributedText = attributedText
             }

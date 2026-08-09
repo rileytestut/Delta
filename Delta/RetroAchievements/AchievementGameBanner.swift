@@ -13,7 +13,8 @@ struct AchievementGameBanner: View
 {
     let game: AchievementsManager.Game
 
-    private var pointUnit: String {
+    private var pointUnit: String
+    {
         game.currentPoints == 1 ? String(localized: "pt") : String(localized: "pts")
     }
     

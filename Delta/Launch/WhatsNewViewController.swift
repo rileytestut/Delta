@@ -35,11 +35,13 @@ extension WhatsNewViewController
         
         var isPatronExclusive: Bool
 
-        var localizedName: String {
+        var localizedName: String
+        {
             Bundle.main.localizedString(forKey: self.name, value: self.name, table: nil)
         }
 
-        var localizedCaption: String {
+        var localizedCaption: String
+        {
             Bundle.main.localizedString(forKey: self.caption, value: self.caption, table: nil)
         }
         

@@ -19,7 +19,8 @@ struct AchievementNotification: View
     @Environment(AchievementToastView.self)
     private var hostingView
 
-    private var pointUnit: String {
+    private var pointUnit: String
+    {
         achievement.points == 1 ? String(localized: "pt") : String(localized: "pts")
     }
 

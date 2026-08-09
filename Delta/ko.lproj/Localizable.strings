@@ -309,7 +309,7 @@
 "Game Controllers" = "게임 컨트롤러";
 "Game Data Saved" = "게임 데이터 저장됨";
 "Game Paused" = "게임 일시 정지됨";
-"Game Save" = "게임 저장 데이터";
+"Game Save" = "세이브 파일";
 "Game Settings" = "게임 설정";
 "Game System" = "게임 시스템";
 "Games" = "게임";
@@ -330,7 +330,7 @@
 "Handoff Failed" = "Handoff 실패";
 "Haptics" = "햅틱";
 "Hardcore Mode" = "하드코어 모드";
-"Hey ,\n\nYou’re the best. Your account was linked successfully, so you now have access to Patreon-exclusive app icons and Experimental Features. You can find them all in Settings.\n\nThanks for all of your support. Enjoy!\nRiley & Shane" = "Hey ,\n\n정말 최고예요. 계정이 성공적으로 연결되어 이제 Patreon 전용 앱 아이콘과 실험적 기능을 이용할 수 있습니다. 설정에서 모두 확인할 수 있습니다.\n\n항상 응원해 주셔서 감사합니다. 즐겁게 사용하세요!\nRiley & Shane";
+"Hey %@,\n\nYou’re the best. Your account was linked successfully, so you now have access to Patreon-exclusive app icons and Experimental Features. You can find them all in Settings.\n\nThanks for all of your support. Enjoy!\nRiley & Shane" = "안녕하세요, %@님!\n\n정말 최고예요. 계정이 성공적으로 연결되어 이제 Patreon 전용 앱 아이콘과 실험적 기능을 이용할 수 있습니다. 설정에서 모두 확인할 수 있습니다.\n\n항상 응원해 주셔서 감사합니다. 즐겁게 사용하세요!\nRiley & Shane";
 "Hey y'all,\n\nYou can support future development of Delta by donating to us on Patreon. In return, you'll unlock Patreon-exclusive app icons and receive early access to new features.\n\nThanks for all your support 💜\nRiley & Shane" = "안녕하세요, 여러분,\n\nPatreon에서 후원하여 Delta의 향후 개발을 지원할 수 있습니다. 후원하면 Patreon 전용 앱 아이콘을 잠금 해제하고 새로운 기능을 미리 이용할 수 있습니다.\n\n항상 응원해 주셔서 감사합니다 💜\nRiley & Shane";
 "Hold Buttons" = "버튼 고정";
 "Home Screen" = "홈 화면";
