@@ -165,13 +165,28 @@ private extension PatreonViewController
                 headerView.supportButton.setTitle(isPatronSupportButtonTitle, for: .normal)
                 
                 let patronName = account.firstName ?? account.name
-                let isPatronText = String(format: isPatronTextFormat, patronName)
+                let patronNameSentinel = "\u{E000}DeltaPatreonNamePlaceholder\u{E001}"
+                let isPatronText = NSMutableString(string: String(format: isPatronTextFormat, patronNameSentinel))
+                let sentinelRange = isPatronText.range(of: patronNameSentinel)
+
+                let nameRange: NSRange?
+                if sentinelRange.location != NSNotFound
+                {
+                    isPatronText.replaceCharacters(in: sentinelRange, with: patronName)
+                    nameRange = NSRange(location: sentinelRange.location, length: (patronName as NSString).length)
+                }
+                else
+                {
+                    isPatronText.setString(String(format: isPatronTextFormat, patronName))
+                    nameRange = nil
+                }
+
                 let font = UIFont.systemFont(ofSize: 16)
-                let attributedText = NSMutableAttributedString(string: isPatronText, attributes: [.font: font,
-                                                                                                  .foregroundColor: UIColor.label])
+                let attributedText = NSMutableAttributedString(string: isPatronText as String,
+                                                               attributes: [.font: font,
+                                                                            .foregroundColor: UIColor.label])
                 
-                let nameRange = (isPatronText as NSString).range(of: patronName)
-                if nameRange.location != NSNotFound
+                if let nameRange
                 {
                     attributedText.addAttributes([.font: UIFont.boldSystemFont(ofSize: font.pointSize),
                                                   .foregroundColor: UIColor.label],
