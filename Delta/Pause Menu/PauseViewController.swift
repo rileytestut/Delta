@@ -20,7 +20,7 @@ class PauseViewController: UIViewController, PauseInfoProviding
     }
     
     var pauseItems: [MenuItem] {
-        return [self.saveStateItem, self.loadStateItem, self.cheatCodesItem, self.fastForwardItem, self.sustainButtonsItem, self.screenshotItem, self.askLuItem].compactMap { $0 }
+        return [self.saveStateItem, self.loadStateItem, self.cheatCodesItem, self.discItem, self.fastForwardItem, self.sustainButtonsItem, self.screenshotItem, self.askLuItem].compactMap { $0 }
     }
     
     var closeButtonTitle: String = NSLocalizedString("Main Menu", comment: "")
@@ -40,6 +40,7 @@ class PauseViewController: UIViewController, PauseInfoProviding
     var saveStateItem: MenuItem?
     var loadStateItem: MenuItem?
     var cheatCodesItem: MenuItem?
+    var discItem: MenuItem?
     var fastForwardItem: MenuItem?
     var sustainButtonsItem: MenuItem?
     var screenshotItem: MenuItem?
@@ -236,6 +237,7 @@ private extension PauseViewController
         self.saveStateItem = nil
         self.loadStateItem = nil
         self.cheatCodesItem = nil
+        self.discItem = nil
         self.sustainButtonsItem = nil
         self.fastForwardItem = nil
         self.screenshotItem = nil
@@ -283,6 +285,14 @@ private extension PauseViewController
         self.fastForwardItem = MenuItem(text: NSLocalizedString("Fast Forward", comment: ""), image: #imageLiteral(resourceName: "FastForward"), action: { _ in })
         self.sustainButtonsItem = MenuItem(text: NSLocalizedString("Hold Buttons", comment: ""), image: #imageLiteral(resourceName: "SustainButtons"), action: { _ in })
         self.screenshotItem = MenuItem(text: NSLocalizedString("Screenshot", comment: ""), image: #imageLiteral(resourceName: "Screenshot"), action: { _ in })
+
+        if emulatorCore.game.type == .ps1 && PS1EmulatorBridge.shared.discLabels.count > 1
+        {
+            self.discItem = MenuItem(text: NSLocalizedString("Change Disc", comment: ""), image: UIImage(systemName: "opticaldisc")) { [weak self] item in
+                item.isSelected = false
+                self?.presentDiscPicker()
+            }
+        }
         
         if let game = emulatorCore.game as? Game
         {
@@ -293,6 +303,37 @@ private extension PauseViewController
         if ExperimentalFeatures.shared.Lu.isEnabled {
             self.askLuItem = self.configureLuMenuItem()
         }
+    }
+
+    func presentDiscPicker()
+    {
+        let bridge = PS1EmulatorBridge.shared
+        let labels = bridge.discLabels
+        guard labels.count > 1 else { return }
+
+        let alert = UIAlertController(title: NSLocalizedString("Change Disc", comment: ""), message: nil, preferredStyle: .actionSheet)
+        for (index, label) in labels.enumerated()
+        {
+            let prefix = index == bridge.currentDiscIndex ? "✓ " : ""
+            alert.addAction(UIAlertAction(title: prefix + label, style: .default) { [weak self] _ in
+                if bridge.swapToDisc(at: UInt(index))
+                {
+                    self?.dismiss()
+                }
+                else
+                {
+                    let error = UIAlertController(title: NSLocalizedString("Could Not Change Disc", comment: ""),
+                                                  message: NSLocalizedString("The selected disc could not be loaded.", comment: ""),
+                                                  preferredStyle: .alert)
+                    error.addAction(.ok)
+                    self?.present(error, animated: true)
+                }
+            })
+        }
+        alert.addAction(.cancel)
+        alert.popoverPresentationController?.sourceView = self.view
+        alert.popoverPresentationController?.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 1, height: 1)
+        self.present(alert, animated: true)
     }
     
     func updateSafeAreaInsets()

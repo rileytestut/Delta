@@ -1,11 +1,11 @@
 #import "PS1EmulatorBridge.h"
+#import "PS1DiscControl.h"
 
 @import DeltaCore;
 
 #import <dlfcn.h>
 #import <stdlib.h>
 #import <string.h>
-#import "../PCSXReARMed/deps/libretro-common/include/libretro.h"
 
 #define CORE_FUNCTION(name) static __typeof__(&name) core_##name
 CORE_FUNCTION(retro_init);
@@ -42,6 +42,8 @@ static int16_t inputStateCallback(unsigned port, unsigned device, unsigned index
 @property (nonatomic, assign) BOOL shouldRender;
 @property (nonatomic, assign) BOOL hasVideo;
 @property (nonatomic, assign) NSTimeInterval frameDuration;
+@property (nonatomic, assign) struct retro_disk_control_ext_callback diskControl;
+@property (nonatomic, assign) BOOL hasDiskControl;
 @end
 
 @implementation PS1EmulatorBridge
@@ -68,6 +70,7 @@ static int16_t inputStateCallback(unsigned port, unsigned device, unsigned index
 
 - (void)startWithGameURL:(NSURL *)gameURL
 {
+    self.hasDiskControl = NO;
     self.gameURL = gameURL;
     self.systemDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject stringByAppendingPathComponent:@"Cores/PS1"];
     [[NSFileManager defaultManager] createDirectoryAtPath:self.systemDirectory withIntermediateDirectories:YES attributes:nil error:nil];
@@ -131,6 +134,7 @@ static int16_t inputStateCallback(unsigned port, unsigned device, unsigned index
     }
     if (_library) dlclose(_library);
     _library = NULL;
+    self.hasDiskControl = NO;
     free(systemPath);
     systemPath = NULL;
     self.gameURL = nil;
@@ -161,6 +165,30 @@ static int16_t inputStateCallback(unsigned port, unsigned device, unsigned index
 }
 
 - (void)resetInputs { buttons[0] = buttons[1] = 0; }
+
+- (NSArray<NSString *> *)discLabels
+{
+    if (activeBridge != self || !self.hasDiskControl) return @[];
+    NSMutableArray<NSString *> *labels = [NSMutableArray array];
+    unsigned count = self.diskControl.get_num_images();
+    for (unsigned index = 0; index < count; index++) {
+        char label[1024] = {0};
+        NSString *name = self.diskControl.get_image_label(index, label, sizeof(label)) ? [NSString stringWithUTF8String:label] : nil;
+        [labels addObject:name.length ? name : [NSString stringWithFormat:@"Disc %u", index + 1]];
+    }
+    return labels;
+}
+
+- (NSInteger)currentDiscIndex
+{
+    return activeBridge == self && self.hasDiskControl ? self.diskControl.get_image_index() : NSNotFound;
+}
+
+- (BOOL)swapToDiscAtIndex:(NSUInteger)index
+{
+    if (activeBridge != self || !self.hasDiskControl || index >= self.diskControl.get_num_images()) return NO;
+    return PS1SwapDisc(&_diskControl, (unsigned)index);
+}
 
 - (void)saveGameSaveToURL:(NSURL *)url
 {
@@ -201,6 +229,13 @@ static int16_t inputStateCallback(unsigned port, unsigned device, unsigned index
 static bool environmentCallback(unsigned command, void *data)
 {
     switch (command) {
+        case RETRO_ENVIRONMENT_GET_DISK_CONTROL_INTERFACE_VERSION:
+            *(unsigned *)data = 1;
+            return true;
+        case RETRO_ENVIRONMENT_SET_DISK_CONTROL_EXT_INTERFACE:
+            activeBridge.diskControl = *(struct retro_disk_control_ext_callback *)data;
+            activeBridge.hasDiskControl = YES;
+            return true;
         case RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY:
         case RETRO_ENVIRONMENT_GET_SAVE_DIRECTORY:
             *(const char **)data = systemPath;

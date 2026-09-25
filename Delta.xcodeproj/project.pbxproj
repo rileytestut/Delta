@@ -614,6 +614,7 @@
 		CA51A0162E60000100000016 /* PS1ScreenLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cores/PS1DeltaCore/PS1ScreenLayout.swift; sourceTree = SOURCE_ROOT; };
 		CA51A0172E60000100000017 /* PS1ArtworkCatalog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PS1ArtworkCatalog.swift; sourceTree = "<group>"; };
 		CA51A0182E60000100000018 /* ps1-boxarts.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "ps1-boxarts.txt"; sourceTree = "<group>"; };
+		CA51A0192E60000100000019 /* PS1DiscControl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Cores/PS1DeltaCore/PS1DiscControl.h; sourceTree = SOURCE_ROOT; };
 		0654CFCA3D2CB4D35CC99F89 /* OperatorSlotDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperatorSlotDataSource.swift; sourceTree = "<group>"; };
 		0B6FDC5A03AD5693BEFFE87C /* GamesViewController+Operator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GamesViewController+Operator.swift"; sourceTree = "<group>"; };
 		2157B527EA676AA703BEBF02 /* DeltaOperatorFacade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeltaOperatorFacade.swift; sourceTree = "<group>"; };
@@ -1018,6 +1019,7 @@
 			children = (
 				CA51A0112E60000100000011 /* PS1.swift */,
 				CA51A0132E60000100000013 /* PS1EmulatorBridge.h */,
+				CA51A0192E60000100000019 /* PS1DiscControl.h */,
 				CA51A0122E60000100000012 /* PS1EmulatorBridge.m */,
 				CA51A0142E60000100000014 /* Standard.deltamapping */,
 				CA51A0152E60000100000015 /* Standard.deltaskin */,
