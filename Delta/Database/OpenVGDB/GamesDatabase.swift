@@ -8,6 +8,7 @@
 
 import Foundation
 import SQLite
+import DeltaCore
 
 // Prefer SQLite's Expression over iOS 18's new Foundation.Expression
 private typealias Expression = SQLite.Expression
@@ -99,8 +100,10 @@ class GamesDatabase
         self.invalidateVirtualTableIfNeeded()
     }
     
-    func metadataResults(forGameName gameName: String) -> [GameMetadata]
+    func metadataResults(forGameName gameName: String, gameType: GameType? = nil) -> [GameMetadata]
     {
+        if gameType == .ps1 { return PS1ArtworkCatalog.shared.metadataResults(forGameName: gameName) }
+
         let releaseID = Expression<Any>.releaseID
         let romID = Expression<Any>.romID
         let name = Expression<Any>.name
@@ -151,6 +154,8 @@ class GamesDatabase
     
     func metadata(for game: Game) -> GameMetadata?
     {
+        if game.type == .ps1 { return PS1ArtworkCatalog.shared.metadata(forGameName: game.name) }
+
         let releaseID = Expression<Any>.releaseID
         let name = Expression<Any>.name
         let artworkAddress = Expression<Any>.artworkAddress

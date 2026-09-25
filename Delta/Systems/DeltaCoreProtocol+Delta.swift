@@ -125,6 +125,11 @@ extension DeltaCoreProtocol
                                       .developer: .init(value: NSLocalizedString("eke-eke", comment: ""), url: URL(string: "https://github.com/ekeeke")),
                                       .version: .init(value: NSLocalizedString("1.7.4", comment: "")),
                                       .source: .init(value: NSLocalizedString("GitHub", comment: ""), url: URL(string: "https://github.com/ekeeke/Genesis-Plus-GX"))])
+        case PS1.core:
+            return DeltaCoreMetadata([.name: .init(value: "PCSX ReARMed (libretro)", url: URL(string: "https://github.com/libretro/pcsx_rearmed")),
+                                      .developer: .init(value: "PCSX Team, notaz, Exophase", url: URL(string: "https://github.com/libretro/pcsx_rearmed/blob/master/AUTHORS")),
+                                      .version: .init(value: "r26"),
+                                      .source: .init(value: "libretro GitHub", url: URL(string: "https://github.com/libretro/pcsx_rearmed"))])
         default: return nil
         }
     }

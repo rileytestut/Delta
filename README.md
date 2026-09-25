@@ -154,6 +154,20 @@ $ git submodule update --init --recursive
 7. Change Delta's `Bundle Identifier` to something unique, such as by appending your GitHub username (ex: `com.rileytestut.Delta.MyGitHubUsername`).
 8. Build + run app! 🎉
 
+### PlayStation support
+
+After initializing the submodules, build the Delta target for an iPhone. Xcode builds and embeds the pinned [PCSX ReARMed](https://github.com/libretro/pcsx_rearmed) core as part of the app target. This core build currently targets iPhone devices, not Simulator.
+
+Import single-file `.chd`, `.pbp`, or `.iso` games. Multi-file `.cue`/`.bin` games need conversion to CHD first because Delta imports each file separately. No game or PlayStation BIOS is included. The core can use its HLE BIOS; if you have your own BIOS, place it in Delta's `Documents/Cores/PS1` directory. The iOS build uses the interpreter without JIT. PS1 support has compiled successfully for iPhone, but still needs a real-device gameplay test.
+
+The PS1 display uses the core's 4:3 display aspect ratio. In landscape it selects the largest whole-number vertical scale that fits between the touch controls, using the current game resolution; when the screen cannot fit at 1×, it fits proportionally. PlayStation video modes have different pixel shapes, so the horizontal axis is adjusted to 4:3. A standard touch skin is included.
+
+Long-press the PS1 game screen to move it by dragging. The on-screen arrows move it in small steps, and the −/+ buttons change its size while preserving the aspect ratio and landscape integer scaling. Reset restores the default position and size. Positions and sizes are saved separately for portrait and landscape.
+
+PlayStation cover search uses [libretro's PlayStation box art collection](https://github.com/libretro-thumbnails/Sony_-_PlayStation). A bundled title index enables cover lookup during game import and in the artwork picker; images download from libretro when selected.
+
+Installing directly through Xcode still requires the signing and bundle identifier steps above.
+
 ## Licensing
 The Delta codebase is distributed under the **AGPLv3 license**.
 

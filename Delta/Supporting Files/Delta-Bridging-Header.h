@@ -5,3 +5,4 @@
 #import "NSFetchedResultsController+Conveniences.h"
 #import "ControllerSkinConfigurations.h"
 #import "GameSetting.h"
+#import "../../Cores/PS1DeltaCore/PS1EmulatorBridge.h"
