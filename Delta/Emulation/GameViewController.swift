@@ -91,6 +91,11 @@ private extension GameViewController
 
 class GameViewController: DeltaCore.GameViewController
 {
+    private var ps1SourceHeight: CGFloat = 240
+    private var ps1ScreenOffset: CGPoint = .zero
+    private var ps1ScreenSizeStep = 0
+    private var ps1DragStartOffset: CGPoint = .zero
+
     /// Assumed to be Delta.Game instance
     override var game: GameProtocol? {
         willSet {
@@ -109,6 +114,7 @@ class GameViewController: DeltaCore.GameViewController
             
             if oldValue?.fileURL != game?.fileURL
             {
+                self.ps1SourceHeight = 240
                 self.shouldResetSustainedInputs = true
             }
             
@@ -197,6 +203,7 @@ class GameViewController: DeltaCore.GameViewController
     }()
         
     private var repositionResetButton: UIButton!
+    private var ps1ScreenControls: UIStackView!
     private var repositionResetButtonTimer: Timer?
     
     // Sustain Buttons
@@ -295,6 +302,7 @@ class GameViewController: DeltaCore.GameViewController
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.sceneKeyboardFocusDidChange(with:)), name: UIScene.keyboardFocusDidChangeNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.keyboardDidShow(with:)), name: UIResponder.keyboardDidShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.keyboardDidChangeFrame(with:)), name: UIResponder.keyboardDidChangeFrameNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.ps1VideoDimensionsDidChange(_:)), name: Notification.Name("PS1VideoDimensionsDidChange"), object: nil)
         
         self.automaticallyPausesWhileInactive = Settings.pauseWhileInactive
     }
@@ -477,6 +485,31 @@ extension GameViewController
         self.repositionResetButton.isHidden = true
         self.view.addSubview(self.repositionResetButton)
 
+        let ps1Controls = UIStackView()
+        ps1Controls.axis = .horizontal
+        ps1Controls.spacing = 4
+        ps1Controls.translatesAutoresizingMaskIntoConstraints = false
+        ps1Controls.alpha = 0
+        ps1Controls.isHidden = true
+        for (title, label, dx, dy, size) in [("←", "Move screen left", -12, 0, 0),
+                                             ("↑", "Move screen up", 0, -12, 0),
+                                             ("↓", "Move screen down", 0, 12, 0),
+                                             ("→", "Move screen right", 12, 0, 0),
+                                             ("−", "Shrink screen", 0, 0, -1),
+                                             ("+", "Enlarge screen", 0, 0, 1)]
+        {
+            let button = UIButton(configuration: .tinted(), primaryAction: UIAction { [weak self] _ in
+                self?.adjustPS1Screen(dx: CGFloat(dx), dy: CGFloat(dy), size: size)
+            })
+            button.setTitle(title, for: .normal)
+            button.accessibilityLabel = label
+            button.widthAnchor.constraint(greaterThanOrEqualToConstant: 42).isActive = true
+            button.heightAnchor.constraint(greaterThanOrEqualToConstant: 44).isActive = true
+            ps1Controls.addArrangedSubview(button)
+        }
+        self.ps1ScreenControls = ps1Controls
+        self.view.addSubview(ps1Controls)
+
         // Gestures
         for gestureRecognizer in self.menuButtonGestureRecognizers
         {
@@ -489,6 +522,8 @@ extension GameViewController
         NSLayoutConstraint.activate([
             self.repositionResetButton.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 8),
             self.repositionResetButton.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            ps1Controls.topAnchor.constraint(equalTo: self.repositionResetButton.bottomAnchor, constant: 8),
+            ps1Controls.centerXAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.centerXAnchor),
 
             self.sustainButtonsContentView.leadingAnchor.constraint(equalTo: self.gameView.leadingAnchor),
             self.sustainButtonsContentView.trailingAnchor.constraint(equalTo: self.gameView.trailingAnchor),
@@ -536,12 +571,45 @@ extension GameViewController
     override func viewDidLayoutSubviews()
     {
         super.viewDidLayoutSubviews()
+
+        if self.game?.type == .ps1,
+           let traits = self.controllerView.controllerSkinTraits,
+           self.controllerView.controllerSkin?.screens(for: traits) == nil
+        {
+            var area = self.view.bounds
+            if traits.orientation == .portrait && !self.controllerView.isHidden
+            {
+                area.size.height = max(0, self.controllerView.frame.minY - area.minY)
+            }
+            else if traits.orientation == .landscape && UIDevice.current.userInterfaceIdiom == .phone && !self.controllerView.isHidden &&
+                        self.controllerView.controllerSkin?.identifier == "com.rileytestut.delta.ps1.standard"
+            {
+                let controlsFrame = self.controllerView.frame.insetBy(dx: self.controllerView.frame.width * 0.24, dy: 0)
+                area = CGRect(x: controlsFrame.minX, y: area.minY, width: controlsFrame.width, height: area.height)
+            }
+
+            let pixelsPerPoint = self.view.window?.screen.scale ?? UIScreen.main.scale
+            let frame = PS1ScreenLayout.frame(in: area, sourceHeight: self.ps1SourceHeight,
+                                              pixelsPerPoint: pixelsPerPoint,
+                                              integerScale: traits.orientation == .landscape,
+                                              sizeStep: self.ps1ScreenSizeStep, maximumArea: self.view.bounds)
+            let positionedFrame = PS1ScreenLayout.offset(frame, by: self.ps1ScreenOffset, within: self.view.bounds)
+            self.gameView.frame = positionedFrame
+            self.ps1ScreenOffset = CGPoint(x: positionedFrame.minX - frame.minX, y: positionedFrame.minY - frame.minY)
+        }
         
         if let sustainButtonsBackgroundView
         {
             // Fixes Hold Button description laying out vertically after orientation change.
             sustainButtonsBackgroundView.detailTextLabel.preferredMaxLayoutWidth = sustainButtonsBackgroundView.bounds.width
         }
+    }
+
+    @objc private func ps1VideoDimensionsDidChange(_ notification: Notification)
+    {
+        guard self.game?.type == .ps1, let height = notification.userInfo?["height"] as? NSNumber else { return }
+        self.ps1SourceHeight = CGFloat(height.doubleValue)
+        self.view.setNeedsLayout()
     }
     
     // MARK: - Segues
@@ -986,12 +1054,21 @@ private extension GameViewController
         // Reapply the saved offset for the current orientation, or reset it when controls are present.
         if self.repositionAnchor == nil
         {
-            let distance = self.canRepositionGameScreen ? UserDefaults.standard.gameScreenOffset(for: traits) : 0
-            
-            switch traits.orientation
+            if self.game?.type == .ps1
             {
-            case .portrait: self.gameScreenOffset = CGPoint(x: 0, y: distance)
-            case .landscape: self.gameScreenOffset = CGPoint(x: distance, y: 0)
+                let saved = UserDefaults.standard.dictionary(forKey: self.ps1ScreenLayoutKey(for: traits))
+                self.ps1ScreenOffset = CGPoint(x: saved?["x"] as? CGFloat ?? 0, y: saved?["y"] as? CGFloat ?? 0)
+                self.ps1ScreenSizeStep = saved?["size"] as? Int ?? 0
+                self.gameScreenOffset = .zero
+            }
+            else
+            {
+                let distance = self.canRepositionGameScreen ? UserDefaults.standard.gameScreenOffset(for: traits) : 0
+                switch traits.orientation
+                {
+                case .portrait: self.gameScreenOffset = CGPoint(x: 0, y: distance)
+                case .landscape: self.gameScreenOffset = CGPoint(x: distance, y: 0)
+                }
             }
         }
 
@@ -1903,6 +1980,12 @@ extension GameViewController
         guard let traits = self.controllerView.controllerSkinTraits else { return }
         let location = gestureRecognizer.location(in: self.view)
 
+        if self.game?.type == .ps1
+        {
+            self.handlePS1ScreenRepositionGesture(gestureRecognizer, location: location, traits: traits)
+            return
+        }
+
         switch gestureRecognizer.state
         {
         case .began:
@@ -1950,7 +2033,58 @@ private extension GameViewController
     // True when on-screen controls are hidden (for DS, via TouchControllerSkin).
     var canRepositionGameScreen: Bool
     {
-        return self.controllerView.isHidden || self.controllerView.controllerSkin is TouchControllerSkin
+        return self.game?.type == .ps1 || self.controllerView.isHidden || self.controllerView.controllerSkin is TouchControllerSkin
+    }
+
+    func ps1ScreenLayoutKey(for traits: DeltaCore.ControllerSkin.Traits) -> String
+    {
+        return traits.orientation == .portrait ? "ps1ScreenLayoutPortrait" : "ps1ScreenLayoutLandscape"
+    }
+
+    func savePS1ScreenLayout(for traits: DeltaCore.ControllerSkin.Traits)
+    {
+        UserDefaults.standard.set(["x": self.ps1ScreenOffset.x, "y": self.ps1ScreenOffset.y,
+                                   "size": self.ps1ScreenSizeStep], forKey: self.ps1ScreenLayoutKey(for: traits))
+    }
+
+    func adjustPS1Screen(dx: CGFloat, dy: CGFloat, size: Int)
+    {
+        guard let traits = self.controllerView.controllerSkinTraits else { return }
+        let oldSize = self.gameView.frame.size
+        let oldStep = self.ps1ScreenSizeStep
+        self.ps1ScreenOffset.x += dx
+        self.ps1ScreenOffset.y += dy
+        self.ps1ScreenSizeStep = min(10, max(-10, self.ps1ScreenSizeStep + size))
+        self.view.setNeedsLayout()
+        self.view.layoutIfNeeded()
+        if size != 0 && self.gameView.frame.size == oldSize { self.ps1ScreenSizeStep = oldStep }
+        self.savePS1ScreenLayout(for: traits)
+        self.showRepositionResetButton()
+        self.hideRepositionResetButton(afterDelay: 10)
+    }
+
+    func handlePS1ScreenRepositionGesture(_ gestureRecognizer: UILongPressGestureRecognizer, location: CGPoint,
+                                          traits: DeltaCore.ControllerSkin.Traits)
+    {
+        switch gestureRecognizer.state
+        {
+        case .began:
+            self.repositionAnchor = location
+            self.ps1DragStartOffset = self.ps1ScreenOffset
+            self.showRepositionResetButton()
+            self.repositionFeedbackGenerator.impactOccurred()
+        case .changed:
+            guard let anchor = self.repositionAnchor else { return }
+            self.ps1ScreenOffset = CGPoint(x: self.ps1DragStartOffset.x + location.x - anchor.x,
+                                          y: self.ps1DragStartOffset.y + location.y - anchor.y)
+            self.view.setNeedsLayout()
+        case .ended, .cancelled, .failed:
+            self.repositionAnchor = nil
+            self.view.layoutIfNeeded()
+            self.savePS1ScreenLayout(for: traits)
+            self.hideRepositionResetButton(afterDelay: 10)
+        default: break
+        }
     }
 
     // Distance the game view has been dragged along its movable axis, clamped within the screen bounds.
@@ -1983,6 +2117,16 @@ private extension GameViewController
 
         guard let traits = self.controllerView.controllerSkinTraits else { return }
 
+        if self.game?.type == .ps1
+        {
+            self.ps1ScreenOffset = .zero
+            self.ps1ScreenSizeStep = 0
+            self.repositionAnchor = nil
+            self.savePS1ScreenLayout(for: traits)
+            self.view.setNeedsLayout()
+            return
+        }
+
         UserDefaults.standard.setGameScreenOffset(0, for: traits)
         self.repositionAnchor = nil
 
@@ -1999,8 +2143,10 @@ private extension GameViewController
         self.repositionResetButtonTimer?.invalidate()
 
         self.repositionResetButton.isHidden = false
+        if self.game?.type == .ps1 { self.ps1ScreenControls.isHidden = false }
         UIView.animate(withDuration: 0.2) {
             self.repositionResetButton.alpha = 1.0
+            if self.game?.type == .ps1 { self.ps1ScreenControls.alpha = 1.0 }
         }
     }
 
@@ -2013,10 +2159,12 @@ private extension GameViewController
             
             UIView.animate(withDuration: 0.2) {
                 self.repositionResetButton.alpha = 0.0
+                self.ps1ScreenControls.alpha = 0.0
             } completion: { finished in
                 if finished
                 {
                     self.repositionResetButton.isHidden = true
+                    self.ps1ScreenControls.isHidden = true
                 }
             }
         }

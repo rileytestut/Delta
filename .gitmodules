@@ -34,3 +34,6 @@
 [submodule "External/DeltaOperator"]
 	path = External/DeltaOperator
 	url = https://github.com/epilogue-co/DeltaOperator.git
+[submodule "Cores/PCSXReARMed"]
+	path = Cores/PCSXReARMed
+	url = https://github.com/libretro/pcsx_rearmed.git

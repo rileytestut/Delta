@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import DeltaCore
 
 struct GamesDatabaseImportOption: ImportOption
 {
@@ -14,12 +15,14 @@ struct GamesDatabaseImportOption: ImportOption
     let image: UIImage? = nil
     
     let searchText: String?
+    let gameType: GameType
     
     private let presentingViewController: UIViewController
     
-    init(searchText: String?, presentingViewController: UIViewController)
+    init(searchText: String?, gameType: GameType, presentingViewController: UIViewController)
     {
         self.searchText = searchText
+        self.gameType = gameType
         self.presentingViewController = presentingViewController
     }
     
@@ -30,6 +33,7 @@ struct GamesDatabaseImportOption: ImportOption
         
         let gamesDatabaseBrowserViewController = navigationController.topViewController as! GamesDatabaseBrowserViewController
         gamesDatabaseBrowserViewController.searchText = self.searchText
+        gamesDatabaseBrowserViewController.gameType = self.gameType
         gamesDatabaseBrowserViewController.selectionHandler = { (metadata) in
             if let artworkURL = metadata.artworkURL
             {

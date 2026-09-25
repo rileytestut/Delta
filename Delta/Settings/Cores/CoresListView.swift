@@ -46,6 +46,13 @@ struct CoresListView: View
         case .gba: GBACoreSettingsView()
         case .ds: MelonDSCoreSettingsView()
             .ignoresSafeArea()
+        case .ps1: PS1CoreSettingsView()
         }
     }
+}
+
+private struct PS1CoreSettingsView: CoreSettingsView
+{
+    var system: System { .ps1 }
+    @Environment(\.openURL) var openURL
 }

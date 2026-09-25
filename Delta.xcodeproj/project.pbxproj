@@ -32,6 +32,13 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		CA51A0012E60000100000001 /* PS1.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA51A0112E60000100000011 /* PS1.swift */; };
+		CA51A0022E60000100000002 /* PS1EmulatorBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = CA51A0122E60000100000012 /* PS1EmulatorBridge.m */; };
+		CA51A0032E60000100000003 /* Standard.deltamapping in Resources */ = {isa = PBXBuildFile; fileRef = CA51A0142E60000100000014 /* Standard.deltamapping */; };
+		CA51A0042E60000100000004 /* Standard.deltaskin in Resources */ = {isa = PBXBuildFile; fileRef = CA51A0152E60000100000015 /* Standard.deltaskin */; };
+		CA51A0052E60000100000005 /* PS1ScreenLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA51A0162E60000100000016 /* PS1ScreenLayout.swift */; };
+		CA51A0062E60000100000006 /* PS1ArtworkCatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA51A0172E60000100000017 /* PS1ArtworkCatalog.swift */; };
+		CA51A0072E60000100000007 /* ps1-boxarts.txt in Resources */ = {isa = PBXBuildFile; fileRef = CA51A0182E60000100000018 /* ps1-boxarts.txt */; };
 		18FC614F90FE76140AAECE67 /* DeltaOperatorUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCBF2F877CA6072880A54F35 /* DeltaOperatorUtils.swift */; };
 		1FA4ABA79AB72914FE414A61 /* libPods-Delta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DC866E433B3BA9AE18ABA1EC /* libPods-Delta.a */; };
 		28B653353E8323FA65C54A42 /* OperatorUICoordinators.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C8C13CE90324CBBA76BC3E /* OperatorUICoordinators.swift */; };
@@ -599,6 +606,15 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		CA51A0112E60000100000011 /* PS1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cores/PS1DeltaCore/PS1.swift; sourceTree = SOURCE_ROOT; };
+		CA51A0122E60000100000012 /* PS1EmulatorBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Cores/PS1DeltaCore/PS1EmulatorBridge.m; sourceTree = SOURCE_ROOT; };
+		CA51A0132E60000100000013 /* PS1EmulatorBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Cores/PS1DeltaCore/PS1EmulatorBridge.h; sourceTree = SOURCE_ROOT; };
+		CA51A0142E60000100000014 /* Standard.deltamapping */ = {isa = PBXFileReference; lastKnownFileType = file; path = Cores/PS1DeltaCore/Standard.deltamapping; sourceTree = SOURCE_ROOT; };
+		CA51A0152E60000100000015 /* Standard.deltaskin */ = {isa = PBXFileReference; lastKnownFileType = file; path = Cores/PS1DeltaCore/Standard.deltaskin; sourceTree = SOURCE_ROOT; };
+		CA51A0162E60000100000016 /* PS1ScreenLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cores/PS1DeltaCore/PS1ScreenLayout.swift; sourceTree = SOURCE_ROOT; };
+		CA51A0172E60000100000017 /* PS1ArtworkCatalog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PS1ArtworkCatalog.swift; sourceTree = "<group>"; };
+		CA51A0182E60000100000018 /* ps1-boxarts.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "ps1-boxarts.txt"; sourceTree = "<group>"; };
+		CA51A0192E60000100000019 /* PS1DiscControl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Cores/PS1DeltaCore/PS1DiscControl.h; sourceTree = SOURCE_ROOT; };
 		0654CFCA3D2CB4D35CC99F89 /* OperatorSlotDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperatorSlotDataSource.swift; sourceTree = "<group>"; };
 		0B6FDC5A03AD5693BEFFE87C /* GamesViewController+Operator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GamesViewController+Operator.swift"; sourceTree = "<group>"; };
 		2157B527EA676AA703BEBF02 /* DeltaOperatorFacade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeltaOperatorFacade.swift; sourceTree = "<group>"; };
@@ -998,6 +1014,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CA51A0202E60000100000020 /* PS1DeltaCore */ = {
+			isa = PBXGroup;
+			children = (
+				CA51A0112E60000100000011 /* PS1.swift */,
+				CA51A0132E60000100000013 /* PS1EmulatorBridge.h */,
+				CA51A0192E60000100000019 /* PS1DiscControl.h */,
+				CA51A0122E60000100000012 /* PS1EmulatorBridge.m */,
+				CA51A0142E60000100000014 /* Standard.deltamapping */,
+				CA51A0152E60000100000015 /* Standard.deltaskin */,
+				CA51A0162E60000100000016 /* PS1ScreenLayout.swift */,
+			);
+			name = PS1DeltaCore;
+			sourceTree = "<group>";
+		};
 		11F7EF970F3EE7DAA5EE0DC8 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
@@ -1346,6 +1376,7 @@
 			children = (
 				BF6BF31F1EB82362008E83CD /* GamesDatabase.storyboard */,
 				BF59426E1E09BC5D0051894B /* GamesDatabase.swift */,
+				CA51A0172E60000100000017 /* PS1ArtworkCatalog.swift */,
 				BF95E2761E4977BF0030E7AD /* GameMetadata.swift */,
 				BF95E2781E4982A10030E7AD /* GamesDatabaseBrowserViewController.swift */,
 			);
@@ -1478,6 +1509,7 @@
 				D5AE76CC2C2B81870086471B /* AltIcons.plist */,
 				CA0101012F8E000100000001 /* CheatIcons.plist */,
 				BF02D5D91DDEBB3000A5E131 /* openvgdb.sqlite */,
+				CA51A0182E60000100000018 /* ps1-boxarts.txt */,
 				D5D797E7298DC9E200738869 /* cheatbase.zip */,
 				D53415A6298C78BC00FD67B1 /* Contributors.plist */,
 				D5E12AEC2D01163A000C7531 /* Profanity.txt */,
@@ -1521,6 +1553,7 @@
 			isa = PBXGroup;
 			children = (
 				BFFA71D91AAC406100EE9DD1 /* Delta */,
+				CA51A0202E60000100000020 /* PS1DeltaCore */,
 				D539103029E88B6C0006B350 /* DeltaPreviews */,
 				D5D7C1F229E60E0000663793 /* DeltaFeatures */,
 				D57A81912E29ADC8006E06E8 /* Dependencies */,
@@ -2022,6 +2055,7 @@
 				BFFA71D51AAC406100EE9DD1 /* Resources */,
 				0E0279E4F38215820BB0C9A0 /* [CP] Copy Pods Resources */,
 				BF08DC3325CE07C3007A9CF4 /* Embed Frameworks */,
+				CA51A0302E60000100000030 /* Build PCSX ReARMed */,
 			);
 			buildRules = (
 			);
@@ -2317,6 +2351,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CA51A0032E60000100000003 /* Standard.deltamapping in Resources */,
+				CA51A0042E60000100000004 /* Standard.deltaskin in Resources */,
+				CA51A0072E60000100000007 /* ps1-boxarts.txt in Resources */,
 				D53BE5FF2E873E6B0012DE0F /* MicrochipIcon.icon in Resources */,
 				D5D797E9298DCC7300738869 /* cheatbase.zip in Resources */,
 				BFFA71E21AAC406100EE9DD1 /* Main.storyboard in Resources */,
@@ -2358,6 +2395,17 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		CA51A0302E60000100000030 /* Build PCSX ReARMed */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			name = "Build PCSX ReARMed";
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -eu\nif [ \"$PLATFORM_NAME\" != iphoneos ]; then echo 'warning: PCSX ReARMed is currently available only in iPhone device builds'; exit 0; fi\ncore=\"$DERIVED_FILE_DIR/pcsx_rearmed_libretro_ios.dylib\"\nmake -C \"$SRCROOT/Cores/PCSXReARMed\" -f Makefile.libretro -j8 platform=ios-arm64 IOSSDK=\"$SDKROOT\" MINVERSION=\"-miphoneos-version-min=$IPHONEOS_DEPLOYMENT_TARGET\" TARGET=\"$core\"\nmkdir -p \"$TARGET_BUILD_DIR/$FRAMEWORKS_FOLDER_PATH\"\nditto \"$core\" \"$TARGET_BUILD_DIR/$FRAMEWORKS_FOLDER_PATH/pcsx_rearmed_libretro_ios.dylib\"\nif [ \"${CODE_SIGNING_ALLOWED:-NO}\" != NO ] && [ -n \"${EXPANDED_CODE_SIGN_IDENTITY:-}\" ]; then\n  codesign --force --sign \"$EXPANDED_CODE_SIGN_IDENTITY\" --timestamp=none \"$TARGET_BUILD_DIR/$FRAMEWORKS_FOLDER_PATH/pcsx_rearmed_libretro_ios.dylib\"\nfi\n";
+		};
 		0E0279E4F38215820BB0C9A0 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -2486,6 +2534,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CA51A0012E60000100000001 /* PS1.swift in Sources */,
+				CA51A0022E60000100000002 /* PS1EmulatorBridge.m in Sources */,
+				CA51A0052E60000100000005 /* PS1ScreenLayout.swift in Sources */,
+				CA51A0062E60000100000006 /* PS1ArtworkCatalog.swift in Sources */,
 				BFB3645823245A6000CD0EB1 /* LicensesViewController.swift in Sources */,
 				BFC6F7B81F435BC500221B96 /* Input+Display.swift in Sources */,
 				D5AE76C82C2B808F0086471B /* AltAppIconsViewController.swift in Sources */,
@@ -3334,7 +3386,7 @@
 			repositoryURL = "https://github.com/RevenueCat/purchases-ios-spm.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 5.8.0;
+				minimumVersion = 5.78.0;
 			};
 		};
 		D5AE76C02C2B59240086471B /* XCRemoteSwiftPackageReference "KeychainAccess" */ = {

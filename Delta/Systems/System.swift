@@ -25,6 +25,7 @@ enum System: CaseIterable
     case gbc
     case gba
     case ds
+    case ps1
     
     static var registeredSystems: [System] {
         let systems = System.allCases.filter { Delta.registeredCores.keys.contains($0.gameType) }
@@ -32,7 +33,7 @@ enum System: CaseIterable
     }
     
     static var allCores: [DeltaCoreProtocol] {
-        return [NES.core, SNES.core, N64.core, GBC.core, GBA.core, MelonDS.core, GPGX.core]
+        return [NES.core, SNES.core, N64.core, GBC.core, GBA.core, MelonDS.core, GPGX.core, PS1.core]
     }
 }
 
@@ -48,6 +49,7 @@ extension System
         case .gba: return NSLocalizedString("Game Boy Advance", comment: "")
         case .ds: return NSLocalizedString("Nintendo DS", comment: "")
         case .genesis: return NSLocalizedString("Sega Genesis", comment: "")
+        case .ps1: return NSLocalizedString("Sony PlayStation", comment: "")
         }
     }
     
@@ -61,6 +63,7 @@ extension System
         case .gba: return NSLocalizedString("GBA", comment: "")
         case .ds: return NSLocalizedString("DS", comment: "")
         case .genesis: return NSLocalizedString("Genesis (Beta)", comment: "")
+        case .ps1: return NSLocalizedString("PS1", comment: "")
         }
     }
     
@@ -74,6 +77,7 @@ extension System
         case .gba: return NSLocalizedString("Game Boy Advance", comment: "")
         case .ds: return NSLocalizedString("Nintendo DS", comment: "")
         case .genesis: return NSLocalizedString("Sega Genesis", comment: "")
+        case .ps1: return NSLocalizedString("PlayStation", comment: "")
         }
     }
     
@@ -84,6 +88,7 @@ extension System
         case .genesis: return 1989
         case .snes: return 1990
         case .n64: return 1996
+        case .ps1: return 1994
         case .gbc: return 1998
         case .gba: return 2001
         case .ds: return 2004
@@ -101,6 +106,7 @@ extension System
         case .gba: return UIImage(named: "GBA") ?? fallback
         case .ds: return UIImage(named: "DS") ?? fallback
         case .genesis: return UIImage(named: "Genesis") ?? fallback
+        case .ps1: return fallback
         }
     }
 }
@@ -117,6 +123,7 @@ extension System
         case .gba: return GBA.core
         case .ds: return Settings.preferredCore(for: .ds) ?? MelonDS.core
         case .genesis: return GPGX.core
+        case .ps1: return PS1.core
         }
     }
     
@@ -130,6 +137,7 @@ extension System
         case .gba: return .gba
         case .ds: return .ds
         case .genesis: return .genesis
+        case .ps1: return .ps1
         }
     }
     
@@ -144,6 +152,7 @@ extension System
         case GameType.gba: self = .gba
         case GameType.ds: self = .ds
         case GameType.genesis: self = .genesis
+        case GameType.ps1: self = .ps1
         default: return nil
         }
     }
@@ -162,6 +171,7 @@ extension DeltaCore.GameType
         case "gba": self = .gba
         case "ds", "nds": self = .ds
         case "gen", "bin", "md", "smd": self = .genesis
+        case "chd", "pbp", "iso": self = .ps1
         default: return nil
         }
     }

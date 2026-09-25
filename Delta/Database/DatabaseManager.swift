@@ -411,9 +411,10 @@ extension DatabaseManager
                 game.identifier = identifier
                 game.type = gameType
                 game.filename = filename
+                game.name = url.deletingPathExtension().lastPathComponent
                 
                 let databaseMetadata = self.gamesDatabase?.metadata(for: game)
-                game.name = databaseMetadata?.name ?? url.deletingPathExtension().lastPathComponent
+                game.name = databaseMetadata?.name ?? game.name
                 game.artworkURL = databaseMetadata?.artworkURL
                 
                 let gameCollection = GameCollection(context: context)

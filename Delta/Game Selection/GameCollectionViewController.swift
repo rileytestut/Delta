@@ -997,7 +997,7 @@ private extension GameCollectionViewController
         
         sanitizedGameName = sanitizedGameName.trimmingCharacters(in: .whitespacesAndNewlines)
         
-        let gamesDatabaseImportOption = GamesDatabaseImportOption(searchText: sanitizedGameName, presentingViewController: self)
+        let gamesDatabaseImportOption = GamesDatabaseImportOption(searchText: sanitizedGameName, gameType: game.type, presentingViewController: self)
         
         let importController = ImportController(documentTypes: [kUTTypeImage as String])
         importController.delegate = self

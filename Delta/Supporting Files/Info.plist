@@ -132,6 +132,18 @@
 				<string>com.rileytestut.delta.game.genesis</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeName</key>
+			<string>PlayStation Game</string>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+			<key>LSHandlerRank</key>
+			<string>Owner</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>com.rileytestut.delta.game.ps1</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
@@ -495,6 +507,25 @@
 					<string>bin</string>
 					<string>md</string>
 					<string>smd</string>
+				</array>
+			</dict>
+		</dict>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>com.rileytestut.delta.game</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>PlayStation Game</string>
+			<key>UTTypeIdentifier</key>
+			<string>com.rileytestut.delta.game.ps1</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>chd</string>
+					<string>pbp</string>
+					<string>iso</string>
 				</array>
 			</dict>
 		</dict>

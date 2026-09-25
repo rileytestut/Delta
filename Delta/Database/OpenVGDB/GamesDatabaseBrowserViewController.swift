@@ -8,6 +8,7 @@
 
 import UIKit
 import AVFoundation
+import DeltaCore
 
 import Roxas
 
@@ -16,6 +17,7 @@ class GamesDatabaseBrowserViewController: UITableViewController
     var selectionHandler: ((GameMetadata) -> Void)?
     
     var searchText: String?
+    var gameType: GameType?
     
     private let database: GamesDatabase?
     
@@ -143,7 +145,7 @@ private extension GamesDatabaseBrowserViewController
         {
             self.dataSource.searchController.searchHandler = { [unowned self, unowned database] (searchValue, previousSearchValue) in
                 return RSTBlockOperation() { [unowned self, unowned database] (operation) in
-                    let results = database.metadataResults(forGameName: searchValue.text)
+                    let results = database.metadataResults(forGameName: searchValue.text, gameType: self.gameType)
                     
                     guard !operation.isCancelled else { return }
                     
