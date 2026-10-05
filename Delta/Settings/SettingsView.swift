@@ -171,6 +171,11 @@ struct OnlineMultiplayerView: View
                         {
                             Text(serverName)
                         }
+                        else
+                        {
+                            Text("Choose")
+                                .foregroundColor(Color(uiColor: .deltaPurple))
+                        }
                     } label: {
                         Text("WFC Server")
                     }
