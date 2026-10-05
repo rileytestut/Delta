@@ -192,7 +192,10 @@ struct OnlineMultiplayerView: View
             } header: {
                 Text("Nintendo DS")
             } footer: {
-                Text("Choose the 3rd-party Nintendo WFC server Delta should use for online play in Nintendo DS games.")
+                if preferredWFCServer == nil
+                {
+                    Text("Choose the 3rd-party Nintendo WFC server Delta should use for online play in Nintendo DS games.")
+                }
             }
         }
         .navigationTitle("Online Multiplayer")
