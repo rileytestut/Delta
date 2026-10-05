@@ -47,6 +47,37 @@ struct GameSettingsView: View
                 Text("Choose a controller skin that should always be used for this game.")
             }
             
+            if let deltaCore = Delta.core(for: game.type), deltaCore.supportedRates.upperBound > 1
+            {
+                let speeds = FastForwardSpeed.speeds(in: deltaCore.supportedRates)
+                let selection = Binding<FastForwardSpeed?> {
+                    guard let speed = game.settings[.fastForwardSpeed] as? Double else { return nil }
+                    let fastForwardSpeed = FastForwardSpeed(rawValue: speed)
+                    return fastForwardSpeed
+                } set: { newValue in
+                    if let newValue
+                    {
+                        game.settings[.fastForwardSpeed] = newValue.rawValue
+                    }
+                    else
+                    {
+                        game.settings[.fastForwardSpeed] = nil
+                    }
+                }
+                
+                Section {
+                    Picker("Fast Forward Speed", selection: selection) {
+                        Text("Default").tag(FastForwardSpeed?.none)
+                        ForEach(speeds, id: \.rawValue) { speed in
+                            speed.localizedDescription
+                                .tag(Optional(speed))
+                        }
+                    }
+                } footer: {
+                    Text("Choose the speed used when fast-forwarding this game.")
+                }
+            }
+            
             let system = System(gameType: game.type)
             
             if system == .n64
@@ -111,6 +142,7 @@ struct GameSettingsView: View
                 }
             }
         }
+        .tint(.accentColor)
         .accentColor(Color("Purple"))
         .navigationTitle(game.name)
         .navigationBarTitleDisplayMode(.inline)
