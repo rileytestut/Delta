@@ -70,7 +70,7 @@ class LoadControllerSkinImageOperation: RSTLoadOperation<UIImage, ControllerSkin
             return
         }
         
-        guard let image = self.controllerSkin.image(for: traits, preferredSize: self.size) else {
+        guard let image = self.controllerSkin.previewImage(for: traits, preferredSize: self.size) else {
             completion(nil, Error.doesNotExist)
             return
         }

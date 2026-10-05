@@ -392,7 +392,7 @@ private extension PreferredControllerSkinsViewController
                     if let portraitControllerSkin = self.portraitControllerSkin
                     {
                         let skin = context.object(with: portraitControllerSkin.objectID) as! ControllerSkin
-                        portraitImage = skin.image(for: portraitTraits, preferredSize: UIScreen.main.defaultControllerSkinSize)
+                        portraitImage = skin.previewImage(for: portraitTraits, preferredSize: UIScreen.main.defaultControllerSkinSize)
                     }
                     else
                     {
@@ -402,7 +402,7 @@ private extension PreferredControllerSkinsViewController
                     if let landscapeControllerSkin = self.landscapeControllerSkin
                     {
                         let skin = context.object(with: landscapeControllerSkin.objectID) as! ControllerSkin
-                        landscapeImage = skin.image(for: landscapeTraits, preferredSize: UIScreen.main.defaultControllerSkinSize)
+                        landscapeImage = skin.previewImage(for: landscapeTraits, preferredSize: UIScreen.main.defaultControllerSkinSize)
                     }
                     else
                     {

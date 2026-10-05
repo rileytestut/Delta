@@ -232,3 +232,39 @@ extension ControllerSkin: Syncable
         return .newest
     }
 }
+
+extension ControllerSkinProtocol
+{
+    func previewImage(for traits: DeltaCore.ControllerSkin.Traits, preferredSize: DeltaCore.ControllerSkin.Size) -> UIImage?
+    {
+        guard let baseImage = self.image(for: traits, preferredSize: preferredSize) else { return nil }
+        guard let items = self.items(for: traits) else { return baseImage }
+
+        let format = UIGraphicsImageRendererFormat()
+        format.scale = baseImage.scale
+
+        let renderer = UIGraphicsImageRenderer(size: baseImage.size, format: format)
+        let previewImage = renderer.image { _ in
+            baseImage.draw(at: .zero)
+
+            for item in items
+            {
+                switch item.kind
+                {
+                case .button, .dPad:
+                    guard let (image, size) = self.image(for: item, traits: traits, preferredSize: preferredSize) else { continue }
+
+                    let imageSize = CGSize(width: size.width * baseImage.size.width, height: size.height * baseImage.size.height)
+                    let itemFrame = item.frame.applying(.identity.scaledBy(x: baseImage.size.width, y: baseImage.size.height))
+                    let drawRect = CGRect(x: itemFrame.midX - imageSize.width / 2, y: itemFrame.midY - imageSize.height / 2,
+                                          width: imageSize.width, height: imageSize.height)
+                    image.draw(in: drawRect)
+
+                default: break
+                }
+            }
+        }
+
+        return previewImage
+    }
+}
