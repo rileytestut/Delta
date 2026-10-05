@@ -42,7 +42,7 @@ struct MinorSettingsView: View
             }
         }
         .tint(.accentColor)
-        .navigationTitle("Minor")
+        .navigationTitle("Lil’ Settings")
         .navigationBarTitleDisplayMode(.inline)
     }
 }

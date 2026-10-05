@@ -363,7 +363,7 @@ private struct MiscellaneousSection: View
             NavigationLink {
                 MinorSettingsView()
             } label: {
-                SettingsRow(label: Text("Minor"), systemImage: "slider.horizontal.3", color: .gray)
+                SettingsRow(label: Text("Lil’ Settings"), systemImage: "slider.horizontal.3", color: .gray)
             }
 
             NavigationLink {
