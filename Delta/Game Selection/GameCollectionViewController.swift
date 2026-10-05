@@ -441,7 +441,7 @@ private extension GameCollectionViewController
             
         case .unspecified, .compact:
             layout.itemWidth = 90
-            layout.minimumInteritemSpacing = 12
+            layout.minimumInteritemSpacing = 20
             
         @unknown default: break
         }
