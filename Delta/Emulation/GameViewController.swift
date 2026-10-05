@@ -1577,12 +1577,12 @@ extension GameViewController
                 try await PHPhotoLibrary.shared().saveScreenshotData(screenshotData)
                 
                 let toastView = RSTToastView(text: NSLocalizedString("Saved screenshot to Photos", comment: ""), detailText: nil)
-                self.show(toastView)
+                self.show(toastView, in: self.view.window)
             }
             catch
             {
                 let toastView = RSTToastView(text: NSLocalizedString("Unable to Save Screenshot", comment: ""), detailText: error.localizedDescription)
-                self.show(toastView)
+                self.show(toastView, in: self.view.window)
             }
             
             self.pauseViewController?.screenshotItem?.isSelected = false
