@@ -109,7 +109,7 @@ struct GameSettingsView: View
                 } header: {
                     Text("RetroAchievements")
                 } footer: {
-                    Text("Log in with RetroAchievements to track your progress and achievements in this specific game.")
+                    Text("Use RetroAchievements to track your progress and achievements in this game.")
                 }
             }
         }
