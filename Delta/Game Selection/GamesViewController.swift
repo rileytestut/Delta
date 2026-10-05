@@ -550,6 +550,12 @@ extension GamesViewController: ImportControllerDelegate
         documentTypes.insert("com.rileytestut.gbc")
         documentTypes.insert("com.rileytestut.gb")
         
+        // Explicitly support all declared file extensions for Genesis games, which may conflict with system UTIs (e.g. Markdown)
+        let genesisType = UTType(importedAs: System.genesis.gameType.rawValue)
+        let genesisFileExtensions = genesisType.tags[.filenameExtension] ?? []
+        let genesisUTIs = genesisFileExtensions.compactMap { UTType(filenameExtension: $0)?.identifier }
+        documentTypes.formUnion(genesisUTIs)
+        
         let importController = ImportController(documentTypes: documentTypes)
         importController.delegate = self
         
