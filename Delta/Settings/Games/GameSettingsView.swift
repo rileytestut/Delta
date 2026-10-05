@@ -106,8 +106,6 @@ struct GameSettingsView: View
 
                     Toggle("RetroAchievements", isOn: binding)
                         .toggleStyle(SwitchToggleStyle(tint: Color("Purple")))
-                } header: {
-                    Text("RetroAchievements")
                 } footer: {
                     Text("Use RetroAchievements to track your progress and achievements in this game.")
                 }
