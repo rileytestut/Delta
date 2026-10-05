@@ -308,7 +308,7 @@ private struct InputMappingRow: View
         Section {
             ForEach(mappableInputs, id: \.self) { input in
                 Label(input.localizedDisplayName, systemImage: input.sfSymbolName)
-                    .tint(.accentColor) // Symbol should always be tinted
+                    .tint(Color(uiColor: .deltaPurple)) // Symbol should always be tinted
                     .tag(AnyInput?.some(input))
             }
         }
@@ -316,7 +316,7 @@ private struct InputMappingRow: View
         Section("Game Actions") {
             ForEach(Self.actionInputs, id: \.self) { input in
                 Label(input.localizedDisplayName, systemImage: input.sfSymbolName)
-                    .tint(.accentColor)
+                    .tint(Color(uiColor: .deltaPurple)) 
                     .tag(AnyInput?.some(input))
             }
         }
