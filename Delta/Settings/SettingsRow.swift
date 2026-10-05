@@ -41,6 +41,7 @@ struct SettingsRow<Content: View>: View
                 else
                 {
                     image
+                        .background(color, in: RoundedRectangle(cornerRadius: badgeSize / 4))
                 }
             }
         }
@@ -51,7 +52,6 @@ struct SettingsRow<Content: View>: View
             .imageScale(.medium)
             .foregroundStyle(.white)
             .frame(width: badgeSize, height: badgeSize)
-            .background(color, in: RoundedRectangle(cornerRadius: badgeSize / 4))
     }
 }
 
