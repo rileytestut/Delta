@@ -734,6 +734,14 @@ extension DatabaseManager
         return gameTypeDirectoryURL
     }
     
+    class func remoteControllerSkinsDirectoryURL() -> URL
+    {
+        let directoryURL = DatabaseManager.controllerSkinsDirectoryURL.appendingPathComponent("Remote")
+        self.createDirectory(at: directoryURL)
+        
+        return directoryURL
+    }
+    
     class func artworkURL(for game: Game) -> URL
     {
         let gameURL = game.fileURL

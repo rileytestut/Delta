@@ -60,8 +60,24 @@ public class ControllerSkin: _ControllerSkin
     public var isReversingScreens: Bool = false
     
     private lazy var controllerSkin: DeltaCore.ControllerSkin? = {
-        let controllerSkin = self.isStandard ? DeltaCore.ControllerSkin.standardControllerSkin(for: self.gameType) : DeltaCore.ControllerSkin(fileURL: self.fileURL)
-        return controllerSkin
+        if !self.isStandard
+        {
+            let skin = DeltaCore.ControllerSkin(fileURL: self.fileURL)
+            return skin
+        }
+        else
+        {
+            let skinURL = RemoteControllerSkinManager.remoteSkinFileURL(forSkinID: self.identifier)
+            if FileManager.default.fileExists(atPath: skinURL.path(percentEncoded: false)), let skin = DeltaCore.ControllerSkin(fileURL: skinURL)
+            {
+                return skin
+            }
+            else
+            {
+                let skin = DeltaCore.ControllerSkin.standardControllerSkin(for: self.gameType)
+                return skin
+            }
+        }
     }()
     
     public override func awakeFromFetch()

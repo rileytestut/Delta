@@ -129,6 +129,8 @@ extension LaunchViewController
         
         AchievementsManager.shared.authenticateInBackground()
         
+        RemoteControllerSkinManager.shared.updateSkinsInBackground()
+        
         func showGameViewController()
         {
             self.view.bringSubviewToFront(self.gameViewContainerView)

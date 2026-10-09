@@ -244,6 +244,7 @@
 		D55C468F29E761C000EA6DE9 /* AnyFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55C468E29E761C000EA6DE9 /* AnyFeature.swift */; };
 		D55C469129E7631000EA6DE9 /* AnyOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55C469029E7631000EA6DE9 /* AnyOption.swift */; };
 		D560BD8629EDC45600289847 /* ExternalDisplaySceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D560BD8529EDC45600289847 /* ExternalDisplaySceneDelegate.swift */; };
+		D56BB6C630796C7600DDAE4C /* RemoteControllerSkinManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56BB6C530796C7600DDAE4C /* RemoteControllerSkinManager.swift */; };
 		D56C362F2D6538C500A8984D /* WhatsNewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56C362E2D6538C500A8984D /* WhatsNewViewController.swift */; };
 		D56C36312D65471D00A8984D /* WhatsNewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56C36302D65471D00A8984D /* WhatsNewCell.swift */; };
 		D56E7E942DC43BE60067766D /* JoinPatreonButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56E7E932DC43BE60067766D /* JoinPatreonButton.swift */; };
@@ -835,6 +836,7 @@
 		D55C468E29E761C000EA6DE9 /* AnyFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyFeature.swift; sourceTree = "<group>"; };
 		D55C469029E7631000EA6DE9 /* AnyOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyOption.swift; sourceTree = "<group>"; };
 		D560BD8529EDC45600289847 /* ExternalDisplaySceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExternalDisplaySceneDelegate.swift; sourceTree = "<group>"; };
+		D56BB6C530796C7600DDAE4C /* RemoteControllerSkinManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteControllerSkinManager.swift; sourceTree = "<group>"; };
 		D56C362E2D6538C500A8984D /* WhatsNewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatsNewViewController.swift; sourceTree = "<group>"; };
 		D56C36302D65471D00A8984D /* WhatsNewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatsNewCell.swift; sourceTree = "<group>"; };
 		D56E7E932DC43BE60067766D /* JoinPatreonButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinPatreonButton.swift; sourceTree = "<group>"; };
@@ -1187,6 +1189,7 @@
 			isa = PBXGroup;
 			children = (
 				BF59426D1E09BC5D0051894B /* DatabaseManager.swift */,
+				D56BB6C530796C7600DDAE4C /* RemoteControllerSkinManager.swift */,
 				BF5942711E09BC690051894B /* Model */,
 				BF95E2751E49763D0030E7AD /* OpenVGDB */,
 				D586496E297734060081477E /* Cheats */,
@@ -2551,6 +2554,7 @@
 				D510BC752A5CA9F500450CC0 /* Delta6ToDelta7.xcmappingmodel in Sources */,
 				D5AE76BF2C2B54050086471B /* PatreonAccount.swift in Sources */,
 				BF5942951E09BD1A0051894B /* NSManagedObjectContext+Conveniences.swift in Sources */,
+				D56BB6C630796C7600DDAE4C /* RemoteControllerSkinManager.swift in Sources */,
 				BFC3628021ADE2BA00EF2BE6 /* UIAlertController+Error.swift in Sources */,
 				BF353FF91C5D870B00C1184C /* MenuItem.swift in Sources */,
 				D5D797E6298D946200738869 /* Contributor.swift in Sources */,
