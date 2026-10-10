@@ -56,6 +56,10 @@ final class AchievementsTracker
         {
             rc_client_set_hardcore_enabled(self.client, 1)
         }
+        else
+        {
+            rc_client_set_hardcore_enabled(self.client, 0)
+        }
         
         self.userData = UnsafeMutablePointer<AchievementsManager.UserData>.allocate(capacity: 1)
         self.userData.initialize(to: AchievementsManager.UserData(tracker: self))
