@@ -321,6 +321,9 @@ private struct ServicesSection: View
 private struct PatreonSection: View
 {
     var body: some View {
+        #if BETA
+        return EmptyView()
+        #else
         if PurchaseManager.shared.supportsExternalPurchases
         {
             Section {
@@ -339,6 +342,7 @@ private struct PatreonSection: View
                 Text("Get early access to new features and unlock exclusive app icons.")
             }
         }
+        #endif
     }
 }
 
