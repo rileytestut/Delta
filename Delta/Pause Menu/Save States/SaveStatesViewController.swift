@@ -674,12 +674,12 @@ private extension SaveStatesViewController
                 if window.bounds.height > window.bounds.width
                 {
                     // Portrait window
-                    portraitWindowWidth = window.bounds.width
+                    portraitWindowWidth = window.bounds.inset(by: window.safeAreaInsets).width
                 }
                 else
                 {
                     // Landscape window
-                    portraitWindowWidth = window.bounds.height
+                    portraitWindowWidth = window.bounds.inset(by: window.safeAreaInsets).height
                 }
             }
             
