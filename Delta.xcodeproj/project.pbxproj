@@ -273,6 +273,7 @@
 		D5864970297734280081477E /* CheatMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586496F297734280081477E /* CheatMetadata.swift */; };
 		D586497229774ABD0081477E /* CheatBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586497129774ABD0081477E /* CheatBase.swift */; };
 		D5864978297756CE0081477E /* CheatBaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5864977297756CE0081477E /* CheatBaseView.swift */; };
+		D5882F59307C507200EC8817 /* ReservedRegionsContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5882F58307C507200EC8817 /* ReservedRegionsContext.swift */; };
 		D58C548F2FCAC43E00B408BA /* Delta11ToDelta12.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = D58C548E2FCAC43E00B408BA /* Delta11ToDelta12.xcmappingmodel */; };
 		D5974CD52D77C37500750CA8 /* Achievement.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5974CD42D77C37200750CA8 /* Achievement.swift */; };
 		D59B50B72C06666A00FDC53A /* Delta7ToDelta8.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = D59B50B62C06666A00FDC53A /* Delta7ToDelta8.xcmappingmodel */; };
@@ -888,6 +889,7 @@
 		D586496F297734280081477E /* CheatMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheatMetadata.swift; sourceTree = "<group>"; };
 		D586497129774ABD0081477E /* CheatBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheatBase.swift; sourceTree = "<group>"; };
 		D5864977297756CE0081477E /* CheatBaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheatBaseView.swift; sourceTree = "<group>"; };
+		D5882F58307C507200EC8817 /* ReservedRegionsContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservedRegionsContext.swift; sourceTree = "<group>"; };
 		D58C54852FCAC37B00B408BA /* Delta 12.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Delta 12.xcdatamodel"; sourceTree = "<group>"; };
 		D58C548E2FCAC43E00B408BA /* Delta11ToDelta12.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = Delta11ToDelta12.xcmappingmodel; sourceTree = "<group>"; };
 		D58F39C529E0A473008B4100 /* Option.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Option.swift; sourceTree = "<group>"; };
@@ -1776,6 +1778,7 @@
 				D52DB1B62F5F8AE000C7491E /* PauseView.swift */,
 				D503AC392F6A15EA00002717 /* MenuItemButton.swift */,
 				D5363C3D2F5BA9AE0065182B /* ContainerRelativeGrid.swift */,
+				D5882F58307C507200EC8817 /* ReservedRegionsContext.swift */,
 			);
 			path = Menu;
 			sourceTree = "<group>";
@@ -2689,6 +2692,7 @@
 				BF3D6C53220286750083E05A /* Delta3ToDelta4.xcmappingmodel in Sources */,
 				D5CDCCF12A859E7500E22131 /* ReviewSaveStatesViewController.swift in Sources */,
 				D5367A8F307DC2F9009D11FC /* MarketplaceDistributor.swift in Sources */,
+				D5882F59307C507200EC8817 /* ReservedRegionsContext.swift in Sources */,
 				BF5942881E09BC8B0051894B /* _Game.swift in Sources */,
 				BF56450D220239B800A8EA26 /* GameControllerInputMappingMigrationPolicy.swift in Sources */,
 				823D998F2E566EE40025F4CD /* GBCColorPalette.swift in Sources */,

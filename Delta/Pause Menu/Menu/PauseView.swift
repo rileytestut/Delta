@@ -86,6 +86,9 @@ struct PauseView: View
 
     @AppStorage(Settings.Name.pauseMenuToolbarPlacement.rawValue)
     private var toolbarPlacement: Settings.PauseMenuToolbarPlacement = .bottom
+    
+    @Environment(\.horizontalSizeClass)
+    private var horizontalSizeClass
 
     private var stopButton: some View {
         Button(role: .close, action: stopHandler) {
@@ -101,10 +104,26 @@ struct PauseView: View
     }
     
     var body: some View {
+        if #available(iOS 27.1, *)
+        {
+            pauseView
+                .ignoresSafeArea()
+        }
+        else
+        {
+            pauseView
+        }
+    }
+    
+    @ViewBuilder
+    private var pauseView: some View {
         GeometryReader { geometry in
-            ScrollView(.horizontal) {
+            
+            let context = ReservedRegionsContext(geometry: geometry)
+            
+            let scrollView = ScrollView(.horizontal) {
                 GlassEffectContainer {
-                    ContainerRelativeGrid(pageWidth: geometry.size.width, itemWidth: MenuItemButton.preferredSize.width) {
+                    ContainerRelativeGrid(pageWidth: context.regionSize.width, itemWidth: MenuItemButton.preferredSize.width) {
                         if !isHidden
                         {
                             ForEach(items, id: \.text) { item in
@@ -115,10 +134,34 @@ struct PauseView: View
                             }
                         }
                     }
-                    .frame(height: geometry.size.height) // Match grid height to scroll view height, but allow width to grow.
+                    .frame(height: context.regionSize.height) // Match grid height to scroll view height, but allow width to grow.
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity) // Fill proposed frame with ScrollView.
+            
+            if #available(iOS 27.1, *), horizontalSizeClass == .regular
+            {
+                // For some reason ArrangementView breaks PauseView on outer display,
+                // so also make sure horizontalSizeClass is regular as workaround.
+                
+                ArrangementView {
+                    
+                    // If no division, explicitly set this View's size to 0
+                    // If there is a division, set the size to regionSize
+                    Color.clear
+                        .frame(width: context.regionsCount == 1 ? 0.0 : context.regionSize.width)
+                        .frame(height: context.regionsCount == 1 ? 0.0 : context.regionSize.height)
+                        .splitArrangementFixedLayoutSize()
+                    
+                } secondary: {
+                    scrollView
+                }
+                .arrangementViewStyle(.split)
+            }
+            else
+            {
+                scrollView
+            }
         }
         .ignoresSafeArea(edges: [.top, .bottom])
         .navigationTitle(Text("")) // HACK: Fixes UI glitch when transitioning to SaveStatesViewController.
