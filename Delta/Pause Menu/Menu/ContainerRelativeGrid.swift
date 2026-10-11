@@ -94,6 +94,8 @@ private extension ContainerRelativeGrid
         let maxColumns = Int((availableWidth + self.horizontalSpacing) / (itemSize.width + self.horizontalSpacing))
         let maxRows = Int((availableHeight + self.verticalSpacing) / (itemSize.height + self.verticalSpacing))
         
+        guard maxColumns > 0 && maxRows > 0 else { return (1, 1) }
+        
         // Special case: prefer 2x2 square for exactly 4 items
         if itemCount == 4 && maxColumns >= 2 && maxRows >= 2
         {
