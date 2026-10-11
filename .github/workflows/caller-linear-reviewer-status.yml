@@ -1,0 +1,11 @@
+name: Linear reviewer status
+
+on:
+  pull_request:
+    types: [review_requested]
+
+jobs:
+  linear:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    uses: altstoreio/workflows/.github/workflows/linear-reviewer-status.yml@main
+    secrets: inherit

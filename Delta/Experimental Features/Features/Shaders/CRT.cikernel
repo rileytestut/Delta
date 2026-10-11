@@ -1,0 +1,63 @@
+// CRT
+//
+// Delta Custom Filter, written in the Core Image Kernel Language:
+// https://developer.apple.com/documentation/coreimage/writing-custom-kernels
+//
+// A filter file contains one kernel with this signature, which Delta runs once for each pixel on screen:
+//
+//     kernel vec4 name(sampler source, vec2 sourceSize, vec2 outputSize)
+//
+// * source:     The game screen at its native resolution, sampled with nearest-neighbor sampling.
+// * sourceSize: Size of the game screen in pixels (e.g. 256 x 224 for SNES).
+// * outputSize: Size of the screen on your device in pixels.
+//
+// Use destCoord() to get the position of the current pixel on your device (0...outputSize),
+// and sample(source, samplerTransform(source, position)) to read the game screen at `position` (0...sourceSize).
+// Coordinates are measured in pixels, with the origin in the bottom-left corner.
+
+float beam(float d, float brightness)
+{
+    float halfWidth = mix(0.3, 0.62, brightness);
+    float t = clamp(abs(d) / halfWidth, 0.0, 1.0);
+    float bump = 1.0 - t * t;
+    return bump * bump;
+}
+
+float scanlines(float y, float pixelHeight, float brightness)
+{
+    float total = 0.0;
+    total += beam(fract(y - pixelHeight / 3.0) - 0.5, brightness);
+    total += beam(fract(y) - 0.5, brightness);
+    total += beam(fract(y + pixelHeight / 3.0) - 0.5, brightness);
+    return total / 3.0;
+}
+
+kernel vec4 crt(sampler source, vec2 sourceSize, vec2 outputSize)
+{
+    vec2 scale = sourceSize / outputSize;
+    vec2 position = destCoord() * scale;
+
+    // Blend between neighboring pixels in each row, but only near their edges, so the image stays crisp.
+    float x = position.x - 0.5;
+    float column = floor(x);
+    float blend = clamp((x - column - 0.5) * 2.5 + 0.5, 0.0, 1.0);
+    float y = clamp(position.y, 0.5, sourceSize.y - 0.5);
+    vec3 leftColor = sample(source, samplerTransform(source, vec2(clamp(column + 0.5, 0.5, sourceSize.x - 0.5), y))).rgb;
+    vec3 rightColor = sample(source, samplerTransform(source, vec2(clamp(column + 1.5, 0.5, sourceSize.x - 0.5), y))).rgb;
+    vec3 color = mix(leftColor, rightColor, blend);
+
+    // High resolution frames (e.g. N64's 480 lines) were interlaced on real TVs, so draw one scanline for every two rows.
+    float rowsPerLine = sourceSize.y > 300.0 ? 2.0 : 1.0;
+    float brightness = max(max(color.r, color.g), color.b);
+    color *= scanlines(position.y / rowsPerLine, scale.y / rowsPerLine, brightness);
+
+    // Aperture grille: each column of device pixels is a red, green, or blue phosphor stripe.
+    float stripe = mod(floor(destCoord().x), 3.0);
+    vec3 phosphor = vec3(stripe == 0.0 ? 1.0 : 0.7, stripe == 1.0 ? 1.0 : 0.7, stripe == 2.0 ? 1.0 : 0.7);
+    color *= phosphor;
+
+    // Scanlines and phosphors darken the image, so boost it back to roughly its original brightness.
+    color *= 2.0;
+
+    return vec4(clamp(color, 0.0, 1.0), 1.0);
+}

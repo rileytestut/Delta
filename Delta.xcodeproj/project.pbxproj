@@ -32,15 +32,18 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		0FCC04D3E01F2316ACC420BC /* OriginalGBA.cikernel in Resources */ = {isa = PBXBuildFile; fileRef = CC9328D3339318FF5C281032 /* OriginalGBA.cikernel */; };
 		18FC614F90FE76140AAECE67 /* DeltaOperatorUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCBF2F877CA6072880A54F35 /* DeltaOperatorUtils.swift */; };
 		1FA4ABA79AB72914FE414A61 /* libPods-Delta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DC866E433B3BA9AE18ABA1EC /* libPods-Delta.a */; };
 		28B653353E8323FA65C54A42 /* OperatorUICoordinators.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C8C13CE90324CBBA76BC3E /* OperatorUICoordinators.swift */; };
+		30D8DB9E1FF2D1B1E7BEE6AC /* CRTCurved.cikernel in Resources */ = {isa = PBXBuildFile; fileRef = E9F590F9C3B11B93463FDD42 /* CRTCurved.cikernel */; };
 		3C42B866777FEA42CD529B95 /* OperatorKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 796FA895EF62DF6A509DCA55 /* OperatorKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4C9DD6C0CC4DC2F8F032ED35 /* AppDelegate+Operator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7C8DB38D2A6B16B8609EAC /* AppDelegate+Operator.swift */; };
 		4F501EDE15C52E1E6230DB9E /* DeltaOperatorGameObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4327597BCB33E196164D3BB6 /* DeltaOperatorGameObserver.swift */; };
 		5FFDBC83E8777EB11777803A /* GamesViewController+Operator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6FDC5A03AD5693BEFFE87C /* GamesViewController+Operator.swift */; };
 		6FF8B1728BDBAF892B397F5E /* DeltaOperatorWritebackToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCE7674E5643CDB43BC8ED32 /* DeltaOperatorWritebackToast.swift */; };
 		70FF20879DA0DCEE53D8CAED /* OperatorKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 796FA895EF62DF6A509DCA55 /* OperatorKit.xcframework */; };
+		77D29BED38BC998396047ED3 /* GameViewController+CustomFilters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3912FC09CEBA5EAE21F54460 /* GameViewController+CustomFilters.swift */; };
 		823D998F2E566EE40025F4CD /* GBCColorPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 823D998E2E566EE40025F4CD /* GBCColorPalette.swift */; };
 		8279ED042E53BA4F008995FA /* GBACoreSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8279ED032E53BA4F008995FA /* GBACoreSettingsView.swift */; };
 		8279ED0E2E53C76C008995FA /* NESCoreSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8279ED0D2E53C76C008995FA /* NESCoreSettingsView.swift */; };
@@ -58,8 +61,10 @@
 		82F450AB2E6A1CD00097CE1C /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 82F450AA2E6A1CD00097CE1C /* AppIcon.icon */; };
 		87343D7B985519A5890A61C6 /* libPods-DeltaPreviews.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E3E5A45AB20C8A87754453B /* libPods-DeltaPreviews.a */; };
 		89DAEB1EDE294B3A7C857765 /* DeltaOperatorFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2157B527EA676AA703BEBF02 /* DeltaOperatorFacade.swift */; };
+		8F8EC06E0F050E6037F16DA3 /* CRT.cikernel in Resources */ = {isa = PBXBuildFile; fileRef = DCC48476A01A40051544F516 /* CRT.cikernel */; };
 		930F926748EAFE4DA261B958 /* GameCollectionViewController+Operator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D171C53E58A0B9BAF0B89D5 /* GameCollectionViewController+Operator.swift */; };
 		954A28F5338A5300C0B9497E /* OperatorSlotDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0654CFCA3D2CB4D35CC99F89 /* OperatorSlotDataSource.swift */; };
+		96CFFFFCF2C07FCBA1EB0EEA /* CustomScreenFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E016EA7AF2F7D73BE4774E /* CustomScreenFilter.swift */; };
 		AC1C991029F8B8C30020E6E4 /* ToastNotificationOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC1C990F29F8B8C30020E6E4 /* ToastNotificationOptions.swift */; };
 		AC1C992729F9F1CF0020E6E4 /* GameViewController+ExperimentalToasts.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC1C992629F9F1CF0020E6E4 /* GameViewController+ExperimentalToasts.swift */; };
 		ACF7E30F29F743A3000FE071 /* PHPhotoLibrary+Screenshots.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACF7E30E29F743A3000FE071 /* PHPhotoLibrary+Screenshots.swift */; };
@@ -355,6 +360,8 @@
 		D5F702FD2C24CE5300DCD271 /* UISceneSession+Delta.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F702FC2C24CE5300DCD271 /* UISceneSession+Delta.swift */; };
 		D5F82FB82981D3AC00B229AF /* LegacySearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F82FB72981D3AC00B229AF /* LegacySearchBar.swift */; };
 		D5FB042C2C5AF40A008329DD /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D5FB042B2C5AF40A008329DD /* libresolv.tbd */; };
+		D8E178EAB0A69A0B600D72B3 /* OriginalGameBoy.cikernel in Resources */ = {isa = PBXBuildFile; fileRef = 58A1876D049DA56BB053833F /* OriginalGameBoy.cikernel */; };
+		E424E54101D49C244341A908 /* CustomFilters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53E940F6FC243E487AE5A1F6 /* CustomFilters.swift */; };
 		E460BA632FECFFE700E8192B /* LibraryExport.swift in Sources */ = {isa = PBXBuildFile; fileRef = E460BA622FECFFE700E8192B /* LibraryExport.swift */; };
 		E647EE152F633116000DA257 /* AchievementToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = E647EE142F633115000DA257 /* AchievementToast.swift */; };
 		E65B0F932F6C65E4009B7F0A /* CheatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E65B0F922F6C65E4009B7F0A /* CheatsView.swift */; };
@@ -604,7 +611,10 @@
 		0B6FDC5A03AD5693BEFFE87C /* GamesViewController+Operator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GamesViewController+Operator.swift"; sourceTree = "<group>"; };
 		2157B527EA676AA703BEBF02 /* DeltaOperatorFacade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeltaOperatorFacade.swift; sourceTree = "<group>"; };
 		22506DA00971C4300AF90A35 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3912FC09CEBA5EAE21F54460 /* GameViewController+CustomFilters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameViewController+CustomFilters.swift"; sourceTree = "<group>"; };
 		4327597BCB33E196164D3BB6 /* DeltaOperatorGameObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeltaOperatorGameObserver.swift; sourceTree = "<group>"; };
+		53E940F6FC243E487AE5A1F6 /* CustomFilters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFilters.swift; sourceTree = "<group>"; };
+		58A1876D049DA56BB053833F /* OriginalGameBoy.cikernel */ = {isa = PBXFileReference; lastKnownFileType = text; path = OriginalGameBoy.cikernel; sourceTree = "<group>"; };
 		796FA895EF62DF6A509DCA55 /* OperatorKit.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = OperatorKit.xcframework; sourceTree = "<group>"; };
 		7C31F852121CBEF08181BD23 /* OperatorStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperatorStatusView.swift; sourceTree = "<group>"; };
 		7E3E5A45AB20C8A87754453B /* libPods-DeltaPreviews.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DeltaPreviews.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -624,6 +634,7 @@
 		82C83A722E4FCC030020711E /* CoreSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreSettingsView.swift; sourceTree = "<group>"; };
 		82F450AA2E6A1CD00097CE1C /* AppIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = AppIcon.icon; sourceTree = "<group>"; };
 		8ECE6641DE30D01EA30FE7F6 /* Pods-DeltaPreviews.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DeltaPreviews.release.xcconfig"; path = "Pods/Target Support Files/Pods-DeltaPreviews/Pods-DeltaPreviews.release.xcconfig"; sourceTree = "<group>"; };
+		98E016EA7AF2F7D73BE4774E /* CustomScreenFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomScreenFilter.swift; sourceTree = "<group>"; };
 		9D171C53E58A0B9BAF0B89D5 /* GameCollectionViewController+Operator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameCollectionViewController+Operator.swift"; sourceTree = "<group>"; };
 		A01281C7023C0041B25963BE /* Pods-DeltaPreviews.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DeltaPreviews.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DeltaPreviews/Pods-DeltaPreviews.debug.xcconfig"; sourceTree = "<group>"; };
 		A19FF50F55441BC2B2248241 /* Pods-Delta.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Delta.release.xcconfig"; path = "Pods/Target Support Files/Pods-Delta/Pods-Delta.release.xcconfig"; sourceTree = "<group>"; };
@@ -791,6 +802,7 @@
 		CA0001262E60000100000026 /* TouchHapticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchHapticsView.swift; sourceTree = "<group>"; };
 		CA0101012F8E000100000001 /* CheatIcons.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = CheatIcons.plist; sourceTree = "<group>"; };
 		CA0101012F8E000100000004 /* CheatIconPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheatIconPickerView.swift; sourceTree = "<group>"; };
+		CC9328D3339318FF5C281032 /* OriginalGBA.cikernel */ = {isa = PBXFileReference; lastKnownFileType = text; path = OriginalGBA.cikernel; sourceTree = "<group>"; };
 		CE7C8DB38D2A6B16B8609EAC /* AppDelegate+Operator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+Operator.swift"; sourceTree = "<group>"; };
 		D5002BD82DCD3E81003418FD /* IAPScareScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAPScareScreen.swift; sourceTree = "<group>"; };
 		D5002BDB2DCD3ED2003418FD /* MockPurchaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPurchaseManager.swift; sourceTree = "<group>"; };
@@ -938,6 +950,7 @@
 		D5FB042B2C5AF40A008329DD /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
 		DC866E433B3BA9AE18ABA1EC /* libPods-Delta.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Delta.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCBF2F877CA6072880A54F35 /* DeltaOperatorUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeltaOperatorUtils.swift; sourceTree = "<group>"; };
+		DCC48476A01A40051544F516 /* CRT.cikernel */ = {isa = PBXFileReference; lastKnownFileType = text; path = CRT.cikernel; sourceTree = "<group>"; };
 		E460BA622FECFFE700E8192B /* LibraryExport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryExport.swift; sourceTree = "<group>"; };
 		E647EE142F633115000DA257 /* AchievementToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementToast.swift; sourceTree = "<group>"; };
 		E65B0F922F6C65E4009B7F0A /* CheatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheatsView.swift; sourceTree = "<group>"; };
@@ -947,6 +960,7 @@
 		E6BD34AA2F563F1A001C9D78 /* AchievementGreeting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementGreeting.swift; sourceTree = "<group>"; };
 		E6BD34AC2F587BF0001C9D78 /* AchievementGameBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementGameBanner.swift; sourceTree = "<group>"; };
 		E6EB10AE2F58B1C50001AAD2 /* AchievementNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementNotification.swift; sourceTree = "<group>"; };
+		E9F590F9C3B11B93463FDD42 /* CRTCurved.cikernel */ = {isa = PBXFileReference; lastKnownFileType = text; path = CRTCurved.cikernel; sourceTree = "<group>"; };
 		FCE7674E5643CDB43BC8ED32 /* DeltaOperatorWritebackToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeltaOperatorWritebackToast.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1058,6 +1072,7 @@
 				D5011C47281B6E8B00A0760B /* CharacterSet+Filename.swift */,
 				ACF7E30E29F743A3000FE071 /* PHPhotoLibrary+Screenshots.swift */,
 				AC1C992629F9F1CF0020E6E4 /* GameViewController+ExperimentalToasts.swift */,
+				3912FC09CEBA5EAE21F54460 /* GameViewController+CustomFilters.swift */,
 				D5CDCCC32A85765900E22131 /* OSLog+Delta.swift */,
 				D5CDCCEA2A8593FC00E22131 /* UserDefaults+Delta.swift */,
 				D5D39E782AF2D624004BE3F7 /* GameView+AirPlay.swift */,
@@ -1860,6 +1875,9 @@
 			isa = PBXGroup;
 			children = (
 				AC1C990F29F8B8C30020E6E4 /* ToastNotificationOptions.swift */,
+				53E940F6FC243E487AE5A1F6 /* CustomFilters.swift */,
+				98E016EA7AF2F7D73BE4774E /* CustomScreenFilter.swift */,
+				D81E7EC4E7EFEF3088375B8B /* Shaders */,
 				D5147EC72A817B4A00D6CD64 /* ReviewSaveStatesOptions.swift */,
 				D5A287242C23A1AC009883C3 /* SkinDebugging.swift */,
 				C6F24AD62D64B452002F939F /* Lu.swift */,
@@ -1988,6 +2006,17 @@
 				D5D7C20929E61FA600663793 /* OptionToggleView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		D81E7EC4E7EFEF3088375B8B /* Shaders */ = {
+			isa = PBXGroup;
+			children = (
+				DCC48476A01A40051544F516 /* CRT.cikernel */,
+				E9F590F9C3B11B93463FDD42 /* CRTCurved.cikernel */,
+				58A1876D049DA56BB053833F /* OriginalGameBoy.cikernel */,
+				CC9328D3339318FF5C281032 /* OriginalGBA.cikernel */,
+			);
+			path = Shaders;
 			sourceTree = "<group>";
 		};
 		FD1E8AE87FA2DB8793F7B937 /* Pods */ = {
@@ -2322,6 +2351,10 @@
 			files = (
 				D53BE5FF2E873E6B0012DE0F /* MicrochipIcon.icon in Resources */,
 				D5D797E9298DCC7300738869 /* cheatbase.zip in Resources */,
+				8F8EC06E0F050E6037F16DA3 /* CRT.cikernel in Resources */,
+				30D8DB9E1FF2D1B1E7BEE6AC /* CRTCurved.cikernel in Resources */,
+				D8E178EAB0A69A0B600D72B3 /* OriginalGameBoy.cikernel in Resources */,
+				0FCC04D3E01F2316ACC420BC /* OriginalGBA.cikernel in Resources */,
 				BFFA71E21AAC406100EE9DD1 /* Main.storyboard in Resources */,
 				D5B6F5D52D6FC23E0061C365 /* FollowUsFooterView.xib in Resources */,
 				D5AE76C62C2B7F3D0086471B /* Icons.xcassets in Resources */,
@@ -2506,6 +2539,8 @@
 				82A787D92F60C4F400E4CA06 /* PageControl.swift in Sources */,
 				BF525EEA1FF6CD12004AA849 /* DeepLink.swift in Sources */,
 				AC1C991029F8B8C30020E6E4 /* ToastNotificationOptions.swift in Sources */,
+				E424E54101D49C244341A908 /* CustomFilters.swift in Sources */,
+				96CFFFFCF2C07FCBA1EB0EEA /* CustomScreenFilter.swift in Sources */,
 				BF8A334621A4926F00A42FD4 /* GameSyncStatusViewController.swift in Sources */,
 				BF59427E1E09BC830051894B /* Game.swift in Sources */,
 				D5011C48281B6E8B00A0760B /* CharacterSet+Filename.swift in Sources */,
@@ -2638,6 +2673,7 @@
 				82C83A732E4FCC030020711E /* CoreSettingsView.swift in Sources */,
 				BFE56E1923EB7BE00014FECD /* UIImage+SymbolFallback.swift in Sources */,
 				AC1C992729F9F1CF0020E6E4 /* GameViewController+ExperimentalToasts.swift in Sources */,
+				77D29BED38BC998396047ED3 /* GameViewController+CustomFilters.swift in Sources */,
 				4C9DD6C0CC4DC2F8F032ED35 /* AppDelegate+Operator.swift in Sources */,
 				5FFDBC83E8777EB11777803A /* GamesViewController+Operator.swift in Sources */,
 				82ACA6662FF58E4100A974BF /* ControlsEditorView.swift in Sources */,

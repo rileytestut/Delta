@@ -1,0 +1,67 @@
+// Original GBA
+// The original Game Boy Advance's unlit screen
+//
+// Delta Custom Filter, written in the Core Image Kernel Language:
+// https://developer.apple.com/documentation/coreimage/writing-custom-kernels
+//
+// A filter file contains one kernel with this signature, which Delta runs once for each pixel on screen:
+//
+//     kernel vec4 name(sampler source, vec2 sourceSize, vec2 outputSize)
+//
+// * source:     The game screen at its native resolution, sampled with nearest-neighbor sampling.
+// * sourceSize: Size of the game screen in pixels (e.g. 256 x 224 for SNES).
+// * outputSize: Size of the screen on your device in pixels.
+//
+// Use destCoord() to get the position of the current pixel on your device (0...outputSize),
+// and sample(source, samplerTransform(source, position)) to read the game screen at `position` (0...sourceSize).
+// Coordinates are measured in pixels, with the origin in the bottom-left corner.
+
+vec3 unlitScreen(vec3 color)
+{
+    vec3 linear = pow(color, vec3(2.2));
+
+    // Light leaking between neighboring subpixels shifts hues (e.g. blues turn teal and yellows turn warmer).
+    // Each row adds up to 1, so white stays white.
+    vec3 leaked = vec3(dot(linear, vec3(0.86, 0.18, -0.04)),
+                       dot(linear, vec3(0.12, 0.68, 0.20)),
+                       dot(linear, vec3(0.16, 0.20, 0.64)));
+
+    // Only apply most of the effect, so colors stay vibrant.
+    linear = mix(linear, leaked, 0.65);
+
+    // Slightly cool tint.
+    linear *= vec3(0.97, 0.98, 1.0);
+
+    // Converting back with a slightly smaller exponent than 1/2.2 deepens midtones a little.
+    return pow(clamp(linear, 0.0, 1.0), vec3(1.0 / 2.0));
+}
+
+float pixelCoverage(float start, float end, float gap)
+{
+    // Total gap width from 0 to x, with gaps centered on pixel edges.
+    float a = start + 0.5 * gap;
+    float b = end + 0.5 * gap;
+    float gapStart = floor(a) * gap + min(fract(a), gap);
+    float gapEnd = floor(b) * gap + min(fract(b), gap);
+    return 1.0 - (gapEnd - gapStart) / max(end - start, 0.0001);
+}
+
+kernel vec4 originalGBA(sampler source, vec2 sourceSize, vec2 outputSize)
+{
+    vec2 scale = sourceSize / outputSize;
+    vec2 position = destCoord() * scale;
+
+    vec3 color = sample(source, samplerTransform(source, clamp(position, vec2(0.5), sourceSize - 0.5))).rgb;
+    color = unlitScreen(color);
+
+    // Gaps between pixels let through some light, so they're darker rather than black.
+    vec2 halfPixel = 0.5 * scale;
+    float coverage = pixelCoverage(position.x - halfPixel.x, position.x + halfPixel.x, 0.18) * pixelCoverage(position.y - halfPixel.y, position.y + halfPixel.y, 0.18);
+    float grid = mix(0.72, 1.0, coverage);
+
+    // Hide the grid when game pixels are too small to show it (e.g. N64's high resolution frames).
+    float pixelSize = min(outputSize.x / sourceSize.x, outputSize.y / sourceSize.y);
+    color *= mix(1.0, grid, smoothstep(1.75, 3.0, pixelSize));
+
+    return vec4(color, 1.0);
+}

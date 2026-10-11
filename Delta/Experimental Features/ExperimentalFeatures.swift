@@ -81,6 +81,11 @@ struct ExperimentalFeatures: FeatureContainer
              description: "Allow other apps to fetch your game library via the “delta://gameInfo?scheme=<callerScheme>” URL request. Delta responds by opening “<callerScheme>://delta?games=<payload>”, where the payload is a base64url-encoded JSON array of your games.")
     var libraryExport
 
+    @Feature(name: "Custom Filters",
+             description: "Recreate the look of original CRT TVs and handheld screens with Core Image shaders, or import your own shader files.",
+             options: CustomFiltersOptions())
+    var customFilters
+
     private init()
     {
         self.prepareFeatures()

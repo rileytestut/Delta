@@ -530,7 +530,10 @@ extension GameViewController
                 
         coordinator.animate(alongsideTransition: { (context) in
             self.updateControllerSkin()
-        }, completion: nil)        
+        }, completion: { (context) in
+            // Custom filters aren't updated while rotating, so update them once game views have their final size.
+            self.updateCustomFilters()
+        })
     }
     
     override func viewDidLayoutSubviews()
@@ -542,6 +545,9 @@ extension GameViewController
             // Fixes Hold Button description laying out vertically after orientation change.
             sustainButtonsBackgroundView.detailTextLabel.preferredMaxLayoutWidth = sustainButtonsBackgroundView.bounds.width
         }
+        
+        // Game view sizes may have changed, which affects custom filters.
+        self.updateCustomFilters()
     }
     
     // MARK: - Segues
@@ -1080,6 +1086,9 @@ private extension GameViewController
                 }
             }
         }
+        
+        // DeltaCore resets game view filters when updating game views, so re-apply custom filters.
+        self.updateCustomFilters()
     }
 }
 
@@ -1678,6 +1687,9 @@ private extension GameViewController
             gameView.setNeedsLayout()
             gameView.layoutIfNeeded()
         }
+        
+        // DeltaCore resets game view filters when updating game views, so re-apply custom filters.
+        self.updateCustomFilters()
     }
     
     func disconnectExternalDisplay(for scene: ExternalDisplayScene)
@@ -2358,6 +2370,10 @@ private extension GameViewController
         case _ where settingsName.rawValue.hasPrefix(ExperimentalFeatures.shared.airPlaySkins.settingsKey.rawValue):
             // Update whenever any of the AirPlay skins have changed.
             self.updateExternalDisplay()
+            
+        case _ where settingsName.rawValue.hasPrefix(ExperimentalFeatures.shared.customFilters.settingsKey.rawValue):
+            // Update whenever Custom Filters is toggled (including removing filters when disabled) or any system's filter changes.
+            self.updateCustomFilters()
             
         case .pauseWhileInactive: self.automaticallyPausesWhileInactive = Settings.pauseWhileInactive
         case .supportsExternalDisplays:

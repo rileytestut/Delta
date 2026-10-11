@@ -1,0 +1,66 @@
+// Original Game Boy
+// The original Game Boy's pea-green dot-matrix screen
+//
+// Delta Custom Filter, written in the Core Image Kernel Language:
+// https://developer.apple.com/documentation/coreimage/writing-custom-kernels
+//
+// A filter file contains one kernel with this signature, which Delta runs once for each pixel on screen:
+//
+//     kernel vec4 name(sampler source, vec2 sourceSize, vec2 outputSize)
+//
+// * source:     The game screen at its native resolution, sampled with nearest-neighbor sampling.
+// * sourceSize: Size of the game screen in pixels (e.g. 256 x 224 for SNES).
+// * outputSize: Size of the screen on your device in pixels.
+//
+// Use destCoord() to get the position of the current pixel on your device (0...outputSize),
+// and sample(source, samplerTransform(source, position)) to read the game screen at `position` (0...sourceSize).
+// Coordinates are measured in pixels, with the origin in the bottom-left corner.
+
+float shade(vec3 color)
+{
+    float luminance = dot(color, vec3(0.3, 0.59, 0.11));
+    return smoothstep(0.0, 1.0, clamp(luminance, 0.0, 1.0));
+}
+
+vec3 screenColor(float shade)
+{
+    vec3 darkest = vec3(0.10, 0.20, 0.09);
+    vec3 dark = vec3(0.24, 0.37, 0.16);
+    vec3 light = vec3(0.52, 0.64, 0.13);
+    vec3 lightest = vec3(0.64, 0.73, 0.16);
+
+    float s = shade * 3.0;
+    return s < 1.0 ? mix(darkest, dark, s) : (s < 2.0 ? mix(dark, light, s - 1.0) : mix(light, lightest, s - 2.0));
+}
+
+float dotCoverage(float start, float end, float gap)
+{
+    // Total gap width from 0 to x, with gaps centered on pixel edges.
+    float a = start + 0.5 * gap;
+    float b = end + 0.5 * gap;
+    float gapStart = floor(a) * gap + min(fract(a), gap);
+    float gapEnd = floor(b) * gap + min(fract(b), gap);
+    return 1.0 - (gapEnd - gapStart) / max(end - start, 0.0001);
+}
+
+kernel vec4 originalGameBoy(sampler source, vec2 sourceSize, vec2 outputSize)
+{
+    vec2 scale = sourceSize / outputSize;
+    vec2 position = destCoord() * scale;
+
+    vec3 color = sample(source, samplerTransform(source, clamp(position, vec2(0.5), sourceSize - 0.5))).rgb;
+    vec3 dotColor = screenColor(shade(color));
+
+    // Dots float slightly above the screen behind them, so dark dots cast shadows down and to the right.
+    vec3 shadowCaster = sample(source, samplerTransform(source, clamp(position + vec2(-0.35, 0.25), vec2(0.5), sourceSize - 0.5))).rgb;
+    vec3 background = screenColor(1.0) * (1.0 - 0.32 * (1.0 - shade(shadowCaster)));
+
+    vec2 halfPixel = 0.5 * scale;
+    float coverage = dotCoverage(position.x - halfPixel.x, position.x + halfPixel.x, 0.16) * dotCoverage(position.y - halfPixel.y, position.y + halfPixel.y, 0.16);
+
+    // Hide the dots when game pixels are too small to show them (e.g. N64's high resolution frames).
+    float pixelSize = min(outputSize.x / sourceSize.x, outputSize.y / sourceSize.y);
+    coverage = mix(1.0, coverage, smoothstep(1.75, 3.0, pixelSize));
+
+    return vec4(mix(background, dotColor, coverage), 1.0);
+}
