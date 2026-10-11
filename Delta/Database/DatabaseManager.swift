@@ -741,6 +741,22 @@ extension DatabaseManager
         
         return directoryURL
     }
+
+    class var eventsDirectoryURL: URL
+    {
+        let eventsDirectoryURL = DatabaseManager.defaultDirectoryURL().appendingPathComponent("DLC")
+        self.createDirectory(at: eventsDirectoryURL)
+        
+        return eventsDirectoryURL
+    }
+    
+    class func eventDirectoryURL(for event: Event) -> URL
+    {
+        let eventDirectoryURL = DatabaseManager.eventsDirectoryURL.appendingPathComponent(event.id)
+        self.createDirectory(at: eventDirectoryURL)
+        
+        return eventDirectoryURL
+    }
     
     class func artworkURL(for game: Game) -> URL
     {

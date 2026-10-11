@@ -19,6 +19,8 @@ extension PauseView
         var resumeHandler: () -> Void = {}
         var stopHandler: () -> Void = {}
         
+        var showsCloseButton: Bool = true
+        
         fileprivate private(set) var isHidden: Bool = true
         fileprivate private(set) var isAnimated: Bool = true
         
@@ -127,10 +129,13 @@ struct PauseView: View
             {
                 if !isHidden
                 {
-                    ToolbarItem(placement: .topBarLeading) {
-                        stopButton
-                            .glassEffect()
-                            .glassEffectTransition(.materialize)
+                    if hostingViewController.showsCloseButton
+                    {
+                        ToolbarItem(placement: .topBarLeading) {
+                            stopButton
+                                .glassEffect()
+                                .glassEffectTransition(.materialize)
+                        }
                     }
 
                     ToolbarItem(placement: .topBarTrailing) {
@@ -144,9 +149,12 @@ struct PauseView: View
             else
             {
                 ToolbarItemGroup(placement: .bottomBar) {
-                    stopButton
-                        .glassEffect()
-                        .glassEffectTransition(.materialize)
+                    if hostingViewController.showsCloseButton
+                    {
+                        stopButton
+                            .glassEffect()
+                            .glassEffectTransition(.materialize)
+                    }
                     
                     Spacer()
                     

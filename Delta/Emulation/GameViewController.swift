@@ -118,6 +118,20 @@ class GameViewController: DeltaCore.GameViewController
             self.presentedGyroAlert = false
             
             self.startTrackingAchievements()
+            
+            if let emulatorBridge = self.emulatorCore?.deltaCore.emulatorBridge as? GBAEmulatorBridge
+            {
+                if let activeEvent
+                {
+                    // Safe to call multiple times
+                    self.activateEvent(activeEvent)
+                }
+                else
+                {
+                    // No active event, so reset patchesDirectoryURL.
+                    emulatorBridge.patchesDirectoryURL = nil
+                }
+            }
         }
     }
     
@@ -164,6 +178,13 @@ class GameViewController: DeltaCore.GameViewController
     }
     
     private var _isLoadingSaveState = false
+    
+    // Events
+    private var activeEvent: Event?
+    private var isEventActive: Bool {
+        let isEventActive = self.activeEvent != nil
+        return isEventActive
+    }
     
     // Online Multiplayer
     private var onlineConnectionDate: Date?
@@ -281,6 +302,9 @@ class GameViewController: DeltaCore.GameViewController
         
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.didActivateGyro(with:)), name: GBA.didActivateGyroNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.didDeactivateGyro(with:)), name: GBA.didDeactivateGyroNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.gbaDidEnableSaving(with:)), name: GBA.didEnableSavingNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.gbaDidDisableSaving(with:)), name: GBA.didDisableSavingNotification, object: nil)
+        
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.didConnectOnline(with:)), name: MelonDS.didConnectToWFCNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.didDisconnectFromOnline(with:)), name: MelonDS.didDisconnectFromWFCNotification, object: nil)
         
@@ -598,6 +622,12 @@ extension GameViewController
             pauseViewController.saveStatesViewControllerDelegate = self
             pauseViewController.cheatsViewControllerDelegate = self
             pauseViewController.closeButtonTitle = self.isGameScene ? NSLocalizedString("Close", comment: "") : NSLocalizedString("Main Menu", comment: "")
+            pauseViewController.showsCloseButton = !self.isEventActive
+            
+            pauseViewController.startEventHandler = { [weak self, weak pauseViewController] event in
+                self?.activateEvent(event)
+                pauseViewController?.dismiss()
+            }
             
             if let traits = self.controllerView.controllerSkinTraits, let menuInsets = self.controllerView.controllerSkin?.menuInsets(for: traits)
             {
@@ -641,6 +671,29 @@ extension GameViewController
                 pauseViewController.loadStateItem = nil
                 pauseViewController.cheatCodesItem = nil
                 pauseViewController.fastForwardItem = nil
+            }
+            
+            if self.isEventActive
+            {
+                pauseViewController.saveStateItem = nil
+                pauseViewController.loadStateItem = nil
+                pauseViewController.cheatCodesItem = nil
+                
+                let image = UIImage(systemName: "xmark.circle", withConfiguration: UIImage.SymbolConfiguration(pointSize: 35))?.withRenderingMode(.alwaysTemplate)
+                pauseViewController.eventsItem?.text = String(localized: "Stop DLC")
+                pauseViewController.eventsItem?.image = image
+                pauseViewController.eventsItem?.action = { [weak self] item in
+                    item.isSelected = false
+                    self?.stopEvent()
+                }
+            }
+            else
+            {
+                let supportsDLC = (self.game as? Game)?.supportsDLC ?? false
+                if !supportsDLC
+                {
+                    pauseViewController.eventsItem = nil
+                }
             }
             
             if let game = self.game as? Game, AchievementsManager.shared.isAuthenticated,
@@ -1151,8 +1204,8 @@ extension GameViewController: SaveStatesViewControllerDelegate
     {
         // Ensures game is non-nil and also a Game subclass
         guard let game = self.game as? Game else { return }
-        
-        guard let emulatorCore = self.emulatorCore, emulatorCore.state != .stopped, !emulatorCore.isWirelessMultiplayerActive else { return }
+                
+        guard let emulatorCore = self.emulatorCore, emulatorCore.state != .stopped, !emulatorCore.isWirelessMultiplayerActive && !self.isEventActive else { return }
         
         // If pausedSaveState exists and has already been saved, don't update auto save state
         // This prevents us from filling our auto save state slots with the same save state
@@ -1366,6 +1419,140 @@ extension GameViewController: CheatsViewControllerDelegate
     }
 }
 
+//MARK: - Events -
+
+extension GameViewController
+{
+    func activateEvent(_ event: Event)
+    {
+        do
+        {
+            guard let emulatorCore, let game = self.game as? Game, let eventGame = game.eventGame, let emulatorBridge = emulatorCore.deltaCore.emulatorBridge as? GBAEmulatorBridge else { throw EventError.unsupportedGame }
+            
+            if let minVersion = event.minVersion
+            {
+                guard let buildVersion = Bundle.main.object(forInfoDictionaryKey: kCFBundleVersionKey as String) as? String, buildVersion >= minVersion else {
+                    throw EventError.deltaVersionNotSupported
+                }
+            }
+            
+            let eventURL = DatabaseManager.eventDirectoryURL(for: event)
+            
+            switch emulatorCore.state
+            {
+            case .running:
+                emulatorCore.pause()
+                emulatorCore.save()
+                
+            case .paused:
+                emulatorCore.save()
+                
+            case .stopped:
+                // Not running, do nothing.
+                break
+            }
+            
+            self.updateAutoSaveState()
+            
+            // Stop emulation so we can load new patched ROM with same save file.
+            emulatorCore.stop()
+            
+            // Back up save file
+            let gameSaveURL = game.gameSaveURL
+            if FileManager.default.fileExists(atPath: gameSaveURL.path(percentEncoded: false))
+            {
+                do
+                {
+                    let backupURL = eventURL.appending(path: gameSaveURL.lastPathComponent)
+                    
+                    // We only want to back up save file once, in case they accidentally run it again, so shouldReplace = false
+                    try FileManager.default.copyItem(at: gameSaveURL, to: backupURL, shouldReplace: false)
+                }
+                catch
+                {
+                    // Backing up save file is a convenience, so don't fail operation overall if it fails
+                    Logger.main.error("Failed to back up save file for game \(game.name, privacy: .public) for event \(event.id). \(error.localizedDescription, privacy: .public)")
+                }
+            }
+            
+            // Create temporary copy of patch with same filename as Game so it is loaded automatically by the core.
+            let patchURL = try EventManager.patchURL(for: event)
+            let gamePatchURL = patchURL.deletingLastPathComponent().appendingPathComponent(game.filename).deletingPathExtension().appendingPathExtension(patchURL.pathExtension)
+            try FileManager.default.copyItem(at: patchURL, to: gamePatchURL, shouldReplace: true)
+            
+            self.activeEvent = event
+            
+            emulatorBridge.patchesDirectoryURL = eventURL
+            
+            // DON'T reset emulation by re-assigning self.game, which could cause infinite loop.
+            // It will be reset automatically when we return to game.
+            // self.game = game
+        }
+        catch
+        {
+            func presentAlert()
+            {
+                let alertController = UIAlertController(title: String(localized: "Unable to Start DLC"), message: error.localizedDescription, preferredStyle: .alert)
+                alertController.addAction(.ok)
+                self.present(alertController, animated: true)
+            }
+            
+            DispatchQueue.main.async {
+                if let transitionCoordinator = self.transitionCoordinator
+                {
+                    transitionCoordinator.animate(alongsideTransition: nil) { (context) in
+                        presentAlert()
+                    }
+                }
+                else
+                {
+                    presentAlert()
+                }
+            }
+        }
+    }
+    
+    private func stopEvent()
+    {
+        func stop()
+        {
+            self.activeEvent = nil
+            
+            guard let emulatorCore, let emulatorBridge = self.emulatorCore?.deltaCore.emulatorBridge as? GBAEmulatorBridge else { return }
+                    
+            switch emulatorCore.state
+            {
+            case .running:
+                emulatorCore.pause()
+                emulatorCore.save()
+                
+            case .paused:
+                emulatorCore.save()
+                
+            case .stopped:
+                // Not running, do nothing.
+                break
+            }
+            
+            // Stop emulation so we can reset to vanilla ROM.
+            emulatorCore.stop()
+            
+            emulatorBridge.patchesDirectoryURL = nil
+            
+            self.pauseViewController?.dismiss()
+        }
+        
+        let alertController = UIAlertController(title: String(localized: "Are you sure you'd like to stop this DLC?"), message: String(localized: "Any unsaved changes will be lost."), preferredStyle: .alert)
+        alertController.addAction(.cancel)
+        alertController.addAction(UIAlertAction(title: String(localized: "Stop DLC"), style: .destructive) { _ in
+            stop()
+        })
+        
+        let presentingViewController = self.pauseViewController ?? self
+        presentingViewController.present(alertController, animated: true, completion: nil)
+    }
+}
+
 //MARK: - Audio -
 /// Audio
 private extension GameViewController
@@ -1438,7 +1625,7 @@ extension GameViewController
 {
     @objc func performQuickSaveAction()
     {
-        guard let game = self.game as? Game, let emulatorCore, !emulatorCore.isWirelessMultiplayerActive else { return }
+        guard let game = self.game as? Game, let emulatorCore, !emulatorCore.isWirelessMultiplayerActive && !self.isEventActive else { return }
         
         let backgroundContext = DatabaseManager.shared.newBackgroundContext()
         backgroundContext.performAndWait {
@@ -1477,7 +1664,7 @@ extension GameViewController
             return
         }
         
-        guard let game = self.game as? Game, let emulatorCore, !emulatorCore.isWirelessMultiplayerActive else { return }
+        guard let game = self.game as? Game, let emulatorCore, !emulatorCore.isWirelessMultiplayerActive && !self.isEventActive else { return }
         
         let fetchRequest = SaveState.fetchRequest(for: game, type: .quick)
         
@@ -2615,6 +2802,22 @@ private extension GameViewController
                 toastView.detailTextLabel.textAlignment = .center
                 self.show(toastView)
             }
+        }
+    }
+    
+    @objc func gbaDidEnableSaving(with notification: Notification)
+    {
+        DispatchQueue.main.async {
+            let toastView = RSTToastView(text: NSLocalizedString("Saving Enabled", comment: ""), detailText: NSLocalizedString("You can resume saving your game normally.", comment: ""))
+            self.show(toastView, duration: 5.0)
+        }
+    }
+    
+    @objc func gbaDidDisableSaving(with notification: Notification)
+    {
+        DispatchQueue.main.async {
+            let toastView = RSTToastView(text: NSLocalizedString("Saving Disabled", comment: ""), detailText: NSLocalizedString("Complete the DLC to resume saving your game.", comment: ""))
+            self.show(toastView, duration: 5.0)
         }
     }
     

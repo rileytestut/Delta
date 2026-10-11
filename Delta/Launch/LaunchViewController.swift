@@ -126,10 +126,10 @@ extension LaunchViewController
         }
         
         WFCManager.shared.updateKnownWFCServers()
+        EventManager.shared.updateSupportedGameIDs()
+        RemoteControllerSkinManager.shared.updateSkinsInBackground()
         
         AchievementsManager.shared.authenticateInBackground()
-        
-        RemoteControllerSkinManager.shared.updateSkinsInBackground()
         
         func showGameViewController()
         {

@@ -143,6 +143,26 @@ public class Game: _Game, GameProtocol
         }
     }
     private var _internalName: String?
+    
+    var supportsDLC: Bool {
+        let supportsDLC = (self.eventGame != nil)
+        return supportsDLC
+    }
+    
+    var eventGame: EventGame? {
+        let identifier = self.identifier.lowercased()
+        
+        for eventGame in EventGame.allCases
+        {
+            if eventGame.gameIDs.contains(identifier)
+            {
+                // One of this game's IDs matches identifier, so we must be this game.
+                return eventGame
+            }
+        }
+        
+        return nil
+    }
 }
 
 extension Game

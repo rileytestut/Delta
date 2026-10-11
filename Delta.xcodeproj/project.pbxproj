@@ -250,6 +250,11 @@
 		D55C469129E7631000EA6DE9 /* AnyOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55C469029E7631000EA6DE9 /* AnyOption.swift */; };
 		D560BD8629EDC45600289847 /* ExternalDisplaySceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D560BD8529EDC45600289847 /* ExternalDisplaySceneDelegate.swift */; };
 		D56BB6C630796C7600DDAE4C /* RemoteControllerSkinManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56BB6C530796C7600DDAE4C /* RemoteControllerSkinManager.swift */; };
+		D56BB7163079EB8C00DDAE4C /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56BB7113079EB8C00DDAE4C /* Event.swift */; };
+		D56BB7173079EB8C00DDAE4C /* EventDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56BB7123079EB8C00DDAE4C /* EventDetailView.swift */; };
+		D56BB7183079EB8C00DDAE4C /* EventManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56BB7133079EB8C00DDAE4C /* EventManager.swift */; };
+		D56BB7193079EB8C00DDAE4C /* EventsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56BB7143079EB8C00DDAE4C /* EventsView.swift */; };
+		D56BB71A3079EB8C00DDAE4C /* EventGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56BB7153079EB8C00DDAE4C /* EventGame.swift */; };
 		D56C362F2D6538C500A8984D /* WhatsNewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56C362E2D6538C500A8984D /* WhatsNewViewController.swift */; };
 		D56C36312D65471D00A8984D /* WhatsNewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56C36302D65471D00A8984D /* WhatsNewCell.swift */; };
 		D56E7E942DC43BE60067766D /* JoinPatreonButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56E7E932DC43BE60067766D /* JoinPatreonButton.swift */; };
@@ -849,6 +854,11 @@
 		D55C469029E7631000EA6DE9 /* AnyOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyOption.swift; sourceTree = "<group>"; };
 		D560BD8529EDC45600289847 /* ExternalDisplaySceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExternalDisplaySceneDelegate.swift; sourceTree = "<group>"; };
 		D56BB6C530796C7600DDAE4C /* RemoteControllerSkinManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteControllerSkinManager.swift; sourceTree = "<group>"; };
+		D56BB7113079EB8C00DDAE4C /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
+		D56BB7123079EB8C00DDAE4C /* EventDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailView.swift; sourceTree = "<group>"; };
+		D56BB7133079EB8C00DDAE4C /* EventManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventManager.swift; sourceTree = "<group>"; };
+		D56BB7143079EB8C00DDAE4C /* EventsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsView.swift; sourceTree = "<group>"; };
+		D56BB7153079EB8C00DDAE4C /* EventGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventGame.swift; sourceTree = "<group>"; };
 		D56C362E2D6538C500A8984D /* WhatsNewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatsNewViewController.swift; sourceTree = "<group>"; };
 		D56C36302D65471D00A8984D /* WhatsNewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatsNewCell.swift; sourceTree = "<group>"; };
 		D56E7E932DC43BE60067766D /* JoinPatreonButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinPatreonButton.swift; sourceTree = "<group>"; };
@@ -1335,6 +1345,7 @@
 				D53ED1252F565D8000F5B5C0 /* Menu */,
 				BF3540031C5DA6D800C1184C /* Save States */,
 				BFC9B7371CEFCD08008629BB /* Cheats */,
+				D56BB7233079F36800DDAE4C /* Events */,
 				BF353FFB1C5DA2F600C1184C /* Presentation Controller */,
 				BF912E481C5CB5D50041527C /* Segues */,
 			);
@@ -1751,6 +1762,18 @@
 				D5363C3D2F5BA9AE0065182B /* ContainerRelativeGrid.swift */,
 			);
 			path = Menu;
+			sourceTree = "<group>";
+		};
+		D56BB7233079F36800DDAE4C /* Events */ = {
+			isa = PBXGroup;
+			children = (
+				D56BB7113079EB8C00DDAE4C /* Event.swift */,
+				D56BB7133079EB8C00DDAE4C /* EventManager.swift */,
+				D56BB7143079EB8C00DDAE4C /* EventsView.swift */,
+				D56BB7123079EB8C00DDAE4C /* EventDetailView.swift */,
+				D56BB7153079EB8C00DDAE4C /* EventGame.swift */,
+			);
+			path = Events;
 			sourceTree = "<group>";
 		};
 		D57A81912E29ADC8006E06E8 /* Dependencies */ = {
@@ -2608,6 +2631,11 @@
 				D5795A1B2CD2D22900C1D7E9 /* PurchaseManager.swift in Sources */,
 				BF04E6FF1DB8625C000F35D3 /* ControllerSkinsViewController.swift in Sources */,
 				D5AE76B62C2B52820086471B /* Patron.swift in Sources */,
+				D56BB7163079EB8C00DDAE4C /* Event.swift in Sources */,
+				D56BB7173079EB8C00DDAE4C /* EventDetailView.swift in Sources */,
+				D56BB7183079EB8C00DDAE4C /* EventManager.swift in Sources */,
+				D56BB7193079EB8C00DDAE4C /* EventsView.swift in Sources */,
+				D56BB71A3079EB8C00DDAE4C /* EventGame.swift in Sources */,
 				D53415A5298C782A00FD67B1 /* ContributorsView.swift in Sources */,
 				E6955FAB2F743735001B8A75 /* CheatsButton.swift in Sources */,
 				BF5942891E09BC8B0051894B /* _GameCollection.swift in Sources */,

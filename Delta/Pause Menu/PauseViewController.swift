@@ -20,10 +20,11 @@ class PauseViewController: UIViewController, PauseInfoProviding
     }
     
     var pauseItems: [MenuItem] {
-        return [self.saveStateItem, self.loadStateItem, self.cheatCodesItem, self.fastForwardItem, self.sustainButtonsItem, self.screenshotItem, self.askLuItem].compactMap { $0 }
+        return [self.saveStateItem, self.loadStateItem, self.cheatCodesItem, self.fastForwardItem, self.sustainButtonsItem, self.screenshotItem, self.askLuItem, self.eventsItem].compactMap { $0 }
     }
     
     var closeButtonTitle: String = NSLocalizedString("Main Menu", comment: "")
+    var showsCloseButton: Bool = true
     
     var menuInsets: UIEdgeInsets? {
         didSet {
@@ -44,6 +45,7 @@ class PauseViewController: UIViewController, PauseInfoProviding
     var sustainButtonsItem: MenuItem?
     var screenshotItem: MenuItem?
     var askLuItem: MenuItem?
+    var eventsItem: MenuItem?
     
     /// PauseInfoProviding
     var pauseText: String?
@@ -53,6 +55,9 @@ class PauseViewController: UIViewController, PauseInfoProviding
     
     /// Save States
     weak var saveStatesViewControllerDelegate: SaveStatesViewControllerDelegate?
+    
+    /// Events
+    var startEventHandler: ((Event) -> Void)?
     
     private var saveStatesViewControllerMode = SaveStatesViewController.Mode.loading
     
@@ -107,6 +112,7 @@ class PauseViewController: UIViewController, PauseInfoProviding
                 gridMenuViewController.closeButton.title = self.closeButtonTitle
                 gridMenuViewController.closeButton.tintColor = .systemRed
                 gridMenuViewController.closeButton.style = .done
+                gridMenuViewController.closeButton.isHidden = !self.showsCloseButton
             }
             
             if UIApplication.shared.supportsMultipleScenes
@@ -159,6 +165,7 @@ extension PauseViewController
                 } stopHandler: { [weak self] in
                     self?.returnToMainMenu()
                 }
+                pauseViewController.showsCloseButton = self.showsCloseButton
                 self.pauseNavigationController.setViewControllers([pauseViewController], animated: false)
                 
                 // Reset storyboard's barStyle = .black which forces legacy appearance
@@ -239,6 +246,7 @@ private extension PauseViewController
         self.sustainButtonsItem = nil
         self.fastForwardItem = nil
         self.screenshotItem = nil
+        self.eventsItem = nil
         
         guard let emulatorCore = self.emulatorCore else { return }
         
@@ -288,6 +296,19 @@ private extension PauseViewController
         {
             let menuOptions = self.makeFastForwardMenuOptions(for: game)
             self.fastForwardItem?.menuOptions = menuOptions ?? []
+            
+            let eventsImage = UIImage(systemName: "arrow.down.circle", withConfiguration: UIImage.SymbolConfiguration(pointSize: 35))?.withRenderingMode(.alwaysTemplate)
+            self.eventsItem = MenuItem(text: NSLocalizedString("DLC", comment: ""), image: eventsImage, action: { [unowned self] item in
+                // Deselect on all iOS versions, since presenting a sheet doesn't trigger GridMenuViewController's automatic deselection.
+                item.isSelected = false
+
+                let eventsView = EventsView(game: game) { [weak self] event in
+                    self?.startEventHandler?(event)
+                }
+                
+                let hostingController = UIHostingController(rootView: eventsView)
+                self.present(hostingController, animated: true)
+            })
         }
         // Add Lu menu item if enabled
         if ExperimentalFeatures.shared.Lu.isEnabled {

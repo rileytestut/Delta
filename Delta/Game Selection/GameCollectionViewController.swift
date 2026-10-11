@@ -147,6 +147,7 @@ class GameCollectionViewController: UICollectionViewController
     weak var activeEmulatorCore: EmulatorCore?
     
     private var activeSaveState: SaveStateProtocol?
+    private var activeEvent: Event?
     private var isResumingGame: Bool = false
     
     private let prototypeCell = GridCollectionViewCell()
@@ -322,7 +323,11 @@ extension GameCollectionViewController
                 emulatorBridge.wfcDNS = Settings.preferredWFCServer
             }
             
-            if let saveState = self.activeSaveState /* && self.isResumingGame */ // activeSaveState can be non-nil even when not resuming game.
+            if let activeEvent
+            {
+                destinationViewController.activateEvent(activeEvent)
+            }
+            else if let saveState = self.activeSaveState /* && self.isResumingGame */ // activeSaveState can be non-nil even when not resuming game.
             {
                 // Must be synchronous or else there will be a flash of black
                 destinationViewController.emulatorCore?.start()
@@ -345,6 +350,7 @@ extension GameCollectionViewController
             }
             
             self.activeSaveState = nil
+            self.activeEvent = nil
             self.isResumingGame = false
             
             if _performingPreviewTransition
@@ -817,7 +823,7 @@ private extension GameCollectionViewController
             self.showSettings(for: game)
         }
         
-        let saveStatesAction = UIAction(title: NSLocalizedString("View Save States", comment: ""), image: UIImage(symbolNameIfAvailable: "doc.on.doc")) { [unowned self] action in
+        let saveStatesAction = UIAction(title: NSLocalizedString("Save States", comment: ""), image: UIImage(symbolNameIfAvailable: "doc.on.doc")) { [unowned self] action in
             self.viewSaveStates(for: game)
         }
         
@@ -827,6 +833,10 @@ private extension GameCollectionViewController
         
         let exportSaveFile = UIAction(title: NSLocalizedString("Export Save File", comment: ""), image: UIImage(symbolNameIfAvailable: "tray.and.arrow.up")) { [unowned self] _ in
             self.exportSaveFile(for: game)
+        }
+        
+        let eventsAction = UIAction(title: NSLocalizedString("DLC", comment: ""), image: UIImage(symbolNameIfAvailable: "arrow.down.circle")) { [unowned self] _ in
+            self.showEvents(for: game)
         }
         
         let deleteAction = UIAction(title: NSLocalizedString("Delete", comment: ""), image: UIImage(symbolNameIfAvailable: "trash"), attributes: .destructive) { [unowned self] action in
@@ -844,6 +854,8 @@ private extension GameCollectionViewController
         
         let settingsMenu = UIMenu(title: "", options: .displayInline, children: [settingsAction])
         
+        let eventsMenu = UIMenu(title: "", options: .displayInline, children: [eventsAction])
+        
         switch game.type
         {
         case GameType.unknown:
@@ -853,7 +865,14 @@ private extension GameCollectionViewController
             return openActions + [favoriteAction, renameAction, changeArtworkAction, settingsMenu, saveStatesAction]
             
         default:
-            return openActions + [favoriteAction, renameAction, changeArtworkAction, shareAction, settingsMenu, savesMenu, deleteAction]
+            var actions = openActions + [favoriteAction, renameAction, changeArtworkAction, shareAction, settingsMenu, savesMenu, deleteAction]
+            
+            if game.supportsDLC, let index = actions.firstIndex(of: settingsMenu)
+            {
+                actions.insert(eventsMenu, at: index)
+            }
+                        
+            return actions
         }
     }
     
@@ -1254,6 +1273,29 @@ private extension GameCollectionViewController
             sheetController.detents = [.medium(), .large()]
             sheetController.selectedDetentIdentifier = .medium
             sheetController.prefersScrollingExpandsWhenScrolledToEdge = false
+        }
+        
+        self.present(hostingController, animated: true)
+    }
+
+    func showEvents(for game: Game)
+    {
+        let eventsView = EventsView(game: game) { [weak self] event in
+            guard let self else { return }
+            self.activeEvent = event
+            
+            self.dismiss(animated: true) {
+                let indexPath = self.dataSource.fetchedResultsController.indexPath(forObject: game)!
+                self.launchGame(at: indexPath, clearScreen: false, ignoreAlreadyRunningError: true)
+            }
+        }
+        
+        let hostingController = UIHostingController(rootView: NavigationView { eventsView })
+        
+        if self.view.traitCollection.userInterfaceIdiom == .pad
+        {
+            // Large screen, so use formSheet presentation (which is automatically sized + centered).
+            hostingController.modalPresentationStyle = .formSheet
         }
         
         self.present(hostingController, animated: true)
