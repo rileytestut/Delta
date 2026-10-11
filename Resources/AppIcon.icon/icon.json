@@ -1,4 +1,7 @@
 {
+  "features" : [
+    "refractivity"
+  ],
   "fill" : {
     "linear-gradient" : [
       "display-p3:0.54510,0.15686,0.96863,1.00000",
@@ -7,10 +10,81 @@
   },
   "groups" : [
     {
+      "blur-material" : 0.5,
+      "hidden" : true,
       "layers" : [
         {
-          "image-name" : "delta_icon.svg",
-          "name" : "delta_icon",
+          "glass" : true,
+          "hidden" : false,
+          "image-name" : "Delta_icon.svg",
+          "name" : "Delta_icon",
+          "position" : {
+            "scale" : 0.88,
+            "translation-in-points" : [
+              0,
+              0
+            ]
+          }
+        }
+      ],
+      "name" : "Icon",
+      "refractivity" : {
+        "depth" : 1,
+        "enabled" : true,
+        "strength" : -0.4
+      },
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 1.6
+      },
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.4
+      }
+    },
+    {
+      "blur-material" : null,
+      "hidden" : true,
+      "layers" : [
+        {
+          "glass" : true,
+          "image-name" : "delta_shadow.svg",
+          "name" : "delta_shadow",
+          "position" : {
+            "scale" : 0.88,
+            "translation-in-points" : [
+              0,
+              0
+            ]
+          }
+        }
+      ],
+      "lighting" : "individual",
+      "name" : "Shadow",
+      "refractivity" : {
+        "depth" : 1,
+        "enabled" : false,
+        "strength" : -0.7359375
+      },
+      "shadow" : {
+        "kind" : "none",
+        "opacity" : 1.6
+      },
+      "specular" : true,
+      "translucency" : {
+        "enabled" : false,
+        "value" : 0.4
+      }
+    },
+    {
+      "blur-material" : 0.5,
+      "hidden" : false,
+      "layers" : [
+        {
+          "glass" : true,
+          "hidden" : false,
+          "image-name" : "Delta_icon.svg",
+          "name" : "Delta_icon",
           "position" : {
             "scale" : 0.88,
             "translation-in-points" : [
@@ -32,13 +106,21 @@
           }
         }
       ],
+      "lighting" : "individual",
+      "name" : "Combined",
+      "refractivity" : {
+        "depth" : 1,
+        "enabled" : true,
+        "strength" : -0.7359375
+      },
       "shadow" : {
         "kind" : "neutral",
-        "opacity" : 0.5
+        "opacity" : 1.6
       },
+      "specular" : true,
       "translucency" : {
         "enabled" : true,
-        "value" : 0.5
+        "value" : 0.4
       }
     }
   ],
