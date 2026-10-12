@@ -20,7 +20,7 @@ class PauseViewController: UIViewController, PauseInfoProviding
     }
     
     var pauseItems: [MenuItem] {
-        return [self.saveStateItem, self.loadStateItem, self.cheatCodesItem, self.fastForwardItem, self.sustainButtonsItem, self.screenshotItem, self.askLuItem, self.eventsItem].compactMap { $0 }
+        return [self.saveStateItem, self.loadStateItem, self.cheatCodesItem, self.fastForwardItem, self.sustainButtonsItem, self.screenshotItem, self.askLuItem, self.eventsItem, self.fullScreenItem].compactMap { $0 }
     }
     
     var closeButtonTitle: String = NSLocalizedString("Main Menu", comment: "")
@@ -46,6 +46,7 @@ class PauseViewController: UIViewController, PauseInfoProviding
     var screenshotItem: MenuItem?
     var askLuItem: MenuItem?
     var eventsItem: MenuItem?
+    var fullScreenItem: MenuItem?
     
     /// PauseInfoProviding
     var pauseText: String?
@@ -291,6 +292,9 @@ private extension PauseViewController
         self.fastForwardItem = MenuItem(text: NSLocalizedString("Fast Forward", comment: ""), image: #imageLiteral(resourceName: "FastForward"), action: { _ in })
         self.sustainButtonsItem = MenuItem(text: NSLocalizedString("Hold Buttons", comment: ""), image: #imageLiteral(resourceName: "SustainButtons"), action: { _ in })
         self.screenshotItem = MenuItem(text: NSLocalizedString("Screenshot", comment: ""), image: #imageLiteral(resourceName: "Screenshot"), action: { _ in })
+        
+        let fullScreenImage = UIImage(systemName: "arrow.up.left.and.arrow.down.right", withConfiguration: UIImage.SymbolConfiguration(pointSize: 35))?.withRenderingMode(.alwaysTemplate)
+        self.fullScreenItem = MenuItem(text: NSLocalizedString("Full Screen", comment: ""), image: fullScreenImage, action: { _ in })
         
         if let game = emulatorCore.game as? Game
         {

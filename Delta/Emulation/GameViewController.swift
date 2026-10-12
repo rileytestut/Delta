@@ -205,6 +205,16 @@ class GameViewController: DeltaCore.GameViewController
         gestureRecognizer.delegate = self
         return gestureRecognizer
     }()
+    
+    private lazy var fullScreenTapGestureRecognizer: UITapGestureRecognizer = {
+        let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(GameViewController.handleFullScreenTapGesture(_:)))
+        gestureRecognizer.delegate = self
+        gestureRecognizer.delaysTouchesBegan = false
+        gestureRecognizer.delaysTouchesEnded = false
+        gestureRecognizer.cancelsTouchesInView = false
+        return gestureRecognizer
+    }()
+    
     private var repositionAnchor: CGPoint? // Location where the current drag began.
     private lazy var repositionFeedbackGenerator: UIImpactFeedbackGenerator = {
         if #available(iOS 17.5, *)
@@ -219,6 +229,10 @@ class GameViewController: DeltaCore.GameViewController
         
     private var repositionResetButton: UIButton!
     private var repositionResetButtonTimer: Timer?
+    
+    private var isFullScreen: Bool = false
+    private var fullScreenButton: UIButton!
+    private var fullScreenButtonTimer: Timer?
     
     private var previousHorizontalSizeClass: UIUserInterfaceSizeClass?
     
@@ -495,6 +509,29 @@ extension GameViewController
             self.view.addInteraction(hingeInteraction)
         }
         
+        // Full Screen button
+        var fullScreenButtonConfiguration: UIButton.Configuration
+        if #available(iOS 26, *)
+        {
+            fullScreenButtonConfiguration = .glass()
+        }
+        else
+        {
+            fullScreenButtonConfiguration = .plain()
+            fullScreenButtonConfiguration.cornerStyle = .capsule
+            fullScreenButtonConfiguration.background.visualEffect = UIBlurEffect(style: .systemUltraThinMaterial)
+        }
+        fullScreenButtonConfiguration.baseForegroundColor = .white
+        fullScreenButtonConfiguration.image = UIImage(systemName: "arrow.down.right.and.arrow.up.left", withConfiguration: UIImage.SymbolConfiguration(scale: .large))
+        fullScreenButtonConfiguration.contentInsets = NSDirectionalEdgeInsets(top: 12, leading: 18, bottom: 12, trailing: 18)
+
+        self.fullScreenButton = UIButton(configuration: fullScreenButtonConfiguration, primaryAction: UIAction { [weak self] _ in
+            self?.exitFullScreen()
+        })
+        self.fullScreenButton.translatesAutoresizingMaskIntoConstraints = false
+        self.fullScreenButton.alpha = 0.0
+        self.view.addSubview(self.fullScreenButton)
+        
         // Reset Game Screen Position Button
         var repositionResetButtonConfiguration: UIButton.Configuration
         if #available(iOS 26, *)
@@ -526,9 +563,13 @@ extension GameViewController
         }
         
         self.view.addGestureRecognizer(self.gameScreenRepositionGestureRecognizer)
+        self.view.addGestureRecognizer(self.fullScreenTapGestureRecognizer)
 
         // Auto Layout
         NSLayoutConstraint.activate([
+            self.fullScreenButton.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 16),
+            self.fullScreenButton.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            
             self.repositionResetButton.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 8),
             self.repositionResetButton.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
 
@@ -701,6 +742,27 @@ extension GameViewController
                 
                 // Re-set gameController as pausingGameController.
                 self.pausingGameController = gameController
+            }
+            
+            pauseViewController.fullScreenItem?.isSelected = self.isFullScreen
+            pauseViewController.fullScreenItem?.action = { [weak self] _ in
+                guard let self else { return }
+                
+                if self.isFullScreen
+                {
+                    self.exitFullScreen()
+                }
+                else
+                {
+                    self.enterFullScreen()
+                }
+            }
+            
+            let gameType = self.game?.type ?? .unknown
+            if gameType != .ds
+            {
+                // Only DS games support Full Screen mode.
+                pauseViewController.fullScreenItem = nil
             }
             
             if self.emulatorCore?.deltaCore.supportedRates.upperBound == 1
@@ -1031,14 +1093,14 @@ private extension GameViewController
         let traits = DeltaCore.ControllerSkin.Traits.defaults(for: window)
         let isExternalControllerConnected = ExternalGameControllerManager.shared.connectedControllers.contains(where: { $0.playerIndex != nil })
         
-        if Settings.localControllerPlayerIndex != nil
+        if Settings.localControllerPlayerIndex != nil && !self.isFullScreen
         {
             // If there is both a local player and a connected controller with a controller skin, we prioritize local player's skin.
             // Even if the skin doesn't exist, we'll fall back to standard skin for local player.
             let controllerSkin = Settings.preferredControllerSkin(for: game, traits: traits, forExternalController: false) // Explicitly load non-external controller skin.
             self.controllerView.controllerSkin = controllerSkin
         }
-        else if isExternalControllerConnected, let externalControllerSkin = Settings.preferredControllerSkin(for: game, traits: traits, forExternalController: true)
+        else if isExternalControllerConnected, let externalControllerSkin = Settings.preferredControllerSkin(for: game, traits: traits, forExternalController: true), !self.isFullScreen
         {
             // No local player, but user has selected an external controller skin, so show that instead.
             self.controllerView.controllerSkin = externalControllerSkin
@@ -1605,6 +1667,53 @@ private extension GameViewController
         self.emulatorCore?.audioManager.respectsSilentMode = Settings.respectSilentMode
         self.emulatorCore?.audioManager.mixesWithOtherAudio = Settings.mixWithOtherAudio
         self.emulatorCore?.audioManager.pausesOtherAudio = Settings.pauseOtherAudio
+    }
+}
+
+private extension GameViewController
+{
+    func enterFullScreen()
+    {
+        guard !self.isFullScreen else { return }
+        self.isFullScreen = true
+        
+        self.showFullScreenButton()
+        
+        self.updateControllerSkin()
+    }
+    
+    func exitFullScreen()
+    {
+        guard self.isFullScreen else { return }
+        self.isFullScreen = false
+        
+        self.hideFullScreenButton()
+        
+        self.updateControllerSkin()
+    }
+    
+    func showFullScreenButton()
+    {
+        self.fullScreenButtonTimer?.invalidate()
+                
+        let animator = UIViewPropertyAnimator(springTimingParameters: UISpringTimingParameters())
+        animator.addAnimations {
+            self.fullScreenButton.alpha = 1.0
+        }
+        animator.startAnimation()
+        
+        self.fullScreenButtonTimer = Timer.scheduledTimer(withTimeInterval: 4.0, repeats: false) { [weak self] _ in
+            self?.hideFullScreenButton()
+        }
+    }
+    
+    func hideFullScreenButton()
+    {
+        let animator = UIViewPropertyAnimator(springTimingParameters: UISpringTimingParameters())
+        animator.addAnimations {
+            self.fullScreenButton.alpha = 0.0
+        }
+        animator.startAnimation()
     }
 }
 
@@ -2184,6 +2293,29 @@ extension GameViewController
 
             return true
         }
+        else if gestureRecognizer == self.fullScreenTapGestureRecognizer
+        {
+            // Only allow full screen tap if we're already in full screen mode.
+            guard self.isFullScreen, !self.isMenuButtonHeldDown else { return false }
+            
+            let location = touch.location(in: self.view)
+
+            // Recognize touch only if NOT inside the DS touch screen.
+            let isTouchingTouchScreen: Bool
+            if let traits = self.controllerView.controllerSkinTraits,
+               let screens = self.controllerView.controllerSkin?.screens(for: traits)
+            {
+                isTouchingTouchScreen = zip(screens, self.gameViews).contains { screen, gameView in
+                    screen.isTouchScreen && gameView.frame.contains(location)
+                }
+            }
+            else
+            {
+                isTouchingTouchScreen = false
+            }
+            
+            guard !isTouchingTouchScreen else { return false }
+        }
 
         if self.menuButtonGestureRecognizers.contains(gestureRecognizer) || self.menuButtonKeyboardGestureRecognizers.contains(gestureRecognizer)
         {
@@ -2264,6 +2396,18 @@ extension GameViewController
             self.hideRepositionResetButton(afterDelay: 3.0)
 
         default: break
+        }
+    }
+    
+    @objc private func handleFullScreenTapGesture(_ gestureRecognizer: UITapGestureRecognizer)
+    {
+        if self.fullScreenButton.alpha == 0.0
+        {
+            self.showFullScreenButton()
+        }
+        else
+        {
+            self.hideFullScreenButton()
         }
     }
 }
