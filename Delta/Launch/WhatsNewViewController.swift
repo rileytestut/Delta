@@ -101,7 +101,9 @@ class WhatsNewViewController: UICollectionViewController
         
         if #available(iOS 26, *)
         {
-            self.closeButton.configuration = .glass()
+            var configuration: UIButton.Configuration = .glass()
+            configuration.contentInsets = NSDirectionalEdgeInsets(top: 12, leading: 18, bottom: 12, trailing: 18)
+            self.closeButton.configuration = configuration
         }
         
         if self.dataSource.itemCount >= Self.maxFeatureCount
