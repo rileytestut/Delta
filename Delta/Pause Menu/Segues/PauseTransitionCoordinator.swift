@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import SwiftUI
+
 import Roxas
 
 class PauseTransitionCoordinator: NSObject, UIViewControllerAnimatedTransitioning
@@ -32,9 +34,22 @@ class PauseTransitionCoordinator: NSObject, UIViewControllerAnimatedTransitionin
         let sourceViewController = transitionContext.viewController(forKey: .from)!
         
         destinationViewController.view.frame = transitionContext.finalFrame(for: destinationViewController)
-        destinationViewController.view.frame.origin.y = self.presenting ? transitionContext.containerView.bounds.height : -destinationViewController.view.bounds.height
-        transitionContext.containerView.addSubview(destinationViewController.view)
+
+        let offscreenOriginY = self.presenting ? transitionContext.containerView.bounds.height : -destinationViewController.view.bounds.height
         
+        // Laying out SwiftUI View (via UIHostingController) while it's positioned outside container results in invalid safe area insets
+        // (e.g. bottom inset >= view.height), which can cause infinite layout loop. So instead we delay moving offscreen until after laying out.
+        //
+        // However, our pre-existing UIKit views (e.g. SaveStatesViewController) still depend on the previous layout order,
+        // so preserve it for UIKit-based views as backwards compatibility.
+        let isHostingController = destinationViewController is UIHostingController<AnyView>
+        if !isHostingController
+        {
+            destinationViewController.view.frame.origin.y = offscreenOriginY
+        }
+
+        transitionContext.containerView.addSubview(destinationViewController.view)
+
         destinationViewController.view.layoutIfNeeded()
         
         if let navigationController = destinationViewController.navigationController
@@ -56,6 +71,11 @@ class PauseTransitionCoordinator: NSObject, UIViewControllerAnimatedTransitionin
                 let adjustedOffset = collectionViewController.collectionView.adjustedContentInset.top
                 collectionViewController.collectionView.contentOffset = CGPoint(x: 0, y: -adjustedOffset)
             }
+        }
+        
+        if isHostingController
+        {
+            destinationViewController.view.frame.origin.y = offscreenOriginY
         }
         
         UIView.animate(withDuration: self.transitionDuration(using: transitionContext), delay:0, options:RSTSystemTransitionAnimationCurve, animations: {
