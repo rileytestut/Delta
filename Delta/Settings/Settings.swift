@@ -42,6 +42,7 @@ extension Settings.Name
     static let preferredGBColorPalette: Settings.Name = "preferredGBColorPalette"
     static let isPreviewsEnabled: Settings.Name = "isPreviewsEnabled"
     static let pauseMenuToolbarPlacement: Settings.Name = "pauseMenuToolbarPlacement"
+    static let showCoverSkins: Settings.Name = "showCoverSkins"
     static let dsAirPlayTopScreenOnly: Settings.Name = Settings.features.dsAirPlay.$topScreenOnly.settingsKey
 }
 
@@ -88,6 +89,7 @@ struct Settings
                         #keyPath(UserDefaults.opensGamesInNewWindow): false,
                         #keyPath(UserDefaults.cheatSorting): "name",
                         #keyPath(UserDefaults.cheatSortDescending): false,
+                        #keyPath(UserDefaults.showCoverSkins): true,
                         Settings.preferredCoreSettingsKey(for: .ds): MelonDS.core.identifier] as [String : Any]
         
         #if BETA
@@ -359,6 +361,14 @@ extension Settings
         set {
             UserDefaults.standard.preferredGBColorPalette = newValue?.rawValue
             NotificationCenter.default.post(name: Settings.didChangeNotification, object: nil, userInfo: [NotificationUserInfoKey.name: Name.preferredGBColorPalette])
+        }
+    }
+    
+    static var showCoverSkins: Bool {
+        get { UserDefaults.standard.showCoverSkins }
+        set {
+            UserDefaults.standard.showCoverSkins = newValue
+            NotificationCenter.default.post(name: Settings.didChangeNotification, object: nil, userInfo: [NotificationUserInfoKey.name: Name.showCoverSkins])
         }
     }
     
@@ -706,6 +716,8 @@ private extension UserDefaults
     @NSManaged var opensGamesInNewWindow: Bool
     
     @NSManaged var preferredGBColorPalette: String?
+    
+    @NSManaged var showCoverSkins: Bool
     
     @NSManaged var cheatSorting: String
     @NSManaged var cheatSortDescending: Bool

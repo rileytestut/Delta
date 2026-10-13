@@ -220,6 +220,12 @@ class GameViewController: DeltaCore.GameViewController
     private var repositionResetButton: UIButton!
     private var repositionResetButtonTimer: Timer?
     
+    private var previousHorizontalSizeClass: UIUserInterfaceSizeClass?
+    
+    // Cover
+    private var coverView: CoverView?
+    private var isShowingCover = false
+    
     // Sustain Buttons
     private var isSelectingSustainedButtons = false
     private var sustainInputsMapping: SustainInputsMapping?
@@ -239,11 +245,13 @@ class GameViewController: DeltaCore.GameViewController
     private var isPreparingAchievements = false
     
     override var shouldAutorotate: Bool {
-        return !self.isGyroActive
+        return !self.isGyroActive && !self.isShowingCover
     }
     
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        guard self.isGyroActive else { return super.supportedInterfaceOrientations }
+        guard self.isGyroActive || self.isShowingCover else {
+            return super.supportedInterfaceOrientations
+        }
         
         // Lock orientation to whatever current device orientation is.
         
@@ -477,6 +485,16 @@ extension GameViewController
         self.handoffPlaceholderView.activityIndicatorView.color = .white
         self.view.insertSubview(self.handoffPlaceholderView, aboveSubview: self.gameView)
         
+        if #available(iOS 27.1, *)
+        {
+            // Cover
+            
+            let hingeInteraction = UIHingeInteraction { [weak self] interaction, update in
+                self?.hingeDidUpdate(update)
+            }
+            self.view.addInteraction(hingeInteraction)
+        }
+        
         // Reset Game Screen Position Button
         var repositionResetButtonConfiguration: UIButton.Configuration
         if #available(iOS 26, *)
@@ -568,6 +586,30 @@ extension GameViewController
         {
             // Fixes Hold Button description laying out vertically after orientation change.
             sustainButtonsBackgroundView.detailTextLabel.preferredMaxLayoutWidth = sustainButtonsBackgroundView.bounds.width
+        }
+        
+        if let coverView, let windowScene = coverView.window?.windowScene
+        {
+            switch windowScene.interfaceOrientation
+            {
+            case .landscapeLeft: coverView.transform = .identity
+            case .landscapeRight: coverView.transform = .init(rotationAngle: .pi)
+            case .portrait: coverView.transform = .init(rotationAngle: (3 * .pi) / 2)
+            case .portraitUpsideDown: coverView.transform = .init(rotationAngle: .pi / 2)
+            case .unknown: coverView.transform = .identity
+            @unknown default: coverView.transform = .identity
+            }
+            
+            // Set frame, not bounds, to always match self.view's bounds regardless of transform.
+            coverView.frame = CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height)
+        }
+        
+        let horizontalSizeClass = self.traitCollection.horizontalSizeClass
+        if horizontalSizeClass != self.previousHorizontalSizeClass
+        {
+            // Will automatically track changes thanks to Automatic trait tracking https://developer.apple.com/documentation/uikit/automatic-trait-tracking
+            self.updateControllerSkin()
+            self.previousHorizontalSizeClass = horizontalSizeClass
         }
         
         // Game view sizes may have changed, which affects custom filters.
@@ -1620,6 +1662,86 @@ private extension GameViewController
     }
 }
 
+//MARK: - Cover -
+/// Cover
+extension GameViewController: CoverViewDelegate
+{
+    func showCover()
+    {
+        guard let game, !self.isShowingCover, Settings.showCoverSkins else { return }
+        
+        let traits = DeltaCore.ControllerSkin.Traits(device: .iphone, displayType: .cover, orientation: .landscape)
+        
+        let controllerSkin: any ControllerSkinProtocol
+        
+        if let skin = self.controllerView.controllerSkin, skin.supports(traits)
+        {
+            // The current skin supports cover skins, so use it.
+            controllerSkin = skin
+        }
+        else if let standardSkin = DeltaCore.ControllerSkin.standardControllerSkin(for: game.type), standardSkin.supports(traits)
+        {
+            // The standard skin for this system supports cover skins, so use it.
+            controllerSkin = standardSkin
+        }
+        else
+        {
+            return
+        }
+        
+        self.isShowingCover = true
+        
+        self.pauseEmulation()
+        
+        self.setNeedsUpdateOfSupportedInterfaceOrientations()
+        self.parent?.setNeedsUpdateOfSupportedInterfaceOrientations() // LaunchViewController
+        
+        let coverView = CoverView(controllerSkin: controllerSkin)
+        coverView.delegate = self
+        self.view.addSubview(coverView)
+        
+        self.view.layoutIfNeeded()
+        
+        coverView.showCover(animated: false)
+        self.coverView = coverView
+    }
+    
+    func hideCover()
+    {
+        guard self.isShowingCover else { return }
+        self.isShowingCover = false
+        
+        self.coverView?.removeFromSuperview()
+        self.coverView = nil
+        
+        self.resumeEmulation()
+        
+        self.setNeedsUpdateOfSupportedInterfaceOrientations()
+        self.parent?.setNeedsUpdateOfSupportedInterfaceOrientations() // LaunchViewController
+    }
+    
+    func coverViewDidHideCover(_ coverView: CoverView)
+    {
+        self.hideCover()
+    }
+    
+    @available(iOS 27.1, *)
+    private func hingeDidUpdate(_ update: UIHingeInteraction.Update)
+    {
+        guard self.game != nil else { return }
+        guard let hinge = update.hinge, hinge.status != .unknown else { return }
+        
+        if hinge.status == .closed
+        {
+            self.showCover()
+        }
+        else
+        {
+            self.hideCover()
+        }
+    }
+}
+
 //MARK: - Action Inputs -
 /// Action Inputs
 extension GameViewController
@@ -1951,6 +2073,7 @@ extension GameViewController: GameViewControllerDelegate
         guard gameViewController == self else { return false }
         guard !self.isContinuingHandoff else { return false }
         guard !self.isPreparingAchievements else { return false }
+        guard !self.isShowingCover else { return false }
         
         var result = false
         

@@ -8,6 +8,9 @@
 
 import SwiftUI
 
+// Access UIDevice.isDuo
+@_spi(Internal) import DeltaCore
+
 struct MinorSettingsView: View
 {
     @AppStorage(Settings.Name.isPreviewsEnabled.rawValue)
@@ -15,9 +18,24 @@ struct MinorSettingsView: View
 
     @AppStorage(Settings.Name.pauseMenuToolbarPlacement.rawValue)
     private var pauseMenuToolbarPlacement: Settings.PauseMenuToolbarPlacement = .bottom
+    
+    @AppStorage(Settings.Name.showCoverSkins.rawValue)
+    private var showCoverSkins: Bool = true
 
     var body: some View {
         Form {
+            if UIDevice.current.isDuo
+            {
+                Section {
+                    Toggle("Show Lid When Closed", isOn: $showCoverSkins)
+                        .onChange(of: showCoverSkins) { _, newValue in
+                            Settings.showCoverSkins = newValue
+                        }
+                } footer: {
+                    Text("Show a lid upon closing your device, if supported by the controller skin.")
+                }
+            }
+            
             Section {
                 Toggle("Context Menu Previews", isOn: $isPreviewsEnabled)
                     .onChange(of: isPreviewsEnabled) { _, newValue in

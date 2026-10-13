@@ -1,0 +1,197 @@
+//
+//  CoverView.swift
+//  Delta
+//
+//  Created by Riley Testut on 10/10/26.
+//  Copyright © 2026 Riley Testut. All rights reserved.
+//
+
+import UIKit
+
+import DeltaCore
+import MelonDSDeltaCore
+
+protocol CoverViewDelegate: AnyObject
+{
+    func coverViewWillShowCover(_ coverView: CoverView)
+    func coverViewDidHideCover(_ coverView: CoverView)
+}
+
+extension CoverViewDelegate
+{
+    func coverViewWillShowCover(_ coverView: CoverView) {}
+    func coverViewDidHideCover(_ coverView: CoverView) {}
+}
+
+class CoverView: UIView
+{
+    let controllerSkin: any ControllerSkinProtocol
+    
+    weak var delegate: CoverViewDelegate?
+    
+    private(set) var isCoverHidden: Bool = false
+    
+    private let imageView: UIImageView
+    
+    init(controllerSkin: some ControllerSkinProtocol)
+    {
+        self.controllerSkin = controllerSkin
+        
+        self.imageView = UIImageView(frame: .zero)
+        self.imageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        
+        super.init(frame: .zero)
+        
+        self.addSubview(self.imageView)
+        
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(CoverView.handleTapGesture(_:)))
+        self.addGestureRecognizer(tapGestureRecognizer)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(CoverView.batteryStateDidChange(_:)), name: UIDevice.batteryStateDidChangeNotification, object: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func layoutSubviews()
+    {
+        super.layoutSubviews()
+        
+        let coverFrame: CGRect = if self.isCoverHidden {
+            CGRect(x: 0, y: -self.bounds.height, width: self.bounds.width, height: self.bounds.height)
+        } else {
+            CGRect(x: 0, y: 0, width: self.bounds.width, height: self.bounds.height)
+        }
+        
+        self.imageView.frame = coverFrame
+    }
+    
+    override func didMoveToWindow()
+    {
+        super.didMoveToWindow()
+        
+        if self.window == nil
+        {
+            // Disable battery monitoring
+            UIDevice.current.isBatteryMonitoringEnabled = false
+        }
+        else
+        {
+            // Enable battery monitoring
+            UIDevice.current.isBatteryMonitoringEnabled = true
+        }
+        
+        self.updateImage()
+    }
+}
+
+extension CoverView
+{
+    func showCover(animated: Bool = true)
+    {
+        guard self.isCoverHidden else { return }
+        self.isCoverHidden = false
+        
+        self.setNeedsLayout()
+        
+        self.delegate?.coverViewWillShowCover(self)
+                
+        if animated
+        {
+            let animator = UIViewPropertyAnimator(springTimingParameters: UISpringTimingParameters())
+            animator.addAnimations {
+                self.layoutIfNeeded()
+            }
+            animator.startAnimation()
+        }
+        else
+        {
+            self.layoutIfNeeded()
+        }
+    }
+    
+    func hideCover(animated: Bool = true)
+    {
+        guard !self.isCoverHidden else { return }
+        self.isCoverHidden = true
+        
+        self.setNeedsLayout()
+        
+        if animated
+        {
+            let animator = UIViewPropertyAnimator(springTimingParameters: UISpringTimingParameters())
+            animator.addAnimations {
+                self.layoutIfNeeded()
+            }
+            animator.addCompletion { _ in
+                self.delegate?.coverViewDidHideCover(self)
+            }
+            
+            animator.startAnimation()
+        }
+        else
+        {
+            self.layoutIfNeeded()
+            self.delegate?.coverViewDidHideCover(self)
+        }
+    }
+}
+
+private extension CoverView
+{
+    func updateImage()
+    {
+        guard let window else { return }
+        
+        let isCharging: Bool
+        
+        switch UIDevice.current.batteryState
+        {
+        case .charging, .full: isCharging = true
+        case .unknown, .unplugged: isCharging = false
+        @unknown default: isCharging = false
+        }
+        
+        var traits = DeltaCore.ControllerSkin.Traits.defaults(for: window)
+        traits.displayType = .cover
+        traits.orientation = .landscape
+        
+        if isCharging, let image = self.controllerSkin.pressedImage(for: traits, preferredSize: .large)
+        {
+            self.imageView.image = image
+        }
+        else
+        {
+            let image = self.controllerSkin.image(for: traits, preferredSize: .large)
+            self.imageView.image = image
+        }
+    }
+}
+
+private extension CoverView
+{
+    @objc func handleTapGesture(_ gestureRecognizer: UITapGestureRecognizer)
+    {
+        if self.isCoverHidden
+        {
+            self.showCover()
+        }
+        else
+        {
+            self.hideCover()
+        }
+    }
+    
+    @objc func batteryStateDidChange(_ notification: Notification)
+    {
+        self.updateImage()
+    }
+}
+
+#Preview {
+    Delta.register(MelonDS.core)
+    
+    let controllerSkin = DeltaCore.ControllerSkin.standardControllerSkin(for: .ds)!
+    return CoverView(controllerSkin: controllerSkin)
+}
