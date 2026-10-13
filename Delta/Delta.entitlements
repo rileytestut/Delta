@@ -1,5 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict/>
+<dict>
+	<key>com.apple.developer.storekit.custom-purchase-link.allowed-regions</key>
+	<array>
+		<string>hu</string>
+		<string>hr</string>
+		<string>fi</string>
+		<string>be</string>
+		<string>it</string>
+		<string>es</string>
+		<string>sk</string>
+		<string>lu</string>
+		<string>dk</string>
+		<string>de</string>
+		<string>cz</string>
+		<string>lv</string>
+		<string>br</string>
+		<string>ee</string>
+		<string>jp</string>
+		<string>cy</string>
+		<string>si</string>
+		<string>nl</string>
+		<string>ro</string>
+		<string>pt</string>
+		<string>ie</string>
+		<string>at</string>
+		<string>lt</string>
+		<string>pl</string>
+		<string>bg</string>
+		<string>gr</string>
+		<string>fr</string>
+		<string>mt</string>
+		<string>se</string>
+	</array>
+</dict>
 </plist>

@@ -16,12 +16,19 @@ extension PatreonAPI
     {
         var title: String?
         var amount_cents: Int32 // In USD
+        var patron_count: Int32?
+        var url: String?
     }
     
     struct TierRelationships: Decodable
     {
         var benefits: Response<[AnyItemResponse]>?
     }
+}
+
+extension PatreonAPI.Tier
+{
+    static let earlyAdopterTierID: String = "4023021"
 }
 
 extension PatreonAPI
@@ -31,6 +38,7 @@ extension PatreonAPI
         public var name: String?
         public var identifier: String
         public var amount: Decimal
+        public var url: URL?
         
         // Relationships
         public var benefits: [Benefit] = []
@@ -45,6 +53,22 @@ extension PatreonAPI
             
             let benefits = response.relationships?.benefits?.data.map(Benefit.init(response:))
             self.benefits = benefits ?? []
+            
+            if let url = response.attributes.url, let sanitizedURL = url.removingPercentEncoding
+            {
+                // API docs say "fully-qualified", but in practice it seems to be a relative URL.
+                // Check for both just in case.
+                if url.hasPrefix("/")
+                {
+                    // Relative URL
+                    self.url = URL(string: "https://patreon.com")?.appending(path: sanitizedURL)
+                }
+                else
+                {
+                    // Absolute URL
+                    self.url = URL(string: url)
+                }
+            }
         }
     }
 }

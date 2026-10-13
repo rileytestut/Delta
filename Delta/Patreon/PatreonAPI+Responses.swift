@@ -62,6 +62,7 @@ extension PatreonAPI
         var patrons: [String: PatronResponse]
         var tiers: [String: TierResponse]
         var benefits: [String: BenefitResponse]
+        var pledges: [String: PledgeResponse]
         
         init(from decoder: Decoder) throws
         {
@@ -72,6 +73,7 @@ extension PatreonAPI
             var patronsByID = [String: PatreonAPI.PatronResponse]()
             var tiersByID = [String: PatreonAPI.TierResponse]()
             var benefitsByID = [String: PatreonAPI.BenefitResponse]()
+            var pledgesByID = [String: PatreonAPI.PledgeResponse]()
             
             for response in self.items
             {
@@ -81,6 +83,7 @@ extension PatreonAPI
                 case .patron(let response): patronsByID[response.id] = response
                 case .tier(let response): tiersByID[response.id] = response
                 case .benefit(let response): benefitsByID[response.id] = response
+                case .pledge(let response): pledgesByID[response.id] = response
                 case .unknown: break // Ignore
                 }
             }
@@ -89,6 +92,7 @@ extension PatreonAPI
             self.patrons = patronsByID
             self.tiers = tiersByID
             self.benefits = benefitsByID
+            self.pledges = pledgesByID
         }
     }
     
@@ -98,6 +102,7 @@ extension PatreonAPI
         case benefit(BenefitResponse)
         case patron(PatronResponse)
         case campaign(CampaignResponse)
+        case pledge(PledgeResponse)
         case unknown(AnyItemResponse)
         
         var id: String {
@@ -107,6 +112,7 @@ extension PatreonAPI
             case .benefit(let response): return response.id
             case .patron(let response): return response.id
             case .campaign(let response): return response.id
+            case .pledge(let response): return response.id
             case .unknown(let response): return response.id
             }
         }
@@ -118,6 +124,7 @@ extension PatreonAPI
             case .benefit(let response): return response.type
             case .patron(let response): return response.type
             case .campaign(let response): return response.type
+            case .pledge(let response): return response.type
             case .unknown(let response): return response.type
             }
         }
@@ -149,6 +156,10 @@ extension PatreonAPI
             case "campaign":
                 let response = try CampaignResponse(from: decoder)
                 self = .campaign(response)
+                
+            case "pledge_event":
+                let response = try PledgeResponse(from: decoder)
+                self = .pledge(response)
                 
             default:
                 Logger.main.error("Unrecognized PatreonAPI response type: \(type, privacy: .public).")

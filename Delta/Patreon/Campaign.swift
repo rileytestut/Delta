@@ -10,12 +10,22 @@ import Foundation
 
 extension PatreonAPI
 {
-    typealias CampaignResponse = DataResponse<CampaignAttributes, AnyRelationships>
+    typealias CampaignResponse = DataResponse<CampaignAttributes, CampaignRelationships>
     
     struct CampaignAttributes: Decodable
     {
         var url: URL
     }
+    
+    struct CampaignRelationships: Decodable
+    {
+        var tiers: Response<[AnyItemResponse]>?
+    }
+}
+
+extension PatreonAPI.Campaign
+{
+    static let rileyShaneID: String = "2863968"
 }
 
 extension PatreonAPI
@@ -25,10 +35,26 @@ extension PatreonAPI
         public var identifier: String
         public var url: URL
         
-        internal init(response: PatreonAPI.CampaignResponse)
+        public var tiers: [Tier]?
+        
+        internal init(response: PatreonAPI.CampaignResponse, including included: IncludedResponses?)
         {
             self.identifier = response.id
             self.url = response.attributes.url
+            
+            guard let included, let relationships = response.relationships, let tiers = relationships.tiers?.data else { return }
+            
+            var allTiers: [PatreonAPI.Tier] = []
+            for tier in tiers
+            {
+                if let response = included.tiers[tier.id]
+                {
+                    let tier = PatreonAPI.Tier(response: response, including: included)
+                    allTiers.append(tier)
+                }
+            }
+            
+            self.tiers = allTiers
         }
     }
 }

@@ -14,7 +14,6 @@ private extension UserDefaults
     @NSManaged var revenueCatPurchasesSyncDate: Date?
 }
 
-@available(iOS 17.5, *)
 extension RevenueCatManager
 {
     static let didUpdateCustomerInfoNotification = Notification.Name("DLTADidUpdateCustomerInfoNotification")
@@ -46,11 +45,42 @@ extension RevenueCatManager
         }
     }
     
+    struct ProductID: RawRepresentable, Codable, Hashable
+    {
+        static let level1 = ProductID(rawValue: "delta_level1_500_month")
+        
+        let rawValue: String
+    }
+    
+    struct IAPSubscription: Identifiable, Hashable
+    {
+        var id: ProductID
+        
+        var title: String
+        
+        var price: Decimal
+        var currency: String?
+        
+        var localizedPriceString: String
+        
+        fileprivate var storeProduct: StoreProduct
+        
+        init(_ storeProduct: StoreProduct)
+        {
+            self.id = ProductID(rawValue: storeProduct.productIdentifier)
+            
+            self.title = storeProduct.localizedTitle
+            self.price = storeProduct.price
+            self.currency = storeProduct.currencyCode
+            self.localizedPriceString = storeProduct.localizedPriceString
+            
+            self.storeProduct = storeProduct
+        }
+    }
+    
     enum Subscription: Identifiable
     {
-        case earlyAdopter
-        case communityMember
-        case friendZone
+        case level1
         
         var id: Self {
             return self
@@ -59,24 +89,19 @@ extension RevenueCatManager
         var title: String {
             switch self
             {
-            case .earlyAdopter: return String(localized: "Early Adopter")
-            case .communityMember: return String(localized: "Community Member")
-            case .friendZone: return String(localized: "Friend Zone")
+            case .level1: return String(localized: "Delta Patron")
             }
         }
         
-        fileprivate var productID: ProductID {
+        var productID: ProductID {
             switch self
             {
-            case .earlyAdopter: return .earlyAdopterMonthly
-            case .communityMember: return .communityMemberMonthly
-            case .friendZone: return .friendZoneMonthly
+            case .level1: return .level1
             }
         }
     }
 }
 
-@available(iOS 17.5, *)
 private extension RevenueCatManager
 {
     private struct Tokens: Decodable
@@ -85,15 +110,6 @@ private extension RevenueCatManager
         var clientPublicKey: String
         var clientSecretV1: String
         var clientSecretV2: String
-    }
-    
-    struct ProductID: RawRepresentable, Codable, Hashable
-    {
-        static let earlyAdopterMonthly = ProductID(rawValue: "delta_earlyadopter_1000_month")
-        static let communityMemberMonthly = ProductID(rawValue: "delta_communitymember_1500_month")
-        static let friendZoneMonthly = ProductID(rawValue: "delta_friendzone_3000_month")
-        
-        let rawValue: String
     }
     
     struct Subscriber: Decodable
@@ -138,8 +154,8 @@ private extension RevenueCatManager
     }
 }
 
-@available(iOS 17.5, *) @MainActor
-class RevenueCatManager
+@MainActor
+class RevenueCatManager: NSObject
 {
     static let shared = RevenueCatManager()
     
@@ -181,6 +197,15 @@ class RevenueCatManager
         return hasPastBetaAccess
     }
     
+    var activeSubscription: Subscription? {
+        guard let activeProductIDs = self.customerInfo?.activeSubscriptions else { return nil }
+
+        let subscription = [Subscription.level1].first { subscription in
+            activeProductIDs.contains(subscription.productID.rawValue)
+        }
+        return subscription
+    }
+
     private let baseURL = URL(string: "https://api.revenuecat.com")!
     
     private let projectID: String
@@ -188,7 +213,7 @@ class RevenueCatManager
     private let clientSecretV1: String
     private let clientSecretV2: String
     
-    private init()
+    private override init()
     {
         let fileURL = Bundle.main.url(forResource: "RevenueCatAPI", withExtension: "plist")!
         
@@ -217,6 +242,8 @@ class RevenueCatManager
             self.clientSecretV2 = ""
         }
         
+        super.init()
+        
         #if DEBUG
         Purchases.logLevel = .debug
         #else
@@ -225,6 +252,7 @@ class RevenueCatManager
         
         // Use anonymous user IDs.
         Purchases.configure(withAPIKey: self.clientPublicKey)
+        Purchases.shared.delegate = self
     }
     
     func start() async throws
@@ -232,49 +260,46 @@ class RevenueCatManager
         guard !self.isStarted else { return }
         self.isStarted = true
         
-        #if APP_STORE
-        
-        Task<Void, Never> {
-            for await customerInfo in Purchases.shared.customerInfoStream
-            {
-                self.customerInfo = customerInfo
-            }
-        }
-        
-        if UserDefaults.standard.revenueCatPurchasesSyncDate == nil
+        if PurchaseManager.shared.supportsInAppPurchase
         {
-            // Initial launch, so sync all purchases.
-            self.customerInfo = try await Purchases.shared.syncPurchases()
-            UserDefaults.standard.revenueCatPurchasesSyncDate = .now
-        }
-        else
-        {
-            // Just fetch customer info.
-            self.customerInfo = try await Purchases.shared.customerInfo(fetchPolicy: .cachedOrFetched)
-        }
-        
-        Task<Void, Never> {
-            for await purchaseIntent in PurchaseIntent.intents
-            {
-                do
+            Task<Void, Never> {
+                for await customerInfo in Purchases.shared.customerInfoStream
                 {
-                    let productID = ProductID(rawValue: purchaseIntent.product.id)
-                    switch productID
+                    self.customerInfo = customerInfo
+                }
+            }
+            
+            if UserDefaults.standard.revenueCatPurchasesSyncDate == nil
+            {
+                // Initial launch, so sync all purchases.
+                self.customerInfo = try await Purchases.shared.syncPurchases()
+                UserDefaults.standard.revenueCatPurchasesSyncDate = .now
+            }
+            else
+            {
+                // Just fetch customer info.
+                self.customerInfo = try await Purchases.shared.customerInfo(fetchPolicy: .cachedOrFetched)
+            }
+            
+            Task<Void, Never> {
+                for await purchaseIntent in PurchaseIntent.intents
+                {
+                    do
                     {
-                    case .earlyAdopterMonthly: try await self.purchase(.earlyAdopter)
-                    case .communityMemberMonthly: try await self.purchase(.communityMember)
-                    case .friendZoneMonthly: try await self.purchase(.friendZone)
-                    default: break
+                        let productID = ProductID(rawValue: purchaseIntent.product.id)
+                        switch productID
+                        {
+                        case .level1: try await self.purchase(.level1)
+                        default: break
+                        }
+                    }
+                    catch
+                    {
+                        Logger.purchases.error("Failed to continue purchase \(purchaseIntent.product.id) in-app. \(error.localizedDescription, privacy: .public)")
                     }
                 }
-                catch
-                {
-                    Logger.purchases.error("Failed to continue purchase \(purchaseIntent.product.id) in-app. \(error.localizedDescription, privacy: .public)")
-                }
             }
         }
-        
-        #endif
     }
     
     func setDisplayName(_ name: String) async throws
@@ -294,9 +319,52 @@ class RevenueCatManager
     }
 }
 
-@available(iOS 17.5, *)
 extension RevenueCatManager
 {
+    func fetchSubscriptions() async -> [IAPSubscription]
+    {
+        let products = await withCheckedContinuation { (continuation: CheckedContinuation<[StoreProduct], Never>) in
+            Purchases.shared.getProducts([Subscription.level1].map { $0.productID.rawValue }) { products in
+                continuation.resume(returning: products)
+            }
+        }
+        
+        let subscriptions = products.compactMap(IAPSubscription.init)
+        return subscriptions
+    }
+    
+    func fetch(_ subscription: Subscription) async -> IAPSubscription?
+    {
+        let product = await withCheckedContinuation { (continuation: CheckedContinuation<StoreProduct?, Never>) in
+            Purchases.shared.getProducts([subscription.productID.rawValue]) { products in
+                continuation.resume(returning: products.first)
+            }
+        }
+        
+        guard let product else { return nil }
+        
+        let subscription = IAPSubscription(product)
+        return subscription
+    }
+    
+    func purchase(_ subscription: IAPSubscription) async throws
+    {
+        do
+        {
+            let (_, customerInfo, isCancelled) = try await Purchases.shared.purchase(product: subscription.storeProduct)
+            guard !isCancelled else { throw CancellationError() }
+            
+            self.customerInfo = customerInfo
+            
+            Logger.purchases.info("Successfully purchased \(subscription.title, privacy: .public) subscription!")
+        }
+        catch
+        {
+            Logger.purchases.error("Failed to purchase \(subscription.title, privacy: .public) subscription. \(error.localizedDescription, privacy: .public)")
+            throw error
+        }
+    }
+    
     func purchase(_ subscription: Subscription) async throws
     {
         do
@@ -340,7 +408,6 @@ extension RevenueCatManager
     }
 }
 
-@available(iOS 17.5, *)
 extension RevenueCatManager
 {
     @discardableResult
@@ -407,10 +474,8 @@ extension RevenueCatManager
     }
 }
 
-@available(iOS 17.5, *)
 private extension RevenueCatManager
 {
-    @available(iOS 17.5, *)
     func send<T: Decodable>(_ request: URLRequest, expecting: T.Type, dateStrategy: JSONDecoder.DateDecodingStrategy = .millisecondsSince1970) async throws -> T
     {
         guard let url = request.url else { throw URLError(.badURL) }
@@ -443,6 +508,17 @@ private extension RevenueCatManager
             
             let response = try decoder.decode(T.self, from: data)
             return response
+        }
+    }
+}
+
+extension RevenueCatManager: PurchasesDelegate
+{
+    nonisolated func purchases(_ purchases: Purchases, receivedUpdated customerInfo: CustomerInfo)
+    {
+        Task<Void, Never> { @MainActor in
+            self.customerInfo = customerInfo
+            NotificationCenter.default.post(name: RevenueCatManager.didUpdateCustomerInfoNotification, object: customerInfo)
         }
     }
 }

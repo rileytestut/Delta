@@ -26,6 +26,10 @@ public class _PatreonAccount: NSManagedObject
 
     @NSManaged public var name: String
 
+    @NSManaged public var pledgeAmount: NSDecimalNumber?
+
+    @NSManaged public var pledgeCurrency: String?
+    
     // MARK: - Relationships
 
 }
