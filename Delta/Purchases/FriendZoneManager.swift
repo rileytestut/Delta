@@ -33,6 +33,7 @@ extension FriendZoneManager
     }
 }
 
+@Observable @MainActor
 class FriendZoneManager
 {
     static let shared = FriendZoneManager()

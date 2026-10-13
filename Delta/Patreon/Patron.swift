@@ -24,6 +24,7 @@ extension PatreonAPI
     {
         var campaign: Response<AnyItemResponse>?
         var currently_entitled_tiers: Response<[AnyItemResponse]>?
+        var pledge_history: Response<[AnyItemResponse]>?
     }
 }
 
@@ -51,6 +52,7 @@ extension PatreonAPI
         public var campaign: Campaign?
         public var tiers: Set<Tier> = []
         public var benefits: Set<Benefit> = []
+        public var pledgeHistory: [Pledge] = []
         
         internal init(response: PatronResponse, including included: IncludedResponses?)
         {
@@ -63,9 +65,12 @@ extension PatreonAPI
             
             if let campaignID = relationships.campaign?.data.id, let response = included.campaigns[campaignID]
             {
-                let campaign = Campaign(response: response)
+                let campaign = Campaign(response: response, including: included)
                 self.campaign = campaign
             }
+            
+            let pledges = (relationships.pledge_history?.data ?? []).compactMap { included.pledges[$0.id] }.map { Pledge(response: $0, including: included) }
+            self.pledgeHistory = pledges
                         
             let tiers = (relationships.currently_entitled_tiers?.data ?? []).compactMap { included.tiers[$0.id] }.map { Tier(response: $0, including: included) }
             self.tiers = Set(tiers)

@@ -1,0 +1,15 @@
+{
+  "images" : [
+    {
+      "filename" : "Apple_In-App_Purchase_Logo_2ln_Blk_USGB-EN_CI_120325.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "preserves-vector-representation" : true
+  }
+}

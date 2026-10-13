@@ -203,6 +203,8 @@
 	<true/>
 	<key>LSSupportsOpeningDocumentsInPlace</key>
 	<false/>
+	<key>MKSellsDigitalGoods</key>
+	<true/>
 	<key>NSBonjourServices</key>
 	<array>
 		<string>_altserver._tcp</string>
@@ -234,18 +236,6 @@
 				</dict>
 			</dict>
 		</dict>
-	</dict>
-	<key>SKExternalPurchaseLink</key>
-	<dict>
-		<key>us</key>
-		<string>https://altstore.io/patreon</string>
-	</dict>
-	<key>SKExternalPurchaseMultiLink</key>
-	<dict>
-		<key>us</key>
-		<array>
-			<string>https://altstore.io/patreon</string>
-		</array>
 	</dict>
 	<key>UIApplicationSceneManifest</key>
 	<dict>

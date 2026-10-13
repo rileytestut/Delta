@@ -310,11 +310,7 @@ private extension SettingsViewController
             // OSLogStore is not available on iOS 14, so section is only visible if experimental features is visible.
             return !PurchaseManager.shared.supportsExperimentalFeatures
             
-        #if LEGACY || BETA
-        case .patreon: return true
-        #elseif APP_STORE
         case .patreon: return !PurchaseManager.shared.supportsExperimentalFeatures
-        #endif
             
         case .hapticTouch:
             if #available(iOS 13, *)
@@ -549,51 +545,6 @@ private extension SettingsViewController
     
     @objc func showSubscriptions()
     {
-        guard #available(iOS 17.5, *) else { return }
-        
-        Task<Void, Never> {
-            var tiersViewController: PatreonTiersViewController?
-            
-            do
-            {
-                var didResume = false
-                
-                let subscription = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<RevenueCatManager.Subscription, Error>) in
-                    let viewController = PatreonTiersViewController { [weak tiersViewController] result in
-                        if didResume
-                        {
-                            tiersViewController?.dismiss(animated: true)
-                            return
-                        }
-                        
-                        didResume = true
-                        continuation.resume(with: result)
-                    }
-                    
-                    let navigationController = UINavigationController(rootViewController: viewController)
-                    self.present(navigationController, animated: true)
-                    
-                    tiersViewController = viewController
-                }
-                
-                tiersViewController?.process(subscription)
-                
-                self.update()
-            }
-            catch is CancellationError
-            {
-                // Ignore
-                
-                tiersViewController?.dismiss(animated: true)
-            }
-            catch
-            {
-                let presentingViewController = self.presentingViewController ?? self
-                
-                let alertController = UIAlertController(title: NSLocalizedString("Unable to Purchase Subscription", comment: ""), error: error)
-                presentingViewController.present(alertController, animated: true)
-            }
-        }
     }
 }
 
@@ -747,33 +698,10 @@ extension SettingsViewController
         case .patreon:
             guard #available(iOS 16, *) else { break }
             
-            if PurchaseManager.shared.isActivePatron
-            {
-                var content = cell.defaultContentConfiguration()
-                content.text = NSLocalizedString("Manage Patreon Account", comment: "")
-                cell.contentConfiguration = content
-                cell.backgroundConfiguration = nil
-            }
-            else
-            {
-                if self.traitCollection.userInterfaceStyle == .dark
-                {
-                    cell.contentConfiguration = UIHostingConfiguration {
-                        JoinPatreonButton()
-                    }
-                    .background {
-                        RoundedRectangle(cornerRadius: 10, style: .continuous)
-                            .strokeBorder(Color.accentColor, lineWidth: 2)
-                            .background(Color(uiColor: .secondarySystemGroupedBackground))
-                    }
-                }
-                else
-                {
-                    cell.contentConfiguration = UIHostingConfiguration {
-                        JoinPatreonButton()
-                    }
-                }
-            }
+            var content = cell.defaultContentConfiguration()
+            content.text = NSLocalizedString("Manage Donation", comment: "")
+            cell.contentConfiguration = content
+            cell.backgroundConfiguration = nil
             
         case .advanced:
             let row = AdvancedRow(rawValue: indexPath.row)!
@@ -914,11 +842,15 @@ extension SettingsViewController
             let row = SupportRow(rawValue: indexPath.row)!
             switch row
             {
-            #if APP_STORE
-            case .alternatePaymentMethods where !PurchaseManager.shared.supportsExternalPurchases: return 0.0
-            #else
-            case .alternatePaymentMethods: return 0.0
-            #endif
+            case .alternatePaymentMethods:
+                if !PurchaseManager.shared.supportsExternalPurchases
+                {
+                    return 0.0
+                }
+                else
+                {
+                    fallthrough
+                }
                 
             default: break
             }

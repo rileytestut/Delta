@@ -211,7 +211,14 @@ private extension SceneDelegate
                 }
                 else if url.scheme?.lowercased() == "delta"
                 {
-                    _ = self.deepLinkController.handle(deepLink)
+                    if url.absoluteString.lowercased().contains("patreon")
+                    {
+                        NotificationCenter.default.post(name: PatreonAPI.operationDidFinish, object: nil, userInfo: ["url": url])
+                    }
+                    else
+                    {
+                        _ = self.deepLinkController.handle(deepLink)
+                    }
                 }
             }
         }

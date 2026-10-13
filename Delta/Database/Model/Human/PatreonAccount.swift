@@ -37,6 +37,13 @@ public class PatreonAccount: _PatreonAccount
             // Beta access tier is $3 in campaign currency.
             let hasPastBetaAccess = (altstorePledge.lifetimePledgeAmount >= 3)
             self.hasPastBetaAccess = hasPastBetaAccess
+            
+            self.pledgeAmount = altstorePledge.pledgeAmount as NSDecimalNumber
+            
+            if let lastActivePledge = altstorePledge.pledgeHistory.first(where: { $0.status == .paid || $0.status == .freeTrial || $0.status == .pending })
+            {
+                self.pledgeCurrency = lastActivePledge.currency
+            }
         }
         else
         {

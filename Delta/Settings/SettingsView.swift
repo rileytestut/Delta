@@ -213,21 +213,27 @@ private struct ServicesSection: View
 private struct PatreonSection: View
 {
     var body: some View {
-        if PurchaseManager.shared.supportsExternalPurchases
-        {
-            Section {
-                NavigationLink {
-                    PatreonViewController.ViewRepresentable()
-                        .ignoresSafeArea()
-                } label: {
-                    SettingsRow(
-                        label: Text(PurchaseManager.shared.isActivePatron
-                            ? "Manage Subscription" : "Become a Patron"),
-                        systemImage: "heart",
-                        color: .accentColor
-                    )
+        Section {
+            NavigationLink {
+                if PurchaseManager.shared.isActivePatron
+                {
+                    ManageDonationView()
                 }
-            } footer: {
+                else
+                {
+                    SupportDeltaView()
+                }
+            } label: {
+                SettingsRow(
+                    label: Text(PurchaseManager.shared.isActivePatron
+                        ? "Manage Donation" : "Become a Patron"),
+                    systemImage: "heart",
+                    color: .accentColor
+                )
+            }
+        } footer: {
+            if !PurchaseManager.shared.isActivePatron
+            {
                 Text("Get early access to new features and unlock exclusive app icons.")
             }
         }

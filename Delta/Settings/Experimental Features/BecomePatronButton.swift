@@ -22,7 +22,7 @@ struct BecomePatronButton: View
                     .fill(Color.accentColor)
                     .frame(minWidth: 0, maxWidth: .infinity)
                 
-                Text("You must be an active patron to use Experimental Features.")
+                Text("Become a Patron to try out Experimental Features.")
                     .foregroundColor(.white)
                     .font(.subheadline)
                     .fontWeight(.semibold)

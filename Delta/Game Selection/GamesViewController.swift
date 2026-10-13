@@ -320,7 +320,12 @@ extension GamesViewController
     
     @IBAction private func showSettings(_ sender: Any)
     {
-        let hostingController = UIHostingController(rootView: SettingsView())
+        let hostingController = UIHostingController(rootView: AnyView(EmptyView()))
+        hostingController.rootView = AnyView(
+            SettingsView()
+                .environment(\.hostingController, hostingController) // Allow subviews to reference hosting controller
+        )
+        
         hostingController.presentationController?.delegate = self
         self.present(hostingController, animated: true)
     }

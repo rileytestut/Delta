@@ -148,17 +148,6 @@ class AltAppIconsViewController: UICollectionViewController
             
             let icons = try PropertyListDecoder().decode([Section: [AltIcon]].self, from: data)
             self.iconsBySection = icons
-            
-            #if APP_STORE
-            if !PurchaseManager.shared.supportsExternalPurchases
-            {
-                for section in Section.allCases where section.isPatronExclusive
-                {
-                    // External purchases aren't supported, so hide patron-exclusive icons.
-                    self.iconsBySection[section] = []
-                }
-            }
-            #endif
         }
         catch
         {
