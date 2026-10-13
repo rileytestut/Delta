@@ -67,6 +67,8 @@ extension SupportDeltaView
 
 struct SupportDeltaView: View
 {
+    var showsCloseButton: Bool = false
+    
     @State
     private var viewModel: ViewModel = ViewModel()
     
@@ -75,6 +77,9 @@ struct SupportDeltaView: View
     
     @Environment(\.hostingController)
     private var hostingController
+    
+    @Environment(\.dismiss)
+    private var dismiss
     
     var body: some View {
         ScrollView {
@@ -97,6 +102,23 @@ struct SupportDeltaView: View
                 .ignoresSafeArea(edges: verticalSizeClass == .regular ? .horizontal : [])
         })
         .toolbar {
+            if showsCloseButton
+            {
+                ToolbarItem(placement: .cancellationAction) {
+                    if #available(iOS 26, *)
+                    {
+                        Button(role: .close) {
+                            dismiss()
+                        }
+                    }
+                    else
+                    {
+                        Button("Cancel") {
+                            dismiss()
+                        }
+                    }
+                }
+            }
             
             ToolbarItemGroup(placement: .secondaryAction) {
                 if PurchaseManager.shared.supportsExternalPurchases

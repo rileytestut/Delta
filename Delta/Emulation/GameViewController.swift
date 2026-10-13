@@ -587,6 +587,7 @@ extension GameViewController
         {
         case "showGamesViewController":
             let gamesViewController = (segue.destination as! UINavigationController).topViewController as! GamesViewController
+            gamesViewController.isReturningFromGame = true
             
             if let emulatorCore = self.emulatorCore
             {

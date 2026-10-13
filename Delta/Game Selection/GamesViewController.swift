@@ -52,6 +52,13 @@ fileprivate enum Page: Equatable
     }
 }
 
+extension GamesViewController
+{
+    // Show donate alert after at least 5 gameplay sessions across 3 separate days.
+    private static let donateAlertMinimumSessionCount: Int = 5
+    private static let donateAlertMinimumSessionDayCount: Int = 3
+}
+
 class GamesViewController: UIViewController
 {
     var theme: Theme = .opaque {
@@ -59,6 +66,8 @@ class GamesViewController: UIViewController
             self.updateTheme()
         }
     }
+    
+    var isReturningFromGame: Bool = false
     
     private var hasRecentlyPlayed: Bool = false
     
@@ -288,6 +297,41 @@ extension GamesViewController
             UserDefaults.standard.didShowWhatsNew = true
             UserDefaults.standard.previousWhatsNewVersion = UserDefaults.whatsNewVersion
         }
+        else if self.isReturningFromGame && UserDefaults.standard.didShowDonateAlert == nil
+        {
+            UserDefaults.standard.sessionsCount += 1
+            
+            if let previousDate = UserDefaults.standard.previousSessionDate, !Calendar.current.isDateInToday(previousDate)
+            {
+                // There is a previous date, and it's a different day than today.
+                UserDefaults.standard.sessionsDayCount += 1
+                UserDefaults.standard.previousSessionDate = .now
+            }
+            else if UserDefaults.standard.previousSessionDate == nil
+            {
+                UserDefaults.standard.sessionsDayCount += 1
+                UserDefaults.standard.previousSessionDate = .now
+            }
+            
+            if UserDefaults.standard.sessionsCount >= GamesViewController.donateAlertMinimumSessionCount &&
+                UserDefaults.standard.sessionsDayCount >= GamesViewController.donateAlertMinimumSessionDayCount
+            {
+                // Show donate alert
+                
+                let alertController = UIAlertController(title: String(localized: "Loving Delta? 💜"),
+                                                        message: String(localized: "Become a Patron to help keep Delta free for everyone, and receive access to exclusive features as thanks."), preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: String(localized: "Maybe Later"), style: .cancel, handler: nil))
+                alertController.addAction(UIAlertAction(title: String(localized: "Become a Patron"), style: .default) { [weak self] _ in
+                    self?.showDonateView()
+                })
+                
+                self.present(alertController, animated: true) {
+                    UserDefaults.standard.didShowDonateAlert = .now // Only set didShowDonateAlert if we actually presented the alert.
+                }
+            }
+        }
+        
+        self.isReturningFromGame = false
     }
     
     override func didReceiveMemoryWarning()
@@ -324,6 +368,20 @@ extension GamesViewController
         hostingController.rootView = AnyView(
             SettingsView()
                 .environment(\.hostingController, hostingController) // Allow subviews to reference hosting controller
+        )
+        
+        hostingController.presentationController?.delegate = self
+        self.present(hostingController, animated: true)
+    }
+    
+    private func showDonateView()
+    {
+        let hostingController = UIHostingController(rootView: AnyView(EmptyView()))
+        hostingController.rootView = AnyView(
+            NavigationStack {
+                SupportDeltaView(showsCloseButton: true)
+            }
+            .environment(\.hostingController, hostingController) // Allow subviews to reference hosting controller
         )
         
         hostingController.presentationController?.delegate = self
@@ -881,4 +939,13 @@ extension GamesViewController: UIAdaptivePresentationControllerDelegate
     {
         self.sync()
     }
+}
+
+fileprivate extension UserDefaults
+{
+    @NSManaged var sessionsCount: Int
+    @NSManaged var sessionsDayCount: Int
+    @NSManaged var previousSessionDate: Date?
+    
+    @NSManaged var didShowDonateAlert: Date?
 }
