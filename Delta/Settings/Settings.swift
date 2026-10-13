@@ -470,25 +470,37 @@ extension Settings
     {
         let preferredControllerSkin: ControllerSkin?
         
+        // IMPORTANT: This should mirror the switch statement in Settings.setPreferredControllerSkin(_:for:traits:forExternalController) below.
         switch (traits.orientation, traits.displayType, isForExternalController)
         {
-        // Split View (no external controller)
+        // Standard/EdgeToEdge
+        case (.portrait, .standard, false), (.portrait, .edgeToEdge, false): preferredControllerSkin = game.preferredPortraitSkin
+        case (.landscape, .standard, false), (.landscape, .edgeToEdge, false): preferredControllerSkin = game.preferredLandscapeSkin
+            
+        // Split View
         case (.portrait, .splitView, false): preferredControllerSkin = game.preferredSplitViewPortraitSkin
         case (.landscape, .splitView, false): preferredControllerSkin = game.preferredSplitViewLandscapeSkin
             
-        // Split View (external controller)
-        // We currently don't support using an external controller skin when in split view,
-        // so fall back to the system's preferred skin (in case we add support later).
-        case (.portrait, .splitView, true): preferredControllerSkin = nil
-        case (.landscape, .splitView, true): preferredControllerSkin = nil
-        
-        // Standard
-        case (.portrait, _, false): preferredControllerSkin = game.preferredPortraitSkin
-        case (.landscape, _, false): preferredControllerSkin = game.preferredLandscapeSkin
+        // Inner
+        case (.portrait, .inner, false): preferredControllerSkin = game.preferredPortraitSkin
+        case (.landscape, .inner, false): preferredControllerSkin = game.preferredLandscapeSkin
             
-        // External Controller
-        case (.portrait, _, true): preferredControllerSkin = game.preferredExternalControllerPortraitSkin
-        case (.landscape, _, true): preferredControllerSkin = game.preferredExternalControllerLandscapeSkin
+        // Outer
+        case (.portrait, .outer, false): preferredControllerSkin = game.preferredOutsidePortraitSkin
+        case (.landscape, .outer, false): preferredControllerSkin = game.preferredOutsideLandscapeSkin
+            
+        // Cover (not yet supported)
+        case (_, .cover, _): preferredControllerSkin = nil
+            
+        // External Controller (Primary display type)
+        case (.portrait, .standard, true), (.portrait, .edgeToEdge, true), (.portrait, .inner, true): preferredControllerSkin = game.preferredExternalControllerPortraitSkin
+        case (.landscape, .standard, true), (.landscape, .edgeToEdge, true), (.landscape, .inner, true): preferredControllerSkin = game.preferredExternalControllerLandscapeSkin
+        
+        // External Controller (Secondary display types)
+        // We currently don't support using an external controller skin when in split view or for outer display,
+        // so fall back to the system's preferred skin (in case we add support later).
+        case (.portrait, .splitView, true), (.portrait, .outer, true): preferredControllerSkin = nil
+        case (.landscape, .splitView, true), (.landscape, .outer, true): preferredControllerSkin = nil
         }
         
         if let controllerSkin = preferredControllerSkin, let _ = controllerSkin.supportedTraits(for: traits)
@@ -536,24 +548,36 @@ extension Settings
                 game.settings.removeValue(forKey: .noExternalControllerSkin)
             }
             
+            // IMPORTANT: This should mirror the switch statement in Settings.preferredControllerSkin(for:traits:forExternalController) above.
             switch (traits.orientation, traits.displayType, isForExternalController)
             {
-            // Split View (no external controller)
+            // Standard/EdgeToEdge
+            case (.portrait, .standard, false), (.portrait, .edgeToEdge, false): game.preferredPortraitSkin = skin
+            case (.landscape, .standard, false), (.landscape, .edgeToEdge, false): game.preferredLandscapeSkin = skin
+                
+            // Split View
             case (.portrait, .splitView, false): game.preferredSplitViewPortraitSkin = skin
             case (.landscape, .splitView, false): game.preferredSplitViewLandscapeSkin = skin
                 
-            // Split View (external controller)
-            // Currently, there is no way to assign a split view skin to use when an external controller is connected.
-            case (.portrait, .splitView, true): break
-            case (.landscape, .splitView, true): break
+            // Inner
+            case (.portrait, .inner, false): game.preferredPortraitSkin = skin
+            case (.landscape, .inner, false): game.preferredLandscapeSkin = skin
                 
-            // External Controller
-            case (.portrait, _, true): game.preferredExternalControllerPortraitSkin = skin
-            case (.landscape, _, true): game.preferredExternalControllerLandscapeSkin = skin
-            
-            // Standard
-            case (.portrait, _, false): game.preferredPortraitSkin = skin
-            case (.landscape, _, false): game.preferredLandscapeSkin = skin
+            // Outer
+            case (.portrait, .outer, false): game.preferredOutsidePortraitSkin = skin
+            case (.landscape, .outer, false): game.preferredOutsideLandscapeSkin = skin
+                
+            // Cover (not yet supported)
+            case (_, .cover, _): break
+                
+            // External Controller (Primary display type)
+            case (.portrait, .standard, true), (.portrait, .edgeToEdge, true), (.portrait, .inner, true): game.preferredExternalControllerPortraitSkin = skin
+            case (.landscape, .standard, true), (.landscape, .edgeToEdge, true), (.landscape, .inner, true): game.preferredExternalControllerLandscapeSkin = skin
+                
+            // External Controller (Secondary display types)
+            // Currently, there is no way to assign a split view or outer display skin to use when an external controller is connected.
+            case (.portrait, .splitView, true), (.portrait, .outer, true): break
+            case (.landscape, .splitView, true), (.landscape, .outer, true): break
             }
             
             context.saveWithErrorLogging()
@@ -615,6 +639,9 @@ private extension Settings
         case .standard: displayType = "standard"
         case .edgeToEdge: displayType = "standard" // In this context, standard and edge-to-edge skins are treated the same.
         case .splitView: displayType = "splitview"
+        case .inner: displayType = "inner"
+        case .outer: displayType = "outer"
+        case .cover: displayType = "cover"
         }
         
         var deviceType: String?

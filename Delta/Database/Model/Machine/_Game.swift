@@ -44,6 +44,10 @@ public class _Game: NSManagedObject
 
     @NSManaged public var preferredLandscapeSkin: ControllerSkin?
 
+    @NSManaged public var preferredOutsideLandscapeSkin: ControllerSkin?
+
+    @NSManaged public var preferredOutsidePortraitSkin: ControllerSkin?
+
     @NSManaged public var preferredPortraitSkin: ControllerSkin?
 
     @NSManaged public var preferredSplitViewLandscapeSkin: ControllerSkin?

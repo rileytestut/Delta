@@ -34,6 +34,10 @@ public class _ControllerSkin: NSManagedObject
 
     @NSManaged public var preferredLandscapeSkinByGames: Set<Game>
 
+    @NSManaged public var preferredOutsideLandscapeSkinByGames: Set<Game>
+
+    @NSManaged public var preferredOutsidePortraitSkinByGames: Set<Game>
+
     @NSManaged public var preferredPortraitSkinByGames: Set<Game>
 
     @NSManaged public var preferredSplitViewLandscapeSkinByGames: Set<Game>

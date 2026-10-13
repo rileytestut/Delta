@@ -17,23 +17,36 @@ extension ControllerSkinConfigurations
     {
         switch (traits.device, traits.displayType, traits.orientation)
         {
+        // iPhone
         case (.iphone, .standard, .portrait): self = .iphoneStandardPortrait
         case (.iphone, .standard, .landscape): self = .iphoneStandardLandscape
         case (.iphone, .edgeToEdge, .portrait): self = .iphoneEdgeToEdgePortrait
         case (.iphone, .edgeToEdge, .landscape): self = .iphoneEdgeToEdgeLandscape
-        case (.iphone, .splitView, _): return nil
             
+        // Duo
+        case (.iphone, .inner, .portrait): self = .iphoneInsidePortrait
+        case (.iphone, .inner, .landscape): self = .iphoneInsideLandscape
+        case (.iphone, .outer, .portrait): self = .iphoneOutsidePortrait
+        case (.iphone, .outer, .landscape): self = .iphoneOutsideLandscape
+        case (.iphone, .splitView, .portrait): self = .iphoneSplitViewPortrait
+        case (.iphone, .splitView, .landscape): self = .iphoneSplitViewLandscape
+        case (.iphone, .cover, _): return nil
+            
+        // iPad
         case (.ipad, .standard, .portrait): self = .ipadStandardPortrait
         case (.ipad, .standard, .landscape): self = .ipadStandardLandscape
         case (.ipad, .edgeToEdge, .portrait): self = .ipadEdgeToEdgePortrait
         case (.ipad, .edgeToEdge, .landscape): self = .ipadEdgeToEdgeLandscape
         case (.ipad, .splitView, .portrait): self = .ipadSplitViewPortrait
         case (.ipad, .splitView, .landscape): self = .ipadSplitViewLandscape
+        case (.ipad, .inner, _), (.ipad, .outer, _), (.ipad, .cover, _): return nil
             
+        // TV
         case (.tv, .standard, .portrait): self = .tvStandardPortrait
         case (.tv, .standard, .landscape): self = .tvStandardLandscape
         case (.tv, .edgeToEdge, _): return nil
         case (.tv, .splitView, _): return nil
+        case (.tv, .inner, _), (.tv, .outer, _), (.tv, .cover, _): return nil
         }
     }
 }

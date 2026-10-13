@@ -64,6 +64,8 @@ extension ControllerSkinsViewController
         self.tableView.dataSource = self.dataSource
         self.tableView.prefetchDataSource = self.dataSource
         
+        self.tableView.insetsContentViewsToSafeArea = false
+        
         self.importControllerSkinButton.accessibilityLabel = NSLocalizedString("Import Controller Skin", comment: "")
         
         if !self.isResetButtonVisible
@@ -143,6 +145,45 @@ private extension ControllerSkinsViewController
             let fallbackConfiguration: ControllerSkinConfigurations = (traits.orientation == .landscape) ? .iphoneStandardLandscape : .iphoneStandardPortrait
             
             // Allow selecting skins that only support standard display types as well.
+            fetchRequest.predicate = NSPredicate(format: "%K == %@ AND ((%K & %d) != 0 OR (%K & %d) != 0)",
+                                                 #keyPath(ControllerSkin.gameType), system.gameType.rawValue,
+                                                 #keyPath(ControllerSkin.supportedConfigurations), configuration.rawValue,
+                                                 #keyPath(ControllerSkin.supportedConfigurations), fallbackConfiguration.rawValue)
+        }
+        else if traits.device == .iphone && traits.displayType == .inner
+        {
+            // Duo inner display, which is large and iPad-like.
+            // Besides inner skins, also allow outer skins, as well as iPad skins and `standard` + `edgeToEdge` iPhone skins.
+            
+            let outerConfiguration: ControllerSkinConfigurations = (traits.orientation == .landscape) ? .iphoneOutsideLandscape : .iphoneOutsidePortrait
+            let ipadConfiguration: ControllerSkinConfigurations = (traits.orientation == .landscape) ? .ipadStandardLandscape : .ipadStandardPortrait
+            let standardConfiguration: ControllerSkinConfigurations = (traits.orientation == .landscape) ? .iphoneStandardLandscape : .iphoneStandardPortrait
+            let edgeToEdgeConfiguration: ControllerSkinConfigurations = (traits.orientation == .landscape) ? .iphoneEdgeToEdgeLandscape : .iphoneEdgeToEdgePortrait
+            
+            fetchRequest.predicate = NSPredicate(format: "%K == %@ AND ((%K & %d) != 0 OR (%K & %d) != 0 OR (%K & %d) != 0 OR (%K & %d) != 0 OR (%K & %d) != 0)",
+                                                 #keyPath(ControllerSkin.gameType), system.gameType.rawValue,
+                                                 #keyPath(ControllerSkin.supportedConfigurations), configuration.rawValue,
+                                                 #keyPath(ControllerSkin.supportedConfigurations), outerConfiguration.rawValue,
+                                                 #keyPath(ControllerSkin.supportedConfigurations), ipadConfiguration.rawValue,
+                                                 #keyPath(ControllerSkin.supportedConfigurations), standardConfiguration.rawValue,
+                                                 #keyPath(ControllerSkin.supportedConfigurations), edgeToEdgeConfiguration.rawValue)
+        }
+        else if traits.device == .iphone && traits.displayType == .outer
+        {
+            // Duo outer display, which is small and iPhone-like.
+            // Besides outer skins, also allow iPhone `standard` skins (but not iPad or `edgeToEdge` iPhone because screen size/aspect ratio are too different).
+            
+            let fallbackConfiguration: ControllerSkinConfigurations = (traits.orientation == .landscape) ? .iphoneStandardLandscape : .iphoneStandardPortrait
+            fetchRequest.predicate = NSPredicate(format: "%K == %@ AND ((%K & %d) != 0 OR (%K & %d) != 0)",
+                                                 #keyPath(ControllerSkin.gameType), system.gameType.rawValue,
+                                                 #keyPath(ControllerSkin.supportedConfigurations), configuration.rawValue,
+                                                 #keyPath(ControllerSkin.supportedConfigurations), fallbackConfiguration.rawValue)
+        }
+        else if traits.device == .iphone && traits.displayType == .splitView
+        {
+            // Duo split view display, which is very similar to iPad split view, so also display iPad split view skins.
+            
+            let fallbackConfiguration: ControllerSkinConfigurations = (traits.orientation == .landscape) ? .ipadSplitViewLandscape : .ipadSplitViewPortrait
             fetchRequest.predicate = NSPredicate(format: "%K == %@ AND ((%K & %d) != 0 OR (%K & %d) != 0)",
                                                  #keyPath(ControllerSkin.gameType), system.gameType.rawValue,
                                                  #keyPath(ControllerSkin.supportedConfigurations), configuration.rawValue,

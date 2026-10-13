@@ -9,7 +9,7 @@
 import UIKit
 import SwiftUI
 
-// Access UIWindowScene.isStageManagerEnabled
+// Access UIWindowScene.isStageManagerEnabled + UIDevice.isDuo
 @_spi(Internal) import DeltaCore
 
 extension PreferredControllerSkinsViewController
@@ -64,13 +64,21 @@ extension PreferredControllerSkinsViewController
     private enum Variant
     {
         case standard
+        case inner
+        case outer
         case splitView
         case airPlay
         
         static var supportedVariants: [Variant] {
             var supportedVariants: [Variant] = [.standard]
             
-            if UIDevice.current.userInterfaceIdiom == .pad
+            if UIDevice.current.isDuo
+            {
+                // Use "inner" and "outer" instead of "standard"
+                supportedVariants = [.inner, .outer]
+            }
+            
+            if UIApplication.shared.supportsMultipleScenes
             {
                 supportedVariants.append(.splitView)
             }
@@ -93,6 +101,9 @@ extension PreferredControllerSkinsViewController
                 case .pad: return NSLocalizedString("Full Screen", comment: "")
                 default: return NSLocalizedString("Standard", comment: "")
                 }
+                
+            case .inner: return String(localized: "Inside")
+            case .outer: return String(localized: "Outside")
                 
             case .splitView:
                 if #available(iOS 16, *), scene.isStageManagerEnabled
@@ -149,6 +160,8 @@ extension PreferredControllerSkinsViewController
     {
         super.viewDidLoad()
         
+        self.tableView.insetsContentViewsToSafeArea = false
+        
         self.title = self.game?.name ?? self.system.localizedShortName
         
         self.variantSegmentedControl.removeAllSegments()
@@ -158,6 +171,11 @@ extension PreferredControllerSkinsViewController
         if Variant.supportedVariants.count == 1
         {
             self.navigationItem.titleView = nil
+        }
+        
+        if let variant = Variant.supportedVariants.first
+        {
+            self.variant = variant
         }
         
         self.update()
@@ -248,12 +266,16 @@ extension PreferredControllerSkinsViewController
         {
             switch (section, self.variant, self.isExternalControllerSkin)
             {
-            case (.portrait, .standard, false): isResetButtonVisible = (game.preferredPortraitSkin != nil)
-            case (.landscape, .standard, false): isResetButtonVisible = (game.preferredLandscapeSkin != nil)
+            // Re-use exisiting `preferredPortraitSkin` and `preferredLandscapeSkin` for inner display skin.
+            case (.portrait, .standard, false), (.portrait, .inner, false): isResetButtonVisible = (game.preferredPortraitSkin != nil)
+            case (.landscape, .standard, false), (.landscape, .inner, false): isResetButtonVisible = (game.preferredLandscapeSkin != nil)
                 
             // Show reset button if external controller skin is non-nil OR we've explicitly set the game's external controller skin to nil.
-            case (.portrait, .standard, true): isResetButtonVisible = (game.preferredExternalControllerPortraitSkin != nil || (game.settings[.noExternalControllerSkin] as? Bool) == true)
-            case (.landscape, .standard, true): isResetButtonVisible = (game.preferredExternalControllerLandscapeSkin != nil || (game.settings[.noExternalControllerSkin] as? Bool) == true)
+            case (.portrait, .standard, true), (.portrait, .inner, true): isResetButtonVisible = (game.preferredExternalControllerPortraitSkin != nil || (game.settings[.noExternalControllerSkin] as? Bool) == true)
+            case (.landscape, .standard, true), (.landscape, .inner, true): isResetButtonVisible = (game.preferredExternalControllerLandscapeSkin != nil || (game.settings[.noExternalControllerSkin] as? Bool) == true)
+                
+            case (.portrait, .outer, _): isResetButtonVisible = (game.preferredOutsidePortraitSkin != nil)
+            case (.landscape, .outer, _): isResetButtonVisible = (game.preferredOutsideLandscapeSkin != nil)
                 
             case (.portrait, .splitView, _): isResetButtonVisible = (game.preferredSplitViewPortraitSkin != nil)
             case (.landscape, .splitView, _): isResetButtonVisible = (game.preferredSplitViewLandscapeSkin != nil)
@@ -296,6 +318,12 @@ extension PreferredControllerSkinsViewController
         
         let section = Section(rawValue: indexPath.section)!
         
+        if UIDevice.current.isDuo && self.variant == .splitView && section == .portrait
+        {
+            // iPhone Duo doesn't support portrait SplitView skins, so hide this row.
+            return 0.0
+        }
+        
         let aspectRatio: CGSize?
         
         switch section
@@ -318,6 +346,19 @@ extension PreferredControllerSkinsViewController
         
         self.performSegue(withIdentifier: "showControllerSkins", sender: cell)
     }
+    
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String?
+    {
+        let section = Section(rawValue: section)!
+        if UIDevice.current.isDuo && self.variant == .splitView && section == .portrait
+        {
+            // iPhone Duo doesn't support portrait SplitView skins, so hide this title.
+            return nil
+        }
+        
+        let title = super.tableView(tableView, titleForHeaderInSection: section.rawValue)
+        return title
+    }
 }
 
 private extension PreferredControllerSkinsViewController
@@ -328,8 +369,8 @@ private extension PreferredControllerSkinsViewController
         
         switch self.variant
         {
-        case .standard: self.navigationItem.rightBarButtonItem = self.filterButton
-        case .airPlay, .splitView: self.navigationItem.rightBarButtonItem = nil // External controller skins not (yet) supported for AirPlay and Split View.
+        case .standard, .inner: self.filterButton.isHidden = false
+        case .airPlay, .splitView, .outer: self.filterButton.isHidden = true // External controller skins not (yet) supported for AirPlay, SplitView, and outer display skins
         }
         
         self.tableView.reloadData()
@@ -436,6 +477,12 @@ private extension PreferredControllerSkinsViewController
         case .standard:
             // Use defaults for iPhone
             break
+            
+        case .inner:
+            traits.displayType = .inner
+            
+        case .outer:
+            traits.displayType = .outer
             
         case .airPlay:
             traits.displayType = .standard
