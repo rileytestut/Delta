@@ -60,7 +60,7 @@ extension System
         case .gbc: return NSLocalizedString("GBC", comment: "")
         case .gba: return NSLocalizedString("GBA", comment: "")
         case .ds: return NSLocalizedString("DS", comment: "")
-        case .genesis: return NSLocalizedString("Genesis (Beta)", comment: "")
+        case .genesis: return NSLocalizedString("Genesis", comment: "")
         }
     }
     
