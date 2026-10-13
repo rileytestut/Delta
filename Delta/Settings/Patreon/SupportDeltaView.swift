@@ -23,7 +23,7 @@ extension SupportDeltaView
     fileprivate class ViewModel
     {
         var perks: [DonationPerk] = [
-            DonationPerk(title: String(localized: "Experimental Features"), subtitle: String(localized: "Be the first to try new Delta features, such as Custom Filters and AirPlay Skins."), iconName: "flask"),
+            DonationPerk(title: String(localized: "Experimental Features"), subtitle: String(localized: "Be the first to try new Delta features like Custom Filters and AirPlay Skins."), iconName: "flask"),
             DonationPerk(title: String(localized: "Exclusive app icons"), subtitle: String(localized: "Designed for Patrons by prominent members of the community."), iconName: "app.gift")
         ]
         
@@ -83,7 +83,7 @@ struct SupportDeltaView: View
     
     var body: some View {
         ScrollView {
-            LazyVStack(spacing: 30) {
+            LazyVStack(spacing: 35) {
                 if verticalSizeClass != .compact
                 {
                     header
@@ -221,16 +221,17 @@ struct SupportDeltaView: View
         .multilineTextAlignment(.center)
         .frame(maxWidth: .infinity)
         .padding(.horizontal)
-        .padding(.top, verticalSizeClass == .compact ? 30 : 0) // Add 30pts margin in vertical compact environments
+        .padding(.top, verticalSizeClass == .compact ? 30 : -5) // Add 30pts margin in vertical compact environments
         
         // Perks
-        VStack(spacing: 15) {
+        VStack(spacing: 20) {
             ForEach(viewModel.perks) { perk in
                 DonationPerkRow(perk: perk)
                     .frame(maxWidth: .infinity)
             }
         }
         .padding(.horizontal, 30)
+        .padding(.bottom, 15)
     }
     
     private var footer: some View {
