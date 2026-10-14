@@ -14,14 +14,16 @@ struct SettingsRow<Content: View>: View
     private let systemImage: String
     private let color: Color
     private let content: Content
+    private let variableValue: Double?
 
     @ScaledMetric
     private var badgeSize: CGFloat = 29
 
-    init(label: Text, systemImage: String, color: Color, @ViewBuilder content: () -> Content)
+    init(label: Text, systemImage: String, variableValue: Double? = nil, color: Color, @ViewBuilder content: () -> Content)
     {
         self.label = label
         self.systemImage = systemImage
+        self.variableValue = variableValue
         self.color = color
         self.content = content()
     }
@@ -48,7 +50,7 @@ struct SettingsRow<Content: View>: View
     }
     
     var image: some View {
-        Image(systemName: systemImage)
+        Image(systemName: systemImage, variableValue: variableValue)
             .imageScale(.medium)
             .foregroundStyle(.white)
             .frame(width: badgeSize, height: badgeSize)
@@ -57,8 +59,8 @@ struct SettingsRow<Content: View>: View
 
 extension SettingsRow where Content == EmptyView
 {
-    init(label: Text, systemImage: String, color: Color)
+    init(label: Text, systemImage: String, variableValue: Double? = nil, color: Color)
     {
-        self.init(label: label, systemImage: systemImage, color: color) { EmptyView() }
+        self.init(label: label, systemImage: systemImage, variableValue: variableValue, color: color) { EmptyView() }
     }
 }

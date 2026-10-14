@@ -44,6 +44,7 @@
 		6FF8B1728BDBAF892B397F5E /* DeltaOperatorWritebackToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCE7674E5643CDB43BC8ED32 /* DeltaOperatorWritebackToast.swift */; };
 		70FF20879DA0DCEE53D8CAED /* OperatorKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 796FA895EF62DF6A509DCA55 /* OperatorKit.xcframework */; };
 		77D29BED38BC998396047ED3 /* GameViewController+CustomFilters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3912FC09CEBA5EAE21F54460 /* GameViewController+CustomFilters.swift */; };
+		822CFC2B301279460031C3F8 /* AudioObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 822CFC22301279430031C3F8 /* AudioObserver.swift */; };
 		823D998F2E566EE40025F4CD /* GBCColorPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 823D998E2E566EE40025F4CD /* GBCColorPalette.swift */; };
 		8279ED042E53BA4F008995FA /* GBACoreSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8279ED032E53BA4F008995FA /* GBACoreSettingsView.swift */; };
 		8279ED0E2E53C76C008995FA /* NESCoreSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8279ED0D2E53C76C008995FA /* NESCoreSettingsView.swift */; };
@@ -632,6 +633,7 @@
 		796FA895EF62DF6A509DCA55 /* OperatorKit.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = OperatorKit.xcframework; sourceTree = "<group>"; };
 		7C31F852121CBEF08181BD23 /* OperatorStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperatorStatusView.swift; sourceTree = "<group>"; };
 		7E3E5A45AB20C8A87754453B /* libPods-DeltaPreviews.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DeltaPreviews.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		822CFC22301279430031C3F8 /* AudioObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioObserver.swift; sourceTree = "<group>"; };
 		823D998E2E566EE40025F4CD /* GBCColorPalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GBCColorPalette.swift; sourceTree = "<group>"; };
 		8279ED032E53BA4F008995FA /* GBACoreSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GBACoreSettingsView.swift; sourceTree = "<group>"; };
 		8279ED0D2E53C76C008995FA /* NESCoreSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NESCoreSettingsView.swift; sourceTree = "<group>"; };
@@ -1445,6 +1447,7 @@
 				BF5E7F431B9A650B00AE44F8 /* SettingsViewController.swift */,
 				8282422F2F7C487800D8F899 /* SettingsRow.swift */,
 				828242252F7C40C300D8F899 /* SettingsView.swift */,
+				822CFC22301279430031C3F8 /* AudioObserver.swift */,
 				BFB3645723245A6000CD0EB1 /* LicensesViewController.swift */,
 				BFE9907E24451DE6006409A7 /* Cores */,
 				BF71CF851FE8FFF1001F1613 /* App Icon */,
@@ -2646,6 +2649,7 @@
 				BF353FF91C5D870B00C1184C /* MenuItem.swift in Sources */,
 				D5D797E6298D946200738869 /* Contributor.swift in Sources */,
 				D5ADD12229F33FBF00CE0560 /* Features.swift in Sources */,
+				822CFC2B301279460031C3F8 /* AudioObserver.swift in Sources */,
 				BFDB3418219E4B1700595A62 /* SyncStatusViewController.swift in Sources */,
 				D54EA6A7306F0AB0002DAEA3 /* Pledge.swift in Sources */,
 				BF18B61F1E2985F900F70067 /* UIAlertController+Importing.swift in Sources */,

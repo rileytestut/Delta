@@ -45,6 +45,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         // Controllers
         ExternalGameControllerManager.shared.startMonitoring()
         
+        // Audio
+        if #available(iOS 27, *)
+        {
+            // Create AudioObserver now so it doesn't miss any audio session activations.
+            _ = AudioObserver.shared
+        }
+        
         // JIT
         ServerManager.shared.prepare()
         

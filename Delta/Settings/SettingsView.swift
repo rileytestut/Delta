@@ -117,7 +117,14 @@ private struct EmulationSection: View
             NavigationLink {
                 AudioSettingsView()
             } label: {
-                SettingsRow(label: Text("Audio"), systemImage: "speaker.wave.2", color: .green)
+                if #available(iOS 27, *)
+                {
+                    DynamicAudioRow()
+                }
+                else
+                {
+                    SettingsRow(label: Text("Audio"), systemImage: "speaker.wave.2", color: .green)
+                }
             }
 
             NavigationLink {
@@ -132,6 +139,20 @@ private struct EmulationSection: View
                 SettingsRow(label: Text("Cores"), systemImage: "cpu", color: .cyan)
             }
         }
+    }
+}
+
+// Separate view because stored properties can't be gated on availability.
+@available(iOS 27, *)
+private struct DynamicAudioRow: View
+{
+    @SwiftUI.State
+    private var audioObserver = AudioObserver.shared
+
+    var body: some View {
+        SettingsRow(label: Text("Audio"), systemImage: "speaker.wave.3", variableValue: audioObserver.volume, color: .green)
+            .onAppear { audioObserver.startMonitoring() }
+            .onDisappear { audioObserver.stopMonitoring() }
     }
 }
 
