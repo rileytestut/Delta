@@ -3167,7 +3167,7 @@ private extension GameViewController
                 let toastView = AchievementToastView {
                     AchievementNotification(achievement: achievement)
                 }
-                toastView.show(in: self.view, duration: 4.0)
+                toastView.show(in: self.view, duration: 4.0, useAutoLayout: false)
             } else {
                 let title = String(format: NSLocalizedString("✅ Achievement Unlocked", comment: ""))
                 let message = String(AttributedString(localized: "\(achievement.title) (^[\(achievement.points) \("point")](inflect: true))").characters)
