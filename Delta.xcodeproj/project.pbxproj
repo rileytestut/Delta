@@ -269,6 +269,7 @@
 		D57D795629F300E100BB2CF8 /* CustomTintColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A817AF29DF4E6E00904AFE /* CustomTintColor.swift */; };
 		D57D795F29F315F700BB2CF8 /* FeatureDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54A4BB229E4D27E004C7D57 /* FeatureDetailView.swift */; };
 		D57D796029F315F700BB2CF8 /* ExperimentalFeaturesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A9C00229DDED6D00A8D610 /* ExperimentalFeaturesView.swift */; };
+		D583F54B307F244A00D62335 /* Delta11ToDelta13.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = D583F54A307F244A00D62335 /* Delta11ToDelta13.xcmappingmodel */; };
 		D585C9C7306B184300591354 /* SupportDeltaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D585C9C6306B184300591354 /* SupportDeltaView.swift */; };
 		D5864970297734280081477E /* CheatMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586496F297734280081477E /* CheatMetadata.swift */; };
 		D586497229774ABD0081477E /* CheatBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D586497129774ABD0081477E /* CheatBase.swift */; };
@@ -887,6 +888,7 @@
 		D57A81CC2E29AE32006E06E8 /* GBADeltaCore.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GBADeltaCore.xcodeproj; path = Cores/GBADeltaCore/GBADeltaCore.xcodeproj; sourceTree = "<group>"; };
 		D57A81D52E29AE3D006E06E8 /* GBCDeltaCore.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GBCDeltaCore.xcodeproj; path = Cores/GBCDeltaCore/GBCDeltaCore.xcodeproj; sourceTree = "<group>"; };
 		D58013E82CC992560055F11C /* Delta.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Delta.entitlements; sourceTree = "<group>"; };
+		D583F54A307F244A00D62335 /* Delta11ToDelta13.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = Delta11ToDelta13.xcmappingmodel; sourceTree = "<group>"; };
 		D585C9C6306B184300591354 /* SupportDeltaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportDeltaView.swift; sourceTree = "<group>"; };
 		D586496F297734280081477E /* CheatMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheatMetadata.swift; sourceTree = "<group>"; };
 		D586497129774ABD0081477E /* CheatBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheatBase.swift; sourceTree = "<group>"; };
@@ -1553,6 +1555,7 @@
 				D51D8EC72D49CA26002649C2 /* Delta10ToDelta11.xcmappingmodel */,
 				D58C548E2FCAC43E00B408BA /* Delta11ToDelta12.xcmappingmodel */,
 				D5D64A00307E128B00C5FCAC /* Delta12ToDelta13.xcmappingmodel */,
+				D583F54A307F244A00D62335 /* Delta11ToDelta13.xcmappingmodel */,
 				BFEF24F11F7DD4BE00454C62 /* Policies */,
 			);
 			path = Migrations;
@@ -2699,6 +2702,7 @@
 				D5AE76B72C2B52820086471B /* Campaign.swift in Sources */,
 				BF3D6C53220286750083E05A /* Delta3ToDelta4.xcmappingmodel in Sources */,
 				D5CDCCF12A859E7500E22131 /* ReviewSaveStatesViewController.swift in Sources */,
+				D583F54B307F244A00D62335 /* Delta11ToDelta13.xcmappingmodel in Sources */,
 				D5367A8F307DC2F9009D11FC /* MarketplaceDistributor.swift in Sources */,
 				D5882F59307C507200EC8817 /* ReservedRegionsContext.swift in Sources */,
 				BF5942881E09BC8B0051894B /* _Game.swift in Sources */,

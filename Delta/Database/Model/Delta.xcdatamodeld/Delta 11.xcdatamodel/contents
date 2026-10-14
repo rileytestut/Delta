@@ -60,7 +60,6 @@
         </attribute>
         <attribute name="gameSettings" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="NSDictionary" syncable="YES"/>
         <attribute name="identifier" attributeType="String" syncable="YES"/>
-        <attribute name="isFavorite" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
         <attribute name="playedDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="type" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" syncable="YES">
