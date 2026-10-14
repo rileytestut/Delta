@@ -240,6 +240,18 @@ class GameViewController: DeltaCore.GameViewController
     private var coverView: CoverView?
     private var isShowingCover = false
     
+    @available(iOS 27.1, *)
+    private var previousHingeStatus: UIHinge.Status? {
+        get {
+            guard let rawStatus = _previousHingeStatus else { return nil }
+            return UIHinge.Status(rawValue: rawStatus)
+        }
+        set {
+            _previousHingeStatus = newValue?.rawValue
+        }
+    }
+    private var _previousHingeStatus: Int?
+    
     // Sustain Buttons
     private var isSelectingSustainedButtons = false
     private var sustainInputsMapping: SustainInputsMapping?
@@ -602,6 +614,20 @@ extension GameViewController
         {
             // We have priority, so replace whatever is currently on external display.
             self.connectExternalDisplay(for: scene)
+        }
+        
+        if #available(iOS 27.1, *), self.previousHingeStatus == nil
+        {
+            if self.view.traitCollection.horizontalSizeClass == .compact
+            {
+                // Device has compact width, so assume we're using outer display (and thus closed).
+                self.previousHingeStatus = .closed
+            }
+            else
+            {
+                // Otherwise default to `partiallyOpen` so we're definitely notified if device is closed.
+                self.previousHingeStatus = .partiallyOpen
+            }
         }
     }
     
@@ -1773,8 +1799,63 @@ private extension GameViewController
 
 //MARK: - Cover -
 /// Cover
-extension GameViewController: CoverViewDelegate
+@available(iOS 27.1, *)
+private extension GameViewController
 {
+    struct LidMapping: GameControllerInputMappingProtocol
+    {
+        var name: String { "" }
+        var gameControllerInputType: GameControllerInputType { .standard }
+        
+        func input(forControllerInput controllerInput: Input) -> Input?
+        {
+            // Map StandardGameControllerInput.r3 to DS lid input
+            guard let standardInput = controllerInput as? StandardGameControllerInput, standardInput == .r3 else { return nil }
+            return MelonDSGameInput.lid
+        }
+    }
+    
+    func hingeDidClose()
+    {
+        // Closed device, similar to closing a Nintendo DS.
+        
+        guard let emulatorCore else { return }
+        
+        self.showCover()
+        
+        if emulatorCore.game.type == .ds, emulatorCore.state == .running
+        {
+            // Activate DS `lid` input
+            Logger.main.info("Device is closed, activating `lid` input.")
+            
+            LocalDeviceController.shared.addReceiver(emulatorCore, inputMapping: LidMapping())
+            LocalDeviceController.shared.activate(StandardGameControllerInput.r3) // We map R3 to lid input above
+            LocalDeviceController.shared.removeReceiver(emulatorCore)
+        }
+        
+        // We pause emulation from coverWillWillShowCover(_:) to make sure we only pause if cover is actually shown.
+        // self.pauseEmulation()
+    }
+    
+    func hingeDidOpen()
+    {
+        // Opened device, similar to opening a Nintendo DS.
+        
+        self.hideCover()
+        
+        if let emulatorCore, emulatorCore.game.type == .ds
+        {
+            // Deactivate DS `lid` input
+            Logger.main.info("Device is open, deactivating `lid` input.")
+            
+            LocalDeviceController.shared.addReceiver(emulatorCore, inputMapping: LidMapping())
+            LocalDeviceController.shared.deactivate(StandardGameControllerInput.r3) // We map R3 to lid input above
+            LocalDeviceController.shared.removeReceiver(emulatorCore)
+        }
+        
+        self.resumeEmulation()
+    }
+    
     func showCover()
     {
         guard let game, !self.isShowingCover, Settings.showCoverSkins else { return }
@@ -1800,8 +1881,6 @@ extension GameViewController: CoverViewDelegate
         
         self.isShowingCover = true
         
-        self.pauseEmulation()
-        
         self.setNeedsUpdateOfSupportedInterfaceOrientations()
         self.parent?.setNeedsUpdateOfSupportedInterfaceOrientations() // LaunchViewController
         
@@ -1823,31 +1902,58 @@ extension GameViewController: CoverViewDelegate
         self.coverView?.removeFromSuperview()
         self.coverView = nil
         
-        self.resumeEmulation()
-        
         self.setNeedsUpdateOfSupportedInterfaceOrientations()
         self.parent?.setNeedsUpdateOfSupportedInterfaceOrientations() // LaunchViewController
     }
     
-    func coverViewDidHideCover(_ coverView: CoverView)
-    {
-        self.hideCover()
-    }
-    
-    @available(iOS 27.1, *)
-    private func hingeDidUpdate(_ update: UIHingeInteraction.Update)
+    /// UIHingeInteraction
+    func hingeDidUpdate(_ update: UIHingeInteraction.Update)
     {
         guard self.game != nil else { return }
         guard let hinge = update.hinge, hinge.status != .unknown else { return }
         
+        guard self.previousHingeStatus != hinge.status else { return }
+        self.previousHingeStatus = hinge.status
+        
         if hinge.status == .closed
         {
-            self.showCover()
+            self.hingeDidClose()
         }
         else
         {
-            self.hideCover()
+            self.hingeDidOpen()
         }
+    }
+}
+
+extension GameViewController: CoverViewDelegate
+{
+    func coverViewWillShowCover(_ coverView: CoverView)
+    {
+        guard let emulatorCore else { return }
+        
+        if emulatorCore.game.type == .ds, emulatorCore.state == .running
+        {
+            // Delay pausing emulation so game can react to `lid` input.
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                self.pauseEmulation()
+            }
+        }
+        else
+        {
+            // Pause emulation immediately, only DS games can react to lid closing/opening.
+            self.pauseEmulation()
+        }
+    }
+    
+    func coverViewDidHideCover(_ coverView: CoverView)
+    {
+        guard #available(iOS 27.1, *) else { return }
+        
+        Logger.main.info("Explicitly dismissed cover skin, treating device as if it's open.")
+        
+        // Treat explicitly hiding cover as equivalent to opening device.
+        self.hingeDidOpen()
     }
 }
 

@@ -10,6 +10,8 @@ import DeltaCore
 
 class LocalDeviceController: NSObject, GameController
 {
+    static let shared = LocalDeviceController()
+    
     var name: String {
         if ProcessInfo.processInfo.isRunningOnVisionPro
         {
