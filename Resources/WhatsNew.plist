@@ -6,7 +6,7 @@
 		<key>name</key>
 		<string>Liquid Glass UI</string>
 		<key>caption</key>
-		<string>An all-new look designed for iOS 26.</string>
+		<string>An all-new look designed from the ground up for Liquid Glass.</string>
 		<key>icon</key>
 		<string>drop.fill</string>
 		<key>isPatronExclusive</key>
@@ -16,7 +16,7 @@
 		<key>name</key>
 		<string>Sega Genesis</string>
 		<key>caption</key>
-		<string>Play your favorite Genesis games with our gorgeous new controller skin.</string>
+		<string>Play all your favorite Genesis games. Delta does what Nintendon&apos;t.</string>
 		<key>icon</key>
 		<string>gamecontroller.fill</string>
 		<key>isPatronExclusive</key>
@@ -26,7 +26,7 @@
 		<key>name</key>
 		<string>RetroAchievements</string>
 		<key>caption</key>
-		<string>Connect a RetroAchievements account to unlock achievements in games.</string>
+		<string>Sign in to RetroAchievements to unlock achievements in your games.</string>
 		<key>icon</key>
 		<string>trophy.fill</string>
 		<key>isPatronExclusive</key>
@@ -34,11 +34,21 @@
 	</dict>
 	<dict>
 		<key>name</key>
-		<string>AirPlay Skins</string>
+		<string>iPhone Duo</string>
 		<key>caption</key>
-		<string>Customize the appearance of your games when AirPlaying to your TV.</string>
+		<string>Adapts to every pose, with controller skins optimized for each one.</string>
 		<key>icon</key>
-		<string>photo.tv</string>
+		<string>book</string>
+		<key>isPatronExclusive</key>
+		<false/>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>Custom Filters</string>
+		<key>caption</key>
+		<string>Give your games a classic look with CRT filters and more, or add your own.</string>
+		<key>icon</key>
+		<string>paintbrush</string>
 		<key>isPatronExclusive</key>
 		<true/>
 	</dict>
