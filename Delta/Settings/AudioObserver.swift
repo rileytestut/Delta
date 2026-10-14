@@ -10,6 +10,12 @@ import AVFoundation
 import Observation
 
 @available(iOS 27, *)
+private extension AudioObserver
+{
+    static let disableAudioObservingFlag: String = "DLTADisableAudioObserving"
+}
+
+@available(iOS 27, *)
 @MainActor @Observable
 class AudioObserver
 {
@@ -28,6 +34,13 @@ class AudioObserver
     
     private init()
     {
+        let gameIDs = UserDefaults.standard.rubyEventGameIDs ?? []
+        guard !gameIDs.contains(AudioObserver.disableAudioObservingFlag) else {
+            // Secret flag to remotely disable this feature if it's causing issues.
+            Logger.main.info("Remote flag to disable audio observing detected, stopping init.")
+            return
+        }
+        
         self.sessionObservations = [
             NotificationCenter.default.addObserver(of: AVAudioSession.sharedInstance(), for: AVAudioSession.DidBecomeActiveMessage.self) { _ in
                 self.isSessionActive = true
@@ -44,6 +57,14 @@ extension AudioObserver
 {
     func startMonitoring()
     {
+        let gameIDs = UserDefaults.standard.rubyEventGameIDs ?? []
+        guard !gameIDs.contains(AudioObserver.disableAudioObservingFlag) else {
+            // Secret flag to remotely disable this feature if it's causing issues.
+            Logger.main.info("Remote flag to disable audio observing detected, stopping monitoring.")
+            self.volume = 1.0
+            return
+        }
+        
         self.volumeObservation?.invalidate()
         self.volumeObservation = AVAudioSession.sharedInstance().observe(\.outputVolume) { session, _ in
             DispatchQueue.main.async {
