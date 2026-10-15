@@ -70,7 +70,7 @@ extension CommissionManager
         let distributor = await PurchaseManager.shared.distributor
         switch distributor
         {
-        case .appStore, .testFlight, .other:
+        case .appStore, .testFlight, .other, .web:
             // Installed via App Store/TestFlight (or App Review for `other`), so request token via ExternalPurchaseCustomLink.
             
             if #available(iOS 18.1, *)
@@ -84,7 +84,7 @@ extension CommissionManager
                 return nil
             }
             
-        case .altStore, .web:
+        case .altStore:
             // Installed via AltStore or web, so request token via TransactionReporting.
             
             if #available(iOS 26.2, *)

@@ -92,7 +92,7 @@ class PurchaseManager
     
     var supportsInAppPurchase: Bool {
         // Both App Store and TestFlight (and App Review via Other) support IAP
-        return self.distributor == .appStore || self.distributor == .testFlight || self.distributor == .other
+        return self.distributor != .altStore
     }
     
     private(set) var distributor: MarketplaceDistributor = .appStore
@@ -137,7 +137,7 @@ class PurchaseManager
         
         let deviceIdiom = UIDevice.current.userInterfaceIdiom
         
-        if self.distributor == .altStore || self.distributor == .web
+        if self.distributor == .altStore
         {
             if #available(iOS 26.2, *)
             {
@@ -199,7 +199,7 @@ class PurchaseManager
             self.commissionRegion = self.externalPurchaseRegion?.region
         }
         
-        if let commissionRegion, self.distributor == .altStore || self.distributor == .web
+        if let commissionRegion, self.distributor == .altStore
         {
             // Set ExternalPurchaseRegion so its non-nil even when outside App Store, to make logic paths easier
             self.externalPurchaseRegion = ExternalPurchaseRegion(region: commissionRegion)
@@ -299,7 +299,7 @@ extension PurchaseManager
     
     func join(_ tier: PatreonAPI.Tier, presentingViewController: UIViewController) async throws -> PatreonAccount
     {
-        if self.distributor == .appStore || self.distributor == .testFlight || self.distributor == .other
+        if self.distributor != .altStore
         {
             // Always check whether payments are allowed in App Store when distributed with App Store, even if region doesn't require an entitlement.
             guard AppStore.canMakePayments else { throw PurchaseError.paymentsNotAllowed }
