@@ -79,6 +79,12 @@ enum ExternalPurchaseRegion
         }
     }
     
+    var supportsSystemDisclosureSheet: Bool {
+        // Only EU supports the system disclosure sheet pre-iOS 27.2
+        let supportsSystemDisclosureSheet = self.isEUCountry
+        return supportsSystemDisclosureSheet
+    }
+    
     // ISO 3166-1 alpha-3
     var countryCode: String {
         switch self

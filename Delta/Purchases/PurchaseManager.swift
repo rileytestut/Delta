@@ -317,7 +317,12 @@ extension PurchaseManager
             {
                 guard await ExternalPurchaseCustomLink.isEligible else { throw PurchaseError.externalPurchasesNotAllowed }
                 
-                if !UserDefaults.standard.hideIAPDisclosureScreen
+                if region.supportsSystemDisclosureSheet
+                {
+                    let result = try await ExternalPurchaseCustomLink.showNotice(type: .withinApp)
+                    guard result == .continued else { throw CancellationError() }
+                }
+                else if !UserDefaults.standard.hideIAPDisclosureScreen
                 {
                     try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
                         
