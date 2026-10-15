@@ -445,15 +445,6 @@ private struct DonateButton: View
                     .shadow(color: .gray.opacity(0.3), radius: 10) //TODO: Verify w/ Caroline
             }
         }
-        .overlay(alignment: .top) {
-            if let freeTrialLength, let formattedString = DonateButton.formatter.string(from: freeTrialLength)
-            {
-                let text = Text(verbatim: formattedString + " ") + Text("free")
-                GlassBadge(content: text, color: buttonColor)
-                    .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
-                    .offset(y: -15)
-            }
-        }
     }
     
     @ViewBuilder
@@ -482,10 +473,20 @@ private struct DonateButton: View
                         .font(.system(size: 16))
                         .bold()
                         
-                    Text("Riley + Shane")
-                        .font(.system(size: 16))
-                        .bold()
-                        .foregroundStyle(.secondary)
+                    if let freeTrialLength, let formattedString = Self.formatter.string(from: freeTrialLength)
+                    {
+                        Text("\(formattedString) free")
+                            .font(.system(size: 16))
+                            .bold()
+                            .foregroundStyle(.secondary)
+                    }
+                    else
+                    {
+                        Text("Riley + Shane")
+                            .font(.system(size: 16))
+                            .bold()
+                            .foregroundStyle(.secondary)
+                    }
                 }
             }
         }
