@@ -400,6 +400,9 @@ private struct DonateButton: View
     
     var action: (() -> Void)?
     
+    @Environment(\.colorScheme)
+    private var colorScheme
+    
     private static let formatter: DateComponentsFormatter = {
         let dateFormatter = DateComponentsFormatter()
         dateFormatter.allowedUnits = [.weekOfMonth, .month, .day, .year]
@@ -408,7 +411,8 @@ private struct DonateButton: View
     }()
     
     var body: some View {
-        let buttonColor = (service == .iap ? .white : Color(.deltaPurple))
+        let buttonColor = (service == .iap ? Color(.label) : Color(.deltaPurple))
+        let invertedColorScheme: ColorScheme = (colorScheme == .dark ? .light : .dark)
         
         let button = Button(action: { action?() }) {
             HStack {
@@ -420,7 +424,7 @@ private struct DonateButton: View
             }
             .padding(.horizontal, 12)
             .padding(.vertical, 8)
-            .colorScheme(service == .iap ? .light : .dark)
+            .colorScheme(service == .iap ? invertedColorScheme : .dark)
             .tint(nil)
         }
         .frame(maxWidth: .infinity)
@@ -445,6 +449,7 @@ private struct DonateButton: View
                     .shadow(color: .gray.opacity(0.3), radius: 10) //TODO: Verify w/ Caroline
             }
         }
+        .shadow(color: .black.opacity(0.1), radius: 30)
     }
     
     @ViewBuilder
@@ -457,6 +462,7 @@ private struct DonateButton: View
                 .resizable()
                 .scaledToFit()
                 .frame(height: 34)
+                .foregroundStyle(Color(.label))
                 .offset(y: -2) // Visually center the body of Apple and ignore leaf
             
         case .patreon:
