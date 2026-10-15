@@ -153,33 +153,42 @@ class PurchaseManager
         {
             self.externalPurchaseRegion = externalPurchaseRegion
             
-            switch externalPurchaseRegion {
-            case .usa:
-                // USA supports external purchases for iPhone and iPad on all iOS versions
-                self._supportsExternalPurchases = true
+            if #available(iOS 18.1, *), AppStore.canMakePayments
+            {
+                let isEligible = await ExternalPurchaseCustomLink.isEligible
                 
-            case .japan:
-                if #available(iOS 26.4, *), deviceIdiom == .phone
-                {
-                    // Japan supports external purchases on iPhone on 26.4 or later (due to External Purchase Server Purchase API not supported before then).
+                switch externalPurchaseRegion {
+                case .usa:
+                    // USA supports external purchases for iPhone and iPad on all iOS versions, and DOESN'T require `isEligible`
                     self._supportsExternalPurchases = true
-                }
+                    
+                case .japan where isEligible:
+                    if #available(iOS 26.4, *), deviceIdiom == .phone
+                    {
+                        // Japan supports external purchases on iPhone on 26.4 or later (due to External Purchase Server Purchase API not supported before then).
+                        self._supportsExternalPurchases = true
+                    }
+                    
+                case .brazil where isEligible:
+                    if #available(iOS 26.5, *), deviceIdiom == .phone
+                    {
+                        // Brazil supports external purchases on iPhone on 26.5 or later
+                        self._supportsExternalPurchases = true
+                    }
+                    
+                case _ where externalPurchaseRegion.isEUCountry && isEligible:
+                    if #available(iOS 26.6, *)
+                    {
+                        // EU supports external purchases on iPhone and iPad on 26.6 or later
+                        self._supportsExternalPurchases = true
+                    }
                 
-            case .brazil:
-                if #available(iOS 26.5, *), deviceIdiom == .phone
-                {
-                    // Brazil supports external purchases on iPhone on 26.5 or later
-                    self._supportsExternalPurchases = true
+                default:
+                    self._supportsExternalPurchases = false
                 }
-                
-            case _ where externalPurchaseRegion.isEUCountry:
-                if #available(iOS 26.6, *)
-                {
-                    // EU supports external purchases on iPhone and iPad on 26.6 or later
-                    self._supportsExternalPurchases = true
-                }
-            
-            default:
+            }
+            else
+            {
                 self._supportsExternalPurchases = false
             }
             
