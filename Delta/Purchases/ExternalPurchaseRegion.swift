@@ -85,6 +85,18 @@ enum ExternalPurchaseRegion
         return supportsSystemDisclosureSheet
     }
     
+    var supportsInAppWebView: Bool {
+        switch self
+        {
+        case .usa: return false
+        case .japan, .brazil: return true
+        case .belgium, .bulgaria, .czechia, .denmark, .germany, .estonia, .ireland,
+             .greece, .spain, .france, .croatia, .italy, .cyprus, .latvia,
+             .lithuania, .luxembourg, .hungary, .malta, .netherlands, .austria,
+             .poland, .portugal, .romania, .slovenia, .slovakia, .finland, .sweden: return true
+        }
+    }
+    
     // ISO 3166-1 alpha-3
     var countryCode: String {
         switch self

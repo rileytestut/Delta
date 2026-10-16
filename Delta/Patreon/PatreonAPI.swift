@@ -412,14 +412,40 @@ extension PatreonAPI
         
         // At this point, we know user is authenticated but NOT an active patron.
         
-        let safariViewController = SFSafariViewController(url: URL(string: "https://patreon.com/checkout/rileyshane?rid=\(tier.identifier)")!)
-        safariViewController.delegate = self
-        presentingViewController.present(safariViewController, animated: true)
+        let joinTierURL = URL(string: "https://patreon.com/checkout/rileyshane?rid=\(tier.identifier)")!
         
-        // Wait for first notification
-        for await _ in NotificationCenter.default.notifications(named: PatreonAPI.operationDidFinish)
+        if let region = PurchaseManager.shared.externalPurchaseRegion, region.supportsInAppWebView
         {
-            break
+            let safariViewController = SFSafariViewController(url: joinTierURL)
+            safariViewController.delegate = self
+            presentingViewController.present(safariViewController, animated: true)
+            
+            // Wait for first notification
+            for await _ in NotificationCenter.default.notifications(named: PatreonAPI.operationDidFinish)
+            {
+                break
+            }
+        }
+        else
+        {
+            try await withCheckedThrowingContinuation { continuation in
+                UIApplication.shared.open(joinTierURL, options: [:]) { success in
+                    if success
+                    {
+                        continuation.resume()
+                    }
+                    else
+                    {
+                        continuation.resume(throwing: PatreonAPIError.unknown)
+                    }
+                }
+            }
+            
+            // Wait until user returns to foreground, and then check if they became a patron.
+            for await _ in NotificationCenter.default.notifications(named: UIApplication.willEnterForegroundNotification)
+            {
+                break
+            }
         }
         
         let account = try await self.fetchUserAccount()
