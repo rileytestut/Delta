@@ -10,6 +10,7 @@ import Foundation
 import StoreKit
 import MarketplaceKit
 import SwiftUI
+import DeclaredAgeRange
 
 import DeltaFeatures
 
@@ -26,12 +27,14 @@ enum PurchaseError: LocalizedError
 {
     case paymentsNotAllowed
     case externalPurchasesNotAllowed
+    case adultPermissionRequired
     
     var errorDescription: String? {
         switch self
         {
         case .paymentsNotAllowed: String(localized: "Payments are not allowed for the current iCloud user.")
         case .externalPurchasesNotAllowed: String(localized: "The current iCloud user is not eligible to make external purchases.")
+        case .adultPermissionRequired: String(localized: "You must be 18 years or older to donate on Patreon.")
         }
     }
 }
@@ -313,9 +316,22 @@ extension PurchaseManager
             // Always check whether payments are allowed in App Store when distributed with App Store, even if region doesn't require an entitlement.
             guard AppStore.canMakePayments else { throw PurchaseError.paymentsNotAllowed }
             
-            if let region = PurchaseManager.shared.externalPurchaseRegion, region.requiresExternalPurchasesOrOffersEntitlement, #available(iOS 18.1, *)
+            if let region = PurchaseManager.shared.externalPurchaseRegion, region.requiresExternalPurchasesOrOffersEntitlement
             {
-                guard await ExternalPurchaseCustomLink.isEligible else { throw PurchaseError.externalPurchasesNotAllowed }
+                guard #available(iOS 26, *), await ExternalPurchaseCustomLink.isEligible else { throw PurchaseError.externalPurchasesNotAllowed }
+                
+                do
+                {
+                    // Apple requires confirming user is an adult before starting an external purchase flow in this region.
+                    let response = try await AgeRangeService.shared.requestAgeRange(ageGates: 18, in: presentingViewController)
+                    guard case .sharing(let ageRange) = response, let lowerBound = ageRange.lowerBound, lowerBound >= 18 else {
+                        throw PurchaseError.adultPermissionRequired
+                    }
+                }
+                catch AgeRangeService.Error.declinedOnboarding
+                {
+                    throw CancellationError()
+                }
                 
                 if region.supportsSystemDisclosureSheet
                 {
