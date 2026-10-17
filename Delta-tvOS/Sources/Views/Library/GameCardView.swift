@@ -11,24 +11,21 @@ struct GameCardView: View {
             VStack(alignment: .leading, spacing: 12) {
                 // Cartridge / Box Art representation
                 ZStack {
-                    LinearGradient(
-                        colors: [cardColor.opacity(0.85), cardColor.opacity(0.4)],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
-                    
-                    VStack(spacing: 8) {
-                        Image(systemName: game.system.systemIconName)
-                            .font(.system(size: 44, weight: .bold))
-                            .foregroundColor(.white.opacity(0.9))
-                        
-                        Text(game.system.shortName)
-                            .font(.system(size: 14, weight: .heavy, design: .rounded))
-                            .foregroundColor(.white.opacity(0.75))
-                            .padding(.horizontal, 10)
-                            .padding(.vertical, 4)
-                            .background(Color.black.opacity(0.3))
-                            .clipShape(Capsule())
+                    if let artworkURL = game.localArtworkURL ?? game.remoteThumbnailURL {
+                        AsyncImage(url: artworkURL) { phase in
+                            switch phase {
+                            case .success(let image):
+                                image
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(height: 180)
+                                    .clipped()
+                            default:
+                                fallbackCardContent
+                            }
+                        }
+                    } else {
+                        fallbackCardContent
                     }
                 }
                 .frame(height: 180)
@@ -55,6 +52,30 @@ struct GameCardView: View {
         .buttonStyle(.card)
         .focused($isFocused)
         .frame(width: 260)
+    }
+    
+    private var fallbackCardContent: some View {
+        ZStack {
+            LinearGradient(
+                colors: [cardColor.opacity(0.85), cardColor.opacity(0.4)],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+            
+            VStack(spacing: 8) {
+                Image(systemName: game.system.systemIconName)
+                    .font(.system(size: 44, weight: .bold))
+                    .foregroundColor(.white.opacity(0.9))
+                
+                Text(game.system.shortName)
+                    .font(.system(size: 14, weight: .heavy, design: .rounded))
+                    .foregroundColor(.white.opacity(0.75))
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 4)
+                    .background(Color.black.opacity(0.3))
+                    .clipShape(Capsule())
+            }
+        }
     }
     
     private var cardColor: Color {

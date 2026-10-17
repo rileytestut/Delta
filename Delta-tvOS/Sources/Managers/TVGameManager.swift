@@ -40,11 +40,7 @@ class TVGameManager: ObservableObject {
         var scannedPaths = Set<String>()
         var flatList: [TVGame] = []
         
-        let candidateDirs = [
-            self.romsDirectory,
-            FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first,
-            FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first
-        ].compactMap { $0 }
+        let candidateDirs = [self.romsDirectory]
         
         for baseDir in candidateDirs {
             guard let enumerator = FileManager.default.enumerator(
@@ -139,11 +135,7 @@ class TVGameManager: ObservableObject {
         var results: [[String: Any]] = []
         var scannedPaths = Set<String>()
         
-        let candidateDirs = [
-            self.romsDirectory,
-            FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first,
-            FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first
-        ].compactMap { $0 }
+        let candidateDirs = [self.romsDirectory]
         
         for baseDir in candidateDirs {
             guard let enumerator = FileManager.default.enumerator(
@@ -165,7 +157,7 @@ class TVGameManager: ObservableObject {
                 let ext = fileURL.pathExtension.lowercased()
                 
                 // Skip non-game system/cache files
-                let ignoredExtensions = ["plist", "savestate", "sav", "data", "db", "sqlite", "sqlite-wal", "sqlite-shm", "lock"]
+                let ignoredExtensions = ["plist", "savestate", "sav", "data", "db", "sqlite", "sqlite-wal", "sqlite-shm", "lock", "list"]
                 if ignoredExtensions.contains(ext) || filename.hasPrefix(".") || filename == "data.data" {
                     continue
                 }

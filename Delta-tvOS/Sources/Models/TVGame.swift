@@ -13,6 +13,31 @@ struct TVGame: Identifiable, Hashable {
         ByteCountFormatter.string(fromByteCount: fileSize, countStyle: .file)
     }
     
+    var localArtworkURL: URL? {
+        let base = fileURL.deletingPathExtension()
+        for ext in ["png", "jpg", "jpeg", "PNG", "JPG"] {
+            let candidate = base.appendingPathExtension(ext)
+            if FileManager.default.fileExists(atPath: candidate.path) {
+                return candidate
+            }
+        }
+        return nil
+    }
+    
+    var remoteThumbnailURL: URL? {
+        let repoSystem: String
+        switch system {
+        case .nes: repoSystem = "Nintendo_-_Nintendo_Entertainment_System"
+        case .snes: repoSystem = "Nintendo_-_Super_Nintendo_Entertainment_System"
+        case .n64: repoSystem = "Nintendo_-_Nintendo_64"
+        }
+        
+        // Try cleaned title or filename
+        let searchName = self.name
+        guard let encoded = searchName.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) else { return nil }
+        return URL(string: "https://raw.githubusercontent.com/libretro-thumbnails/\(repoSystem)/master/Named_Boxarts/\(encoded).png")
+    }
+    
     var deltaGame: Game {
         Game(fileURL: fileURL, type: system.gameType)
     }

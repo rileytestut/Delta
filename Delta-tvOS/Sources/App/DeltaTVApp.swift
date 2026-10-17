@@ -26,15 +26,10 @@ struct DeltaTVApp: App {
         let fm = FileManager.default
         var dirsToEnsure: [URL] = []
         
-        if let docs = fm.urls(for: .documentDirectory, in: .userDomainMask).first {
-            dirsToEnsure.append(docs)
-        }
         if let caches = fm.urls(for: .cachesDirectory, in: .userDomainMask).first {
             dirsToEnsure.append(caches)
-        }
-        if let appSupport = fm.urls(for: .applicationSupportDirectory, in: .userDomainMask).first {
-            dirsToEnsure.append(appSupport)
-            dirsToEnsure.append(appSupport.appendingPathComponent("Mupen64Plus", isDirectory: true))
+            dirsToEnsure.append(caches.appendingPathComponent("ROMs", isDirectory: true))
+            dirsToEnsure.append(caches.appendingPathComponent("Mupen64Plus", isDirectory: true))
         }
         dirsToEnsure.append(Delta.coresDirectoryURL)
         dirsToEnsure.append(N64.core.directoryURL)
