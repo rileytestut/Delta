@@ -73,6 +73,9 @@ class GameEmulatorViewController: UIViewController {
     private func connectControllers() {
         guard let emulator = self.emulatorCore else { return }
         for controller in ExternalGameControllerManager.shared.connectedControllers {
+            if let mfi = controller as? MFiGameController, mfi.controller.extendedGamepad == nil {
+                continue
+            }
             controller.addReceiver(emulator)
         }
     }

@@ -34,13 +34,19 @@ struct GameCardView: View {
                 .frame(height: 180)
                 .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
                 
-                // Game Title
-                Text(game.name)
-                    .font(.system(size: 20, weight: .semibold))
-                    .foregroundColor(.primary)
-                    .lineLimit(2)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.horizontal, 4)
+                // Game Title & Size
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(game.name)
+                        .font(.system(size: 20, weight: .semibold))
+                        .foregroundColor(.primary)
+                        .lineLimit(2)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    
+                    Text(game.fileSizeFormatted)
+                        .font(.system(size: 14, weight: .medium))
+                        .foregroundColor(.secondary)
+                }
+                .padding(.horizontal, 4)
             }
             .padding(10)
             .background(isFocused ? Color.white.opacity(0.15) : Color.clear)

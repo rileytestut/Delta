@@ -150,6 +150,6 @@ struct GameLibraryView: View {
     }
     
     private func checkControllers() {
-        self.hasConnectedController = !GCController.controllers().isEmpty
+        self.hasConnectedController = GCController.controllers().contains(where: { $0.extendedGamepad != nil })
     }
 }
