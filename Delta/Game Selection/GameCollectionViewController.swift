@@ -809,6 +809,10 @@ private extension GameCollectionViewController
             self.changeArtwork(for: game)
         }
         
+        let changeControllerSkinAction = UIAction(title: NSLocalizedString("Change Controller Skin", comment: ""), image: UIImage(symbolNameIfAvailable: "gamecontroller")) { [unowned self] action in
+            self.changeControllerSkin(for: game)
+        }
+        
         let shareAction = UIAction(title: NSLocalizedString("Share", comment: ""), image: UIImage(symbolNameIfAvailable: "square.and.arrow.up")) { [unowned self] action in
             self.share(game)
         }
@@ -850,10 +854,10 @@ private extension GameCollectionViewController
             return [renameAction, shareAction, settingsMenu, deleteAction]
             
         case .ds where game.identifier == Game.melonDSBIOSIdentifier || game.identifier == Game.melonDSDSiBIOSIdentifier:
-            return openActions + [favoriteAction, renameAction, changeArtworkAction, settingsMenu, saveStatesAction]
+            return openActions + [favoriteAction, renameAction, changeArtworkAction, changeControllerSkinAction, settingsMenu, saveStatesAction]
             
         default:
-            return openActions + [favoriteAction, renameAction, changeArtworkAction, shareAction, settingsMenu, savesMenu, deleteAction]
+            return openActions + [favoriteAction, renameAction, changeArtworkAction, changeControllerSkinAction, shareAction, settingsMenu, savesMenu, deleteAction]
         }
     }
     
@@ -1257,6 +1261,30 @@ private extension GameCollectionViewController
         }
         
         self.present(hostingController, animated: true)
+    }
+    
+    func changeControllerSkin(for game: Game)
+    {
+        let storyboard = UIStoryboard(name: "Settings", bundle: nil)
+        let viewController = storyboard.instantiateViewController(withIdentifier: "preferredControllerSkins") as! PreferredControllerSkinsViewController
+        viewController.game = game
+        
+        let navigationController = UINavigationController(rootViewController: viewController)
+        
+        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(self.dismissPresentedViewController))
+        viewController.navigationItem.leftBarButtonItem = doneButton
+        
+        if self.view.traitCollection.userInterfaceIdiom == .pad
+        {
+            navigationController.modalPresentationStyle = .formSheet
+        }
+        
+        self.present(navigationController, animated: true, completion: nil)
+    }
+    
+    @objc private func dismissPresentedViewController()
+    {
+        self.dismiss(animated: true, completion: nil)
     }
 }
 
