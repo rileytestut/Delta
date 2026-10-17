@@ -24,7 +24,7 @@ struct TVGame: Identifiable, Hashable {
         return nil
     }
     
-    var remoteThumbnailURL: URL? {
+    var remoteThumbnailURLs: [URL] {
         let repoSystem: String
         switch system {
         case .nes: repoSystem = "Nintendo_-_Nintendo_Entertainment_System"
@@ -32,10 +32,46 @@ struct TVGame: Identifiable, Hashable {
         case .n64: repoSystem = "Nintendo_-_Nintendo_64"
         }
         
-        // Try cleaned title or filename
-        let searchName = self.name
-        guard let encoded = searchName.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) else { return nil }
-        return URL(string: "https://raw.githubusercontent.com/libretro-thumbnails/\(repoSystem)/master/Named_Boxarts/\(encoded).png")
+        let spaced = TVGame.insertSpacesInCamelCase(self.name)
+        let candidates = [
+            "\(spaced) (USA)",
+            "\(self.name) (USA)",
+            spaced,
+            self.name,
+            self.fileURL.deletingPathExtension().lastPathComponent
+        ]
+        
+        var urls: [URL] = []
+        for cand in candidates {
+            if let encoded = cand.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed),
+               let url = URL(string: "https://raw.githubusercontent.com/libretro-thumbnails/\(repoSystem)/master/Named_Boxarts/\(encoded).png") {
+                if !urls.contains(url) {
+                    urls.append(url)
+                }
+            }
+        }
+        return urls
+    }
+    
+    var remoteThumbnailURL: URL? {
+        remoteThumbnailURLs.first
+    }
+    
+    static func insertSpacesInCamelCase(_ str: String) -> String {
+        var result = ""
+        let chars = Array(str)
+        for (i, char) in chars.enumerated() {
+            if i > 0 {
+                let prev = chars[i - 1]
+                if (prev.isLowercase && char.isUppercase) ||
+                   (prev.isLetter && char.isNumber) ||
+                   (prev.isNumber && char.isLetter) {
+                    result.append(" ")
+                }
+            }
+            result.append(char)
+        }
+        return result
     }
     
     var deltaGame: Game {

@@ -453,8 +453,8 @@ class ROMWebServer: ObservableObject {
                     <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
                         <div class="icon">🎮</div>
                         <div class="upload-title">Choose or Drop ROM Files Here</div>
-                        <div class="upload-hint">Supports .nes, .smc, .sfc, .n64, .z64, .v64 & .zip archives (auto-extracted)</div>
-                        <input type="file" id="fileInput" multiple accept=".nes,.smc,.sfc,.fig,.n64,.z64,.v64,.zip">
+                        <div class="upload-hint">Supports .nes, .smc, .sfc, .n64, .z64, .v64, .zip archives &amp; cover art (.png, .jpg)</div>
+                        <input type="file" id="fileInput" multiple accept=".nes,.smc,.sfc,.fig,.n64,.z64,.v64,.zip,.png,.jpg,.jpeg">
                     </div>
                     <div id="statusBox" class="status-box"></div>
                 </div>
