@@ -91,6 +91,9 @@ struct CustomFastForwardOptions
 
     @Option(name: "Nintendo DS", description: "Preferred DS fast forward speed.", values: FastForwardSpeed.speeds(in: System.ds.deltaCore.supportedRates))
     var ds: FastForwardSpeed?
+
+    @Option(name: "Nintendo GameCube", description: "Preferred GameCube fast forward speed.", values: FastForwardSpeed.speeds(in: System.gamecube.deltaCore.supportedRates))
+    var gamecube: FastForwardSpeed?
     
     @Option(name: "Allow Unrestricted Speeds", description: "Allow choosing speeds that exceed the maximum supported speed of a system.\n\nThis can be used to test the performance of new iOS devices.")
     var allowUnrestrictedSpeeds: Bool = false
@@ -110,6 +113,7 @@ extension Feature where Options == CustomFastForwardOptions
             case .gbc: return self.gbc
             case .gba: return self.gba
             case .ds: return self.ds
+            case .gamecube: return self.gamecube
             }
         }
         set {
@@ -123,6 +127,7 @@ extension Feature where Options == CustomFastForwardOptions
             case .gbc: self.gbc = newValue
             case .gba: self.gba = newValue
             case .ds: self.ds = newValue
+            case .gamecube: self.gamecube = newValue
             }
         }
     }

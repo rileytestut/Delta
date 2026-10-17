@@ -15,6 +15,7 @@ import GBADeltaCore
 import N64DeltaCore
 import MelonDSDeltaCore
 import GPGXDeltaCore
+import DolphinDeltaCore
 
 extension Delta
 {
@@ -82,6 +83,8 @@ extension DeltaCoreProtocol
         case MelonDS.core where UIDevice.current.hasA15ProcessorOrBetter || ProcessInfo.processInfo.isJITAvailable: return 3
         case MelonDS.core where UIDevice.current.hasA11ProcessorOrBetter: return 1.5
         case GPGX.core: return 4
+        case Dolphin.core where ProcessInfo.processInfo.isJITAvailable && UIDevice.current.hasA15ProcessorOrBetter: return 2
+        case Dolphin.core where ProcessInfo.processInfo.isJITAvailable: return 1.5
         default: return 1
         }
     }
@@ -89,6 +92,11 @@ extension DeltaCoreProtocol
     var metadata: DeltaCoreMetadata? {
         switch self
         {
+        case Dolphin.core:
+            return DeltaCoreMetadata([.name: .init(value: NSLocalizedString("Dolphin", comment: ""), url: URL(string: "https://dolphin-emu.org")),
+                                      .developer: .init(value: NSLocalizedString("Dolphin Team", comment: ""), url: URL(string: "https://dolphin-emu.org")),
+                                      .version: .init(value: NSLocalizedString("5.0", comment: ""), url: URL(string: "https://github.com/dolphin-emu/dolphin")),
+                                      .source: .init(value: NSLocalizedString("GitHub", comment: ""), url: URL(string: "https://github.com/Provenance-Emu/iCube"))])
         case MelonDS.core:
             return DeltaCoreMetadata([.name: .init(value: NSLocalizedString("melonDS", comment: ""), url: URL(string: "http://melonds.kuribo64.net")),
                                       .developer: .init(value: NSLocalizedString("Arisotura", comment: ""), url: URL(string: "https://twitter.com/Arisotura")),

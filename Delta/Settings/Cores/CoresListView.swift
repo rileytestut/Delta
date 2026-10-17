@@ -46,6 +46,7 @@ struct CoresListView: View
         case .gba: GBACoreSettingsView()
         case .ds: MelonDSCoreSettingsView()
             .ignoresSafeArea()
+        case .gamecube: DolphinCoreSettingsView()
         }
     }
 }

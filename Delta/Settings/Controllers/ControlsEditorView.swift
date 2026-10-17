@@ -18,6 +18,7 @@ import GBCDeltaCore
 import N64DeltaCore
 import MelonDSDeltaCore
 import GPGXDeltaCore
+import DolphinDeltaCore
 
 @Observable
 private class ControlsEditor
@@ -357,6 +358,7 @@ private extension System
         case .n64: return [.a, .b, .up, .down, .left, .right, .analogStickUp, .analogStickDown, .analogStickLeft, .analogStickRight, .cUp, .cDown, .cLeft, .cRight, .l, .r, .z, .start] as [N64GameInput]
         case .ds: return [.a, .b, .x, .y, .up, .down, .left, .right, .l, .r, .start, .select] as [MelonDSGameInput]
         case .genesis: return [.a, .b, .c, .x, .y, .z, .up, .down, .left, .right, .start, .mode] as [GPGXGameInput]
+        case .gamecube: return [.a, .b, .x, .y, .l, .r, .z, .start, .up, .down, .left, .right, .controlStickUp, .controlStickDown, .controlStickLeft, .controlStickRight, .cStickUp, .cStickDown, .cStickLeft, .cStickRight] as [GameCubeGameInput]
         }
     }
 }
