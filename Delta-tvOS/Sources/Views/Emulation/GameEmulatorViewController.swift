@@ -86,7 +86,14 @@ class GameEmulatorViewController: UIViewController {
         self.connectControllers()
     }
     
-    // MARK: - Siri Remote Menu Interception
+    override var canBecomeFirstResponder: Bool { true }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        self.becomeFirstResponder()
+    }
+    
+    // MARK: - Controller Press Interception
     override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
         for press in presses {
             if press.type == .menu {
@@ -111,8 +118,12 @@ class GameEmulatorViewController: UIViewController {
                 return
             }
         }
-        super.pressesBegan(presses, with: event)
+        // DO NOT call super! This prevents Gamepad A (.select) from dismissing the game or triggering background actions.
     }
+    
+    override func pressesEnded(_ presses: Set<UIPress>, with event: UIPressesEvent?) {}
+    override func pressesCancelled(_ presses: Set<UIPress>, with event: UIPressesEvent?) {}
+    override func pressesChanged(_ presses: Set<UIPress>, with event: UIPressesEvent?) {}
     
     private func showPauseMenu() {
         guard let emulator = self.emulatorCore else { return }
@@ -169,7 +180,9 @@ class GameEmulatorViewController: UIViewController {
         
         alert.addAction(UIAlertAction(title: "Lopeta kirjastoon", style: .destructive, handler: { [weak self] _ in
             self?.emulatorCore?.stop()
-            self?.onDismiss?()
+            self?.dismiss(animated: true) {
+                self?.onDismiss?()
+            }
         }))
         
         self.present(alert, animated: true)

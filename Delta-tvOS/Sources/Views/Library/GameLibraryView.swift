@@ -148,7 +148,7 @@ struct GameLibraryView: View {
                         LazyVGrid(columns: columns, spacing: 36) {
                             ForEach(filteredGames) { game in
                                 GameCardView(game: game) {
-                                    self.selectedGame = game
+                                    self.launchGame(game)
                                 }
                             }
                         }
@@ -157,11 +157,6 @@ struct GameLibraryView: View {
                     }
                 }
             }
-        }
-        .fullScreenCover(item: $selectedGame) { game in
-            GameEmulatorView(game: game)
-                .background(Color.black.ignoresSafeArea())
-                .ignoresSafeArea(.all)
         }
         .sheet(isPresented: $showControllerRemapper) {
             ControllerRemapView(initialSystem: selectedSystem ?? .n64)
@@ -194,5 +189,17 @@ struct GameLibraryView: View {
                 self.hasConnectedController = isConnected
             }
         }
+    }
+    
+    private func launchGame(_ game: TVGame) {
+        guard let windowScene = UIApplication.shared.connectedScenes.first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene,
+              let rootVC = windowScene.windows.first(where: { $0.isKeyWindow })?.rootViewController else {
+            return
+        }
+        
+        let emuVC = GameEmulatorViewController(game: game)
+        emuVC.modalPresentationStyle = .fullScreen
+        emuVC.modalTransitionStyle = .crossDissolve
+        rootVC.present(emuVC, animated: true)
     }
 }

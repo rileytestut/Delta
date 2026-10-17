@@ -30,7 +30,7 @@ struct ControllerRemapView: View {
                             .font(.system(size: 20, weight: .bold))
                             .padding(.horizontal, 24)
                             .padding(.vertical, 12)
-                            .background(selectedSystem == system ? Color.white.opacity(0.25) : Color.clear)
+                            .background(selectedSystem == system ? Color(red: 0.55, green: 0.35, blue: 0.95) : Color.white.opacity(0.1))
                             .clipShape(Capsule())
                         }
                         .buttonStyle(.plain)
@@ -48,18 +48,18 @@ struct ControllerRemapView: View {
                             .animation(.easeInOut(duration: 0.6).repeatForever(autoreverses: true), value: pulseAnimation)
                         
                         Text("Määritetään toimintoa: \(action.displayName)")
-                            .font(.system(size: 18))
-                            .foregroundColor(.white.opacity(0.8))
+                            .font(.system(size: 18, weight: .medium))
+                            .foregroundColor(.white.opacity(0.9))
                         
                         Button("Peruuta") {
                             self.stopListening()
                         }
-                        .font(.system(size: 16, weight: .medium))
+                        .font(.system(size: 16, weight: .bold))
                         .padding(.top, 4)
                     }
                     .padding(18)
                     .frame(maxWidth: .infinity)
-                    .background(Color.yellow.opacity(0.12))
+                    .background(Color.yellow.opacity(0.15))
                     .cornerRadius(16)
                     .padding(.horizontal, 60)
                     .onAppear {
@@ -76,7 +76,7 @@ struct ControllerRemapView: View {
                     }
                 }
                 
-                // Button Actions List
+                // Button Actions List with High-Contrast Focus Styling
                 List {
                     let actions = mappingManager.supportedActions(for: selectedSystem)
                     let categories = Array(Set(actions.map { $0.category })).sorted()
@@ -84,33 +84,14 @@ struct ControllerRemapView: View {
                     ForEach(categories, id: \.self) { category in
                         Section(header: Text(category).font(.system(size: 18, weight: .bold)).foregroundColor(.secondary)) {
                             ForEach(actions.filter { $0.category == category }) { action in
-                                Button(action: {
-                                    self.startListening(for: action)
-                                }) {
-                                    HStack {
-                                        Text(action.displayName)
-                                            .font(.system(size: 20, weight: .semibold))
-                                        
-                                        Spacer()
-                                        
-                                        if listeningAction?.id == action.id {
-                                            Text("Odota painallusta...")
-                                                .font(.system(size: 18, weight: .bold))
-                                                .foregroundColor(.yellow)
-                                        } else if let mapped = mappingManager.mappedButton(for: action) {
-                                            HStack(spacing: 6) {
-                                                Text(mapped.displayName)
-                                                    .font(.system(size: 18, weight: .bold))
-                                                    .foregroundColor(.white)
-                                                    .padding(.horizontal, 14)
-                                                    .padding(.vertical, 6)
-                                                    .background(Color.white.opacity(0.15))
-                                                    .cornerRadius(8)
-                                            }
-                                        }
+                                ActionRowView(
+                                    action: action,
+                                    isListening: listeningAction?.id == action.id,
+                                    mappedButton: mappingManager.mappedButton(for: action),
+                                    onSelect: {
+                                        self.startListening(for: action)
                                     }
-                                    .padding(.vertical, 8)
-                                }
+                                )
                             }
                         }
                     }
@@ -123,8 +104,8 @@ struct ControllerRemapView: View {
                         mappingManager.resetToDefaults(for: selectedSystem)
                     }) {
                         Text("Palauta oletukset")
-                            .font(.system(size: 18, weight: .medium))
-                            .foregroundColor(.red.opacity(0.85))
+                            .font(.system(size: 18, weight: .bold))
+                            .foregroundColor(.red.opacity(0.9))
                             .padding(.horizontal, 24)
                             .padding(.vertical, 12)
                     }
@@ -140,7 +121,7 @@ struct ControllerRemapView: View {
                             .font(.system(size: 20, weight: .bold))
                             .padding(.horizontal, 36)
                             .padding(.vertical, 14)
-                            .background(Color.white.opacity(0.2))
+                            .background(Color(red: 0.55, green: 0.35, blue: 0.95))
                             .cornerRadius(12)
                     }
                     .buttonStyle(.plain)
@@ -168,5 +149,44 @@ struct ControllerRemapView: View {
     private func stopListening() {
         self.listeningAction = nil
         mappingManager.stopListening()
+    }
+}
+
+/// A high-contrast action row item for tvOS focus state
+struct ActionRowView: View {
+    let action: TVConsoleAction
+    let isListening: Bool
+    let mappedButton: TVGamepadButton?
+    let onSelect: () -> Void
+    
+    @FocusState private var isFocused: Bool
+    
+    var body: some View {
+        Button(action: onSelect) {
+            HStack {
+                Text(action.displayName)
+                    .font(.system(size: 20, weight: .bold))
+                    .foregroundColor(isFocused ? .black : .white)
+                
+                Spacer()
+                
+                if isListening {
+                    Text("Paina nappia nyt...")
+                        .font(.system(size: 18, weight: .heavy))
+                        .foregroundColor(isFocused ? Color(red: 0.8, green: 0.35, blue: 0.0) : .yellow)
+                } else if let mapped = mappedButton {
+                    Text(mapped.displayName)
+                        .font(.system(size: 18, weight: .heavy))
+                        .foregroundColor(isFocused ? .white : .cyan)
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 6)
+                        .background(isFocused ? Color.black : Color.white.opacity(0.12))
+                        .clipShape(Capsule())
+                }
+            }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 10)
+        }
+        .focused($isFocused)
     }
 }
