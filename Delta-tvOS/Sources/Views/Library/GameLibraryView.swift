@@ -9,6 +9,7 @@ struct GameLibraryView: View {
     @State private var selectedSystem: TVSystem? = nil
     @State private var selectedGame: TVGame? = nil
     @State private var hasConnectedController = false
+    @State private var controllerBadgeFlash = false
     @State private var showUploadInfo = false
     
     let columns = [
@@ -40,18 +41,26 @@ struct GameLibraryView: View {
                     
                     Spacer()
                     
-                    // Controller Status Indicator
+                    // Controller Status Indicator with Flash Transition
                     HStack(spacing: 10) {
                         Image(systemName: hasConnectedController ? "gamecontroller.fill" : "gamecontroller")
-                            .foregroundColor(hasConnectedController ? .green : .yellow)
+                            .foregroundColor(controllerBadgeFlash ? .black : (hasConnectedController ? .green : .yellow))
                         Text(hasConnectedController ? "Controller Connected" : "Connect Gamepad")
-                            .font(.system(size: 16, weight: .semibold))
-                            .foregroundColor(hasConnectedController ? .green : .yellow)
+                            .font(.system(size: 16, weight: .bold))
+                            .foregroundColor(controllerBadgeFlash ? .black : (hasConnectedController ? .green : .yellow))
                     }
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 8)
-                    .background(Color.white.opacity(0.08))
+                    .padding(.horizontal, 18)
+                    .padding(.vertical, 10)
+                    .background(
+                        controllerBadgeFlash ? Color.white : (hasConnectedController ? Color.green.opacity(0.18) : Color.white.opacity(0.08))
+                    )
                     .clipShape(Capsule())
+                    .overlay(
+                        Capsule()
+                            .stroke(controllerBadgeFlash ? Color.white : (hasConnectedController ? Color.green.opacity(0.6) : Color.clear), lineWidth: 2)
+                    )
+                    .scaleEffect(controllerBadgeFlash ? 1.12 : 1.0)
+                    .shadow(color: controllerBadgeFlash ? Color.white.opacity(0.8) : Color.clear, radius: 12)
                     
                     // Wi-Fi Upload Server Address
                     HStack(spacing: 8) {
@@ -150,6 +159,21 @@ struct GameLibraryView: View {
     }
     
     private func checkControllers() {
-        self.hasConnectedController = GCController.controllers().contains(where: { $0.extendedGamepad != nil })
+        let isConnected = GCController.controllers().contains(where: { $0.extendedGamepad != nil })
+        if isConnected && !self.hasConnectedController {
+            withAnimation(.spring(response: 0.25, dampingFraction: 0.5)) {
+                self.controllerBadgeFlash = true
+                self.hasConnectedController = true
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
+                withAnimation(.easeInOut(duration: 0.35)) {
+                    self.controllerBadgeFlash = false
+                }
+            }
+        } else {
+            withAnimation(.easeInOut(duration: 0.25)) {
+                self.hasConnectedController = isConnected
+            }
+        }
     }
 }

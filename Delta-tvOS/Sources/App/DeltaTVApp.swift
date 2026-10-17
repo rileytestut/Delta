@@ -17,6 +17,38 @@ struct DeltaTVApp: App {
         
         // Start monitoring physical controllers (DualSense, Xbox, Switch Pro, MFi)
         ExternalGameControllerManager.shared.startMonitoring()
+        
+        // Ensure all required system and emulator core directories exist on tvOS flash
+        self.setupStorageDirectories()
+    }
+    
+    private func setupStorageDirectories() {
+        let fm = FileManager.default
+        var dirsToEnsure: [URL] = []
+        
+        if let docs = fm.urls(for: .documentDirectory, in: .userDomainMask).first {
+            dirsToEnsure.append(docs)
+        }
+        if let caches = fm.urls(for: .cachesDirectory, in: .userDomainMask).first {
+            dirsToEnsure.append(caches)
+        }
+        if let appSupport = fm.urls(for: .applicationSupportDirectory, in: .userDomainMask).first {
+            dirsToEnsure.append(appSupport)
+            dirsToEnsure.append(appSupport.appendingPathComponent("Mupen64Plus", isDirectory: true))
+        }
+        dirsToEnsure.append(Delta.coresDirectoryURL)
+        dirsToEnsure.append(N64.core.directoryURL)
+        dirsToEnsure.append(N64.core.directoryURL.appendingPathComponent("Config", isDirectory: true))
+        dirsToEnsure.append(SNES.core.directoryURL)
+        dirsToEnsure.append(NES.core.directoryURL)
+        
+        for dir in dirsToEnsure {
+            do {
+                try fm.createDirectory(at: dir, withIntermediateDirectories: true, attributes: nil)
+            } catch {
+                print("[DeltaTVApp] Directory creation error for \(dir.path): \(error)")
+            }
+        }
     }
     
     var body: some Scene {
