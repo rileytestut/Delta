@@ -112,6 +112,10 @@ class TVGameManager: ObservableObject {
     }
     
     func deleteFile(named filename: String) throws {
+        guard filename != "data.data", !filename.hasPrefix(".") else {
+            throw NSError(domain: "TVGameManager", code: 403, userInfo: [NSLocalizedDescriptionKey: "Cannot delete system files"])
+        }
+        
         // Look in romsDirectory first
         let target = self.romsDirectory.appendingPathComponent(filename)
         if FileManager.default.fileExists(atPath: target.path) {
@@ -160,8 +164,9 @@ class TVGameManager: ObservableObject {
                 let filename = fileURL.lastPathComponent
                 let ext = fileURL.pathExtension.lowercased()
                 
-                // Skip non-game and cache internal files if any
-                if ext == "plist" || ext == "savestate" || ext == "sav" {
+                // Skip non-game system/cache files
+                let ignoredExtensions = ["plist", "savestate", "sav", "data", "db", "sqlite", "sqlite-wal", "sqlite-shm", "lock"]
+                if ignoredExtensions.contains(ext) || filename.hasPrefix(".") || filename == "data.data" {
                     continue
                 }
                 
