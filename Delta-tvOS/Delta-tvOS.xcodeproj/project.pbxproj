@@ -1,0 +1,518 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		02C66E213EF09314CF0CBB11 /* TVGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E054CA6485698ED03500F56 /* TVGame.swift */; };
+		0465569865DA0051E21E4A49 /* N64DeltaCore_RSP.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F1E10895D8FF9FEFDD26FDA /* N64DeltaCore_RSP.framework */; };
+		15F5E0E7D35B4819B3695EF1 /* GameController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC55BAC13F5C08968BBC371F /* GameController.framework */; };
+		24BC3530E01F76148B751D4E /* N64DeltaCore_Video.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 26439E9396CCE471C31E9EA0 /* N64DeltaCore_Video.framework */; };
+		2827FE9BE3B129297410516D /* SNESDeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61DC6217B24CE11865F9E02E /* SNESDeltaCore.framework */; };
+		285BDE1EB06AD6562B016AE7 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A799A6B29032DAFB4BE18414 /* SwiftUI.framework */; };
+		2D9F10546B0619B78BCB2E0E /* N64DeltaCore_RSP.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7F1E10895D8FF9FEFDD26FDA /* N64DeltaCore_RSP.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		31A2BA1627911A048A664F79 /* GameEmulatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E739F3996FF1BA904B82819B /* GameEmulatorView.swift */; };
+		3E267FFE86CB9433B2000941 /* DeltaTVApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0330355A29ED18024878E70C /* DeltaTVApp.swift */; };
+		43BB32CB120E941285D47FED /* GameCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08695E73019A772CF726742D /* GameCardView.swift */; };
+		484AB11020D487C1EFD983C9 /* N64DeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1DE0C284E3B538D335341B3 /* N64DeltaCore.framework */; };
+		52A38DCB5048351A6362290D /* TVSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D98E02B634BA6163ED563064 /* TVSystem.swift */; };
+		54FFFC01A0A115B5E3092790 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F814A766B781CBBCB4014C20 /* UIKit.framework */; };
+		69807395A010EFD94B97E5B8 /* DeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 432BC8C6FAF0716BDB3D5AF0 /* DeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		706910F111DEBEBB4B8E1C29 /* NESDeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF4DC59A144CD72B4414AE9F /* NESDeltaCore.framework */; };
+		71CEE841B419554EF4823D89 /* DeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 432BC8C6FAF0716BDB3D5AF0 /* DeltaCore.framework */; };
+		7239DDE1DB76F1670AC0CFEA /* GameEmulatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C3D81E0BCFEE82017D3E4FA /* GameEmulatorViewController.swift */; };
+		744C79583EB6F6ED21EE5CD6 /* NESDeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CF4DC59A144CD72B4414AE9F /* NESDeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		9AC8E9B967CB8721010CB18B /* N64DeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D1DE0C284E3B538D335341B3 /* N64DeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		9BDF25C9E4164A798E4E9556 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E5B5760925A2C0EEFA9C27D /* Foundation.framework */; };
+		AEB850EA73D0647FAA208873 /* TVGameManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC5C427E8C22FC7962AAC8E8 /* TVGameManager.swift */; };
+		B4E576CDA124B381C624C5FE /* Network.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F16CC07DF5616718B805BD17 /* Network.framework */; };
+		B791E5900002F6E63C523B9C /* ROMWebServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D49B708A7BBDEF0938D41DD /* ROMWebServer.swift */; };
+		CFC1B0564B3DFB226C3F8DDC /* SNESDeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 61DC6217B24CE11865F9E02E /* SNESDeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D3063F9B1C7141F10BEC7AC9 /* N64DeltaCore_Video.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 26439E9396CCE471C31E9EA0 /* N64DeltaCore_Video.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		E21E28B9EB5C3CE7516B80AB /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68435E86B4A4B53C1216E622 /* AVFoundation.framework */; };
+		FB4CCA7562B8E56284B369B3 /* GameLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653B9622454F8EFE3FE6C577 /* GameLibraryView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		0B13BA2D760452745E69C94E /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				69807395A010EFD94B97E5B8 /* DeltaCore.framework in Embed Frameworks */,
+				744C79583EB6F6ED21EE5CD6 /* NESDeltaCore.framework in Embed Frameworks */,
+				CFC1B0564B3DFB226C3F8DDC /* SNESDeltaCore.framework in Embed Frameworks */,
+				9AC8E9B967CB8721010CB18B /* N64DeltaCore.framework in Embed Frameworks */,
+				D3063F9B1C7141F10BEC7AC9 /* N64DeltaCore_Video.framework in Embed Frameworks */,
+				2D9F10546B0619B78BCB2E0E /* N64DeltaCore_RSP.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		0330355A29ED18024878E70C /* DeltaTVApp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DeltaTVApp.swift; sourceTree = "<group>"; };
+		08695E73019A772CF726742D /* GameCardView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GameCardView.swift; sourceTree = "<group>"; };
+		26439E9396CCE471C31E9EA0 /* N64DeltaCore_Video.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = N64DeltaCore_Video.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		29F5EDD053300569E966666E /* Delta-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Delta-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2D49B708A7BBDEF0938D41DD /* ROMWebServer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ROMWebServer.swift; sourceTree = "<group>"; };
+		432BC8C6FAF0716BDB3D5AF0 /* DeltaCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = DeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4E054CA6485698ED03500F56 /* TVGame.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TVGame.swift; sourceTree = "<group>"; };
+		5C3D81E0BCFEE82017D3E4FA /* GameEmulatorViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GameEmulatorViewController.swift; sourceTree = "<group>"; };
+		61DC6217B24CE11865F9E02E /* SNESDeltaCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SNESDeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		653B9622454F8EFE3FE6C577 /* GameLibraryView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GameLibraryView.swift; sourceTree = "<group>"; };
+		68435E86B4A4B53C1216E622 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		6E5B5760925A2C0EEFA9C27D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		7F1E10895D8FF9FEFDD26FDA /* N64DeltaCore_RSP.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = N64DeltaCore_RSP.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A799A6B29032DAFB4BE18414 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		ADFE0DB0D8C5966591C086B0 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BC55BAC13F5C08968BBC371F /* GameController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameController.framework; path = System/Library/Frameworks/GameController.framework; sourceTree = SDKROOT; };
+		CF4DC59A144CD72B4414AE9F /* NESDeltaCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = NESDeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D1DE0C284E3B538D335341B3 /* N64DeltaCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = N64DeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D98E02B634BA6163ED563064 /* TVSystem.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TVSystem.swift; sourceTree = "<group>"; };
+		E739F3996FF1BA904B82819B /* GameEmulatorView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GameEmulatorView.swift; sourceTree = "<group>"; };
+		F16CC07DF5616718B805BD17 /* Network.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Network.framework; path = System/Library/Frameworks/Network.framework; sourceTree = SDKROOT; };
+		F814A766B781CBBCB4014C20 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		FC5C427E8C22FC7962AAC8E8 /* TVGameManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TVGameManager.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		7EC0DE593745F55F77FA56A5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9BDF25C9E4164A798E4E9556 /* Foundation.framework in Frameworks */,
+				15F5E0E7D35B4819B3695EF1 /* GameController.framework in Frameworks */,
+				B4E576CDA124B381C624C5FE /* Network.framework in Frameworks */,
+				E21E28B9EB5C3CE7516B80AB /* AVFoundation.framework in Frameworks */,
+				54FFFC01A0A115B5E3092790 /* UIKit.framework in Frameworks */,
+				285BDE1EB06AD6562B016AE7 /* SwiftUI.framework in Frameworks */,
+				71CEE841B419554EF4823D89 /* DeltaCore.framework in Frameworks */,
+				706910F111DEBEBB4B8E1C29 /* NESDeltaCore.framework in Frameworks */,
+				2827FE9BE3B129297410516D /* SNESDeltaCore.framework in Frameworks */,
+				484AB11020D487C1EFD983C9 /* N64DeltaCore.framework in Frameworks */,
+				24BC3530E01F76148B751D4E /* N64DeltaCore_Video.framework in Frameworks */,
+				0465569865DA0051E21E4A49 /* N64DeltaCore_RSP.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		17BB65EEB5A0AD21ADC0B396 /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				08695E73019A772CF726742D /* GameCardView.swift */,
+				653B9622454F8EFE3FE6C577 /* GameLibraryView.swift */,
+			);
+			name = Library;
+			path = Library;
+			sourceTree = "<group>";
+		};
+		410C2065F24B6C75384F79BF /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F9AE84CC0AD1EE5650353383 /* tvOS */,
+				432BC8C6FAF0716BDB3D5AF0 /* DeltaCore.framework */,
+				CF4DC59A144CD72B4414AE9F /* NESDeltaCore.framework */,
+				61DC6217B24CE11865F9E02E /* SNESDeltaCore.framework */,
+				D1DE0C284E3B538D335341B3 /* N64DeltaCore.framework */,
+				26439E9396CCE471C31E9EA0 /* N64DeltaCore_Video.framework */,
+				7F1E10895D8FF9FEFDD26FDA /* N64DeltaCore_RSP.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		5BF39CD91A6128DA1802DEDE /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BC55BAC13F5C08968BBC371F /* GameController.framework */,
+				F16CC07DF5616718B805BD17 /* Network.framework */,
+				68435E86B4A4B53C1216E622 /* AVFoundation.framework */,
+				F814A766B781CBBCB4014C20 /* UIKit.framework */,
+				A799A6B29032DAFB4BE18414 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		5C35842B8A275B0D579A7964 = {
+			isa = PBXGroup;
+			children = (
+				C1A49F67870FF6CBC38DA17A /* Products */,
+				410C2065F24B6C75384F79BF /* Frameworks */,
+				C3254D428559AC86CF2B9C5D /* Sources */,
+				A6E83BFFA266B80FE65D7FB4 /* Supporting Files */,
+				5BF39CD91A6128DA1802DEDE /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		5CD095C8AAB1F587664823B1 /* Emulation */ = {
+			isa = PBXGroup;
+			children = (
+				5C3D81E0BCFEE82017D3E4FA /* GameEmulatorViewController.swift */,
+				E739F3996FF1BA904B82819B /* GameEmulatorView.swift */,
+			);
+			name = Emulation;
+			path = Emulation;
+			sourceTree = "<group>";
+		};
+		9395C9B3FAE2EB45407B6021 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				D98E02B634BA6163ED563064 /* TVSystem.swift */,
+				4E054CA6485698ED03500F56 /* TVGame.swift */,
+			);
+			name = Models;
+			path = Models;
+			sourceTree = "<group>";
+		};
+		9DD02026583CE56C81B0B885 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				FC5C427E8C22FC7962AAC8E8 /* TVGameManager.swift */,
+				2D49B708A7BBDEF0938D41DD /* ROMWebServer.swift */,
+			);
+			name = Managers;
+			path = Managers;
+			sourceTree = "<group>";
+		};
+		A6E83BFFA266B80FE65D7FB4 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				ADFE0DB0D8C5966591C086B0 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		BC85227F718B595AFEB7517F /* App */ = {
+			isa = PBXGroup;
+			children = (
+				0330355A29ED18024878E70C /* DeltaTVApp.swift */,
+			);
+			name = App;
+			path = App;
+			sourceTree = "<group>";
+		};
+		C1A49F67870FF6CBC38DA17A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				29F5EDD053300569E966666E /* Delta-tvOS.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C3254D428559AC86CF2B9C5D /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				BC85227F718B595AFEB7517F /* App */,
+				9395C9B3FAE2EB45407B6021 /* Models */,
+				9DD02026583CE56C81B0B885 /* Managers */,
+				D0CA7622506332F779148153 /* Views */,
+			);
+			name = Sources;
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		D0CA7622506332F779148153 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				17BB65EEB5A0AD21ADC0B396 /* Library */,
+				5CD095C8AAB1F587664823B1 /* Emulation */,
+			);
+			name = Views;
+			path = Views;
+			sourceTree = "<group>";
+		};
+		F9AE84CC0AD1EE5650353383 /* tvOS */ = {
+			isa = PBXGroup;
+			children = (
+				6E5B5760925A2C0EEFA9C27D /* Foundation.framework */,
+			);
+			name = tvOS;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F14FCDE0E5E5E6E6B9DB3D91 /* Delta-tvOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A174D433D54471DB6A180313 /* Build configuration list for PBXNativeTarget "Delta-tvOS" */;
+			buildPhases = (
+				3A07BA95F76EB6ECFA7684F7 /* Sources */,
+				7EC0DE593745F55F77FA56A5 /* Frameworks */,
+				06F694E1D3A64B334B2326BE /* Resources */,
+				0B13BA2D760452745E69C94E /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Delta-tvOS";
+			productName = "Delta-tvOS";
+			productReference = 29F5EDD053300569E966666E /* Delta-tvOS.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		8C28CBA01655720289E96E02 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+			};
+			buildConfigurationList = 37A6ECF309DDA0DD97A89D47 /* Build configuration list for PBXProject "Delta-tvOS" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 5C35842B8A275B0D579A7964;
+			minimizedProjectReferenceProxies = 0;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = C1A49F67870FF6CBC38DA17A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F14FCDE0E5E5E6E6B9DB3D91 /* Delta-tvOS */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		06F694E1D3A64B334B2326BE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		3A07BA95F76EB6ECFA7684F7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3E267FFE86CB9433B2000941 /* DeltaTVApp.swift in Sources */,
+				52A38DCB5048351A6362290D /* TVSystem.swift in Sources */,
+				02C66E213EF09314CF0CBB11 /* TVGame.swift in Sources */,
+				AEB850EA73D0647FAA208873 /* TVGameManager.swift in Sources */,
+				B791E5900002F6E63C523B9C /* ROMWebServer.swift in Sources */,
+				7239DDE1DB76F1670AC0CFEA /* GameEmulatorViewController.swift in Sources */,
+				31A2BA1627911A048A664F79 /* GameEmulatorView.swift in Sources */,
+				43BB32CB120E941285D47FED /* GameCardView.swift in Sources */,
+				FB4CCA7562B8E56284B369B3 /* GameLibraryView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		1DA4499335F78A508C26DFFB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SUPPORTED_PLATFORMS = "appletvos appletvsimulator";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "3";
+				TVOS_DEPLOYMENT_TARGET = 17.0;
+			};
+			name = Debug;
+		};
+		622DFE97C0CB66F17BCDA72E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = LBFBZP3Z4J;
+				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(BUILT_PRODUCTS_DIR)",
+				);
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "Supporting Files/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "fi.or.Delta-tvOS";
+				PRODUCT_NAME = Delta;
+				SDKROOT = appletvos;
+				SUPPORTED_PLATFORMS = "appletvos appletvsimulator";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 17.0;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		708F14C81344691003AE6427 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SUPPORTED_PLATFORMS = "appletvos appletvsimulator";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "3";
+				TVOS_DEPLOYMENT_TARGET = 17.0;
+			};
+			name = Release;
+		};
+		C7A5AD326D0A963C4C1755FF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = LBFBZP3Z4J;
+				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(BUILT_PRODUCTS_DIR)",
+				);
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "Supporting Files/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "fi.or.Delta-tvOS";
+				PRODUCT_NAME = Delta;
+				SDKROOT = appletvos;
+				SUPPORTED_PLATFORMS = "appletvos appletvsimulator";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 17.0;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		37A6ECF309DDA0DD97A89D47 /* Build configuration list for PBXProject "Delta-tvOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DA4499335F78A508C26DFFB /* Debug */,
+				708F14C81344691003AE6427 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A174D433D54471DB6A180313 /* Build configuration list for PBXNativeTarget "Delta-tvOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				622DFE97C0CB66F17BCDA72E /* Release */,
+				C7A5AD326D0A963C4C1755FF /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 8C28CBA01655720289E96E02 /* Project object */;
+}
