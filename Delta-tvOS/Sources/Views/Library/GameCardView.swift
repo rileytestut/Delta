@@ -1,0 +1,92 @@
+import SwiftUI
+
+struct GameCardView: View {
+    let game: TVGame
+    let onSelect: () -> Void
+    
+    @FocusState private var isFocused: Bool
+    
+    var body: some View {
+        Button(action: onSelect) {
+            VStack(alignment: .leading, spacing: 12) {
+                // Cartridge / Box Art representation
+                ZStack {
+                    if let artworkURL = game.localArtworkURL ?? game.remoteThumbnailURL {
+                        AsyncImage(url: artworkURL) { phase in
+                            switch phase {
+                            case .success(let image):
+                                image
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(height: 180)
+                                    .clipped()
+                            default:
+                                fallbackCardContent
+                            }
+                        }
+                    } else {
+                        fallbackCardContent
+                    }
+                }
+                .frame(height: 180)
+                .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                
+                // Game Title & Size
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(game.name)
+                        .font(.system(size: 20, weight: .semibold))
+                        .foregroundColor(.primary)
+                        .lineLimit(2)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    
+                    Text(game.fileSizeFormatted)
+                        .font(.system(size: 14, weight: .medium))
+                        .foregroundColor(.secondary)
+                }
+                .padding(.horizontal, 4)
+            }
+            .padding(10)
+            .background(isFocused ? Color.white.opacity(0.15) : Color.clear)
+            .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+        }
+        .buttonStyle(.card)
+        .focused($isFocused)
+        .frame(width: 260)
+    }
+    
+    private var fallbackCardContent: some View {
+        ZStack {
+            LinearGradient(
+                colors: [cardColor.opacity(0.85), cardColor.opacity(0.4)],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+            
+            VStack(spacing: 8) {
+                Image(systemName: game.system.systemIconName)
+                    .font(.system(size: 44, weight: .bold))
+                    .foregroundColor(.white.opacity(0.9))
+                
+                Text(game.system.shortName)
+                    .font(.system(size: 14, weight: .heavy, design: .rounded))
+                    .foregroundColor(.white.opacity(0.75))
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 4)
+                    .background(Color.black.opacity(0.3))
+                    .clipShape(Capsule())
+            }
+        }
+    }
+    
+    private var cardColor: Color {
+        switch game.system {
+        case .nes: return Color(red: 0.85, green: 0.2, blue: 0.2)
+        case .snes: return Color(red: 0.45, green: 0.3, blue: 0.8)
+        case .n64: return Color(red: 0.1, green: 0.65, blue: 0.55)
+        case .gbc: return Color(red: 0.3, green: 0.6, blue: 0.25)
+        case .gba: return Color(red: 0.35, green: 0.3, blue: 0.75)
+        case .genesis: return Color(red: 0.15, green: 0.35, blue: 0.7)
+        case .ds: return Color(red: 0.5, green: 0.5, blue: 0.55)
+        }
+    }
+}

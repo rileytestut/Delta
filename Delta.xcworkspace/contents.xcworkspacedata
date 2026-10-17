@@ -5,6 +5,9 @@
       location = "group:Delta.xcodeproj">
    </FileRef>
    <FileRef
+      location = "group:Delta-tvOS/Delta-tvOS.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:Cores/DeltaCore/DeltaCore.xcodeproj">
    </FileRef>
    <FileRef

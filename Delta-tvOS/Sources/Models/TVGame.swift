@@ -1,0 +1,162 @@
+import Foundation
+import DeltaCore
+
+struct TVGame: Identifiable, Hashable {
+    let id: UUID
+    let name: String
+    let internalTitle: String?
+    let fileURL: URL
+    let system: TVSystem
+    let fileSize: Int64
+    
+    var fileSizeFormatted: String {
+        ByteCountFormatter.string(fromByteCount: fileSize, countStyle: .file)
+    }
+    
+    var localArtworkURL: URL? {
+        let base = fileURL.deletingPathExtension()
+        for ext in ["png", "jpg", "jpeg", "PNG", "JPG"] {
+            let candidate = base.appendingPathExtension(ext)
+            if FileManager.default.fileExists(atPath: candidate.path) {
+                return candidate
+            }
+        }
+        return nil
+    }
+    
+    var remoteThumbnailURLs: [URL] {
+        let repoSystem: String
+        switch system {
+        case .nes: repoSystem = "Nintendo_-_Nintendo_Entertainment_System"
+        case .snes: repoSystem = "Nintendo_-_Super_Nintendo_Entertainment_System"
+        case .n64: repoSystem = "Nintendo_-_Nintendo_64"
+        case .gbc: repoSystem = fileURL.pathExtension.lowercased() == "gb" ? "Nintendo_-_Game_Boy" : "Nintendo_-_Game_Boy_Color"
+        case .gba: repoSystem = "Nintendo_-_Game_Boy_Advance"
+        case .genesis: repoSystem = "Sega_-_Mega_Drive_-_Genesis"
+        case .ds: repoSystem = "Nintendo_-_Nintendo_DS"
+        }
+        
+        let spaced = TVGame.insertSpacesInCamelCase(self.name)
+        let candidates = [
+            "\(spaced) (USA)",
+            "\(self.name) (USA)",
+            spaced,
+            self.name,
+            self.fileURL.deletingPathExtension().lastPathComponent
+        ]
+        
+        var urls: [URL] = []
+        for cand in candidates {
+            if let encoded = cand.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed),
+               let url = URL(string: "https://raw.githubusercontent.com/libretro-thumbnails/\(repoSystem)/master/Named_Boxarts/\(encoded).png") {
+                if !urls.contains(url) {
+                    urls.append(url)
+                }
+            }
+        }
+        return urls
+    }
+    
+    var remoteThumbnailURL: URL? {
+        remoteThumbnailURLs.first
+    }
+    
+    static func insertSpacesInCamelCase(_ str: String) -> String {
+        var result = ""
+        let chars = Array(str)
+        for (i, char) in chars.enumerated() {
+            if i > 0 {
+                let prev = chars[i - 1]
+                if (prev.isLowercase && char.isUppercase) ||
+                   (prev.isLetter && char.isNumber) ||
+                   (prev.isNumber && char.isLetter) {
+                    result.append(" ")
+                }
+            }
+            result.append(char)
+        }
+        return result
+    }
+    
+    var deltaGame: Game {
+        Game(fileURL: fileURL, type: system.gameType)
+    }
+    
+    init(fileURL: URL, system: TVSystem) {
+        self.id = UUID()
+        self.fileURL = fileURL
+        self.system = system
+        
+        // Calculate file size
+        let resources = try? fileURL.resourceValues(forKeys: [.fileSizeKey])
+        self.fileSize = Int64(resources?.fileSize ?? 0)
+        
+        let filename = fileURL.lastPathComponent
+        let cleaned = TVGame.cleanTitle(from: filename)
+        
+        let internalName = TVGame.extractInternalROMName(fileURL: fileURL, system: system)
+        self.internalTitle = internalName
+        
+        // Priority: Cleaned filename is usually the most readable for human releases,
+        // but internal title is great confirmation.
+        if !cleaned.isEmpty {
+            self.name = cleaned
+        } else if let internalName = internalName, !internalName.isEmpty {
+            self.name = internalName
+        } else {
+            self.name = fileURL.deletingPathExtension().lastPathComponent
+        }
+    }
+    
+    static func cleanTitle(from filename: String) -> String {
+        var name = (filename as NSString).deletingPathExtension
+        let patterns = [
+            "\\s*\\([^\\)]*\\)",
+            "\\s*\\[[^\\]]*\\]"
+        ]
+        for pattern in patterns {
+            if let regex = try? NSRegularExpression(pattern: pattern, options: []) {
+                name = regex.stringByReplacingMatches(in: name, options: [], range: NSRange(location: 0, length: name.utf16.count), withTemplate: "")
+            }
+        }
+        return name.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+    
+    static func extractInternalROMName(fileURL: URL, system: TVSystem) -> String? {
+        guard let fileHandle = try? FileHandle(forReadingFrom: fileURL) else { return nil }
+        defer { try? fileHandle.close() }
+        
+        switch system {
+        case .n64:
+            // N64 header: title is at offset 0x20 (32 bytes), 20 bytes long
+            fileHandle.seek(toFileOffset: 0x20)
+            let data = fileHandle.readData(ofLength: 20)
+            if data.count == 20,
+               let title = String(data: data, encoding: .ascii)?
+                .trimmingCharacters(in: .whitespacesAndNewlines.union(CharacterSet(charactersIn: "\0"))),
+               !title.isEmpty,
+               title.allSatisfy({ $0.isASCII && ($0.isLetter || $0.isNumber || $0.isWhitespace || $0.isPunctuation) }) {
+                return title
+            }
+        case .snes:
+            let fileSize = (try? fileURL.resourceValues(forKeys: [.fileSizeKey]).fileSize) ?? 0
+            let smcOffset = (fileSize % 1024 == 512) ? 512 : 0
+            let possibleOffsets: [UInt64] = [UInt64(smcOffset + 0x7FC0), UInt64(smcOffset + 0xFFC0)]
+            for offset in possibleOffsets {
+                if fileSize > Int(offset) + 21 {
+                    fileHandle.seek(toFileOffset: offset)
+                    let data = fileHandle.readData(ofLength: 21)
+                    if let title = String(data: data, encoding: .ascii)?
+                        .trimmingCharacters(in: .whitespacesAndNewlines.union(CharacterSet(charactersIn: "\0"))),
+                       title.allSatisfy({ $0.isASCII && ($0.isLetter || $0.isNumber || $0.isWhitespace || $0.isPunctuation) }),
+                       !title.isEmpty {
+                        return title
+                    }
+                }
+            }
+        case .nes, .gbc, .gba, .genesis, .ds:
+            break
+        }
+        return nil
+    }
+}
