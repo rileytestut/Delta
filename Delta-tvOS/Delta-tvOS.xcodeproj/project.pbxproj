@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		02C66E213EF09314CF0CBB11 /* TVGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E054CA6485698ED03500F56 /* TVGame.swift */; };
 		0465569865DA0051E21E4A49 /* N64DeltaCore_RSP.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F1E10895D8FF9FEFDD26FDA /* N64DeltaCore_RSP.framework */; };
+		0BBBEFE062449697D0B326C1 /* ZIPFoundation.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = ED4317D99DC692A56A150642 /* ZIPFoundation.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		15F5E0E7D35B4819B3695EF1 /* GameController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC55BAC13F5C08968BBC371F /* GameController.framework */; };
 		24BC3530E01F76148B751D4E /* N64DeltaCore_Video.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 26439E9396CCE471C31E9EA0 /* N64DeltaCore_Video.framework */; };
 		2827FE9BE3B129297410516D /* SNESDeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61DC6217B24CE11865F9E02E /* SNESDeltaCore.framework */; };
@@ -33,6 +34,7 @@
 		CFC1B0564B3DFB226C3F8DDC /* SNESDeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 61DC6217B24CE11865F9E02E /* SNESDeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D3063F9B1C7141F10BEC7AC9 /* N64DeltaCore_Video.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 26439E9396CCE471C31E9EA0 /* N64DeltaCore_Video.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E21E28B9EB5C3CE7516B80AB /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68435E86B4A4B53C1216E622 /* AVFoundation.framework */; };
+		E22907BCE81B382C398E096B /* ZIPFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED4317D99DC692A56A150642 /* ZIPFoundation.framework */; };
 		FB4CCA7562B8E56284B369B3 /* GameLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653B9622454F8EFE3FE6C577 /* GameLibraryView.swift */; };
 /* End PBXBuildFile section */
 
@@ -49,6 +51,7 @@
 				9AC8E9B967CB8721010CB18B /* N64DeltaCore.framework in Embed Frameworks */,
 				D3063F9B1C7141F10BEC7AC9 /* N64DeltaCore_Video.framework in Embed Frameworks */,
 				2D9F10546B0619B78BCB2E0E /* N64DeltaCore_RSP.framework in Embed Frameworks */,
+				0BBBEFE062449697D0B326C1 /* ZIPFoundation.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -76,6 +79,7 @@
 		D1DE0C284E3B538D335341B3 /* N64DeltaCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = N64DeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D98E02B634BA6163ED563064 /* TVSystem.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TVSystem.swift; sourceTree = "<group>"; };
 		E739F3996FF1BA904B82819B /* GameEmulatorView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GameEmulatorView.swift; sourceTree = "<group>"; };
+		ED4317D99DC692A56A150642 /* ZIPFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ZIPFoundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F16CC07DF5616718B805BD17 /* Network.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Network.framework; path = System/Library/Frameworks/Network.framework; sourceTree = SDKROOT; };
 		F814A766B781CBBCB4014C20 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		FC5C427E8C22FC7962AAC8E8 /* TVGameManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TVGameManager.swift; sourceTree = "<group>"; };
@@ -98,6 +102,7 @@
 				484AB11020D487C1EFD983C9 /* N64DeltaCore.framework in Frameworks */,
 				24BC3530E01F76148B751D4E /* N64DeltaCore_Video.framework in Frameworks */,
 				0465569865DA0051E21E4A49 /* N64DeltaCore_RSP.framework in Frameworks */,
+				E22907BCE81B382C398E096B /* ZIPFoundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -124,6 +129,7 @@
 				D1DE0C284E3B538D335341B3 /* N64DeltaCore.framework */,
 				26439E9396CCE471C31E9EA0 /* N64DeltaCore_Video.framework */,
 				7F1E10895D8FF9FEFDD26FDA /* N64DeltaCore_RSP.framework */,
+				ED4317D99DC692A56A150642 /* ZIPFoundation.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -377,7 +383,7 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "3";
+				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 17.0;
 			};
 			name = Debug;
@@ -461,7 +467,7 @@
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "3";
+				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 17.0;
 			};
 			name = Release;
