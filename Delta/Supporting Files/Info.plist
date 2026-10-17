@@ -102,6 +102,21 @@
 			<key>LSItemContentTypes</key>
 			<array>
 				<string>com.rileytestut.delta.game.n64</string>
+				<string>org.provenance-emu.n64</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeName</key>
+			<string>All Files</string>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+			<key>LSHandlerRank</key>
+			<string>Alternate</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>public.data</string>
+				<string>public.content</string>
+				<string>public.item</string>
 			</array>
 		</dict>
 		<dict>
@@ -200,6 +215,8 @@
 		<string>altstore</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
+	<true/>
+	<key>LSSupportsGameMode</key>
 	<true/>
 	<key>LSSupportsOpeningDocumentsInPlace</key>
 	<false/>
@@ -321,8 +338,6 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UISupportsDocumentBrowser</key>
-	<true/>
-	<key>LSSupportsGameMode</key>
 	<true/>
 	<key>UTExportedTypeDeclarations</key>
 	<array>
@@ -453,6 +468,7 @@
 				<array>
 					<string>n64</string>
 					<string>z64</string>
+					<string>v64</string>
 				</array>
 			</dict>
 		</dict>
@@ -495,6 +511,29 @@
 					<string>bin</string>
 					<string>md</string>
 					<string>smd</string>
+				</array>
+			</dict>
+		</dict>
+	</array>
+	<key>UTImportedTypeDeclarations</key>
+	<array>
+		<dict>
+			<key>UTTypeIdentifier</key>
+			<string>org.provenance-emu.n64</string>
+			<key>UTTypeDescription</key>
+			<string>Nintendo 64 ROM</string>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.data</string>
+				<string>public.content</string>
+			</array>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>n64</string>
+					<string>z64</string>
+					<string>v64</string>
 				</array>
 			</dict>
 		</dict>

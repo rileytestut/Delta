@@ -157,7 +157,7 @@ extension DeltaCore.GameType
         {
         case "nes": self = .nes
         case "smc", "sfc", "fig": self = .snes
-        case "n64", "z64": self = .n64
+        case "n64", "z64", "v64": self = .n64
         case "gbc", "gb": self = .gbc
         case "gba": self = .gba
         case "ds", "nds": self = .ds
