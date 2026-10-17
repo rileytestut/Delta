@@ -35,32 +35,23 @@ struct GameLibraryView: View {
                             .foregroundStyle(
                                 LinearGradient(colors: [Color(red: 0.65, green: 0.35, blue: 0.95), Color(red: 0.35, green: 0.55, blue: 0.95)], startPoint: .leading, endPoint: .trailing)
                             )
-                        Text(selectedSystem?.fullName ?? "All Systems (\(gameManager.allGames.count) games)")
+                        Text(selectedSystem?.fullName ?? "Kaikki järjestelmät (\(gameManager.allGames.count) peliä)")
                             .font(.system(size: 18, weight: .medium))
                             .foregroundColor(.secondary)
                     }
                     
                     Spacer()
                     
-                    // Controller Remapping Tool Button
-                    Button(action: { showControllerRemapper = true }) {
-                        HStack(spacing: 8) {
-                            Image(systemName: "slider.horizontal.3")
-                            Text("Määritä ohjain")
-                        }
-                        .font(.system(size: 16, weight: .bold))
-                        .padding(.horizontal, 16)
-                        .padding(.vertical, 9)
-                        .background(Color.white.opacity(0.12))
-                        .clipShape(Capsule())
+                    // Controller Remapping Tool Button in Header
+                    HeaderRemapButton {
+                        self.showControllerRemapper = true
                     }
-                    .buttonStyle(.plain)
                     
                     // Controller Status Indicator with Flash Transition
                     HStack(spacing: 10) {
                         Image(systemName: hasConnectedController ? "gamecontroller.fill" : "gamecontroller")
                             .foregroundColor(controllerBadgeFlash ? .black : (hasConnectedController ? .green : .yellow))
-                        Text(hasConnectedController ? "Controller Connected" : "Connect Gamepad")
+                        Text(hasConnectedController ? "Ohjain yhdistetty" : "Liitä ohjain")
                             .font(.system(size: 16, weight: .bold))
                             .foregroundColor(controllerBadgeFlash ? .black : (hasConnectedController ? .green : .yellow))
                     }
@@ -93,36 +84,43 @@ struct GameLibraryView: View {
                 .padding(.horizontal, 48)
                 .padding(.top, 24)
                 .padding(.bottom, 20)
+                .focusSection()
                 
                 // System Filter Tabs
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 16) {
-                        Button(action: { selectedSystem = nil }) {
-                            Text("All Games")
-                                .font(.system(size: 18, weight: .semibold))
-                                .padding(.horizontal, 18)
-                                .padding(.vertical, 10)
-                        }
-                        .buttonStyle(.borderedProminent)
-                        .tint(selectedSystem == nil ? Color(red: 0.55, green: 0.35, blue: 0.95) : Color.white.opacity(0.12))
+                        LibrarySystemTabButton(
+                            title: "Kaikki pelit",
+                            iconName: "square.grid.2x2.fill",
+                            isSelected: selectedSystem == nil,
+                            action: { selectedSystem = nil }
+                        )
                         
                         ForEach(TVSystem.allCases) { system in
-                            Button(action: { selectedSystem = system }) {
-                                HStack(spacing: 8) {
-                                    Image(systemName: system.systemIconName)
-                                    Text(system.shortName)
-                                }
-                                .font(.system(size: 18, weight: .semibold))
-                                .padding(.horizontal, 18)
-                                .padding(.vertical, 10)
-                            }
-                            .buttonStyle(.borderedProminent)
-                            .tint(selectedSystem == system ? Color(red: 0.55, green: 0.35, blue: 0.95) : Color.white.opacity(0.12))
+                            LibrarySystemTabButton(
+                                title: system.shortName,
+                                iconName: system.systemIconName,
+                                isSelected: selectedSystem == system,
+                                action: { selectedSystem = system }
+                            )
                         }
+                        
+                        // Also provide direct button to Remap in the tabs row for effortless remote navigation
+                        Button(action: { showControllerRemapper = true }) {
+                            HStack(spacing: 8) {
+                                Image(systemName: "slider.horizontal.3")
+                                Text("Aseta napit...")
+                            }
+                            .font(.system(size: 18, weight: .bold))
+                            .padding(.horizontal, 20)
+                            .padding(.vertical, 12)
+                        }
+                        .buttonStyle(.bordered)
                     }
                     .padding(.horizontal, 48)
                     .padding(.vertical, 10)
                 }
+                .focusSection()
                 
                 // Main Games Grid
                 if filteredGames.isEmpty {
@@ -132,10 +130,10 @@ struct GameLibraryView: View {
                             .font(.system(size: 64))
                             .foregroundColor(.secondary)
                         
-                        Text("No Games in Library")
+                        Text("Kirjasto on tyhjä")
                             .font(.system(size: 28, weight: .bold))
                         
-                        Text("Upload ROM files from your phone or computer:\nOpen \(webServer.serverAddress) in any browser.")
+                        Text("Siirrä ROM-pelejä tietokoneelta tai puhelimelta:\nAvaa selaimessa osoite \(webServer.serverAddress)")
                             .font(.system(size: 18))
                             .foregroundColor(.secondary)
                             .multilineTextAlignment(.center)
@@ -155,6 +153,7 @@ struct GameLibraryView: View {
                         .padding(.horizontal, 48)
                         .padding(.vertical, 24)
                     }
+                    .focusSection()
                 }
             }
         }
@@ -201,5 +200,75 @@ struct GameLibraryView: View {
         emuVC.modalPresentationStyle = .fullScreen
         emuVC.modalTransitionStyle = .crossDissolve
         rootVC.present(emuVC, animated: true)
+    }
+}
+
+/// Header Remap Button with proper tvOS focus style
+struct HeaderRemapButton: View {
+    let action: () -> Void
+    @Environment(\.isFocused) private var isFocused
+    
+    var body: some View {
+        Button(action: action) {
+            HStack(spacing: 8) {
+                Image(systemName: "slider.horizontal.3")
+                Text("Määritä ohjain")
+            }
+            .font(.system(size: 16, weight: .bold))
+            .foregroundColor(isFocused ? .black : .white)
+            .padding(.horizontal, 18)
+            .padding(.vertical, 10)
+            .background(
+                isFocused ? Color.white : Color.white.opacity(0.12)
+            )
+            .clipShape(Capsule())
+            .scaleEffect(isFocused ? 1.08 : 1.0)
+            .animation(.easeInOut(duration: 0.15), value: isFocused)
+        }
+        .buttonStyle(.plain)
+    }
+}
+
+/// System filter button with high-contrast handling for focused and selected states
+struct LibrarySystemTabButton: View {
+    let title: String
+    let iconName: String?
+    let isSelected: Bool
+    let action: () -> Void
+    
+    @Environment(\.isFocused) private var isFocused
+    
+    var body: some View {
+        Button(action: action) {
+            HStack(spacing: 8) {
+                if let iconName = iconName {
+                    Image(systemName: iconName)
+                }
+                Text(title)
+            }
+            .font(.system(size: 18, weight: .bold))
+            .foregroundColor(isFocused ? .black : .white)
+            .padding(.horizontal, 22)
+            .padding(.vertical, 12)
+            .background(
+                Group {
+                    if isFocused {
+                        Color.white
+                    } else if isSelected {
+                        Color(red: 0.55, green: 0.35, blue: 0.95)
+                    } else {
+                        Color.white.opacity(0.12)
+                    }
+                }
+            )
+            .clipShape(Capsule())
+            .overlay(
+                Capsule()
+                    .stroke(isSelected && !isFocused ? Color.white.opacity(0.6) : Color.clear, lineWidth: 2)
+            )
+            .scaleEffect(isFocused ? 1.06 : 1.0)
+            .animation(.easeInOut(duration: 0.15), value: isFocused)
+        }
+        .buttonStyle(.plain)
     }
 }

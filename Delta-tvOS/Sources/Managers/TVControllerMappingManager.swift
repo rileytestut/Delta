@@ -241,50 +241,66 @@ class TVControllerMappingManager: ObservableObject {
         self.listeningAction = action
         self.configureControllers()
         
-        let controllers = GCController.controllers().filter { $0.extendedGamepad != nil }
+        let controllers = GCController.controllers()
         guard !controllers.isEmpty else { return }
         
-        // Listen on all extended gamepads
         for controller in controllers {
-            guard let extended = controller.extendedGamepad else { continue }
+            let profile = controller.physicalInputProfile
             
-            let handleButton: (TVGamepadButton) -> Void = { [weak self] button in
-                guard let self = self, self.listeningAction?.id == action.id else { return }
-                self.stopListening()
-                self.setMapping(button, for: action)
-                completion(button)
+            profile.valueDidChangeHandler = { [weak self, weak controller] (_, element) in
+                guard let self = self, self.listeningAction?.id == action.id, let ctrl = controller else { return }
+                let prof = ctrl.physicalInputProfile
+                
+                var detectedButton: TVGamepadButton? = nil
+                
+                if let btn = element as? GCControllerButtonInput, btn.isPressed {
+                    if btn == prof.buttons[GCInputButtonA] { detectedButton = .a }
+                    else if btn == prof.buttons[GCInputButtonB] { detectedButton = .b }
+                    else if btn == prof.buttons[GCInputButtonX] { detectedButton = .x }
+                    else if btn == prof.buttons[GCInputButtonY] { detectedButton = .y }
+                    else if btn == prof.buttons[GCInputLeftShoulder] { detectedButton = .leftShoulder }
+                    else if btn == prof.buttons[GCInputRightShoulder] { detectedButton = .rightShoulder }
+                    else if btn == prof.buttons[GCInputLeftTrigger] { detectedButton = .leftTrigger }
+                    else if btn == prof.buttons[GCInputRightTrigger] { detectedButton = .rightTrigger }
+                    else if btn == prof.buttons[GCInputButtonMenu] { detectedButton = .start }
+                    else if btn == prof.buttons[GCInputButtonOptions] { detectedButton = .select }
+                    else if btn == prof.buttons[GCInputButtonHome] { detectedButton = .menu }
+                    else if btn == prof.dpads[GCInputDirectionPad]?.up { detectedButton = .up }
+                    else if btn == prof.dpads[GCInputDirectionPad]?.down { detectedButton = .down }
+                    else if btn == prof.dpads[GCInputDirectionPad]?.left { detectedButton = .left }
+                    else if btn == prof.dpads[GCInputDirectionPad]?.right { detectedButton = .right }
+                    else if btn == prof.dpads[GCInputRightThumbstick]?.up { detectedButton = .rightThumbstickUp }
+                    else if btn == prof.dpads[GCInputRightThumbstick]?.down { detectedButton = .rightThumbstickDown }
+                    else if btn == prof.dpads[GCInputRightThumbstick]?.left { detectedButton = .rightThumbstickLeft }
+                    else if btn == prof.dpads[GCInputRightThumbstick]?.right { detectedButton = .rightThumbstickRight }
+                } else if let dpad = element as? GCControllerDirectionPad {
+                    if dpad.up.isPressed {
+                        detectedButton = (dpad == prof.dpads[GCInputRightThumbstick]) ? .rightThumbstickUp : .up
+                    } else if dpad.down.isPressed {
+                        detectedButton = (dpad == prof.dpads[GCInputRightThumbstick]) ? .rightThumbstickDown : .down
+                    } else if dpad.left.isPressed {
+                        detectedButton = (dpad == prof.dpads[GCInputRightThumbstick]) ? .rightThumbstickLeft : .left
+                    } else if dpad.right.isPressed {
+                        detectedButton = (dpad == prof.dpads[GCInputRightThumbstick]) ? .rightThumbstickRight : .right
+                    }
+                }
+                
+                if let button = detectedButton {
+                    DispatchQueue.main.async {
+                        self.stopListening()
+                        self.setMapping(button, for: action)
+                        completion(button)
+                    }
+                }
             }
-            
-            extended.buttonA.pressedChangedHandler = { _, _, pressed in if pressed { handleButton(.a) } }
-            extended.buttonB.pressedChangedHandler = { _, _, pressed in if pressed { handleButton(.b) } }
-            extended.buttonX.pressedChangedHandler = { _, _, pressed in if pressed { handleButton(.x) } }
-            extended.buttonY.pressedChangedHandler = { _, _, pressed in if pressed { handleButton(.y) } }
-            
-            extended.leftShoulder.pressedChangedHandler = { _, _, pressed in if pressed { handleButton(.leftShoulder) } }
-            extended.rightShoulder.pressedChangedHandler = { _, _, pressed in if pressed { handleButton(.rightShoulder) } }
-            extended.leftTrigger.pressedChangedHandler = { _, _, pressed in if pressed { handleButton(.leftTrigger) } }
-            extended.rightTrigger.pressedChangedHandler = { _, _, pressed in if pressed { handleButton(.rightTrigger) } }
-            
-            extended.buttonMenu.pressedChangedHandler = { _, _, pressed in if pressed { handleButton(.start) } }
-            extended.buttonOptions?.pressedChangedHandler = { _, _, pressed in if pressed { handleButton(.select) } }
-            extended.buttonHome?.pressedChangedHandler = { _, _, pressed in if pressed { handleButton(.menu) } }
-            
-            extended.dpad.up.pressedChangedHandler = { _, _, pressed in if pressed { handleButton(.up) } }
-            extended.dpad.down.pressedChangedHandler = { _, _, pressed in if pressed { handleButton(.down) } }
-            extended.dpad.left.pressedChangedHandler = { _, _, pressed in if pressed { handleButton(.left) } }
-            extended.dpad.right.pressedChangedHandler = { _, _, pressed in if pressed { handleButton(.right) } }
-            
-            extended.rightThumbstick.up.pressedChangedHandler = { _, _, pressed in if pressed { handleButton(.rightThumbstickUp) } }
-            extended.rightThumbstick.down.pressedChangedHandler = { _, _, pressed in if pressed { handleButton(.rightThumbstickDown) } }
-            extended.rightThumbstick.left.pressedChangedHandler = { _, _, pressed in if pressed { handleButton(.rightThumbstickLeft) } }
-            extended.rightThumbstick.right.pressedChangedHandler = { _, _, pressed in if pressed { handleButton(.rightThumbstickRight) } }
         }
     }
     
     func stopListening() {
         self.listeningAction = nil
-        // Restore normal controller handlers
-        NotificationCenter.default.post(name: .GCControllerDidConnect, object: nil)
+        for controller in GCController.controllers() {
+            controller.physicalInputProfile.valueDidChangeHandler = nil
+        }
     }
     
     // MARK: - DeltaCore GameControllerInputMapping Generator
@@ -294,7 +310,13 @@ class TVControllerMappingManager: ObservableObject {
         let systemMap = self.mappings[system] ?? self.defaultMapping(for: system)
         
         for (actionId, gamepadBtn) in systemMap {
-            let mfiInput = AnyInput(stringValue: gamepadBtn.rawValue, intValue: nil, type: .controller(.mfi))
+            let mfiInput: AnyInput
+            if let typedInput = MFiGameController.Input(rawValue: gamepadBtn.rawValue) {
+                mfiInput = AnyInput(typedInput)
+            } else {
+                mfiInput = AnyInput(stringValue: gamepadBtn.rawValue, intValue: nil, type: .controller(.mfi))
+            }
+            
             let consoleInput = self.consoleInput(for: actionId, system: system)
             if let consoleInput = consoleInput {
                 deltaMapping.set(consoleInput, forControllerInput: mfiInput)

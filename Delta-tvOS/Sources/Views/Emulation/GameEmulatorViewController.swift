@@ -139,13 +139,13 @@ class GameEmulatorViewController: UIViewController {
         
         alert.addAction(UIAlertAction(title: "Määritä ohjaimen napit (Remap)", style: .default, handler: { [weak self] _ in
             guard let self = self else { return }
-            let remapView = ControllerRemapView(initialSystem: self.game.system)
+            let remapView = ControllerRemapView(initialSystem: self.game.system) { [weak self] in
+                self?.connectControllers()
+                self?.showPauseMenu()
+            }
             let hosting = UIHostingController(rootView: remapView)
             hosting.modalPresentationStyle = .overFullScreen
-            self.present(hosting, animated: true) { [weak self] in
-                // Reconnect controllers with updated mappings when dismissed
-                self?.connectControllers()
-            }
+            self.present(hosting, animated: true, completion: nil)
         }))
         
         alert.addAction(UIAlertAction(title: "Tallenna tilanne (Save State)", style: .default, handler: { [weak self] _ in
