@@ -83,6 +83,10 @@ struct GameCardView: View {
         case .nes: return Color(red: 0.85, green: 0.2, blue: 0.2)
         case .snes: return Color(red: 0.45, green: 0.3, blue: 0.8)
         case .n64: return Color(red: 0.1, green: 0.65, blue: 0.55)
+        case .gbc: return Color(red: 0.3, green: 0.6, blue: 0.25)
+        case .gba: return Color(red: 0.35, green: 0.3, blue: 0.75)
+        case .genesis: return Color(red: 0.15, green: 0.35, blue: 0.7)
+        case .ds: return Color(red: 0.5, green: 0.5, blue: 0.55)
         }
     }
 }

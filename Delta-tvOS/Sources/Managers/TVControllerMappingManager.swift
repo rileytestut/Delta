@@ -1,9 +1,14 @@
 import Foundation
 import GameController
+import CoreHaptics
 import DeltaCore
 import NESDeltaCore
 import SNESDeltaCore
 import N64DeltaCore
+import GBCDeltaCore
+import GBADeltaCore
+import GPGXDeltaCore
+import MelonDSDeltaCore
 
 /// Represents a physical button or direction on an MFi / Xbox / PlayStation / Switch gamepad
 enum TVGamepadButton: String, CaseIterable, Identifiable, Codable {
@@ -27,6 +32,30 @@ enum TVGamepadButton: String, CaseIterable, Identifiable, Codable {
     case rightThumbstickLeft = "rightThumbstickLeft"
     case rightThumbstickRight = "rightThumbstickRight"
     
+    func value(in pad: GCExtendedGamepad) -> Float {
+        switch self {
+        case .a: return pad.buttonA.value
+        case .b: return pad.buttonB.value
+        case .x: return pad.buttonX.value
+        case .y: return pad.buttonY.value
+        case .leftShoulder: return pad.leftShoulder.value
+        case .rightShoulder: return pad.rightShoulder.value
+        case .leftTrigger: return pad.leftTrigger.value
+        case .rightTrigger: return pad.rightTrigger.value
+        case .start: return pad.buttonMenu.value
+        case .select: return pad.buttonOptions?.value ?? 0
+        case .menu: return pad.buttonHome?.value ?? 0
+        case .up: return pad.dpad.up.value
+        case .down: return pad.dpad.down.value
+        case .left: return pad.dpad.left.value
+        case .right: return pad.dpad.right.value
+        case .rightThumbstickUp: return pad.rightThumbstick.up.value
+        case .rightThumbstickDown: return pad.rightThumbstick.down.value
+        case .rightThumbstickLeft: return pad.rightThumbstick.left.value
+        case .rightThumbstickRight: return pad.rightThumbstick.right.value
+        }
+    }
+
     var id: String { rawValue }
     
     var displayName: String {
@@ -42,14 +71,14 @@ enum TVGamepadButton: String, CaseIterable, Identifiable, Codable {
         case .start: return "Start / +"
         case .select: return "Select / -"
         case .menu: return "Menu"
-        case .up: return "D-Pad Ylös"
-        case .down: return "D-Pad Alas"
-        case .left: return "D-Pad Vasen"
-        case .right: return "D-Pad Oikea"
-        case .rightThumbstickUp: return "Oikea Tatti Ylös"
-        case .rightThumbstickDown: return "Oikea Tatti Alas"
-        case .rightThumbstickLeft: return "Oikea Tatti Vasen"
-        case .rightThumbstickRight: return "Oikea Tatti Oikea"
+        case .up: return "D-Pad Up"
+        case .down: return "D-Pad Down"
+        case .left: return "D-Pad Left"
+        case .right: return "D-Pad Right"
+        case .rightThumbstickUp: return "Right Stick Up"
+        case .rightThumbstickDown: return "Right Stick Down"
+        case .rightThumbstickLeft: return "Right Stick Left"
+        case .rightThumbstickRight: return "Right Stick Right"
         }
     }
 }
@@ -67,6 +96,12 @@ class TVControllerMappingManager: ObservableObject {
     
     @Published var mappings: [TVSystem: [String: TVGamepadButton]] = [:]
     @Published var listeningAction: TVConsoleAction? = nil
+    @Published private(set) var capturedButton: TVGamepadButton?
+    @Published var hapticFeedbackEnabled = UserDefaults.standard.bool(forKey: "TVMappingHapticFeedback") {
+        didSet { UserDefaults.standard.set(hapticFeedbackEnabled, forKey: "TVMappingHapticFeedback") }
+    }
+    private var feedbackEngine: CHHapticEngine?
+    private var feedbackControllerID: ObjectIdentifier?
     
     var lastGamepadInteractionTime: Double = 0
     private var listeningTimer: Timer?
@@ -84,7 +119,7 @@ class TVControllerMappingManager: ObservableObject {
     
     /// Configures connected physical controllers to disable system gestures so tvOS won't capture Menu/Back
     func configureControllers() {
-        for controller in GCController.controllers() {
+        for controller in GCController.controllers() where controller.extendedGamepad != nil {
             let profile = controller.physicalInputProfile
             profile.buttons[GCInputButtonMenu]?.preferredSystemGestureState = .disabled
             profile.buttons[GCInputButtonOptions]?.preferredSystemGestureState = .disabled
@@ -96,48 +131,60 @@ class TVControllerMappingManager: ObservableObject {
     
     func supportedActions(for system: TVSystem) -> [TVConsoleAction] {
         switch system {
+        case .gbc, .gba, .genesis, .ds:
+            let ids: [String]
+            switch system {
+            case .gbc: ids = ["a", "b", "start", "select", "up", "down", "left", "right"]
+            case .gba: ids = ["a", "b", "l", "r", "start", "select", "up", "down", "left", "right"]
+            case .genesis: ids = ["a", "b", "c", "x", "y", "z", "start", "mode", "up", "down", "left", "right"]
+            default: ids = ["a", "b", "x", "y", "l", "r", "start", "select", "lid", "touch", "up", "down", "left", "right"]
+            }
+            return ids.map { id in
+                let names = ["touch": "Touch (move pointer with right stick)", "lid": "Close Lid", "mode": "Mode"]
+                return TVConsoleAction(id: id, displayName: names[id] ?? id.uppercased(), system: system, category: "Controls")
+            }
         case .n64:
             return [
-                TVConsoleAction(id: "start", displayName: "Start-nappi", system: .n64, category: "Päätoiminnot"),
-                TVConsoleAction(id: "a", displayName: "A-nappi", system: .n64, category: "Päätoiminnot"),
-                TVConsoleAction(id: "b", displayName: "B-nappi", system: .n64, category: "Päätoiminnot"),
-                TVConsoleAction(id: "z", displayName: "Z-liipaisin", system: .n64, category: "Liipaisimet"),
-                TVConsoleAction(id: "l", displayName: "L-olkanappi", system: .n64, category: "Liipaisimet"),
-                TVConsoleAction(id: "r", displayName: "R-olkanappi", system: .n64, category: "Liipaisimet"),
-                TVConsoleAction(id: "cUp", displayName: "C-Ylös", system: .n64, category: "C-napit"),
-                TVConsoleAction(id: "cDown", displayName: "C-Alas", system: .n64, category: "C-napit"),
-                TVConsoleAction(id: "cLeft", displayName: "C-Vasen", system: .n64, category: "C-napit"),
-                TVConsoleAction(id: "cRight", displayName: "C-Oikea", system: .n64, category: "C-napit"),
-                TVConsoleAction(id: "up", displayName: "Ristiohjain Ylös", system: .n64, category: "Ristiohjain"),
-                TVConsoleAction(id: "down", displayName: "Ristiohjain Alas", system: .n64, category: "Ristiohjain"),
-                TVConsoleAction(id: "left", displayName: "Ristiohjain Vasen", system: .n64, category: "Ristiohjain"),
-                TVConsoleAction(id: "right", displayName: "Ristiohjain Oikea", system: .n64, category: "Ristiohjain")
+                TVConsoleAction(id: "start", displayName: "Start Button", system: .n64, category: "Main Controls"),
+                TVConsoleAction(id: "a", displayName: "A Button", system: .n64, category: "Main Controls"),
+                TVConsoleAction(id: "b", displayName: "B Button", system: .n64, category: "Main Controls"),
+                TVConsoleAction(id: "z", displayName: "Z Trigger", system: .n64, category: "Triggers"),
+                TVConsoleAction(id: "l", displayName: "L Shoulder", system: .n64, category: "Triggers"),
+                TVConsoleAction(id: "r", displayName: "R Shoulder", system: .n64, category: "Triggers"),
+                TVConsoleAction(id: "cUp", displayName: "C-Up", system: .n64, category: "C Buttons"),
+                TVConsoleAction(id: "cDown", displayName: "C-Down", system: .n64, category: "C Buttons"),
+                TVConsoleAction(id: "cLeft", displayName: "C-Left", system: .n64, category: "C Buttons"),
+                TVConsoleAction(id: "cRight", displayName: "C-Right", system: .n64, category: "C Buttons"),
+                TVConsoleAction(id: "up", displayName: "D-Pad Up", system: .n64, category: "D-Pad"),
+                TVConsoleAction(id: "down", displayName: "D-Pad Down", system: .n64, category: "D-Pad"),
+                TVConsoleAction(id: "left", displayName: "D-Pad Left", system: .n64, category: "D-Pad"),
+                TVConsoleAction(id: "right", displayName: "D-Pad Right", system: .n64, category: "D-Pad")
             ]
         case .snes:
             return [
-                TVConsoleAction(id: "a", displayName: "A-nappi", system: .snes, category: "Toimintonapit"),
-                TVConsoleAction(id: "b", displayName: "B-nappi", system: .snes, category: "Toimintonapit"),
-                TVConsoleAction(id: "x", displayName: "X-nappi", system: .snes, category: "Toimintonapit"),
-                TVConsoleAction(id: "y", displayName: "Y-nappi", system: .snes, category: "Toimintonapit"),
-                TVConsoleAction(id: "start", displayName: "Start-nappi", system: .snes, category: "Valikkonapit"),
-                TVConsoleAction(id: "select", displayName: "Select-nappi", system: .snes, category: "Valikkonapit"),
-                TVConsoleAction(id: "l", displayName: "L-olkanappi", system: .snes, category: "Olkanapit"),
-                TVConsoleAction(id: "r", displayName: "R-olkanappi", system: .snes, category: "Olkanapit"),
-                TVConsoleAction(id: "up", displayName: "Ristiohjain Ylös", system: .snes, category: "Ristiohjain"),
-                TVConsoleAction(id: "down", displayName: "Ristiohjain Alas", system: .snes, category: "Ristiohjain"),
-                TVConsoleAction(id: "left", displayName: "Ristiohjain Vasen", system: .snes, category: "Ristiohjain"),
-                TVConsoleAction(id: "right", displayName: "Ristiohjain Oikea", system: .snes, category: "Ristiohjain")
+                TVConsoleAction(id: "a", displayName: "A Button", system: .snes, category: "Action Buttons"),
+                TVConsoleAction(id: "b", displayName: "B Button", system: .snes, category: "Action Buttons"),
+                TVConsoleAction(id: "x", displayName: "X Button", system: .snes, category: "Action Buttons"),
+                TVConsoleAction(id: "y", displayName: "Y Button", system: .snes, category: "Action Buttons"),
+                TVConsoleAction(id: "start", displayName: "Start Button", system: .snes, category: "Menu Buttons"),
+                TVConsoleAction(id: "select", displayName: "Select Button", system: .snes, category: "Menu Buttons"),
+                TVConsoleAction(id: "l", displayName: "L Shoulder", system: .snes, category: "Shoulder Buttons"),
+                TVConsoleAction(id: "r", displayName: "R Shoulder", system: .snes, category: "Shoulder Buttons"),
+                TVConsoleAction(id: "up", displayName: "D-Pad Up", system: .snes, category: "D-Pad"),
+                TVConsoleAction(id: "down", displayName: "D-Pad Down", system: .snes, category: "D-Pad"),
+                TVConsoleAction(id: "left", displayName: "D-Pad Left", system: .snes, category: "D-Pad"),
+                TVConsoleAction(id: "right", displayName: "D-Pad Right", system: .snes, category: "D-Pad")
             ]
         case .nes:
             return [
-                TVConsoleAction(id: "a", displayName: "A-nappi", system: .nes, category: "Toimintonapit"),
-                TVConsoleAction(id: "b", displayName: "B-nappi", system: .nes, category: "Toimintonapit"),
-                TVConsoleAction(id: "start", displayName: "Start-nappi", system: .nes, category: "Valikkonapit"),
-                TVConsoleAction(id: "select", displayName: "Select-nappi", system: .nes, category: "Valikkonapit"),
-                TVConsoleAction(id: "up", displayName: "Ristiohjain Ylös", system: .nes, category: "Ristiohjain"),
-                TVConsoleAction(id: "down", displayName: "Ristiohjain Alas", system: .nes, category: "Ristiohjain"),
-                TVConsoleAction(id: "left", displayName: "Ristiohjain Vasen", system: .nes, category: "Ristiohjain"),
-                TVConsoleAction(id: "right", displayName: "Ristiohjain Oikea", system: .nes, category: "Ristiohjain")
+                TVConsoleAction(id: "a", displayName: "A Button", system: .nes, category: "Action Buttons"),
+                TVConsoleAction(id: "b", displayName: "B Button", system: .nes, category: "Action Buttons"),
+                TVConsoleAction(id: "start", displayName: "Start Button", system: .nes, category: "Menu Buttons"),
+                TVConsoleAction(id: "select", displayName: "Select Button", system: .nes, category: "Menu Buttons"),
+                TVConsoleAction(id: "up", displayName: "D-Pad Up", system: .nes, category: "D-Pad"),
+                TVConsoleAction(id: "down", displayName: "D-Pad Down", system: .nes, category: "D-Pad"),
+                TVConsoleAction(id: "left", displayName: "D-Pad Left", system: .nes, category: "D-Pad"),
+                TVConsoleAction(id: "right", displayName: "D-Pad Right", system: .nes, category: "D-Pad")
             ]
         }
     }
@@ -146,6 +193,21 @@ class TVControllerMappingManager: ObservableObject {
     
     func defaultMapping(for system: TVSystem) -> [String: TVGamepadButton] {
         switch system {
+        case .gbc:
+            return self.defaultMapping(for: .nes)
+        case .gba:
+            var map = self.defaultMapping(for: .nes)
+            map["l"] = .leftShoulder
+            map["r"] = .rightShoulder
+            return map
+        case .genesis:
+            return ["a": .x, "b": .a, "c": .b, "x": .leftShoulder, "y": .y, "z": .rightShoulder,
+                    "start": .start, "mode": .select, "up": .up, "down": .down, "left": .left, "right": .right]
+        case .ds:
+            var map = self.defaultMapping(for: .snes)
+            map["lid"] = .leftTrigger
+            map["touch"] = .rightTrigger
+            return map
         case .n64:
             return [
                 "start": .start,
@@ -200,6 +262,12 @@ class TVControllerMappingManager: ObservableObject {
     
     func setMapping(_ button: TVGamepadButton, for action: TVConsoleAction) {
         var systemMap = self.mappings[action.system] ?? self.defaultMapping(for: action.system)
+        let previousButton = systemMap[action.id]
+        // One physical input has one destination in Delta's mapping. Swap an
+        // existing assignment instead of silently overwriting it during creation.
+        for (id, mappedButton) in systemMap where id != action.id && mappedButton == button {
+            systemMap[id] = previousButton
+        }
         systemMap[action.id] = button
         self.mappings[action.system] = systemMap
         self.saveMappings()
@@ -238,71 +306,89 @@ class TVControllerMappingManager: ObservableObject {
     // MARK: - Interactive Gamepad Input Listener
     
     func startListening(for action: TVConsoleAction, completion: @escaping (TVGamepadButton) -> Void) {
+        self.stopListening()
         self.listeningAction = action
         self.configureControllers()
-        
-        let controllers = GCController.controllers()
-        guard !controllers.isEmpty else { return }
-        
-        for controller in controllers {
-            let profile = controller.physicalInputProfile
-            
-            profile.valueDidChangeHandler = { [weak self, weak controller] (_, element) in
-                guard let self = self, self.listeningAction?.id == action.id, let ctrl = controller else { return }
-                let prof = ctrl.physicalInputProfile
-                
-                var detectedButton: TVGamepadButton? = nil
-                
-                if let btn = element as? GCControllerButtonInput, btn.isPressed {
-                    if btn == prof.buttons[GCInputButtonA] { detectedButton = .a }
-                    else if btn == prof.buttons[GCInputButtonB] { detectedButton = .b }
-                    else if btn == prof.buttons[GCInputButtonX] { detectedButton = .x }
-                    else if btn == prof.buttons[GCInputButtonY] { detectedButton = .y }
-                    else if btn == prof.buttons[GCInputLeftShoulder] { detectedButton = .leftShoulder }
-                    else if btn == prof.buttons[GCInputRightShoulder] { detectedButton = .rightShoulder }
-                    else if btn == prof.buttons[GCInputLeftTrigger] { detectedButton = .leftTrigger }
-                    else if btn == prof.buttons[GCInputRightTrigger] { detectedButton = .rightTrigger }
-                    else if btn == prof.buttons[GCInputButtonMenu] { detectedButton = .start }
-                    else if btn == prof.buttons[GCInputButtonOptions] { detectedButton = .select }
-                    else if btn == prof.buttons[GCInputButtonHome] { detectedButton = .menu }
-                    else if btn == prof.dpads[GCInputDirectionPad]?.up { detectedButton = .up }
-                    else if btn == prof.dpads[GCInputDirectionPad]?.down { detectedButton = .down }
-                    else if btn == prof.dpads[GCInputDirectionPad]?.left { detectedButton = .left }
-                    else if btn == prof.dpads[GCInputDirectionPad]?.right { detectedButton = .right }
-                    else if btn == prof.dpads[GCInputRightThumbstick]?.up { detectedButton = .rightThumbstickUp }
-                    else if btn == prof.dpads[GCInputRightThumbstick]?.down { detectedButton = .rightThumbstickDown }
-                    else if btn == prof.dpads[GCInputRightThumbstick]?.left { detectedButton = .rightThumbstickLeft }
-                    else if btn == prof.dpads[GCInputRightThumbstick]?.right { detectedButton = .rightThumbstickRight }
-                } else if let dpad = element as? GCControllerDirectionPad {
-                    if dpad.up.isPressed {
-                        detectedButton = (dpad == prof.dpads[GCInputRightThumbstick]) ? .rightThumbstickUp : .up
-                    } else if dpad.down.isPressed {
-                        detectedButton = (dpad == prof.dpads[GCInputRightThumbstick]) ? .rightThumbstickDown : .down
-                    } else if dpad.left.isPressed {
-                        detectedButton = (dpad == prof.dpads[GCInputRightThumbstick]) ? .rightThumbstickLeft : .left
-                    } else if dpad.right.isPressed {
-                        detectedButton = (dpad == prof.dpads[GCInputRightThumbstick]) ? .rightThumbstickRight : .right
-                    }
-                }
-                
-                if let button = detectedButton {
-                    DispatchQueue.main.async {
-                        self.stopListening()
-                        self.setMapping(button, for: action)
-                        completion(button)
-                    }
+
+        // Poll the extended profile without replacing DeltaCore's input handlers.
+        // Ignore the button used to open the row until it has been released.
+        func pressedButtons() -> [(String, TVGamepadButton)] {
+            var result: [(String, TVGamepadButton)] = []
+            for controller in GCController.controllers() {
+                guard let pad = controller.extendedGamepad else { continue }
+                let buttons: [(TVGamepadButton, GCControllerButtonInput?)] = [
+                    (.a, pad.buttonA), (.b, pad.buttonB), (.x, pad.buttonX), (.y, pad.buttonY),
+                    (.leftShoulder, pad.leftShoulder), (.rightShoulder, pad.rightShoulder),
+                    (.leftTrigger, pad.leftTrigger), (.rightTrigger, pad.rightTrigger),
+                    (.start, pad.buttonMenu), (.select, pad.buttonOptions), (.menu, pad.buttonHome),
+                    (.up, pad.dpad.up), (.down, pad.dpad.down),
+                    (.left, pad.dpad.left), (.right, pad.dpad.right),
+                    (.rightThumbstickUp, pad.rightThumbstick.up),
+                    (.rightThumbstickDown, pad.rightThumbstick.down),
+                    (.rightThumbstickLeft, pad.rightThumbstick.left),
+                    (.rightThumbstickRight, pad.rightThumbstick.right)
+                ]
+                for (button, input) in buttons where (input?.value ?? 0) > 0.5 {
+                    result.append(("\(ObjectIdentifier(controller))-\(button.rawValue)", button))
                 }
             }
+            return result
         }
+        var capture = ButtonCaptureState<String, TVGamepadButton>(initiallyPressed: pressedButtons().map { $0.0 })
+        let timer = Timer(timeInterval: 1.0 / 60.0, repeats: true) { [weak self] _ in
+            guard let self = self, self.listeningAction == action else { return }
+            switch capture.sample(pressedButtons()) {
+            case .detected(let button):
+                self.capturedButton = button
+            case .completed(let button):
+                self.setMapping(button, for: action)
+                self.stopListening()
+                if let controller = GCController.controllers().first(where: {
+                    capture.capturedKey == "\(ObjectIdentifier($0))-\(button.rawValue)"
+                }) {
+                    self.playMappingFeedback(on: controller)
+                }
+                completion(button)
+            case nil:
+                break
+            }
+        }
+        self.listeningTimer = timer
+        RunLoop.main.add(timer, forMode: .common)
     }
-    
+
     func stopListening() {
+        self.listeningTimer?.invalidate()
+        self.listeningTimer = nil
         self.listeningAction = nil
-        for controller in GCController.controllers() {
-            controller.physicalInputProfile.valueDidChangeHandler = nil
+        self.capturedButton = nil
+    }
+
+    private func playMappingFeedback(on controller: GCController) {
+        guard hapticFeedbackEnabled, let haptics = controller.haptics else { return }
+        do {
+            if feedbackControllerID != ObjectIdentifier(controller) || feedbackEngine == nil {
+                feedbackEngine?.stop(completionHandler: nil)
+                feedbackEngine = haptics.createEngine(withLocality: .default)
+                feedbackControllerID = ObjectIdentifier(controller)
+            }
+            guard let engine = feedbackEngine else { return }
+            let event = CHHapticEvent(eventType: .hapticContinuous, parameters: [
+                CHHapticEventParameter(parameterID: .hapticIntensity, value: 0.35),
+                CHHapticEventParameter(parameterID: .hapticSharpness, value: 0.5)
+            ], relativeTime: 0, duration: 0.08)
+            let pattern = try CHHapticPattern(events: [event], parameters: [])
+            try engine.start()
+            let player = try engine.makePlayer(with: pattern)
+            try player.start(atTime: CHHapticTimeImmediate)
+            engine.notifyWhenPlayersFinished { _ in .stopEngine }
+        } catch {
+            // Mapping is already saved; unavailable haptics must not interrupt it.
+            feedbackEngine = nil
+            feedbackControllerID = nil
         }
     }
-    
+
     // MARK: - DeltaCore GameControllerInputMapping Generator
     
     func createDeltaInputMapping(for system: TVSystem) -> GameControllerInputMapping {
@@ -330,69 +416,19 @@ class TVControllerMappingManager: ObservableObject {
             deltaMapping.set(N64GameInput.analogStickDown, forControllerInput: MFiGameController.Input.leftThumbstickDown)
             deltaMapping.set(N64GameInput.analogStickLeft, forControllerInput: MFiGameController.Input.leftThumbstickLeft)
             deltaMapping.set(N64GameInput.analogStickRight, forControllerInput: MFiGameController.Input.leftThumbstickRight)
-        } else if system == .snes {
-            deltaMapping.set(SNESGameInput.up, forControllerInput: MFiGameController.Input.leftThumbstickUp)
-            deltaMapping.set(SNESGameInput.down, forControllerInput: MFiGameController.Input.leftThumbstickDown)
-            deltaMapping.set(SNESGameInput.left, forControllerInput: MFiGameController.Input.leftThumbstickLeft)
-            deltaMapping.set(SNESGameInput.right, forControllerInput: MFiGameController.Input.leftThumbstickRight)
-        } else if system == .nes {
-            deltaMapping.set(NESGameInput.up, forControllerInput: MFiGameController.Input.leftThumbstickUp)
-            deltaMapping.set(NESGameInput.down, forControllerInput: MFiGameController.Input.leftThumbstickDown)
-            deltaMapping.set(NESGameInput.left, forControllerInput: MFiGameController.Input.leftThumbstickLeft)
-            deltaMapping.set(NESGameInput.right, forControllerInput: MFiGameController.Input.leftThumbstickRight)
+        } else {
+            for (direction, physical) in [("up", MFiGameController.Input.leftThumbstickUp),
+                                          ("down", .leftThumbstickDown), ("left", .leftThumbstickLeft), ("right", .leftThumbstickRight)] {
+                if let input = self.consoleInput(for: direction, system: system) {
+                    deltaMapping.set(input, forControllerInput: physical)
+                }
+            }
         }
         
         return deltaMapping
     }
     
     private func consoleInput(for actionId: String, system: TVSystem) -> Input? {
-        switch system {
-        case .n64:
-            switch actionId {
-            case "a": return N64GameInput.a
-            case "b": return N64GameInput.b
-            case "z": return N64GameInput.z
-            case "start": return N64GameInput.start
-            case "l": return N64GameInput.l
-            case "r": return N64GameInput.r
-            case "cUp": return N64GameInput.cUp
-            case "cDown": return N64GameInput.cDown
-            case "cLeft": return N64GameInput.cLeft
-            case "cRight": return N64GameInput.cRight
-            case "up": return N64GameInput.up
-            case "down": return N64GameInput.down
-            case "left": return N64GameInput.left
-            case "right": return N64GameInput.right
-            default: return nil
-            }
-        case .snes:
-            switch actionId {
-            case "a": return SNESGameInput.a
-            case "b": return SNESGameInput.b
-            case "x": return SNESGameInput.x
-            case "y": return SNESGameInput.y
-            case "start": return SNESGameInput.start
-            case "select": return SNESGameInput.select
-            case "l": return SNESGameInput.l
-            case "r": return SNESGameInput.r
-            case "up": return SNESGameInput.up
-            case "down": return SNESGameInput.down
-            case "left": return SNESGameInput.left
-            case "right": return SNESGameInput.right
-            default: return nil
-            }
-        case .nes:
-            switch actionId {
-            case "a": return NESGameInput.a
-            case "b": return NESGameInput.b
-            case "start": return NESGameInput.start
-            case "select": return NESGameInput.select
-            case "up": return NESGameInput.up
-            case "down": return NESGameInput.down
-            case "left": return NESGameInput.left
-            case "right": return NESGameInput.right
-            default: return nil
-            }
-        }
+        system.core.gameInputType.init(stringValue: actionId)
     }
 }

@@ -30,6 +30,10 @@ struct TVGame: Identifiable, Hashable {
         case .nes: repoSystem = "Nintendo_-_Nintendo_Entertainment_System"
         case .snes: repoSystem = "Nintendo_-_Super_Nintendo_Entertainment_System"
         case .n64: repoSystem = "Nintendo_-_Nintendo_64"
+        case .gbc: repoSystem = fileURL.pathExtension.lowercased() == "gb" ? "Nintendo_-_Game_Boy" : "Nintendo_-_Game_Boy_Color"
+        case .gba: repoSystem = "Nintendo_-_Game_Boy_Advance"
+        case .genesis: repoSystem = "Sega_-_Mega_Drive_-_Genesis"
+        case .ds: repoSystem = "Nintendo_-_Nintendo_DS"
         }
         
         let spaced = TVGame.insertSpacesInCamelCase(self.name)
@@ -150,7 +154,7 @@ struct TVGame: Identifiable, Hashable {
                     }
                 }
             }
-        case .nes:
+        case .nes, .gbc, .gba, .genesis, .ds:
             break
         }
         return nil

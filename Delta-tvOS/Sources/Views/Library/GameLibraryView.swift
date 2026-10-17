@@ -11,7 +11,6 @@ struct GameLibraryView: View {
     @State private var hasConnectedController = false
     @State private var controllerBadgeFlash = false
     @State private var showUploadInfo = false
-    @State private var showControllerRemapper = false
     
     let columns = [
         GridItem(.adaptive(minimum: 260, maximum: 280), spacing: 32)
@@ -35,7 +34,7 @@ struct GameLibraryView: View {
                             .foregroundStyle(
                                 LinearGradient(colors: [Color(red: 0.65, green: 0.35, blue: 0.95), Color(red: 0.35, green: 0.55, blue: 0.95)], startPoint: .leading, endPoint: .trailing)
                             )
-                        Text(selectedSystem?.fullName ?? "Kaikki järjestelmät (\(gameManager.allGames.count) peliä)")
+                        Text(selectedSystem?.fullName ?? "All Systems (\(gameManager.allGames.count) games)")
                             .font(.system(size: 18, weight: .medium))
                             .foregroundColor(.secondary)
                     }
@@ -43,15 +42,17 @@ struct GameLibraryView: View {
                     Spacer()
                     
                     // Controller Remapping Tool Button in Header
-                    HeaderRemapButton {
-                        self.showControllerRemapper = true
+                    if hasConnectedController {
+                        HeaderRemapButton {
+                            self.presentControllerRemapper()
+                        }
                     }
                     
                     // Controller Status Indicator with Flash Transition
                     HStack(spacing: 10) {
                         Image(systemName: hasConnectedController ? "gamecontroller.fill" : "gamecontroller")
                             .foregroundColor(controllerBadgeFlash ? .black : (hasConnectedController ? .green : .yellow))
-                        Text(hasConnectedController ? "Ohjain yhdistetty" : "Liitä ohjain")
+                        Text(hasConnectedController ? "Controller Connected" : "Connect a Controller")
                             .font(.system(size: 16, weight: .bold))
                             .foregroundColor(controllerBadgeFlash ? .black : (hasConnectedController ? .green : .yellow))
                     }
@@ -90,7 +91,7 @@ struct GameLibraryView: View {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 16) {
                         LibrarySystemTabButton(
-                            title: "Kaikki pelit",
+                            title: "All Games",
                             iconName: "square.grid.2x2.fill",
                             isSelected: selectedSystem == nil,
                             action: { selectedSystem = nil }
@@ -105,17 +106,7 @@ struct GameLibraryView: View {
                             )
                         }
                         
-                        // Also provide direct button to Remap in the tabs row for effortless remote navigation
-                        Button(action: { showControllerRemapper = true }) {
-                            HStack(spacing: 8) {
-                                Image(systemName: "slider.horizontal.3")
-                                Text("Aseta napit...")
-                            }
-                            .font(.system(size: 18, weight: .bold))
-                            .padding(.horizontal, 20)
-                            .padding(.vertical, 12)
-                        }
-                        .buttonStyle(.bordered)
+
                     }
                     .padding(.horizontal, 48)
                     .padding(.vertical, 10)
@@ -130,10 +121,10 @@ struct GameLibraryView: View {
                             .font(.system(size: 64))
                             .foregroundColor(.secondary)
                         
-                        Text("Kirjasto on tyhjä")
+                        Text("Your Library Is Empty")
                             .font(.system(size: 28, weight: .bold))
                         
-                        Text("Siirrä ROM-pelejä tietokoneelta tai puhelimelta:\nAvaa selaimessa osoite \(webServer.serverAddress)")
+                        Text("Upload ROMs from your computer or phone:\nOpen this address in your browser: \(webServer.serverAddress)")
                             .font(.system(size: 18))
                             .foregroundColor(.secondary)
                             .multilineTextAlignment(.center)
@@ -157,17 +148,14 @@ struct GameLibraryView: View {
                 }
             }
         }
-        .sheet(isPresented: $showControllerRemapper) {
-            ControllerRemapView(initialSystem: selectedSystem ?? .n64)
-        }
         .onAppear {
             self.checkControllers()
-            NotificationCenter.default.addObserver(forName: .GCControllerDidConnect, object: nil, queue: .main) { _ in
-                self.checkControllers()
-            }
-            NotificationCenter.default.addObserver(forName: .GCControllerDidDisconnect, object: nil, queue: .main) { _ in
-                self.checkControllers()
-            }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .GCControllerDidConnect)) { _ in
+            self.checkControllers()
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .GCControllerDidDisconnect)) { _ in
+            self.checkControllers()
         }
     }
     
@@ -190,29 +178,49 @@ struct GameLibraryView: View {
         }
     }
     
+    private func presentControllerRemapper() {
+        guard let scene = UIApplication.shared.connectedScenes.first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene,
+              let root = scene.windows.first(where: { $0.isKeyWindow })?.rootViewController,
+              root.presentedViewController == nil else { return }
+        root.present(ControllerRemapViewController(initialSystem: selectedSystem ?? .n64), animated: true)
+    }
+
     private func launchGame(_ game: TVGame) {
         guard let windowScene = UIApplication.shared.connectedScenes.first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene,
               let rootVC = windowScene.windows.first(where: { $0.isKeyWindow })?.rootViewController else {
             return
         }
         
-        let emuVC = GameEmulatorViewController(game: game)
-        emuVC.modalPresentationStyle = .fullScreen
-        emuVC.modalTransitionStyle = .crossDissolve
-        rootVC.present(emuVC, animated: true)
+        guard rootVC.presentedViewController == nil else { return }
+        let presentGame: (URL?) -> Void = { resumeURL in
+            let emuVC = GameEmulatorViewController(game: game, resumeStateURL: resumeURL)
+            emuVC.modalPresentationStyle = .fullScreen
+            emuVC.modalTransitionStyle = .crossDissolve
+            rootVC.present(emuVC, animated: true)
+        }
+        if let resumeURL = TVGameStateFiles(romURL: game.fileURL).resumeURL {
+            let alert = UIAlertController(title: "Resume Game?",
+                                          message: "Continue \(game.name) from your last saved position?", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Resume Game", style: .default) { _ in presentGame(resumeURL) })
+            alert.addAction(UIAlertAction(title: "Start from Beginning", style: .default) { _ in presentGame(nil) })
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+            rootVC.present(alert, animated: true)
+        } else {
+            presentGame(nil)
+        }
     }
 }
 
 /// Header Remap Button with proper tvOS focus style
 struct HeaderRemapButton: View {
     let action: () -> Void
-    @Environment(\.isFocused) private var isFocused
+    @FocusState private var isFocused: Bool
     
     var body: some View {
         Button(action: action) {
             HStack(spacing: 8) {
                 Image(systemName: "slider.horizontal.3")
-                Text("Määritä ohjain")
+                Text("Controller Mapping")
             }
             .font(.system(size: 16, weight: .bold))
             .foregroundColor(isFocused ? .black : .white)
@@ -222,10 +230,12 @@ struct HeaderRemapButton: View {
                 isFocused ? Color.white : Color.white.opacity(0.12)
             )
             .clipShape(Capsule())
-            .scaleEffect(isFocused ? 1.08 : 1.0)
+            .scaleEffect(isFocused ? 1.035 : 1.0)
             .animation(.easeInOut(duration: 0.15), value: isFocused)
         }
         .buttonStyle(.plain)
+        .focused($isFocused)
+        .focusEffectDisabled()
     }
 }
 
@@ -236,7 +246,7 @@ struct LibrarySystemTabButton: View {
     let isSelected: Bool
     let action: () -> Void
     
-    @Environment(\.isFocused) private var isFocused
+    @FocusState private var isFocused: Bool
     
     var body: some View {
         Button(action: action) {
@@ -266,9 +276,11 @@ struct LibrarySystemTabButton: View {
                 Capsule()
                     .stroke(isSelected && !isFocused ? Color.white.opacity(0.6) : Color.clear, lineWidth: 2)
             )
-            .scaleEffect(isFocused ? 1.06 : 1.0)
+            .scaleEffect(isFocused ? 1.035 : 1.0)
             .animation(.easeInOut(duration: 0.15), value: isFocused)
         }
         .buttonStyle(.plain)
+        .focused($isFocused)
+        .focusEffectDisabled()
     }
 }

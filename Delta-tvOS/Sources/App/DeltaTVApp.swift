@@ -11,9 +11,7 @@ struct DeltaTVApp: App {
     
     init() {
         // Register supported systems with Delta
-        Delta.register(NES.core)
-        Delta.register(SNES.core)
-        Delta.register(N64.core)
+        TVSystem.allCases.forEach { Delta.register($0.core) }
         
         // Start monitoring physical controllers (DualSense, Xbox, Switch Pro, MFi)
         ExternalGameControllerManager.shared.startMonitoring()
@@ -32,10 +30,10 @@ struct DeltaTVApp: App {
             dirsToEnsure.append(caches.appendingPathComponent("Mupen64Plus", isDirectory: true))
         }
         dirsToEnsure.append(Delta.coresDirectoryURL)
-        dirsToEnsure.append(N64.core.directoryURL)
+        for system in TVSystem.allCases {
+            dirsToEnsure.append(system.core.directoryURL)
+        }
         dirsToEnsure.append(N64.core.directoryURL.appendingPathComponent("Config", isDirectory: true))
-        dirsToEnsure.append(SNES.core.directoryURL)
-        dirsToEnsure.append(NES.core.directoryURL)
         
         for dir in dirsToEnsure {
             do {

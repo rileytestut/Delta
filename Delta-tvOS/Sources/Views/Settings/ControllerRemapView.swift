@@ -1,14 +1,88 @@
 import SwiftUI
 import GameController
 
-struct ControllerRemapView: View {
+/// Present this controller directly, so no SwiftUI sheet sits outside the
+/// GameController event boundary and interprets a gamepad B press as Back.
+final class ControllerRemapViewController: GCEventViewController {
+    private let initialSystem: TVSystem
+    private var onClose: (() -> Void)?
+    private var isClosing = false
+
+    init(initialSystem: TVSystem, onClose: (() -> Void)? = nil) {
+        self.initialSystem = initialSystem
+        self.onClose = onClose
+        super.init(nibName: nil, bundle: nil)
+        modalPresentationStyle = .fullScreen
+        controllerUserInteractionEnabled = false
+    }
+
+    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+    override var canBecomeFirstResponder: Bool { true }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .black
+        let host = UIHostingController(rootView: ControllerRemapContentView(initialSystem: initialSystem) { [weak self] in
+            self?.close()
+        })
+        addChild(host)
+        view.addSubview(host.view)
+        host.view.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            host.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            host.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            host.view.topAnchor.constraint(equalTo: view.topAnchor),
+            host.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+        host.didMove(toParent: self)
+        NotificationCenter.default.addObserver(self, selector: #selector(controllerDisconnected), name: .GCControllerDidDisconnect, object: nil)
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        controllerUserInteractionEnabled = false
+        becomeFirstResponder()
+    }
+
+    override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
+        if presses.contains(where: { $0.type == .menu }) {
+            if TVControllerMappingManager.shared.listeningAction != nil {
+                TVControllerMappingManager.shared.stopListening()
+            } else {
+                close()
+            }
+            return
+        }
+        super.pressesBegan(presses, with: event)
+    }
+
+    @objc private func controllerDisconnected() {
+        if !GCController.controllers().contains(where: { $0.extendedGamepad != nil }) {
+            close()
+        }
+    }
+
+    deinit { NotificationCenter.default.removeObserver(self) }
+
+    func close() {
+        guard !isClosing else { return }
+        isClosing = true
+        TVControllerMappingManager.shared.stopListening()
+        dismiss(animated: true) { [self] in
+            onClose?()
+            onClose = nil
+        }
+    }
+}
+
+private struct ControllerRemapContentView: View {
     @ObservedObject var mappingManager = TVControllerMappingManager.shared
     @State private var selectedSystem: TVSystem
-    @Environment(\.presentationMode) var presentationMode
     
     var onDismiss: (() -> Void)? = nil
     
-    @State private var listeningAction: TVConsoleAction? = nil
+    private var listeningAction: TVConsoleAction? { mappingManager.listeningAction }
+    @State private var feedback: String?
     @State private var pulseAnimation = false
     
     init(initialSystem: TVSystem = .n64, onDismiss: (() -> Void)? = nil) {
@@ -19,35 +93,41 @@ struct ControllerRemapView: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 20) {
-                // System Switcher (NES / SNES / N64)
-                HStack(spacing: 20) {
-                    ForEach(TVSystem.allCases) { system in
-                        RemapSystemTabButton(
-                            system: system,
-                            isSelected: selectedSystem == system,
-                            action: {
-                                self.selectedSystem = system
-                                self.stopListening()
-                            }
-                        )
+                // Keep every system reachable as more cores are added.
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 20) {
+                        ForEach(TVSystem.allCases) { system in
+                            RemapSystemTabButton(
+                                system: system,
+                                isSelected: selectedSystem == system,
+                                action: {
+                                    self.selectedSystem = system
+                                    self.stopListening()
+                                }
+                            )
+                        }
                     }
+                    .padding(.horizontal, 60)
+                    .padding(.vertical, 10)
                 }
+                .focusSection()
                 .padding(.top, 16)
                 
                 // Instructions / Listening Banner
                 if let action = listeningAction {
                     VStack(spacing: 8) {
-                        Text("Paina haluamaasi nappia peliohjaimessa...")
+                        Text(mappingManager.capturedButton.map { "Detected \($0.displayName). Release to save." }
+                             ?? "Press a button on your game controller…")
                             .font(.system(size: 24, weight: .heavy))
                             .foregroundColor(.yellow)
                             .scaleEffect(pulseAnimation ? 1.05 : 0.98)
                             .animation(.easeInOut(duration: 0.6).repeatForever(autoreverses: true), value: pulseAnimation)
                         
-                        Text("Määritetään toimintoa: \(action.displayName)")
+                        Text("Mapping: \(action.displayName)")
                             .font(.system(size: 18, weight: .medium))
                             .foregroundColor(.white.opacity(0.9))
                         
-                        Button("Peruuta") {
+                        Button("Cancel") {
                             self.stopListening()
                         }
                         .font(.system(size: 16, weight: .bold))
@@ -63,10 +143,10 @@ struct ControllerRemapView: View {
                     }
                 } else {
                     VStack(spacing: 4) {
-                        Text("Valitse toiminto kaukosäätimellä ja paina ohjaimen nappia")
+                        Text("Select an action with the remote, then press a gamepad button")
                             .font(.system(size: 20, weight: .semibold))
                             .foregroundColor(.white.opacity(0.9))
-                        Text("Asetukset tallentuvat automaattisesti profiiliin: \(selectedSystem.fullName)")
+                        Text(feedback ?? "Mappings are saved automatically for: \(selectedSystem.fullName)")
                             .font(.system(size: 15))
                             .foregroundColor(.secondary)
                     }
@@ -108,7 +188,7 @@ struct ControllerRemapView: View {
                     Button(action: {
                         mappingManager.resetToDefaults(for: selectedSystem)
                     }) {
-                        Text("Palauta oletukset")
+                        Text("Restore Defaults")
                             .font(.system(size: 18, weight: .bold))
                             .foregroundColor(.red.opacity(0.9))
                             .padding(.horizontal, 24)
@@ -117,36 +197,36 @@ struct ControllerRemapView: View {
                     .buttonStyle(.plain)
                     
                     Spacer()
-                    
+
+                    Toggle("Haptic Feedback", isOn: $mappingManager.hapticFeedbackEnabled)
+                        .toggleStyle(.automatic)
+                        .frame(width: 280)
+                        .accessibilityHint("A short vibration confirms saved mappings on supported controllers.")
+
                     RemapDoneButton {
                         self.stopListening()
-                        self.presentationMode.wrappedValue.dismiss()
                         self.onDismiss?()
                     }
                 }
                 .padding(.horizontal, 60)
                 .padding(.bottom, 24)
             }
-            .navigationTitle("Ohjaimen Mäppäys: \(selectedSystem.shortName)")
+            .navigationTitle("Controller Mapping: \(selectedSystem.shortName)")
             .background(Color.black.ignoresSafeArea())
         }
         .onDisappear {
             self.stopListening()
-            self.onDismiss?()
         }
     }
     
     private func startListening(for action: TVConsoleAction) {
-        self.listeningAction = action
-        mappingManager.startListening(for: action) { _ in
-            DispatchQueue.main.async {
-                self.listeningAction = nil
-            }
+        self.feedback = nil
+        mappingManager.startListening(for: action) { button in
+            self.feedback = "Saved: \(action.displayName) → \(button.displayName)"
         }
     }
-    
+
     private func stopListening() {
-        self.listeningAction = nil
         mappingManager.stopListening()
     }
 }
@@ -157,7 +237,7 @@ struct RemapSystemTabButton: View {
     let isSelected: Bool
     let action: () -> Void
     
-    @Environment(\.isFocused) private var isFocused
+    @FocusState private var isFocused: Bool
     
     var body: some View {
         Button(action: action) {
@@ -189,6 +269,8 @@ struct RemapSystemTabButton: View {
             .animation(.easeInOut(duration: 0.15), value: isFocused)
         }
         .buttonStyle(.plain)
+        .focused($isFocused)
+        .focusEffectDisabled()
     }
 }
 
@@ -199,7 +281,7 @@ struct ActionRowView: View {
     let mappedButton: TVGamepadButton?
     let onSelect: () -> Void
     
-    @Environment(\.isFocused) private var isFocused
+    @FocusState private var isFocused: Bool
     
     var body: some View {
         Button(action: onSelect) {
@@ -211,7 +293,7 @@ struct ActionRowView: View {
                 Spacer()
                 
                 if isListening {
-                    Text("Paina nappia nyt...")
+                    Text("Press a button…")
                         .font(.system(size: 19, weight: .heavy))
                         .foregroundColor(isFocused ? Color(red: 0.85, green: 0.25, blue: 0.0) : .yellow)
                 } else if let mapped = mappedButton {
@@ -236,17 +318,19 @@ struct ActionRowView: View {
             .animation(.easeInOut(duration: 0.15), value: isFocused)
         }
         .buttonStyle(.plain)
+        .focused($isFocused)
+        .focusEffectDisabled()
     }
 }
 
 /// Done button with focus scaling
 struct RemapDoneButton: View {
     let action: () -> Void
-    @Environment(\.isFocused) private var isFocused
+    @FocusState private var isFocused: Bool
     
     var body: some View {
         Button(action: action) {
-            Text("Valmis")
+            Text("Done")
                 .font(.system(size: 20, weight: .bold))
                 .foregroundColor(isFocused ? .black : .white)
                 .padding(.horizontal, 36)
@@ -257,5 +341,7 @@ struct RemapDoneButton: View {
                 .animation(.easeInOut(duration: 0.15), value: isFocused)
         }
         .buttonStyle(.plain)
+        .focused($isFocused)
+        .focusEffectDisabled()
     }
 }

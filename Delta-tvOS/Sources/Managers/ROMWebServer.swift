@@ -453,8 +453,8 @@ class ROMWebServer: ObservableObject {
                     <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
                         <div class="icon">🎮</div>
                         <div class="upload-title">Choose or Drop ROM Files Here</div>
-                        <div class="upload-hint">Supports .nes, .smc, .sfc, .n64, .z64, .v64, .zip archives &amp; cover art (.png, .jpg)</div>
-                        <input type="file" id="fileInput" multiple accept=".nes,.smc,.sfc,.fig,.n64,.z64,.v64,.zip,.png,.jpg,.jpeg">
+                        <div class="upload-hint">NES · SNES · N64 · GB/GBC · GBA · Mega Drive · DS · ZIP archives &amp; cover art</div>
+                        <input type="file" id="fileInput" multiple accept="\(TVSystem.uploadExtensions.map { "." + $0 }.joined(separator: ","))">
                     </div>
                     <div id="statusBox" class="status-box"></div>
                 </div>
@@ -552,6 +552,7 @@ class ROMWebServer: ObservableObject {
                         if (g.system === 'NES') badgeClass = 'badge-nes';
                         else if (g.system === 'SNES') badgeClass = 'badge-snes';
                         else if (g.system === 'N64') badgeClass = 'badge-n64';
+                        else if (['GB/GBC', 'GBA', 'DS', 'Mega Drive'].includes(g.system)) badgeClass = 'badge-snes';
 
                         let internalInfo = '';
                         if (g.internalTitle && g.internalTitle !== g.cleanName) {
