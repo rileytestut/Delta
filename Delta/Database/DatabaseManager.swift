@@ -357,6 +357,44 @@ extension DatabaseManager
             return
         }
         
+        // Recursively expand any directories into their contained files
+        var hasDirectory = false
+        var expandedURLs = Set<URL>()
+        for url in urls
+        {
+            var isDirectory: ObjCBool = false
+            if FileManager.default.fileExists(atPath: url.path, isDirectory: &isDirectory), isDirectory.boolValue
+            {
+                hasDirectory = true
+                let isSecurityScoped = url.startAccessingSecurityScopedResource()
+                if let enumerator = FileManager.default.enumerator(at: url, includingPropertiesForKeys: [.isDirectoryKey], options: [.skipsHiddenFiles])
+                {
+                    for case let fileURL as URL in enumerator
+                    {
+                        var subIsDir: ObjCBool = false
+                        if FileManager.default.fileExists(atPath: fileURL.path, isDirectory: &subIsDir), !subIsDir.boolValue
+                        {
+                            expandedURLs.insert(fileURL)
+                        }
+                    }
+                }
+                if isSecurityScoped
+                {
+                    url.stopAccessingSecurityScopedResource()
+                }
+            }
+            else
+            {
+                expandedURLs.insert(url)
+            }
+        }
+        
+        if hasDirectory
+        {
+            self.importGames(at: expandedURLs, completion: completion)
+            return
+        }
+        
         let zipFileURLs = urls.filter { $0.pathExtension.lowercased() == "zip" }
         if zipFileURLs.count > 0
         {

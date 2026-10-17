@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 import MobileCoreServices
+import UniformTypeIdentifiers
 
 import DeltaCore
 
@@ -549,6 +550,26 @@ extension GamesViewController: ImportControllerDelegate
         documentTypes.insert("com.rileytestut.gba")
         documentTypes.insert("com.rileytestut.gbc")
         documentTypes.insert("com.rileytestut.gb")
+        
+        // Add dynamic UTTypes for all known ROM extensions so third-party apps (like Provenance) don't override file associations and grey them out
+        let romExtensions = ["n64", "z64", "v64", "nes", "smc", "sfc", "fig", "gba", "gbc", "gb", "nds", "ds", "gen", "bin", "md", "smd", "zip", "7z", "deltaskin"]
+        for ext in romExtensions
+        {
+            if let utType = UTType(filenameExtension: ext)
+            {
+                documentTypes.insert(utType.identifier)
+            }
+        }
+        
+        // Known third-party emulator UTIs
+        documentTypes.insert("org.provenance-emu.n64")
+        documentTypes.insert("org.provenance-emu.rom")
+        
+        // Allow general items and folders so files are never greyed out and directories can be imported
+        documentTypes.insert(UTType.data.identifier)
+        documentTypes.insert(UTType.item.identifier)
+        documentTypes.insert(UTType.folder.identifier)
+        documentTypes.insert(UTType.directory.identifier)
         
         let importController = ImportController(documentTypes: documentTypes)
         importController.delegate = self
