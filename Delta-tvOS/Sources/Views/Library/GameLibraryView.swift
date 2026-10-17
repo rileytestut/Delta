@@ -11,6 +11,7 @@ struct GameLibraryView: View {
     @State private var hasConnectedController = false
     @State private var controllerBadgeFlash = false
     @State private var showUploadInfo = false
+    @State private var showControllerRemapper = false
     
     let columns = [
         GridItem(.adaptive(minimum: 260, maximum: 280), spacing: 32)
@@ -32,7 +33,7 @@ struct GameLibraryView: View {
                         Text("Delta")
                             .font(.system(size: 40, weight: .bold, design: .rounded))
                             .foregroundStyle(
-                                LinearGradient(colors: [.orange, .pink], startPoint: .leading, endPoint: .trailing)
+                                LinearGradient(colors: [Color(red: 0.65, green: 0.35, blue: 0.95), Color(red: 0.35, green: 0.55, blue: 0.95)], startPoint: .leading, endPoint: .trailing)
                             )
                         Text(selectedSystem?.fullName ?? "All Systems (\(gameManager.allGames.count) games)")
                             .font(.system(size: 18, weight: .medium))
@@ -40,6 +41,20 @@ struct GameLibraryView: View {
                     }
                     
                     Spacer()
+                    
+                    // Controller Remapping Tool Button
+                    Button(action: { showControllerRemapper = true }) {
+                        HStack(spacing: 8) {
+                            Image(systemName: "slider.horizontal.3")
+                            Text("Määritä ohjain")
+                        }
+                        .font(.system(size: 16, weight: .bold))
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 9)
+                        .background(Color.white.opacity(0.12))
+                        .clipShape(Capsule())
+                    }
+                    .buttonStyle(.plain)
                     
                     // Controller Status Indicator with Flash Transition
                     HStack(spacing: 10) {
@@ -89,7 +104,7 @@ struct GameLibraryView: View {
                                 .padding(.vertical, 10)
                         }
                         .buttonStyle(.borderedProminent)
-                        .tint(selectedSystem == nil ? .orange : .gray.opacity(0.3))
+                        .tint(selectedSystem == nil ? Color(red: 0.55, green: 0.35, blue: 0.95) : Color.white.opacity(0.12))
                         
                         ForEach(TVSystem.allCases) { system in
                             Button(action: { selectedSystem = system }) {
@@ -102,7 +117,7 @@ struct GameLibraryView: View {
                                 .padding(.vertical, 10)
                             }
                             .buttonStyle(.borderedProminent)
-                            .tint(selectedSystem == system ? .orange : .gray.opacity(0.3))
+                            .tint(selectedSystem == system ? Color(red: 0.55, green: 0.35, blue: 0.95) : Color.white.opacity(0.12))
                         }
                     }
                     .padding(.horizontal, 48)
@@ -145,7 +160,11 @@ struct GameLibraryView: View {
         }
         .fullScreenCover(item: $selectedGame) { game in
             GameEmulatorView(game: game)
-                .ignoresSafeArea()
+                .background(Color.black.ignoresSafeArea())
+                .ignoresSafeArea(.all)
+        }
+        .sheet(isPresented: $showControllerRemapper) {
+            ControllerRemapView(initialSystem: selectedSystem ?? .n64)
         }
         .onAppear {
             self.checkControllers()

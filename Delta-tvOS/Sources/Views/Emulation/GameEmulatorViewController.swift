@@ -27,6 +27,7 @@ class GameEmulatorViewController: UIViewController {
         
         // 1. Setup GameView
         self.gameView = GameView(frame: self.view.bounds)
+        self.gameView.backgroundColor = .black
         self.gameView.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(self.gameView)
         
@@ -72,11 +73,12 @@ class GameEmulatorViewController: UIViewController {
     
     private func connectControllers() {
         guard let emulator = self.emulatorCore else { return }
+        let mapping = TVControllerMappingManager.shared.createDeltaInputMapping(for: self.game.system)
         for controller in ExternalGameControllerManager.shared.connectedControllers {
             if let mfi = controller as? MFiGameController, mfi.controller.extendedGamepad == nil {
                 continue
             }
-            controller.addReceiver(emulator)
+            controller.addReceiver(emulator, inputMapping: mapping)
         }
     }
     
@@ -88,7 +90,23 @@ class GameEmulatorViewController: UIViewController {
     override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
         for press in presses {
             if press.type == .menu {
-                // Intercept Menu button to toggle Pause Menu
+                // If this event came from a physical gamepad, ignore it!
+                let isGamepadActive = GCController.controllers().contains { controller in
+                    guard let ext = controller.extendedGamepad else { return false }
+                    return ext.buttonMenu.isPressed ||
+                           ext.buttonOptions?.isPressed == true ||
+                           ext.buttonHome?.isPressed == true ||
+                           ext.buttonB.isPressed ||
+                           ext.buttonA.isPressed ||
+                           ext.buttonX.isPressed ||
+                           ext.buttonY.isPressed
+                }
+                
+                if isGamepadActive {
+                    return
+                }
+                
+                // Intercept Menu button exclusively from Apple TV Siri Remote
                 self.showPauseMenu()
                 return
             }
@@ -101,14 +119,25 @@ class GameEmulatorViewController: UIViewController {
         emulator.pause()
         self.isPaused = true
         
-        let alert = UIAlertController(title: "Paused: \(self.game.name)", message: nil, preferredStyle: .actionSheet)
+        let alert = UIAlertController(title: "Pysäytetty: \(self.game.name)", message: nil, preferredStyle: .actionSheet)
         
-        alert.addAction(UIAlertAction(title: "Resume", style: .default, handler: { [weak self] _ in
+        alert.addAction(UIAlertAction(title: "Jatka peliä", style: .default, handler: { [weak self] _ in
             self?.emulatorCore?.resume()
             self?.isPaused = false
         }))
         
-        alert.addAction(UIAlertAction(title: "Save State", style: .default, handler: { [weak self] _ in
+        alert.addAction(UIAlertAction(title: "Määritä ohjaimen napit (Remap)", style: .default, handler: { [weak self] _ in
+            guard let self = self else { return }
+            let remapView = ControllerRemapView(initialSystem: self.game.system)
+            let hosting = UIHostingController(rootView: remapView)
+            hosting.modalPresentationStyle = .overFullScreen
+            self.present(hosting, animated: true) { [weak self] in
+                // Reconnect controllers with updated mappings when dismissed
+                self?.connectControllers()
+            }
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Tallenna tilanne (Save State)", style: .default, handler: { [weak self] _ in
             guard let self = self, let emulator = self.emulatorCore else { return }
             let saveStateURL = self.game.fileURL.deletingPathExtension().appendingPathExtension("savestate")
             _ = emulator.saveSaveState(to: saveStateURL)
@@ -116,7 +145,7 @@ class GameEmulatorViewController: UIViewController {
             self.isPaused = false
         }))
         
-        alert.addAction(UIAlertAction(title: "Load State", style: .default, handler: { [weak self] _ in
+        alert.addAction(UIAlertAction(title: "Lataa tilanne (Load State)", style: .default, handler: { [weak self] _ in
             guard let self = self, let emulator = self.emulatorCore else { return }
             let saveStateURL = self.game.fileURL.deletingPathExtension().appendingPathExtension("savestate")
             if FileManager.default.fileExists(atPath: saveStateURL.path) {
@@ -131,18 +160,57 @@ class GameEmulatorViewController: UIViewController {
             self.isPaused = false
         }))
         
-        alert.addAction(UIAlertAction(title: "Restart Game", style: .destructive, handler: { [weak self] _ in
+        alert.addAction(UIAlertAction(title: "Käynnistä peli alusta", style: .destructive, handler: { [weak self] _ in
             guard let self = self, let emulator = self.emulatorCore else { return }
             emulator.stop()
             emulator.start()
             self.isPaused = false
         }))
         
-        alert.addAction(UIAlertAction(title: "Quit to Library", style: .destructive, handler: { [weak self] _ in
+        alert.addAction(UIAlertAction(title: "Lopeta kirjastoon", style: .destructive, handler: { [weak self] _ in
             self?.emulatorCore?.stop()
             self?.onDismiss?()
         }))
         
+        self.present(alert, animated: true)
+    }
+    
+    private func showControllerLayoutInfo() {
+        let title = "\(self.game.system.shortName) Controller Mapping"
+        let message: String
+        switch self.game.system {
+        case .n64:
+            message = """
+            • A Button ➔ A
+            • B Button ➔ B
+            • Z Trigger ➔ L2 / R2 (or Y / Select)
+            • Start Button ➔ Start / Menu / Options (or X)
+            • L / R Bumpers ➔ L1 / R1
+            • C-Buttons (Yellow) ➔ Right Thumbstick
+            • Analog Stick ➔ Left Thumbstick
+            • D-Pad ➔ D-Pad
+            """
+        case .snes:
+            message = """
+            • A, B, X, Y ➔ A, B, X, Y
+            • L / R Shoulders ➔ L1 / R1
+            • Start ➔ Start / Menu
+            • Select ➔ Select / Options
+            • D-Pad ➔ D-Pad / Left Stick
+            """
+        case .nes:
+            message = """
+            • A, B ➔ A, B
+            • Start ➔ Start / Menu
+            • Select ➔ Select / Options
+            • D-Pad ➔ D-Pad / Left Stick
+            """
+        }
+        
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak self] _ in
+            self?.showPauseMenu()
+        }))
         self.present(alert, animated: true)
     }
 }

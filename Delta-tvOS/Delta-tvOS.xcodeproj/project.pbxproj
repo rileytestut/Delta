@@ -26,9 +26,11 @@
 		71CEE841B419554EF4823D89 /* DeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 432BC8C6FAF0716BDB3D5AF0 /* DeltaCore.framework */; };
 		7239DDE1DB76F1670AC0CFEA /* GameEmulatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C3D81E0BCFEE82017D3E4FA /* GameEmulatorViewController.swift */; };
 		744C79583EB6F6ED21EE5CD6 /* NESDeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CF4DC59A144CD72B4414AE9F /* NESDeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		7EDC57072955687E4E0F24FA /* ControllerRemapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B87EAF757F8A2E91852F52A4 /* ControllerRemapView.swift */; };
 		9AC8E9B967CB8721010CB18B /* N64DeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D1DE0C284E3B538D335341B3 /* N64DeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9BDF25C9E4164A798E4E9556 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E5B5760925A2C0EEFA9C27D /* Foundation.framework */; };
 		AEB850EA73D0647FAA208873 /* TVGameManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC5C427E8C22FC7962AAC8E8 /* TVGameManager.swift */; };
+		B3555B047C6D59E758E991B9 /* TVControllerMappingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AFEE2832944F7F6E99CCA5 /* TVControllerMappingManager.swift */; };
 		B4E576CDA124B381C624C5FE /* Network.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F16CC07DF5616718B805BD17 /* Network.framework */; };
 		B791E5900002F6E63C523B9C /* ROMWebServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D49B708A7BBDEF0938D41DD /* ROMWebServer.swift */; };
 		CFC1B0564B3DFB226C3F8DDC /* SNESDeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 61DC6217B24CE11865F9E02E /* SNESDeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -60,6 +62,7 @@
 
 /* Begin PBXFileReference section */
 		0330355A29ED18024878E70C /* DeltaTVApp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DeltaTVApp.swift; sourceTree = "<group>"; };
+		04AFEE2832944F7F6E99CCA5 /* TVControllerMappingManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TVControllerMappingManager.swift; sourceTree = "<group>"; };
 		08695E73019A772CF726742D /* GameCardView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GameCardView.swift; sourceTree = "<group>"; };
 		26439E9396CCE471C31E9EA0 /* N64DeltaCore_Video.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = N64DeltaCore_Video.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		29F5EDD053300569E966666E /* Delta-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Delta-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -74,6 +77,7 @@
 		7F1E10895D8FF9FEFDD26FDA /* N64DeltaCore_RSP.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = N64DeltaCore_RSP.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A799A6B29032DAFB4BE18414 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		ADFE0DB0D8C5966591C086B0 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B87EAF757F8A2E91852F52A4 /* ControllerRemapView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ControllerRemapView.swift; sourceTree = "<group>"; };
 		BC55BAC13F5C08968BBC371F /* GameController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameController.framework; path = System/Library/Frameworks/GameController.framework; sourceTree = SDKROOT; };
 		CF4DC59A144CD72B4414AE9F /* NESDeltaCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = NESDeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1DE0C284E3B538D335341B3 /* N64DeltaCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = N64DeltaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -109,6 +113,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		059F58F01FCC62E799606984 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				B87EAF757F8A2E91852F52A4 /* ControllerRemapView.swift */,
+			);
+			name = Settings;
+			path = Settings;
+			sourceTree = "<group>";
+		};
 		17BB65EEB5A0AD21ADC0B396 /* Library */ = {
 			isa = PBXGroup;
 			children = (
@@ -182,6 +195,7 @@
 			children = (
 				FC5C427E8C22FC7962AAC8E8 /* TVGameManager.swift */,
 				2D49B708A7BBDEF0938D41DD /* ROMWebServer.swift */,
+				04AFEE2832944F7F6E99CCA5 /* TVControllerMappingManager.swift */,
 			);
 			name = Managers;
 			path = Managers;
@@ -230,6 +244,7 @@
 			children = (
 				17BB65EEB5A0AD21ADC0B396 /* Library */,
 				5CD095C8AAB1F587664823B1 /* Emulation */,
+				059F58F01FCC62E799606984 /* Settings */,
 			);
 			name = Views;
 			path = Views;
@@ -317,6 +332,8 @@
 				31A2BA1627911A048A664F79 /* GameEmulatorView.swift in Sources */,
 				43BB32CB120E941285D47FED /* GameCardView.swift in Sources */,
 				FB4CCA7562B8E56284B369B3 /* GameLibraryView.swift in Sources */,
+				B3555B047C6D59E758E991B9 /* TVControllerMappingManager.swift in Sources */,
+				7EDC57072955687E4E0F24FA /* ControllerRemapView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
