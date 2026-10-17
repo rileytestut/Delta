@@ -32,6 +32,10 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		D5DD00072E29ADF3006E06E8 /* DolphinDeltaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5DD00032E29ADF3006E06E8 /* DolphinDeltaCore.framework */; };
+		D5DD00082E29ADF3006E06E8 /* DolphinDeltaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D5DD00032E29ADF3006E06E8 /* DolphinDeltaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D5DD000A2E29ADF3006E06E8 /* PVlibDolphin.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D5DD00092E29ADF3006E06E8 /* PVlibDolphin.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D5DD000B2E29ADF3006E06E8 /* PVlibDolphin.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5DD00092E29ADF3006E06E8 /* PVlibDolphin.xcframework */; };
 		18FC614F90FE76140AAECE67 /* DeltaOperatorUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCBF2F877CA6072880A54F35 /* DeltaOperatorUtils.swift */; };
 		1FA4ABA79AB72914FE414A61 /* libPods-Delta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DC866E433B3BA9AE18ABA1EC /* libPods-Delta.a */; };
 		28B653353E8323FA65C54A42 /* OperatorUICoordinators.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C8C13CE90324CBBA76BC3E /* OperatorUICoordinators.swift */; };
@@ -47,6 +51,10 @@
 		8279ED102E53C780008995FA /* SNESCoreSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8279ED0F2E53C780008995FA /* SNESCoreSettingsView.swift */; };
 		8279ED142E53C7A4008995FA /* N64CoreSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8279ED132E53C7A4008995FA /* N64CoreSettingsView.swift */; };
 		8279ED162E53C8BC008995FA /* GenesisCoreSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8279ED152E53C8BC008995FA /* GenesisCoreSettingsView.swift */; };
+		D5DD00102E29ADF3006E06E8 /* DolphinCoreSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DD00112E29ADF3006E06E8 /* DolphinCoreSettingsView.swift */; };
+		D5DD00122E29ADF3006E06E8 /* DeltaOperatorToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DD00132E29ADF3006E06E8 /* DeltaOperatorToast.swift */; };
+		D5DD00142E29ADF3006E06E8 /* DeltaOperatorImportToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DD00152E29ADF3006E06E8 /* DeltaOperatorImportToast.swift */; };
+		D5DD00162E29ADF3006E06E8 /* DeltaOperatorSaveReadToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DD00172E29ADF3006E06E8 /* DeltaOperatorSaveReadToast.swift */; };
 		828242262F7C40C300D8F899 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 828242252F7C40C300D8F899 /* SettingsView.swift */; };
 		828242302F7C487800D8F899 /* SettingsRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8282422F2F7C487800D8F899 /* SettingsRow.swift */; };
 		82A787D92F60C4F400E4CA06 /* PageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82A787D82F60C4F400E4CA06 /* PageControl.swift */; };
@@ -366,6 +374,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		D5DD00042E29ADF3006E06E8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D5DD00012E29ADF3006E06E8 /* DolphinDeltaCore.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3297B9363CF0214BD7C19ADF;
+			remoteInfo = DolphinDeltaCore;
+		};
+		D5DD00052E29ADF3006E06E8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D5DD00012E29ADF3006E06E8 /* DolphinDeltaCore.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = F5C46A4804DF3D2C33E46931;
+			remoteInfo = DolphinDeltaCore;
+		};
 		D57A819D2E29ADF3006E06E8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D57A81982E29ADF3006E06E8 /* GPGXDeltaCore.xcodeproj */;
@@ -575,6 +597,8 @@
 				D5C7DD152E26CF6F0048FF5C /* N64DeltaCore_Video.framework in Embed Frameworks */,
 				D5C7DD0E2E26CF630048FF5C /* GBCDeltaCore.framework in Embed Frameworks */,
 				D5DF874A2E25AA74005CCF92 /* GPGXDeltaCore.framework in Embed Frameworks */,
+				D5DD00082E29ADF3006E06E8 /* DolphinDeltaCore.framework in Embed Frameworks */,
+				D5DD000A2E29ADF3006E06E8 /* PVlibDolphin.xcframework in Embed Frameworks */,
 				D5C7DD172E26CF6F0048FF5C /* N64DeltaCore.framework in Embed Frameworks */,
 				D5C7DD1A2E26CF810048FF5C /* MelonDSDeltaCore.framework in Embed Frameworks */,
 				D5C7DD052E26CF350048FF5C /* NESDeltaCore.framework in Embed Frameworks */,
@@ -599,6 +623,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		D5DD00012E29ADF3006E06E8 /* DolphinDeltaCore.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = DolphinDeltaCore.xcodeproj; path = Cores/DolphinDeltaCore/DolphinDeltaCore.xcodeproj; sourceTree = "<group>"; };
+		D5DD00092E29ADF3006E06E8 /* PVlibDolphin.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = PVlibDolphin.xcframework; path = Cores/DolphinDeltaCore/Frameworks/PVlibDolphin.xcframework; sourceTree = "<group>"; };
 		0654CFCA3D2CB4D35CC99F89 /* OperatorSlotDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperatorSlotDataSource.swift; sourceTree = "<group>"; };
 		0B6FDC5A03AD5693BEFFE87C /* GamesViewController+Operator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GamesViewController+Operator.swift"; sourceTree = "<group>"; };
 		2157B527EA676AA703BEBF02 /* DeltaOperatorFacade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeltaOperatorFacade.swift; sourceTree = "<group>"; };
@@ -613,6 +639,10 @@
 		8279ED0F2E53C780008995FA /* SNESCoreSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SNESCoreSettingsView.swift; sourceTree = "<group>"; };
 		8279ED132E53C7A4008995FA /* N64CoreSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = N64CoreSettingsView.swift; sourceTree = "<group>"; };
 		8279ED152E53C8BC008995FA /* GenesisCoreSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenesisCoreSettingsView.swift; sourceTree = "<group>"; };
+		D5DD00112E29ADF3006E06E8 /* DolphinCoreSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DolphinCoreSettingsView.swift; sourceTree = "<group>"; };
+		D5DD00132E29ADF3006E06E8 /* DeltaOperatorToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeltaOperatorToast.swift; sourceTree = "<group>"; };
+		D5DD00152E29ADF3006E06E8 /* DeltaOperatorImportToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeltaOperatorImportToast.swift; sourceTree = "<group>"; };
+		D5DD00172E29ADF3006E06E8 /* DeltaOperatorSaveReadToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeltaOperatorSaveReadToast.swift; sourceTree = "<group>"; };
 		828242252F7C40C300D8F899 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		8282422F2F7C487800D8F899 /* SettingsRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRow.swift; sourceTree = "<group>"; };
 		82A787D82F60C4F400E4CA06 /* PageControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageControl.swift; sourceTree = "<group>"; };
@@ -964,6 +994,8 @@
 				D5C7DD0D2E26CF630048FF5C /* GBCDeltaCore.framework in Frameworks */,
 				D5C7DD122E26CF6F0048FF5C /* N64DeltaCore_RSP.framework in Frameworks */,
 				D5DF87492E25AA74005CCF92 /* GPGXDeltaCore.framework in Frameworks */,
+				D5DD00072E29ADF3006E06E8 /* DolphinDeltaCore.framework in Frameworks */,
+				D5DD000B2E29ADF3006E06E8 /* PVlibDolphin.xcframework in Frameworks */,
 				D5C7DD162E26CF6F0048FF5C /* N64DeltaCore.framework in Frameworks */,
 				D5EF1A202D84BD59001B06E6 /* rcheevos in Frameworks */,
 				D5C7DD042E26CF350048FF5C /* NESDeltaCore.framework in Frameworks */,
@@ -1009,6 +1041,9 @@
 				0654CFCA3D2CB4D35CC99F89 /* OperatorSlotDataSource.swift */,
 				7C31F852121CBEF08181BD23 /* OperatorStatusView.swift */,
 				C1C8C13CE90324CBBA76BC3E /* OperatorUICoordinators.swift */,
+				D5DD00132E29ADF3006E06E8 /* DeltaOperatorToast.swift */,
+				D5DD00152E29ADF3006E06E8 /* DeltaOperatorImportToast.swift */,
+				D5DD00172E29ADF3006E06E8 /* DeltaOperatorSaveReadToast.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -1364,6 +1399,7 @@
 				D5C7DD062E26CF540048FF5C /* SNESDeltaCore.framework */,
 				D5C7DD032E26CF350048FF5C /* NESDeltaCore.framework */,
 				D5DF87472E25AA6B005CCF92 /* GPGXDeltaCore.framework */,
+				D5DD00092E29ADF3006E06E8 /* PVlibDolphin.xcframework */,
 				D52CB8C72CE2B7C800B04458 /* StoreKit.framework */,
 				D5FB042B2C5AF40A008329DD /* libresolv.tbd */,
 				BF69FBA923E399AA0051BEEA /* CoreMotion.framework */,
@@ -1465,6 +1501,7 @@
 				8279ED0F2E53C780008995FA /* SNESCoreSettingsView.swift */,
 				8279ED132E53C7A4008995FA /* N64CoreSettingsView.swift */,
 				8279ED152E53C8BC008995FA /* GenesisCoreSettingsView.swift */,
+				D5DD00112E29ADF3006E06E8 /* DolphinCoreSettingsView.swift */,
 			);
 			path = Cores;
 			sourceTree = "<group>";
@@ -1746,8 +1783,17 @@
 				D57A81CC2E29AE32006E06E8 /* GBADeltaCore.xcodeproj */,
 				D57A81A12E29ADFE006E06E8 /* MelonDSDeltaCore.xcodeproj */,
 				D57A81982E29ADF3006E06E8 /* GPGXDeltaCore.xcodeproj */,
+				D5DD00012E29ADF3006E06E8 /* DolphinDeltaCore.xcodeproj */,
 			);
 			name = Dependencies;
+			sourceTree = "<group>";
+		};
+				D5DD00022E29ADF3006E06E8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D5DD00032E29ADF3006E06E8 /* DolphinDeltaCore.framework */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		D57A81992E29ADF3006E06E8 /* Products */ = {
@@ -2036,6 +2082,7 @@
 				D57A82252E29AE66006E06E8 /* PBXTargetDependency */,
 				D57A82272E29AE66006E06E8 /* PBXTargetDependency */,
 				D57A82292E29AE66006E06E8 /* PBXTargetDependency */,
+				D5DD00062E29ADF3006E06E8 /* PBXTargetDependency */,
 				D5D7C1FC29E60EDE00663793 /* PBXTargetDependency */,
 			);
 			name = Delta;
@@ -2163,6 +2210,10 @@
 					ProjectRef = D57A81982E29ADF3006E06E8 /* GPGXDeltaCore.xcodeproj */;
 				},
 				{
+					ProductGroup = D5DD00022E29ADF3006E06E8 /* Products */;
+					ProjectRef = D5DD00012E29ADF3006E06E8 /* DolphinDeltaCore.xcodeproj */;
+				},
+				{
 					ProductGroup = D57A81A22E29ADFE006E06E8 /* Products */;
 					ProjectRef = D57A81A12E29ADFE006E06E8 /* MelonDSDeltaCore.xcodeproj */;
 				},
@@ -2191,6 +2242,13 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		D5DD00032E29ADF3006E06E8 /* DolphinDeltaCore.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = DolphinDeltaCore.framework;
+			remoteRef = D5DD00042E29ADF3006E06E8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		D57A819E2E29ADF3006E06E8 /* GPGXDeltaCore.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -2653,6 +2711,10 @@
 				BFDCA1E9244F7E1000B8FBDB /* Delta5ToDelta6.xcmappingmodel in Sources */,
 				D5A817B329DF6C6C00904AFE /* ExperimentalFeatures.swift in Sources */,
 				8279ED042E53BA4F008995FA /* GBACoreSettingsView.swift in Sources */,
+				D5DD00102E29ADF3006E06E8 /* DolphinCoreSettingsView.swift in Sources */,
+				D5DD00122E29ADF3006E06E8 /* DeltaOperatorToast.swift in Sources */,
+				D5DD00142E29ADF3006E06E8 /* DeltaOperatorImportToast.swift in Sources */,
+				D5DD00162E29ADF3006E06E8 /* DeltaOperatorSaveReadToast.swift in Sources */,
 				BFD097211D3A01B8005A44C2 /* SaveStatesViewController.swift in Sources */,
 				8279ED0E2E53C76C008995FA /* NESCoreSettingsView.swift in Sources */,
 				BF6EE5EB1F7C5F8F0051AD6C /* GameControllerInputMapping.swift in Sources */,
@@ -2815,6 +2877,11 @@
 			isa = PBXTargetDependency;
 			name = MelonDSDeltaCore;
 			targetProxy = D57A82262E29AE66006E06E8 /* PBXContainerItemProxy */;
+		};
+				D5DD00062E29ADF3006E06E8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = DolphinDeltaCore;
+			targetProxy = D5DD00052E29ADF3006E06E8 /* PBXContainerItemProxy */;
 		};
 		D57A82292E29AE66006E06E8 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -3085,7 +3152,7 @@
 				STRIP_INSTALLED_PRODUCT = YES;
 				STRIP_STYLE = "non-global";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = BETA;
-				SWIFT_INCLUDE_PATHS = "$(inherited) \"$(SRCROOT)/Cores/GPGXDeltaCore/Sources/GPGXBridge\"";
+				SWIFT_INCLUDE_PATHS = "$(inherited) \"$(SRCROOT)/Cores/GPGXDeltaCore/Sources/GPGXBridge\" \"$(SRCROOT)/Cores/DolphinDeltaCore/DolphinDeltaCore/Bridge\"";
 				SWIFT_OBJC_BRIDGING_HEADER = "Delta/Supporting Files/Delta-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -3119,7 +3186,7 @@
 				STRIP_INSTALLED_PRODUCT = YES;
 				STRIP_STYLE = "non-global";
 				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_INCLUDE_PATHS = "$(inherited) \"$(SRCROOT)/Cores/GPGXDeltaCore/Sources/GPGXBridge\"";
+				SWIFT_INCLUDE_PATHS = "$(inherited) \"$(SRCROOT)/Cores/GPGXDeltaCore/Sources/GPGXBridge\" \"$(SRCROOT)/Cores/DolphinDeltaCore/DolphinDeltaCore/Bridge\"";
 				SWIFT_OBJC_BRIDGING_HEADER = "Delta/Supporting Files/Delta-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;

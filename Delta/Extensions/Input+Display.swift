@@ -10,6 +10,7 @@ import DeltaCore
 import GBADeltaCore
 import N64DeltaCore
 import GPGXDeltaCore
+import DolphinDeltaCore
 
 extension Input
 {
@@ -188,6 +189,14 @@ extension Input
             case N64GameInput.cDown.stringValue: return NSLocalizedString("C-Down", comment: "")
             case N64GameInput.cLeft.stringValue: return NSLocalizedString("C-Left", comment: "")
             case N64GameInput.cRight.stringValue: return NSLocalizedString("C-Right", comment: "")
+            case GameCubeGameInput.controlStickUp.stringValue: return NSLocalizedString("Control Stick Up", comment: "")
+            case GameCubeGameInput.controlStickDown.stringValue: return NSLocalizedString("Control Stick Down", comment: "")
+            case GameCubeGameInput.controlStickLeft.stringValue: return NSLocalizedString("Control Stick Left", comment: "")
+            case GameCubeGameInput.controlStickRight.stringValue: return NSLocalizedString("Control Stick Right", comment: "")
+            case GameCubeGameInput.cStickUp.stringValue: return NSLocalizedString("C-Stick Up", comment: "")
+            case GameCubeGameInput.cStickDown.stringValue: return NSLocalizedString("C-Stick Down", comment: "")
+            case GameCubeGameInput.cStickLeft.stringValue: return NSLocalizedString("C-Stick Left", comment: "")
+            case GameCubeGameInput.cStickRight.stringValue: return NSLocalizedString("C-Stick Right", comment: "")
             default: return self.stringValue.capitalized
             }
             
@@ -319,6 +328,14 @@ extension Input
             case N64GameInput.cDown.stringValue: return "circle.grid.cross.down.filled"
             case N64GameInput.cLeft.stringValue: return "circle.grid.cross.left.filled"
             case N64GameInput.cRight.stringValue: return "circle.grid.cross.right.filled"
+            case GameCubeGameInput.controlStickUp.stringValue: return "l.joystick.tilt.up"
+            case GameCubeGameInput.controlStickDown.stringValue: return "l.joystick.tilt.down"
+            case GameCubeGameInput.controlStickLeft.stringValue: return "l.joystick.tilt.left"
+            case GameCubeGameInput.controlStickRight.stringValue: return "l.joystick.tilt.right"
+            case GameCubeGameInput.cStickUp.stringValue: return "r.joystick.tilt.up"
+            case GameCubeGameInput.cStickDown.stringValue: return "r.joystick.tilt.down"
+            case GameCubeGameInput.cStickLeft.stringValue: return "r.joystick.tilt.left"
+            case GameCubeGameInput.cStickRight.stringValue: return "r.joystick.tilt.right"
             default: return "questionmark.circle"
             }
             

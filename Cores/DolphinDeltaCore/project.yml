@@ -1,0 +1,59 @@
+name: DolphinDeltaCore
+options:
+  bundleIdPrefix: com.rileytestut
+  deploymentTarget:
+    iOS: 17.0
+  xcodeVersion: "16.0"
+
+settings:
+  base:
+    IPHONEOS_DEPLOYMENT_TARGET: "17.0"
+    SWIFT_VERSION: "5.0"
+    ENABLE_BITCODE: "NO"
+    ALWAYS_SEARCH_USER_PATHS: "NO"
+    CLANG_ENABLE_MODULES: "YES"
+    DEFINES_MODULE: "YES"
+    SKIP_INSTALL: "YES"
+
+targets:
+  DolphinDeltaCore:
+    type: framework
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: DolphinDeltaCore/DolphinDeltaCore.h
+        buildPhase: headers
+        headerVisibility: public
+      - path: DolphinDeltaCore/Bridge/DolphinEmulatorBridge.h
+        buildPhase: headers
+        headerVisibility: public
+      - path: DolphinDeltaCore/Bridge/DolphinTypes.h
+        buildPhase: headers
+        headerVisibility: public
+      - path: DolphinDeltaCore/Dolphin.swift
+      - path: DolphinDeltaCore/Types/GameCubeGameInput.swift
+      - path: DolphinDeltaCore/Bridge/DolphinEmulatorBridge.mm
+      - path: DolphinDeltaCore/Bridge/DolphinTypes.m
+      - path: DolphinDeltaCore/Resources
+        buildPhase: resources
+    dependencies:
+      - framework: Frameworks/PVlibDolphin.xcframework
+        embed: false
+    settings:
+      base:
+        PRODUCT_NAME: DolphinDeltaCore
+        PRODUCT_BUNDLE_IDENTIFIER: com.rileytestut.DolphinDeltaCore
+        INFOPLIST_FILE: DolphinDeltaCore/Info.plist
+        FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          - $(PROJECT_DIR)/Frameworks
+          - $(BUILT_PRODUCTS_DIR)
+        HEADER_SEARCH_PATHS:
+          - $(inherited)
+          - $(PROJECT_DIR)/DolphinDeltaCore
+          - $(PROJECT_DIR)/DolphinDeltaCore/Bridge
+        OTHER_LDFLAGS:
+          - $(inherited)
+          - -ObjC
+          - -lc++
+          - -framework DeltaCore

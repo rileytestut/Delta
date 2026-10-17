@@ -598,6 +598,7 @@ private extension Settings
         case .n64: systemName = "n64"
         case .ds: systemName = "ds"
         case .genesis: systemName = "genesis"
+        case .gamecube: systemName = "gamecube"
         }
         
         let orientation: String
