@@ -322,19 +322,6 @@ extension PurchaseManager
             {
                 guard #available(iOS 26, *), await ExternalPurchaseCustomLink.isEligible else { throw PurchaseError.externalPurchasesNotAllowed }
                 
-                do
-                {
-                    // Apple requires confirming user is an adult before starting an external purchase flow in this region.
-                    let response = try await AgeRangeService.shared.requestAgeRange(ageGates: 18, in: presentingViewController)
-                    guard case .sharing(let ageRange) = response, let lowerBound = ageRange.lowerBound, lowerBound >= 18 else {
-                        throw PurchaseError.adultPermissionRequired
-                    }
-                }
-                catch AgeRangeService.Error.declinedOnboarding
-                {
-                    throw CancellationError()
-                }
-                
                 if region.supportsSystemDisclosureSheet
                 {
                     let result = try await ExternalPurchaseCustomLink.showNotice(type: .withinApp)
