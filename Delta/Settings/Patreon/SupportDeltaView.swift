@@ -70,6 +70,9 @@ struct SupportDeltaView: View
     var showsCloseButton: Bool = false
     
     @State
+    private var isAdult: Bool = false // Default to false so we only show Patreon button if we 100% know we can
+    
+    @State
     private var viewModel: ViewModel = ViewModel()
     
     @Environment(\.verticalSizeClass)
@@ -121,7 +124,7 @@ struct SupportDeltaView: View
             }
             
             ToolbarItemGroup(placement: .secondaryAction) {
-                if PurchaseManager.shared.supportsExternalPurchases
+                if PurchaseManager.shared.supportsExternalPurchases && self.isAdult
                 {
                     if PatreonAPI.shared.isAuthenticated, let patreonAccount = DatabaseManager.shared.patreonAccount()
                     {
@@ -164,6 +167,7 @@ struct SupportDeltaView: View
         })
         .task {
             await viewModel.prepare()
+            await requestAgeIfNeeded()
         }
     }
     
@@ -237,7 +241,7 @@ struct SupportDeltaView: View
     private var footer: some View {
         VStack(spacing: 15) {
             // Patreon
-            if PurchaseManager.shared.supportsExternalPurchases
+            if PurchaseManager.shared.supportsExternalPurchases && self.isAdult
             {
                 if let offering = viewModel.patreonTierOffering
                 {
@@ -355,6 +359,63 @@ private extension SupportDeltaView
                 self.viewModel.donateError = error
                 self.viewModel.isShowingErrorAlert = true
             }
+        }
+    }
+    
+    func requestAgeIfNeeded() async
+    {
+        if let isAdult = PurchaseManager.shared.isAdult
+        {
+            // We already know whether user is an adult, so assign that value.
+            self.isAdult = isAdult
+            return
+        }
+        
+        guard PurchaseManager.shared.distributor != .altStore else {
+            // We always consider the user an adult (for external purchase purposes) when distributed with AltStore.
+            self.isAdult = true
+            return
+        }
+        
+        guard let region = PurchaseManager.shared.externalPurchaseRegion else {
+            // Unknown external purchase region, so default to assuming user is NOT adult.
+            self.isAdult = false
+            return
+        }
+        
+        guard region.requiresExternalPurchasesOrOffersEntitlement else {
+            // Region doesn't require external purchases entitlement (e.g. US), so we DO consider user an adult.
+            self.isAdult = true
+            return
+        }
+        
+        // Put these checks at the end so we don't override any above `self.isAdult = true`
+        
+        guard #available(iOS 26, *) else {
+            // We can't request user's age pre-iOS 26, so default to assuming user is NOT adult.
+            self.isAdult = false
+            return
+        }
+        
+        guard let hostingController else {
+            // We can't request user's age without a hosting controller, so default to assuming user is NOT adult.
+            self.isAdult = false
+            return
+        }
+        
+        do
+        {
+            // Apple requires confirming user is an adult before showing/starting an external purchase flow in this region.
+            try await PurchaseManager.shared.requestAgeIfNeeded(presentingController: hostingController)
+            
+            if let isAdult = PurchaseManager.shared.isAdult
+            {
+                self.isAdult = isAdult
+            }
+        }
+        catch
+        {
+            Logger.main.error("Failed to determine user's age range. \(error.localizedDescription, privacy: .public)")
         }
     }
 }

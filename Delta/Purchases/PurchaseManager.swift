@@ -107,6 +107,8 @@ class PurchaseManager
     private(set) var commissionRegion: String? // Determines whether we must report CTC transactions
     private(set) var storeRegion: String? // Determines whether we can offer external purchases or not
     
+    private(set) var isAdult: Bool? // Nil until we explicitly ask user to provide their age
+    
     private var revenueCatObserver: NSObjectProtocol?
     private var patreonObserver: NSObjectProtocol?
     
@@ -412,6 +414,22 @@ extension PurchaseManager
             }
             
             throw CancellationError()
+        }
+    }
+    
+    @available(iOS 26, *)
+    func requestAgeIfNeeded(presentingController: UIViewController) async throws
+    {
+        guard self.isAdult == nil else { return }
+        
+        let response = try await AgeRangeService.shared.requestAgeRange(ageGates: 18, in: presentingController)
+        if case .sharing(let ageRange) = response, let lowerBound = ageRange.lowerBound, lowerBound >= 18
+        {
+            self.isAdult = true
+        }
+        else
+        {
+            self.isAdult = false
         }
     }
 }
