@@ -165,6 +165,19 @@ struct SupportDeltaView: View
         }, message: { error in
             Text(error.localizedDescription)
         })
+        .onAppear {
+            if let isAdult = PurchaseManager.shared.isAdult
+            {
+                // We already know whether user is an adult, so assign that value.
+                self.isAdult = isAdult
+            }
+            
+            if let region = PurchaseManager.shared.externalPurchaseRegion, !region.requiresExternalPurchasesOrOffersEntitlement
+            {
+                // Show button immediately for regions where we don't need to verify user's age
+                self.isAdult = true
+            }
+        }
         .task {
             await viewModel.prepare()
             await requestAgeIfNeeded()
