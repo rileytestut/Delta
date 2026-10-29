@@ -28,7 +28,7 @@ class CoverView: UIView
     let controllerSkin: any ControllerSkinProtocol
     
     // Keep the selected skin separate from the standard skin used as a cover fallback.
-    // Many third-party skins (including DuoDS) have no .cover representation.
+    // Third-party skins may have no .cover representation.
     var decorativeSkin: (any ControllerSkinProtocol)? {
         didSet { self.updateImage() }
     }
@@ -163,7 +163,7 @@ private extension CoverView
         
         if LidCoverStore.isEnabled, let skin = self.decorativeSkin, skin.gameType == .ds
         {
-            if let image = LidCoverStore.image(for: skin.identifier, isCharging: isCharging)
+            if let image = LidCoverStore.image(for: skin.identifier)
             {
                 self.imageView.backgroundColor = .black
                 self.imageView.clipsToBounds = true

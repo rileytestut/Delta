@@ -18,58 +18,30 @@ enum LidCoverStore
         ExperimentalFeatures.shared.decorativeLidCovers.isEnabled
     }
 
-    static func selection(for skinIdentifier: String) -> LidCoverSelection?
+    static func selection(for skinIdentifier: String) -> UUID?
     {
         guard let value = ExperimentalFeatures.shared.decorativeLidCovers.selections[skinIdentifier] else { return nil }
-        return LidCoverSelection(storedValue: value)
+        return UUID(uuidString: value)
     }
 
-    static func setSelection(_ selection: LidCoverSelection?, for skinIdentifier: String)
+    static func setSelection(_ selection: UUID?, for skinIdentifier: String)
     {
         let previousSelection = self.selection(for: skinIdentifier)
         var selections = ExperimentalFeatures.shared.decorativeLidCovers.selections
-        selections[skinIdentifier] = selection?.storedValue
+        selections[skinIdentifier] = selection?.uuidString
         ExperimentalFeatures.shared.decorativeLidCovers.selections = selections
 
-        if case .imported(let identifier) = previousSelection, previousSelection != selection,
+        if let identifier = previousSelection, previousSelection != selection,
            !selections.values.contains(identifier.uuidString), let url = try? self.imageURL(for: identifier)
         {
             try? FileManager.default.removeItem(at: url)
         }
     }
 
-    static func image(for skinIdentifier: String, isCharging: Bool) -> UIImage?
+    static func image(for skinIdentifier: String) -> UIImage?
     {
-        if let selection = self.selection(for: skinIdentifier), let image = self.image(for: selection, isCharging: isCharging)
-        {
-            return image
-        }
-
-        // Missing/corrupt imports fall back without preventing a user from resetting their choice.
-        guard let style = LidCoverStyle.matching(skinIdentifier: skinIdentifier) else { return nil }
-        return self.image(for: .builtIn(style), isCharging: isCharging)
-    }
-
-    static func image(for selection: LidCoverSelection, isCharging: Bool) -> UIImage?
-    {
-        switch selection
-        {
-        case .builtIn(let style):
-            return UIImage(named: style.assetName + (isCharging ? "-Charging" : ""))
-
-        case .imported(let identifier):
-            guard let url = try? self.imageURL(for: identifier) else { return nil }
-            return UIImage(contentsOfFile: url.path)
-        }
-    }
-
-    static func defaultImage(for skin: any ControllerSkinProtocol, isCharging: Bool) -> UIImage?
-    {
-        if let style = LidCoverStyle.matching(skinIdentifier: skin.identifier)
-        {
-            return self.image(for: .builtIn(style), isCharging: isCharging)
-        }
-        return self.skinImage(for: skin, isCharging: isCharging)
+        guard let identifier = self.selection(for: skinIdentifier), let url = try? self.imageURL(for: identifier) else { return nil }
+        return UIImage(contentsOfFile: url.path)
     }
 
     static func skinImage(for skin: any ControllerSkinProtocol, isCharging: Bool) -> UIImage?
@@ -94,7 +66,7 @@ enum LidCoverStore
         let destination = try self.imageURL(for: identifier)
         try FileManager.default.createDirectory(at: destination.deletingLastPathComponent(), withIntermediateDirectories: true)
         try data.write(to: destination, options: .atomic)
-        self.setSelection(.imported(identifier), for: skinIdentifier)
+        self.setSelection(identifier, for: skinIdentifier)
     }
 
     private static func imageURL(for identifier: UUID) throws -> URL

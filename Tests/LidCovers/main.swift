@@ -7,36 +7,6 @@ func expect(_ condition: @autoclosure () -> Bool, _ message: String)
     assertions += 1
 }
 
-for style in LidCoverStyle.allCases
-{
-    for layout in ["inner-book", "cover", "split-view"]
-    {
-        expect(LidCoverStyle.matching(skinIdentifier: "com.duods.delta.ds.\(style.rawValue).\(layout)") == style, "Official DuoDS variant must match")
-    }
-    let selection = LidCoverSelection.builtIn(style)
-    expect(LidCoverSelection(storedValue: selection.storedValue) == selection, "Built-in selection must survive persistence")
-}
-for identifier in ["", "com.duods.delta.ds.gold.cover", "com.duods.delta.ds.navy", "com.duods.delta.ds.navy.cover.extra", "custom.DuoDS.Graphite", "com.duods.delta.ds.graphite.unknown"]
-{
-    expect(LidCoverStyle.matching(skinIdentifier: identifier) == nil, "Unrecognized identifiers must retain the skin's own default")
-}
-let imported = LidCoverSelection.imported(UUID())
-expect(LidCoverSelection(storedValue: imported.storedValue) == imported, "Imported selection must survive persistence")
-for value in ["../../cover.png", "/tmp/cover.png", "invalid", "", "Graphite"]
-{
-    expect(LidCoverSelection(storedValue: value) == nil, "Invalid persisted values must be rejected")
-}
-let defaults = UserDefaults(suiteName: "LidCoverTests.\(UUID().uuidString)")!
-let first = "com.duods.delta.ds.graphite.inner-book"
-let second = "com.duods.delta.ds.navy.cover"
-let values = [first: LidCoverSelection.builtIn(.snow).storedValue, second: imported.storedValue]
-defaults.set(values, forKey: "selections")
-expect(defaults.dictionary(forKey: "selections") as? [String: String] == values, "Per-skin selections must persist independently")
-var resetValues = defaults.dictionary(forKey: "selections") as! [String: String]
-resetValues[first] = nil
-expect(resetValues[second] == imported.storedValue, "Reset must leave other skins' selections alone")
-defaults.removeObject(forKey: "selections")
-
 // Exercise the production ImageIO importer on macOS; no simulator or UIKit mocks required.
 import ImageIO
 import UniformTypeIdentifiers
@@ -96,4 +66,4 @@ do
     fatalError("Oversized files must be rejected before decoding")
 }
 catch LidCoverImageImporter.ImportError.tooLarge { assertions += 1 }
-print("Passed \(assertions) model and image-import assertions")
+print("Passed \(assertions) image-import assertions")

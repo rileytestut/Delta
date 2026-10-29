@@ -53,16 +53,11 @@ final class LidCoverViewController: UITableViewController, UIDocumentPickerDeleg
         }
     }
 
-    override func numberOfSections(in tableView: UITableView) -> Int { 3 }
+    override func numberOfSections(in tableView: UITableView) -> Int { 2 }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
-        switch section
-        {
-        case 0: return LidCoverStyle.allCases.count
-        case 1: return 2
-        default: return 1
-        }
+        section == 0 ? 2 : 1
     }
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String?
@@ -72,26 +67,13 @@ final class LidCoverViewController: UITableViewController, UIDocumentPickerDeleg
 
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String?
     {
-        switch section
-        {
-        case 0: return String(localized: "Original decorative lids coordinated with DuoDS. Your choice is remembered for this controller skin.")
-        case 1: return String(localized: "Imported PNG and JPEG images fill the lid with a centered crop. Reset restores the matching DuoDS design or the skin’s original lid.")
-        default: return nil
-        }
+        section == 0 ? String(localized: "Choose your own PNG or JPEG closing-lid image. Your choice is remembered for this controller skin. Images fill the lid with a centered crop. Reset restores the skin’s original lid.") : nil
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
         let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
         if indexPath.section == 0
-        {
-            let style = LidCoverStyle.allCases[indexPath.row]
-            cell.textLabel?.text = style.name
-            cell.imageView?.image = LidCoverStore.image(for: .builtIn(style), isCharging: false)?.preparingThumbnail(of: CGSize(width: 72, height: 36))
-            let selection = LidCoverStore.selection(for: self.skin.identifier) ?? LidCoverStyle.matching(skinIdentifier: self.skin.identifier).map { .builtIn($0) }
-            cell.accessoryType = selection == .builtIn(style) ? .checkmark : .none
-        }
-        else if indexPath.section == 1
         {
             cell.textLabel?.text = indexPath.row == 0 ? String(localized: "Import Image…") : String(localized: "Reset to Default")
             cell.textLabel?.textColor = self.view.tintColor
@@ -111,18 +93,14 @@ final class LidCoverViewController: UITableViewController, UIDocumentPickerDeleg
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
     {
         tableView.deselectRow(at: indexPath, animated: true)
-        if indexPath.section == 0
-        {
-            LidCoverStore.setSelection(.builtIn(LidCoverStyle.allCases[indexPath.row]), for: self.skin.identifier)
-        }
-        else if indexPath.section == 1 && indexPath.row == 0
+        if indexPath.section == 0 && indexPath.row == 0
         {
             let picker = UIDocumentPickerViewController(forOpeningContentTypes: [.png, .jpeg], asCopy: true)
             picker.delegate = self
             self.present(picker, animated: true)
             return
         }
-        else if indexPath.section == 1
+        else if indexPath.section == 0
         {
             LidCoverStore.setSelection(nil, for: self.skin.identifier)
         }
@@ -149,8 +127,8 @@ final class LidCoverViewController: UITableViewController, UIDocumentPickerDeleg
 
     private func updatePreview()
     {
-        self.preview.image = LidCoverStore.image(for: self.skin.identifier, isCharging: self.previewCharging)
-            ?? LidCoverStore.defaultImage(for: self.skin, isCharging: self.previewCharging)
+        self.preview.image = LidCoverStore.image(for: self.skin.identifier)
+            ?? LidCoverStore.skinImage(for: self.skin, isCharging: self.previewCharging)
     }
 
     @objc private func changeChargingPreview(_ sender: UISwitch)
