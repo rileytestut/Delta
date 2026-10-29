@@ -27,15 +27,22 @@ class CoverView: UIView
 {
     let controllerSkin: any ControllerSkinProtocol
     
+    // Keep the selected skin separate from the standard skin used as a cover fallback.
+    // Many third-party skins (including DuoDS) have no .cover representation.
+    var decorativeSkin: (any ControllerSkinProtocol)? {
+        didSet { self.updateImage() }
+    }
+
     weak var delegate: CoverViewDelegate?
     
     private(set) var isCoverHidden: Bool = false
     
     private let imageView: UIImageView
     
-    init(controllerSkin: some ControllerSkinProtocol)
+    init(controllerSkin: some ControllerSkinProtocol, decorativeSkin: (any ControllerSkinProtocol)? = nil)
     {
         self.controllerSkin = controllerSkin
+        self.decorativeSkin = decorativeSkin
         
         self.imageView = UIImageView(frame: .zero)
         self.imageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -43,6 +50,7 @@ class CoverView: UIView
         super.init(frame: .zero)
         
         self.addSubview(self.imageView)
+        NotificationCenter.default.addObserver(self, selector: #selector(CoverView.lidSettingsDidChange(_:)), name: Settings.didChangeNotification, object: nil)
         
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(CoverView.handleTapGesture(_:)))
         self.addGestureRecognizer(tapGestureRecognizer)
@@ -153,6 +161,27 @@ private extension CoverView
         @unknown default: isCharging = false
         }
         
+        if LidCoverStore.isEnabled, let skin = self.decorativeSkin, skin.gameType == .ds
+        {
+            if let image = LidCoverStore.image(for: skin.identifier, isCharging: isCharging)
+            {
+                self.imageView.backgroundColor = .black
+                self.imageView.clipsToBounds = true
+                self.imageView.contentMode = .scaleAspectFill
+                self.imageView.image = image
+                return
+            }
+
+            self.imageView.backgroundColor = .clear
+            self.imageView.clipsToBounds = false
+            self.imageView.contentMode = .scaleToFill
+            self.imageView.image = LidCoverStore.skinImage(for: skin, isCharging: isCharging)
+            return
+        }
+
+        self.imageView.backgroundColor = .clear
+        self.imageView.clipsToBounds = false
+        self.imageView.contentMode = .scaleToFill
         var traits = DeltaCore.ControllerSkin.Traits.defaults(for: window)
         traits.displayType = .cover
         traits.orientation = .landscape
@@ -183,6 +212,13 @@ private extension CoverView
         }
     }
     
+    @objc func lidSettingsDidChange(_ notification: Notification)
+    {
+        guard let name = notification.userInfo?[Settings.NotificationUserInfoKey.name] as? Settings.Name,
+              name == ExperimentalFeatures.shared.decorativeLidCovers.settingsKey || name == ExperimentalFeatures.shared.decorativeLidCovers.$selections.settingsKey else { return }
+        self.updateImage()
+    }
+
     @objc func batteryStateDidChange(_ notification: Notification)
     {
         self.updateImage()

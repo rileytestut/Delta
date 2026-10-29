@@ -8,6 +8,7 @@
 
 import UIKit
 import SwiftUI
+import MelonDSDeltaCore
 
 // Access UIWindowScene.isStageManagerEnabled + UIDevice.isDuo
 @_spi(Internal) import DeltaCore
@@ -423,6 +424,12 @@ private extension PreferredControllerSkinsViewController
         
         self.portraitTraits = portraitTraits
         self.landscapeTraits = landscapeTraits
+
+        if LidCoverStore.isEnabled, self.system.gameType == .ds
+        {
+            // Rebuild the cover controls after resolving the current skin identifiers.
+            self.tableView.reloadData()
+        }
         
         self.loadingTask = Task<Void, Never> {
             let (portraitImage, landscapeImage) = await withCheckedContinuation { continuation in
@@ -571,5 +578,53 @@ extension PreferredControllerSkinsViewController: ControllerSkinsViewControllerD
         }
         
         _ = self.navigationController?.popViewController(animated: true)
+    }
+}
+
+//MARK: - Decorative Lids -
+extension PreferredControllerSkinsViewController
+{
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat
+    {
+        self.lidCoverSkin(for: section) != nil ? 60 : super.tableView(tableView, heightForFooterInSection: section)
+    }
+
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView?
+    {
+        guard let skin = self.lidCoverSkin(for: section) else { return super.tableView(tableView, viewForFooterInSection: section) }
+
+        let button = UIButton(type: .system)
+        button.setTitle(String(localized: "Closed-Lid Cover…"), for: .normal)
+        button.titleLabel?.font = .preferredFont(forTextStyle: .body)
+        button.titleLabel?.adjustsFontForContentSizeCategory = true
+        button.contentHorizontalAlignment = .leading
+        button.accessibilityHint = String(localized: "Customize the decorative lid for this controller skin.")
+        button.addAction(UIAction { [weak self] _ in
+            let controller = LidCoverViewController(skin: skin)
+            self?.navigationController?.pushViewController(controller, animated: true)
+        }, for: .touchUpInside)
+
+        let footer = UIView()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        footer.addSubview(button)
+        NSLayoutConstraint.activate([
+            button.leadingAnchor.constraint(equalTo: footer.layoutMarginsGuide.leadingAnchor),
+            button.trailingAnchor.constraint(equalTo: footer.layoutMarginsGuide.trailingAnchor),
+            button.topAnchor.constraint(equalTo: footer.topAnchor),
+            button.bottomAnchor.constraint(equalTo: footer.bottomAnchor)
+        ])
+        return footer
+    }
+
+    private func lidCoverSkin(for section: Int) -> ControllerSkin?
+    {
+        guard LidCoverStore.isEnabled, UIDevice.current.isDuo, self.system.gameType == .ds,
+              !self.isExternalControllerSkin, self.variant == .inner || self.variant == .outer else { return nil }
+        switch Section(rawValue: section)
+        {
+        case .portrait: return self.portraitControllerSkin
+        case .landscape: return self.landscapeControllerSkin
+        case nil: return nil
+        }
     }
 }

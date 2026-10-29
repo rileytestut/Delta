@@ -386,6 +386,10 @@
 		E6BD34AB2F563F1A001C9D78 /* AchievementGreeting.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6BD34AA2F563F1A001C9D78 /* AchievementGreeting.swift */; };
 		E6BD34AD2F587BF0001C9D78 /* AchievementGameBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6BD34AC2F587BF0001C9D78 /* AchievementGameBanner.swift */; };
 		E6EB10AF2F58B1C50001AAD2 /* AchievementNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6EB10AE2F58B1C50001AAD2 /* AchievementNotification.swift */; };
+		DEC0C0FE0000000000000101 /* LidCoverStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC0C0FE0000000000000001 /* LidCoverStyle.swift */; };
+		DEC0C0FE0000000000000102 /* LidCoverStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC0C0FE0000000000000002 /* LidCoverStore.swift */; };
+		DEC0C0FE0000000000000103 /* LidCoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC0C0FE0000000000000003 /* LidCoverViewController.swift */; };
+		DEC0C0FE0000000000000104 /* LidCoverImageImporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC0C0FE0000000000000004 /* LidCoverImageImporter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -993,6 +997,10 @@
 		E6EB10AE2F58B1C50001AAD2 /* AchievementNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementNotification.swift; sourceTree = "<group>"; };
 		E9F590F9C3B11B93463FDD42 /* CRTCurved.cikernel */ = {isa = PBXFileReference; lastKnownFileType = text; path = CRTCurved.cikernel; sourceTree = "<group>"; };
 		FCE7674E5643CDB43BC8ED32 /* DeltaOperatorWritebackToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeltaOperatorWritebackToast.swift; sourceTree = "<group>"; };
+		DEC0C0FE0000000000000001 /* LidCoverStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Lid Covers/LidCoverStyle.swift"; sourceTree = "<group>"; };
+		DEC0C0FE0000000000000002 /* LidCoverStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Lid Covers/LidCoverStore.swift"; sourceTree = "<group>"; };
+		DEC0C0FE0000000000000003 /* LidCoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Lid Covers/LidCoverViewController.swift"; sourceTree = "<group>"; };
+		DEC0C0FE0000000000000004 /* LidCoverImageImporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Lid Covers/LidCoverImageImporter.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1139,6 +1147,10 @@
 			isa = PBXGroup;
 			children = (
 				BF1DAD5C1D9F576000E752A7 /* PreferredControllerSkinsViewController.swift */,
+				DEC0C0FE0000000000000001 /* LidCoverStyle.swift */,
+				DEC0C0FE0000000000000002 /* LidCoverStore.swift */,
+				DEC0C0FE0000000000000003 /* LidCoverViewController.swift */,
+				DEC0C0FE0000000000000004 /* LidCoverImageImporter.swift */,
 				CA0001092E60000100000009 /* SkinSettingsView.swift */,
 				BF04E6FE1DB8625C000F35D3 /* ControllerSkinsViewController.swift */,
 				BF99A5961DC2F9C400468E9E /* ControllerSkinTableViewCell.swift */,
@@ -2829,6 +2841,10 @@
 				CA00011F2E6000010000001F /* MinorSettingsView.swift in Sources */,
 				CA0001222E60000100000022 /* AdvancedSettingsView.swift in Sources */,
 				CA0001072E60000100000007 /* ControllerSettingsView.swift in Sources */,
+				DEC0C0FE0000000000000101 /* LidCoverStyle.swift in Sources */,
+				DEC0C0FE0000000000000102 /* LidCoverStore.swift in Sources */,
+				DEC0C0FE0000000000000103 /* LidCoverViewController.swift in Sources */,
+				DEC0C0FE0000000000000104 /* LidCoverImageImporter.swift in Sources */,
 				CA00010A2E6000010000000A /* SkinSettingsView.swift in Sources */,
 				CA00010D2E6000010000000D /* AudioSettingsView.swift in Sources */,
 				CA0001102E60000100000010 /* VideoSettingsView.swift in Sources */,

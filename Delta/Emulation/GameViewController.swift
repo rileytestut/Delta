@@ -1159,6 +1159,9 @@ private extension GameViewController
             // self.controllerView.controllerSkin = nil
         }
         
+        // Refresh an already-visible lid after changing skins or display traits.
+        self.coverView?.decorativeSkin = game.type == .ds ? self.controllerView.controllerSkin : nil
+
         self.updateExternalDisplay()
         
         if let pauseViewController
@@ -1884,7 +1887,8 @@ private extension GameViewController
         self.setNeedsUpdateOfSupportedInterfaceOrientations()
         self.parent?.setNeedsUpdateOfSupportedInterfaceOrientations() // LaunchViewController
         
-        let coverView = CoverView(controllerSkin: controllerSkin)
+        let decorativeSkin = game.type == .ds ? self.controllerView.controllerSkin : nil
+        let coverView = CoverView(controllerSkin: controllerSkin, decorativeSkin: decorativeSkin)
         coverView.delegate = self
         self.view.addSubview(coverView)
         
