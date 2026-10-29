@@ -86,6 +86,10 @@ struct ExperimentalFeatures: FeatureContainer
              options: CustomFiltersOptions())
     var customFilters
 
+    @Feature(name: "Custom DS Lid Skins",
+             description: "Choose a closing-lid skin in Nintendo DS controller skin settings.")
+    var customDSLidSkins
+
     private init()
     {
         self.prepareFeatures()

@@ -124,6 +124,22 @@ private extension ControllerSkinsViewController
     {
         guard let system = self.system, let traits = self.traits else { return }
         
+        if traits.displayType == .cover
+        {
+            guard ExperimentalFeatures.shared.customDSLidSkins.isEnabled else { return }
+
+            // Cover traits have no database configuration flag. Use the skin's actual support
+            // so existing imports work without changing their stored configuration bitmask.
+            let request: NSFetchRequest<ControllerSkin> = ControllerSkin.fetchRequest()
+            request.predicate = NSPredicate(format: "%K == %@", #keyPath(ControllerSkin.gameType), system.gameType.rawValue)
+            guard let skins = try? DatabaseManager.shared.viewContext.fetch(request) else { return }
+            let identifiers = skins.filter { $0.supports(traits) }.map { $0.identifier }
+            request.predicate = NSPredicate(format: "%K IN %@", #keyPath(ControllerSkin.identifier), identifiers)
+            request.sortDescriptors = [NSSortDescriptor(key: #keyPath(ControllerSkin.isStandard), ascending: false), NSSortDescriptor(key: #keyPath(ControllerSkin.name), ascending: true)]
+            self.skinsDataSource.fetchedResultsController = NSFetchedResultsController(fetchRequest: request, managedObjectContext: DatabaseManager.shared.viewContext, sectionNameKeyPath: #keyPath(ControllerSkin.name), cacheName: nil)
+            return
+        }
+
         guard let configuration = ControllerSkinConfigurations(traits: traits) else { return }
         
         let fetchRequest: NSFetchRequest<ControllerSkin> = ControllerSkin.fetchRequest()
@@ -338,6 +354,11 @@ extension ControllerSkinsViewController: ImportControllerDelegate
                 self.present(alertController, animated: true, completion: nil)
             }
             
+            if self.traits.displayType == .cover
+            {
+                self.updateDataSource()
+            }
+
             if controllerSkins.count > 0
             {
                 print("Imported Controller Skins:", controllerSkins.map { $0.name })
