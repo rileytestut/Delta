@@ -1864,7 +1864,12 @@ private extension GameViewController
         
         let controllerSkin: any ControllerSkinProtocol
         
-        if let skin = self.controllerView.controllerSkin, skin.supports(traits)
+        if ExperimentalFeatures.shared.customDSLidSkins.isEnabled, game.type == .ds,
+           let skin = Settings.preferredControllerSkin(for: .ds, traits: traits, forExternalController: false), skin.supports(traits)
+        {
+            controllerSkin = skin
+        }
+        else if let skin = self.controllerView.controllerSkin, skin.supports(traits)
         {
             // The current skin supports cover skins, so use it.
             controllerSkin = skin

@@ -68,6 +68,7 @@ extension PreferredControllerSkinsViewController
         case outer
         case splitView
         case airPlay
+        case cover
         
         static var supportedVariants: [Variant] {
             var supportedVariants: [Variant] = [.standard]
@@ -104,6 +105,7 @@ extension PreferredControllerSkinsViewController
                 
             case .inner: return String(localized: "Inside")
             case .outer: return String(localized: "Outside")
+            case .cover: return String(localized: "Closed Lid")
                 
             case .splitView:
                 if #available(iOS 16, *), scene.isStageManagerEnabled
@@ -132,6 +134,15 @@ class PreferredControllerSkinsViewController: UITableViewController
         }
     }
     
+    private var supportedVariants: [Variant] {
+        var variants = Variant.supportedVariants
+        if self.system == .ds, UIDevice.current.isDuo, ExperimentalFeatures.shared.customDSLidSkins.isEnabled
+        {
+            variants.append(.cover)
+        }
+        return variants
+    }
+
     private var variant: Variant = .standard
     private var isExternalControllerSkin: Bool = false
     
@@ -168,12 +179,12 @@ extension PreferredControllerSkinsViewController
         
         self.prepareFilterMenu()
         
-        if Variant.supportedVariants.count == 1
+        if self.supportedVariants.count == 1
         {
             self.navigationItem.titleView = nil
         }
         
-        if let variant = Variant.supportedVariants.first
+        if let variant = self.supportedVariants.first
         {
             self.variant = variant
         }
@@ -185,11 +196,11 @@ extension PreferredControllerSkinsViewController
     {
         super.viewIsAppearing(animated)
         
-        if let scene = self.view.window?.windowScene, Variant.supportedVariants.count > 1, self.variantSegmentedControl.numberOfSegments == 0
+        if let scene = self.view.window?.windowScene, self.supportedVariants.count > 1, self.variantSegmentedControl.numberOfSegments == 0
         {
             // Only update segmented control on initial appearance when it has no segments.
             
-            for (index, variant) in zip(0..., Variant.supportedVariants)
+            for (index, variant) in zip(0..., self.supportedVariants)
             {
                 self.variantSegmentedControl.insertSegment(withTitle: variant.localizedName(for: scene), at: index, animated: false)
             }
@@ -262,7 +273,7 @@ extension PreferredControllerSkinsViewController
         
         let isResetButtonVisible: Bool
         
-        if let game = self.game
+        if let game = self.game, self.variant != .cover
         {
             switch (section, self.variant, self.isExternalControllerSkin)
             {
@@ -280,6 +291,7 @@ extension PreferredControllerSkinsViewController
             case (.portrait, .splitView, _): isResetButtonVisible = (game.preferredSplitViewPortraitSkin != nil)
             case (.landscape, .splitView, _): isResetButtonVisible = (game.preferredSplitViewLandscapeSkin != nil)
                 
+            case (_, .cover, _): isResetButtonVisible = false // Closing-lid skins are system-wide.
             case (.portrait, .airPlay, _), (.landscape, .airPlay, _): isResetButtonVisible = false //TODO: Support per-game AirPlay skins
             }
         }
@@ -318,9 +330,9 @@ extension PreferredControllerSkinsViewController
         
         let section = Section(rawValue: indexPath.section)!
         
-        if UIDevice.current.isDuo && self.variant == .splitView && section == .portrait
+        if section == .portrait && (self.variant == .cover || (UIDevice.current.isDuo && self.variant == .splitView))
         {
-            // iPhone Duo doesn't support portrait SplitView skins, so hide this row.
+            // Closed lids and iPhone Duo Split View only use landscape skins.
             return 0.0
         }
         
@@ -350,12 +362,14 @@ extension PreferredControllerSkinsViewController
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String?
     {
         let section = Section(rawValue: section)!
-        if UIDevice.current.isDuo && self.variant == .splitView && section == .portrait
+        if section == .portrait && (self.variant == .cover || (UIDevice.current.isDuo && self.variant == .splitView))
         {
-            // iPhone Duo doesn't support portrait SplitView skins, so hide this title.
+            // Closed lids and iPhone Duo Split View only use landscape skins.
             return nil
         }
         
+        if self.variant == .cover { return String(localized: "Closed Lid") }
+
         let title = super.tableView(tableView, titleForHeaderInSection: section.rawValue)
         return title
     }
@@ -370,7 +384,7 @@ private extension PreferredControllerSkinsViewController
         switch self.variant
         {
         case .standard, .inner: self.filterButton.isHidden = false
-        case .airPlay, .splitView, .outer: self.filterButton.isHidden = true // External controller skins not (yet) supported for AirPlay, SplitView, and outer display skins
+        case .airPlay, .splitView, .outer, .cover: self.filterButton.isHidden = true // External controller skins not (yet) supported for AirPlay, SplitView, and outer display skins
         }
         
         self.tableView.reloadData()
@@ -392,7 +406,7 @@ private extension PreferredControllerSkinsViewController
         var portraitControllerSkin: ControllerSkin?
         var landscapeControllerSkin: ControllerSkin?
                 
-        if let game = self.game
+        if let game = self.game, self.variant != .cover
         {
             portraitControllerSkin = Settings.preferredControllerSkin(for: game, traits: portraitTraits, forExternalController: self.isExternalControllerSkin)
             landscapeControllerSkin = Settings.preferredControllerSkin(for: game, traits: landscapeTraits, forExternalController: self.isExternalControllerSkin)
@@ -488,6 +502,10 @@ private extension PreferredControllerSkinsViewController
             traits.displayType = .standard
             traits.device = .tv
             
+        case .cover:
+            traits.displayType = .cover
+            traits.orientation = .landscape
+
         case .splitView:
             traits.displayType = .splitView
         }
@@ -526,7 +544,7 @@ private extension PreferredControllerSkinsViewController
 {
     @IBAction func changeCurrentVariant(_ sender: UISegmentedControl)
     {
-        let variant = Variant.supportedVariants[sender.selectedSegmentIndex]
+        let variant = self.supportedVariants[sender.selectedSegmentIndex]
         self.variant = variant
         
         // Always reset to non-external controller skin when changing variants.
@@ -547,7 +565,7 @@ extension PreferredControllerSkinsViewController: ControllerSkinsViewControllerD
 {
     func controllerSkinsViewController(_ controllerSkinsViewController: ControllerSkinsViewController, didChooseControllerSkin controllerSkin: ControllerSkin?)
     {
-        if let game = self.game
+        if let game = self.game, self.variant != .cover
         {
             Settings.setPreferredControllerSkin(.some(controllerSkin), for: game, traits: controllerSkinsViewController.traits, forExternalController: self.isExternalControllerSkin)
         }
@@ -561,7 +579,7 @@ extension PreferredControllerSkinsViewController: ControllerSkinsViewControllerD
     
     func controllerSkinsViewControllerDidResetControllerSkin(_ controllerSkinsViewController: ControllerSkinsViewController)
     {
-        if let game = self.game
+        if let game = self.game, self.variant != .cover
         {
             Settings.setPreferredControllerSkin(nil, for: game, traits: controllerSkinsViewController.traits, forExternalController: self.isExternalControllerSkin)
         }
