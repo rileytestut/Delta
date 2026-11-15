@@ -1027,6 +1027,9 @@ private extension GameCollectionViewController
     
     func changeArtwork(for game: Game, toImageAt url: URL?, errors: [Error])
     {
+        let presentedViewController = self.presentedViewController
+        let windowScene = presentedViewController?.viewIfLoaded?.window?.windowScene ?? self.viewIfLoaded?.window?.windowScene
+        
         defer {
             if let temporaryImageURL = url
             {
@@ -1100,7 +1103,7 @@ private extension GameCollectionViewController
                         self.collectionView.reloadItems(at: [indexPath])
                     }
                     
-                    self.presentedViewController?.dismiss(animated: true, completion: nil)
+                    self.dismissArtworkImportController(presentedViewController, in: windowScene)
                 }
             }
         }
@@ -1115,17 +1118,36 @@ private extension GameCollectionViewController
                     self.present(alertController, animated: true, completion: nil)
                 }
                 
-                if let presentedViewController = self.presentedViewController
-                {
-                    presentedViewController.dismiss(animated: true) {
-                        presentAlertController()
-                    }
-                }
-                else
-                {
-                    presentAlertController()
-                }
+                self.dismissArtworkImportController(presentedViewController, in: windowScene, completion: presentAlertController)
             }
+        }
+    }
+    
+    private func dismissArtworkImportController(_ presentedViewController: UIViewController?, in windowScene: UIWindowScene?, completion: (() -> Void)? = nil)
+    {
+        let finishDismissal = {
+            ExperimentalFeatures.shared.screenOrientation.updateInterfaceOrientation(in: windowScene)
+            completion?()
+        }
+        
+        guard let presentedViewController = presentedViewController else {
+            finishDismissal()
+            return
+        }
+        
+        if presentedViewController.isBeingDismissed, let transitionCoordinator = presentedViewController.transitionCoordinator
+        {
+            transitionCoordinator.animate(alongsideTransition: nil) { _ in
+                finishDismissal()
+            }
+        }
+        else if presentedViewController.presentingViewController != nil
+        {
+            presentedViewController.dismiss(animated: true, completion: finishDismissal)
+        }
+        else
+        {
+            finishDismissal()
         }
     }
     
@@ -1422,7 +1444,16 @@ extension GameCollectionViewController: ImportControllerDelegate
     
     func importControllerDidCancel(_ importController: ImportController)
     {
-        self.presentedViewController?.dismiss(animated: true, completion: nil)
+        if self._changingArtworkGame != nil
+        {
+            let presentedViewController = self.presentedViewController
+            let windowScene = presentedViewController?.viewIfLoaded?.window?.windowScene ?? self.viewIfLoaded?.window?.windowScene
+            self.dismissArtworkImportController(presentedViewController, in: windowScene)
+        }
+        else
+        {
+            self.presentedViewController?.dismiss(animated: true, completion: nil)
+        }
     }
 }
 

@@ -86,6 +86,11 @@ struct ExperimentalFeatures: FeatureContainer
              options: CustomFiltersOptions())
     var customFilters
 
+    @Feature(name: "Screen Orientation",
+             description: "Choose a fixed screen orientation. iPhone only.",
+             options: ScreenOrientationOptions())
+    var screenOrientation
+
     private init()
     {
         self.prepareFeatures()

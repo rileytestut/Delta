@@ -69,6 +69,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate
         self.launchViewController = launchViewController
         
         self.window?.makeKeyAndVisible()
+        ExperimentalFeatures.shared.screenOrientation.updateInterfaceOrientation(in: scene as? UIWindowScene)
     }
     
     func sceneDidDisconnect(_ scene: UIScene)
@@ -83,6 +84,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate
     {
         // Called when the scene has moved from an inactive state to an active state.
         // Use this method to restart any tasks that were paused (or not yet started) when the scene was inactive.
+        ExperimentalFeatures.shared.screenOrientation.updateInterfaceOrientation(in: scene as? UIWindowScene)
     }
     
     func sceneWillResignActive(_ scene: UIScene)
@@ -104,6 +106,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate
         // Called as the scene transitions from the foreground to the background.
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
+    }
+
+    @available(iOS 27, *)
+    func supportedInterfaceOrientations(for windowScene: UIWindowScene) -> UIInterfaceOrientationMask
+    {
+        return ExperimentalFeatures.shared.screenOrientation.supportedInterfaceOrientations(for: self.window)
     }
 }
 

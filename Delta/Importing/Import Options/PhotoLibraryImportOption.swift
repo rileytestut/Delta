@@ -40,6 +40,11 @@ class PhotoLibraryImportOption: NSObject, ImportOption
 
 extension PhotoLibraryImportOption: UIImagePickerControllerDelegate, UINavigationControllerDelegate
 {
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController)
+    {
+        self.completionHandler?(nil)
+    }
+    
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any])
     {
         guard let image = info[.originalImage] as? UIImage, let rotatedImage = image.rotatedToIntrinsicOrientation(), let data = rotatedImage.pngData() else {

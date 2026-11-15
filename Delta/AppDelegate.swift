@@ -84,6 +84,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         return true
     }
 
+    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask
+    {
+        return ExperimentalFeatures.shared.screenOrientation.supportedInterfaceOrientations(for: window)
+    }
+
     func applicationWillResignActive(_ application: UIApplication)
     {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -284,8 +289,27 @@ private extension AppDelegate
     
     @objc func settingsDidChange(_ notification: Notification)
     {
-        guard let settingsName = notification.userInfo?[Settings.NotificationUserInfoKey.name] as? Settings.Name, settingsName == ExperimentalFeatures.shared.showTouches.settingsKey else { return }
-        self.updateSettings()
+        guard let settingsName = notification.userInfo?[Settings.NotificationUserInfoKey.name] as? Settings.Name else { return }
+
+        switch settingsName
+        {
+        case ExperimentalFeatures.shared.showTouches.settingsKey:
+            self.updateSettings()
+
+        case ExperimentalFeatures.shared.screenOrientation.settingsKey,
+             ExperimentalFeatures.shared.screenOrientation.$orientation.settingsKey:
+            for scene in UIApplication.shared.connectedScenes
+            {
+                guard scene.delegate is SceneDelegate || scene.delegate is GameSceneDelegate,
+                      scene.activationState == .foregroundActive || scene.activationState == .foregroundInactive
+                else { continue }
+
+                ExperimentalFeatures.shared.screenOrientation.updateInterfaceOrientation(in: scene as? UIWindowScene)
+            }
+
+        default:
+            break
+        }
     }
     
     func receivedApplicationStateRequest()

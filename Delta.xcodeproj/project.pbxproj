@@ -67,6 +67,7 @@
 		954A28F5338A5300C0B9497E /* OperatorSlotDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0654CFCA3D2CB4D35CC99F89 /* OperatorSlotDataSource.swift */; };
 		96CFFFFCF2C07FCBA1EB0EEA /* CustomScreenFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E016EA7AF2F7D73BE4774E /* CustomScreenFilter.swift */; };
 		AC1C991029F8B8C30020E6E4 /* ToastNotificationOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC1C990F29F8B8C30020E6E4 /* ToastNotificationOptions.swift */; };
+		A7E39D402FC8100100000002 /* ScreenOrientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E39D402FC8100100000001 /* ScreenOrientation.swift */; };
 		AC1C992729F9F1CF0020E6E4 /* GameViewController+ExperimentalToasts.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC1C992629F9F1CF0020E6E4 /* GameViewController+ExperimentalToasts.swift */; };
 		ACF7E30F29F743A3000FE071 /* PHPhotoLibrary+Screenshots.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACF7E30E29F743A3000FE071 /* PHPhotoLibrary+Screenshots.swift */; };
 		B8BF6056C00AB0507A06D39E /* OperatorStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C31F852121CBEF08181BD23 /* OperatorStatusView.swift */; };
@@ -655,6 +656,7 @@
 		A01281C7023C0041B25963BE /* Pods-DeltaPreviews.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DeltaPreviews.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DeltaPreviews/Pods-DeltaPreviews.debug.xcconfig"; sourceTree = "<group>"; };
 		A19FF50F55441BC2B2248241 /* Pods-Delta.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Delta.release.xcconfig"; path = "Pods/Target Support Files/Pods-Delta/Pods-Delta.release.xcconfig"; sourceTree = "<group>"; };
 		AC1C990F29F8B8C30020E6E4 /* ToastNotificationOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastNotificationOptions.swift; sourceTree = "<group>"; };
+		A7E39D402FC8100100000001 /* ScreenOrientation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenOrientation.swift; sourceTree = "<group>"; };
 		AC1C992629F9F1CF0020E6E4 /* GameViewController+ExperimentalToasts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameViewController+ExperimentalToasts.swift"; sourceTree = "<group>"; };
 		ACF7E30E29F743A3000FE071 /* PHPhotoLibrary+Screenshots.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PHPhotoLibrary+Screenshots.swift"; sourceTree = "<group>"; };
 		BF00BEA525B758AA00C8607D /* SystemBIOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemBIOS.swift; sourceTree = "<group>"; };
@@ -1930,6 +1932,7 @@
 			isa = PBXGroup;
 			children = (
 				AC1C990F29F8B8C30020E6E4 /* ToastNotificationOptions.swift */,
+				A7E39D402FC8100100000001 /* ScreenOrientation.swift */,
 				53E940F6FC243E487AE5A1F6 /* CustomFilters.swift */,
 				98E016EA7AF2F7D73BE4774E /* CustomScreenFilter.swift */,
 				D81E7EC4E7EFEF3088375B8B /* Shaders */,
@@ -2593,6 +2596,7 @@
 				82A787D92F60C4F400E4CA06 /* PageControl.swift in Sources */,
 				BF525EEA1FF6CD12004AA849 /* DeepLink.swift in Sources */,
 				AC1C991029F8B8C30020E6E4 /* ToastNotificationOptions.swift in Sources */,
+				A7E39D402FC8100100000002 /* ScreenOrientation.swift in Sources */,
 				E424E54101D49C244341A908 /* CustomFilters.swift in Sources */,
 				D5882F63307C638B00EC8817 /* CoverView.swift in Sources */,
 				96CFFFFCF2C07FCBA1EB0EEA /* CustomScreenFilter.swift in Sources */,
