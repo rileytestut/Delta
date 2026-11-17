@@ -271,10 +271,20 @@ class GameViewController: DeltaCore.GameViewController
     private var isPreparingAchievements = false
     
     override var shouldAutorotate: Bool {
+        if ExperimentalFeatures.shared.screenOrientation.fixedInterfaceOrientation(in: self.viewIfLoaded?.window?.windowScene) != nil
+        {
+            return true
+        }
+
         return !self.isGyroActive && !self.isShowingCover
     }
     
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        if let orientation = ExperimentalFeatures.shared.screenOrientation.fixedInterfaceOrientation(in: self.viewIfLoaded?.window?.windowScene)
+        {
+            return UIInterfaceOrientationMask(rawValue: 1 << orientation.rawValue)
+        }
+
         guard self.isGyroActive || self.isShowingCover else {
             return super.supportedInterfaceOrientations
         }
@@ -3055,10 +3065,11 @@ private extension GameViewController
         
         guard !self.presentedGyroAlert else { return }
         
-        self.presentedGyroAlert = true
-        
         func presentToastView()
         {
+            guard !self.presentedGyroAlert, ExperimentalFeatures.shared.screenOrientation.fixedInterfaceOrientation(in: self.viewIfLoaded?.window?.windowScene) == nil else { return }
+            self.presentedGyroAlert = true
+
             let toastView = RSTToastView(text: NSLocalizedString("Autorotation Disabled", comment: ""), detailText: NSLocalizedString("Pause game to change orientation.", comment: ""))
             self.show(toastView)
         }

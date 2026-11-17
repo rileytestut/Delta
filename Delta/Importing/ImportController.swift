@@ -131,6 +131,12 @@ class ImportController: NSObject
     private func finish(with urls: Set<URL>?, errors: [Error])
     {
         DispatchQueue.main.async {
+            let presentedViewController = self.presentedViewController
+            let windowScene = presentedViewController?.viewIfLoaded?.window?.windowScene ?? self.presentingViewController?.viewIfLoaded?.window?.windowScene
+            let updateInterfaceOrientation = {
+                ExperimentalFeatures.shared.screenOrientation.updateInterfaceOrientation(in: windowScene)
+            }
+            
             if let urls = urls
             {
                 self.delegate?.importController(self, didImportItemsAt: urls, errors: errors)
@@ -140,7 +146,27 @@ class ImportController: NSObject
                 self.delegate?.importControllerDidCancel(self)
             }
             
-            self.presentedViewController?.dismiss(animated: true)
+            if let presentedViewController = presentedViewController
+            {
+                if presentedViewController.isBeingDismissed, let transitionCoordinator = presentedViewController.transitionCoordinator
+                {
+                    transitionCoordinator.animate(alongsideTransition: nil) { _ in
+                        updateInterfaceOrientation()
+                    }
+                }
+                else if presentedViewController.presentingViewController != nil
+                {
+                    presentedViewController.dismiss(animated: true, completion: updateInterfaceOrientation)
+                }
+                else
+                {
+                    updateInterfaceOrientation()
+                }
+            }
+            else
+            {
+                updateInterfaceOrientation()
+            }
             
             self.presentingViewController?.importController = nil
         }
